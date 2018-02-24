@@ -10,12 +10,14 @@
  vitorbarros
  */
 
+const config = require('./config');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const whoami = 'core/config/passportconf: '
 const user = require('../models/userModel.js');
 //var user = require(rootPath + '/calendar/controllers/user');
+const CALLBACK_URL = config.serverUrl + '/api/users/login/google/return'
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
   function(usermail, password, done){
@@ -54,7 +56,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 passport.use(new GoogleStrategy({
     clientID: '197765753575-do7v040q2smrad7ekof1ilncjbm4lef3.apps.googleusercontent.com',
     clientSecret: 'GM6hXdmZ8dbldbgnaHx1BEr7',
-    callbackURL: 'http://develar-local.com:3000/api/users/login/google/return'
+    callbackURL: CALLBACK_URL
   },
 
   function(accessToken, refreshToken, profile, done){

@@ -34,7 +34,9 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
+package-lock.json
 testem.log
+repositorio.zip
 /typings
 
 # e2e
