@@ -1,0 +1,28 @@
+@import '../../../../../assets/sass/variable';
+
+:host {
+  
+  display: table;
+  height: 80%;
+  vertical-align: middle;
+  width: 90%;
+
+  card {
+    margin: 0 auto;
+    max-width: 400px;
+
+    /deep/ .card-wrap {
+      border: 0;
+    }
+    form {
+      button {
+        width: 100%;
+      }
+      .additional-info {
+        background: rgba(#000,.1);
+        margin: $module (-$module) (-$module);
+        padding: $module/2 $module;
+      }
+    }
+  }
+}

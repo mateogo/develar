@@ -1,0 +1,18 @@
+.map-col {
+  card {
+    height: 100%;
+
+
+    /deep/.card-wrap {
+      height: 100%;
+
+      .card-content {
+        height: 100%;
+      }
+    }
+  }
+}
+#map {
+  height: 100%;
+  min-height: 300px;
+}

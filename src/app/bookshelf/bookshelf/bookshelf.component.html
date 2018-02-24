@@ -1,0 +1,26 @@
+<div class="container-fluid">
+
+	<div>	
+		  <mat-button-toggle-group #view="matButtonToggleGroup">
+		    <mat-button-toggle value="list">
+		      <mat-icon>view_list</mat-icon>
+		    </mat-button-toggle>
+		    <mat-button-toggle value="grid">
+		      <mat-icon>view_module</mat-icon>
+		    </mat-button-toggle>
+		  </mat-button-toggle-group>				
+			<card-search (lookUpModels)="lookup($event)"></card-search>
+	</div>
+
+
+
+	<div >	
+		<div *ngIf='!view.value || view.value=="list"' >
+			<app-cardsviewlist [cards]='models' ></app-cardsviewlist>
+		</div>
+
+		<div *ngIf='view.value=="grid"' >
+			<app-cardsviewgrid [models]='models' ></app-cardsviewgrid>
+		</div>
+	</div>
+</div>

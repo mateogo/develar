@@ -1,0 +1,35 @@
+<div id="search-component" class="d-flex justify-content between align-items-center">
+	<mat-form-field>
+		<mat-select #type placeholder="Tipo"
+				[(value)]='selectedType'
+				(change)="changeCardType(type.value)" >
+		  <mat-option *ngFor="let litem of cardtypes" 
+		  	[value]="litem.val" >{{ litem.label }}</mat-option>
+		</mat-select>
+	</mat-form-field>
+	
+	<mat-form-field>
+		<mat-select #category   placeholder="Categoría"
+				[(value)]='selectedCategory' 
+				(change)="changeCardCategory(category.value)" >
+		  <mat-option *ngFor="let litem of cardcategories" 
+		  	[value]="litem.val" >{{ litem.label }}</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field>
+  	<input matInput #searchBox id="search-box" placeholder="búsqueda por texto" 
+  			(keyup)="search(searchBox.value)" />
+	</mat-form-field>
+</div>
+
+<div id="search-component" class="d-flex ">
+	<app-tags [taglist]='selectedTags' 
+						(emitTags)='changeTags($event)'
+						[parentCol]="componentCol" 
+						[parentType]='type.value'  
+						[parentStype]='category.value' >
+	</app-tags>
+</div>
+
+
+

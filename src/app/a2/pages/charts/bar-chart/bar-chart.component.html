@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-lg-6">
+    <card>
+      <canvas
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+    </card>
+  </div>
+  <div class="col-lg-6">
+    <card>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tr>
+            <th *ngFor="let label of barChartLabels">{{label}}</th>
+          </tr>
+          <tr *ngFor="let d of barChartData">
+            <td *ngFor="let label of barChartLabels; let j=index">{{d && d.data[j]}}</td>
+          </tr>
+        </table>
+      </div>
+    </card>
+
+    <button mat-raised-button color="accent" (click)="randomize()">Update</button>
+  </div>
+</div>

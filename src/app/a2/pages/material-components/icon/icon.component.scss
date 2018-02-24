@@ -1,0 +1,11 @@
+@import '../../../../../assets/sass/variable';
+
+:host md-icon {
+  background: rgba(main-color(A100),.2);
+  font-size: 32px;
+  height: 50px;
+  padding: 9px;
+  margin: 11px 10px;
+  text-align: center;
+  width: 50px;
+}

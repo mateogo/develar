@@ -1,0 +1,108 @@
+<mat-list-item>
+	<img mat-list-avatar src="{{ token.avatar }}" width="40" height="40" alt="">
+	<!---  encabezado: nombre del recurso relacionado  -->
+	<h3 mat-line>{{ token.displayAs || 'producto objetivo' }}</h3>
+
+
+	<!---  encabezado con boton de editar relación  -->
+	<p mat-line title="detalle del predicado" >
+		<span>{{ getPredicateLabel(token.predicate) }}</span>
+		<span class="slug"> -- {{ token.slug || 'nuevo elelmento relacionado'}}</span>
+
+		<span style="margin: 10px" 
+			(click)='editToken()' title="abrir/ cerrar editor de relación">
+			<i [class]="openEditor ? 'far fa-edit' : 'fas fa-pen-square'" aria-hidden="true"></i></span>
+
+		<span style="margin: 10px" 
+			(click)='removeEditor(token)' title="cerrar editor"  >
+			<i class='fas fa-times' aria-hidden="true"></i></span>
+	</p>
+
+	<p mat-line *ngIf="token.description" >
+		<span  class="description">{{ token.description }}</span>
+	</p>
+</mat-list-item>
+
+	<!---  encabezado con boton de editar relación  -->
+<ng-container *ngIf='openEditor'>
+
+	<div class="product-search">
+		<h5>buscar producto</h5>
+		<product-base		[entityId]='token.entityId' 
+									[entityName]='token.displayAs'
+									(updateProduct)='updateProductEntity($event)'></product-base>
+
+		<p style="text-align:left"><small>Producto seleccionado: 
+			{{token.displayAs}} id: {{token.entityId}}</small></p>
+	</div>
+
+	<h5>Relación producto: {{getPredicateLabel(token.predicate)}} </h5>
+	<mat-form-field>
+		<input matInput name="displayAs" [(ngModel)]='token.displayAs' placeholder="Mostrar como..." >
+	</mat-form-field>	
+
+	<div class="d-flex flex-column flex-md-row align-items-start justify-content-start">
+		<mat-form-field style="max-width: 220px; margin-right:15px;" >
+	  	<input matInput name="slug" [(ngModel)]='token.slug' placeholder="descripción corta - asunto" >
+		</mat-form-field>	
+		<mat-form-field style="max-width: 140px" >
+	  	<input matInput name="fenectx" [(ngModel)]='token.fenectx' placeholder="Fecha necesidad" 
+	  					(blur)='validDate(token.fenectx)'>
+		</mat-form-field>	
+	</div>
+	
+	<div class="d-flex justify-content-start align-items-center">
+		<mat-form-field>
+		  <input matInput name="description" [(ngModel)]='token.description' placeholder="descripcion" >
+		</mat-form-field>	
+	</div>
+
+
+	<div class="d-flex flex-column align-items-start flex-md-row justify-content-start">
+
+		<mat-form-field  style="max-width: 200px;margin-right: 20px;">
+			<span matSuffix><strong>{{token.ume}}</strong></span>
+	  	<input matInput name="qt" [(ngModel)]='token.qt' placeholder="Cantidad" >
+		</mat-form-field>	
+
+		<mat-form-field  style="max-width: 90px" >
+	  	<input matInput name="freq" [(ngModel)]='token.freq' placeholder="Frecuencia" >
+		</mat-form-field>	
+    <mat-form-field style="max-width: 90px;margin-right: 20px;" >
+      <mat-select #freqFld placeholder="UM Freq"
+          [(ngModel)]='token.fume'
+          (change)="changeFume(freqFld.value)" >
+        <mat-option *ngFor="let fume of fumeList" 
+          [value]="fume.val" >{{ fume.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="max-width: 90px;" >
+      <mat-select #prmoneda placeholder="Moneda"
+          [(ngModel)]='token.moneda'
+          (change)="changeMoneda(prmoneda.value)" >
+        <mat-option *ngFor="let currency of currencyList" 
+          [value]="currency.val" >{{ currency.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+		<mat-form-field style="max-width: 120px;margin-right: 20px;" >
+	  	<input matInput name="pu" [(ngModel)]='token.pu' placeholder="Precio Unitario" >
+		</mat-form-field>	
+
+	</div>
+
+		<p><strong>cant x freq x pu = total: </strong> {{token.qt|number:'0.1-1'}} ({{token.ume}}) x {{token.freq|number:'0.0-0'}} ({{token.fume}}) x {{token.moneda}} {{token.pu|number:'0.4-4'}} = <strong> {{token.moneda}} {{token.qt * token.freq * token.pu|number:'0.2-2'}}</strong></p>
+</ng-container>
+
+
+<!--
+		<div style="max-width: 400px" class="pr-3">	
+			<span matSuffix><strong>{{getPredicateLabel(token.predicate)}}</strong></span>
+			<mat-form-field>
+			  <span matPrefix><strong>Predicado: </strong></span>
+			  <input matInput type="text" name="predicate"
+			   			[(ngModel)]='token.predicate' [matAutocomplete]="predicate">
+			  <span matSuffix><strong>{{getPredicateLabel(token.predicate)}}</strong></span>
+			</mat-form-field>
+		</div>
+-->

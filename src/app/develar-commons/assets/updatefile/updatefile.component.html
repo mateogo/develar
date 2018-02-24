@@ -1,0 +1,66 @@
+<mat-card>
+	<mat-card-content>
+		<div ng2FileDrop
+	   [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+	   (fileOver)="fileOverBase($event)"
+	   [uploader]="uploader"
+	   class="my-drop-zone">
+
+	   	<mat-list>
+	   		<mat-list-item  *ngFor="let item of uploader.queue">
+	   			<div mat-line  *ngIf='item.file' >
+	   				<div class='d-flex justify-content-between align-items-center'>
+
+	        	<small>
+	        		{{ item?.file?.name }}
+			        <span class="text-center">
+			          <span *ngIf="item.isSuccess"><i class="far fa-check-square"></i></span>
+			          <span *ngIf="item.isCancel"><i  class="fa fa-times-circle"></i></span>
+			          <span *ngIf="item.isError"><i   class="fa fa-question-circle"></i></span>
+			        </span>
+			      </small>
+
+
+	   				<small nowrap>
+	        		{{ item?.file?.size/1024/1024 | number:'.2' }} MB</small>
+
+	        	<div style="min-width: 100px">
+							<mat-progress-bar mode="determinate" color="accent" [value]="item.progress" >
+							</mat-progress-bar>
+	        	</div>
+
+
+		        <div  class='upload-item-group' nowrap >
+	            <span class='upload-item-control' title="subir este item"
+	            		(click)="item.upload()" > 
+	                <i class="fas fa-paper-plane"></i>
+	            </span>
+
+	            <span class='upload-item-control'  title="cancelar subida"
+	            		(click)="item.cancel()" >
+	                <i class="fa fa-times"></i>
+	            </span>
+
+	            <span class='upload-item-control'  title="remover el item de la lista"
+	            		(click)="item.remove()" >
+	                <i class="fa fa-toggle-on"></i>
+	            </span>
+		        </div>
+					</div>
+	   			</div>
+	   			
+	   		</mat-list-item>
+	   	</mat-list>
+	   	
+
+		</div>
+		<mat-card-actions>
+
+			<div class="d-flex">
+				<input type="file" name="single" ng2FileSelect [uploader]="uploader" multiple  />
+			</div>
+
+		</mat-card-actions>
+
+	</mat-card-content>
+</mat-card>

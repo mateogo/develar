@@ -1,0 +1,438 @@
+import { Injectable }    from '@angular/core';
+import { Headers, Http } from '@angular/http';
+import { Observable }    from 'rxjs/Observable';
+import { Subject }       from 'rxjs/Subject';
+import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
+import { DataSource, SelectionModel } from '@angular/cdk/collections';
+import { SharedService } from '../../develar-commons/shared-service';
+
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+
+import 'rxjs/add/operator/toPromise';
+
+import { Product, Productit, ProductitTable, ProductBaseData, productModel } from './product.model';
+import { devutils } from '../../develar-commons/utils';
+
+
+import { Tag }                 from '../../develar-commons/develar-entities';
+
+import { DaoService }  from '../../develar-commons/dao.service';
+import { UserService } from '../../entities/user/user.service';
+import { User }        from '../../entities/user/user';
+
+
+const whoami = 'entity.controller';
+
+const newEntityConfirm = {
+  width:  '330px',
+  height: '300px',
+  hasBackdrop: true,
+  backdropClass: 'yellow-backdrop',
+  data: {
+    caption:'Alta de nueva entidad',
+    title: 'Confirme la acción',
+    body: 'Se dará de alta: ',
+    accept:{
+      action: 'accept',
+      label: 'Aceptar'
+    },
+    cancel:{
+      action: 'cancel',
+      label: 'Cancelar'
+    }
+  }
+};
+
+function initForSave(basicData: ProductBaseData, model: Product, user: User): Product {
+  //console.log('initForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
+  model.code = basicData.code;
+  model.name = basicData.name;
+  model.slug    = basicData.slug;
+
+  model.ptype  = basicData.ptype;
+  model.pclass = basicData.pclass;
+  model.pbrand = basicData.pbrand;
+  model.pmodel = basicData.pmodel;
+
+  model.pinventory = basicData.pinventory;
+  model.pume       = basicData.pume;
+  model.pformula   = basicData.pformula;
+
+  model.description = basicData.description;
+  model.taglist = basicData.taglist;
+  model.user = user.username;
+  model.userId = user._id;
+
+
+  return model;
+};
+
+function initItemForSave(model: Product, user: User): Product {
+  //console.log('initItemForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
+  model.user = user.username;
+  model.userId = user._id;
+
+
+  return model;
+};
+
+
+@Injectable()
+export class ProductController {
+
+  private backendUrl = 'api/products';
+  private searchUrl  = 'api/products/search';
+  private tags: Tag[] = [];
+
+  private productmaster: Product;
+  private productmasterId;
+  private emitProductMaster = new Subject<Product>();
+  private basicData: ProductBaseData;
+
+  private productit;
+  private productitId;
+  private emitProductItem = new Subject<Productit>();
+  
+  private productitList: Productit[] = [];
+  private emitProductTable = new BehaviorSubject<ProductitTable[]>([]);
+  private _selectionModel: SelectionModel<ProductitTable>
+  private _tableActions: Array<any> = productModel.tableActionOptions;
+
+  private handleError(error: any): Promise<any> {
+    console.error('[%s]: Ocurrió un error: [%s]',whoami, error);
+    return Promise.reject(error.message || error);
+  }
+
+  constructor(
+    private daoService: DaoService,
+    public snackBar: MatSnackBar,
+    public userService: UserService,
+    public sharedSrv:   SharedService,
+
+    private http: Http) { 
+  }
+
+  findById<T>(type:string, modelId: string):Promise<T>{
+    return this.daoService.findById<T>(type, modelId)
+      .then(response => {
+        if(response){
+          this.manageResponse(type, response);
+        }
+        return response as T
+      })
+      .catch(err => {
+        console.log(err);
+        return err;
+      });
+  }
+
+  findByQuery<T>(type:string, query: any){
+    this.daoService.search<Productit>(type, query).subscribe(list => {
+      this.productitList = list;
+      this.updateTableData();
+    })
+  }
+
+  updateTableData(){
+    let tableData = productModel.buildProductTable(this.productitList);
+    this.emitProductTable.next(tableData);
+  }
+
+  manageResponse(type, response){
+    if(type==='product'){
+      this.productmaster = response;
+      this.initBaseData();
+    }else if(type === 'productit'){
+      this.productit = response;
+      this.initProductItemData();
+    }
+  }
+
+
+  /*****************
+    productItem PRODUCT-ITEM
+  *****************/
+  get productItemListener():Subject<Productit>{
+    return this.emitProductItem;
+  }
+
+  initProductItEdit(model: Productit, modelId: string){
+    if(model){
+      this.productit = model;
+      this.initProductItemData();
+    }else if(modelId){
+      this.findById<Productit>('productit', modelId);
+    }else{
+      this.initNewProductItem();
+    }
+  }
+
+  initNewProductItem(){
+    this.productit = productModel.initNewProductItem('nuevo item producto');
+    this.initProductItemData();
+  }
+
+  initProductItemData(){
+    this.productitId = this.productit._id
+    this.emitProductItem.next(this.productit);
+    this.changePageTitle('items de producto')
+
+  }
+
+  // ****** Search ******************
+  searchProductItemBySlug(slug): Observable<Productit[]>{
+    return this.daoService.search<Productit>('productit', {slug: slug});
+  }
+
+  // ****** SAVE ******************
+  saveItemRecord(){
+    this.productit = initItemForSave(this.productit, this.userService.currentUser);
+
+    if(this.productitId){
+      return this.daoService.update<Productit>('productit', this.productitId, this.productit).then((model) =>{
+              console.log('update OK, opening snakbar[%s] [%s]', this.productit.slug, model.slug)
+              this.openSnackBar('Actualización exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+
+    }else{
+      return this.daoService.create<Productit>('productit', this.productit).then((model) =>{
+              console.log('create OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+    }
+  }
+
+  updateItemRecord(token: Productit){
+    this.productit = token;
+    this.productitId = token._id;
+    console.log('updateItemRecord: [%s] [%s] [%s] [%s] [%s]', token._id, token.pume, token.slug, token.productId, token.vendorId);
+    this.saveItemRecord();
+
+  }
+
+  cloneItemRecord(){
+      this.productit = initItemForSave(this.productit, this.userService.currentUser);
+      return this.daoService.create<Productit>('productit', this.productit).then((model) =>{
+              console.log('create OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+  }
+
+  /*****************
+    product PRODUCT
+  *****************/
+  getModelListener():Subject<Product>{
+    return this.emitProductMaster;
+  }
+
+  getBasicData():ProductBaseData {
+    return this.basicData;
+  }
+
+  initProductEdit(model: Product, modelId: string){
+    //console.log('controller: initProduct: [%s] [%s]', model.slug, modelId)
+    if(model){
+      this.productmaster = model;
+      this.initBaseData();
+    }else if(modelId){
+      this.findById<Product>('product', modelId);
+    }else{
+      this.initNewModel()
+
+    }
+  }
+
+  initNewModel(){
+    this.productmaster = productModel.initNew('','',null,null);
+    this.initBaseData();
+
+  }
+
+  initBaseData(){
+    this.productmasterId = this.productmaster._id
+    this.basicData = {
+      code: this.productmaster.code,
+      name: this.productmaster.name, 
+      slug: this.productmaster.slug,
+      
+      pclass: this.productmaster.pclass,
+      ptype:  this.productmaster.ptype, 
+      pbrand: this.productmaster.pbrand, 
+      pmodel: this.productmaster.pmodel, 
+
+      pinventory: this.productmaster.pinventory,
+      pume:       this.productmaster.pume,
+      pformula:   this.productmaster.pformula,
+
+      description: this.productmaster.description, 
+      taglist:     this.productmaster.taglist
+    }
+    this.emitProductMaster.next(this.productmaster);
+  }
+
+  // ****** Search ******************
+  searchBySlug(slug): Observable<Product[]>{
+    return this.daoService.search<Product>('product', {slug: slug})
+  }
+
+  // ****** SAVE ******************
+  saveRecord(){
+    this.productmaster = initForSave(this.basicData, this.productmaster, this.userService.currentUser);
+    console.log('saveRecord: [%s]', this.productmasterId);
+    console.log('this.basicData [%s]', this.basicData.code);
+    console.log('productIT: [%s]', this.productit);
+
+    if(this.productmasterId){
+      return this.daoService.update<Product>('product', this.productmasterId, this.productmaster).then((model) =>{
+              console.log('update OK, opening snakbar[%s] [%s]', this.productmaster.slug, model.slug)
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+
+    }else{
+      return this.daoService.create<Product>('product', this.productmaster).then((model) =>{
+              console.log('create OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+    }
+  }
+
+
+  /*****************
+    Utils
+  *****************/
+  openSnackBar(message: string, action: string) {
+    let snck = this.snackBar.open(message, action, {
+      duration: 3000,
+
+    });
+
+    snck.onAction().subscribe((e)=> {
+      //console.log('action???? [%s]', e);
+    })
+  }
+
+  setTags(tags:Tag[]){
+    this.tags = tags;
+  }
+
+  changePageTitle(title){
+    setTimeout(()=>{
+      this.sharedSrv.emitChange(title);
+    },1000)
+  }
+
+  buildCommonData(list: Productit[]): Productit{
+    if(list.length === 1) return list[0];
+
+    let memo: Productit = Object.assign({}, list[0]);
+    let keys = Object.keys(memo);
+
+    memo = list.reduce((memo, item) =>{
+      keys.forEach(key => {
+        if( memo[key] !== item[key]) {
+          if(typeof memo[key] == "number" ) memo[key] = 0;
+          else if( memo[key] instanceof Array) memo[key] = [];
+          else if(memo[key] instanceof Object) memo[key] = {};
+          else memo[key] = "";
+        }
+
+      })
+
+      // memo.code = memo.code === item.code ? memo.code : "";
+      // memo.slug = memo.slug === item.slug ? memo.slug : "";
+      // memo.ptype = memo.ptype === item.ptype ? memo.ptype : "";
+      // memo.pbrand = memo.pbrand === item.pbrand ? memo.pbrand : "";
+      // memo.pmodel = memo.pmodel === item.pmodel ? memo.pmodel : "";
+      // memo.vendorId = memo.vendorId === item.vendorId ? memo.vendorId : "";
+      // memo.productId = memo.productId === item.productId ? memo.productId : "";
+      // memo.pume = memo.pume === item.pume ? memo.pume : "";
+      // memo.fume = memo.fume === item.fume ? memo.fume : "";
+      // memo.moneda = memo.moneda === item.moneda ? memo.moneda : "";
+      // memo.vendorpl = memo.vendorpl === item.vendorpl ? memo.vendorpl : "";
+      // memo.vendorurl = memo.vendorurl === item.vendorurl ? memo.vendorurl : "";
+      // memo.pu = memo.pu === item.pu ? memo.pu : 0;
+      return memo;
+    }, memo);
+    return memo;
+  }
+
+  actualNewData(edited: Productit){
+    let base = {};
+    Object.keys(edited).forEach(key =>{
+      if(edited[key]) base[key] = edited[key];
+    })
+    return base;
+  }
+
+  updateCommonData(actual: Productit, edited){
+    Object.assign(actual, edited);
+    return actual;
+  }
+
+
+
+  /*****************
+    Table ProductItem
+  *****************/
+  get productsDataSource(): BehaviorSubject<ProductitTable[]>{
+    return this.emitProductTable;
+  }
+
+  get selectionModel(): SelectionModel<ProductitTable>{
+    return this._selectionModel;
+  }
+
+  set selectionModel(selection: SelectionModel<ProductitTable>){
+    this._selectionModel = selection;
+  }
+
+  get tableActions(){
+    return this._tableActions;
+  }
+  
+  updateProductListItem(item ):void{
+    let pr: Productit = this.productitList.find((product:any) => product._id === item._id);
+    if(pr){
+      pr.pu = item.pu;
+      pr.slug = item.slug;
+    }
+  }
+
+  addProductitToList(){
+    // let token = graphUtilities.cardGraphFromProduct('product', this.productList, this.milestone);
+    // token.predicate = this.predicate;
+    // this.productList.unshift(token);
+    // return token;
+  }
+
+
+  fetchSelectedList():Productit[]{
+    let list = this.filterSelectedList();
+    return list;
+  }
+
+  filterSelectedList():Productit[]{
+    let list: Productit[];
+    let selected = this.selectionModel.selected as any;
+
+    list = this.productitList.filter((product: any) =>{
+      let valid = selected.find(model => {
+        return (model._id === product._id)
+      });
+      return valid;
+    });
+    return list;
+  }
+
+
+
+}

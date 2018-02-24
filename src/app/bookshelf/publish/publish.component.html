@@ -1,0 +1,76 @@
+<mat-card [title]='"Publicar"' >
+	<mat-card-header>
+				<mat-card-title><strong>Publicación</strong></mat-card-title>
+				<mat-card-title>Configura el modo de publicación</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+			<mat-checkbox  
+					[formControl]="form.controls['toPublish']"
+					(change)='publishChange($event)' >
+
+			¿Habilita publicación de la ficha?</mat-checkbox>
+
+			<ng-container *ngIf='openeditor'>
+
+			<div class="d-flex flex-column flex-md-row align-items-start justify-content-start" >
+				<mat-form-field>
+	        <mat-select #scopeTpl placeholder="Alcance de la publicación"
+	            [formControl]="form.controls['scope']"
+	            (change)="scopeChange(scopeTpl.value)" >
+	          <mat-option *ngFor="let scope of scopeList" 
+	            [value]="scope.val" >{{ scope.label }}</mat-option>
+	        </mat-select>
+			 			<small *ngIf="form.controls['scope'].hasError('required') && 
+			         form.controls['scope'].touched" class="form-message text-danger">
+			         Dato requerido</small>
+				</mat-form-field>
+
+				<mat-form-field>
+			 		<input matInput  placeholder="Comentario opcional de publicación" 
+			 			[formControl]="form.controls['slug']" >
+				</mat-form-field>
+			</div>
+
+
+			<div class="d-flex flex-column flex-md-row align-items-start justify-content-start" >
+				<mat-form-field>
+			 		<input matInput placeholder="Publicar desde..." 
+			 				(blur)="dateRangeChange()"
+			 				[formControl]="form.controls['dateFrom']" >
+			 			<small *ngIf="form.controls['dateFrom'].hasError('required') && 
+			         form.controls['dateFrom'].touched" class="form-message text-danger">
+			         Dato requerido</small>
+				</mat-form-field>
+
+				<mat-form-field>
+			 		<input matInput placeholder="Publicar hasta..."
+			 			(blur)="dateRangeChange()"
+			 			[formControl]="form.controls['dateTo']"  >
+			 			<small *ngIf="form.controls['dateTo'].hasError('required') && 
+			         form.controls['dateTo'].touched" class="form-message text-danger">
+			         Dato requerido</small>
+				</mat-form-field>
+			</div>
+			<p><small >Publicar desde: <strong>{{ fromTxt }}</strong> hasta: <strong>{{ toTxt }}</strong></small></p>
+
+			<h4>Tópicos y componente de renderización</h4>
+			<p>Indique la lista de etiquetas de publicación (tópicos)</p>
+			<p>La URL de publicación será del tipo http://:comunidad/publicacion/:topico</p>
+
+  		<app-tags [taglist]='topicList' (emitTags)='addTopicos($event)'></app-tags>
+
+      <mat-form-field>
+        <mat-select #templateFld placeholder="Componente de renderización"
+            [formControl]="form.controls['template']"
+            (change)="templateChange(templateFld.value)" >
+          <mat-option *ngFor="let template of templateList" 
+            [value]="template.val" >{{ template.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+	
+
+	    </ng-container>
+		</form>
+	</mat-card-content>
+</mat-card>

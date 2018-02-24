@@ -1,0 +1,12 @@
+@import '../../../assets/sass/variable';
+
+:host {
+	display: block;
+	margin: 0 0 40px 0;
+
+
+  .additional-info {
+    margin: $module (-$module) (-$module);
+    padding: $module/2 $module;
+  }
+}

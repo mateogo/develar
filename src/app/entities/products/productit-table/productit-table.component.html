@@ -1,0 +1,206 @@
+<mat-card class="product-table mat-elevation-z8">
+  <mat-card-content>
+  <div id="tableactions" class="d-flex flex-column flex-md-row justify-content-start align-items-center">
+    <mat-form-field style="font-size: 12px;  max-width: 200px">
+      <mat-select #actionFld placeholder="Acciones" [disabled]='selection.isEmpty()'
+          (selectionChange)="changeAction($event)" 
+          [(value)]="selectedAction" >
+        <mat-option *ngFor="let action of actionList" 
+          [value]="action.val" >{{ action.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span style="margin: 0 15px 0 15px;" >
+      <small>{{ getLabel(selectedAction, actionList, 'Seleccionado: ') }}</small></span>
+
+    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Editar relación-producto" 
+        (click)='triggerAction("editone")'  >
+        <i class='fas fa-pencil-alt'></i></button>
+
+    <button mat-button color="accent" title="Limpiar lista de productos inspeccionados"
+        (click)='triggerAction("limpiar")'>
+        <i class='fas fa-times' aria-hidden="true"></i></button>
+
+    <button mat-button *ngIf='isColSelectionAllowed' color="accent"  title="Seleccione columnas de la tabla"
+        (click)='openModalDialog(formdata)'  ><i class='fa fa-cog'></i></button>
+    <div>
+      <small><strong>
+        <span *ngFor='let total of totals' > {{total.moneda}} {{ total.value | number: '1.0-0'}}</span>
+      </strong></small>
+    </div>
+   
+  </div>
+
+  <mat-table #table matSort [dataSource]="dataSource">
+    <!-- _id, predicate, displayAs, slug, entityId, qt, ume, pu, moneda, total  -->
+
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef> 
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="predicate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Predicado </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.predicateTx}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vendorname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.vendorname}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Código </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.code}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ptype">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ptype}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="slug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)='openEditor(element, CERO)'>
+          <div *ngIf='!element.editflds[CERO]'>{{element.slug}}</div>
+          <div *ngIf='element.editflds[CERO]'>
+            <mat-form-field>
+              <input matInput [(ngModel)]='element.slug' >
+            </mat-form-field>
+          </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="displayAs">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Denominación </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.displayAs}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="milestoneLabel">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Hito-Etapa </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.milestoneLabel}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ume">
+      <mat-header-cell *matHeaderCellDef> UM</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ume}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qtx">
+      <mat-header-cell *matHeaderCellDef> UM x Freq </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.qtx}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="fume">
+      <mat-header-cell *matHeaderCellDef> UF </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fume}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pu">
+      <mat-header-cell *matHeaderCellDef> PU </mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)='openEditor(element, UNO)' > 
+          <div *ngIf='!element.editflds[UNO]'>
+            <span>{{element.moneda}}</span>  
+            <span>{{element.pu | number:'1.2-2' }}</span>
+          </div>
+          <div *ngIf='element.editflds[UNO]'>
+            <mat-form-field style="width:75px;" >
+              <input type="number" matInput [(ngModel)]='element.pu' >
+            </mat-form-field>
+          </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="moneda">
+      <mat-header-cell *matHeaderCellDef> Mon </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.moneda}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Importe </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.total | number:'1.2-2'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ars">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ARS </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ars | number:'1.2-2'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="usd">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> USD </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.usd | number:'1.2-2'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="brl">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> BRL </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.brl | number:'1.2-2'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="eur">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> EUR </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.eur | number:'1.2-2'}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container  matColumnDef="freq">
+      <mat-header-cell *matHeaderCellDef>Freq</mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)='openEditor(element, TRES)' > 
+          <div *ngIf='!element.editflds[TRES]'>
+            <span>{{element.freq | number:'1.0-0' }}</span>
+          </div>
+          <div *ngIf='element.editflds[TRES]'>
+            <mat-form-field style="width:25px;" >
+              <input type="number" matInput [(ngModel)]='element.freq' >
+            </mat-form-field>
+          </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container  matColumnDef="qt">
+      <mat-header-cell *matHeaderCellDef>Qt</mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)='openEditor(element, DOS)' > 
+          <div *ngIf='!element.editflds[DOS]'>
+            <span>{{element.qt | number:'1.1-1' }}</span>
+          </div>
+          <div *ngIf='element.editflds[DOS]'>
+            <mat-form-field style="width:25px;" >
+              <input type="number" matInput [(ngModel)]='element.qt' >
+            </mat-form-field>
+          </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+        [length]="10"
+        [pageIndex]="0"
+        [pageSize]="25"
+        [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+
+</mat-card-content>
+</mat-card>
+
+<ng-template #formdata >
+  <ng-container  *ngFor="let col of table_columns"  >
+    <p><mat-checkbox   [(ngModel)]='table_columns_sel[col]' 
+                    (change)='changeCheckBx($event, col)'>{{col}}
+        </mat-checkbox ></p>
+  </ng-container>
+</ng-template>
+
+
+

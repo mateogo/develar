@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Error:</h2>
+<div mat-dialog-content>
+	<p>Hubo un fallo en la autenticación de sus credenciales</p> 
+	<p>Usuario o clave incorrecta</p>
+	<p>{{ data?.message }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="dialogRef.close('Aceptar')" color="primary">Aceptar</button>
+</div>

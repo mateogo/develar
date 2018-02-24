@@ -1,0 +1,40 @@
+@import '../../../../../assets/sass/variable';
+
+:host {
+  
+
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+  width: 100%;
+
+  card {
+    margin: 0 auto;
+    display: flex;
+
+    /deep/ .card-wrap {
+      border: 0;
+    }
+    form {
+
+      md-select {
+        margin:  $module  0 $module;
+      }
+
+      .card_estados {
+        display: flex;
+        flex-flow: row wrap;
+
+        .mat-card {
+          margin: $module/2;
+        }
+      }
+
+      .additional-info {
+        background: rgba(#000,.1);
+        margin: $module (-$module) (-$module);
+        padding: $module/2 $module;
+      }
+    }
+  }
+}

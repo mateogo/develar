@@ -1,0 +1,12 @@
+<div [align]="customalign" *ngIf="model" >
+
+<project-selector (milestoneEmitted)='milestoneChange($event)'
+                  (buttonViewEmitted)='navigationChange($event)'></project-selector>
+
+<div *ngIf='showView' >
+  <app-unitcardview class="p-2" [model]='model'></app-unitcardview>
+</div>
+
+
+</div>
+

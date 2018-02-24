@@ -1,0 +1,30 @@
+@import '../../../assets/sass/variable';
+
+:host {
+  background: main-color(700);
+  display: block;
+  height: 70px;
+
+  .logo {
+    align-items: flex-end;
+    display: flex;
+    font-family: $second-ff;
+    height: 100%;
+    padding: 10px 22px;
+    text-decoration: none;
+
+    .logo-img {
+      height: auto;
+      max-height: 100%;
+      max-width: 100%;
+      vertical-align: top;
+      width: auto;
+    }
+    .logo-text {
+      color: #fff;
+      display: block;
+      font-size: 24px;
+      padding: 0 11px 7px;
+    }
+  }
+}

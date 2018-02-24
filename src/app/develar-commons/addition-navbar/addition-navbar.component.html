@@ -1,0 +1,43 @@
+<button class="open-navbar"  (click)="openNavbar()">
+  <i class="icon fa fa-object-ungroup"></i>
+</button>
+
+<div class="navbar-wrap">
+  <div class="navbar-header">
+    {{ title }}
+  </div>
+
+  <div class="navbar-content">
+    <div>
+      <h5 class="mt-0">Frameworks</h5>
+      <p class="mb-1"><strong>Angular</strong></p>
+      <mat-progress-bar mode="determinate" color="accent" [value]="98"></mat-progress-bar>
+
+      <p class="mb-1"><strong>React</strong></p>
+      <mat-progress-bar mode="determinate" color="accent" [value]="85"></mat-progress-bar>
+
+      <p class="mb-1"><strong>Vue.js</strong></p>
+      <mat-progress-bar mode="determinate" color="accent" [value]="40"></mat-progress-bar>
+
+      <p class="mb-1"><strong>Backbone.js</strong></p>
+      <mat-progress-bar mode="determinate" color="accent" [value]="38"></mat-progress-bar>
+    </div>
+
+    <hr>
+
+    <div>
+      <h5>Uploaded files</h5>
+
+      <div class="files-wrap">
+        <file [type]="'jpg'" [size]="'small'" [title]="'bulb'" [image]="'assets/content/file-1.jpg'"></file>
+        <file [type]="'doc'" [size]="'small'" [title]="'resume'"></file>
+        <file [type]="'jpg'" [size]="'small'" [title]="'watch'" [image]="'assets/content/file-3.jpg'"></file>
+        <file [type]="'jpg'" [size]="'small'" [title]="'camera'" [image]="'assets/content/file-4.jpg'"></file>
+        <file [type]="'pdf'" [size]="'small'" [title]="'documentation'"></file>
+        <file [type]="'mp4'" [size]="'small'" [title]="'video-tutorial'"></file>
+        <file [type]="'jpg'" [size]="'small'" [title]="'smart'" [image]="'assets/content/file-5.jpg'"></file>
+        <file [type]="'zip'" [size]="'small'" [title]="'theme'"></file>
+      </div>
+    </div>
+  </div>
+</div>

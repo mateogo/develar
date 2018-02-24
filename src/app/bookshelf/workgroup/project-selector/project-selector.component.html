@@ -1,0 +1,22 @@
+<div [align]="customalign" *ngIf="model" >
+
+<div id="navigation-group" class="d-flex flex-row justify-content-between align-items-center">
+  <mat-form-field  style="max-width: 400px">
+    <mat-select #milestone placeholder="Hito / Etapa / Subproceso"
+        [(value)]='milestoneSelected'
+        (change)="changeMilestone(milestone.value)" >
+      <mat-option *ngFor="let milestone of milestones" 
+        [value]="milestone.val" >{{ milestone.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-button-toggle-group #navigation='matButtonToggleGroup'
+          [value]='navigationSelected'
+          (change)='navigationChange($event)'>
+    <mat-button-toggle *ngFor='let nav of navoptions'  [value]='nav.val'>{{nav.label}} </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+</div>
+

@@ -1,0 +1,25 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>Socket.io test</mat-card-title>
+		<mat-card-subtitle>{{ status }}</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+		<mat-form-field>
+			<input #messageFld matInput placeholder="nuevo mensaje"
+											(blur)="newMessage()" 
+											(keyup)="messaging($event, messageFld.value)"
+											[(ngModel)]='content' >
+		</mat-form-field>
+	</mat-card-content>
+
+	<mat-list>
+		<mat-list-item *ngFor='let msj of messageList'>
+			<p matLine ><small><span innerHTML="{{ msj }}"></span></small></p>
+			
+		</mat-list-item>
+	</mat-list>
+
+<button mat-button (click)='login()' color="accent">Login</button>
+<button mat-button (click)='logout()' color="accent">Logout</button>
+</mat-card>

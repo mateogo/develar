@@ -1,0 +1,20 @@
+<ngx-datatable
+  class="material"
+  [rows]="models"
+  [columns]="columns"
+  [headerHeight]="'auto'"
+  [rowHeight]="'auto'"
+  [loadingIndicator]="loadingIndicator"
+  [columnMode]="'force'">
+</ngx-datatable>
+
+<ng-template #viewcardTmpl let-row="row" let-value="value" let-i="index" title="Gestión y segimiento">
+	<a [routerLink]="['/develar/fichas', 'followup', row._id ]" >{{ value }}</a>
+</ng-template>
+
+<ng-template #actionsTmpl let-row="row" let-value="value" let-i="index" title="Editar ficha">
+	<a [routerLink]="['../', 'editar', value ]" >
+    <i class="far fa-edit" aria-hidden="true"></i></a>
+  <a [routerLink]="['/develar/presentacion','show', value ]" title="Presentación">
+    <i class="fas fa-desktop" aria-hidden="true"></i></a>  
+</ng-template>

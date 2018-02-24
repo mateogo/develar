@@ -1,0 +1,21 @@
+<card [title]="'Basic'">
+  <mat-slide-toggle>Slide me!</mat-slide-toggle>
+</card>
+
+<card [title]="'Disabled'">
+  <mat-slide-toggle disabled>Disabled</mat-slide-toggle>
+</card>
+
+<card [title]="'Theming'" class="mb-0">
+  <mat-slide-toggle color="primary" [checked]="true">
+    Primary Slide Toggle
+  </mat-slide-toggle>
+
+  <mat-slide-toggle color="accent" [checked]="true">
+    Accent Slide Toggle
+  </mat-slide-toggle>
+
+  <mat-slide-toggle color="warn" [checked]="true">
+    Warning Slide Toggle
+  </mat-slide-toggle>
+</card>

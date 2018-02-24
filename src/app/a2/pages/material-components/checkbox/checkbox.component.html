@@ -1,0 +1,57 @@
+<card [title]="'Configurable checkbox'">
+  <div class="row">
+    <div class="col col-auto">
+      <mat-checkbox class="example-margin" [(ngModel)]="checked">Checked</mat-checkbox>
+    </div>
+    <div class="col col-auto">
+      <mat-checkbox class="example-margin" [(ngModel)]="indeterminate">Indeterminate</mat-checkbox>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col col-auto">
+      <label>Align:</label>
+    </div>
+    <div class="col col-auto">
+      <mat-radio-group [(ngModel)]="align">
+        <mat-radio-button class="example-margin" value="start">Start</mat-radio-button>
+        <mat-radio-button class="example-margin" value="end">End</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+  <br>
+
+  <div>
+    <mat-checkbox class="example-margin" [(ngModel)]="disabled">Disabled</mat-checkbox>
+  </div>
+
+  <h6>Result</h6>
+
+  <div>
+    <mat-checkbox
+      class="example-margin"
+      [checked]="checked"
+      [indeterminate]="indeterminate"
+      [align]="align"
+      [disabled]="disabled">
+      I'm a checkbox
+    </mat-checkbox>
+  </div>
+</card>
+
+<card [title]="'Theming'" class="mb-0">
+  <div class="row">
+    <div class="col col-auto">
+      <mat-checkbox [checked]="true" color="primary">Primary</mat-checkbox>
+    </div>
+    <div class="col col-auto">
+      <mat-checkbox [checked]="true" color="accent">Accent</mat-checkbox>
+    </div>
+    <div class="col col-auto">
+      <mat-checkbox [checked]="true" color="warn">Warning</mat-checkbox>
+    </div>
+  </div>
+</card>

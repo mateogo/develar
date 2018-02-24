@@ -1,0 +1,19 @@
+extends layout
+
+block append content
+  h1= title
+  h2= "Ta bueno, estaaaaaa"
+  p(id='pepe' class='<%= algo %>') Welcome to #{title}
+  #megusta Esto es un div con id megusta
+
+
+  form(action="/api/upload/profile" method="post" enctype="multipart/form-data")
+    input(type="file" name='single' placeholder="Select file")
+    button= 'Upload'
+
+
+block footer
+  ul Lista li tareas para hoy
+    li punto uno
+    li punto dos
+

@@ -1,0 +1,25 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+	.detail-card {
+		max-width: 1100px;
+	}
+
+}
+
+mat-list-item {
+	@media #{$min544} {
+		width: 70%;
+	}
+
+}
+
+.description {
+	width: 70%;
+	font-size: 12px;
+	white-space: normal;
+}
+
+
+
+

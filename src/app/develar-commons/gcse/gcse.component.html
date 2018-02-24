@@ -1,0 +1,65 @@
+<mat-card class="gcsecard" [title]="'Buscar relaciones'">
+	<mat-card-content>
+
+	<div class="d-flex justify-content-between align-items-center">
+		<mat-form-field>
+			<input matInput #searchBox  (blur)="crawl(searchBox.value)" (keyup)="search(searchBox.value)" 
+						placeholder="buscar en la web {{ machine }}" >
+		</mat-form-field>
+
+    <div class="site-navbar" >
+ 		<div class="nav-items">
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-icon-button (click)="open($event)">
+        <mat-icon>
+          search
+        </mat-icon>
+      </button>
+
+      <div class="dropdown-menu mini-menu">
+        <h4 class="menu-title">motores de búsqueda</h4>
+
+        <ul>
+          <li *ngFor='let engine of machines' >
+            <a title="{{ engine.slug }}" role="button" (click)="selectMachine($event, engine.val)">
+           		<i class="fa fa-search"></i> {{engine.label}}
+         		</a>
+          </li>
+        </ul>
+
+        <div class="menu-footer">
+          Seleccionar
+        </div>
+      </div>
+  
+      </div>
+    	<div class="items-overlay" (click)="close($event)"></div>
+
+    </div>
+    </div>
+	</div>
+
+	<div class="itemgroup"  *ngFor="let result of results" >
+		<div class="itemblock">
+			<h5><a rel="noopener noreferrer" target="_blank" href="{{result.link}}">{{result.title}}</a></h5>
+			<div class="itemdata">
+				<cite>{{result.formattedUrl}}</cite>
+				<span>{{result.snippet}} 
+          <span (click)="saveURL(result)"  title="Fichar este enlace">
+            <i class="far fa-file-alt mr-2"></i></span>
+          <span (click)="crawlURL(result)" title="Explorar contenido">
+            <i class="fa fa-eye mr-3"></i></span>
+        </span>
+			</div>
+		</div>
+	</div>
+
+	</mat-card-content>
+</mat-card>
+
+<div *ngIf='targetUrl'>
+  <app-crawler [target]='targetUrl' (crawlerAction)='handleCrawlingData($event)'></app-crawler>  
+</div>
+
+
+

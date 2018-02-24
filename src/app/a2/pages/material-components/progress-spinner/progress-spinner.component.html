@@ -1,0 +1,21 @@
+<card [title]="'Basic progress-spinner'">
+  <mat-spinner class="mb-0" mode="indeterminate"></mat-spinner>
+</card>
+
+<card [title]="'Progress mode'">
+  <p><strong>Determinate</strong></p>
+  <mat-progress-spinner mode="determinate" [value]="progressValue"></mat-progress-spinner>
+  <p>
+    <button mat-raised-button color="primary" (click)="step(10)">Increase</button>
+    <button mat-raised-button color="varn" (click)="step(-10)">Decrease</button>
+  </p>
+
+  <p><strong>Indeterminate</strong></p>
+  <mat-progress-spinner class="mb-0" mode="indeterminate"></mat-progress-spinner>
+</card>
+
+<card [title]="'Theming'" class="mb-0">
+  <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+  <mat-progress-spinner class="mb-0" mode="indeterminate" color="warn"></mat-progress-spinner>
+</card>

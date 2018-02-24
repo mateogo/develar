@@ -1,0 +1,23 @@
+{
+  "/api": {
+    "target": "http://develar-local.com:3000",
+    "secure": false
+  },
+  "/socket.io": {
+    "target": "http://develar-local.com:3000",
+    "secure": false
+  },
+  "ws://develar-local.com:4200/socket.io": {
+    "target": "ws://develar-local.com:3000/socket.io",
+    "secure": false
+  },
+  "/storage": {
+    "target": "http://develar-local.com:3000",
+    "secure": false
+  },
+  "/download": {
+    "target": "http://develar-local.com:3000",
+    "secure": false
+  }
+
+}

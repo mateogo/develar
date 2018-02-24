@@ -1,0 +1,15 @@
+<div class="site-container" [ngClass]="{'open-sidebar': openedSidebar}">
+  <navbar [title]="pageTitle" (sidebarState)="sidebarState()"></navbar>
+
+  <workgroup-sidebar></workgroup-sidebar>
+
+ 
+
+  <main class="main-content">
+    <div class="main-content-wrap">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
+  </main>
+</div>

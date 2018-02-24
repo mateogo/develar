@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-md-6 col-xl-3">
+    <card [bgColor]="'danger'" class="info-card">
+      <div class="title text-uppercase">Orders</div>
+      <div class="count">2,145</div>
+      <badge [customColor]="'rgba(255,255,255,0.3)'" [borderRadius]="false">+17%</badge> <small>from previous period</small>
+      <mat-icon>shopping_basket</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <card [bgColor]="'warning'" class="info-card">
+      <div class="title text-uppercase">Revenue</div>
+      <div class="count">$ 50,24</div>
+      <small>11750</small>
+      <mat-icon>equalizer</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <card [bgColor]="'info'" class="info-card">
+      <div class="title text-uppercase">Products</div>
+      <div class="count">2,543</div>
+      <badge [customColor]="'rgba(255,255,255,0.3)'" [borderRadius]="false">+210</badge>
+      <mat-icon>monetization_on</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <card [bgColor]="'success'" class="info-card">
+      <div class="title text-uppercase">Sold</div>
+      <div class="count">1,005</div>
+      <badge [customColor]="'rgba(255,255,255,0.3)'" [borderRadius]="false">+24%</badge>
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-lg-8">
+    <card title="Audience Overview">
+      <canvas
+        baseChart
+        [datasets]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"></canvas>
+    </card>
+  </div>
+
+  <div class="col-lg-4">
+    <card title="Development">
+      <canvas
+        baseChart
+        [datasets]="radarChartData"
+        [labels]="radarChartLabels"
+        [chartType]="radarChartType"
+        [colors]="radarChartColors"></canvas>
+    </card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <card [title]="'Users'">
+      <mat-list>
+        <mat-list-item *ngFor="let message of messages">
+          <img mat-list-avatar src="{{ message.avatar }}" width="40" height="40" alt="">
+          <h3 mat-line class="h3">{{ message.from }}</h3>
+          <p mat-line><i>
+            <span>{{message.subject}}</span>
+            <span> -- {{ message.content }}</span>
+          </i></p>
+        </mat-list-item>
+      </mat-list>
+    </card>
+  </div>
+
+  <div class="col-lg-6">
+    <card [title]="'To do list'">
+      <mat-list>
+        <mat-list-item *ngFor="let folder of folders">
+          <mat-icon mat-list-avatar>{{folder.icon}}<badge *ngIf="folder.badge" [color]="'danger'" [position]="'top-right'">{{folder.badge}}</badge></mat-icon>
+          <h4 mat-line>{{folder.name}}</h4>
+          <p mat-line><i>{{folder.updated}}</i></p>
+        </mat-list-item>
+      </mat-list>
+    </card>
+  </div>
+</div>
+
+<card title="Last uploaded files" class="mb-0">
+  <file [type]="'jpg'" [title]="'bulb'" [image]="'assets/content/file-1.jpg'"></file>
+  <file [type]="'doc'" [title]="'resume'"></file>
+  <file [type]="'jpg'" [title]="'main-image'" [image]="'assets/content/file-2.jpg'"></file>
+  <file [type]="'jpg'" [title]="'watch'" [image]="'assets/content/file-3.jpg'"></file>
+  <file [type]="'jpg'" [title]="'camera'" [image]="'assets/content/file-4.jpg'"></file>
+  <file [type]="'pdf'" [title]="'documentation'"></file>
+  <file [type]="'mp4'" [title]="'video-tutorial'"></file>
+  <file [type]="'jpg'" [title]="'best-work'" [image]="'assets/content/file.jpg'"></file>
+  <file [type]="'jpg'" [title]="'smart'" [image]="'assets/content/file-5.jpg'"></file>
+  <file [type]="'zip'" [title]="'theme'"></file>
+</card>

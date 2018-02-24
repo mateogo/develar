@@ -1,0 +1,21 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+
+  display: block;
+  height: 100%;
+  width: 100%;
+  vertical-align: top;
+
+  md-select {
+    margin:  $module  0 $module;
+  }
+  .mat-expansion-panel {
+  	margin: 0 0 22px 0;
+  }
+
+  .additional-info {
+    margin: $module (-$module) (-$module);
+    padding: $module/2 $module;
+  }
+}

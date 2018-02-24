@@ -1,0 +1,97 @@
+$main-fs: 14px;
+$main-ff: 'Open Sans', sans-serif;
+$main-fw: 400;
+$main-lh: 1.5714286;
+$module: 1.5714286rem;
+
+$second-ff: 'Nunito Sans', sans-serif;
+
+$animation: ease-in-out;
+
+$sidebar-width: 220px;
+
+$max543 : only screen and (max-width: 543px);
+$min544 : only screen and (min-width: 544px);
+$max767 : only screen and (max-width: 767px);
+$min768 : only screen and (min-width: 768px);
+$max991 : only screen and (max-width: 991px);
+$min992 : only screen and (min-width: 992px);
+$max1199 : only screen and (max-width: 1199px);
+$min1200 : only screen and (min-width: 1200px);
+
+$headers-ff: $second-ff;
+$headers-fw: 700;
+
+$success-color: #008000;
+$info-color: #00bfff;
+$warning-color: #ff8c00;
+$danger-color: #dc143c;
+
+$main-color: (
+  50 : #e8eaec,
+  100 : #c5cad0,
+  200 : #9ea7b1,
+  300 : #778391,
+  400 : #59697a,
+  500 : #3c4e62,
+  600 : #36475a,
+  700 : #2e3d50,
+  800 : #273546,
+  900 : #1a2534,
+  A100 : #5dade0,
+  A200 : #2694d9,
+  A400 : #0e7cc5,
+  A700 : #03568b,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+@function main-color($key: $main-color) {
+  @return map-get($main-color, $key);
+}
+$accent-palette: (
+  50 : #ecf5fb,
+  100 : #cee6f6,
+  200 : #aed6f0,
+  300 : #8ec6e9,
+  400 : #75b9e5,
+  500 : #5dade0,
+  600 : #55a6dc,
+  700 : #4b9cd8,
+  800 : #4193d3,
+  900 : #3083cb,
+  A100 : #ffffff,
+  A200 : #dceeff,
+  A400 : #a9d5ff,
+  A700 : #90c9ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+

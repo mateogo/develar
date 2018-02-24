@@ -1,0 +1,13 @@
+<mat-card>
+	<mat-card-content>
+		<div class="container-fluid">
+			<div id='items' class="row align-items-end">
+				<div class='col-sm item' *ngFor='let node of nodes'>
+					<h4 class='item-title'> {{node.title}}</h4>
+					<div class='item-description' innerHtml='{{node.description}}'></div>
+					<img src='{{node.imageUrl}}' >
+				</div>
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>

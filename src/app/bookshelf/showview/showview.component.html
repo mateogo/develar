@@ -1,0 +1,51 @@
+<div class="pre-navbar-wrapper">
+<div class="presentation-navbar">
+  <div class="navbar-button" >
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="nav-items">
+    <div class="nav-item" *ngIf="currentModelTitle">
+          <p><span>{{ currentModelTitle }}</span>
+            <badge [color]="'default'">{{ show.currOffset + 1 }}</badge> /
+            <badge [color]="'info'">{{ show.currIndex }}</badge>
+          </p>
+    </div>
+
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-button (click)="open($event)">
+        <div class="name">Tema: </div>
+      </button>
+
+      <div class="dropdown-menu mini-menu">
+        <ul>
+          <li *ngFor="let topic of topics">
+            <a role="button" (click)='changeTopic($event, topic)' >{{ topic }}</a>
+          </li>
+        </ul>
+      </div>
+      {{show?.currTopic}}
+    </div>
+
+
+    <div class="nav-item">
+      <a  href="#" role="button" (click)='showPreviousCard($event)' title="Anterior">
+        <i class="fa fa-angle-left" aria-hidden="true"></i></a>
+    </div>
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <a href="#" role="button" (click)='showNextCard($event)' title="Siguiente"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+    </div>
+
+
+  </div>
+</div>
+</div>
+<div *ngIf='currentModelTitle' >
+	<app-unitcardview [model]='currentCard' [relatedcards]='currentRelatedCards' ></app-unitcardview>
+</div>
+
