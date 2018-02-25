@@ -80,7 +80,7 @@
     "@types/hammerjs": "2.0.35",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.2",
-    "@types/node": "8.5.7",
+    "@types/node": "9.4.6",
     "@types/socket.io-client": "^1.4.32",
     "angular-in-memory-web-api": "0.5.3",
     "codelyzer": "^4.1.0",
