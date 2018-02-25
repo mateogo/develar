@@ -51,7 +51,7 @@ if(environment === 'development'){
 }else if(environment === 'production'){
   settings.dbase = dbaseProd;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://35.184.242.174';
+  settings.serverUrl = 'http://develar.co';
 
 }
 

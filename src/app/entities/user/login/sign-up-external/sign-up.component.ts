@@ -61,38 +61,47 @@ export class RegistrarUsuario implements OnInit {
   	private fb: FormBuilder, 
   	//private _sharedService: SharedService,
 		private userService: UserService) {
+
     	//this._sharedService.emitChange(this.pageTitle);
+
+      this.form = this.fb.group({
+        username: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(20)])],
+        email: [null, Validators.compose([Validators.required, CustomValidators.email])],
+        password: password,
+        confirmPassword: confirmPassword,
+        termscond: [null, Validators.required],
+        //range: [null, Validators.compose([Validators.required, CustomValidators.range([5, 9])])],
+        //url: [null, Validators.compose([Validators.required, CustomValidators.url])],
+        //date: [null, Validators.compose([Validators.required, CustomValidators.date])],
+        //creditCard: [null, Validators.compose([Validators.required, CustomValidators.creditCard])],
+        //phone: [null, Validators.compose([Validators.required, CustomValidators.phone('en-US')])],
+        //gender: [null, Validators.required],
+      });
+
   }
 
   ngOnInit() {
-    this.model = this.userService.currentUser;
     this.userlistener = this.userService.userEmitter;
-
-    this.form = this.fb.group({
-      username: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(20)])],
-      email: [null, Validators.compose([Validators.required, CustomValidators.email])],
-      password: password,
-      confirmPassword: confirmPassword,
-      termscond: [null, Validators.required],
-      //range: [null, Validators.compose([Validators.required, CustomValidators.range([5, 9])])],
-      //url: [null, Validators.compose([Validators.required, CustomValidators.url])],
-      //date: [null, Validators.compose([Validators.required, CustomValidators.date])],
-      //creditCard: [null, Validators.compose([Validators.required, CustomValidators.creditCard])],
-      //phone: [null, Validators.compose([Validators.required, CustomValidators.phone('en-US')])],
-      //gender: [null, Validators.required],
-    });
-
     this.userlistener.subscribe(user =>{
       this.model = user;
+      console.log('SignUp: [%s]  [%s]', (this.model && this.model._id), (this.model && this.model.username) )
       this.initForEdit()
-
     })
+
+    setTimeout(()=>{
+      this.model = this.userService.currentUser;
+      if(this.model.username !== 'invitado'){
+        this.initForEdit();
+      }
+    }, 2000)
+
 
   }
 
  
   onSubmit() {
     this.model = this.initUserForSave();
+    console.log('onSubmit: [%s]', (this.model && this.model._id))
 
     if(this.model._id){
       this.userService.create(this.model).then(user => {
