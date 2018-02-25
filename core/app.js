@@ -93,7 +93,7 @@ app.use('/download', downloadRoutes)
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
-  res.sendfile(path.join(config.rootPath,'public/index.html'))
+  res.sendFile(path.join(config.rootPath,'public/index.html'))
   // const err = new Error('Not Found');
   // err.status = 404;
   // next(err);

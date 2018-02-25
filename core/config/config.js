@@ -30,7 +30,7 @@ const settings = {
   staticFolder: '/public',
   publicPath: publicPath,
   storagePath: storagePath,
-  port: normalizePort(process.env.PORT || '3000'),
+  port: normalizePort(process.env.PORT || '8080'),
   debug: 'develar:server',
   serverUrl: 'http://develar-local.com:4200',
   dbconnect: path.join(rootPath, 'core/config/dbconnect'),
@@ -51,7 +51,7 @@ if(environment === 'development'){
 }else if(environment === 'production'){
   settings.dbase = dbaseProd;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://35.184.242.174';
+  settings.serverUrl = 'http://develar.co';
 
 }
 

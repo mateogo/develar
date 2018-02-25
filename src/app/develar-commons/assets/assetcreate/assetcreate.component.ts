@@ -11,7 +11,7 @@ import { Asset, assetModel }    from '../../develar-entities';
 
 import { Subject } from 'rxjs/Subject';
 
-const DEVELAR = 'localhost:3000/'
+const DEVELAR = 'localhost:8080/'
 
 function initForSave(form: FormGroup, model: Asset): Asset {
 	const fvalue = form.value;

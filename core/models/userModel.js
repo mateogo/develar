@@ -275,7 +275,7 @@ function newGoogleUser(profile){
         provider:       profile.provider,
         providerId:     profile.providerId,
         accessToken:    profile.accessToken,
-        email:          'no informado',
+        email:          profile.email,
         password:       'abc1234',
         displayName:    profile.displayName,
         description:    'alta de usuario vía google-login',
@@ -601,7 +601,6 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
     let id = profile.id;
 
     User.findOne({providerId: id}, function(err, entity) {
-        console.log('[%s] findOne: mongo:[%s] provider:[%s] mail:[%s]', whoami, entity._id, entity.providerId, entity.email);
 
         if(err){ 
             if(cb) cb(err, null);

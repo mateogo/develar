@@ -17,7 +17,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const whoami = 'core/config/passportconf: '
 const user = require('../models/userModel.js');
 //var user = require(rootPath + '/calendar/controllers/user');
-const CALLBACK_URL = config.serverUrl + '/api/users/login/google/return'
+const CALLBACK_URL = 'http://develar.co/api/users/login/google/return'
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
   function(usermail, password, done){
