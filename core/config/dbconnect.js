@@ -49,7 +49,7 @@ module.exports = function(settings){
   db.on('error', console.error.bind(console, 'connection error:'));
 
   db.on('open', function(){
-  	console.log('mongodb connected ok');
+  	console.log('mongodb connected ok: [%s]',settings.dbase);
     debug('MongoDB: connected OKKKK');
   });
 

@@ -1,22 +1,22 @@
 {
   "/api": {
-    "target": "http://develar-local.com:3000",
+    "target": "http://develar.co:8080",
     "secure": false
   },
   "/socket.io": {
-    "target": "http://develar-local.com:3000",
+    "target": "http://develar.co:8080",
     "secure": false
   },
-  "ws://develar-local.com:4200/socket.io": {
-    "target": "ws://develar-local.com:3000/socket.io",
+  "ws://develar.co:4200/socket.io": {
+    "target": "ws://develar.co:8080/socket.io",
     "secure": false
   },
   "/storage": {
-    "target": "http://develar-local.com:3000",
+    "target": "http://develar.co:8080",
     "secure": false
   },
   "/download": {
-    "target": "http://develar-local.com:3000",
+    "target": "http://develar.co:8080",
     "secure": false
   }
 

@@ -79,7 +79,7 @@ export class UserSignIn1Component implements OnInit {
 
   loginGoogle(){
     console.log('LoginUser VIA GOOGLE BEGINS')
-    window.location.href = 'http://localhost:3000/api/users/login/google';
+    window.location.href = '/api/users/login/google';
   }
 
 }

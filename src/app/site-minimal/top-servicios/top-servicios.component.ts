@@ -44,28 +44,28 @@ interface Servicios {
 
 /***
 benchmarking
-http://develar-local.com:4200/download/5a7e2f54ca280f07c28bc34b
+http://develar.co:4200/download/5a7e2f54ca280f07c28bc34b
 
 branding
-http://develar-local.com:4200/download/5a7e2f54ca280f07c28bc34e
+http://develar.co:4200/download/5a7e2f54ca280f07c28bc34e
 
 com corp
-http://develar-local.com:4200/download/5a7e2f54ca280f07c28bc351
+http://develar.co:4200/download/5a7e2f54ca280f07c28bc351
 
 estrat medios
-http://develar-local.com:4200/download/5a7e2f54ca280f07c28bc354
+http://develar.co:4200/download/5a7e2f54ca280f07c28bc354
 
 estrat relacion
-http://develar-local.com:4200/download/5a7e2f55ca280f07c28bc357
+http://develar.co:4200/download/5a7e2f55ca280f07c28bc357
 
 estrategia susten
-http://develar-local.com:4200/download/5a7e2f55ca280f07c28bc35a
+http://develar.co:4200/download/5a7e2f55ca280f07c28bc35a
 
 marketing
-http://develar-local.com:4200/download/5a7e2f55ca280f07c28bc35d
+http://develar.co:4200/download/5a7e2f55ca280f07c28bc35d
 
 social media
-http://develar-local.com:4200/download/5a7e2f55ca280f07c28bc360
+http://develar.co:4200/download/5a7e2f55ca280f07c28bc360
 
 
 

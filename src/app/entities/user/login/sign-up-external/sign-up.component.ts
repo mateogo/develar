@@ -59,10 +59,7 @@ export class RegistrarUsuario implements OnInit {
   constructor( 
 		private router: Router,
   	private fb: FormBuilder, 
-  	//private _sharedService: SharedService,
 		private userService: UserService) {
-
-    	//this._sharedService.emitChange(this.pageTitle);
 
       this.form = this.fb.group({
         username: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(20)])],
@@ -70,14 +67,7 @@ export class RegistrarUsuario implements OnInit {
         password: password,
         confirmPassword: confirmPassword,
         termscond: [null, Validators.required],
-        //range: [null, Validators.compose([Validators.required, CustomValidators.range([5, 9])])],
-        //url: [null, Validators.compose([Validators.required, CustomValidators.url])],
-        //date: [null, Validators.compose([Validators.required, CustomValidators.date])],
-        //creditCard: [null, Validators.compose([Validators.required, CustomValidators.creditCard])],
-        //phone: [null, Validators.compose([Validators.required, CustomValidators.phone('en-US')])],
-        //gender: [null, Validators.required],
       });
-
   }
 
   ngOnInit() {
@@ -95,7 +85,6 @@ export class RegistrarUsuario implements OnInit {
       }
     }, 2000)
 
-
   }
 
  
@@ -104,17 +93,17 @@ export class RegistrarUsuario implements OnInit {
     console.log('onSubmit: [%s]', (this.model && this.model._id))
 
     if(this.model._id){
-      this.userService.create(this.model).then(user => {
-        console.log('User created!: [%s] [%s]', user._id, user.email);
+      this.userService.update(this.model).then(user => {
+        console.log('User updated!: [%s] [%s]', user._id, user.email);
         this.sendMailTo(user);
-        this.router.navigate(['/', this.model.email]);
+        this.router.navigate(['/']);
       });
 
     }else{
-      this.userService.update(this.model).then(user => {
+      this.userService.create(this.model).then(user => {
         console.log('User created!: [%s] [%s]', user._id, user.email);
         this.sendMailTo(user);
-        this.router.navigate(['/', this.model.email]);
+        this.router.navigate(['/']);
       });
     }
 

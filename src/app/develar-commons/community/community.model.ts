@@ -167,7 +167,8 @@ const entityClass: Array<any> = [
     {val: 'academica',      label: 'Académica',     slug: 'Académica'  },
     {val: 'investigacion',  label: 'Investigación', slug: 'Investigación'  },
     {val: 'proyecto',       label: 'Proyecto',      slug: 'Proyecto'  },
-    {val: 'agencia',        label: 'Agencia',      slug: 'Agencia'  },
+    {val: 'agencia',        label: 'Agencia',       slug: 'Agencia'  },
+    {val: 'home',           label: 'Sitio base',    slug: 'Comunidad por omisión para mostrar en home'  },
 ];
 
 const entityType = {

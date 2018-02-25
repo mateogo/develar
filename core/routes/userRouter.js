@@ -110,7 +110,7 @@ router.post('/login', function(req, res, next) {
  * Sign up a new user
  */
 router.post('/signup', function (req, res) {
-    console.log('router POST signup HIT');
+    console.log('router POST for Create signup HIT');
 
     service.signup(req.body, function(err) {
         res.status(400).json(err);
@@ -122,7 +122,7 @@ router.post('/signup', function (req, res) {
 });
 
 router.put('/signup/:id', function (req, res) {
-    console.log('router POST signup HIT');
+    console.log('router PUT for Update signup HIT');
 
     service.update(req.params.id, req.body, 
         function (err) {

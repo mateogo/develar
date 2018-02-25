@@ -60,9 +60,14 @@ function buildQuery(query){
       q["urlpath"] = query['urlpath'];
     }
 
+    if(query['eclass']){
+      q["eclass"] = query['eclass'];
+    }
+
     if(query['communities']){
       q['_id'] =  { $in: query['communities'].split(',') };
     }
+
 
     if(query["_id"]){
         q["_id"] = {$in: query["_id"].split(',')};

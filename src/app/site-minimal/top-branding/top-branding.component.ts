@@ -36,9 +36,9 @@ interface About {
 
 
 
-// main-image: http://develar-local.com:4200/download/5a7afe4940fa660c17b4d970
-// background: http://develar-local.com:4200/download/5a7b00a240fa660c17b4d98a
-// base azul para logo: http://develar-local.com:4200/download/5a7b295940fa660c17b4daab
+// main-image: http://develar.co:4200/download/5a7afe4940fa660c17b4d970
+// background: http://develar.co:4200/download/5a7b00a240fa660c17b4d98a
+// base azul para logo: http://develar.co:4200/download/5a7b295940fa660c17b4daab
 
 // shadow DOM
 //  http://robdodson.me/shadow-dom-css-cheat-sheet/

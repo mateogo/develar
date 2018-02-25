@@ -539,34 +539,6 @@ exports.signup = function (user, errcb, cb) {
         }
     });
 
-    // promise.catch(err => {
-    //     console.log('entity error')
-    //     errcb(err);
-    // });
-
-    // promise.then(entity => {
-    //     console.log('entity promise[%s]', entity.username)
-    //     cb(entity);
-    // });
-
-
-    // promise.catch(err => {
-    //     console.log('validation error')
-    //     err.itsme = 'yew i caughtit'
-    //     errcb(err);
-    // })
-
-
-    // User.create(user, function(err, entity) {
-    //     if (err) {
-    //         console.dir(err)
-    //         errcb(err);
-
-    //     }else{
-    //         console.log('success: [%s]',entity._id)
-    //         cb(entity);
-    //     }
-    // });
 };
 
 /**
@@ -601,7 +573,6 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
     let id = profile.id;
 
     User.findOne({providerId: id}, function(err, entity) {
-        //console.log('[%s] findOne: mongo:[%s] provider:[%s] mail:[%s]', whoami, entity._id, entity.providerId, entity.email);
 
         if(err){ 
             if(cb) cb(err, null);
@@ -610,17 +581,13 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
 
         if(!entity){
             // ATENCIÓN: NUEVO USUARIO que se registra vía google
-            console.log('[%s] findOrCreateGoogle NUEVO USUARIO ',whoami);
+            console.log('[%s] findOrCreateGoogle usuraio NUEVO ',whoami);
             initNewGoogleUser(profile, accessToken, cb);
 
         }else{
             // ATENCIÓN: USUARIO EXISTENTE vuelve a loguearse vía google
-            console.log('[%s] findOrCreateGoogle USUARIO ENCONTRADO [%s]',whoami, entity._id);
+            console.log('[%s] findOrCreateGoogle usuario ENCONTRADO [%s]',whoami, entity._id);
             updateExistingGoogleUser(entity, profile, accessToken, cb);
-            // entity.accessToken = accessToken;
-            // User.findByIdAndUpdate(entity._id, entity, { new: false }, function(err, entity) {});
-
-            // if(cb) cb(err, entity);
         }
     });
 

@@ -80,7 +80,6 @@ export class SiteMinimalController {
   ////************* API ************////
   fetchHomeResources(): Subject<RecordCard[]>{
     let emitter =new Subject<RecordCard[]>();
-    this.fetchCurrentCommunity()
 
     this.communityChange.subscribe(community => {
       if(this.hasActiveCommunity){
@@ -95,13 +94,13 @@ export class SiteMinimalController {
 
       }
     })
+    this.fetchCurrentCommunity()
 
     return emitter;
   }
 
   fetchRenderResources(topic: string): Subject<RecordCard[]>{
     let emitter =new Subject<RecordCard[]>();
-    this.fetchCurrentCommunity()
 
     this.communityChange.subscribe(community => {
       if(this.hasActiveCommunity){
@@ -117,6 +116,7 @@ export class SiteMinimalController {
       }
     })
 
+    this.fetchCurrentCommunity()
     return emitter;
   }
 
@@ -278,14 +278,30 @@ export class SiteMinimalController {
   private fetchCurrentCommunity(){
     if(this.hasActiveCommunity){
       this.communityChange.next(this.communityRecord)
-    }
-    if(this.userLoggedIn){
+
+    }else if(this.userLoggedIn && this.user.communityId !== 'develar'){
       this.loadCommunityFromDb(this.user.communityId, null)
 
-    }else{
+    }else if(this.navigationUrl){
       this.loadCommunityFromDb(null, this.navigationUrl);
-    }
 
+    }else{
+      this.fetchDefaultCommunityFromDB();
+    } 
+
+  }
+
+  fetchDefaultCommunityFromDB(){
+    this.hasActiveCommunity = false;
+    if(this.isLoading) return;
+
+    this.isLoading = true;
+    return this.daoService.search<Community>('community', {eclass: 'home'}).subscribe(records => {
+      this.isLoading = false;
+      if(records && records.length){
+        this.setCurrentCommunityData(records[0]);
+      }
+    });
   }
  
   loadCommunityFromDb(id:string, url:string){

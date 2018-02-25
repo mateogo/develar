@@ -19,7 +19,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "assets/css/fontawesome-all.min.css",
+        "assets/css/fontawesome-all.css",
+        "assets/css/fa-regular.css",
+        "assets/css/fa-solid.css",
+        "assets/css/fa-brands.css",
         "assets/sass/bootstrap.scss",
         "assets/sass/loader.scss",
         "assets/sass/custom-material-theme.scss",

@@ -288,8 +288,6 @@ const cardCategory = {
 };
 
 
-//http://develar-local.com:4200/develar/fichas/editar/5a7a3cf99abb4606b09ed787
-
 const DEFAULT_IMAGE_URL_BASE = "assets/content/";
 const DEFAULT_IMAGE_URL_ARRAY = ['card-1.jpg', 'card-2.jpg', 'card-3.jpg'];
 const DEFAULT_MAIN = DEFAULT_IMAGE_URL_BASE + DEFAULT_IMAGE_URL_ARRAY[0];
