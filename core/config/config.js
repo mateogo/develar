@@ -14,8 +14,8 @@ const storagePath = path.join(publicPath, 'storage');
 
 //Installed Dbases
 const dbaseDevel = 'mongodb://localhost/develar_dev'; //port = 27017  ojo: {auto_reconnect: true}
-const dbaseTest =  'mongodb://localhost/develar_test'; //port = 27017  ojo: {auto_reconnect: true}
-const dbaseProd =  'mongodb://localhost/develar_dev';      //port = 27017  ojo: {auto_reconnect: true}
+const dbaseTest =  'mongodb://localhost/develar_dev'; //port = 27017  ojo: {auto_reconnect: true}
+const dbaseProd =  'mongodb://localhost/develar';      //port = 27017  ojo: {auto_reconnect: true}
 
 /****** ATENCION *********/
 const environment = global.environment || process.env.NODE_ENV || 'development';
@@ -46,12 +46,12 @@ if(environment === 'development'){
 }else if(environment === 'test'){
   settings.dbase = dbaseTest;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar-local.com:4200';
+  settings.serverUrl = 'http://develar-local.com:8080';
 
 }else if(environment === 'production'){
   settings.dbase = dbaseProd;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar-local.com:8080';
+  settings.serverUrl = 'http://35.184.242.174';
 
 }
 

@@ -7,7 +7,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "server": "DEBUG=develar:server  NODE_ENV=production node bin/www",
+    "server": "DEBUG=develar:server  NODE_ENV=development node bin/www",
+    "production": "DEBUG=develar:server  NODE_ENV=production node bin/www",
+    "qa": "DEBUG=develar:server  NODE_ENV=test node bin/www",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
