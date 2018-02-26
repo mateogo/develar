@@ -32,23 +32,23 @@ const settings = {
   storagePath: storagePath,
   port: normalizePort(process.env.PORT || '8080'),
   debug: 'develar:server',
-  serverUrl: 'http://develar.co:4200',
+  serverUrl: 'http://develar-local.co:4200',
   dbconnect: path.join(rootPath, 'core/config/dbconnect'),
   failureLoginUrl: '/ingresar/login',
   signUpUrl: '/ingresar/registrarse',
-  googleCbUrl: 'http://develar.co:4200/api/users/login/google/return'
+  googleCbUrl: 'http://develar-local.co:4200/api/users/login/google/return'
 };
 
 if(environment === 'development'){
   settings.dbase = dbaseDevel;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar.co:4200';
+  settings.serverUrl = 'http://develar-local.co:4200';
   settings.googleCbUrl = settings.serverUrl + '/api/users/login/google/return';
 
 }else if(environment === 'test'){
   settings.dbase = dbaseTest;
   settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar.co:4200';
+  settings.serverUrl = 'http://develar-local.co:4200';
   settings.googleCbUrl = settings.serverUrl + '/api/users/login/google/return';
 
 }else if(environment === 'production'){

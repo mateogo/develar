@@ -15,8 +15,9 @@ export class TopContactoComponent implements OnInit {
 
 	public mainimage: string = "";
 	public title: string = "";
+  public formTitle: string = "estemos en contacto";
 	public description: string = "";
-	public nodes: Array<About> = [];
+	public nodes: Array<Notes> = [];
 
   public form: FormGroup;
   private contacto = new SolicitudDeContacto();
@@ -36,20 +37,23 @@ export class TopContactoComponent implements OnInit {
   }
 
   ngOnInit() {
-  	console.log('contacto INIT BEGIN: [%s] [%s]', this.record.cardCategory, this.record.slug);
+  	console.log('contacto INIT BEGIN: [%s] [%s] [%s]', this.record.cardCategory, this.record.slug, this.record.relatedcards.length);
 
   	this.title = this.record.slug;
   	this.description = this.record.description;
   	this.mainimage = this.record.mainimage;
+    this.formTitle = this.record.subtitle;
 
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({
         title: s.slug,
   			imageUrl: s.mainimage,
+        subtitle: s.subtitle,
   			description: s.description,
-  		} as About)
+  		} as Notes)
   	})
     this.formReset();
+
   }
 
   /******** FORM ACTIONS  ******/
@@ -70,6 +74,7 @@ export class TopContactoComponent implements OnInit {
 
   /******** SAVING-CANCEL A C T I O N S  ******/
   public enviarSolicitud() {
+    let node: Notes = {} as Notes
 
     let fvalue = this.form.value;
     this.contacto.name = fvalue.name;
@@ -84,8 +89,11 @@ export class TopContactoComponent implements OnInit {
 
     this.minimalCtrl.notifyUsers(this.contacto)
 
+    node = this.initMessageText(this.nodes);
 
-    this.minimalCtrl.openModalDialog(new NotifyDialog( this.contacto.name, this.contacto.email ));
+
+
+    this.minimalCtrl.openModalDialog(new NotifyDialog(node,  this.contacto.name, this.contacto.email ));
     this.formReset();
 
 
@@ -99,8 +107,43 @@ export class TopContactoComponent implements OnInit {
 
   }
 
+  private initMessageText(nodes: Notes[]){
+    if(this.nodes && this.nodes.length && this.nodes.length >= 2){
+      return this.nodes[1]
+
+    }else{
+      return {
+        title: '¡Gracias por vuestro interés!',
+        subtitle: 'Mensaje enviado correctamente',
+        description: 'Serás contactado por nuestros representantes a la brevedad.',
+        imageUrl: ''
+      }
+    }
+  }
+
+  private initTermsOfCondition(nodes: Notes[]){
+    if(this.nodes && this.nodes.length && this.nodes.length >= 1){
+      return this.nodes[0]
+
+    }else{
+      return {
+        title: 'Privacidad y uso de los datos',
+        subtitle: 'Condiciones de uso de la paltaforma',
+        description: `
+                <p>Toda información contenida o enviada a esta plataforma es considerada confidencial</p>
+                <p>El envío de este formulario supone la aceptación de que seas contactado por uno de nuestros representantes a través de la casilla de correo provista.</p>
+                <p>No se te enviará publicidad de ningún tipo a tu casilla de correo desde esta plataforma</p>
+                <p>Cualquier otro servicio previsto requiere tu registración voluntaria.</p>`,
+        imageUrl: ''
+
+      }
+    }
+  }
+
   public termsOfConditions(){
-    this.minimalCtrl.openModalDialog(new TermsOfCondition( )).subscribe(action => {
+    let node = this.initTermsOfCondition(this.nodes);
+
+    this.minimalCtrl.openModalDialog(new TermsOfCondition( node)).subscribe(action => {
       if(action === 'accept'){
         console.log('termos of condition CLOSED: [%s]', action)
 
@@ -118,10 +161,11 @@ export class TopContactoComponent implements OnInit {
 
 }
 
-interface About {
+interface Notes {
 	imageUrl: string;
 	description: string;
   title: string;
+  subtitle: string;
 }
 
 
@@ -133,21 +177,23 @@ class NotifyDialog {
   backdropClass:string = 'yellow-backdrop';
 
   data: any = {
-                caption:'¡Gracias por vuestro interés!',
-                title: 'Mensaje enviado correctamente',
-                body: 'Serás contactado por nuestros representantes a la brevedad.',
+                caption:'',
+                title: '',
+                body: '',
                 accept:{
                   action: 'accept',
                   label: 'Cerrar'
                 }
               };
 
-  constructor(txt?, mail?){
-    if(txt){
-      this.data.body = `<p>Estimado/a <strong>${txt}</strong>: Serás contactado por nuestros representantes a la brevedad. </p>
-                       <p>Un mail de confirmación te será enviado a <strong> ${mail} </strong> por favor verifica que no entre como spam o prioridad baja.</p> <p> Gracias.</p>`
-    }
-
+  constructor(node, txt?, mail?){
+    txt = txt || ' ';
+    mail = mail || '';
+    this.data.caption = node.subtitle;
+    this.data.title = node.title;
+    let txt1 =  `<p>Estimado/a <strong>${txt}</strong>:</p>`;
+    let txt2 =  `<p>Un mail de confirmación te será enviado a <strong> ${mail} </strong>, por favor verifica que no entre como spam o prioridad baja.</p> <p> Gracias.</p>`;
+    this.data.body = txt1 + node.description + txt2;
   }
 }
 
@@ -159,14 +205,9 @@ class TermsOfCondition {
   backdropClass:string = 'yellow-backdrop';
 
   data: any = {
-                caption:'Condiciones de uso de la paltaforma',
-                title: 'Privacidad y uso de los datos',
-                body: `
-                <p>Toda información contenida o enviada a esta plataforma es considerada confidencial</p>
-                <p>El envío de este formulario supone la aceptación de que seas contactado por uno de nuestros representantes a través de la casilla de correo provista.</p>
-                <p>No se te enviará publicidad de ningún tipo a tu casilla de correo desde esta plataforma</p>
-                <p>Cualquier otro servicio previsto requiere tu registración voluntaria.</p>
-                `,
+                caption:'',
+                title: '',
+                body: '',
 
                 accept:{
                   action: 'accept',
@@ -178,7 +219,10 @@ class TermsOfCondition {
                 }
               };
 
-  constructor(){
+  constructor(node){
+    this.data.caption = node.subtitle;
+    this.data.title = node.title;
+    this.data.body = node.description;
 
   }
 }

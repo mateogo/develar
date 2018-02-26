@@ -11,7 +11,7 @@
 				<!-- El form comienza acá -->
 				<form [formGroup]="form"  >
 
-					<h4>estemos en contacto</h4>
+					<h4> {{formTitle}} </h4>
 					<mat-form-field>
 						<input matInput placeholder="su nombre" 
 								[formControl]="form.controls['name']" >
@@ -56,7 +56,7 @@
 						</mat-checkbox>
 
 					<div id='top' class="top-button" >
-						<button mat-raised-button color="primary" type="button" title='enviar datos a la agencia'
+						<button mat-raised-button color="primary" type="button" title='enviar datos'
 										(click)='enviarSolicitud()'  
 										 [disabled]=" !form.valid || !form.controls['termsofuse'].value" >enviar solicitud</button>
 
