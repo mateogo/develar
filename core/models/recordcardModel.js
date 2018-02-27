@@ -112,7 +112,6 @@ const recordSch = new Schema({
 });
 
 recordSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -184,7 +183,6 @@ const Record = mongoose.model('Ficha', recordSch, 'fichas');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll',whoami);
     Record.find(function(err, entities) {
         if (err) {
             errcb(err);
@@ -196,16 +194,6 @@ exports.findAll = function (errcb, cb) {
 
 function buildQuery(query, user){
     let q = {};
-    console.log('******* buildquery *******')
-    console.dir(query);
-
-    if(user){
-        console.log('user name: [%s]',user.username, user.communityId);
-
-    }else{
-         console.log('*********** user NO IN REQUEST  *******')
-
-    }
 
 
     if(user && user.communityId){
@@ -231,7 +219,6 @@ function buildQuery(query, user){
 
     if(query["communitylist"]){
         let communities = query["communitylist"].split(',');
-        console.log('buildQuery: community:[%s]', communities.length);
         q["communitylist"] = communities;
     }
 
@@ -262,8 +249,6 @@ function buildQuery(query, user){
         q["publish.dateTo"] = {$gte: actual};
 
     }
-
-    console.dir(q)
         
         
     return q;
@@ -301,14 +286,7 @@ exports.fetchNext = function (req, errcb, cb) {
     let user = req.user;
     let nquery = buildQuery(query, user);
     let order;
-    console.log('*********** user *******')
 
-
-
-    console.log('nquery: ********')
-    console.dir(nquery);
-    console.log('query: ********')
-    console.dir(query)
     if(query['sort']){
         order = query['sort']
 

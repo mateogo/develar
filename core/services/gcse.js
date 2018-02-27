@@ -61,7 +61,7 @@ const querybase = {
 
 function getQueryBase(machine){
 	let engine = machines.find(x => (x.id === machine));
-	console.log('getQueryBase: [%s]', machine, engine && engine.cx )
+	//console.log('getQueryBase: [%s]', machine, engine && engine.cx )
 	if(!engine) engine = defaultMachine;
 	querybase.cx = engine.cx;
 	return querybase;
@@ -73,7 +73,6 @@ function getQuery(querystring, machine, opts){
 
 	Object.assign(queryParams, getQueryBase(machine), opts);
 	queryParams.q = querystring || 'angular4';
-	console.dir(queryParams);
 
 	return queryParams;
 }

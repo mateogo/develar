@@ -62,7 +62,6 @@ const folderSch = new Schema({
 });
 
 folderSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -85,7 +84,6 @@ const Record = mongoose.model('Folder', folderSch, 'folders');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll', whoami);
     Record.find(function(err, entities) {
         if (err) {
             errcb(err);

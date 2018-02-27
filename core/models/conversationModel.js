@@ -164,7 +164,6 @@ function buildQuery(query){
 
 
 userConversationSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -204,7 +203,6 @@ const UserConversation = mongoose.model('UserConversation', userConversationSch,
  * @param errcb
  */
 exports.conversations = function (errcb, cb) {
-    console.log('[%s] findAll',whoami);
     Conversation.find(function(err, entities) {
         if (err) {
             errcb(err);
@@ -245,7 +243,6 @@ exports.findById = function (id, errcb, cb) {
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll',whoami);
     UserConversation.find(function(err, entities) {
         if (err) {
             errcb(err);
@@ -366,7 +363,6 @@ exports.emitnotification = function (record, errcb, cb) {
   let actors = [];
   userquery.push(record.from);
 
-  console.log('emit notification model BEGIN [%s]', userquery);
 
   userModel.findByRole(userquery).then(users => {
     if(users && users.length){
@@ -393,8 +389,6 @@ exports.emitnotification = function (record, errcb, cb) {
  * @param errcb
  */
 exports.create = function (record, errcb, cb) {
-  console.log('conversationModel CREATE BEGIN new[%s] content:[%s]', record.isNewConversation, record.content)
-
   if(record.isNewConversation){
     createNewConversation(record, errcb, cb);
 
@@ -423,8 +417,8 @@ function updateConversation(record, errcb, cb){
       cver.save(err => {
         if(err){
           console.log('error: ', err)
+
         }else{
-          console.log('UPDATE conversation.saved OK')
           updateUserConversationList(record, cver, errcb, cb);
         }
       })
@@ -439,17 +433,15 @@ function updateConversation(record, errcb, cb){
 
 /******* CREATE NEW CONVERSATION   ******/
 function createNewConversation(record, errcb, cb){
-  console.log('b.01: new Conversation')
 
   let conversation = initNewConversation(record);
   let model = new Conversation(conversation);
 
   model.save(err => {
     if(err){
-      console.log('conversation.saved w/errors')
       errcb(err)
+
     }else{
-      console.log('NEW conversation.saved OK')
       updateUserConversationList(record, model, errcb, cb);
     }
   })
@@ -530,7 +522,6 @@ function updateUserConversationList(record, conversation, errcb, cb){
 
   actors.forEach(actor => {
     query = {conversationId: conversationId, userId: actor.userId}
-      console.log('acotorsForEach');
 
     UserConversation.findOne(query).then(token =>{
       if(token){
@@ -547,7 +538,6 @@ function updateUserConversationList(record, conversation, errcb, cb){
 
 /***** helper: init USR CONVERSATION  *****/
 function initUsrConversation(conversation, actor, record){
-  console.log('initUsrConversation [%s]', actor.role, actor.userId);
   let msj = buildMessageToken(record);
   let role = actor.role;
   let token = {
@@ -648,8 +638,8 @@ function buildActorList(role, rolestring, users, actors){
   if(!(users && users.length)) return actors;
   let tokens = users.filter(user => {
     let test = false;
+
     user.moduleroles.forEach(role => {
-      console.log('buildActorsList: [%s]: search:[%s] user:[%s] [%s] ',user.username,rolestring, role, (rolestring.indexOf(role) !== -1))
       if(rolestring.indexOf(role) !== -1) test = true;
     });
     return test;
@@ -771,15 +761,12 @@ function sendNotificationMail(opt){
 
   // envía el mail a los usuarios 'marketing:admin'
 
-  console.log('[%s] enviando mail notificación a [%s]', whoami, opt.to);
   mailer.sendMail(mail.content, (err) =>{
     console.log('[%s] error en el envío de mail', whoami);
     console.log('[%s] error: [%s]', whoami. err);
 
 
   }, (info)=>{
-    console.log('[%s] envío de mail exitoso: [%s]', whoami, info);
-    console.dir(info);
 
   })
 

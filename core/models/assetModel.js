@@ -72,7 +72,6 @@ var assetSch = new mongoose.Schema({
 });
 
 assetSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -95,7 +94,6 @@ var Record = mongoose.model('Asset', assetSch, 'assets');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll', whoami);
     Record.find(function(err, entities) {
         if (err) {
             errcb(err);

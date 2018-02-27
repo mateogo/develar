@@ -210,8 +210,6 @@ userconvListener.subscribe(userconv => {
 
 	if(userconv.role === 'from') return;
 
-	console.log('=================================')
-	console.log('userconv not from sender ')
 
 	let ns = io.sockets; // default namespace object
 	let clients = ns.connected; // hash of connectd objects
@@ -219,7 +217,7 @@ userconvListener.subscribe(userconv => {
 
 	for(let i in clients){
 		if(clients[i].userId && (clients[i].userId === userconv.userId)) {
-			console.log('connected: [%s] [%s] role:[%s]', clients[i].userId, userconv.userId, userconv.role);
+			//console.log('connected: [%s] [%s] role:[%s]', clients[i].userId, userconv.userId, userconv.role);
 			msj = notif.buildMessage(userconv)
 			msj.username = clients[i].username;
 			clients[i].emit('notification:message', msj)
@@ -250,7 +248,6 @@ function fetchUserConversations(socket){
 function helloworld(){
 	let su = new Rx.Subject();
 	su.subscribe(data => {
-		console.log('hellowworld says: [%s] !!!!!!!!!!!!!!!!!!!', data);
 
 	})
 
@@ -258,7 +255,6 @@ function helloworld(){
 
 	let userId = '597008d3b13931027e9fa691';
 	notif.fetchNonReadUserConversations(userId).then(records => {
-		console.log('fetchNonReadUserConversations - records:[%s]',records && records.length)
 		//console.dir(records && reco);
 	})
 
@@ -278,7 +274,6 @@ exports.serverFactory = function(http_server){
 function engineSetUp(io){
 
 	io.on('connection', socket => {
-		console.log('36 on connection soket.io [%s]', socket.id);
 		let addedUser = false;
 
 		io.emit('notification:new', {username: socket.id, content: 'on connection'});
@@ -306,7 +301,6 @@ function engineSetUp(io){
 		});
 
 		socket.on('user:connect', user =>{
-			console.log('48 on  user connect [%s]', (user && user.userId));
 			if(!(user && user.userId) || user.username === 'invitado') return;
 
 			socket.username = user.username;
@@ -337,20 +331,16 @@ function engineSetUp(io){
 		})
 
 		socket.on('typing:start', () =>{
-			console.log('57 typing:start');
 			socket.broadcast.emit('typing:start', {username: socket.username});
 		})
 
 		socket.on('typing:stop', () =>{
-			console.log('62  typing:stop');
 			socket.broadcast.emit('typing:stop', {username: socket.username});
 		})
 
 		socket.on('goodbye', () =>{
-			console.log('80 goodbye');
 
 			if(addedUser) {
-				console.log('socket disconnecting: [%s]', socket.id);
 
 				numUsers -= 1;
 				socket.disconnect(false);
@@ -358,7 +348,6 @@ function engineSetUp(io){
 		})
 
 		socket.on('disconnect', (reason) =>{
-			console.log('93 disconnect');
 			socket.broadcast.emit('user:left', {
 				username: socket.username,
 				numUsers: numUsers,

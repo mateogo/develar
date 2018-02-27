@@ -42,20 +42,16 @@ const whoami = '/core/services/crwaler:';
 
 
 exports.crawlURL = function(query, opts, errcb, cb){
-	console.log('[%s] crawlURL CALLED', whoami)
 
 
 	// Queue just one URL, with default callback
-	console.log('[%s] READY TO QUEUE:[%s]', whoami, query)
 	crawler.queue([{
 		uri: query,
 		callback : function (error, res, done) {
-		    console.log('callback [%s]', error == null);
 		    if(error){
 		        console.log(error);
 		    }else{
 		        let $ = res.$;
-		        console.log($("title").text());
 		        let text = html2txt.fromString($("body"),htmlParser);
 
 		        cb({title: $('title').text(), body: $("body").text() });

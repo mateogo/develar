@@ -21,7 +21,7 @@ const CALLBACK_URL = config.googleCbUrl
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
   function(usermail, password, done){
-    console.log('passport verify: usermail[%s] pass[%s] ',usermail,password);
+    //console.log('passport verify: usermail[%s] pass[%s] ',usermail,password);
     // VERIFY CALLBACK
     //  return done(null, user); // ok
     //  return done(null, false, { message: 'Incorrect usermail.' }); // ToDo: implementar FLASH
@@ -60,18 +60,18 @@ passport.use(new GoogleStrategy({
   },
 
   function(accessToken, refreshToken, profile, done){
-    console.log('[%s] callback CALLED ******************** PASS', whoami);
+    // console.log('[%s] callback CALLED ******************** PASS', whoami);
 
-    console.log('ACCESS TOKEN: ');
-    console.dir(accessToken);
+    // console.log('ACCESS TOKEN: ');
+    // console.dir(accessToken);
 
-    console.log('USER PROFILE: ');
-    console.dir(profile);
+    // console.log('USER PROFILE: ');
+    // console.dir(profile);
 
     let emails = profile.emails;
 
-    console.log('MAILS PROFILE: ');
-    console.dir(emails);
+    // console.log('MAILS PROFILE: ');
+    // console.dir(emails);
 
     user.findOrCreateGoogle(profile, accessToken, function(err, user){
       return done(err, user);
@@ -81,12 +81,10 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  console.log('serialize: user:[%s] [%s]',user.displayName, user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('deserialize:[%s]',id);
   user.fetchById(id, function(err, user) {
     done(err, user);
   });

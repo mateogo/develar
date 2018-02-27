@@ -20,7 +20,6 @@ const crypto = require('crypto'),
     password = 'd3v3l4r';
 
 function encrypt(text){
-    console.log('encrypt')
   let cipher = crypto.createCipher(algorithm,password)
   let crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
@@ -42,10 +41,6 @@ function comparePasswd (passwd, actualpasswd, cb){
     }
 }
 
-//const hw = encrypt("hello world")
-// outputs hello world
-//console.log(hw);
-//console.log(decrypt(hw));
 const googleProfileSch = new mongoose.Schema({
     id:           { type: String, required: false },
     kind:         { type: String, required: false },
@@ -114,7 +109,6 @@ const userSch = new mongoose.Schema({
 });
 
 userSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     let user = this;
     user.displayName = user.displayName || user.name;
     // Check if password has been changed
@@ -170,7 +164,6 @@ function buildQuery(query){
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
-    console.dir(regexQuery)
 
     User.find(regexQuery, function(err, entities) {
         if (err) {
@@ -415,7 +408,6 @@ function updateExistingGoogleUser(user, google_profile, accessToken, cb ){
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll', whoami);
     User.find(function(err, users) {
         if (err) {
             errcb(err);
@@ -446,7 +438,6 @@ exports.verifyPassword = function (actualpasswd, testpasswd, cb) {
  * @param errcb
  */
 exports.login = function (user, errcb, cb) {
-    console.log('[%s] login: [%s]', whoami, user.email);
     User.findOne({email: user.email}, function(err, user) {
         if (err) {
             errcb(err);
@@ -455,7 +446,6 @@ exports.login = function (user, errcb, cb) {
             errcb({message: whoami + ': email o password incorrecto'});
 
         }else{
-            console.log('[%s] login OK: user retrieved: [%s]', whoami, user.username);
             cb(user);
         }
     });
@@ -476,7 +466,6 @@ exports.findById = function (id, errcb, cb) {
             errcb(err);
         
         }else{
-            console.log('[%s] findByID SUCCESS [%s]', whoami, entity.username);
             cb(entity);
         }
     });
@@ -509,7 +498,6 @@ exports.update = function (id, user, errcb, cb) {
             errcb(err);
         
         }else{
-            console.log('[%s] pass validate', whoami);
             cb(entity);
         }
     });
@@ -534,7 +522,6 @@ exports.signup = function (user, errcb, cb) {
             errcb(err);
         
         }else{
-            console.log('[%s] pass validate', whoami);
             cb(entity);
         }
     });
@@ -581,12 +568,10 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
 
         if(!entity){
             // ATENCIÓN: NUEVO USUARIO que se registra vía google
-            console.log('[%s] findOrCreateGoogle usuraio NUEVO ',whoami);
             initNewGoogleUser(profile, accessToken, cb);
 
         }else{
             // ATENCIÓN: USUARIO EXISTENTE vuelve a loguearse vía google
-            console.log('[%s] findOrCreateGoogle usuario ENCONTRADO [%s]',whoami, entity._id);
             updateExistingGoogleUser(entity, profile, accessToken, cb);
         }
     });

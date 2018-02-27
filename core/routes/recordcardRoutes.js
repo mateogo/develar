@@ -42,7 +42,6 @@ router.get('/search', function (req, res) {
  * fetch entities
  */
 router.get('/fetchnext', function (req, res) {
-    console.log('******** fetchnext: to begin ********')
     service.fetchNext(req, function(err) {
         res.status(400).json(err);
 

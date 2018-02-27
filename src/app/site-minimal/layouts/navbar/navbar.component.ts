@@ -23,6 +23,8 @@ export class NavbarComponent implements OnInit {
   public loggedIn = false;
   public avatar: string = DEFAULT_AVATAR
 
+  public hideLogin = true;
+
   private socket: SocketIOClient.Socket; 
   private connected = false;
   private username: string = "";
@@ -82,7 +84,16 @@ export class NavbarComponent implements OnInit {
     this.messageNew = false;
   }
 
-  close(event) {
+  close2(event) {
+    let clickedComponent = event.target;
+    let items = clickedComponent.parentElement.children;
+
+    for (let i = 0; i < items.length; i++) {
+      items[i].classList.remove('opened');
+    }
+  }
+
+  close1(event) {
     let clickedComponent = event.target;
     let items = clickedComponent.parentElement.children;
 
@@ -138,6 +149,7 @@ export class NavbarComponent implements OnInit {
   loginUser(e){
     e.stopPropagation();
     e.preventDefault();
+    if(this.hideLogin) return;
     this.router.navigate(['/ingresar/login'])
   }
 }

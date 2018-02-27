@@ -22,7 +22,6 @@ const buildProperAddress = function(address){
 
 	let serviceUrl = gaddressUrl + utils.safeAddress('"' + location + '"') + '&sensor=false';
 
-	console.log('buildProperAddress: [%s]', serviceUrl)
 
 	return serviceUrl
 }
@@ -48,7 +47,6 @@ const buildNormalizedAddress = function(data){
  * Search for lat / lng
  */
 exports.addressLookUp = function (address, errcb, cb) {
-	console.log('[%s] addressLookUp BEGIN', whoami)
 	let path = buildProperAddress(address);
 
 	const options = {

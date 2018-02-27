@@ -48,7 +48,6 @@ const tagSch = new Schema({
 });
 
 tagSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -71,7 +70,6 @@ const Record = mongoose.model('Tag', tagSch, 'tags');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll',whoami);
     Record.find(function(err, entities) {
         if (err) {
             errcb(err);
@@ -235,7 +233,7 @@ const updateTagRecord = function(tag, record, token){
 
     let update = Record.findByIdAndUpdate(record._id, record)
     update.then(record => {
-        console.log('[%s] record Updated: [%s]', whoami, record.name)
+        //console.log('[%s] record Updated: [%s]', whoami, record.name)
     })
 }
 
@@ -253,7 +251,7 @@ const createTagRecord = function(tag, token){
     record.userId = token.userId;
     let create = Record.create(record)
     create.then(record => {
-        console.log('[%s]record Created: [%s]',whoami, record.name)
+        //console.log('[%s]record Created: [%s]',whoami, record.name)
     })
 }
 const deleteTagRecord = function(record){

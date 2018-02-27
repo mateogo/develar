@@ -29,7 +29,7 @@ export class TopServiciosComponent implements OnInit {
         title: s.slug,
   			imageUrl: s.mainimage,
   			description: s.description,
-        linkTo: s.linkTo || "#",
+        linkTo: s.linkTo,
   		} as Servicios)
   	})
   }

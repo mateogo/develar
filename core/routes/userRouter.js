@@ -21,12 +21,10 @@ const REGISTRARSE =  DOMAIN + config.signUpUrl;
  * Retrieve all usuarios
  */
 router.get('/', function (req, res) {
-    console.log('router root hit');
     service.findAll(function(err) {
         res.status(400).json(err);
 
     }, function(entities) {
-        console.log('findAll success [%s]', entities.length);
         res.status(200).json(entities);
 
     });
@@ -36,8 +34,6 @@ router.get('/', function (req, res) {
  * search entities
  */
 router.get('/search', function (req, res) {
-    //service.findByQuery(req.query, function(err) {
-    console.log('[%s] user Search BEGIN',whoami);
 
     service.findByQuery(req.query, function(err) {
         res.status(400).json(err);
@@ -54,7 +50,6 @@ router.get('/search', function (req, res) {
  * Retrieve Current User from request
  */
 router.get('/currentuser', function (req, res) {
-    console.log('fetch curren User')
     if(req.user){
         res.status(200).json(req.user);
     }else{
@@ -66,8 +61,6 @@ router.get('/currentuser', function (req, res) {
 router.get('/login/google/return', 
   passport.authenticate('google', { failureRedirect: FAILURE_REDIRECT }),
   function(req, res) {
-    console.log('GOOGLE return:[%s] [%s]', req.user.email, req.user.externalProfile);
-    console.log(HOME);
 
     if(req.user && req.user.localProfile){
         res.redirect(HOME);
@@ -110,7 +103,6 @@ router.post('/login', function(req, res, next) {
  * Sign up a new user
  */
 router.post('/signup', function (req, res) {
-    console.log('router POST for Create signup HIT');
 
     service.signup(req.body, function(err) {
         res.status(400).json(err);
@@ -122,7 +114,6 @@ router.post('/signup', function (req, res) {
 });
 
 router.put('/signup/:id', function (req, res) {
-    console.log('router PUT for Update signup HIT');
 
     service.update(req.params.id, req.body, 
         function (err) {
@@ -141,7 +132,6 @@ router.put('/signup/:id', function (req, res) {
  * Testing: alta trucha de un user
  */
 router.get('/populate', function (req, res) {
-    console.log('router populate hit');
     service.populate(function(err) {
         res.status(400).json(err);
 
@@ -156,12 +146,10 @@ router.get('/populate', function (req, res) {
  * Retrieve USER by ID
  */
 router.get('/:id', function (req, res) {
-    console.log('getUserBY ID [%s]', req.params.id);
     service.findById(req.params.id, function(err) {
         res.status(400).json(err);
 
     }, function(entities) {
-        console.log('findAll success [%s]', entities.length);
         res.status(200).json(entities);
 
     });

@@ -17,7 +17,6 @@ const whoami =  "Router:routes/crawlerRoutes: ";
  * api/q=angular4
  */
 router.get('/', function (req, res) {
-    console.dir(req.query)
 
     service.crawlURL(req.query.q, {}, function(err) {
         res.status(400).json(err);

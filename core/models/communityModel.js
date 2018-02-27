@@ -78,7 +78,6 @@ function buildQuery(query){
 
 
 communitySch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -169,8 +168,6 @@ exports.findById = function (id, errcb, cb) {
  * @param errcb
  */
 exports.update = function (id, record, errcb, cb) {
-    console.log('******** Update to begin *****: [%s]', record.taglist)
-    console.dir(record);
 
     Record.findByIdAndUpdate(id, record, { new: true } ,function(err, entity) {
         if (err){
@@ -180,8 +177,6 @@ exports.update = function (id, record, errcb, cb) {
         }else{
             // Actualizar relación TAGS
 
-    console.log('******** OK *****: [%s]', entity.taglist)
-    console.dir(entity);
             updateTags(entity);
 
             // Actualizar relación COMUNIDAD-USUARIO
@@ -190,9 +185,8 @@ exports.update = function (id, record, errcb, cb) {
                 console.log('error actualizando relación user-community', err)
                 err.itsme = whoami;
                 errcb(err);
-              }else{
-                console.log('READY TO RETURN: [%s]', entity.taglist);
 
+              }else{
                 cb(entity);
               }
             });

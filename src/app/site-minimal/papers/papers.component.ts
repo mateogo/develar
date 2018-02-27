@@ -59,6 +59,8 @@ export class PapersComponent implements OnInit {
 
   public breadcrumb: BreadcrumbItem[] = breadcrumb;
 
+  public unBindList = [];
+
 
 
   constructor(
@@ -67,55 +69,137 @@ export class PapersComponent implements OnInit {
     	private route: ActivatedRoute,
   	) { }
 
-  ngOnInit() {
-  	console.log('Home ngOnInit BEGIN')
-  	this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
+  // ngxxOnInit() {
+  // 	console.log('Home ngOnInit BEGIN')
+  // 	this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
 
-    this.buildBreadCrumb();
+  //   this.buildBreadCrumb();
    
-    this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
-      console.log('***************** Papers Component: [%s] ******************', this.topic);
+  //   this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
+  //     console.log('***************** Papers Component: [%s] ******************', this.topic);
   	
-  	this.minimalCtrl.fetchRenderResources(this.topic).subscribe(tokens => {
-  		console.log('***************** Home Component ******************')
-      console.log('HomeComponent cb  =====>[%s]',tokens.length);
-			if(tokens && tokens.length){
+  // 	this.minimalCtrl.fetchRenderResources(this.topic).subscribe(tokens => {
+  // 		console.log('***************** Home Component ******************')
+  //     console.log('HomeComponent cb  =====>[%s]',tokens.length);
+		// 	if(tokens && tokens.length){
 
-        tokens.forEach(record => {
-          let publish = record.publish;
-          if(publish.template === BRANDING){
-            this.topbranding = record;
-            this.isTopbranding = true
+  //       tokens.forEach(record => {
+  //         let publish = record.publish;
+  //         if(publish.template === BRANDING){
+  //           this.topbranding = record;
+  //           this.isTopbranding = true
 
-          }else if(publish.template === ABOUT){
-            this.topabout = record;
-            this.isTopabout = true
+  //         }else if(publish.template === ABOUT){
+  //           this.topabout = record;
+  //           this.isTopabout = true
 
-          }else if(publish.template === DESTACADO){
-            this.destacado = record;
-            this.isDestacado = true
+  //         }else if(publish.template === DESTACADO){
+  //           this.destacado = record;
+  //           this.isDestacado = true
 
-          }else if(publish.template === CONTACTO){
-            this.contacto = record;
-            this.isContacto = true
+  //         }else if(publish.template === CONTACTO){
+  //           this.contacto = record;
+  //           this.isContacto = true
 
-          }else if(publish.template === FICHA){
-            this.papers.push(record);
+  //         }else if(publish.template === FICHA){
+  //           this.papers.push(record);
 
-          }else if(publish.template === SERVICIOS){
-            this.servicios = record;
-            this.isServicios = true
-          }
-        });
+  //         }else if(publish.template === SERVICIOS){
+  //           this.servicios = record;
+  //           this.isServicios = true
+  //         }
+  //       });
 
-        if(this.papers && this.papers.length){
-          this.isPapers = true;
-        }
+  //       if(this.papers && this.papers.length){
+  //         this.isPapers = true;
+  //       }
 
-			}
+		// 	}
 
-  	});
+  // 	});
+  // }
+
+
+  ngOnInit() {
+    let first = true;
+
+    let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
+
+      if(readyToGo && first){
+        first = false;
+
+        this.initHomePage();
+
+      }
+    })
+    this.unBindList.push(sscrp2);
   }
+
+  ngOnDestroy(){
+    this.unBindList.forEach(x => {x.unsubscribe()});
+  }
+
+
+
+  initHomePage(){
+    this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
+    
+    this.buildBreadCrumb();
+
+    this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
+    
+    let sscrp1 = this.minimalCtrl.fetchContextRecords(this.topic).subscribe(records => {
+      this.renderHomePage(records);
+    });
+    this.unBindList.push(sscrp1);
+
+  }
+
+  renderHomePage(records: RecordCard[]){
+    if(records && records.length){
+
+
+      records.forEach(record => {
+
+        let publish = record.publish;
+
+        if(publish.template === BRANDING){
+          this.topbranding = record;
+          this.isTopbranding = true
+
+        }else if(publish.template === ABOUT){
+          this.topabout = record;
+          this.isTopabout = true
+
+        }else if(publish.template === DESTACADO){
+          this.destacado = record;
+          this.isDestacado = true
+
+        }else if(publish.template === CONTACTO){
+          this.contacto = record;
+          this.isContacto = true
+
+        }else if(publish.template === FICHA){
+          this.papers.push(record);
+
+        }else if(publish.template === SERVICIOS){
+          this.servicios = record;
+          this.isServicios = true
+        }
+      });
+
+      if(this.papers && this.papers.length){
+        this.isPapers = true;
+      }
+
+    }    
+  }
+
+
+
+
+
+
 
   fetchTopicFromUrl(urls:UrlSegment[]){
     let tokens = urls.length;
@@ -126,6 +210,7 @@ export class PapersComponent implements OnInit {
     return topic;
 
   }
+
   buildBreadCrumb(){
     this.breadcrumb[0].link = this.minimalCtrl.communityRoute;
     this.breadcrumb[1].link = this.minimalCtrl.communityRoute;

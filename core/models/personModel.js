@@ -35,17 +35,12 @@ function comparePasswd (passwd, actualpasswd, cb){
     }
 }
 
-//var hw = encrypt("hello world")
-// outputs hello world
-//console.log(hw);
-//console.log(decrypt(hw));
 
  
 
 /**
  * Creación de un Schema
  */
-
 
 const addressSch = new mongoose.Schema({
     slug:        {type: String,  required: true,  defalut: ''},
@@ -81,7 +76,6 @@ const personSch = new mongoose.Schema({
 });
 
 personSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 
@@ -109,7 +103,6 @@ const Person = mongoose.model('Persona', personSch, 'personas');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    console.log('[%s] findAll',whoami);
     Person.find(function(err, persons) {
         if (err) {
             errcb(err);
@@ -167,13 +160,7 @@ exports.upsert = function (req, errcb, cb) {
     let regexQuery = buildQuery(req.query);
     let data = req.body;
 
-    console.dir(regexQuery)
-    console.dir(data)
-    
-    console.log('Person ready to FindONE ');
-
     Person.findOne(regexQuery).then(token =>{
-        console.log('Person FindONE then: [%s]', (token && token.displayName))
         if(!token) token = new Person();
         token = updateData(token, data);
         token.save().then(err => {
@@ -204,7 +191,6 @@ function updateData(model, data){
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
-    console.dir(regexQuery)
 
     Person.find(regexQuery, function(err, entities) {
         if (err) {

@@ -14,7 +14,7 @@ const ASSETS_NOT_SHOW = ['mainimage'];
 const templateList: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'topbranding',    label: 'topbranding',        slug:'topbranding' },
-		{val: 'topcontacto',    label: 'topcontactos',       slug:'topcontactos' },
+		{val: 'topcontacto',    label: 'topcontacto',        slug:'topcontacto' },
 		{val: 'topservicios',   label: 'topservicios',       slug:'topservicios' },
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
@@ -47,6 +47,7 @@ const subCardCategory = {
 		{val: 'examen',         label: 'Examen',      slug:'Examen' },
 		{val: 'exposicion',     label: 'Exposición',  slug:'Exposición' },
 		{val: 'documento',      label: 'Documento',   slug:'Documento' },
+		{val: 'webresource',    label: 'Recurso Portal',  slug:'Recurso Portal' },
 	],
 
 	milestone: [
@@ -83,6 +84,7 @@ const cardCategories: Array<any> = [
 		{val: 'ejercicio', 	    label: 'Ejercicio',          slug:'Ejercicio' },
 		{val: 'ejemplo', 	      label: 'Ejemplo',            slug:'Ejemplo' },
 		{val: 'evento', 	      label: 'Evento',             slug:'Evento/ Jornada/ Seminario' },
+		{val: 'webresource',    label: 'Recurso Portal',     slug:'Recurso Portal' },
 ];
 
 const cardCategory = {

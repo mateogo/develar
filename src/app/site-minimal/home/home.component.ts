@@ -9,11 +9,18 @@ import { RecordCard } from '../recordcard.model';
 
 
 const HOME_TYPE = 'webresource';
-const BRANDING = 'topbranding';
-const ABOUT = 'topabout';
+const BRANDING =  'topbranding';
+const ABOUT =     'topabout';
 const DESTACADO = 'destacado';
 const SERVICIOS = 'topservicios';
-const CONTACTO = 'formcontacto';
+const CONTACTO =  'topcontacto';
+const CARROUSEL = 'carrousel';
+const SIDEMENU =  'sidemenu';
+const FICHA =     'ficha';
+
+const HOME = 'home';
+
+
 
 @Component({
   selector: 'public-home',
@@ -37,6 +44,11 @@ export class HomeComponent implements OnInit {
   public isContacto = false;
   public contacto: RecordCard;
 
+  public isPapers = false;
+  public papers: RecordCard[] = [];
+
+  public unBindList = [];
+
 
   constructor(
   		private minimalCtrl: SiteMinimalController,
@@ -45,45 +57,90 @@ export class HomeComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-  	console.log('Home ngOnInit BEGIN')
-  	this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
-  	
-  	this.minimalCtrl.fetchHomeResources().subscribe(tokens => {
-  		console.log('***************** Home Component ******************')
-      console.log('HomeComponent cb  =====>[%s]',tokens.length);
-			if(tokens && tokens.length){
+    let first = true;
 
-        tokens.forEach(record => {
-          if(record.cardType === HOME_TYPE && record.cardCategory === BRANDING){
-            this.topbranding = record;
-            this.isTopbranding = true
+    let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
 
-          }else if(record.cardType === HOME_TYPE && record.cardCategory === ABOUT){
-            this.topabout = record;
-            this.isTopabout = true
+      if(readyToGo && first){
+        first = false;
 
-          }else if(record.cardType === HOME_TYPE && record.cardCategory === DESTACADO){
-            this.destacado = record;
-            this.isDestacado = true
+        this.initHomePage();
+      }
+    })
 
-          }else if(record.cardType === HOME_TYPE && record.cardCategory === CONTACTO){
-            this.contacto = record;
-            this.isContacto = true
+    this.unBindList.push(sscrp2);
+  }
 
-          }else if(record.cardType === HOME_TYPE && record.cardCategory === SERVICIOS){
-            this.servicios = record;
-            this.isServicios = true
-          }
-        })
-			}
+  ngOnDestroy(){
+    this.unBindList.forEach(x => {x.unsubscribe()});
+  }
 
-  	});
+  initHomePage(){
+    this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
+
+    if(this.minimalCtrl.navigateToUserCommunity()){
+      this.router.navigate(['./', this.minimalCtrl.userUrl], { relativeTo: this.route })
+
+    }else{
+
+      let sscrp1 = this.minimalCtrl.fetchContextRecords(HOME).subscribe(records => {
+        this.renderHomePage(records);
+      });
+
+      this.unBindList.push(sscrp1);
+
+    }
+
+  }
+
+  renderHomePage(records: RecordCard[]){
+    if(records && records.length){
+
+      records.forEach(record => {
+
+        let publish = record.publish;
+        
+        if(publish.template === BRANDING){
+          this.topbranding = record;
+          this.isTopbranding = true
+
+        }else if(publish.template === ABOUT){
+          this.topabout = record;
+          this.isTopabout = true
+
+        }else if(publish.template === DESTACADO){
+          this.destacado = record;
+          this.isDestacado = true
+
+        }else if(publish.template === CONTACTO){
+          this.contacto = record;
+          this.isContacto = true
+
+        }else if(publish.template === FICHA){
+          this.papers.push(record);
+
+        }else if(publish.template === SERVICIOS){
+          this.servicios = record;
+          this.isServicios = true
+        }
+      });
+
+      if(this.papers && this.papers.length){
+        this.isPapers = true;
+      }
+
+
+
+
+
+
+    }
   }
 
 
 
 }
-
+// end component
 
 
 

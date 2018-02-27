@@ -96,7 +96,6 @@ router.get('/retrieve/:id', function (req, res) {
  * Create new entity
  */
 router.post('/', function (req, res) {
-    console.log('conversationRoutes Create BEGIN');
     service.create(req.body, function(err) {
         res.status(400).json(err);
 
@@ -111,7 +110,6 @@ router.post('/', function (req, res) {
  * Create new entity
  */
 router.post('/emitnotification', function (req, res) {
-    console.log('conversationRoutes EmitNotification BEGIN');
     service.emitnotification(req.body, function(err) {
         res.status(400).json(err);
 

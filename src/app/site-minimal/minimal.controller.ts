@@ -31,15 +31,18 @@ export class SiteMinimalController {
   private readonly recordtype = 'notification'
 
   //Site state properties
-  private user: User;
-  private userLoggedIn = false;
+  private userLoading = false;
+  public  onReady = new BehaviorSubject<boolean>(false);
 
-  private hasActiveCommunity = false;
-  private isLoading = false;
-  private communityId = "";
-  private communityUrl = "";
-  private communityRecord: Community;
-  private communityChange: BehaviorSubject<Community> = new BehaviorSubject(new Community());
+  private homeResourcesEmitter =new Subject<RecordCard[]>();
+
+  private recordLoaderListener = new Subject<CommunityToken>();
+
+  private naviCmty: CommunityToken = new CommunityToken();
+  private userCmty: CommunityToken = new CommunityToken();
+  private userx: UserToken = new UserToken();
+
+  private communityEmitter: BehaviorSubject<CommunityToken> = new BehaviorSubject(new CommunityToken());
 
   private hasActiveUrlPath = false;
   private actualUrl = "";
@@ -67,59 +70,30 @@ export class SiteMinimalController {
     private snackBar:    MatSnackBar,
 		private userService: UserService,
 		) {
-
     this.userListener = this.userService.userEmitter;
+
     this.userListener.subscribe(user =>{
-      this.initUserStatus(user);
+      // console.log('**** minimalCtroller Constructor userListener :[%s]', user.username)
+      // console.log('++++ user: [%s] [%s]', user.communityId, user.communityUrlpath);
+      // console.log('**** navi: [%s] [%s]', this.naviCmty.id, this.naviCmty.url);
+      // console.log('xxxx usrx: [%s] [%s]', this.userCmty.id, this.userCmty.url);
+
+
+      this.userLoading = true;
+      this.updateUserStatus(user);
     })
+    setTimeout(() => {if(!this.userLoading) this.onReady.next(true)}, 1000);
   }
 
 
   ////************* API ************////
   ////              API             ////
   ////************* API ************////
-  fetchHomeResources(): Subject<RecordCard[]>{
-    let emitter =new Subject<RecordCard[]>();
+  
 
-    this.communityChange.subscribe(community => {
-      if(this.hasActiveCommunity){
-        this.fetchRecords('home').subscribe(tokens => {
-          if(tokens && tokens.length){
-            console.log('fetchHomeRecords cb  =====>[%s]',tokens.length);
-            emitter.next(tokens)
-          }else{
-            emitter.next([]);
-          }
-        })
-
-      }
-    })
-    this.fetchCurrentCommunity()
-
-    return emitter;
+  get homeResources(): Subject<RecordCard[]>{
+    return this.homeResourcesEmitter
   }
-
-  fetchRenderResources(topic: string): Subject<RecordCard[]>{
-    let emitter =new Subject<RecordCard[]>();
-
-    this.communityChange.subscribe(community => {
-      if(this.hasActiveCommunity){
-        this.fetchRecords(topic).subscribe(tokens => {
-          if(tokens && tokens.length){
-            console.log('fetchRenderRecords cb  =====>[%s]',tokens.length);
-            emitter.next(tokens)
-          }else{
-            emitter.next([]);
-          }
-        })
-
-      }
-    })
-
-    this.fetchCurrentCommunity()
-    return emitter;
-  }
-
 
 
   saveContactPerson(contact: SolicitudDeContacto){
@@ -146,12 +120,48 @@ export class SiteMinimalController {
     this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
 
-    console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
-    console.log('actualRoute: actualUrl[%s]', this.actualUrl );
-    console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
+    // console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
+    // console.log('actualRoute: actualUrl[%s]', this.actualUrl );
+    // console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
 
 
   }
+
+  navigateToUserCommunity():boolean{
+    if(!this.userx.isLogged) return false;
+    if(!this.userx.hasCommunity) return false;
+
+    // usuario loggeado
+    if(this.hasActiveUrlPath){
+      // la url actual es tipo /:community
+      // if(this.userCmty.url === this.navigationUrl){
+      //   return false;
+      // }
+      return false;
+    }
+    return true;
+  }
+
+  get userUrl (){
+    return this.userCmty.url;
+  }
+
+  fetchContextRecords(topic): Subject<RecordCard[]>{
+    let listener = new Subject<RecordCard[]>();
+
+    let communityFinder = new Subject<CommunityToken>();
+
+    communityFinder.subscribe(commty =>{
+      if(commty.isActive){
+        this.fetchRecords(topic, listener);
+      }
+    });
+
+    this.fetchCurrentCommunity(communityFinder);
+
+    return listener;
+  }
+
 
   ////              recordcard             ////
   fetchRecordCard(model: RecordCard, modelId: string){
@@ -199,7 +209,6 @@ export class SiteMinimalController {
 
   ////************* RecordCard ************////
   initNewRecordCard(){
-    console.log('initNewRecordard')
     //this.model = recordcardModel.initNew('','',null,null);
     this.initRecordCard();
   }
@@ -261,92 +270,174 @@ export class SiteMinimalController {
   }
 
   ////************* Recordcards  ************////
-  private fetchRecords(topic){
+  private fetchRecords(topic:string, recordEmitter:Subject<RecordCard[]>){
     let query = {
-      communityId: this.communityId,
+      communityId: this.naviCmty.id,
       publish: true,
       'publish.tag': topic,
-
     }
-    return this.daoService.search<RecordCard>('recordcard', query);
+
+    this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
   }
 
   ////************* Contact person by email  ************////
 
 
   ////************* Community ************////
-  private fetchCurrentCommunity(){
-    if(this.hasActiveCommunity){
-      this.communityChange.next(this.communityRecord)
+  private fetchCurrentCommunity(commtyListener: Subject<CommunityToken>){
 
-    }else if(this.userLoggedIn && this.user.communityId !== 'develar'){
-      this.loadCommunityFromDb(this.user.communityId, null)
 
-    }else if(this.navigationUrl){
-      this.loadCommunityFromDb(null, this.navigationUrl);
+    if(this.navigationUrl){
+      this.loadCommunityFromDb(this.navigationUrl, commtyListener);
+
+    }else if(this.naviCmty.isActive){
+      commtyListener.next(this.naviCmty);
 
     }else{
-      this.fetchDefaultCommunityFromDB();
+      this.fetchDefaultCommunityFromDB(commtyListener);
     } 
 
   }
 
-  fetchDefaultCommunityFromDB(){
-    this.hasActiveCommunity = false;
-    if(this.isLoading) return;
+  fetchDefaultCommunityFromDB(commtyListener: Subject<CommunityToken>){
+    this.naviCmty.isActive = false;
+    this.naviCmty.isLoading = true;
+    this.daoService.search<Community>('community', {eclass: 'home'}).subscribe(records => {
+      this.naviCmty.isLoading = false;
 
-    this.isLoading = true;
-    return this.daoService.search<Community>('community', {eclass: 'home'}).subscribe(records => {
-      this.isLoading = false;
       if(records && records.length){
         this.setCurrentCommunityData(records[0]);
       }
+      commtyListener.next(this.naviCmty);
     });
   }
  
-  loadCommunityFromDb(id:string, url:string){
-    this.hasActiveCommunity = false;
-    if(this.isLoading) return;
-    if(id){
-      this.isLoading = true;
-      return this.daoService.findById<Community>('community', id).then(entity => {
-        this.isLoading = false;
-        if(entity){
-         this.setCurrentCommunityData(entity);
-        }
-      })
+  loadCommunityFromDb(url:string, commtyListener: Subject<CommunityToken>){
+    if(url){
+      this.naviCmty.isActive = false;
+      this.naviCmty.isLoading = true
 
-    }else if(url){      
-      this.isLoading = true;
-      return this.daoService.search<Community>('community', {urlpath: url}).subscribe(records => {
-        this.isLoading = false;
+      this.daoService.search<Community>('community', {urlpath: url}).subscribe(records => {
+        this.naviCmty.isLoading = false;
+
         if(records && records.length){
           this.setCurrentCommunityData(records[0]);
         }
+
+        commtyListener.next(this.naviCmty);
+
       })
     }
   }
 
   setCurrentCommunityData(entity: Community){
 
-    console.log('setCurrentCommunityData:[%s] [%s]', entity.urlpath, entity.displayAs);
-    this.communityId = entity._id;
-    this.communityUrl = entity.urlpath;
-    this.communityRecord = entity;
-    this.hasActiveCommunity = true;
-    this.communityChange.next(this.communityRecord);
-    this.isLoading = false;
+    this.naviCmty.data = entity;
+    this.naviCmty.id = entity._id;
+    this.naviCmty.isActive = true;
+    this.naviCmty.isLoading = false;
+    this.naviCmty.url = entity.urlpath;
+    this.naviCmty.userOwned = false;
+
+    if(this.naviCmty.id === this.userCmty.id){
+      this.naviCmty.userOwned = true;
+
+    }
+
+    //this.communityEmitter.next(this.naviCmty);
+  }
+
+ // ********** USER MANAGEMENT *************
+
+  loadUserCommunity(){
+    if(this.userx.communityId === 'develar') {
+      this.userHasNoCommunity();
+
+
+    }else{
+        this.daoService.findById<Community>('community', this.userx.communityId).then(entity => {
+
+          if(entity){
+            this.userx.userCommunity = entity;
+            this.userx.hasCommunity = true;
+            //
+            this.userCmty.data = entity;
+            this.userCmty.id = entity._id;
+            this.userCmty.isActive = true;
+            this.userCmty.isLoading = false;
+            this.userCmty.userOwned = true;
+            this.userCmty.url = entity.urlpath;
+    
+            this.pushCommunityFromUser()
+
+          }else{
+            this.userHasNoCommunity();
+          }
+
+          this.userLoading = false;
+          this.onReady.next (true);
+        });
+      }
+  }
+
+
+  userHasNoCommunity(){
+      this.userx.userCommunity = null;
+      this.userx.hasCommunity = false;
+
+      this.userCmty.data = null;
+      this.userCmty.id = '';
+      this.userCmty.isActive = false;
+      this.userCmty.isLoading = false;
+      this.userCmty.userOwned = false;
+      this.userCmty.url = '';
+
+      this.userLoading = false;
+      this.onReady.next (true);
 
   }
 
- // INIT USER STATUS
-  initUserStatus(user:User){
-    this.user = user;
-    this.userLoggedIn = this.userService.userlogged;
-    if((this.communityId === this.user.communityId) && this.hasActiveCommunity) return;
-    else {
-      this.hasActiveCommunity = false;
-      this.fetchCurrentCommunity()
+  pushCommunityFromUser(){
+
+      Object.assign(this.naviCmty, this.userCmty);  
+
+    // if(!this.naviCmty.isActive){
+    //   // no hay una comunidad corriente activa
+    //   Object.assign(this.naviCmty, this.userCmty);  
+
+    // }else{
+
+    //   if(this.naviCmty.id === this.userCmty.id){
+    //     this.naviCmty.userOwned = true;
+
+    //   }else{
+    //     this.naviCmty.userOwned = false;
+    //   }
+    // }
+  }
+
+  updateUserStatus(user:User){
+    this.userx.id = user._id;
+    this.userx.data = user;
+    this.userx.isLogged = true;
+    this.userx.username = user.username;
+    this.userx.email = user.email;
+    this.userx.hasCommunity = false;
+ 
+    if(user.communityId){
+      this.userx.communityId = user.communityId
+      this.loadUserCommunity()
+    }else{
+      this.userLoading = false;
+      this.onReady.next (true);
     }
 
   }
@@ -358,7 +449,7 @@ export class SiteMinimalController {
 
     if(urlmodule){
       urlpath = snap.substr(1, (snap.length - urlmodule.length -2));
-      console.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
+      //console.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
     }else{
       urlpath = snap.substr(1);
     }
@@ -418,6 +509,29 @@ class NotificationToken {
       this.emitter_description = data.description;
     }
   }
+}
+
+class CommunityToken {
+  isActive: boolean = false;
+  isLoading: boolean = false;
+  userOwned: boolean = false;
+  renderTopic: string = "";
+  id: string = "";
+  url: string = "";
+  data: Community;
+}
+
+
+
+class UserToken {
+  isLogged: boolean = false;
+  hasCommunity: boolean = false;
+  username: string = "";
+  email:string = "";
+  id: string = "";
+  communityId: string = "";
+  userCommunity: Community;
+  data: User;
 }
 
 

@@ -32,7 +32,6 @@ const usercomSch = new mongoose.Schema({
   })
 
 usercomSch.pre('save', function (next) {
-    console.log('[%s] pre-save', whoami)
     return next();
 });
 

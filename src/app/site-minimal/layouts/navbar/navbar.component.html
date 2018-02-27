@@ -215,7 +215,7 @@
           </ul>
         </div>
     </div>
-    <div class="items-overlay" (click)="close($event)"></div>
+    <div class="items-overlay" (click)="close1($event)"></div>
   </div>
   </ng-container>
 
@@ -246,24 +246,15 @@
       </button>
 
       <div class="dropdown-menu">
-        <h4 class="menu-title">Eventos</h4>
+        <h4 class="menu-title">Eventos </h4>
 
         <ul>
           <li>
             <a href="#">
-              <mat-icon>android</mat-icon>
+              <mat-icon>mood</mat-icon>
               <div class="content">
-                <span class="desc">This is a new message for my dear friend <strong>Rob</strong>.</span>
-                <span class="date">2 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <mat-icon>free_breakfast</mat-icon>
-              <div class="content">
-                <span class="desc">This is a new message for my dear friend <strong>Rob</strong>.</span>
-                <span class="date">14 minutes ago</span>
+                <span class="desc">Jornadas de actualización en  <strong>ICH-GCP (R2)</strong>.</span>
+                <span class="date">26 y 27 de Febrero - Ciudad de Panamá</span>
               </div>
             </a>
           </li>
@@ -271,8 +262,8 @@
             <a href="#">
               <mat-icon>mood</mat-icon>
               <div class="content">
-                <span class="desc">This is a new message for my dear friend <strong>Rob</strong>.</span>
-                <span class="date">15 minutes ago</span>
+                <span class="desc">Simposio Internacional de <strong>Vacunas e Investigación Clínica</strong>.</span>
+                <span class="date">26 y 27 de Febrero - Ciudad de Panamá</span>
               </div>
             </a>
           </li>
@@ -289,8 +280,8 @@
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-button (click)="loginUser($event)">Ingresar</button>
     </div>
+    <div class="items-overlay" (click)="close2($event)"></div>
 
-    <div class="items-overlay" ></div>
   </div>
   </ng-container>
 

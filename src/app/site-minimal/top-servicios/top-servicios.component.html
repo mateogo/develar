@@ -10,8 +10,15 @@
 
 			<div id='items' class="row align-items-end">
 				<div class='col-sm-3 item' *ngFor='let node of nodes'>
-					<a routerLink='{{ node.linkTo }}'>
-						<img class='item-image' src='{{ node.imageUrl }}' ></a>
+					<ng-container *ngIf='node.linkTo'>
+						<a routerLink='{{ node.linkTo }}'>
+							<img class='item-image' src='{{ node.imageUrl }}' ></a>
+					</ng-container>
+					
+					<ng-container *ngIf='!node.linkTo'>
+						<img class='item-image' src='{{ node.imageUrl }}' >						
+					</ng-container>
+
 				</div>
 			</div>
 		</div>

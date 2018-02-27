@@ -96,7 +96,7 @@ function setNormalizedFileName(originalname){
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
     let destination = selectDestination();
-		console.log('destination [%s]', destination);
+		//console.log('destination [%s]', destination);
 		cb(null, destination);
 	},
 
@@ -124,7 +124,6 @@ router.post('/assetupload', upload, function(req, res, next){
 
   let file = req.file;
   let uploadDate = new Date();
-  console.dir(file);
 
   let fileData = {
     filename:     file.filename,
@@ -137,7 +136,6 @@ router.post('/assetupload', upload, function(req, res, next){
     upload:       uploadDate,
     uploadtime:   uploadDate.getTime()
   }
-  console.log('path: [%s] filename:[%s]', fileData.path, fileData.filename)
 
   asset.createAssetFromUpload(fileData, function(err){
 
@@ -166,7 +164,7 @@ router.post('/updatefile', upload, function(req, res, next){
     upload:       uploadDate,
     uploadtime:   uploadDate.getTime()
   }
-  console.log('path: [%s] filename:[%s]', fileData.path, fileData.filename)
+
   res.status(200).json(fileData);
 
 
@@ -193,7 +191,7 @@ router.post('/profile', upload, function(req, res, next){
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any  
 
-  console.log('relative path: [%s]', path.relative(storageDir,req.file.path ))
+  //console.log('relative path: [%s]', path.relative(storageDir,req.file.path ))
   res.status(200).json(req.file);
 
   // const urlPath = new URL(req.file.path);

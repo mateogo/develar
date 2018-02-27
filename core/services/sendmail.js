@@ -87,7 +87,6 @@ exports.sendMail = function (mailOptions, errorcb, cb){
       } 
 
       if(info){
-        console.log('Sendmail: info[%s]', info)
         if(cb){
             let message = {
                 message: 'Message sent: ' + info.response,
