@@ -37,12 +37,12 @@ var db;
 module.exports = function(settings){
 
   mongoose.Promise = BBPromise;
+  console.log('Mongo Connect: [%s]', settings.dbase);
 
   mongoose.connect(settings.dbase, {
 
   });
 
-  mongoose
   
   db = mongoose.connection;
 

@@ -9,9 +9,6 @@ const debug = require('debug')('develar:server');
 
 const path = require('path');
 const rootPath = path.normalize(__dirname + '/../..');
-const publicPath = path.join(rootPath, 'public');
-const storagePath = path.join(publicPath, 'storage');
-
 //Installed Dbases
 const dbaseDevel = 'mongodb://localhost/develar_dev'; //port = 27017  ojo: {auto_reconnect: true}
 const dbaseTest =  'mongodb://localhost/develar';     //port = 27017  ojo: {auto_reconnect: true}
@@ -19,43 +16,65 @@ const dbaseProd =  'mongodb://localhost/develar';     //port = 27017  ojo: {auto
 
 /****** ATENCION *********/
 const environment = global.environment || process.env.NODE_ENV || 'development';
-console.log('********* config:[%s] **********', environment);
+
+const PORT = normalizePort(process.env.PORT || '8080');
+const DBASE = process.env.DBASE || 'develar';
+const SERVER = process.env.SERVER || 'http://develar.co';
+const FAVICON = process.env.FAVICON || 'favicon.ico';
+const STORAGE = process.env.STORAGE || 'storage';
+
+const publicPath = path.join(rootPath, 'public');
+const storagePath = path.join(publicPath, STORAGE);
+const app_file =  path.join(rootPath, '/core/app');
+
+
+
+const DEV_SERVER = 'http://develar-local.co:4200';
+const QA_SERVER = 'http://develar-local.co:4200';
+
+const MONGOSRV = 'mongodb://localhost/';
+const GOOGLE_LOGIN_RETURN = '/api/users/login/google/return'
+
+const mongo_db = MONGOSRV + DBASE
+
+
+console.log('***config ENV:[%s] PORT:[%s]  DB:[%s]  SRV:[%s]  STO:[%s] ****', environment, PORT, mongo_db, SERVER, STORAGE);;
 
 debug('config.js:settings:mode:[%s]', environment);
 /*************************/
 
 const settings = {
   rootPath: rootPath,
-  faviconPath: '/core/img/favicon.ico',
+  faviconPath: '/core/img/' + FAVICON, ///?????
   staticFolder: '/public',
   publicPath: publicPath,
   storagePath: storagePath,
-  port: normalizePort(process.env.PORT || '8080'),
+  port: PORT,
   debug: 'develar:server',
-  serverUrl: 'http://develar-local.co:4200',
+  serverUrl: DEV_SERVER,
   dbconnect: path.join(rootPath, 'core/config/dbconnect'),
   failureLoginUrl: '/ingresar/login',
   signUpUrl: '/ingresar/registrarse',
-  googleCbUrl: 'http://develar-local.co:4200/api/users/login/google/return'
+  googleCbUrl: DEV_SERVER + GOOGLE_LOGIN_RETURN
 };
 
 if(environment === 'development'){
-  settings.dbase = dbaseDevel;
-  settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar-local.co:4200';
-  settings.googleCbUrl = settings.serverUrl + '/api/users/login/google/return';
+  settings.dbase = mongo_db + '_dev';
+  settings.app = app_file;
+  settings.serverUrl = DEV_SERVER;
+  settings.googleCbUrl = settings.serverUrl + GOOGLE_LOGIN_RETURN;
 
 }else if(environment === 'test'){
-  settings.dbase = dbaseTest;
-  settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar-local.co:4200';
-  settings.googleCbUrl = settings.serverUrl + '/api/users/login/google/return';
+  settings.dbase = mongo_db;
+  settings.app = app_file;
+  settings.serverUrl = QA_SERVER;
+  settings.googleCbUrl = settings.serverUrl + GOOGLE_LOGIN_RETURN;
 
 }else if(environment === 'production'){
-  settings.dbase = dbaseProd;
-  settings.app = rootPath + '/core/app';
-  settings.serverUrl = 'http://develar.co';
-  settings.googleCbUrl = settings.serverUrl + '/api/users/login/google/return';
+  settings.dbase = mongo_db;
+  settings.app = app_file;
+  settings.serverUrl = SERVER;
+  settings.googleCbUrl = settings.serverUrl + GOOGLE_LOGIN_RETURN;
 
 }
 

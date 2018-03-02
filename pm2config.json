@@ -1,9 +1,40 @@
 {
-"apps": [{
-        "script" : "./bin/www",
-        "env": {
-                "NODE_ENV": "production",
-                "PORT": "8080"
-        }
-}]
+	"apps": [
+		{
+			"name": "picris",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8080",
+		          "DBASE": "develar",
+		          "SERVER": "http://picris.co",
+		          "FAVICON": "favicon.ico",
+		          "STORAGE": "picris-storage"
+		  }
+		},
+		{
+			"name": "masuno",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8081",
+		          "DBASE": "masunodb",
+		          "SERVER": "http://masuno.digital",
+		          "FAVICON": "favicon.ico",
+		          "STORAGE": "masuno-storage"
+		  }
+		},
+		{
+			"name": "develar",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "development",
+		          "PORT": "8080",
+		          "DBASE": "develardb",
+		          "SERVER": "http://develar.co",
+		          "FAVICON": "favicon.ico",
+		          "STORAGE": "develar-storage"
+		  }
+		},
+	]
 }
