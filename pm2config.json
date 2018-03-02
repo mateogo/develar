@@ -7,9 +7,9 @@
 		          "NODE_ENV": "production",
 		          "PORT": "8080",
 		          "DBASE": "develar",
-		          "SERVER": "http://picris.co",
+		          "SERVER": "http://develar.co",
 		          "FAVICON": "favicon.ico",
-		          "STORAGE": "picris-storage"
+		          "STORAGE": "storage"
 		  }
 		},
 		{

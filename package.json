@@ -10,6 +10,8 @@
     "server": "DEBUG=develar:server PORT=8080 NODE_ENV=development node bin/www",
     "qa": "DEBUG=develar:server PORT=8080 NODE_ENV=test node bin/www",
     "production": "DEBUG=develar:server PORT=8080 NODE_ENV=production node bin/www",
+    "picris": "DEBUG=develar:server PORT=8080 NODE_ENV=production DBASE=develar PUBLIC=public node bin/www",
+    "masuno": "DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=masunodb SERVER=http://masuno.digital PUBLIC=www/masuno node bin/www",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
