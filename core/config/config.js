@@ -34,7 +34,7 @@ const GOOGLE_LOGIN_RETURN = '/api/users/login/google/return'
 const mongo_db = MONGOSRV + DBASE
 
 
-console.log('***config ENV:[%s] PORT:[%s]  DB:[%s]  SRV:[%s]  STO:[%s] ****', environment, PORT, mongo_db, SERVER, PUBLIC);;
+console.log('***config ENV:[%s] PORT:[%s]  DB:[%s]  SRV:[%s]  public:[%s] ****', environment, PORT, mongo_db, SERVER, PUBLIC);;
 
 debug('config.js:settings:mode:[%s]', environment);
 /*************************/
@@ -42,7 +42,6 @@ debug('config.js:settings:mode:[%s]', environment);
 const settings = {
   rootPath: rootPath,
   faviconPath: '/core/img/' + FAVICON, ///?????
-  staticFolder: '/public',
   publicPath: publicPath,
   storagePath: storagePath,
   port: PORT,

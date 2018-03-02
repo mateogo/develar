@@ -9,7 +9,7 @@
 		          "DBASE": "develar",
 		          "SERVER": "http://develar.co",
 		          "FAVICON": "favicon.ico",
-		          "STORAGE": "storage"
+		          "PUBLIC": "/public"
 		  }
 		},
 		{
@@ -21,7 +21,7 @@
 		          "DBASE": "masunodb",
 		          "SERVER": "http://masuno.digital",
 		          "FAVICON": "favicon.ico",
-		          "STORAGE": "masuno-storage"
+		          "PUBLIC": "/www/masuno"
 		  }
 		},
 		{
@@ -33,7 +33,7 @@
 		          "DBASE": "develardb",
 		          "SERVER": "http://develar.co",
 		          "FAVICON": "favicon.ico",
-		          "STORAGE": "develar-storage"
+		          "PUBLIC": "/public"
 		  }
 		},
 	]

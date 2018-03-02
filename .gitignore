@@ -11,6 +11,7 @@
 
 # public
 /public
+/www
 
 # IDEs and editors
 /.idea
