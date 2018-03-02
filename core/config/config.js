@@ -9,25 +9,21 @@ const debug = require('debug')('develar:server');
 
 const path = require('path');
 const rootPath = path.normalize(__dirname + '/../..');
-//Installed Dbases
-const dbaseDevel = 'mongodb://localhost/develar_dev'; //port = 27017  ojo: {auto_reconnect: true}
-const dbaseTest =  'mongodb://localhost/develar';     //port = 27017  ojo: {auto_reconnect: true}
-const dbaseProd =  'mongodb://localhost/develar';     //port = 27017  ojo: {auto_reconnect: true}
 
-/****** ATENCION *********/
+
 const environment = global.environment || process.env.NODE_ENV || 'development';
 
 const PORT = normalizePort(process.env.PORT || '8080');
 const DBASE = process.env.DBASE || 'develar';
 const SERVER = process.env.SERVER || 'http://develar.co';
 const FAVICON = process.env.FAVICON || 'favicon.ico';
-const STORAGE = process.env.STORAGE || 'storage';
+const PUBLIC = process.env.PUBLIC || '/public';
 
-const publicPath = path.join(rootPath, 'public');
+const STORAGE = 'storage';
+
+const publicPath = path.join(rootPath, PUBLIC);
 const storagePath = path.join(publicPath, STORAGE);
 const app_file =  path.join(rootPath, '/core/app');
-
-
 
 const DEV_SERVER = 'http://develar-local.co:4200';
 const QA_SERVER = 'http://develar-local.co:4200';
@@ -38,7 +34,7 @@ const GOOGLE_LOGIN_RETURN = '/api/users/login/google/return'
 const mongo_db = MONGOSRV + DBASE
 
 
-console.log('***config ENV:[%s] PORT:[%s]  DB:[%s]  SRV:[%s]  STO:[%s] ****', environment, PORT, mongo_db, SERVER, STORAGE);;
+console.log('***config ENV:[%s] PORT:[%s]  DB:[%s]  SRV:[%s]  STO:[%s] ****', environment, PORT, mongo_db, SERVER, PUBLIC);;
 
 debug('config.js:settings:mode:[%s]', environment);
 /*************************/

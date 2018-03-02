@@ -4,6 +4,7 @@
  *  Use:
  *     Exporta un objeto con funciones utilitarias
  */
+const config = require('../config/config');
 
 
 var fs = require('fs');
@@ -57,7 +58,7 @@ var createFolder = function(publicPath, today){
     month  = month<10 ? '0'+month : month;
     var year = today.getFullYear();
 
-    var serverPath = 'files'
+    var serverPath = 'storage'
     if(!fs.existsSync(publicPath + serverPath)) fs.mkdirSync(publicPath + serverPath);
 
     serverPath += '/assets';
@@ -128,11 +129,11 @@ exports.moveFile = function(req, res, next,rootPath){
 
     var filename = safeFileName(req.files.loadfiles.name);
 
-    var publicPath = rootPath + '/public/';
+    var publicPath = config.publicPath;
 
     var urlPath = createFolder(publicPath, today) + '/' + times_str + filename;
 
-    var serverPath = rootPath + '/public/' + urlPath;
+    var serverPath = config.publicPath + urlPath;
 
     //console.log("req.body: "+JSON.stringify(req.body));
     //console.log("req.files: "+JSON.stringify(filename));
