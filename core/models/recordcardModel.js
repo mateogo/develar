@@ -31,6 +31,16 @@ const publicationSch = new Schema( {
     slug:      { type: String, required: false},
 });
 
+const cardgraphSch = new Schema({
+    displayAs:   { type: String, required: false },
+    slug:        { type: String, required: false },
+    predicate:   { type: String, required: false },
+    avatar:      { type: String, required: false },
+    description: { type: String, required: false },
+    entityId:    { type: String, required: false },
+    entity:      { type: String, required: false }
+
+});
 
 const subrecordSch = new Schema({
     cardId:       { type: String, required: false },
@@ -43,19 +53,9 @@ const subrecordSch = new Schema({
     cardType:     { type: String, required: false },
     cardCategory: { type: String, required: false },
     images:       { type: Array,  required: false },
+    viewimages:   [cardgraphSch],
     userId:       { type: String, required: false },
     user:         { type: String, required: false },
-
-});
-
-const cardgraphSch = new Schema({
-    displayAs:   { type: String, required: false },
-    slug:        { type: String, required: false },
-    predicate:   { type: String, required: false },
-    avatar:      { type: String, required: false },
-    description: { type: String, required: false },
-    entityId:    { type: String, required: false },
-    entity:      { type: String, required: false }
 
 });
 
@@ -107,6 +107,7 @@ const recordSch = new Schema({
     persons:      [cardgraphSch],
     resources:    [cardgraphSch],
     assets:       [cardgraphSch],
+    viewimages:   [cardgraphSch],
     products:     [productgraphSch],
     publish:      { type: publicationSch, required: false}
 });
@@ -154,6 +155,7 @@ function updatePromotedCard(card, subcard){
     card.cardType     = subcard.cardType;
     card.cardCategory = subcard.cardCategory;
     card.images       = subcard.images;
+    card.viewimages   = subcard.viewimages;
     card.parent       = subcard.parent;
     card.user         = subcard.user;
     card.userId       = subcard.userId;

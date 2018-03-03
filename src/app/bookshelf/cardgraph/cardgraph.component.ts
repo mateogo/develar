@@ -75,6 +75,15 @@ export class CardgraphComponent implements OnInit {
     this.token.description     = asset.description;
   }
 
+  updateImageEntity(asset: Asset){
+    console.log('Image promoted: [%s]', asset.slug)
+    this.token.displayAs = asset.assetId;
+    this.token.slug     = asset.slug;
+    this.token.entityId = asset._id;
+    this.token.description     = asset.description;
+  }
+
+
   removeToken(token: CardGraph){
     console.log('delete token: [%s]', token.displayAs);
     this.deleteToken.emit(token);

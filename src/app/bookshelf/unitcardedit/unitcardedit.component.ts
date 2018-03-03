@@ -18,7 +18,7 @@ import { CardGraph, graphUtilities }      from '../cardgraph.helper';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { GenericDialogComponent }  from '../../develar-commons/generic-dialog/generic-dialog.component';
 
-function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], persons:CardGraph[], resources:CardGraph[], assets: CardGraph[], tags: Array<string>, publish: PublicationConfig, user: User, communities: Array<Community>): RecordCard {
+function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], persons:CardGraph[], resources:CardGraph[], assets: CardGraph[], images: CardGraph[], tags: Array<string>, publish: PublicationConfig, user: User, communities: Array<Community>): RecordCard {
 
 	const fvalue = form.value;
 	const entity = model;
@@ -37,6 +37,18 @@ function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], pers
   entity.resources = resources;
   entity.persons = persons;
   entity.assets = assets;
+
+  entity.viewimages = images;
+  images.forEach(image => {
+    if(image.predicate === 'mainimage')
+      entity.mainimage = '/download/' + image.entityId;
+  })
+  let carrousel = images.filter(image => image.predicate === 'images').map(img => 'download/' + img.entityId);
+  if(carrousel && carrousel.length){
+    entity.images = carrousel;
+  }  
+
+
   entity.taglist = tags;
   if(communities && communities.length){
     entity.communitylist = communities.map(token => token._id);
@@ -78,11 +90,13 @@ export class UnitcardeditComponent implements OnInit {
 
   public personList: CardGraph[];
   public assetList: CardGraph[];
+  public imageList: CardGraph[];
   public resourceList: CardGraph[];
   public tagList: Array<string>;
   public communityList: Array<Community>;
   public addResourceToList = new Subject<CardGraph>();
   public addAssetToList = new Subject<CardGraph>();
+  public addImageToList = new Subject<CardGraph>();
   public parentCol = 'fichas';
   public publish: PublicationConfig;
 
@@ -138,11 +152,12 @@ export class UnitcardeditComponent implements OnInit {
             images:       cardHelper.buildImageString(this.model.images)
 					});
           // ToDo seguir la variable relatecards
-          this.loadRelatedCards(this.model.relatedcards)
-          this.loadRelatedPersons(this.model.persons)
-          this.loadRelatedAssets(this.model.assets)
-          this.loadRelatedResources(this.model.resources)
-          this.loadRelatedTags(this.model.taglist)
+          this.loadRelatedCards(this.model.relatedcards);
+          this.loadRelatedPersons(this.model.persons);
+          this.loadRelatedAssets(this.model.assets);
+          this.loadRelatedImages(this.model.viewimages);
+          this.loadRelatedResources(this.model.resources);
+          this.loadRelatedTags(this.model.taglist);
           this.loadRelatedCommunities(this.model.communitylist);
           this.loadPublishData(this.model.publish);
           this.changeCardType();          
@@ -169,8 +184,7 @@ export class UnitcardeditComponent implements OnInit {
 
   /******** SAVING-CANCEL A C T I O N S  ******/
   editSave() {
-    console.log('onSubmit:UnitCard:BEGINS');
-    this.model = initForSave(this.form, this.model, this.relatedcards, this.personList, this.resourceList, this.assetList, this.tagList, this.publish, this.userService.currentUser, this.communityList);
+    this.model = initForSave(this.form, this.model, this.relatedcards, this.personList, this.resourceList, this.assetList,  this.imageList, this.tagList, this.publish, this.userService.currentUser, this.communityList);
     return this.cardService.update(this.model).then((model) =>{
         this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
         return model;
@@ -183,7 +197,6 @@ export class UnitcardeditComponent implements OnInit {
   }
 
   editSaveClose() {
-  	console.log('onSubmit:UnitCard:BEGINS');
     this.editSave().then(model => {
       this.closeEditor()
       });
@@ -196,7 +209,6 @@ export class UnitcardeditComponent implements OnInit {
   loadNext(direction){
     let query;
     if(direction === 'next'){
-      console.log('fetchNext: [%s]',this.model.cardId)
       query = {
         gtid: this.model.cardId,
         select: '_id',
@@ -226,7 +238,7 @@ export class UnitcardeditComponent implements OnInit {
   }
 
 	showPreview(){
-  	this.model = initForSave(this.form, this.model, this.relatedcards, this.personList, this.resourceList, this.assetList, this.tagList, this.publish, this.userService.currentUser, this.communityList);
+  	this.model = initForSave(this.form, this.model, this.relatedcards, this.personList, this.resourceList, this.assetList, this.imageList, this.tagList, this.publish, this.userService.currentUser, this.communityList);
 	}
 
   openSnackBar(message: string, action: string) {
@@ -234,12 +246,11 @@ export class UnitcardeditComponent implements OnInit {
       duration: 3000,
     });
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
+      //console.log('action???? [%s]', e);
     })
   }
 
   updateSelCommunities(communities: Community[]){
-    console.log('community List Updated')
     this.communityList = communities;
   }
 
@@ -250,13 +261,11 @@ export class UnitcardeditComponent implements OnInit {
   }
 
   addSubCard(){
-    console.log('addSubcard');
     this.smodel = new SubCard('Sub ficha'); 
     this.openSubCardEditor = true;
   }
 
   editSubCard(card: SubCard){
-    console.log('edit Subcard');
     if(!card) return;
     this.smodel = card;
     this.openSubCardEditor = true;
@@ -268,7 +277,6 @@ export class UnitcardeditComponent implements OnInit {
   };
 
   publishListener(pub: PublicationConfig){
-    console.log('Publish Listener: [%s] [%s]', pub.slug, pub.template);
     this.publish = pub;
   }
 
@@ -282,11 +290,10 @@ export class UnitcardeditComponent implements OnInit {
   };
 
   descriptionUpdateContent(content){
-    console.log("BUBBBBBLED: [%s]", content);
+    //console.log("BUBBBBBLED: [%s]", content);
   }
   
   updateTags(tags: Array<string>){
-    console.log('updateTags: [%s]', tags.length);
     this.tagList = tags;
   }
 
@@ -310,9 +317,13 @@ export class UnitcardeditComponent implements OnInit {
   }
 
   createCardGraphFromAsset(asset){
-    console.log('CreateCardGraph from Asset: [%a]', asset.slug)
     let card = graphUtilities.cardGraphFromAsset('asset', asset, 'mainimage');
     this.addAssetToList.next(card);
+  }
+
+  createCardGraphFromImage(image){
+    let card = graphUtilities.cardGraphFromAsset('image', image, 'mainimage');
+    this.addImageToList.next(card);
   }
 
 
@@ -341,7 +352,6 @@ export class UnitcardeditComponent implements OnInit {
   loadRelatedCommunities(list: Array<string>) {
     if(list && list.length){
 
-      console.log('ready to call daoService: [%s]', list.length)
       this.daoService.search<Community>('community', {_id: list}).subscribe((list: Community[]) => {
         this.communityList = list;
       });
@@ -352,7 +362,6 @@ export class UnitcardeditComponent implements OnInit {
   }
   loadPublishData(publish: PublicationConfig){
     if(publish) {
-      console.log('*******   loadPublish: [%s]', (publish && publish.slug))
       this.publish = publish;
     }else{
       this.publish = new PublicationConfig();      
@@ -367,6 +376,16 @@ export class UnitcardeditComponent implements OnInit {
       this.assetList = graphUtilities.buildGraphList('asset', assets);
     }
   }
+
+  loadRelatedImages(viewimages: CardGraph[]) {
+    if(!viewimages.length){
+      this.imageList = [];
+
+    }else{      
+      this.imageList = graphUtilities.buildGraphList('image', viewimages);
+    }
+  }
+
 
   loadRelatedPersons(persons: CardGraph[]) {
     if(!persons.length){

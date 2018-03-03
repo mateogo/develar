@@ -10,6 +10,14 @@ import { Asset, AssetFile, assetModel }    from '../../develar-entities';
 
 import { Subject } from 'rxjs/Subject';
 
+const IMG_MIMETYPS = [
+  'image/jpeg',
+  'image/jpg',
+  'image/gif',
+  'image/png',
+];
+
+
 function initForSave(form: FormGroup, model: Asset): Asset {
 	const fvalue = form.value;
 
@@ -79,7 +87,7 @@ export class AsseteditComponent implements OnInit {
 
   saveRecord(){
     this.model = initForSave(this.form, this.model);
-    console.log('saveRecord: model.files[%s] files: [%s]', this.model.files.length, this.files.length)
+    //console.log('saveRecord: model.files[%s] files: [%s]', this.model.files.length, this.files.length)
     return this.assetService.update(this.model).then((model) =>{
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
@@ -89,13 +97,11 @@ export class AsseteditComponent implements OnInit {
   onSubmit() {
     if(this.model._id){
       this.saveRecord().then(model =>{
-          console.log('onSubmit: Entidad actualizada: [%s] [%s]', this.model.slug, this.model._id)
           this.editAsset()
       })
 
     }else{
       this.saveNewRecord().then(model =>{
-          console.log('onSubmit: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id)
           this.editAsset()
       })
     }
@@ -112,14 +118,18 @@ export class AsseteditComponent implements OnInit {
 
   assetUpload(loader: Subject<Asset>){
   	loader.subscribe(asset =>{
-  		console.log('Asset emited: CATCHHEDDDDD [%s]', asset.slug);
   		this.assets.unshift(asset);
 
   	})
   }
+  isImage(){
+    let type = this.model.mimetype;
+    let isImage = IMG_MIMETYPS.indexOf(type) !== -1 ? true: false;
+    return isImage;
+
+  }
   
   selectAsset(asset: Asset){
-    console.log('ToDo')
     this.assetEmitted.emit(asset)
   }
 
@@ -162,7 +172,6 @@ export class AsseteditComponent implements OnInit {
     loader.subscribe(file =>{
       this.files.unshift(file);
       this.updateAsset(file)
-      console.log('File emited: CATCHHEDDDDD [%s]', file.filename, this.files.length);
     })
   }
   
@@ -208,7 +217,6 @@ export class AsseteditComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
     })
   }
 

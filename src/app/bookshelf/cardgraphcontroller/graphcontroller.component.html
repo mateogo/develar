@@ -12,14 +12,12 @@
 	</mat-card-header>
 
 	<mat-card-content>
-	  <mat-list>
 	  	<card-graph *ngFor="let entity of entities" 
 	  				[entityType]='entityType'
 	  				(deleteToken)='deleteToken($event)'
 	  				[graphToken]='entity'>
 	  		
 	  	</card-graph>
-	  </mat-list>
 	</mat-card-content>
 
 </mat-card>

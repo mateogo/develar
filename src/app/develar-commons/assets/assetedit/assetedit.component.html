@@ -1,5 +1,12 @@
 <mat-list-item>
 
+	<ng-container *ngIf='isImage()'>
+		<a rel="noopener noreferrer" target="_blank"
+						href="/download/{{model._id}}" >
+			<img  class="imagepreview" src="download/{{model._id}}"  alt="{{model.slug}}" 
+						title="{{model.assetId}}"></a>
+	</ng-container>
+
 	<h3 mat-line>
 		<a  rel="noopener noreferrer" target="_blank" href="{{ model.path }}">
 			{{model.assetId}}</a>
@@ -14,12 +21,9 @@
 	</p>
 	<p mat-line><small>{{ model.description }}</small></p>
 	<div mat-line>
-		<div class="d-flex justify-content-between align-items-center">
-			<small style="min-width: 50px" ><span>Encoding: {{ model.encoding }}</span></small>
-			<small style="min-width: 100px" ><span>MimeType: {{ model.mimetype}}</span></small>
-			<small style="min-width: 50px" ><span>Tamaño: {{ model.size}}</span></small>
-			<small style="min-width: 100px" ><span>Hora subida: {{ model.upload}}</span></small>
-		</div>						
+			<small style="min-width: 100px" ><span>Type: {{ model.mimetype}}; </span></small>
+			<small style="min-width: 50px" ><span>Tamaño: {{ model.size}}; </span></small>
+			<small style="min-width: 100px" ><span>{{ model.upload}}</span></small>
 	</div>
 </mat-list-item>
 

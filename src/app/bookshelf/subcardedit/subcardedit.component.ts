@@ -1,11 +1,13 @@
 import { Component, EventEmitter, OnInit, Input, Output} from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { CustomValidators }  from 'ng2-validation';
+import { Subject }           from 'rxjs/Subject';
 
 import { SubCard, cardHelper }    from '../recordcard';
 import { RecordCardService } from '../bookshelf.service';
+import { CardGraph, graphUtilities }      from '../cardgraph.helper';
 
-function initForSave(form: FormGroup, model: SubCard): SubCard {
+function initForSave(form: FormGroup, model: SubCard, images: CardGraph[] ): SubCard {
 	const fvalue = form.value;
 
 	const entity = model;
@@ -19,6 +21,16 @@ function initForSave(form: FormGroup, model: SubCard): SubCard {
   entity.cardType = fvalue.cardType;
   entity.topic = fvalue.topic;
   entity.cardCategory = fvalue.cardCategory;
+
+  entity.viewimages = images;
+  images.forEach(image => {
+    if(image.predicate === 'mainimage')
+      entity.mainimage = '/download/' + image.entityId;
+  })
+  let carrousel = images.filter(image => image.predicate === 'images').map(img => 'download/' + img.entityId);
+  if(carrousel && carrousel.length){
+    entity.images = carrousel;
+  }
 
 	return entity;
 };
@@ -42,6 +54,9 @@ export class SubcardeditComponent implements OnInit {
   // valores default para el medium-editor para campo descripción
   public meContent: string = '';
   public mePlaceholder: string = 'Descripción';
+
+  public imageList: CardGraph[];
+  public addImageToList = new Subject<CardGraph>();
 
 
 	form: FormGroup;
@@ -81,17 +96,33 @@ export class SubcardeditComponent implements OnInit {
 		  mainimage:    this.model.mainimage,
 	    images:       cardHelper.buildImageString(this.model.images)
 		});
+    
+    this.loadRelatedImages(this.model.viewimages);
     this.changeCardType(this.model.cardType);
   }
 
+  loadRelatedImages(viewimages: CardGraph[]) {
+    if(!viewimages.length){
+      this.imageList = [];
+
+    }else{      
+      this.imageList = graphUtilities.buildGraphList('image', viewimages);
+    }
+  }
+
+  createCardGraphFromImage(image){
+    let card = graphUtilities.cardGraphFromAsset('image', image, 'mainimage');
+    this.addImageToList.next(card);
+  }
+
+
+
   onSubmit() {
-    console.log('subcardEdit:onSubmit: BEGINS');
-    this.model = initForSave(this.form, this.model);
+    this.model = initForSave(this.form, this.model, this.imageList);
     this.addRelatedCard.emit(this.model);
   }
 
   changeCardType(val){
-    console.log('cartType CHANGED [%s]',val);
     this.cardcategories = cardHelper.getSubcardCategies(val)
 
   }
@@ -101,7 +132,7 @@ export class SubcardeditComponent implements OnInit {
   }
 
   descriptionUpdateContent(content){
-    console.log("BUBBBBBLED: [%s]", content);
+    //console.log("BUBBBBBLED: [%s]", content);
   }
 
 

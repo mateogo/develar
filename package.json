@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "server": "DEBUG=develar:server PORT=8080 NODE_ENV=development node bin/www",
+    "server": "DEBUG=develar:server PORT=8080 NODE_ENV=development DBASE=develar SERVER=http://develar-local.co PUBLIC=/public node bin/www",
     "qa": "DEBUG=develar:server PORT=8080 NODE_ENV=test node bin/www",
     "production": "DEBUG=develar:server PORT=8080 NODE_ENV=production node bin/www",
     "picris": "DEBUG=develar:server PORT=8080 NODE_ENV=production DBASE=develar PUBLIC=/public node bin/www",

@@ -66,6 +66,20 @@
 								formControlName='images' placeholder="Imágenes"></textarea>		  
 		</mat-form-field>
 
+		<mat-card>
+		<mat-card-content>
+			<card-graph-controller [relatedList]='imageList' 
+														[addCardToList]='addImageToList'
+														[entityType]="'image'"  ></card-graph-controller>
+
+
+
+			<asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
+		</mat-card-content>
+		</mat-card>
+
+
+
 		<div class="additional-info">
 		  <button mat-button type="submit"  color="accent">ACEPTAR</button>
 		  <button mat-button (click)="cancelEditForm()"   color="warn">Cancelar</button>

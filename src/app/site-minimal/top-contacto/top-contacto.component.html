@@ -49,13 +49,14 @@
 								[formControl]="form.controls['description']" ></textarea>
 					</mat-form-field>
 
-						<mat-checkbox  [formControl]="form.controls['termsofuse']" >
-							<button mat-button color="accent" type="button" title='Terminos y condiciones de uso'
-								(click)='termsOfConditions()'  >Acepto los términos y condiciones de uso de la plataforma
-							</button>
-						</mat-checkbox>
+					<mat-checkbox  [formControl]="form.controls['termsofuse']" >
+						<button mat-button class='accept' color="accent" type="button" 
+							title='Terminos y condiciones de uso'
+							(click)='termsOfConditions()'  >Acepto los términos y condiciones de uso
+						</button>
+					</mat-checkbox>
 
-					<div id='top' class="top-button" >
+					<div id='top-submit' class="top-button" >
 						<button mat-raised-button color="primary" type="button" title='enviar datos'
 										(click)='enviarSolicitud()'  
 										 [disabled]=" !form.valid || !form.controls['termsofuse'].value" >enviar solicitud</button>

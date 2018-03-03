@@ -141,7 +141,27 @@
 			<!-- /tab-02-03 Fichas relacionadas    -->
 
 
-			<!-- tab-02-04 Assets recursos de cuerpo presente    -->
+			<!-- tab-02-04-00 Recursos gráficos    -->
+			<mat-tab label='Imágenes'>
+			<mat-card>
+			<mat-card-content>
+
+				<card-graph-controller 	[relatedList]='imageList' 
+																[addCardToList]='addImageToList'
+																[entityType]="'image'"  ></card-graph-controller>
+
+
+
+				<asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
+
+
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-04-00 Recursos gráficos    --> 
+
+
+			<!-- tab-02-04-01 Assets recursos de cuerpo presente    -->
 			<mat-tab label='Recursos'>
 			<mat-card>
 			<mat-card-content>
