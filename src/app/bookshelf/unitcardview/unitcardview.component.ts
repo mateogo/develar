@@ -5,6 +5,7 @@ import { RecordCardService } from '../bookshelf.service';
 
 import { CardGraph, graphUtilities }       from '../cardgraph.helper';
 import { RecordCard, SubCard, cardHelper } from '../recordcard';
+import { gldef } from '../../develar-commons/develar.config';
 
 const BROWSE = 'lista';
 
@@ -17,10 +18,18 @@ export class UnitcardviewComponent implements OnInit {
 	@Input() customalign: string = 'center';
   @Input() title: string;
 
+  public showAssets = false;
+  public showResources = false;
+
+  public avatar = gldef.logoAvatar;
+  public assetList: CardGraph[];
+  public resourceList: CardGraph[];
+
 
   private currentModel: RecordCard;
   private currentSubcardList;
 
+  
 
   @Input()
   set model(entity: RecordCard){
@@ -47,8 +56,6 @@ export class UnitcardviewComponent implements OnInit {
 	//private model: RecordCard;
   private models: RecordCard[];
   private personList: CardGraph[];
-  private assetList: CardGraph[];
-  private resourceList: CardGraph[];
   private tagList: Array<string>;
 
 
@@ -121,6 +128,11 @@ export class UnitcardviewComponent implements OnInit {
     }else{      
       this.resourceList = graphUtilities.buildGraphList('resource',resources);
     }
+
+    if(this.resourceList.length) this.showResources = true;
+    else this.showResources = false;
+
+
   }
 
   loadRelatedTags(tags: Array<string>) {
@@ -139,7 +151,10 @@ export class UnitcardviewComponent implements OnInit {
     }else{      
       this.assetList = graphUtilities.buildGraphList('asset', assets);
     }
-  }
+   if(this.assetList.length) this.showAssets = true;
+    else this.showAssets = false;
+ 
+   }
 
   goToBrowse(){
     //this.router.navigate(['./' ], {relativeTo: this.route});
