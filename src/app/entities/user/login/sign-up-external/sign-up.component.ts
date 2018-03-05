@@ -21,18 +21,19 @@ const ESTADO = 'pendiente';
 function buildMailContent(data):string {
   const tmpl = `
   <p>Estimadx  ${data.displayName}: </p>
-  <p>Agradecemos su registración en DEVELAR.</p>
-  <p>Develar es una aplicación en pleno desarrollo, 
-  vuestra participación activa en esta comunidad es fundamental para
-  guiar las directrices del proyecto</p>
+  <p>Agradecemos su registración en la aplicación DEVELAR de Picris LLC</p>
+  <p>Al ingresar con sus credenciales podrá acceder a los recursos y materiales exclusivos para los participantes del Seminario Internacional 'Vacunas e Investigación Clínica'. </p>
 
-  <h2>Los datos registrados son:</h2>
+  <h2>Sus datos de acceso son:</h2>
  
+   <p><strong>URL: </strong> http://www.picris.co</p>
    <p><strong>Nombre de usuario: </strong> ${data.username}</p>
    <p><strong>Correo electrónico: </strong> ${data.email}</p>
-   <h4>¡¡Esperamos sus comentarios!!</h4>
+   <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+   <h4>Estamos atentos por cualquier asistencia que Usted pudiera necesitar.</h4>
 
   <h4>Equipo de desarrollo</h4>
+
 
   `;
 

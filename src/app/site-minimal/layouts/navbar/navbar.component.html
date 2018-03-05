@@ -17,6 +17,7 @@
 
   <div class="nav-items">
 
+    <!--- Redes sociales 
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-icon-button (click)="open($event)" title="síguenos en twitter">
         <i class='fab fa-twitter'></i>
@@ -34,10 +35,11 @@
         <i class='fab fa-instagram'></i>
       </button>
     </div>
-
+    fin redes sociales -->
 
 
     <!--- 1.Logged NOTIFICACIONES y ALERTAS -->
+    <!--- 
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-icon-button title="notificaciones y alertas" (click)="open($event)">
       	<i class='far fa-bell'></i>
@@ -98,10 +100,12 @@
         </div>
       </div>
     </div>
+    -->
     <!--- 1.0 FIN NOTIFICACIONES y ALERTAS -->
 
 
     <!--- 2.0-logged EVENTOS -->
+    <!--- 
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-icon-button (click)="open($event)" title="eventos y agenda">
       	<i class='far fa-calendar-check'></i>
@@ -144,6 +148,7 @@
         </div>
       </div>
     </div>
+    -->
     <!--- 2.0 FIN EVENTOS -->
 
     <!--- 3.0-logged MENSAJES  -->
@@ -183,6 +188,7 @@
         </button>
 
         <div class="dropdown-menu mini-menu">
+          <ng-container *ngIf="isAdminUser()">
           <ul>
             <li>
               <a role="button" (click)='editUser($event)' >
@@ -213,6 +219,15 @@
                 <i class="fas fa-sign-out-alt"></i> Log Out</a>
             </li>
           </ul>
+          </ng-container>
+          <ng-container *ngIf="!isAdminUser()">
+          <ul>
+            <li>
+              <a href="#" role="button" (click)='logout($event)'  >
+                <i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+          </ul>
+          </ng-container>
         </div>
     </div>
     <div class="items-overlay" (click)="close1($event)"></div>

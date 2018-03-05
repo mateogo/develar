@@ -281,6 +281,19 @@ export class UserService {
 		return roles;
 	}
 
+	isAdminUser(){
+		let user = this.currentUser;
+		let roles = user.moduleroles;
+		let admin = false;
+		if(roles && roles.length){
+			if(roles.indexOf('core:admin') !== -1){
+				admin = true;
+			}
+		}
+		console.log('User isAdmin? [%s]', admin);
+		return admin;
+	}
+
 	getModulos(){
 		return modulos;
 	}

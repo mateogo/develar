@@ -27,7 +27,7 @@
       <mat-card-subtitle><strong>Referencias externas: </strong>
         <ng-container *ngFor='let resource of resourceList' >
           <a mat-button color="accent" rel="noopener noreferrer" target="_blank" title="{{resource.slug}}"
-             href="download/{{resource.entityId}}" >{{resource.displayAs || 'identificación del recurso'}}</a> 
+             href="{{resource.entityId}}" >{{resource.displayAs || 'identificación del recurso'}}</a> 
         </ng-container>
       </mat-card-subtitle>
     </ng-container>
