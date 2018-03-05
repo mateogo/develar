@@ -59,7 +59,12 @@
 
 			<div *ngSwitchCase="'asset'">
 				<asset-search  (lookUpModels)='updateAssetEntity($event) '></asset-search>
-				<p><strong>Recurso seleccionado: </strong>{{token.displayAs}} <small>id: {{token.entityId}}</small></p>
+				<p><strong>Recurso seleccionado: </strong>{{token.slug}} <small>id: {{token.entityId}}</small></p>
+				<mat-form-field>
+				  <input matInput name="displayAs" placeholder="Mostrar URL como...." 
+				  				[(ngModel)]='token.displayAs'>
+				</mat-form-field>
+
 			</div>
 
 			<div *ngSwitchCase="'image'">

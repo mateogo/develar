@@ -753,7 +753,7 @@ function assetAdapter(model, data, entity, predicate){
     model.slug = data.slug;
     model.description = data.description;
     model.displayAs = data.assetId;
-    model.entityId = data._id;
+    model.entityId = data._id || data.assetId;
     model.predicate = predicate || 'documento'
     model.entity = entity || 'asset';
     return model;

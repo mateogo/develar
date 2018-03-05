@@ -20,4 +20,11 @@ router.get('/:id', function (req, res) {
     });
 });
 
+
+router.get('/*', function (req, res) {
+		let target = req.originalUrl.substr(req.baseUrl.length);
+    res.redirect(target); 
+});
+
+
 module.exports = router;

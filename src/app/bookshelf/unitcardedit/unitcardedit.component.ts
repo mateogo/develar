@@ -317,7 +317,7 @@ export class UnitcardeditComponent implements OnInit {
   }
 
   createCardGraphFromAsset(asset){
-    let card = graphUtilities.cardGraphFromAsset('asset', asset, 'mainimage');
+    let card = graphUtilities.cardGraphFromAsset('asset', asset, 'documento');
     this.addAssetToList.next(card);
   }
 
