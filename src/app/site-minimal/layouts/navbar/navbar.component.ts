@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   public loggedIn = false;
   public avatar: string = DEFAULT_AVATAR
 
-  public hideLogin = true;
+  public hideLogin = false;
 
   private socket: SocketIOClient.Socket; 
   private connected = false;
@@ -108,6 +108,10 @@ export class NavbarComponent implements OnInit {
       logged = true;
 
     return logged;
+  }
+  
+  isAdminUser(){
+    return this.userService.isAdminUser();
   }
 
   editProfile(){
