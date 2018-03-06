@@ -121,7 +121,7 @@ export class PapersComponent implements OnInit {
 
 
   ngOnInit() {
-    let first = true;
+    let first = true;    
 
     let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
 
