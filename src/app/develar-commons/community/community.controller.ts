@@ -340,6 +340,10 @@ export class CommunityController {
     this.userService.changeCurrentCommunity(token);
   }
 
+  changeUserCommunity(user:User, community: Community){
+    this.userService.changeUserCommunity(user, community);
+  }
+
   filterSelectedList():Community[]{
     let list: Community[];
     let selected = this.selectionModel.selected as any;

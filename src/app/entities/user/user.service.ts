@@ -134,6 +134,18 @@ export class UserService {
 
 	}
 
+	changeUserCommunity(user: User, community: Community){
+		let move_to: CurrentCommunity = {
+			id: community.id,
+			name: community.name,
+			slug: community.slug,
+			displayAs: community.displayAs
+		}
+		user.communityId = community._id;
+		user.communityUrlpath = community.urlpath;
+		user.currentCommunity = move_to;
+		this.update(user)
+	}
 
 
 	/**************

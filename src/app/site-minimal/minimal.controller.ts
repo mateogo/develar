@@ -142,6 +142,14 @@ export class SiteMinimalController {
     return true;
   }
 
+  navigateToUserPublications():boolean{
+    if(!this.userx.isLogged) return false;
+    if(!this.userx.hasCommunity) return false;
+
+
+    return true;
+  }
+
   get userUrl (){
     return this.userCmty.url;
   }
@@ -201,6 +209,15 @@ export class SiteMinimalController {
     return "/" + this.navigationUrl +  "/" + this.actualUrlSegments[0] +  "/" + this.actualUrlSegments[1];
   }
 
+  setPapersTitle(){
+    setTimeout(()=>{this.sharedSrv.emitChange('Publicaciones');},300)
+    
+  }
+
+  setHomeTitle(){
+    setTimeout(()=>{this.sharedSrv.emitChange(this.naviCmty.data.displayAs);},300)    
+  }
+
 
   ////************* API-END ************////
 
@@ -212,6 +229,7 @@ export class SiteMinimalController {
     //this.model = recordcardModel.initNew('','',null,null);
     this.initRecordCard();
   }
+
 
   initRecordCard(){
     if(!this.recordCardId || (this.recordCardId !== this.recordCard._id)){

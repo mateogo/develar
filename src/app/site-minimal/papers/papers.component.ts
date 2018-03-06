@@ -146,7 +146,17 @@ export class PapersComponent implements OnInit {
     
     this.buildBreadCrumb();
 
+    // ********** validación de usuario logueado ***********
+    //if(!this.minimalCtrl.navigateToUserPublications()){
+    if(!this.minimalCtrl.navigateToUserPublications()){
+      this.router.navigate([this.minimalCtrl.communityRoute], {relativeTo: this.route})
+      
+    }
+    //******************************************************
+
     this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
+
+    this.minimalCtrl.setPapersTitle();
     
     let sscrp1 = this.minimalCtrl.fetchContextRecords(this.topic).subscribe(records => {
       this.renderHomePage(records);
