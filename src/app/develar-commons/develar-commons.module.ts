@@ -49,7 +49,8 @@ import { NoteBaseComponent }        from './note-base/note-base.component';
 import { CommunityCreateComponent } from './community/community-create/community-create.component';
 import { CommunityBaseComponent }   from './community/community-base/community-base.component';
 import { CommunityTableComponent }  from './community/communit-table/community-table.component';
-import { CommunitySelectorComponent}from './community/community-selector/community-selector.component';
+import { CommunitySelectorComponent} from './community/community-selector/community-selector.component';
+import { CommunityRelationComponent} from './community/community-relation/community-relation.component';
 
 import { CommunityController }  from './community/community.controller'
 import { ModelController }      from './folders/model.controller';
@@ -111,6 +112,7 @@ import { TagService }           from './tag.service';
     NoteBaseComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
+    CommunityRelationComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent
@@ -155,6 +157,7 @@ import { TagService }           from './tag.service';
     NoteBaseComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
+    CommunityRelationComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent

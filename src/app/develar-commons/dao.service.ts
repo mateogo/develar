@@ -52,7 +52,8 @@ export class DaoService {
       },
       community:{
         backendURL: 'api/communities',
-        searchURL:  'api/communities/search'
+        searchURL:  'api/communities/search',
+        relationURL: 'api/communities/usercommrel'
       },
       user:{
         backendURL: 'api/users',
@@ -108,6 +109,16 @@ export class DaoService {
   emitnotification<T>(type: string, entity:T): Promise<T>{
     let url = `${this.dao[type].emitnotificationURL}`;
     console.log('emitnotification [%s]', url)
+
+    return this.http
+      .post(url, JSON.stringify(entity), {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  userCommunity<T>(type: string, entity:T): Promise<T>{
+    let url = `${this.dao[type].relationURL}`;
+    console.log('user-community Relation [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(entity), {headers: this.headers})

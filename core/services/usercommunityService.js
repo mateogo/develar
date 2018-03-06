@@ -234,4 +234,13 @@ exports.updateFromCommunity = function(community, cb){
     updateRelation(token, cb)
 }
 
+// owner|admin|manager|user|public|
+exports.updateUserRelation = function(relation, cb){
+
+    let today = new Date();
+    relation.fealta = today;
+    relation.feacep = today;
+
+    updateRelation(relation, cb)
+}
 

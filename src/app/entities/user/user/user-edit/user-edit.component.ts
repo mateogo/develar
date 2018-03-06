@@ -39,6 +39,8 @@ export class UserEditComponent implements OnInit {
   pageTitle: string = 'Perfil de Usuario';
 
   public form: FormGroup;
+  public _openEditor = false;
+  
   submitted = false;
 
   users: User[] = [];

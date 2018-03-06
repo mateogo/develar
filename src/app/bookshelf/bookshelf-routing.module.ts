@@ -31,6 +31,10 @@ const routes: Routes = [
 		component: ProjectDashboardComponent
 	},
 	{
+		path:'grid/:id',
+		component: UnitcardeditComponent
+	},
+	{
 		path:'grid',
 		component: CardsviewgridComponent
 	},

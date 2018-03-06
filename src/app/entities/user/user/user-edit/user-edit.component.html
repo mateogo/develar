@@ -104,12 +104,23 @@
             <mat-radio-button  [value]='true'>Ok</mat-radio-button>
             <mat-radio-button  [value]='false'>Pendiente</mat-radio-button>
           </mat-radio-group>
+
+          
+
+
         </mat-card-content>
       </mat-card>
     </div>
     </div>
 
     </div>
+
+    <div *ngIf="model" class="row">
+      <div class="col">
+        <community-relation [user]='model' [openeditor]='_openEditor'></community-relation>
+      </div>
+    </div>
+
 
    <button mat-raised-button [disabled]="!form.valid" color="primary" type="submit" color="accent">Actualizar</button>
    <button mat-button  color="accent" (click)='editCancel()'>cancelar</button>

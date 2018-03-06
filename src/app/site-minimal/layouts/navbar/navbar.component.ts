@@ -5,6 +5,7 @@ import * as io from 'socket.io-client';
 
 import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
+import { gldef } from '../../../develar-commons/develar.config';
 
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
 
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit {
   currentUser: User;
   public loggedIn = false;
   public avatar: string = DEFAULT_AVATAR
+  public avatar2 = gldef.logoAvatar;
 
   public hideLogin = false;
 
@@ -109,7 +111,7 @@ export class NavbarComponent implements OnInit {
 
     return logged;
   }
-  
+
   isAdminUser(){
     return this.userService.isAdminUser();
   }

@@ -48,6 +48,8 @@ export class Community {
 export class CommunityBase {
   id:          string;
   _id:         string;
+  userId:      string = "";
+  communityId:      string = "";
   code:        string = "";
   displayAs:   string = "";
   name:        string = "";
@@ -61,7 +63,6 @@ export class CommunityBase {
 
   estado:      string = "activa";
 
-  userId:      string = "";
   tagstr:      string = ""
   taglist:     Array<string> = [];
 
@@ -87,22 +88,23 @@ export class CommunityBase {
 }
 
 
-export interface CommunityUserRelation{
-  communityId: string,
-  userId:      string,
-  isOwner:     string,
-  roles:       string,
-  code:        string,
-  displayAs:   string,
-  slug:        string,
-  name:        string,
-  urlpath:     string,
-  eclass:      string,
-  etype:       string,
-  invMode:     string,
-  fealta:      string,
-  feacep:      string,
-  estado:      string,
+export class CommunityUserRelation{
+  _id: string;
+  communityId: string = "";
+  userId:      string = "";
+  isOwner:     boolean = false;
+  roles:       Array<string> = [];
+  code:        string = "";
+  displayAs:   string = "";
+  slug:        string = "";
+  name:        string = "";
+  urlpath:     string = "";
+  eclass:      string = "";
+  etype:       string = "";
+  invMode:     string = "creator";
+  fealta:      number = 0;
+  feacep:      number = 0;
+  estado:      string = "";
 }
 
 export interface CommunityTable{
