@@ -5,11 +5,12 @@ import * as io from 'socket.io-client';
 
 import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
+import { gldef } from '../../develar.config';
 
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
 
 
-const DEFAULT_AVATAR = 'assets/content/avatar-2.jpg';
+const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 
 @Component({
   moduleId: module.id,

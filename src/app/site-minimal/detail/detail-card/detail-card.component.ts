@@ -6,7 +6,7 @@ import { RecordCard, SubCard, CardGraph, BreadcrumbItem } from '../../recordcard
 import { GraphUtils, CardHelper }       from '../../recordcard-helper';
 
 import { SiteMinimalController } from '../../minimal.controller';
-
+import { gldef } from '../../../develar-commons/develar.config';
 
 const BROWSE = 'lista';
 
@@ -65,6 +65,7 @@ export class DetailCardComponent implements OnInit {
   private showAssets = false;
   private showResources = false;
 
+  public avatar = gldef.logoAvatar;
 
 	private modelId: string;
   private models: RecordCard[];

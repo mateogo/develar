@@ -9,7 +9,7 @@ import { gldef } from '../../../develar-commons/develar.config';
 
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
 
-const DEFAULT_AVATAR = 'assets/content/avatar-2.jpg';
+const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 
 @Component({
   moduleId: module.id,
