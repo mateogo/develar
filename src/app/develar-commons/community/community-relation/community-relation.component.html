@@ -1,0 +1,82 @@
+<mat-form-field>
+  <input  #searchFld  matInput  id="search-box" 
+    name="slug"
+    [(ngModel)]='communitySlug'
+    [matAutocomplete]="slug"
+    (keyup)="search(searchFld.value)"  
+    placeholder="buscar comunidad por denominación..." />
+    
+    <span matSuffix style="margin: 10px" title="abrir/ cerrar editor de comunidad"
+      (click)='editToken()' >
+      <i aria-hidden="true"
+        [class]="_openEditor ? 'far fa-edit' : 'fas fa-pen-square'" ></i>
+    </span>  
+</mat-form-field>
+
+<mat-autocomplete #slug="matAutocomplete" >
+   <mat-option
+          *ngFor="let community of fetchedEntities | async" 
+          (onSelectionChange)="selectEntity(community)"
+          [value]='community.slug'>
+      {{community.slug}}
+    </mat-option>
+</mat-autocomplete>
+
+
+<div *ngIf='_openEditor'>
+	<div class="d-flex justify-content-star align-items-center">
+		<span><strong>Usuario: </strong>{{user._id}} : {{user.username}}</span>
+		<span><strong>mail: </strong>{{user.email}}</span>
+	</div>
+
+	<h4>Relación usuario-comunidad prexistente:</h4>
+	<ng-container *ngFor='let relation of communityUserList'>
+		<div class="d-flex justify-content-start align-items-center">
+			<p><span><strong>Comunidad: </strong>{{relation.code}} {{relation.slug}} {{relation.displayAs}}</span></p>
+		</div>
+	</ng-container>
+
+	<h4>Comunidad seleccionada: </h4>
+	<div class="d-flex justify-content-start"><strong>Com: </strong>{{community.code}}: {{community.slug}}</div>
+	<div class="d-flex justify-content-start"><strong>Relaciónexistente: </strong>{{ hasUserRelation}}</div>
+	<div class="d-flex justify-content-start"><strong>communityId: </strong>{{ currentUserRelation.communityId }}</div>
+	<div class="d-flex justify-content-start"><strong>userId: </strong>     {{ currentUserRelation.userId }}</div>
+	<div class="d-flex justify-content-start"><strong>isOwner: </strong>    {{ currentUserRelation.isOwner }}</div>
+	<div class="d-flex justify-content-start"><strong>roles: </strong>      {{ currentUserRelation.roles }}</div>
+	<div class="d-flex justify-content-start"><strong>code: </strong>       {{ currentUserRelation.code }}</div>
+	<div class="d-flex justify-content-start"><strong>displayAs: </strong> {{ currentUserRelation.displayAs }}</div>
+	<div class="d-flex justify-content-start"><strong>slug: </strong>       {{ currentUserRelation.slug }}</div>
+	<div class="d-flex justify-content-start"><strong>name: </strong>       {{ currentUserRelation.name }}</div>
+	<div class="d-flex justify-content-start"><strong>urlpath: </strong>    {{ currentUserRelation.urlpath }}</div>
+	<div class="d-flex justify-content-start"><strong>eclass: </strong>     {{ currentUserRelation.eclass }}</div>
+	<div class="d-flex justify-content-start"><strong>etype: </strong>      {{ currentUserRelation.etype }}</div>
+	<div class="d-flex justify-content-start"><strong>invMode: </strong>    {{ currentUserRelation.invMode }}</div>
+	<div class="d-flex justify-content-start"><strong>fealta: </strong>     {{ currentUserRelation.fealta }}</div>
+	<div class="d-flex justify-content-start"><strong>feacep: </strong>     {{ currentUserRelation.feacep }}</div>
+	<div class="d-flex justify-content-start"><strong>estado: </strong>     {{ currentUserRelation.estado }}</div>
+
+	<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+	  <div class="d-flex justify-content-start align-items-center">
+	    <mat-form-field>
+	      <input matInput [formControl]="form.controls['roles']" placeholder="Roles" >
+	      <small *ngIf="form.controls['roles'].hasError('required') && 
+	         form.controls['roles'].touched" class="form-message text-danger">
+	         Dato requerido</small>
+	    </mat-form-field>
+
+	    <mat-form-field>
+	      <input matInput [formControl]="form.controls['estado']" placeholder="Estado" >
+	      <small *ngIf="form.controls['estado'].hasError('required') && 
+	         form.controls['estado'].touched" class="form-message text-danger">
+	         Dato requerido</small>
+	    </mat-form-field>
+	  </div>
+	</form>
+
+	<div *ngIf="editable" class="additional-info">
+	  <button mat-button type="button" color="accent"  
+	      (click)="save('continue')" >Actualizar relación comunidad</button>
+	</div>
+
+</div>
+

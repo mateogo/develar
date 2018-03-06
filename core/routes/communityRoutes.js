@@ -53,6 +53,19 @@ router.get('/fetchusers', function (req, res) {
     });
 });
 
+/**
+ * fetch users in user-community relationship
+ */
+router.post('/usercommrel', function (req, res) {
+    userservice.updateUserRelation(req.body, function(err, entity) {
+        if(err){
+            res.status(400).json(err);
+        }else{
+            res.status(200).json(entity);
+        }
+
+    });
+});
 
 
 

@@ -177,7 +177,8 @@ export class DetailCardComponent implements OnInit {
   }
 
   goToBrowse(){
-    this.router.navigate(['/develar/fichas' ]);
+    this.router.navigate(['../'], {relativeTo: this.route});
+
   }
 
   buildBreadCrumb(){

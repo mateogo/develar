@@ -170,6 +170,15 @@ export class CommunityController {
     }
   }
 
+  saveUserRelation(userRelation: CommunityUserRelation){
+      return this.daoService.userCommunity<CommunityUserRelation>(this.recordtype, userRelation).then((model) =>{
+              console.log('userRelation OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+  }
+
   updateRecord(token: Community){
     this.community = token;
     this.communityId = token._id;
@@ -184,6 +193,11 @@ export class CommunityController {
               this.openSnackBar('Grabación nuevo registro exitoso id: ' + model._id, 'cerrar');
               return model;
             });
+  }
+
+  fetchUserRelatedCommunities(userId: string){
+    let query = {userId: userId};
+    return this.daoService.fetch<CommunityUserRelation>(this.recordtype, 'fetchusers', query);
   }
 
   fetchUserCommunities(){
