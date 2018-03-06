@@ -94,6 +94,8 @@ export class HomeComponent implements OnInit {
   }
 
   renderHomePage(records: RecordCard[]){
+    this.minimalCtrl.setHomeTitle();
+
     if(records && records.length){
 
       records.forEach(record => {

@@ -141,6 +141,7 @@ export class CommunityRelationComponent implements OnInit {
   save(target:string){
     this.initForSave();
     this.communityCtrl.saveUserRelation(this.currentUserRelation).then(model =>{
+      this.communityCtrl.changeUserCommunity(this.user, this.community);
       this.continueEditing(model);
     })
   }
