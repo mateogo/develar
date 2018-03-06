@@ -24,27 +24,6 @@ const removeRelation = {
   }
 };
 
-const demo_entities:CardGraph[] = [
-  {
-    displayAs:   "Capital Beto",
-    slug:        "Es el autor del principito",
-    predicate:   "autor",
-    avatar:      "",
-    description: "",
-    entityId:    "10101",
-    entity:      "person"
-  },
-  {
-    displayAs:   "Hacho Cao",
-    slug:        "Experto en Administración pública",
-    predicate:   "autor",
-    avatar:      "assets/content/avatar-2.jpg",
-    description: "Es el administrador del grupo, organiza los eventos",
-    entityId:    "10215",
-    entity:      "person"
-  }
-];
-
 
 @Component({
   selector: 'card-graph-controller',
