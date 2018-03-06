@@ -96,6 +96,20 @@ export class SiteMinimalController {
   }
 
 
+  // initMinimalPage(){
+  //   let ready = new Subject<boolean>();
+  //   let user = this.userService.currentUser;
+  //   if(user._id === this.userx.id && this.userx.isLogged === this.userService.userlogged){
+  //     ready.next(true);
+  //   }else{
+      
+  //   }
+
+
+  //   return ready
+  // }
+
+
   saveContactPerson(contact: SolicitudDeContacto){
     this.upsertContact(contact);
   }
@@ -143,6 +157,7 @@ export class SiteMinimalController {
   }
 
   navigateToUserPublications():boolean{
+    console.log('navigateToUserPublication [%s] [%s]', this.userx.isLogged, this.userx.hasCommunity)
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
 

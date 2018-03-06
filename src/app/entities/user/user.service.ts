@@ -266,7 +266,9 @@ export class UserService {
 										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
 
 										if(!loggedIn ){
-											loginUser.next(new User('invitado', 'invitado@develar'))
+											fetchedUser = new User('invitado', 'invitado@develar');
+											this.setAnonimousUser(fetchedUser, loginUser);
+
 										}else{
 											this.setLoginUser(fetchedUser, loginUser);
 										}
@@ -288,8 +290,15 @@ export class UserService {
 		const url = `${this.usersUrl}/${'currentuser'}`;
 		return this.http
 			.get(url)
-			.toPromise()
-	
+			.toPromise()	
+	}
+
+	setAnonimousUser(user: User, loginUser: Subject<User>){
+		this._currentUser = user;
+		this.isLogIn = false;
+		this.hasLogout = false;
+		loginUser.next(this._currentUser);
+		this.userEmitter.next(this._currentUser);
 	}
 
 	setLoginUser(user: User, loginUser: Subject<User>){
@@ -297,7 +306,9 @@ export class UserService {
 		this.isLogIn = true;
 		this.hasLogout = false;
 		loginUser.next(this._currentUser);
+		this.userEmitter.next(this._currentUser);
 	}
+
 	//****************** END: login management  *****************
 
 	updateCurrentUser(): Promise<User> {
