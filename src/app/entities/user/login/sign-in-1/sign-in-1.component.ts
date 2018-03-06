@@ -62,11 +62,12 @@ export class UserSignIn1Component implements OnInit {
   loginUser(){
   	console.log('LoginUser BEGINS')
   	this.userService.login(this.model).then(user => {
-  		console.log('User login callback!: [%s] [%s]', user._id, user.email)
+  		console.log('User login CALLBACK ***** !: [%s] [%s]', user._id, user.email)
 
   		this.userService.currentUser = user;
 
-  		this.router.navigate(['/']);
+      console.log('ready to navigate**************')
+  		this.router.navigate(['/ingresando']);
 
   	})
   	.catch((err) =>{

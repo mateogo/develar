@@ -12,7 +12,7 @@ const config = require('../config/config');
 
 const DOMAIN = config.serverUrl;
 const HOME = DOMAIN;
-
+const LOGIN_HOME = config.loginUrl;
 const FAILURE_REDIRECT = DOMAIN + config.failureLoginUrl;
 const REGISTRARSE =  DOMAIN + config.signUpUrl;
 
@@ -63,7 +63,8 @@ router.get('/login/google/return',
   function(req, res) {
 
     if(req.user && req.user.localProfile){
-        res.redirect(HOME);
+        console.log('Auth OK redirecting [%s]', LOGIN_HOME);
+        res.redirect(LOGIN_HOME);
     }else{
         res.redirect(REGISTRARSE);
     }

@@ -16,7 +16,6 @@ export class TopAboutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	console.log('topAbout INIT BEGIN: [%s] [%s]', this.record.cardCategory, this.record.slug);
   	this.mainimage = this.record.mainimage;
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({

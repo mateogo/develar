@@ -25,6 +25,7 @@ import { Page404Component }             from './develar-commons/errorpages/page-
 
 // Components 
 import { CommunityCreateComponent }     from './develar-commons/community/community-create/community-create.component';
+import { EnterSiteComponent }            from './develar-commons/enter-site/enter-site.component';
 
 
 const defaultAdminRoute: Routes = [
@@ -93,6 +94,9 @@ const entityRoutes: Routes = [
   { path: 'usuarios',  children:  userRoutes },
 ];
 
+const afterLogin: Routes = [
+  { path: '',          component:  EnterSiteComponent },
+];
 
 const loginRoutes: Routes = [
   {
@@ -188,6 +192,11 @@ const routes: Routes = [
     path: 'ingresar',
     component: ExtraLayoutComponent,
     children: loginRoutes
+  },
+  {
+    path: 'ingresando',
+    component: ExtraLayoutComponent,
+    children: afterLogin
   },
   {
     path: '',

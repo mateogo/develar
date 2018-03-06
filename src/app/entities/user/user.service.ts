@@ -1,6 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
+import { Subject }       from 'rxjs/Subject';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -79,7 +80,6 @@ export class UserService {
 
 	create(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'signup'}`;
-		console.log('createUser: BEGINs shooting: [%s]', url);
 		return this.http
 			.post(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
@@ -89,7 +89,6 @@ export class UserService {
 
 	update(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'signup'}/${user._id}`;
-		console.log('user UPDATE BEGINs shooting: [%s]', url);
 		return this.http
 			.put(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
@@ -99,7 +98,6 @@ export class UserService {
 
 	getUser(id: string): Promise<User> {
 		const url = `${this.usersUrl}/${id}`;
-		console.log('user getUser BEGINs shooting: [%s]', url);
 		return this.http.get(url)
 				.toPromise()
 				.then(response => response.json() as User)
@@ -153,7 +151,6 @@ export class UserService {
 	******************/
 	login(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'login'}`;
-		console.log('user LOGIN BEGINs shooting: [%s]', url);
 		this.hasLogout = false;
 		return this.http
 			.post(url, JSON.stringify(user), {headers: this.headers})
@@ -164,7 +161,6 @@ export class UserService {
 
 	googlelogin(): Promise<User> {
 		const url = `${this.usersUrl}/${'login/google'}`;
-		console.log('user GOOGLE LOGIN BEGINs shooting: [%s]', url);
 		this.hasLogout = false;
 		return this.http
 			.get(url)
@@ -174,11 +170,10 @@ export class UserService {
 	}
 
 	logout(){
-		console.log('logout')
 		this.isLogIn = false;
 		this.hasLogout = true;
-		this.currentUser = new User('invitado', 'invitado@develar');
-		this._userEmitter.next(this.currentUser);
+		this._currentUser = new User('invitado', 'invitado@develar');
+		this._userEmitter.next(this._currentUser);
 	}
 
 	private loginError(error: any): Promise<any> {
@@ -195,7 +190,6 @@ export class UserService {
 	}
 
 	send(mail: SendMail): Promise<any> {
-		console.log('user SEND MAIL BEGINs ');
 		return this.http
 			.post(mail.url, JSON.stringify(mail.content), {headers: mail.headers})
 			.toPromise()
@@ -242,7 +236,6 @@ export class UserService {
 	/***** CURRENT USER     **********/
 	get currentUser():User{
 		if(this._currentUser.username === 'invitado' && !this.hasLogout){
-			console.log('getCurrentUser userService 214, usuario: INVITADO')
 			this.updateCurrentUser();
 		}
 		
@@ -250,14 +243,67 @@ export class UserService {
 	}
 
 	set currentUser(user: User){
-		console.log('currentUser INVOKED!')
 		this._currentUser = user;
 	}
 
+	//****************** login management  *****************
+	initLoginUser() {
+		let fetchedUser: User;
+		let loggedIn = false;
+		let loginUser = new Subject<User>();
+
+		this.loadLoginUser().then(res =>{
+				fetchedUser = res.json() as User;
+				console.log('loading 1: [%s]', fetchedUser && fetchedUser.username);
+				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+
+				if(!loggedIn ){
+					setTimeout(() =>{
+
+						this.loadLoginUser().then(res =>{
+										fetchedUser = res.json() as User;
+										console.log('loading 2: [%s]', fetchedUser && fetchedUser.username);
+										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
+
+										if(!loggedIn ){
+											loginUser.next(new User('invitado', 'invitado@develar'))
+										}else{
+											this.setLoginUser(fetchedUser, loginUser);
+										}
+						})
+					},2000)
+
+				}else {
+					this.setLoginUser(fetchedUser, loginUser);
+				}
+
+			})
+			.catch(this.handleError);	
+
+		return loginUser;
+	}
+
+
+	loadLoginUser(){
+		const url = `${this.usersUrl}/${'currentuser'}`;
+		return this.http
+			.get(url)
+			.toPromise()
+	
+	}
+
+	setLoginUser(user: User, loginUser: Subject<User>){
+		this._currentUser = user;
+		this.isLogIn = true;
+		this.hasLogout = false;
+		loginUser.next(this._currentUser);
+	}
+	//****************** END: login management  *****************
+
 	updateCurrentUser(): Promise<User> {
 		console.log('userService: updateCurrentStatus')
+
 		const url = `${this.usersUrl}/${'currentuser'}`;
-		let currentStatus = (this._currentUser && this._currentUser._id);
 		return this.http
 			.get(url)
 			.toPromise()
@@ -275,7 +321,6 @@ export class UserService {
 				}
 
 				this.userEmitter.next(this._currentUser);
-				console.log('UpdateCurrentUser: CB:  [%s]',  fetchedUser.username)
 				return this._currentUser;
 			})
 			.catch(this.handleError);
@@ -302,7 +347,6 @@ export class UserService {
 				admin = true;
 			}
 		}
-		console.log('User isAdmin? [%s]', admin);
 		return admin;
 	}
 

@@ -18,7 +18,6 @@ export class TopServiciosComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	console.log('destacado INIT BEGIN: [%s] [%s]', this.record.cardCategory, this.record.slug);
 
   	this.title = this.record.slug;
   	this.description = this.record.description;

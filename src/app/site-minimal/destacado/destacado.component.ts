@@ -16,7 +16,6 @@ export class DestacadoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	console.log('destacado INIT BEGIN: [%s] [%s]', this.record.cardCategory, this.record.slug);
   	this.mainimage = this.record.mainimage;
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({
