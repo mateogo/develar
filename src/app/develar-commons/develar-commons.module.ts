@@ -51,6 +51,7 @@ import { CommunityBaseComponent }   from './community/community-base/community-b
 import { CommunityTableComponent }  from './community/communit-table/community-table.component';
 import { CommunitySelectorComponent} from './community/community-selector/community-selector.component';
 import { CommunityRelationComponent} from './community/community-relation/community-relation.component';
+import { EnterSiteComponent }            from './enter-site/enter-site.component';
 
 import { CommunityController }  from './community/community.controller'
 import { ModelController }      from './folders/model.controller';
@@ -113,6 +114,7 @@ import { TagService }           from './tag.service';
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,
+    EnterSiteComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent
@@ -158,6 +160,7 @@ import { TagService }           from './tag.service';
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,
+    EnterSiteComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent

@@ -41,18 +41,29 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() { 
+    this.initSocket();
+
+    this.initUser()
+
+    this.userService.userEmitter.subscribe(user =>{
+      this.initUser();
+    })
+  }
+
+  initSocket(){
     let that = this;
     this.socket = this.userService.socket;
     this.socket.on('notification:message', function (msj: MessageToPrint) {
       that.addNotificationMessage(msj);
     });
 
-    this.userService.userEmitter.subscribe(user =>{
-      this.currentUser = user;
-      this.loggedIn = this.isActiveUser(user);
+  }
+
+  initUser(){
+      this.currentUser = this.userService.currentUser;
+      this.loggedIn = this.userService.userlogged;
       this.avatar = this.currentUser.avatarUrl || DEFAULT_AVATAR;
-      this.emitLogin();
-    })
+      this.emitLogin();    
   }
 
 
@@ -123,7 +134,6 @@ export class NavbarComponent implements OnInit {
   editUser(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('editUser: [%s]', this.currentUser._id)
     this.router.navigate([ '/develar/entidades/usuarios', this.currentUser._id])
   }
 

@@ -50,7 +50,8 @@ const settings = {
   dbconnect: path.join(rootPath, 'core/config/dbconnect'),
   failureLoginUrl: '/ingresar/login',
   signUpUrl: '/ingresar/registrarse',
-  googleCbUrl: DEV_SERVER + GOOGLE_LOGIN_RETURN
+  googleCbUrl: DEV_SERVER + GOOGLE_LOGIN_RETURN,
+  loginUrl: path.join('/ingresando')
 };
 
 if(environment === 'development'){
@@ -58,6 +59,7 @@ if(environment === 'development'){
   settings.app = app_file;
   settings.serverUrl = DEV_SERVER;
   settings.googleCbUrl = settings.serverUrl + GOOGLE_LOGIN_RETURN;
+
 
 }else if(environment === 'test'){
   settings.dbase = mongo_db;
@@ -70,7 +72,6 @@ if(environment === 'development'){
   settings.app = app_file;
   settings.serverUrl = SERVER;
   settings.googleCbUrl = settings.serverUrl + GOOGLE_LOGIN_RETURN;
-
 }
 
 //console.dir(settings);

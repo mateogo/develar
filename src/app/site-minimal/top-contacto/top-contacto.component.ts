@@ -37,7 +37,6 @@ export class TopContactoComponent implements OnInit {
   }
 
   ngOnInit() {
-  	console.log('contacto INIT BEGIN: [%s] [%s] [%s]', this.record.cardCategory, this.record.slug, this.record.relatedcards.length);
 
   	this.title = this.record.slug;
   	this.description = this.record.description;
@@ -61,7 +60,6 @@ export class TopContactoComponent implements OnInit {
   // form solicitud
   public formReset(){
     this.contacto = new SolicitudDeContacto();
-    console.log('reset [%s]', this.contacto.termsofuse)
     this.form.reset({
         name:        this.contacto.name,
         slug:        this.contacto.slug,
@@ -83,8 +81,6 @@ export class TopContactoComponent implements OnInit {
     this.contacto.slug = fvalue.slug;
     this.contacto.description = fvalue.description;
 
-    console.log('onSubmit: envío solicitud:BEGINS tc: [%s]', this.contacto.termsofuse);
-    console.dir(this.contacto);
     this.minimalCtrl.saveContactPerson(this.contacto)
 
     this.minimalCtrl.notifyUsers(this.contacto)
@@ -145,7 +141,6 @@ export class TopContactoComponent implements OnInit {
 
     this.minimalCtrl.openModalDialog(new TermsOfCondition( node)).subscribe(action => {
       if(action === 'accept'){
-        console.log('termos of condition CLOSED: [%s]', action)
 
         //  this.form: array de controls ==> formGroup
         // this.form.controls['field'] ==> formControl

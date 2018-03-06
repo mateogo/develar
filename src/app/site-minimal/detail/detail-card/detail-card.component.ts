@@ -50,7 +50,6 @@ export class DetailCardComponent implements OnInit {
 
   @Input()
   set relatedcards(models: SubCard[]){
-    console.log('Set SubCard models:[%s]', models.length);
     this.initSubCardData(models);
     this.currentSubcardList = models;
   }
@@ -88,17 +87,14 @@ export class DetailCardComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id')
-    console.log('detail Card Component: ngOnINIT: [%s]',id)
 
 
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
     this.buildBreadCrumb();
 
     this.modelScrptn = this.minimalCtrl.recordCardListener.subscribe(model =>{
-      console.log('Subscribe cb from controller: [%s]', (model && model._id))
       this.model = model;
       this.initCardData(model);
-      console.log('2')
     })
 
     this.minimalCtrl.fetchRecordCard(this.model, id);
@@ -109,7 +105,6 @@ export class DetailCardComponent implements OnInit {
     //this.currentSubcardList = CardHelper.buildRelatedCards(entity);
     //this.initSubCardData(this.currentSubcardList );
 
-      console.log('3')
     entity.carrousel = CardHelper.buildCarrousel(entity.slug, entity, 0);
     this.loadRelatedPersons(entity.persons);
     this.loadRelatedAssets(entity.assets);
@@ -120,7 +115,6 @@ export class DetailCardComponent implements OnInit {
   }
 
   initSubCardData(smodels: SubCard[]){
-    console.log("INIT-sub-CARD-DATA [%s]", smodels.length);
     smodels.forEach(card => {
       card.carrousel = CardHelper.buildCarrousel(card.slug, card, 0);
     });
