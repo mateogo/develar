@@ -158,6 +158,16 @@ router.get('/populate', function (req, res) {
 });
 
 
+router.get('/closesession', function (req, res) {
+    console.log('close Session');
+    req.session = null;
+    res.status(200).json({message: 'session closed ok'});
+
+});
+
+
+
+
 /**
  * Retrieve USER by ID
  */

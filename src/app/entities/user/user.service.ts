@@ -170,10 +170,19 @@ export class UserService {
 	}
 
 	logout(){
+
+		let url = `${this.usersUrl}/closesession`;
 		this.isLogIn = false;
 		this.hasLogout = true;
 		this._currentUser = new User('invitado', 'invitado@develar');
 		this._userEmitter.next(this._currentUser);
+		this.http.get(url)
+				.toPromise()
+				.then(response => {
+						let msj = response.json()
+				})
+				.catch(this.handleError);
+
 	}
 
 	private loginError(error: any): Promise<any> {
@@ -254,7 +263,7 @@ export class UserService {
 
 		this.loadLoginUser().then(res =>{
 				fetchedUser = res.json() as User;
-				console.log('loading 1: [%s]', fetchedUser && fetchedUser.username);
+				//console.log('loading 1: [%s]', fetchedUser && fetchedUser.username);
 				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
 
 				if(!loggedIn ){
@@ -262,7 +271,7 @@ export class UserService {
 
 						this.loadLoginUser().then(res =>{
 										fetchedUser = res.json() as User;
-										console.log('loading 2: [%s]', fetchedUser && fetchedUser.username);
+										//console.log('loading 2: [%s]', fetchedUser && fetchedUser.username);
 										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
 
 										if(!loggedIn ){
@@ -312,7 +321,7 @@ export class UserService {
 	//****************** END: login management  *****************
 
 	updateCurrentUser(): Promise<User> {
-		console.log('userService: updateCurrentStatus')
+		//console.log('userService: updateCurrentStatus')
 
 		const url = `${this.usersUrl}/${'currentuser'}`;
 		return this.http
@@ -323,7 +332,7 @@ export class UserService {
 				this.isLogIn = (fetchedUser && fetchedUser._id) ? true: false;
 
 				if(!this.isLogIn ){
-					this.hasLogout = false;
+					this.hasLogout = true;
 					this.currentUser = new User('invitado', 'invitado@develar');
 
 				}else {
@@ -425,5 +434,3 @@ class SendMail{
 
 
 }
-
-
