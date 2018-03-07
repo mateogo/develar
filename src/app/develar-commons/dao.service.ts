@@ -57,7 +57,8 @@ export class DaoService {
       },
       user:{
         backendURL: 'api/users',
-        searchURL:  'api/users/search'
+        searchURL:  'api/users/search',
+        closesessionURL:  'api/users/closesession',
       },
       notification:{
         backendURL: 'api/conversations',
@@ -169,6 +170,12 @@ export class DaoService {
 
   defaultSearch<T>(type:string): Observable<T[]> {
     let query = `${this.dao[type].searchURL}`;
+    return this.http
+               .get<T[]>(query);
+  }
+
+  closeSession<T>(type: string): Observable<T[]> {
+    let query = `${this.dao[type].closesessionURL}`;
     return this.http
                .get<T[]>(query);
   }
