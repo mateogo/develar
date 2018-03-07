@@ -581,13 +581,13 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
 
 const userList = [
     {
-        username:       'Carolina Rivera',
+        username:       'Jose Jimeno',
         provider:       "local",
-        providerId:     'Carolina Rivera',
+        providerId:     'Jose Jimeno',
         accessToken:    '',
-        email:          'carolina.rivera@vaxtrials.com',
+        email:          'jose.jimeno@vaxtrials.com',
         password:       'abc1234',
-        displayName:    'Carolina Rivera',
+        displayName:    'Jose Jimeno',
         description:    '',
         cellphone:      '',
         communityUrlpath: "simposio-vac-ic-2018",
