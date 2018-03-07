@@ -333,7 +333,6 @@ export class UserService {
 
 				if(!this.isLogIn ){
 					this.hasLogout = true;
-					console.dir(fetchedUser);
 					this.currentUser = new User('invitado', 'invitado@develar');
 
 				}else {
