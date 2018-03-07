@@ -47,6 +47,21 @@ router.get('/search', function (req, res) {
 
 
 /**
+ * Retrieve USER by ID
+ */
+router.get('/altausuario', function (req, res) {
+    service.createuser(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
+/**
  * Retrieve Current User from request
  */
 router.get('/currentuser', function (req, res) {

@@ -111,10 +111,11 @@ const userSch = new mongoose.Schema({
 userSch.pre('save', function (next) {
     let user = this;
     user.displayName = user.displayName || user.name;
-    // Check if password has been changed
+    console.log('user-pre')
     if (!user.isModified('password')) {
         return next();
     }else{
+        console.log('user-pre: Encrypt passws: YES!!!!')
         user.password = encrypt(user.password);
         next();
     }
@@ -278,7 +279,7 @@ function newGoogleUser(profile){
         grupos:         '',
         roles:          '',
         modulos:        '',
-        moduleroles:    '',
+        moduleroles:    ['core:operador'],
         language:       profile.language,
         gender:         profile.gender,
         termscond:      false,
@@ -578,6 +579,78 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
 
 };
 
+const userList = [
+    {
+        username:       'Carolina Rivera',
+        provider:       "local",
+        providerId:     'Carolina Rivera',
+        accessToken:    '',
+        email:          'carolina.rivera@vaxtrials.com',
+        password:       'abc1234',
+        displayName:    'Carolina Rivera',
+        description:    '',
+        cellphone:      '',
+        communityUrlpath: "simposio-vac-ic-2018",
+        communityId:     "5a9c491081ecd02c9001ef83",
+        grupos:         '',
+        roles:          'operador',
+        modulos:        'core',
+        moduleroles:    ['core:operador'],
+        language:       'es',
+        gender:         '',
+        termscond:      true,
+        estado:         'activo',
+        navance:        'approved',
+        localProfile:   false,
+        externalProfile:true,
+        avatarUrl:      '',
+        googleProfile:  {
+            emails: [],
+            photos: [],
+        },
+
+        verificado:     {
+                        mail: false,
+                        feaprobado: new Date().getTime(),
+                        adminuser: ''
+                    },
+
+        currentCommunity: {
+            name: "Simposio Vacunas e Investigación Clínica - Panamá 2018",
+            slug: "Simposio Vacunas e Investig Clínica - Panamá 2018",
+            displayAs: "Simposio Vacunas e Investig Clínica - Panamá 2018"
+        }
+
+    }
+
+
+
+];
+
+
+exports.createuser = function (errcb, cb) {
+    console.log('create user BEGINS!!!!')
+    let user = userList[0]
+    createNewUser(user, errcb, cb);
+
+
+};
+
+function createNewUser(user, errcb, cb){
+
+    User.create(user, function(err, entity) {
+        if (err){
+            console.log('[%s] validation error as validate() argument', whoami)
+            err.itsme = whoami;
+            errcb(err);
+        
+        }else{
+            cb(entity);
+        }
+    });
+
+
+}
 
 //////
 
