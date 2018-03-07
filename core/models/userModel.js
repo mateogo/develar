@@ -581,13 +581,140 @@ exports.findOrCreateGoogle = function (profile, accessToken,  cb){
 
 const userList = [
     {
-        username:       'Carolina Rivera',
+        username:       'Ricardo Ruttimann',
         provider:       "local",
-        providerId:     'Carolina Rivera',
+        providerId:     'Ricardo Ruttimann',
         accessToken:    '',
-        email:          'carolina.rivera@vaxtrials.com',
+        email:          'rruttimann@fidec-online.org',
         password:       'abc1234',
-        displayName:    'Carolina Rivera',
+        displayName:    'Ricardo Ruttimann',
+        description:    '',
+        cellphone:      '',
+        communityUrlpath: "simposio-vac-ic-2018",
+        communityId:     "5a9c491081ecd02c9001ef83",
+        grupos:         '',
+        roles:          'operador',
+        modulos:        'core',
+        moduleroles:    ['core:operador'],
+        language:       'es',
+        gender:         '',
+        termscond:      true,
+        estado:         'activo',
+        navance:        'approved',
+        localProfile:   false,
+        externalProfile:true,
+        avatarUrl:      '',
+        googleProfile:  {
+            emails: [],
+            photos: [],
+        },
+
+        verificado:     {
+                        mail: false,
+                        feaprobado: new Date().getTime(),
+                        adminuser: ''
+                    },
+
+        currentCommunity: {
+            name: "Simposio Vacunas e Investigación Clínica - Panamá 2018",
+            slug: "Simposio Vacunas e Investig Clínica - Panamá 2018",
+            displayAs: "Simposio Vacunas e Investig Clínica - Panamá 2018"
+        }
+
+    },
+
+    {
+        username:       'Gabriela Aguirre',
+        provider:       "local",
+        providerId:     'Gabriela Aguirre',
+        accessToken:    '',
+        email:          'gaguirre@fidec-online.org',
+        password:       'abc1234',
+        displayName:    'Gabriela Aguirre',
+        description:    '',
+        cellphone:      '',
+        communityUrlpath: "simposio-vac-ic-2018",
+        communityId:     "5a9c491081ecd02c9001ef83",
+        grupos:         '',
+        roles:          'operador',
+        modulos:        'core',
+        moduleroles:    ['core:operador'],
+        language:       'es',
+        gender:         '',
+        termscond:      true,
+        estado:         'activo',
+        navance:        'approved',
+        localProfile:   false,
+        externalProfile:true,
+        avatarUrl:      '',
+        googleProfile:  {
+            emails: [],
+            photos: [],
+        },
+
+        verificado:     {
+                        mail: false,
+                        feaprobado: new Date().getTime(),
+                        adminuser: ''
+                    },
+
+        currentCommunity: {
+            name: "Simposio Vacunas e Investigación Clínica - Panamá 2018",
+            slug: "Simposio Vacunas e Investig Clínica - Panamá 2018",
+            displayAs: "Simposio Vacunas e Investig Clínica - Panamá 2018"
+        }
+
+    },
+    {
+        username:       'Valeria Rotholc',
+        provider:       "local",
+        providerId:     'Valeria Rotholc',
+        accessToken:    '',
+        email:          'vrotholc@fidec-online.org',
+        password:       'abc1234',
+        displayName:    'Valeria Rotholc',
+        description:    '',
+        cellphone:      '',
+        communityUrlpath: "simposio-vac-ic-2018",
+        communityId:     "5a9c491081ecd02c9001ef83",
+        grupos:         '',
+        roles:          'operador',
+        modulos:        'core',
+        moduleroles:    ['core:operador'],
+        language:       'es',
+        gender:         '',
+        termscond:      true,
+        estado:         'activo',
+        navance:        'approved',
+        localProfile:   false,
+        externalProfile:true,
+        avatarUrl:      '',
+        googleProfile:  {
+            emails: [],
+            photos: [],
+        },
+
+        verificado:     {
+                        mail: false,
+                        feaprobado: new Date().getTime(),
+                        adminuser: ''
+                    },
+
+        currentCommunity: {
+            name: "Simposio Vacunas e Investigación Clínica - Panamá 2018",
+            slug: "Simposio Vacunas e Investig Clínica - Panamá 2018",
+            displayAs: "Simposio Vacunas e Investig Clínica - Panamá 2018"
+        }
+
+    },
+    {
+        username:       'Roxana Stamboulian',
+        provider:       "local",
+        providerId:     'Roxana Stamboulian',
+        accessToken:    '',
+        email:          'rstamboulian@fidec-online.org',
+        password:       'abc1234',
+        displayName:    'Roxana Stamboulian',
         description:    '',
         cellphone:      '',
         communityUrlpath: "simposio-vac-ic-2018",
@@ -624,14 +751,18 @@ const userList = [
     }
 
 
-
 ];
 
 
 exports.createuser = function (errcb, cb) {
     console.log('create user BEGINS!!!!')
-    let user = userList[0]
-    createNewUser(user, errcb, cb);
+
+    userList.forEach(user =>{
+        createNewUser(user, errcb, cb);
+    })
+
+    cb({altas: userList.length});
+
 
 
 };
@@ -645,7 +776,7 @@ function createNewUser(user, errcb, cb){
             errcb(err);
         
         }else{
-            cb(entity);
+            //cb(entity);
         }
     });
 
