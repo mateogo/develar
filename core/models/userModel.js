@@ -623,70 +623,24 @@ const userMaster = {
     };
 
 const userList = [
-        {
-            username: 'Gioconda Castillero',
-            email: 'giocondacast_@hotmail.com'
-        },
-
-        {  
-            username : "Juan Carlos Batista", 
-            email : "juanb30@hotmail.com" },
-        {  
-            username : "Ana Eloisa Leandro", 
-            email : "anleavi@gmail.com" },
-        {  
-            username : "Rubiel Nieto Melgar", 
-            email : "rubiel_nieto@hotmail.com" },
-        {  
-            username : "Alcibiades Villarreal D.", 
-            email : "alcibiadesvillarreal@gmail.com" },
-        {  
-            username : "Judith", 
-            email : "judithcarmen29@gmail.com" },
-        {  
-            username : "Ivonne Torres", 
-            email :"torres.ivonne182001@gmail.com" },
-        {  
-            username : "Maryorie Bonilla", 
-            email : "Maryorie_482@hotmail.com" },
-        {  
-            username : "Judith J Córdoba", 
-            email : "Judithc@cwpanama.net" },
-        {  
-            username : "Nydia Flores Chiari", 
-            email:"nyflores@css.gob.pa" },
-        {  
-            username : "Luis Coronado", 
-            email : "coronado_luis@yahoo.com" },
-        {  
-            username : "Andres Felipe Romero Andrade", 
-            email :"romeroandres@correounivalle.edu.co" },
-        {  
-            username : "Melissa Del Carmen Gómez Gil", 
-            email : "melidec1521@gmail.com" },
-        {  
-            username : "Victoria Batista ", 
-            email : "victoria_1993_9@hotmail.com" },
-        {  
-            username : "Ericka Ferguson", 
-            email : "erife23@gmail.com" },
-        {  
-            username : "LAURA CHEN", 
-            email :"lachen@indicasat.org.pa" },
-        {  
-            username : "Lourdes Moreno Castillo", 
-            email : "lmorenocastillo@yahoo.com" },
-        {  
-            username : "Yara Ruiz", 
-            email :"yarax.ruiz@gsk.com" },
-        {  
-            username : "Esthefani Robles", 
-            email : "emroblesv@gmail.com" },
-        {  
-            username : "Damaris Morales", 
-            email : "damorales03@hotmail.com" },
-
-
+    {  username : "YESENIA WILLIAMS", 
+        email : "ywilliams30@gmail.com" },
+    {  username : "Ricardo Reyes Mora", 
+        email : "ricardoreyesmora0@gmail.com" },
+    {  username : "Tirza De León", 
+        email : "tirzarelis@gmail.com" },
+    {  username : "Rita Ines Trujillo Sagel", 
+        email : "rita_ines@yahoo.com" },
+    {  username : "Carlos N. González Díaz", 
+        email : "drcgonzadiaz@yahoo.com" },
+    {  username : "Fabian", 
+        email : "fabian.grimoldi@vaxtrials.com" },
+    {  username : "Yadira Isaza de Moltó", 
+        email : "yimolto@gmail.com" },
+    {  username : "Mirna Eneida Caicedo Lasso", 
+        email : "mirnacaicedo@cwpanama.net" },
+    {  username : "Lorena Lizet Merlo de Bristan", 
+        email : "lomerlo3110@gmail.com" },
 ];
 
 
@@ -726,6 +680,10 @@ function createNewUser(user, errcb, cb){
 }
 
 //////
+
+
+
+
 
 
 
