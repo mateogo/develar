@@ -19,13 +19,13 @@ export class UserSignIn1Component implements OnInit {
   }
   
   model: User;
-
   dialogRef: MatDialogRef<DialogUserComponent>;
   userlistener: BehaviorSubject<User>;
 
   ngOnInit() {
     this.model = this.userService.currentUser;
     if(this.model.email === 'invitado@develar') this.model.email = "";
+
     this.userlistener = this.userService.userEmitter;
 
     this.userlistener.subscribe(user =>{
