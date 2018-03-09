@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'picris';
+const user = 'masuno';
 //const user = 'develar';
 
 const globals = {
@@ -23,8 +23,8 @@ const globals = {
 	},
 
 	masuno: {
-		logoAvatar: 'avatar-u-masuno.jpeg',
-		logoUser: 'avatar-u-masuno.png',
+		logoAvatar: 'avatar-masuno.png',
+		logoUser: 'avatar-u-masuno-jpeg.jpg',
 		company: 'masuno'
 	}
 
