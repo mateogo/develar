@@ -1,4 +1,4 @@
-import { RecordCard, SubCard, CardGraph, CardGraphProduct, CardGraphAsset, CardGraphPerson, CardGraphResource, PublicationConfig } from './recordcard.model';
+import { RecordCard, SubCard, CardGraph, CardGraphProduct, CardGraphAsset, CardGraphImage, CardGraphPerson, CardGraphResource, PublicationConfig } from './recordcard.model';
 import { devutils } from '../develar-commons/utils';
 
 
@@ -219,7 +219,17 @@ export const predicateType = {
 			{val: 'video',          label: 'video',             slug:'video' },
 			{val: 'audio',          label: 'audio',             slug:'audio' },
 		]
+	},
+	image: {
+		predicates: [
+			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
+			{val: 'mainimage',      label: 'Imagen principal',   slug:'Imagen principal de la ficha' },
+			{val: 'images',         label: 'Carrousel',          slug:'Lista de imágenes Carrousel' },
+			{val: 'avatar',         label: 'Avatar',             slug:'Avatar' },
+
+		]
 	}
+
 }
 
 const productTableActions = [
@@ -569,6 +579,17 @@ function assetAdapter(model, data, entity, predicate){
     return model;
 }
 
+function imageAdapter(model, data, entity, predicate){
+    model.slug = data.slug;
+    model.description = data.description;
+    model.displayAs = data.assetId;
+    model.entityId = data._id;
+    model.predicate = predicate || 'mainimage'
+    model.entity = entity || 'image';
+    return model;
+}
+
+
 function predicateLabel(type, item){
 	if(predicateType[type]){
 		let label = predicateType[type].predicates.find(x => x.val === item );			
@@ -789,7 +810,38 @@ const extendedUtilites = {
 	  	})
 	  	return graphs;
 	  }
+	},
+
+	image: {
+		initCardGraph: function(list){
+			let graph = new CardGraphImage();
+			if(list && list.length >0){
+				graph.predicate = list[0].predicate;
+				graph.slug = list[0].slug;
+			}
+			return graph;
+		},
+
+		initCardGrpahFromAsset: function(data, predicate){
+			let graph = imageAdapter(new CardGraphImage(), data, 'image', predicate)
+
+			return graph;
+		},
+
+
+	  buildCardGraphList(rawList): Array<CardGraphImage>{
+	  	let graphs: Array<CardGraphImage>;
+	  	let token:CardGraphImage;
+	  	graphs = rawList.map(model =>{
+	  		token = new CardGraphImage();
+	  		Object.assign(token, model);
+	  		return token;
+	  	})
+	  	return graphs;
+	  }
 	}
+
+
 
 }
 

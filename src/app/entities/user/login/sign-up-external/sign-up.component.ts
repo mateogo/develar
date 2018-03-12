@@ -11,6 +11,7 @@ import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
 import { User } from '../../user';
 import { UserService } from '../../user.service';
 //import { SharedService } from '../../develar-commons/shared-service';
+import { gldef } from '../../../../develar-commons/develar.config';
 
 
 const password = new FormControl('', Validators.required);
@@ -19,25 +20,63 @@ const NAVANCE = 'registro-web';
 const ESTADO = 'pendiente';
 
 function buildMailContent(data):string {
-  const tmpl = `
-  <p>Estimadx  ${data.displayName}: </p>
-  <p>Agradecemos su registración en la aplicación DEVELAR de Picris LLC</p>
-  <p>Al ingresar con sus credenciales podrá acceder a los recursos y materiales exclusivos para los participantes del Seminario Internacional 'Vacunas e Investigación Clínica'. </p>
+  if(gldef.company === 'picris'){
+      const tmpl = `
+      <p>Estimadx  ${data.displayName}: </p>
+      <p>Agradecemos su registración en la aplicación DEVELAR de Picris LLC</p>
+      <p>Al ingresar con sus credenciales podrá acceder a los recursos y materiales exclusivos para los participantes del Seminario Internacional 'Vacunas e Investigación Clínica'. </p>
 
-  <h2>Sus datos de acceso son:</h2>
- 
-   <p><strong>URL: </strong> http://www.picris.co</p>
-   <p><strong>Nombre de usuario: </strong> ${data.username}</p>
-   <p><strong>Correo electrónico: </strong> ${data.email}</p>
-   <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
-   <h4>Estamos atentos por cualquier asistencia que Usted pudiera necesitar.</h4>
+      <h2>Sus datos de acceso son:</h2>
+     
+       <p><strong>URL: </strong>  ${gldef.url}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.username}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <h4>Estamos atentos por cualquier asistencia que Usted pudiera necesitar.</h4>
 
-  <h4>Equipo de desarrollo</h4>
+      <h4>Equipo de desarrollo</h4>
 
+      `;
+    return tmpl;
 
-  `;
+  }else if(gldef.company === 'masuno') {
+      const tmpl = `
+      <p>Estimadx  ${data.displayName}: </p>
+      <p>Agradecemos tu registración en la aplicación DEVELAR, un espacio de producción colaborativa.</p>
+      <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad académica.</p>
 
-  return tmpl;
+      <h2>Tus datos de acceso son:</h2>
+     
+       <p><strong>URL: </strong> ${gldef.url}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.username}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
+
+      <h4>Equipo de desarrollo</h4>
+
+      `;
+    return tmpl;
+
+  }else {
+      const tmpl = `
+      <p>Estimadx  ${data.displayName}: </p>
+      <p>Agradecemos tu registración en la aplicación DEVELAR, un espacio de producción colaborativa.</p>
+      <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad.</p>
+
+      <h2>Tus datos de acceso son:</h2>
+     
+       <p><strong>URL: </strong> ${gldef.url}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.username}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
+
+      <h4>Equipo de desarrollo</h4>
+
+      `;
+    return tmpl;
+  }
 }
 
 @Component({
