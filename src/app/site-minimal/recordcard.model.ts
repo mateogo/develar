@@ -105,6 +105,21 @@ export class CardGraphAsset extends CardGraphBasae {
 	}	
 }
 
+export class CardGraphImage extends CardGraphBasae {
+	entity: string;
+	displayAs: string = "";
+	predicate: string = "mainimage";
+	slug: string = "";
+	description: string = "";
+	avatar: string = "";
+	entityId: string = "";
+	constructor(link?, predicate?){
+		super('image');
+		this.entityId = link || this.entityId;
+		this.predicate = predicate || this.predicate;
+	}	
+}
+
 
 /****************************************/
 /**           Breadcrumb         */
