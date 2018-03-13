@@ -10,22 +10,22 @@ const user = 'develar';
 const globals = {
 
 	develar: {
-		logoAvatar: 'avatar-u-develar.png',
-		logoUser: 'avatar-develar.png',
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
 		company: 'develar',
 		url: 'www.develar.co'
 	},
 
 	picris: {
-		logoAvatar: 'avatar-u-picris.jpg',
-		logoUser: 'avatar-diamante.jpg',
+		logoAvatar: 'avatar-picris.jpg',
+		logoUser: 'avatar-u-diamante.jpg',
 		company: 'picris',
 		url: 'www.picris.co'
 	},
 
 	masuno: {
 		logoAvatar: 'avatar-masuno.png',
-		logoUser: 'avatar-u-masuno-jpeg.jpg',
+		logoUser: 'avatar-u-masuno.jpg',
 		company: 'masuno',
 		url: 'www.masuno.digital'
 	}
