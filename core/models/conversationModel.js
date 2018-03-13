@@ -693,7 +693,7 @@ function sendMailToEmitter (notif){
     from: 'intranet.develar@gmail.com',
     body: body,
     to: notif.emitter_email,
-    prefix: 'Simplecomm',
+    prefix: 'app-mail',
     subject: 'Nuevo contacto vía Web'
   }
 

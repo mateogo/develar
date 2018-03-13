@@ -4,14 +4,14 @@
  *
  *
 *************/
-const user = 'picris';
+const user = 'develar';
 //const user = 'develar';
 
 const globals = {
 
 	develar: {
-		logoAvatar: 'avatar-u-picris.jpg',
-		logoUser: 'avatar-diamante.jpg',
+		logoAvatar: 'avatar-u-develar.png',
+		logoUser: 'avatar-develar.png',
 		company: 'develar',
 		url: 'www.develar.co'
 	},
