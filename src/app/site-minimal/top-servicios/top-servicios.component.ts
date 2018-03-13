@@ -24,11 +24,28 @@ export class TopServiciosComponent implements OnInit {
   	this.mainimage = this.record.mainimage;
 
   	this.record.relatedcards.forEach(s => {
+      let link:string , navigate:string , noLink = true;
+
+      if(s.linkTo){
+        noLink = false;
+
+        if(s.linkTo.indexOf('http') === -1){
+          navigate = s.linkTo;
+        }else{
+          link = s.linkTo;
+        }
+      }
+
+
+
+
   		this.nodes.push({
         title: s.slug,
   			imageUrl: s.mainimage,
   			description: s.description,
-        linkTo: s.linkTo,
+        linkTo: link,
+        navigateTo: navigate,
+        noLink: noLink
   		} as Servicios)
   	})
   }
@@ -39,6 +56,8 @@ interface Servicios {
 	description: string;
   title: string;
   linkTo: string;
+  navigateTo: string;
+  noLink: boolean;
 }
 
 /***
