@@ -7,7 +7,6 @@
 
 /**
  * Load module dependencies
- vitorbarros
  */
 
 const config = require('./config');

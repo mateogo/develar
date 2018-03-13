@@ -30,7 +30,7 @@ const body_default_tpl = _.template(
             "<br>"+
             "<br>"+
             "<div>"+
-            "<p>Si usted esta recibiendo este mail en forma indebida, por favor comuniquese al teléfono (54 11) 4474 2025</p>"+
+            "<p>Si usted esta recibiendo este mail en forma indebida, por favor contáctese con el administrador</p>"+
             "<p>Buenos Aires - Argentina</p>"
         );
 
