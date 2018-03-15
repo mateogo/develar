@@ -623,19 +623,10 @@ const userMaster = {
     };
 
 const userList = [
-    {  username : 'Adi Johana', 
-        email : 'adijohana_300@hotmail.com' },
-    {  username : 'Ivonne Abadía de Regalado', 
-        email : 'josivo@usa.net' },
-    {  username : 'Katia Carolina Lizárraga Torres ', 
-        email : 'katializarragatorresponce@gmail.com' },
-    {  username : 'Alba Aguilar' , 
-        email :  'alba.aguilar@cevaxin.com'},
-    {  username : 'Eda Medina de Wong' , 
-        email : 'edalmw@gmail.com' },
-    {  username : ' Yara Ruiz', 
-        email : 'yara.x.ruiz@gsk.com' }
+    {  username : 'Ana Villareal', 
+        email : 'ana.villarreal@cevaxin.com' }
 ];
+
 
 
 exports.createuser = function (errcb, cb) {
