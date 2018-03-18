@@ -1,0 +1,98 @@
+<mat-card class="custom-table mat-elevation-z8">
+  <mat-card-content>
+
+  <div id="tableactions" class="d-flex flex-column flex-md-row justify-content-start align-items-center">
+
+    <mat-form-field style="font-size: 12px;  max-width: 200px">
+      <mat-select #actionFld placeholder="Acciones" [disabled]='selection.isEmpty()'
+          (selectionChange)="changeAction($event)" 
+          [(value)]="selectedAction" >
+        <mat-option *ngFor="let action of actionList" 
+          [value]="action.val" >{{ action.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <span style="margin: 0 15px 0 15px;" >
+      <small>{{ getLabel(selectedAction, actionList, 'Seleccionado: ') }}</small></span>
+
+
+    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Editar entidad" 
+        (click)='triggerAction("editone")'  >
+        <i class='fas fa-pencil-alt'></i></button>
+
+    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Crear usuario" 
+        (click)='triggerAction("navigate")'  >
+        <i class='fa fa-user-circle'></i></button>
+
+
+    <button mat-button *ngIf='isColSelectionAllowed' color="accent"  title="Seleccione columnas de la tabla"
+        (click)='openModalDialog(formdata)'  ><i class='fa fa-cog'></i></button>
+
+   
+  </div>
+
+  <mat-table #table matSort [dataSource]="dataSource">
+    <!-- _id, predicate, displayName, displayName, entityId, qt, ume, pu, moneda, total  -->
+
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef> 
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="personType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.personType}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Correo </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="displayName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Mostrar como... </mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)='openEditor(element, CERO)'>
+          <div *ngIf='!element.editflds[CERO]'>{{element.displayName}}</div>
+          <div *ngIf='element.editflds[CERO]'>
+            <mat-form-field>
+              <input matInput [(ngModel)]='element.displayName' >
+            </mat-form-field>
+          </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+        [length]="10"
+        [pageIndex]="0"
+        [pageSize]="25"
+        [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+
+</mat-card-content>
+</mat-card>
+
+<ng-template #formdata >
+  <ng-container  *ngFor="let col of table_columns"  >
+    <p><mat-checkbox   [(ngModel)]='table_columns_sel[col]' 
+                    (change)='changeCheckBx($event, col)'>{{col}}
+        </mat-checkbox ></p>
+  </ng-container>
+</ng-template>
+

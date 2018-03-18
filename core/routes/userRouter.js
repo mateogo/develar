@@ -59,6 +59,20 @@ router.get('/altausuario', function (req, res) {
     });
 });
 
+/**
+ * create User(s) from Person(s)
+ */
+router.post('/userfromperson', function (req, res) {
+    
+    service.userFromPerson(req.body, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 
 /**

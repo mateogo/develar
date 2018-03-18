@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
-import { Person, Address, personHelper} from './../person';
+import { Person, Address, personModel} from './../person';
 import { PersonService} from './../person.service';
 import { devutils }from '../../../develar-commons/utils'
 //, states, dummyaddresses, addressTypes, countries 
@@ -40,11 +40,11 @@ export class PersonEditComponent implements OnInit {
 	public model: Person;
 	private models: Person[];
   private modelId: string;
-  public ph = personHelper;
-  private provincias = personHelper.provincias;
-  private addTypes = personHelper.addressTypes;
-  private countries = personHelper.countries;
-  public persontypes = personHelper.persontypes;
+  public ph = personModel;
+  private provincias = personModel.provincias;
+  private addTypes = personModel.addressTypes;
+  private countries = personModel.countries;
+  public persontypes = personModel.persontypes;
   private showMaps = false;
   public renderMap = false;
   private zoom: number = 8;
@@ -129,7 +129,7 @@ export class PersonEditComponent implements OnInit {
     const locacionesDeepCopy: Address[] = this.form.value.guaridas.map(
       (address: Address) => Object.assign({}, address)
     );
-    locacionesDeepCopy.push(personHelper.initAddress({street:'quintana 2135'}));
+    locacionesDeepCopy.push(personModel.initAddress({street:'quintana 2135'}));
     const addressFGs = locacionesDeepCopy.map(address => this.fb.group(address));
     const addressFormArray = this.fb.array(addressFGs);
 
@@ -146,7 +146,7 @@ export class PersonEditComponent implements OnInit {
   }
 
   addLocation(){
-    const locacionFG = this.fb.group(personHelper.initAddress());
+    const locacionFG = this.fb.group(personModel.initAddress());
     const formArray = this.form.get('guaridas') as FormArray;
     formArray.push(locacionFG);
   }
@@ -154,14 +154,14 @@ export class PersonEditComponent implements OnInit {
   changeAddType(item){
     console.log('Change Add Type');
     const formArray = this.form.get('guaridas') as FormArray;
-    formArray.at(item).patchValue({slug: personHelper.fetchAddrTypeLabel(formArray.at(item).value.addType)});
+    formArray.at(item).patchValue({slug: personModel.fetchAddrTypeLabel(formArray.at(item).value.addType)});
 
   }
 
   changeProvincia(item){
     console.log('Change provincia');
     const formArray = this.form.get('guaridas') as FormArray;
-    formArray.at(item).patchValue({statetext: personHelper.fetchProvinceLabel(formArray.at(item).value.state)});
+    formArray.at(item).patchValue({statetext: personModel.fetchProvinceLabel(formArray.at(item).value.state)});
   }
 
   changePersonType(){
