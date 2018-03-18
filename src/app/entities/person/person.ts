@@ -4,8 +4,31 @@
  exports:
  	Person
  	Address
- 	PersonHelpers
+ 	PersonModel
 ****************************/
+
+export interface PersonTable {
+	personType: string;
+	displayName: string;
+	email: string;
+};
+
+class PersonTableData implements PersonTable {
+	personType: string;
+	displayName: string;
+	email: string;
+
+  _id: string = "";
+  editflds = [0,0,0,0,0,0,0,0]
+
+  constructor(data: any){
+    this._id = data._id;
+    this.personType = data.personType;
+    this.displayName = data.displayName;
+    this.email = data.email;
+  }  
+}
+
 
 export class Person {
 	id: string;
@@ -174,11 +197,26 @@ const ptypes: Array<any> = [
 		{val: 'osc', 	     label: 'osc',    slug:'osc' },
 ];
 
+const entityTableActions = [
+      {val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'editone',      label: 'Editar registro',    slug:'editone' },
+      {val: 'navigate',     label: 'Navegar comunidad',    slug:'Cambiar a esta comunidad' },
+]
 
-class PersonHelper {
+function initNewModel(displayName:string, email:string){
+  let entity = new Person(displayName, email);
+  return entity;
+}
+
+
+class PersonModel {
 	constructor(){
 
 	}
+	
+  initNew(displayName:string, email:string){
+    return initNewModel(displayName, email);
+  }
 
 	get addressTypes():Array<any>{
 		return addressTypes;
@@ -222,9 +260,25 @@ class PersonHelper {
 		return  prov;
 	}
 
+  get tableActionOptions(){
+    return entityTableActions;
+  }
+
+  buildPersonTable(elist: Array<Person>): PersonTable[]{
+    let list: Array<PersonTable>;
+
+    list = elist.map(item => {
+      let token: PersonTable = new PersonTableData(item);
+      return token;
+    });
+
+    return list;
+  }
+
+
 }
 
-export const personHelper = new PersonHelper();
+export const personModel = new PersonModel();
 
 
 /***

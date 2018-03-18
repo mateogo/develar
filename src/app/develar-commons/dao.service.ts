@@ -59,6 +59,7 @@ export class DaoService {
         backendURL: 'api/users',
         searchURL:  'api/users/search',
         closesessionURL:  'api/users/closesession',
+        createusersURL:  'api/users/userfromperson',
       },
       notification:{
         backendURL: 'api/conversations',
@@ -123,6 +124,16 @@ export class DaoService {
 
     return this.http
       .post(url, JSON.stringify(entity), {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  usersFromPersons(type: string, query:any): Promise<any>{
+    let url = `${this.dao[type].createusersURL}`;
+    console.log('create Users from Persons: [%s]', url)
+
+    return this.http
+      .post(url, JSON.stringify(query), {headers: this.headers})
       .toPromise()
       .catch(this.handleError);
   }

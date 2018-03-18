@@ -13,6 +13,11 @@
 const whoami =  "models/userModel: ";
 
 const mongoose = require('mongoose');
+const mailer = require('../services/sendmail')
+const config = require('../config/config');
+
+const DOMAIN = config.serverUrl;
+
 const Mixed = mongoose.Schema.Types.Mixed;
 
 const crypto = require('crypto'),
@@ -111,11 +116,9 @@ const userSch = new mongoose.Schema({
 userSch.pre('save', function (next) {
     let user = this;
     user.displayName = user.displayName || user.name;
-    console.log('user-pre')
     if (!user.isModified('password')) {
         return next();
     }else{
-        console.log('user-pre: Encrypt passws: YES!!!!')
         user.password = encrypt(user.password);
         next();
     }
@@ -600,8 +603,8 @@ const userMaster = {
         termscond:      true,
         estado:         'activo',
         navance:        'approved',
-        localProfile:   false,
-        externalProfile:true,
+        localProfile:   true,
+        externalProfile:false,
         avatarUrl:      '',
         googleProfile:  {
             emails: [],
@@ -630,7 +633,6 @@ const userList = [
 
 
 exports.createuser = function (errcb, cb) {
-    console.log('create user BEGINS!!!!')
 
     userList.forEach(token =>{
         let user = Object.assign({}, userMaster)
@@ -644,9 +646,49 @@ exports.createuser = function (errcb, cb) {
 
     cb({altas: userList.length});
 
+};
+
+exports.userFromPerson = function (data, errcb, cb) {
+    let personList = data.persons;
+    let currentUser = data.user;
+
+    let userTempl = Object.assign({}, userMaster)
+    userTempl.communityUrlpath = currentUser.communityUrlpath;
+    userTempl.communityId = currentUser.communityId;
+    userTempl.currentCommunity = currentUser.currentCommunity;
+
+    personList.forEach(token =>{
+        let user = Object.assign({}, userTempl)
+        user.username = token.displayName;
+        user.providerId = token.displayName;
+        user.displayName = token.displayName;
+        user.email = token.email;
+
+        createNewUserFromPerson(user, errcb, cb);
+    })
+
+    cb({altas: personList.length});
+
 
 
 };
+
+function createNewUserFromPerson(newuser, errcb, cb){
+    let email = newuser.email;
+
+    User.findOne({email: email}, function(err, user) {
+        if(err){
+            console.log('[%s] error al verificar el mail del user', whoami);
+        }else {
+            if(!user){
+                createNewUser(newuser, errcb, cb);
+            }
+        }
+    });
+
+}
+
+
 
 function createNewUser(user, errcb, cb){
 
@@ -657,12 +699,104 @@ function createNewUser(user, errcb, cb){
             errcb(err);
         
         }else{
-            //cb(entity);
+            if(user){
+                buildUserEmail(user);
+            }
+
         }
     });
 
 
 }
+
+function buildUserEmail(user){
+
+  let body = buildEmitterMailContent( {
+    userName: user.username,
+    email: user.email,
+    displayName: user.displayName,
+    slug: 'Alta de usuario desde Persona',
+    description: 'alta de usuario desde persona.',
+    community: user.currentCommunity.displayAs
+  })
+
+  let opt = {
+    from: 'intranet.develar@gmail.com',
+    body: body,
+    to: user.email,
+    prefix: 'app-mail',
+    subject: 'Nuevo usuario registrado'
+  }
+
+  sendNotificationMail(opt);
+
+
+}
+
+function sendNotificationMail(opt){
+
+  let mail = mailer.mailFactory(opt)
+
+  // envía el mail a los usuarios 'marketing:admin'
+
+  mailer.sendMail(mail.content, (err) =>{
+    console.log('[%s] error en el envío de mail', whoami);
+    console.log('[%s] error: [%s]', whoami. err);
+
+
+  }, (info)=>{
+
+  })
+
+}
+
+
+function buildAdminMailContent(data){
+  const admin_tpl = `
+    <p>Estimadx  ${data.userName}: </p>
+    <p>Un formulario de contacto fue procesado a través del sitio Web</p>
+    <p>Ingresando a la opción 'Personas' de la plataform podrás recuperar los datos del emisor</p>
+
+    <h2>Los datos recibidos en el formulario son:</h2>
+   
+     <p><strong>Nombre del emisor: </strong> ${data.displayName}</p>
+     <p><strong>Correo electrónico: </strong> ${data.email}</p>
+     <p><strong>Asunto: </strong> ${data.slug}</p>
+     <p><strong>Mensaje: </strong> ${data.description}</p>
+
+     <h4>¡¡Favor contactar al usuario dentro de las 24:00hs!!</h4>
+
+    <h4>Equipo de Marketing</h4>
+    <h4>Enviado en forma automática, no responder.</h4>
+    `;
+
+    return admin_tpl
+}
+
+function buildEmitterMailContent(data){
+  const admin_tpl = `
+    <p>Estimadx  ${data.displayName}: </p>
+    <p>Agradecemos tu registración en la aplicación ${DOMAIN}, un espacio de producción colaborativa.</p>
+    <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad.</p>
+
+    <h2>Tus datos de acceso son:</h2>
+   
+       <p><strong>URL: </strong> ${DOMAIN}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.userName}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <p><strong>Comunidad: </strong> ${data.community}</p>
+       <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
+
+      <h4>Equipo de Soporte</h4>
+
+
+    <h4>Enviado en forma automática, no responder.</h4>
+    `;
+
+    return admin_tpl
+}
+
 
 //////
 

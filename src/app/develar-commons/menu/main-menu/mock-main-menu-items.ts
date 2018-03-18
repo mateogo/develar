@@ -205,8 +205,12 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/develar/entidades/personas'
       },
       {
-        title: 'Alta nueva persona',
+        title: 'Alta nueva Persona',
         routing: '/develar/entidades/personas/alta'
+      },
+      {
+        title: 'Persona - Usuario',
+        routing: '/develar/entidades/personas/gestion'
       }
     ],
     routing: '',

@@ -14,11 +14,14 @@ import { DevelarCommonsModule }    from '../../develar-commons/develar-commons.m
 
 import { PersonRoutingModule }     from './person-routing.module';
 
+import { PersonController }        from './person.controller';
 import { PersonService }           from './person.service';
 import { PersonComponent }         from './person/person.component';
 import { PersonCreateComponent }   from './person-create/person-create.component';
 import { PersonEditComponent }     from './person-edit/person-edit.component';
 import { BrowsepersonComponent }   from './browseperson/browseperson.component';
+import { PersonManageComponent }   from './person-manage/person-manage.component';
+import { PersonTableComponent }    from './person-table/person-table.component';
 
 //InMemoryWebApiModule.forRoot(InMemoryDataService),
 
@@ -37,11 +40,13 @@ import { BrowsepersonComponent }   from './browseperson/browseperson.component';
       PersonComponent,
       PersonCreateComponent,
       PersonEditComponent,
-      BrowsepersonComponent
+      BrowsepersonComponent,
+      PersonManageComponent,
+      PersonTableComponent
   ],
   exports:[
       BrowsepersonComponent
   ],
-  providers: [PersonService]
+  providers: [PersonService, PersonController]
 })
 export class PersonModule { }
