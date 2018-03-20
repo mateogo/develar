@@ -162,6 +162,13 @@ export class NavbarComponent implements OnInit {
     this.userService.logout();
   }
 
+  changePasswd(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.router.navigate(['/ingresar/clave', this.currentUser._id])
+
+  }
+
   loginUser(e){
     e.stopPropagation();
     e.preventDefault();

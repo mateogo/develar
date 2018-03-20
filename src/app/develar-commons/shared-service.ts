@@ -11,7 +11,6 @@ export class SharedService {
 
   // Service message commands
   emitChange(change: string) {
-  	console.log('********** emitChange: [%s]', change);
     this.emitChangeSource.next(change);
   }
 

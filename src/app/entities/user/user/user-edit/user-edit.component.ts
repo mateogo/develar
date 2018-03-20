@@ -14,6 +14,7 @@ import { UserService } from '../../user.service';
 
 const HOME = "/";
 const LIST = "../../";
+const CHANGEPASSWD = "/ingresar/clave";
 const NAVANCE = 'webform';
 const ESTADO = 'pendiente';
 
@@ -190,6 +191,10 @@ export class UserEditComponent implements OnInit {
 
   editCancel(){
     this.closeEditor(LIST);
+  }
+
+  changePassword(){
+    this.router.navigate([CHANGEPASSWD, this.modelId]);
   }
 
   updateUserList(users:User[]){

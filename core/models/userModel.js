@@ -116,9 +116,12 @@ const userSch = new mongoose.Schema({
 userSch.pre('save', function (next) {
     let user = this;
     user.displayName = user.displayName || user.name;
+    console.log('UserModel SAVE ********* passwd[%s]', user.isModified('password'));
     if (!user.isModified('password')) {
         return next();
     }else{
+
+        console.log('UserModel SAVE ********* encrypt passwd');
         user.password = encrypt(user.password);
         next();
     }
@@ -493,7 +496,7 @@ exports.fetchById = function (id, cb) {
  * @param cb
  * @param errcb
  */
-exports.update = function (id, user, errcb, cb) {
+exports.update = function (id, user, errcb, cb) { 
 
     User.findByIdAndUpdate(id, user, { new: true }, function(err, entity) {
         if (err){
@@ -507,6 +510,26 @@ exports.update = function (id, user, errcb, cb) {
     });
 
 };
+
+
+exports.changePassword = function (id, user, errcb, cb) {
+
+    user.password = encrypt(user.password);
+    console.log('UserModel ChangePassword ********* passwd[%s]', user.password);
+
+    User.findByIdAndUpdate(id, user, { new: true }, function(err, entity) {
+        if (err){
+            console.log('[%s] validation error as validate() argument ', whoami)
+            err.itsme = whoami;
+            errcb(err);
+        
+        }else{
+            cb(entity);
+        }
+    });
+
+};
+
 
 
 /**

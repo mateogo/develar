@@ -13,6 +13,7 @@ import { RegistrarUsuario }     from './sign-up-external/sign-up.component';
 
 
 import { LoginRoutingModule }     from './login-routing.module';
+import { CredentialsComponent } from './credentials/credentials.component';
 //import { UserService }            from '../user.service';
 
 //InMemoryWebApiModule.forRoot(InMemoryDataService),
@@ -30,7 +31,8 @@ import { LoginRoutingModule }     from './login-routing.module';
     PageForgotComponent,
     UserSignIn1Component,
     RegistrarUsuario,
-    DialogUserComponent
+    DialogUserComponent,
+    CredentialsComponent
   ],
   exports:[
   ],

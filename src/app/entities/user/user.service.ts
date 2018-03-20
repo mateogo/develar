@@ -96,6 +96,17 @@ export class UserService {
 			.catch(this.handleError);
 	}
 
+	credentials(user: User): Promise<User> {
+		const url = `${this.usersUrl}/${'credentials'}/${user._id}`;
+		return this.http
+			.put(url, JSON.stringify(user), {headers: this.headers})
+			.toPromise()
+			.then(res => res.json() as User)
+			.catch(this.handleError);
+	}
+
+
+
 	getUser(id: string): Promise<User> {
 		const url = `${this.usersUrl}/${id}`;
 		return this.http.get(url)
