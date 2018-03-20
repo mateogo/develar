@@ -1,5 +1,5 @@
 <card [title]="'Perfil de Usuario (Id: )'" [align]="'center'">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <form [formGroup]="form" >
     <mat-form-field>
       <input matInput [formControl]="form.controls['username']" placeholder="Nombre de Usuario" required>
       <small *ngIf="form.controls['username'].hasError('required') && 
@@ -122,7 +122,8 @@
     </div>
 
 
-   <button mat-raised-button [disabled]="!form.valid" color="primary" type="submit" color="accent">Actualizar</button>
+   <button mat-raised-button [disabled]="!form.valid" color="primary" color="accent"
+          (click)='onSubmit()'>Actualizar</button>
    <button mat-button  color="accent" (click)='editCancel()'>cancelar</button>
    <button mat-button  color="accent" (click)='changePassword()'>cambiar contraseña</button>
 
