@@ -156,6 +156,20 @@ router.put('/signup/:id', function (req, res) {
 });
 
 
+router.put('/credentials/:id', function (req, res) {
+
+    service.changePassword(req.params.id, req.body, 
+        function (err) {
+            res.status(400).json(err);
+
+        }, function(entity) {
+            res.status(201).json(entity);
+
+        });
+});
+
+
+
 /**
 
 /**

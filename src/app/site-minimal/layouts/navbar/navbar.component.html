@@ -215,9 +215,14 @@
                 <i class="fa fa-cogs"></i> Settings</a>
             </li>
             <li>
+              <a href="#" role="button" (click)='changePasswd($event)'  >
+                <i class="far fa-user"></i> Cambiar clave</a>
+            </li>
+            <li>
               <a href="#" role="button" (click)='logout($event)'  >
                 <i class="fas fa-sign-out-alt"></i> Log Out</a>
             </li>
+
           </ul>
           </ng-container>
           <ng-container *ngIf="!isAdminUser()">
@@ -225,6 +230,10 @@
             <li>
               <a href="#" role="button" (click)='logout($event)'  >
                 <i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='changePasswd($event)'  >
+                <i class="far fa-user"></i> Cambiar clave</a>
             </li>
           </ul>
           </ng-container>

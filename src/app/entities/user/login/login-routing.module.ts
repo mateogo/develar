@@ -5,6 +5,7 @@ import { PageConfirmComponent } from './confirm/confirm.component';
 import { PageForgotComponent }  from './forgot/forgot.component';
 import { UserSignIn1Component } from './sign-in-1/sign-in-1.component';
 import { RegistrarUsuario }     from './sign-up-external/sign-up.component';
+import { CredentialsComponent } from './credentials/credentials.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'confirmar/:id',
     component: PageConfirmComponent,
+  },
+  {
+    path: 'clave/:id',
+    component: CredentialsComponent,
   },
   {
     path: '',
