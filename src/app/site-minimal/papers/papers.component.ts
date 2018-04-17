@@ -207,10 +207,6 @@ export class PapersComponent implements OnInit {
 
 
 
-
-
-
-
   fetchTopicFromUrl(urls:UrlSegment[]){
     let tokens = urls.length;
     let topic = "";

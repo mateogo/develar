@@ -5,6 +5,7 @@
  *     Exporta un objeto con funciones utilitarias
  */
 const config = require('../config/config');
+const Prism = require('prismjs');
 
 
 var fs = require('fs');
@@ -181,6 +182,24 @@ exports.getDeepValue = function(obj, path) {
     }
     return rv;
 };
+
+const hl = function(match, p, offset){
+    console.log('************************hl match ');
+
+  return '<pre><code class="language-javascript">' + Prism.highlight(p, Prism.languages.javascript, 'javascript') + '</code></pre>';
+};
+
+const rg = /<pre><code.*?>((\s|\S)*?)<\/code><\/pre>/g;
+
+exports.highlightCode = function(code){
+
+
+    let token = code.replace(rg, hl);
+
+    //let token = Prism.highlight(code, Prism.languages.javascript, 'javascript');
+
+    return token;
+}
 
 var parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)

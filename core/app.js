@@ -12,6 +12,7 @@ const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
 const userRouter = require('./routes/userRouter.js');
+const parserRoutes = require('./routes/parserRoutes.js');
 const assetRoutes = require('./routes/assetRoutes.js');
 const folderRoutes = require('./routes/folderRoutes.js');
 const productRoutes = require('./routes/productRoutes.js');
@@ -73,6 +74,7 @@ const myLogger = function (req, res, next) {
 app.use(myLogger);
 
 app.use('/pug', routes);
+app.use('/api/parser', parserRoutes);
 app.use('/api/gcse', gcseRoutes);
 app.use('/api/crawl', crawlRoutes);
 app.use('/api/recordcards', recordcardRoutes);

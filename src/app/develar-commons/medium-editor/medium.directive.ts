@@ -35,7 +35,7 @@ const TextColorButtonClass = mediumEditorColorButtons.TextColorButtonClass;
 
 
 const DEFAULT_OPTIONS = {
-		toolbar: {'buttons': ['bold', 'italic', 'underline', 'anchor', 'h1', 'h2', 'h3']},
+		toolbar: {'buttons': ['bold', 'italic', 'underline', 'pre', 'anchor', 'h1', 'h2', 'h3']},
 		/*textcolor?: {
 		  colors?: Array<string>;
 		  moreColorText?: string;
@@ -44,6 +44,17 @@ const DEFAULT_OPTIONS = {
 		extensions: {
 		  //textcolor: new TextColorButtonClass(/* options? */)
 		},
+		paste: {
+			/* This example includes the default options for paste,
+			   if nothing is passed this is what it used */
+			forcePlainText: true,
+			cleanPastedHTML: false,
+			cleanReplacements: [],
+			cleanAttrs: ['class', 'style', 'dir'],
+			cleanTags: ['meta'],
+			unwrapTags: []
+		},
+
 		buttonLabels: 'fontawesome',
 		imageDragging: false,
 		placeholder: {

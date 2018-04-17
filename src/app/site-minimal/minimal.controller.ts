@@ -95,6 +95,11 @@ export class SiteMinimalController {
     return this.homeResourcesEmitter
   }
 
+  highlightCode(query: any): Promise<any>{
+    return this.daoService.highlight('parser', query);
+  }
+
+
 
   // initMinimalPage(){
   //   let ready = new Subject<boolean>();
@@ -167,6 +172,10 @@ export class SiteMinimalController {
 
   get userUrl (){
     return this.userCmty.url;
+  }
+
+  parseText(text: string){
+
   }
 
   fetchContextRecords(topic): Subject<RecordCard[]>{
