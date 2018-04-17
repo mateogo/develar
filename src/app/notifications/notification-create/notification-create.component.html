@@ -40,8 +40,7 @@
           mediumEditor
           [formControl]="form.controls['content']" 
           [(editorModel)]="meContent"
-          (mouseover)='mouseOverPrueba()'
-          [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','anchor', 'h1', 'h2']}}" 
+          [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
           [editorplaceholder]="mePlaceholder"
           (modelValueChange)="contentUpdateContent($event)">
         </textarea>
@@ -55,8 +54,7 @@
         <button mat-button type="submit" color="primary" 
         		[disabled]="!form.valid"  > Enviar</button>
         <button mat-button type="button"  color="accent"
-          (click)="editCancel()" 
-          (mouseover)='mouseOverPrueba()' >Cancelar</button>
+          (click)="editCancel()"  >Cancelar</button>
       </div>
     </form>
     </mat-card-content></mat-card>

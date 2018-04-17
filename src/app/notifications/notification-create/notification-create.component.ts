@@ -204,8 +204,4 @@ export class NotificationCreateComponent implements OnInit {
     this._openEditor = !this._openEditor;
   }
 
-  mouseOverPrueba(){
-    console.log('mouseover******************')
-  }
-
 }

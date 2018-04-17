@@ -50,7 +50,7 @@
 			  mediumEditor
 				[formControl]="form.controls['description']" placeholder="Descripción"
 				[(editorModel)]="meContent"
-	      [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','anchor', 'h1', 'h2']}}" 
+				[editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
 	      [editorplaceholder]="mePlaceholder"
 	      (modelValueChange)="descriptionUpdateContent($event)">
 			</textarea>

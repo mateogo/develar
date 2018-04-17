@@ -162,7 +162,7 @@ export class SiteMinimalController {
   }
 
   navigateToUserPublications():boolean{
-    console.log('navigateToUserPublication [%s] [%s]', this.userx.isLogged, this.userx.hasCommunity)
+    //console.log('navigateToUserPublication [%s] [%s]', this.userx.isLogged, this.userx.hasCommunity)
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
 
