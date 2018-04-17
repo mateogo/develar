@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute }   from '@angular/router';
 
 import { RecordCard, SubCard, CardGraph, BreadcrumbItem } from '../../recordcard.model';
@@ -6,6 +6,8 @@ import { RecordCard, SubCard, CardGraph, BreadcrumbItem } from '../../recordcard
 import { GraphUtils, CardHelper }       from '../../recordcard-helper';
 
 import { SiteMinimalController } from '../../minimal.controller';
+import { HighlightService } from '../../minimal-highlighter.service';
+
 import { gldef } from '../../../develar-commons/develar.config';
 
 const BROWSE = 'lista';
@@ -75,10 +77,12 @@ export class DetailCardComponent implements OnInit {
 
   private modelScrptn;
   private breadcrumb: BreadcrumbItem[] = breadcrumb;
+  private isPrismed = false;
 
 
   constructor(
   		private minimalCtrl: SiteMinimalController,
+      private hlSrv: HighlightService,
       private router: Router,
   		private route: ActivatedRoute
   	) {
@@ -93,17 +97,29 @@ export class DetailCardComponent implements OnInit {
     this.buildBreadCrumb();
 
     this.modelScrptn = this.minimalCtrl.recordCardListener.subscribe(model =>{
-      this.model = model;
-      this.initCardData(model);
+      this.tryPrism(model);
     })
 
     this.minimalCtrl.fetchRecordCard(this.model, id);
   }
 
 
+  /**
+   * Highlight blog post when it's ready
+   */
+  ngAfterViewChecked() {
+    console.log('ngAfterViewCh... BEGINS');
+    if(this.model && !this.isPrismed){
+      console.log('ngAfterViewCh... HIL');
+      this.hlSrv.highlightAll();
+      this.isPrismed = false;
+    }
+  }
+
   initCardData(entity: RecordCard){
     //this.currentSubcardList = CardHelper.buildRelatedCards(entity);
     //this.initSubCardData(this.currentSubcardList );
+
 
     entity.carrousel = CardHelper.buildCarrousel(entity.slug, entity, 0);
     this.loadRelatedPersons(entity.persons);
@@ -111,8 +127,31 @@ export class DetailCardComponent implements OnInit {
     this.loadRelatedResources(entity.resources);
     this.loadRelatedTags(entity.taglist);
     this.loadRelatedCards(entity.relatedcards);
+    this.model = entity;
+
 
   }
+
+
+  tryPrism(record: RecordCard){
+
+
+    // console.log('tryPrism BEGINS');
+    // let query =  {
+    //   text: record.description
+    // };
+
+    // this.minimalCtrl.highlightCode(query).then(code =>{
+    //   record.description = code.result;
+    //   this.initCardData(record);
+    //   console.dir(code);
+    // })
+    
+    this.initCardData(record);
+
+
+  }
+
 
   initSubCardData(smodels: SubCard[]){
     smodels.forEach(card => {

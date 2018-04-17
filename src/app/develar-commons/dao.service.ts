@@ -70,6 +70,9 @@ export class DaoService {
         backendURL: 'api/persons',
         searchURL:  'api/persons/search',
         upsertURL:  'api/persons/upsert'
+      },
+      parser:{
+        backendURL: 'api/parser/highlight'
       }
     };
   }
@@ -131,6 +134,16 @@ export class DaoService {
   usersFromPersons(type: string, query:any): Promise<any>{
     let url = `${this.dao[type].createusersURL}`;
     console.log('create Users from Persons: [%s]', url)
+
+    return this.http
+      .post(url, JSON.stringify(query), {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  highlight(type: string, query:any): Promise<any>{
+    let url = `${this.dao[type].backendURL}`;
+    console.log('parse text: [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(query), {headers: this.headers})
