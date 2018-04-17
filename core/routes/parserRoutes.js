@@ -19,7 +19,6 @@ const whoami =  "Router:routes/parserRoutes: ";
  */
 router.post('/highlight', function (req, res) {
     let code = req.body.text;
-    console.log('highlight PARSER begins...');
 
     if(code){
         let parsedCode = utils.highlightCode(code, 'javascript');

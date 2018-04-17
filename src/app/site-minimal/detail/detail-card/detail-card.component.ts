@@ -97,7 +97,7 @@ export class DetailCardComponent implements OnInit {
     this.buildBreadCrumb();
 
     this.modelScrptn = this.minimalCtrl.recordCardListener.subscribe(model =>{
-      this.tryPrism(model);
+      this.initCardData(model);
     })
 
     this.minimalCtrl.fetchRecordCard(this.model, id);
@@ -108,11 +108,9 @@ export class DetailCardComponent implements OnInit {
    * Highlight blog post when it's ready
    */
   ngAfterViewChecked() {
-    console.log('ngAfterViewCh... BEGINS');
     if(this.model && !this.isPrismed){
-      console.log('ngAfterViewCh... HIL');
       this.hlSrv.highlightAll();
-      this.isPrismed = false;
+      this.isPrismed = true;
     }
   }
 
@@ -147,8 +145,7 @@ export class DetailCardComponent implements OnInit {
     //   console.dir(code);
     // })
     
-    this.initCardData(record);
-
+    //this.initCardData(record);
 
   }
 

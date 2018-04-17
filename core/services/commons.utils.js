@@ -184,7 +184,6 @@ exports.getDeepValue = function(obj, path) {
 };
 
 const hl = function(match, p, offset){
-    console.log('************************hl match ');
 
   return '<pre><code class="language-javascript">' + Prism.highlight(p, Prism.languages.javascript, 'javascript') + '</code></pre>';
 };
