@@ -118,7 +118,6 @@ export class DetailCardComponent implements OnInit {
     //this.currentSubcardList = CardHelper.buildRelatedCards(entity);
     //this.initSubCardData(this.currentSubcardList );
 
-
     entity.carrousel = CardHelper.buildCarrousel(entity.slug, entity, 0);
     this.loadRelatedPersons(entity.persons);
     this.loadRelatedAssets(entity.assets);
@@ -126,6 +125,7 @@ export class DetailCardComponent implements OnInit {
     this.loadRelatedTags(entity.taglist);
     this.loadRelatedCards(entity.relatedcards);
     this.model = entity;
+   
 
 
   }

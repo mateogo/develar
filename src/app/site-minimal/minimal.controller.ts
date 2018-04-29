@@ -41,6 +41,7 @@ export class SiteMinimalController {
   private naviCmty: CommunityToken = new CommunityToken();
   private userCmty: CommunityToken = new CommunityToken();
   private userx: UserToken = new UserToken();
+  public  isUserAdmin = false;
 
   private communityEmitter: BehaviorSubject<CommunityToken> = new BehaviorSubject(new CommunityToken());
 
@@ -473,7 +474,8 @@ export class SiteMinimalController {
     this.userx.username = user.username;
     this.userx.email = user.email;
     this.userx.hasCommunity = false;
- 
+    this.isUserAdmin = this.userService.isAdminUser();
+
     if(user.communityId){
       this.userx.communityId = user.communityId
       this.loadUserCommunity()

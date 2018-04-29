@@ -26,7 +26,9 @@
 <ng-container *ngIf="isPapers">
 	
 	<div class="d-lg-flex flex-row flex-wrap">
-	  <app-unitcardview class="w-50 p-2" *ngFor='let paper of papers' [model]='paper'></app-unitcardview>
+	  <app-unitcardview class="w-50 p-2" 
+	  		*ngFor='let paper of papers' 
+	  		[isAdmin]='isUserAdmin' [model]='paper'></app-unitcardview>
 	</div>
 
 </ng-container>

@@ -530,6 +530,7 @@ class CardHelper {
 	}
 
 	getSubcardCategies(type):Array<any>{
+		console.log('getSubardCat: [%s]', type)
 		return subCardCategory[type] || cardCategories;
 	}
 
