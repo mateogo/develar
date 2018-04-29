@@ -57,6 +57,8 @@ export class PapersComponent implements OnInit {
   public isPapers = false;
   public papers: RecordCard[] = [];
 
+  public isUserAdmin = false;
+
   public breadcrumb: BreadcrumbItem[] = breadcrumb;
 
   public unBindList = [];
@@ -153,6 +155,7 @@ export class PapersComponent implements OnInit {
       
     }
     //******************************************************
+    this.isUserAdmin = this.minimalCtrl.isUserAdmin;
 
     this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
 

@@ -84,20 +84,29 @@ export class SubcardeditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initSubcard(this.model);
+
 		this.form.reset({
 	    cardId:       this.model.cardId,
 		  slug:         this.model.slug,
 	    subtitle:     this.model.subtitle,
       linkTo:       this.model.linkTo,
-		  cardType:     this.model.cardType || "subficha",
-	    topic:        this.model.topic || "general",
-	    cardCategory: this.model.cardCategory || 'documento',
+		  cardType:     this.model.cardType,
+	    topic:        this.model.topic,
+	    cardCategory: this.model.cardCategory,
 		  description:  this.model.description,
 		  mainimage:    this.model.mainimage,
 	    images:       cardHelper.buildImageString(this.model.images)
 		});
     
     this.loadRelatedImages(this.model.viewimages);
+    //this.changeCardType(this.model.cardType);
+  }
+
+  initSubcard(model: SubCard){
+    this.model.cardCategory = this.model.cardCategory || 'documento';
+    this.model.cardType = this.model.cardType || 'subficha';
+    this.model.topic = this.model.topic || 'general';
     this.changeCardType(this.model.cardType);
   }
 

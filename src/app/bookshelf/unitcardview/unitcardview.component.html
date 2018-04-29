@@ -32,9 +32,8 @@
       </mat-card-subtitle>
     </ng-container>
   
-
-
     <button mat-button color="accent" (click)="goToDetail()">Ver detalle</button>
+    <button  *ngIf='isAdmin' mat-button color="accent" (click)="editCard()">Editar</button>
   </mat-card-actions>
 
 </mat-card>
@@ -53,7 +52,8 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button color="accent" (click)="goToDetail()">Ver detalle</button>
+    <button mat-button color="accent" (click)="goToDetail()">Ver DETALLE</button>
+    <button *ngIf='isAdmin' mat-button color="accent" (click)="editCard()">Editar</button>
   </mat-card-actions>
 </mat-card>
 </div>

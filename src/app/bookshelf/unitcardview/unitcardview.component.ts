@@ -17,6 +17,7 @@ const BROWSE = 'lista';
 export class UnitcardviewComponent implements OnInit {
 	@Input() customalign: string = 'center';
   @Input() title: string;
+  @Input() isAdmin = false;
 
   public showAssets = false;
   public showResources = false;
@@ -163,6 +164,9 @@ export class UnitcardviewComponent implements OnInit {
 
   goToDetail(){
     this.router.navigate(['./', this.modelId ], {relativeTo: this.route});
+  }
+  editCard(){
+    this.router.navigate(['/develar/fichas/editar', this.modelId]);
   }
 
 }

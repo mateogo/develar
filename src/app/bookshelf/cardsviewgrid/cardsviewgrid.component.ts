@@ -19,6 +19,7 @@ export class CardsviewgridComponent implements OnInit {
 	selectedModel:  RecordCard;
 
 	loadingIndicator: boolean = true;
+  isAdmin: boolean = true;
 
   getModels(): void{
     console.log('********** view grid ************')

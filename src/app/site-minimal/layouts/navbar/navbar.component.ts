@@ -146,7 +146,7 @@ export class NavbarComponent implements OnInit {
   navigateAdmin(e){
     e.stopPropagation();
     e.preventDefault();
-    let path = "/develar" ;
+    let path = "/develar/fichas/lista" ;
     this.router.navigate([path]);
   }
 
