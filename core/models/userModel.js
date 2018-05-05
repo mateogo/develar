@@ -799,7 +799,7 @@ function buildAdminMailContent(data){
 function buildEmitterMailContent(data){
   const admin_tpl = `
     <p>Estimadx  ${data.displayName}: </p>
-    <p>Agradecemos tu registración en la aplicación ${DOMAIN}, un espacio de producción colaborativa.</p>
+    <p>Agradecemos tu registración en el sitio web ${DOMAIN}.</p>
     <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad.</p>
 
     <h2>Tus datos de acceso son:</h2>

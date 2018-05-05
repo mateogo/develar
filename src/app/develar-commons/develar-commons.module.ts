@@ -51,14 +51,19 @@ import { CommunityBaseComponent }   from './community/community-base/community-b
 import { CommunityTableComponent }  from './community/communit-table/community-table.component';
 import { CommunitySelectorComponent} from './community/community-selector/community-selector.component';
 import { CommunityRelationComponent} from './community/community-relation/community-relation.component';
-import { EnterSiteComponent }            from './enter-site/enter-site.component';
+import { EnterSiteComponent }        from './enter-site/enter-site.component';
+import { NoteeditorComponent }       from './noteeditor/noteeditor/noteeditor.component';
+import { NotepieceComponent }        from './noteeditor/notepiece/notepiece.component';
+
 
 import { CommunityController }  from './community/community.controller'
 import { ModelController }      from './folders/model.controller';
 
+
 import { AssetService }         from './asset.service';
 import { DaoService }           from './dao.service';   
 import { TagService }           from './tag.service';
+import { PrismHighlightService }     from './highlighter.service';
 
 
 @NgModule({
@@ -111,6 +116,8 @@ import { TagService }           from './tag.service';
     UpdatefileComponent,
     AssetSearchComponent,
     NoteBaseComponent,
+    NoteeditorComponent,
+    NotepieceComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,
@@ -157,6 +164,8 @@ import { TagService }           from './tag.service';
     UpdatefileComponent,
     AssetSearchComponent,
     NoteBaseComponent,
+    NoteeditorComponent,
+    NotepieceComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,
@@ -165,7 +174,7 @@ import { TagService }           from './tag.service';
     CommunitySelectorComponent,
     BreadcrumbComponent
   ],
-  providers: [AssetService, DaoService, ModelController, TagService, CommunityController],
+  providers: [AssetService, DaoService, ModelController, TagService, CommunityController, PrismHighlightService],
   entryComponents: [CrawlerDialogComponent, GenericDialogComponent]
 })
 export class DevelarCommonsModule { }

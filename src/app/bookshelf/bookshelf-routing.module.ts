@@ -10,10 +10,11 @@ import { CardsviewgridComponent }  from './cardsviewgrid/cardsviewgrid.component
 import { UnitcardviewComponent } from './unitcardview/unitcardview.component';
 import { UnitcardeditComponent } from './unitcardedit/unitcardedit.component';
 import { InputDemoComponent }    from './input-demo/input-demo.component';
-import { ShowviewComponent }        from './showview/showview.component';
-import { GraphcontrollerComponent } from './cardgraphcontroller/graphcontroller.component';
+import { ShowviewComponent }         from './showview/showview.component';
+import { GraphcontrollerComponent }  from './cardgraphcontroller/graphcontroller.component';
 import { ProjectDashboardComponent } from './workgroup/project-dashboard/project-dashboard.component';
-import { ProjectProductComponent }    from './workgroup/project-product/project-product.component';
+import { ProjectProductComponent }   from './workgroup/project-product/project-product.component';
+import { CardnoteeditorComponent } from './cardnoteeditor/cardnoteeditor.component';
 
 const routes: Routes = [
 	{
@@ -29,6 +30,10 @@ const routes: Routes = [
 	{
 		path:'followup/:id',
 		component: ProjectDashboardComponent
+	},
+	{
+		path:'contenido/:id',
+		component: CardnoteeditorComponent
 	},
 	{
 		path:'grid/:id',

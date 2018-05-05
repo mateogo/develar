@@ -202,6 +202,10 @@ export class UnitcardeditComponent implements OnInit {
       });
   }
 
+  contentEditor(){
+    this.router.navigate(['../../contenido', this.modelId], {relativeTo: this.route});
+  }
+
   editCanel(){
     this.closeEditor()
   }
