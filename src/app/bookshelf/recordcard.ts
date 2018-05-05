@@ -3,7 +3,7 @@
 *********/
 import { CardGraph } from './cardgraph.helper';
 import { Asset } from '../develar-commons/develar-entities';
-
+import { NotePiece } from '../develar-commons/noteeditor/note-model';
 
 
 export class PublicationConfig {
@@ -69,6 +69,7 @@ export class SubCard {
 	viewimages:  Array<CardGraph> = [];
 	carrousel: Carrousel;
 	parent: string = "";
+	noteDescriptor: Array<NotePiece> = [];
 
 	constructor(slug: string){
 		this.slug = slug;
@@ -103,6 +104,7 @@ export class RecordCard {
 	taglist: Array<string> = [];
 	communitylist: Array<string> = [];
 	publish: PublicationConfig;
+	noteDescriptor: Array<NotePiece> = [];
 
 	constructor(slug: string){
 		this.slug = slug;
@@ -333,6 +335,21 @@ function populateImages(entity): Array<string>{
   return arr;
 }
 
+function buildRecordcardDescriptor(entity: RecordCard): Array<NotePiece>{
+	let notes: Array<NotePiece> = [];
+
+	let note = new NotePiece();
+	note.raw = entity.description;
+	note.estado = 'activo';
+	note.editorComp = 'medium';
+	note.viewerComp = 'medium';
+	note.header = entity.slug;
+	note.sheader = entity.subtitle;
+	note.type = 'paragraph';
+	notes.push(note);
+
+	return notes;
+}
 
 function buildOpeningCard(show:ShowCards, model:RecordCard){
 	let openingcard = new RecordCard(model.slug);
@@ -611,6 +628,17 @@ class CardHelper {
 	  }
 	  return arr[0].slug;
 	}
+
+	buildRecordcardDescriptor(entity: RecordCard): Array<NotePiece>{
+		let descriptor: Array<NotePiece>;
+		if(entity.noteDescriptor && entity.noteDescriptor.length){
+			descriptor = entity.noteDescriptor;
+		}else{
+			descriptor = buildRecordcardDescriptor(entity);
+		}
+		return descriptor;
+	}
+
 }
 
 export const cardHelper = new CardHelper();

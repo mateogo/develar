@@ -1,8 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../cardgraph.helper';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { GenericDialogComponent } from '../../develar-commons/generic-dialog/generic-dialog.component';
+
 import { Subject } from 'rxjs/Subject';
+
+import { NotePiece, noteModel } from '../note-model';
+
+import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
 
 const removeRelation = {
   width:  '330px',
@@ -10,9 +13,9 @@ const removeRelation = {
   hasBackdrop: true,
   backdropClass: 'yellow-backdrop',
   data: {
-    caption:'Baja de relación',
+    caption:'Párrafo de nota eliminada',
     title: 'Confirme la acción',
-    body: 'Se dará de baja la relación seleccionada en esta ficha',
+    body: 'Se dará de baja el parágrafo seleccionado',
     accept:{
       action: 'accept',
       label: 'Aceptar'
@@ -26,36 +29,33 @@ const removeRelation = {
 
 
 @Component({
-  selector: 'card-graph-controller',
-  templateUrl: './graphcontroller.component.html',
-  styleUrls: ['./graphcontroller.component.scss'],
-  providers: [GenericDialogComponent]
+  selector: 'noteeditor',
+  templateUrl: './noteeditor.component.html',
+  styleUrls: ['./noteeditor.component.scss']
 })
-export class GraphcontrollerComponent implements OnInit {
-  @Input() addCardToList: Subject<CardGraph>;
+export class NoteeditorComponent implements OnInit {
+  @Input() addNoteToList: Subject<NotePiece>;
   @Input()
-    get relatedList():Array<CardGraph>{
+    get noteList():Array<NotePiece>{
       return this.entities;
     }
-    set relatedList(tokens: CardGraph[]){
+    set noteList(tokens: NotePiece[]){
       this.entities = tokens;
     }
-  @Input() entityType: string = 'resource'
   @Input() canAddTokens: boolean = true;
 
-  public entities: CardGraph[] = [];
+  public entities: NotePiece[] = [];
   private acceptNewToken = true;
-  public formLabels:object;
 
   constructor(
       public dialogService: MatDialog,
     ) { }
 
   ngOnInit() {
-    this.formLabels = predicateLabels[this.entityType] || predicateLabels['default'];
+    console.log('NoteList: [%s]', this.entities.length);
 
-    if(this.addCardToList){
-      this.addCardToList.subscribe({
+    if(this.addNoteToList){
+      this.addNoteToList.subscribe({
         next: (card) => {
           this.entities.unshift(card);
         }
@@ -66,16 +66,14 @@ export class GraphcontrollerComponent implements OnInit {
   }
 
   addToken(){
-    let token = graphUtilities.initNewCardGraph(this.entityType, this.entities);
-    console.log('AddNewToken request [%s] [%s] [%s]', token.entity,this.entityType, this.entities.length );
-
+    let token = noteModel.newNotePiece({});
     this.entities.unshift(token);
   }
 
-  deleteToken(token: CardGraph){
+  deleteToken(token: NotePiece){
     let index = this.entities.findIndex(x => x === token);
     if(index !== -1){
-      console.log('delete token:  [%s] [%s]', index, token.displayAs);
+      console.log('delete token:  [%s]', index);
       this.openDialog(removeRelation).subscribe(result => {
         if(result==='accept') this.entities.splice(index, 1);
       })

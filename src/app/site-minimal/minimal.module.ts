@@ -26,7 +26,6 @@ import { DetailCardComponent } from './detail/detail-card/detail-card.component'
 import { ShowAssetsComponent } from './detail/show-assets/show-assets.component';
 import { ShowResourcesComponent } from './detail/show-resources/show-resources.component';
 
-HighlightService
 @NgModule({
   imports: [
     MinimalRoutingModule,

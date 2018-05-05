@@ -58,6 +58,25 @@ function buildMailContent(data):string {
       `;
     return tmpl;
 
+  }else if(gldef.company === 'simplecomm') {
+      const tmpl = `
+      <p>Estimadx  ${data.displayName}: </p>
+      <p>Agradecemos tu registración el sitio web de Simplecomm.</p>
+      <p>Al ingresar con tus credenciales tendrás acceso a los recursos asignados por tu Gerente de Cuenta.</p>
+
+      <h2>Tus datos de acceso son:</h2>
+     
+       <p><strong>URL: </strong> ${gldef.url}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.username}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
+
+      <h4>Equipo de desarrollo</h4>
+
+      `;
+    return tmpl;
+
   }else {
       const tmpl = `
       <p>Estimadx  ${data.displayName}: </p>
