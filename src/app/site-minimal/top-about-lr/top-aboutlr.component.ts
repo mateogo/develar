@@ -12,10 +12,12 @@ export class TopAboutlrComponent implements OnInit {
 
 	public mainimage: string = "";
 	public nodes: Array<About> = [];
+	public title: string = "";
 
   constructor() { }
 
   ngOnInit() {
+  	this.title = this.record.slug;
   	this.mainimage = this.record.mainimage;
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({

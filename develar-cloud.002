@@ -1,5 +1,5 @@
 {
-      "apps": [
+	"apps": [
 		{
 			"name": "picris",
 		  "script" : "./bin/www",
@@ -34,18 +34,6 @@
 		          "SERVER": "http://develar.co",
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/develar"
-		  }
-		},
-		{
-			"name": "simplecomm",
-		  "script" : "./bin/www",
-		  "env": {
-		          "NODE_ENV": "production",
-		          "PORT": "8083",
-		          "DBASE": "simplecommdb",
-		          "SERVER": "http://simplecomm.co",
-		          "FAVICON": "favicon.ico",
-		          "PUBLIC": "/www/simplecomm"
 		  }
 		}
 	]
