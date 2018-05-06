@@ -16,6 +16,8 @@ import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.compo
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { TopBrandingComponent } from './top-branding/top-branding.component';
 import { TopAboutComponent } from './top-about/top-about.component';
+import { TopAboutlrComponent } from './top-about-lr/top-aboutlr.component';
+
 import { SiteMinimalController } from './minimal.controller';
 import { HighlightService } from './minimal-highlighter.service';
 import { DestacadoComponent } from './destacado/destacado.component';
@@ -41,6 +43,7 @@ import { ShowResourcesComponent } from './detail/show-resources/show-resources.c
   	NavbarComponent,
   	TopBrandingComponent,
   	TopAboutComponent,
+    TopAboutlrComponent,
   	DestacadoComponent,
   	TopServiciosComponent,
   	TopContactoComponent,

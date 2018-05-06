@@ -11,6 +11,7 @@ import { RecordCard } from '../recordcard.model';
 const HOME_TYPE = 'webresource';
 const BRANDING =  'topbranding';
 const ABOUT =     'topabout';
+const ABOUTLR =   'topaboutlr';
 const DESTACADO = 'destacado';
 const SERVICIOS = 'topservicios';
 const CONTACTO =  'topcontacto';
@@ -34,6 +35,9 @@ export class HomeComponent implements OnInit {
 
   public isTopabout = false;
   public topabout: RecordCard;
+
+  public isTopaboutlr = false;
+  public topaboutlr: RecordCard;
 
   public isDestacado = false;
   public destacado: RecordCard;
@@ -109,6 +113,10 @@ export class HomeComponent implements OnInit {
         }else if(publish.template === ABOUT){
           this.topabout = record;
           this.isTopabout = true
+
+        }else if(publish.template === ABOUTLR){
+          this.topaboutlr = record;
+          this.isTopaboutlr = true
 
         }else if(publish.template === DESTACADO){
           this.destacado = record;
