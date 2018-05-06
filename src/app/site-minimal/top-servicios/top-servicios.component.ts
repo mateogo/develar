@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RecordCard } from '../recordcard.model';
+import { RecordCard, SubCard  } from '../recordcard.model';
 
 
 @Component({
@@ -14,8 +14,47 @@ export class TopServiciosComponent implements OnInit {
 	public title: string = "";
 	public description: string = "";
 	public nodes: Array<Servicios> = [];
+  public showDetail = false;
+  public detailImage: RelatedImage;
 
   constructor() { }
+
+  serviceDetail(e, token: Servicios){
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('serviceDetail: [%s]', token);
+    console.dir(token);
+
+    if(token.flipImage){
+      this.detailImage = token.flipImage;
+      this.showDetail = true;
+    }
+
+  }
+  servicePlain(e){
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('servicePlain');
+    this.showDetail = false;
+  }
+
+  flipImage(s: SubCard): RelatedImage{
+    let fimage = s.viewimages.find(t => t.predicate === 'images');
+    if(fimage){
+      let flipimage = {
+        predicate: fimage.predicate,
+        entityId: fimage.entityId,
+        url: '/download/' + fimage.entityId,
+        slug: fimage.slug
+      } as RelatedImage;
+
+      return flipimage;
+
+    }else{
+      return null;
+    }
+
+  }
 
   ngOnInit() {
 
@@ -25,6 +64,8 @@ export class TopServiciosComponent implements OnInit {
 
   	this.record.relatedcards.forEach(s => {
       let link:string , navigate:string , noLink = true;
+      
+      let flipImage: RelatedImage = this.flipImage(s);
 
       if(s.linkTo){
         noLink = false;
@@ -42,6 +83,7 @@ export class TopServiciosComponent implements OnInit {
   		this.nodes.push({
         title: s.slug,
   			imageUrl: s.mainimage,
+        flipImage: flipImage,
   			description: s.description,
         linkTo: link,
         navigateTo: navigate,
@@ -51,8 +93,17 @@ export class TopServiciosComponent implements OnInit {
   }
 
 }
+
+interface RelatedImage {
+  predicate: string;
+  entityId: string;
+  url: string;
+  slug: string;
+}
+
 interface Servicios {
 	imageUrl: string;
+  flipImage: RelatedImage;
 	description: string;
   title: string;
   linkTo: string;

@@ -175,6 +175,7 @@ export class SubCard {
 	cardType: string = "";
 	cardCategory: string = "";
 	images:  Array<string> = [];
+	viewimages:  Array<CardGraph> = [];
 	carrousel: Carrousel;
 	parent: string = "";
 
