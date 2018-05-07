@@ -7,15 +7,7 @@
 					<div class='top-description' innerHtml='{{description}}'></div>
 				</div>
 			</div>
-			<div id="transition">
 
-			<ng-container *ngIf='showDetail'>
-      	<a role="button" class="item-link" title="{{detailImage.slug}}" href="#" 
-         		(click)="servicePlain($event)">
-         <img mat-card-image src='{{ detailImage.url }}'
-         			[@flyInOut]='flyState.state' ></a>
-			</ng-container>
-			
 			<ng-container *ngIf='!showDetail'>
 
 				<div [@blockIn]='blockState.state' id='items' class="row">
@@ -42,7 +34,15 @@
 					</div>
 				</div>
 			</ng-container>
-		</div>
+			<ng-container *ngIf='showDetail'>
+      	<a role="button" class="item-link" title="{{detailImage.slug}}" href="#" 
+         		(click)="servicePlain($event)">
+         <img mat-card-image src='{{ detailImage.url }}'
+         			[@flyInOut]='flyState.state' ></a>
+			</ng-container>
+			
+
+			
 	</mat-card-content>
 </mat-card>
 
