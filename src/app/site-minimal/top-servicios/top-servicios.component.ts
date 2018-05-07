@@ -22,8 +22,6 @@ export class TopServiciosComponent implements OnInit {
   serviceDetail(e, token: Servicios){
     e.stopPropagation();
     e.preventDefault();
-    console.log('serviceDetail: [%s]', token);
-    console.dir(token);
 
     if(token.flipImage){
       this.detailImage = token.flipImage;
@@ -34,7 +32,6 @@ export class TopServiciosComponent implements OnInit {
   servicePlain(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('servicePlain');
     this.showDetail = false;
   }
 

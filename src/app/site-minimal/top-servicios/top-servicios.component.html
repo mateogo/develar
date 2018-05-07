@@ -1,6 +1,5 @@
 <mat-card>
 	<mat-card-content>
-		<div class="container-fluid">
 
 			<div id='top' class="row align-items-center justify-content-center">
 				<div class='col' >
@@ -9,15 +8,15 @@
 				</div>
 			</div>
 
-			<div id='items' class="row align-items-end">
+			<ng-container *ngIf='showDetail'>
+      	<a role="button" title="{{detailImage.slug}}" href="#" 
+         		(click)="servicePlain($event)">
+         <img mat-card-image src='{{ detailImage.url }}' ></a>
+			</ng-container>
+			
+			<ng-container *ngIf='!showDetail'>
 
-				<ng-container *ngIf='showDetail'>
-	      	<a role="button" title="{{detailImage.slug}}" href="#" 
-	         		(click)="servicePlain($event)">
-	         <img mat-card-image src='{{ detailImage.url }}' ></a>
-				</ng-container>
-
-				<ng-container *ngIf='!showDetail'>
+				<div id='items' class="row">
 
 					<div class='col-sm-3 item' *ngFor='let node of nodes'>
 
@@ -38,10 +37,8 @@
 	           </ng-container>
 
 					</div>
-				</ng-container>
-
-			</div>
-		</div>
+				</div>
+			</ng-container>
 	</mat-card-content>
 </mat-card>
 

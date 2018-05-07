@@ -201,6 +201,7 @@ export class RecordCard {
 	persons:  Array<CardGraph> = [];
 	products:  Array<CardGraph> = [];
 	assets:  Array<CardGraph> = [];
+	viewimages:  Array<CardGraph> = [];
 	resources:  Array<CardGraph> = [];
 	relatedcards: Array<SubCard> = [];
 	carrousel: Carrousel;
