@@ -1,11 +1,55 @@
 import { Component, Input, OnInit } from '@angular/core';
+
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
+
+
 import { RecordCard, SubCard  } from '../recordcard.model';
 
 
 @Component({
   selector: 'top-servicios',
   templateUrl: './top-servicios.component.html',
-  styleUrls: ['./top-servicios.component.scss']
+  styleUrls: ['./top-servicios.component.scss'],
+  animations: [
+    trigger('heroState', [
+      state('inactive', style({
+        backgroundColor: '#eee',
+        transform: 'scale(1)'
+      })),
+      state('active',   style({
+        backgroundColor: '#cfd8dc',
+        transform: 'scale(1.1)'
+      })),
+      transition('inactive => active', animate('200ms ease-in')),
+      transition('active => inactive', animate('200ms ease-out'))
+    ]),
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(500)
+      ]),
+      transition('* => void', [
+        animate(500, style({transform: 'translateX(100%)'}))
+      ])
+    ]),
+    trigger('blockIn', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(500)
+      ])
+    ])
+  ]
+
+
+
 })
 export class TopServiciosComponent implements OnInit {
 	@Input() record: RecordCard;
@@ -15,6 +59,10 @@ export class TopServiciosComponent implements OnInit {
 	public description: string = "";
 	public nodes: Array<Servicios> = [];
   public showDetail = false;
+  public trState = {state: 'inactive'};
+  public flyState = {state: 'void'};
+  public blockState = {state: 'void'};
+
   public detailImage: RelatedImage;
 
   constructor() { }
@@ -22,17 +70,30 @@ export class TopServiciosComponent implements OnInit {
   serviceDetail(e, token: Servicios){
     e.stopPropagation();
     e.preventDefault();
+    this.trState.state = 'active';
+    this.flyState.state = 'in';
 
     if(token.flipImage){
+      token.state = "active";
       this.detailImage = token.flipImage;
-      this.showDetail = true;
+      setTimeout(()=>{
+        this.showDetail = true;
+        token.state = "inactive";
+      },400);
     }
 
   }
   servicePlain(e){
     e.stopPropagation();
     e.preventDefault();
-    this.showDetail = false;
+    this.trState.state = 'inactive';
+    this.flyState.state = 'void';
+    this.blockState.state = "in";
+    setTimeout(()=>{
+      this.showDetail = false;
+    },400);
+
+
   }
 
   flipImage(s: SubCard): RelatedImage{
@@ -84,7 +145,8 @@ export class TopServiciosComponent implements OnInit {
   			description: s.description,
         linkTo: link,
         navigateTo: navigate,
-        noLink: noLink
+        noLink: noLink,
+        state: 'inactive'
   		} as Servicios)
   	})
   }
@@ -106,6 +168,7 @@ interface Servicios {
   linkTo: string;
   navigateTo: string;
   noLink: boolean;
+  state: string;
 }
 
 /***

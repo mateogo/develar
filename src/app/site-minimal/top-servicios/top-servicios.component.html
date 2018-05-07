@@ -3,20 +3,22 @@
 
 			<div id='top' class="row align-items-center justify-content-center">
 				<div class='col' >
-					<h4 class='top-title'>{{title}}</h4>
+					<h4  class='top-title'>{{title}}</h4>
 					<div class='top-description' innerHtml='{{description}}'></div>
 				</div>
 			</div>
+			<div id="transition">
 
 			<ng-container *ngIf='showDetail'>
-      	<a role="button" title="{{detailImage.slug}}" href="#" 
+      	<a role="button" class="item-link" title="{{detailImage.slug}}" href="#" 
          		(click)="servicePlain($event)">
-         <img mat-card-image src='{{ detailImage.url }}' ></a>
+         <img mat-card-image src='{{ detailImage.url }}'
+         			[@flyInOut]='flyState.state' ></a>
 			</ng-container>
 			
 			<ng-container *ngIf='!showDetail'>
 
-				<div id='items' class="row">
+				<div [@blockIn]='blockState.state' id='items' class="row">
 
 					<div class='col-sm-3 item' *ngFor='let node of nodes'>
 
@@ -33,12 +35,14 @@
 						<ng-container *ngIf='node.noLink'>
 	          	<a role="button" title="{{node.linkTo}}" href="#" 
 	             		(click)="serviceDetail($event, node)">
-	             <img class='item-image' src='{{ node.imageUrl }}' ></a>
+	             <img class='item-image' src='{{ node.imageUrl }}'
+	             			[@heroState]='node.state' ></a>
 	           </ng-container>
 
 					</div>
 				</div>
 			</ng-container>
+		</div>
 	</mat-card-content>
 </mat-card>
 
