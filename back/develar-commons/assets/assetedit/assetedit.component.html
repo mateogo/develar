@@ -1,0 +1,107 @@
+<mat-list-item>
+
+	<ng-container *ngIf='isImage()'>
+		<a rel="noopener noreferrer" target="_blank"
+						href="/download/{{model._id}}" >
+			<img  class="imagepreview" src="download/{{model._id}}"  alt="{{model.slug}}" 
+						title="{{model.assetId}}"></a>
+	</ng-container>
+
+	<h3 mat-line>
+		<a  rel="noopener noreferrer" target="_blank" href="{{ model.path }}">
+			{{model.assetId}}</a>
+	</h3>
+	<p mat-line>
+			{{model.slug}}
+      <span (click)="selectAsset(model)"  style="min-width: 15px" title="relacionar este enlace">
+        <i class="far fa-file-alt mr-2"></i></span>
+      <span (click)="editAsset()" style="min-width: 15px" title="editar contenido">
+				<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+					aria-hidden="true"></i></span>
+	</p>
+	<p mat-line><small>{{ model.description }}</small></p>
+	<div mat-line>
+			<small style="min-width: 100px" ><span>Type: {{ model.mimetype}}; </span></small>
+			<small style="min-width: 50px" ><span>Tamaño: {{ model.size}}; </span></small>
+			<small style="min-width: 100px" ><span>{{ model.upload}}</span></small>
+	</div>
+</mat-list-item>
+
+
+
+<div *ngIf='openEditor'>
+	<hr>
+	<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+	  <mat-form-field>
+	    <input matInput [formControl]="form.controls['assetId']" placeholder="Nombre a mostrar" >
+	    <small *ngIf="form.controls['assetId'].hasError('required') && 
+	       form.controls['assetId'].touched" class="form-message text-danger">
+	       Dato requerido</small>
+	  </mat-form-field>
+
+	  <div *ngIf='!model.isUploaded' ><mat-form-field>
+	    <input matInput [formControl]="form.controls['path']" placeholder="Url física del recurso" >
+	    <small *ngIf="form.controls['path'].hasError('required') && 
+	       form.controls['path'].touched" class="form-message text-danger">
+	       Dato requerido</small>
+
+	  </mat-form-field></div>
+
+	  <mat-form-field>
+	    <input matInput [formControl]="form.controls['slug']" placeholder="Descripción corta" >
+	  </mat-form-field>
+
+	  <mat-form-field>
+	    <input matInput [formControl]="form.controls['description']" placeholder="Observaciones" >
+	  </mat-form-field>
+	  	
+
+
+		<div class="d-flex justify-content-between align-items-center">
+			<p><strong>Arrastre para subir nueva versión del recurso?</strong></p>
+		</div>
+		<div class="d-flex justify-content-between align-items-center">
+			<span>{{ model.upload }}</span>
+			<span>
+				<a  rel="noopener noreferrer" target="_blank" href="{{ model.path }}">
+					{{model.path}}</a>
+			</span>
+		</div>
+		<div class="d-flex justify-content-between align-items-center">
+			<small style="min-width: 50px" ><span>Encoding: {{ model.encoding }}</span></small>
+			<small style="min-width: 100px" ><span>MimeType: {{ model.mimetype}}</span></small>
+			<small style="min-width: 50px" ><span>Tamaño: {{ model.size}}</span></small>
+			<small style="min-width: 100px" ><span>Hora subida: {{ model.uploadtime}}</span></small>
+		</div>
+		
+		<file-update (fileUpdated)='fileUpdated($event)'></file-update>
+
+
+	  <div class="additional-info">
+	    <button mat-raised-button type="submit" [disabled]="!form.valid" color="primary"  >Aceptar</button>
+	    <button mat-button type="button" (click)="editCancel()" color="accent">Cancelar</button>
+	  </div>
+	</form>
+
+	<mat-list dense>
+		<h3 matSubheader >Versiones existentes del recurso</h3>
+		<mat-list-item  *ngFor="let file of model.files">
+			<h3 mat-line>
+				<a  rel="noopener noreferrer" target="_blank" href="{{ file.path }}">
+							{{file.path}}</a>
+				 <span (click)="promoteFile(file)" style="min-width: 15px" title="establecer esta versión del archivo como la versión activa del recurso">
+						<i class="far fa-edit" aria-hidden="true"></i></span>
+			</h3>
+			<div mat-line>
+				<div class="d-flex justify-content-between align-items-center">
+					<small>{{ file.upload }}</small>
+					<small>{{ file.originalname }}</small>
+					<small><span>Encoding: {{ file.encoding }}</span></small>
+					<small><span>MimeType: {{ file.mimetype}}</span></small>
+					<small><span>Tamaño: {{ file.size}}</span></small>
+				</div>
+			</div>
+		</mat-list-item>
+	</mat-list>
+
+</div>

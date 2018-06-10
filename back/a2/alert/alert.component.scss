@@ -1,0 +1,98 @@
+@import '../../../assets/sass/variable';
+
+:host {
+  display: block;
+  margin-bottom: $module;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+  .alert {
+    background: main-color(A100);
+    border: 1px solid main-color(A100);
+    padding: $module/1.5 $module;
+    position: relative;
+
+    &:not(.outline-alert){
+      color: #fff;
+
+      /deep/ a {
+        color: rgba(#fff,.8);
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+    .close {
+      background: rgba(#000,.1);
+      font-size: 20px;
+      line-height: 1;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition:
+        background .2s $animation,
+        color .2s $animation;
+
+      .rtl & {
+        left: 0;
+        right: auto;
+      }
+      &:hover {
+        background: rgba(#fff,.3);
+        color: #f00;
+      }
+      .material-icons {
+        color: inherit;
+        font-size: inherit;
+        margin: 0;
+        vertical-align: top;
+      }
+    }
+    /deep/ .material-icons {
+      color: main-color(A100);
+      margin: 0 $module 0 0;
+      vertical-align: top;
+
+      .rtl & {
+        margin: 0 0 0 $module;
+      }
+    }
+    &.success-alert {
+      background: $success-color;
+      border-color: $success-color;
+
+      /deep/ .material-icons {
+        color: $success-color;
+      }
+    }
+    &.info-alert {
+      background: $info-color;
+      border-color: $info-color;
+
+      /deep/ .material-icons {
+        color: $info-color;
+      }
+    }
+    &.warning-alert {
+      background: $warning-color;
+      border-color: $warning-color;
+
+      /deep/ .material-icons {
+        color: $warning-color;
+      }
+    }
+    &.danger-alert {
+      background: $danger-color;
+      border-color: $danger-color;
+
+      /deep/ .material-icons {
+        color: $danger-color;
+      }
+    }
+    &.outline-alert {
+      background: none !important;
+    }
+  }
+}

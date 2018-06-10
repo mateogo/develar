@@ -1,0 +1,7 @@
+<ul class="breadcrumb" [ngClass]="getClasses()">
+  <li *ngFor="let item of menu; let last = last">
+    <a href="{{item.link}}" *ngIf="item.link"><span class="icon {{item.icon}}" *ngIf="item.icon"></span>{{item.title}}</a><!--
+    --><span class="static" *ngIf="!item.link"><span class="icon {{item.icon}}" *ngIf="item.icon"></span>{{item.title}}</span><!--
+    --><span class="separator" *ngIf="!last">{{separator}}</span>
+  </li>
+</ul>

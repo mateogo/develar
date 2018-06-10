@@ -1,0 +1,53 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+  background: main-color(500);
+  display: block;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transition:
+    left .2s $animation,
+    right .2s $animation;
+  width: $sidebar-width;
+  will-change: left, right;
+  z-index: 997;
+  @media #{$max991} {
+    left: -($sidebar-width);
+    //z-index: 9997;
+  }
+
+  .rtl & {
+    left: auto;
+    right: 0;
+    @media #{$max991} {
+      left: auto;
+      right: -($sidebar-width);
+    }
+  }
+  .site-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    @media #{$max991} {
+      position: relative;
+      z-index: 9999;
+    }
+  }
+  .sidebar-overlay {
+    background: rgba(main-color(500),.2);
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    transition:
+      .2s opacity 0s $animation,
+      0s visibility .2s $animation;
+    visibility: hidden;
+    width: 100%;
+    z-index: 9998;
+  }
+}

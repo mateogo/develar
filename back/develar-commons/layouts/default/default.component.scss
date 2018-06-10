@@ -1,0 +1,36 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+  .main-content {
+    padding: 70px 0 0 $sidebar-width;
+    transition: padding .2s $animation;
+    @media #{$max991} {
+      padding-left: 0;
+    }
+  }
+  
+  navbar {
+    transition: left .2s $animation;
+    @media #{$max991} {
+      width: 100%;
+    }
+  }
+  .open-sidebar {
+    navbar {
+      left: 220px;
+    }
+    sidebar {
+      left: 0;
+
+      /deep/ .sidebar-overlay {
+        @media #{$max991} {
+          opacity: 1;
+          transition:
+            .2s opacity 0s $animation,
+            0s visibility 0s $animation;
+          visibility: visible;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+<div class='container'>
+	<h4>{{title}}</h4>
+	<h5>{{subtitle}}</h5>
+
+  <form [formGroup]="form">
+		<div class="d-flex justify-content-start align-items-center" 
+				style="margin: 0 0 15px 0; background-color: #f2eded;">
+			<a role="button" href="#" class="w-40 p-2" (click)='editView($event)' title='Editor'>
+				<i class="far fa-edit"  aria-hidden="true"></i>Editar</a>
+			<a role="button" href="#" class="w-40 p-2" (click)='userView($event)' title='Vista'>
+				<i class="far fa-edit w-40 p-2"  aria-hidden="true"></i>Vista</a>
+			<a role="button" href="#" class="w-40 p-2" (click)='compileView($event)' title='Precompilado'>
+				<i class="fas fa-pen-square w-40 p-2"  aria-hidden="true"></i>Compilado</a>
+			<a role="button" href="#" class="w-40 p-2" (click)='colapsedView($event)' title='Colapsar'>
+				<i class="far fa-diamond w-40 p-2"  aria-hidden="true" ></i>Colapsar</a>
+		</div>
+
+	<div class='row'>
+
+		<ng-container *ngIf='userMode'>
+			<div class="col-md-8 offset-md-2" >
+    		<p [innerHTML]="form.controls['description'].value" ></p>
+    	</div>
+		</ng-container>
+
+		<ng-container *ngIf='compiledMode'>
+			<div class="col-md-8 offset-md-2" >
+				<mat-form-field>
+					<textarea matInput 
+	                  matAutosizeMinRows="6"
+	                  matTextareaAutosize
+	                  matAutosizeMaxRows="8"
+										[formControl]="form.controls['description']" placeholder="Descripción"></textarea>
+				</mat-form-field>
+    	</div>
+		</ng-container>
+
+		<ng-container *ngIf='editMode'>
+		<div class='col-md-3'>
+	    <mat-form-field >
+	      <mat-select #typeFld placeholder="Tipo" formControlName='type' 
+	          (selectionChange)="changeType($event)" 
+	          [(value)]="selectedType" >
+	        <mat-option *ngFor="let type of typeList" 
+	          [value]="type.val" >{{ type.label }}</mat-option>
+	      </mat-select>
+	    </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['vclass']" placeholder="Atributo class" >
+        <small *ngIf="form.controls['vclass'].hasError('required') && 
+           form.controls['vclass'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['header']" placeholder="Título sección" >
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['sheader']" placeholder="Sub-título sección" >
+      </mat-form-field>
+			<mat-form-field>
+				<textarea matInput 
+                  matAutosizeMinRows="3"
+                  matTextareaAutosize
+                  matAutosizeMaxRows="4"
+									[formControl]="form.controls['todo']" placeholder="Comentarios / ToDo"></textarea>
+			</mat-form-field>
+		</div>
+
+		<div class='col-md-8'>
+			<textarea 
+			  mediumEditor
+				[formControl]="form.controls['description']" placeholder="Descripción"
+				[(editorModel)]="meContent"
+		    [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+		    [editorplaceholder]="mePlaceholder"
+		    (modelValueChange)="descriptionUpdateContent($event)">
+			</textarea>
+		</div>
+
+		<div class='col-md-1 d-flex align-items-center flex-column' >
+				<a role="button" href="#" class="p-2" (click)='editView($event)' 
+						title='Agregar arriba'><i class="far fa-caret-square-up"  aria-hidden="true"></i></a>
+				<a role="button" href="#" class="p-2" (click)='userView($event)' 
+						title='Clonar'><i class="far fa-copy"  aria-hidden="true"></i></a>
+				<a role="button" href="#" class="mb-auto p-2" (click)='compileView($event)' 
+						title='Eliminar contenido'><i class="fas fa-trash-alt"  aria-hidden="true"></i></a>
+				<a role="button" href="#" class="p-2" (click)='colapsedView($event)' 
+						title='Agregar abajo'><i class="far fa-caret-square-down"  aria-hidden="true" ></i></a>
+		</div>
+		</ng-container>
+	</div>
+	</form>
+
+
+
+</div>
+
+

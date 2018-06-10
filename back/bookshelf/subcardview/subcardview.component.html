@@ -1,0 +1,16 @@
+<div class="subcarditemview row">
+
+	<div class="col subcarditem" >{{ model.slug }}</div>
+	<div class="col subcarditem" >{{ model.cardType}}</div>
+	<div class="col subcarditem" >
+		<a href="#"  (click)="editSubcard($event)" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>
+		<a href="#"   (click)="promoteSubcard($event)" title="Promover como ficha principal"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+	</div>
+</div>
+<div  *ngIf="openSubCardEditor" class="row">
+	<div class="col" >
+		<app-subcardedit [model]="model" 
+					(cancelEdit)="cancelEdit()"
+					(addRelatedCard)="addRelatedCard($event)" ></app-subcardedit>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<mat-card>
+	<mat-card-content>
+		<div class="container-fluid">
+			<div id="top" class="row align-items-center justify-content-center">
+				<div class="col">
+					<h4 class="top-title">{{title}}</h4>
+				</div>
+			</div>
+			<div id='about' class="row align-items-end">
+				<div class='col-md' *ngFor='let node of nodes'>
+
+					<div class='row'>
+
+						<div class='col-md-5'>
+							<img class='about-img' src='{{node.imageUrl}}' >
+						</div>
+
+						<div class='col-md-7'>
+							<div class='about-text' innerHtml='{{node.description}}'></div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="about-image">
+			<img mat-card-image src='{{mainimage}}' >
+		</div>
+	</mat-card-content>
+</mat-card>
+
+
+<!--
+		<div id='about' class="d-flex flex-column flex-md-row justify-content-start align-items-center">
+			<div *ngFor='let node of nodes'>
+				<span innerHtml='{{node.description}}'></span>
+				<img src='{{node.imageUrl}}' >
+			</div>
+		</div>
+-->

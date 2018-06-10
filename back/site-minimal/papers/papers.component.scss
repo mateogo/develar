@@ -1,0 +1,27 @@
+@import '../../../assets/sass/variable';
+
+:host {
+//  background: url(/download/5a7b00a240fa660c17b4d98a) 50% 50% no-repeat;
+//  background-size: cover;
+//  display: table-cell;
+//  height: 100%;
+//  vertical-align: middle;
+//  width: 100%;
+	.papers-container{
+		margin: 26px 0 0 0;
+
+	}
+
+	breadcrumb {
+	  max-width: 1100px;
+		margin: 0 0 0 22px;
+		.breadcrumb{
+			font-weight: 400;
+			font-size: .8rem;
+		}
+
+	}
+
+
+
+}

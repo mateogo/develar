@@ -1,0 +1,20 @@
+<mat-card >
+	<mat-card-header *ngIf='canAddTokens'>
+		<mat-card-subtitle>
+			<strong>Editor</strong>
+
+			<button mat-icon-button
+					type="button" title="elemento de Nota" color="accent" 
+					(click)='addToken()'>
+					<mat-icon>add</mat-icon>
+			</button>
+		</mat-card-subtitle>
+	</mat-card-header>
+	<mat-card-content>
+	  	<notepiece *ngFor="let entity of entities" 
+	  				(deleteToken)='deleteToken($event)'
+	  				[notePiece]='entity'>
+	  		
+	  	</notepiece>
+	</mat-card-content>
+</mat-card>

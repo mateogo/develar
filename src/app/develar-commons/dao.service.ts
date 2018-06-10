@@ -1,9 +1,10 @@
 import { Injectable }    from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
-import { Observable }    from 'rxjs/Observable';
+import { Observable, of }    from 'rxjs';
+import { catchError }     from 'rxjs/operators';
 
-import 'rxjs/add/operator/toPromise';
+
 
 
 const whoami = 'DAO.service';
@@ -17,6 +18,25 @@ export class DaoService {
 	private headers = new HttpHeaders().set('Content-Type', 'application/json');
   private dao = {};
 
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleObsError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      //console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      //this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 
 	private handleError(error: any): Promise<any> {
 		console.error('[%s]: Ocurrió un error: [%s]',whoami, error);
@@ -45,6 +65,10 @@ export class DaoService {
       product:{
         backendURL: 'api/products',
         searchURL:  'api/products/search'
+      },
+      issue:{
+        backendURL: 'api/issues',
+        searchURL:  'api/issues/search'
       },
       productit:{
         backendURL: 'api/productits',
@@ -79,10 +103,8 @@ export class DaoService {
 
   buildParams(query){
     //let params =  new HttpParams().append('slug', query.slug).append('cardType',  query["type"]);
-
     return Object.getOwnPropertyNames(query)
                  .reduce((p, key) => p.append(key, query[key]), new HttpParams());
-
   }
 
   findById<T>(type: string, id: string): Promise<T> {
@@ -173,11 +195,14 @@ export class DaoService {
     let searchUrl = `${this.dao[type].searchURL}`;;
     let params = this.buildParams(query);
     return this.http
-               .get<T[]>(searchUrl, { params });
+               .get<T[]>(searchUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
   }
 
   upsert<T>(type:string, query, entity:T): Observable<T> {
-    let url = `${this.dao[type].upsertURL}`;;
+    let url = `${this.dao[type].upsertURL}`;
     let params = this.buildParams(query);
     return this.http
                .post<T>(url, JSON.stringify(entity), {headers: this.headers, params: params})
@@ -189,19 +214,28 @@ export class DaoService {
     let params = this.buildParams(query);
 
     return this.http
-               .get<T[]>(url, { params });
+               .get<T[]>(url, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
   }
 
   defaultSearch<T>(type:string): Observable<T[]> {
     let query = `${this.dao[type].searchURL}`;
     return this.http
-               .get<T[]>(query);
+               .get<T[]>(query)
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
   }
 
   closeSession<T>(type: string): Observable<T[]> {
     let query = `${this.dao[type].closesessionURL}`;
     return this.http
-               .get<T[]>(query);
+               .get<T[]>(query)
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
   }
 
 

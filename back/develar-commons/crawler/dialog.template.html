@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Inspector:</h2>
+<div mat-dialog-content>
+	<h4>{{data.title}}</h4> 
+	<p>{{data.body}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="dialogRef.close(data.btn.action)" color="primary">{{data.btn.actionLabel}}</button>
+  <button mat-raised-button (click)="dialogRef.close('cancelar')" color="accent">cancelar</button>
+</div>

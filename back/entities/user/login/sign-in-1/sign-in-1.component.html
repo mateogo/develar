@@ -1,0 +1,38 @@
+<card [title]="'Ingrese a develar con su usuario y clave'" [align]="'center'">
+  <form #loginForm (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input [(ngModel)]="model.email" matInput placeholder="Correo registrado" name="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [(ngModel)]="model.password" matInput placeholder="Clave" name="password" type="password" >
+    </mat-form-field>
+
+    <div class="text-left mb-module">
+      <mat-checkbox>
+        Mantenerme Ingresado
+      </mat-checkbox>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" color="accent">Ingresar</button>
+
+    <div class="social-divider">Ingresar con</div>
+
+    <div class="social-login">
+      <button mat-raised-button type="button" class="bg-google text-white"
+            (click)='loginGoogle()'><i class="fa fa-google"></i> Google</button>
+      <button mat-raised-button type="button" class="bg-facebook text-white"><i class="fab fa-facebook"></i> Facebook</button>
+
+    </div>
+
+
+
+    <div class="additional-info">
+      <a routerLink="/ingresar/registrarse">REGISTRATE</a>
+      <span class="divider"></span>
+      <a routerLink="/ingresar/nuevaclave">¿Olvidaste tu clave?</a>
+      <span class="divider"></span>
+      <a routerLink="/">Vovler a inicio</a>
+    </div>
+  </form>
+</card>

@@ -1,0 +1,19 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+  .main-content {
+    padding: 70px 0 0 $sidebar-width;
+    transition: padding .2s $animation;
+    @media #{$max991} {
+      padding-left: 0;
+    }
+  }
+  
+  navbar {
+    transition: left .2s $animation;
+    @media #{$max991} {
+      width: 100%;
+    }
+  }
+
+}

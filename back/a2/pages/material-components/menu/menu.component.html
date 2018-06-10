@@ -1,0 +1,56 @@
+<card [title]="'Simple menu'">
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <span>Redial</span>
+    </button>
+    <button mat-menu-item disabled>
+      <span>Check voicemail</span>
+    </button>
+    <button mat-menu-item>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+</card>
+
+<card [title]="'Icons'">
+  <button mat-icon-button [matMenuTriggerFor]="menu2">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu2="matMenu">
+    <button mat-menu-item>
+      <mat-icon>dialpad</mat-icon>
+      <span>Redial</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>voicemail</mat-icon>
+      <span>Check voicemail</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+</card>
+
+<card [title]="'Customizing menu position'" class="mb-0">
+  <button mat-icon-button [matMenuTriggerFor]="menu3">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu3="matMenu" x-position="before">
+    <button mat-menu-item>
+      <mat-icon>dialpad</mat-icon>
+      <span>Redial</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>voicemail</mat-icon>
+      <span>Check voicemail</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+</card>

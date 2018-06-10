@@ -1,0 +1,16 @@
+<mat-card class="alta-ficha" [title]="'Edición de Ficha'" >
+
+	<asset-search  (lookUpModels)='assetSearch($event) '></asset-search>
+
+	<mat-card-content>
+		<mat-list>
+			<asset-edit *ngFor='let asset of assets' 
+									[selectedAsset]='asset'
+									(assetEmitted)='assetToPromote($event)' ></asset-edit>
+		</mat-list>
+	</mat-card-content>
+
+  <assets-upload	(assetUpload)=assetUpload($event)  
+  								(externalAsset)='addExternalAsset($event)' ></assets-upload>
+
+</mat-card>

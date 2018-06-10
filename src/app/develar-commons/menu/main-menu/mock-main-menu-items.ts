@@ -155,6 +155,22 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
   {
+    title: 'Reclamos',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'nuevo reclamo',
+        routing: '/develar/reclamos/alta'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
     title: 'Entidades',
     icon: '',
     active: false,

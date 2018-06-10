@@ -1,0 +1,21 @@
+<div [align]="customalign" *ngIf="model" >
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title><strong>{{ model.slug }}</strong>
+		    <i class="far fa-edit"  aria-hidden="true"
+		    (click)='editContent($event)' title='editar descripción'></i>
+    </mat-card-title>
+    <mat-card-subtitle><strong>{{ model.cardId }}: </strong>{{ model.subtitle }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+  	<ng-container *ngFor='let subcard of currentSubcardList'>
+  		<p>{{subcard.slug}}</p>
+  	</ng-container>
+
+  </mat-card-content>
+
+</mat-card>
+<ng-container *ngIf='openEditor'>
+	<noteeditor [noteList]='content'></noteeditor>
+</ng-container>

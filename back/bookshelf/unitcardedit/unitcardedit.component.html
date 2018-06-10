@@ -1,0 +1,265 @@
+<mat-card [title]='"Fichas"' >
+
+	<!-- Encabezado general del componente   --> 
+	<mat-card-header>
+		<mat-card-title><strong>Fichame</strong></mat-card-title>
+		<mat-card-subtitle>{{model?.slug}} Id: {{model?._id}}</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+		<!-- El form comienza acá -->
+		<form [formGroup]="form" >
+		<!--                      -->
+		<mat-tab-group>
+	
+			<!-- tab-01-00  vista de ficha  --> 
+			<mat-tab label='Ficha'>
+				<div *ngIf='model'>
+					<app-unitcardview [model]="model" [relatedcards]="relatedcards" ></app-unitcardview>
+				</div>
+			</mat-tab>
+			<!-- /tab-01-00  vista de ficha  --> 
+
+
+			<!-- tab-02-01 edición datos-generales   --> 
+			<mat-tab label='Carátula'>
+			<mat-card>
+			<mat-card-content>
+
+		    <mat-form-field>
+		      <input matInput [formControl]="form.controls['slug']" placeholder="Título/ Denominación" >
+		      <small *ngIf="form.controls['slug'].hasError('required') && 
+		         form.controls['slug'].touched" class="form-message text-danger">
+		         Dato requerido</small>
+		    </mat-form-field>
+
+		    <mat-form-field>
+		      <input matInput [formControl]="form.controls['subtitle']" placeholder="Subtítulo" >
+		      <small *ngIf="form.controls['subtitle'].hasError('required') && 
+		         form.controls['subtitle'].touched" class="form-message text-danger">
+		         Dato requerido</small>
+		    </mat-form-field>
+
+				<community-selector  [entityList]='communityList' 
+								(emitEntities)='updateSelCommunities($event)'></community-selector>
+
+
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-01 edición datos-generales   --> 
+
+			<!-- tab-02-02 clasificación    --> 
+			<mat-tab label='Clasificación'>
+			<mat-card>
+			<mat-card-content>
+				<div class="d-flex justify-content-between align-items-center">
+					<mat-form-field>
+						<mat-select #cardtype placeholder="Tipo de ficha"
+								[formControl]="form.controls['cardType']"  
+								(change)="changeCardType()" >
+						  <mat-option *ngFor="let litem of cardtypes" 
+						  	[value]="litem.val" >{{ litem.label }}</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+
+					
+					<mat-form-field>
+						<mat-select   #cardcategory  placeholder="Categoría"
+								[formControl]="form.controls['cardCategory']" >
+						  <mat-option *ngFor="let litem of cardcategories" 
+						  	[value]="litem.val" >{{ litem.label }}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="d-flex justify-content between align-items-center">			
+					<mat-form-field>
+					  <input matInput [formControl]="form.controls['cardId']" placeholder="Código" >
+					  <small *ngIf="form.controls['cardId'].hasError('required') && 
+					     form.controls['cardId'].touched" class="form-message text-danger">
+					     Dato requerido</small>
+					</mat-form-field>
+
+					<mat-form-field>
+					  <input matInput [formControl]="form.controls['topic']" placeholder="Tópico/ lugar" >
+					</mat-form-field>
+				</div>
+
+				<div class="d-flex justify-content between align-items-center">			
+					<app-tags [taglist]='tagList' 
+										[parentCol]="parentCol" 
+										[parentType]='cardtype.value'  
+										[parentStype]='cardcategory.value' 
+										(emitTags)='updateTags($event)'>
+											
+					</app-tags>
+				</div>
+
+			</mat-card-content>
+			</mat-card>				
+
+			<publish *ngIf='publish' [model]='publish' (publishEmitter)='publishListener($event)'></publish>
+
+			</mat-tab>
+			<!-- /tab-02-02 clasificación    --> 
+
+
+			<!-- tab-02-03 Fichas relacionadas    --> 
+			<mat-tab label='fichas relacionadas'>
+			<mat-card>
+			<mat-card-header>
+				<mat-card-subtitle>
+					<strong>Fichas relacionadas: (# {{relatedcards?.length}})</strong>
+				</mat-card-subtitle>
+			</mat-card-header>
+
+			<mat-card-content>
+				<div  *ngIf="showrelatedcards">
+					<div *ngFor="let scard of relatedcards">
+						<app-subcardview [model]="scard"  
+						                 (promoteRelatedCard)="promoteRelatedCard($event)" 
+						                 (editRelatedCard)="editRelatedCard($event)">
+						</app-subcardview>
+					</div>
+				</div>
+
+				<strong>Agregar subficha  </strong>
+				<button  	mat-icon-button type="button" (click)="addSubCard()" 
+									title="Nueva ficha" color="accent" ><mat-icon>add</mat-icon>
+				</button>
+
+				<div *ngIf="openSubCardEditor">
+					<app-subcardedit 	[model]="smodel" 
+														(addRelatedCard)="addRelatedCard($event)" >
+					</app-subcardedit>
+				</div>
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-03 Fichas relacionadas    -->
+
+
+			<!-- tab-02-04-00 Recursos gráficos    -->
+			<mat-tab label='Imágenes'>
+			<mat-card>
+			<mat-card-content>
+
+				<card-graph-controller 	[relatedList]='imageList' 
+																[addCardToList]='addImageToList'
+																[entityType]="'image'"  ></card-graph-controller>
+
+
+
+				<asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
+
+
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-04-00 Recursos gráficos    --> 
+
+
+			<!-- tab-02-04-01 Assets recursos de cuerpo presente    -->
+			<mat-tab label='Recursos'>
+			<mat-card>
+			<mat-card-content>
+		    <mat-form-field>
+		      <input matInput [formControl]="form.controls['mainimage']" placeholder="Imagen principal" >
+		    </mat-form-field>
+
+				<mat-form-field>
+					<textarea matInput 
+	                  matTextareaAutosize
+	                  matAutosizeMaxRows="10"
+										[formControl]="form.controls['images']" placeholder="Imágenes"></textarea>
+		      <small *ngIf="form.controls['images'].hasError('required') && 
+		         form.controls['images'].touched" class="form-message text-danger">
+		         Dato requerido</small>
+				</mat-form-field>
+
+				<card-graph-controller 	[relatedList]='assetList' 
+																[addCardToList]='addAssetToList'
+																[entityType]="'asset'"  ></card-graph-controller>
+
+
+
+				<asset-create (assetEmitted)='createCardGraphFromAsset($event)' ></asset-create>
+
+
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-04 Assets recursos de cuerpo presente    --> 
+
+			<!-- tab-02-05 Referencias Hipervínculos e Imágenes    -->
+			<mat-tab label='Referencias'>
+			<mat-card>
+			<mat-card-content>
+
+				<card-graph-controller 	[relatedList]='resourceList' 
+																[addCardToList]='addResourceToList'
+																[entityType]="'resource'"  ></card-graph-controller>
+
+
+				<app-gcse  (recordThisRequest)='createCardGraphFromGoogle($event)' ></app-gcse>
+
+			</mat-card-content>
+			</mat-card>
+			</mat-tab>
+			<!-- /tab-02-05 Referencias Hipervínculos e Imágenes    --> 
+
+
+
+
+			<!-- tab-02-06 personas    --> 
+			<mat-tab label='Personas'>
+				<card-graph-controller [relatedList]='personList' [entityType]="'person'"  ></card-graph-controller>
+			</mat-tab>
+			<!-- /tab-02-06 personas    --> 
+			
+		</mat-tab-group>
+
+				<hr>
+				<div>
+					<textarea 
+					  mediumEditor
+						[formControl]="form.controls['description']" placeholder="Descripción"
+						[(editorModel)]="meContent"
+			      [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+			      [editorplaceholder]="mePlaceholder"
+			      (modelValueChange)="descriptionUpdateContent($event)">
+					</textarea>
+				</div>
+
+		    <div class="additional-info">
+		    	<button mat-raised-button type="button" color="primary"
+		    				(click)="editSave()" [disabled]="!form.valid" >Guardar</button>
+
+		    	<button mat-raised-button type="button" color="accent"
+		    				(click)="editSaveClose()" [disabled]="!form.valid" >Guardar y cerrar</button>
+
+		      <button mat-button type="button" color="accent" 
+		      			(click)="showPreview()" >Vista previa </button>
+
+		      <button mat-button type="button" color="accent" 
+		      			(click)="editCanel()" >Cancelar</button>
+
+		      <button mat-button type="button" color="accent" 
+		      			(click)="loadNext('next')" >Siguiente</button>
+
+		      <button mat-button type="button" color="accent" 
+		      			(click)="loadNext('previous')" >Anterior</button>
+
+		      <button mat-button type="button" color="accent" 
+		      			(click)="contentEditor()" >Editor de Contenido</button>
+		    </div>
+
+			<!-- FORM END  --> 
+			</form>
+			<!-- FORM END  --> 
+	</mat-card-content>
+
+
+</mat-card>

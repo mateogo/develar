@@ -1,0 +1,72 @@
+<mat-card>
+	<mat-card-content>
+		<div class="container-fluid">
+			<div id='top' class="row align-items-center justify-content-center" >
+
+				<div class='col-sm-6' >
+					<img class='top-image' src='{{mainimage}}' >
+				</div>
+
+				<div class='col-sm-6'>
+				<!-- El form comienza acá -->
+				<form [formGroup]="form"  >
+
+					<h4> {{formTitle}} </h4>
+					<mat-form-field>
+						<input matInput placeholder="su nombre" 
+								[formControl]="form.controls['name']" >
+			      <small class="form-message text-danger"
+			      	*ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" >
+			         Dato requerido</small>
+					</mat-form-field>
+
+					<mat-form-field>
+						<input matInput name="email"  placeholder="su correo electrónico" 
+								[formControl]="form.controls['email']" >
+
+			      <small class="form-message text-danger"
+			      	*ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" >
+			         Dato requerido</small>
+
+			      <small class="form-message text-danger"
+			      	*ngIf="form.controls['email'].hasError('email') && !form.controls['email'].hasError('required')
+			      	                                                &&  form.controls['email'].touched" >
+			         Debe ingresar una dirección de correo válida</small>
+
+					</mat-form-field>
+
+					<mat-form-field>
+						<input matInput name="slug" placeholder="consulta o asunto" 
+								[formControl]="form.controls['slug']" >
+			      <small class="form-message text-danger"
+			      	*ngIf="form.controls['slug'].hasError('required') && form.controls['slug'].touched" >
+			         Dato requerido</small>
+					</mat-form-field>
+
+					<mat-form-field>
+						<textarea matInput name="description" placeholder="su mensaje" 
+								matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"
+								[formControl]="form.controls['description']" ></textarea>
+					</mat-form-field>
+
+					<mat-checkbox  [formControl]="form.controls['termsofuse']" >
+						<button mat-button class='accept' color="accent" type="button" 
+							title='Terminos y condiciones de uso'
+							(click)='termsOfConditions()'  >Acepto los términos y condiciones de uso
+						</button>
+					</mat-checkbox>
+
+					<div id='top-submit' class="top-button" >
+						<button mat-raised-button color="primary" type="button" title='enviar datos'
+										(click)='enviarSolicitud()'  
+										 [disabled]=" !form.valid || !form.controls['termsofuse'].value" >enviar solicitud</button>
+
+					</div>
+
+				</form>
+				</div>
+			
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>

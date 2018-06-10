@@ -1,0 +1,23 @@
+.my-drop-zone { 
+	border: dotted 3px lightgray; 
+	min-height: 100px;
+}
+
+.nv-file-over { 
+	border: dotted 3px red; 
+} 
+
+html, body { 
+	height: 100%; 
+}
+
+.upload-item-control {
+	margin-left: 15px;
+	font-weight: 200;
+	font-size: 12px;
+
+}
+
+.upload-item-group {
+	font-weight: 200;
+}

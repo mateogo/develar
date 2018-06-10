@@ -1,0 +1,190 @@
+<mat-card [title]="'Alta de Persona'" >
+  <mat-card-header>
+    <div mat-card-avatar><img src="assets/content/avatar-1.jpg" width="40" height="40"></div>
+    <mat-card-title><strong>Módulo Personas</strong></mat-card-title>
+    <mat-card-subtitle>{{model.displayName}} Id: {{model._id}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+  <mat-tab-group>
+    <mat-tab label="Persona">
+    
+      <mat-card>
+      <mat-card-header>
+      <mat-card-title><strong>{{model.displayName}} </strong></mat-card-title>
+      <mat-card-subtitle><strong>{{ph.personType(model.personType)}}</strong>
+      </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <div *ngIf='model.messages && model.messages.length'>
+          <mat-card-subtitle>Notificaciones</mat-card-subtitle>
+          <mat-list>
+            <mat-list-item *ngFor='let msj of model.messages'>
+              <p mat-line><strong>{{ dateToText(msj.fe) }} De: {{msj.from}}</strong></p>
+              <p mat-line>{{ msj.content}}</p>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+      </mat-card-content>
+      </mat-card>
+
+
+
+
+      <div *ngFor="let address of model.locaciones; let i=index " >
+        <mat-card>
+        <mat-card-header>
+        <mat-card-title><strong>{{address.slug}} #{{i + 1}} </strong></mat-card-title>
+        <mat-card-subtitle>
+          <strong>{{address.street1}} ({{address.zip}}) {{address.city}}</strong><span><button (click)="mapLookUp(address)" title="Ver mapa" mat-icon-button color="accent"><mat-icon>place</mat-icon></button></span>
+          <p *ngIf="address.street2" > {{address.street2}} - {{address.state}} - {{address.country}} </p>
+
+          {{address.description}}
+          
+        </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+        </mat-card>
+      </div>
+      <div *ngIf="renderMap">
+        <agm-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="zoom">
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
+        </agm-map>
+      </div>
+
+
+
+    </mat-tab>
+
+    <mat-tab label="Editar">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+
+        <h6>Datos generales</h6>
+        <div class="row" >
+          <div class="col">
+            <mat-form-field>
+            <mat-select   formControlName='personType' (change)="changePersonType()" placeholder="Tipo de persona">
+              <mat-option *ngFor="let tper of persontypes" [value]="tper.val" >{{ tper.label }}</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <input matInput [formControl]="form.controls['displayName']" placeholder="Nombre o denominación" >
+              <small *ngIf="form.controls['displayName'].hasError('required') && 
+                 form.controls['displayName'].touched" class="form-message text-danger">
+                 Dato requerido</small>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col">
+            <mat-form-field>
+              <input matInput [formControl]="form.controls['email']" placeholder="Correo electrónico" >
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-card>
+        <mat-card-header>
+        <mat-card-title><strong>Locaciones (#{{guaridas.controls.length}}) </strong><button type="button" mat-icon-button (click)="addLocation()" title="agregar una locación" color="accent" ><mat-icon>add</mat-icon></button></mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+        <div formArrayName="guaridas" >
+          <div *ngFor="let address of guaridas.controls; let i=index" [formGroupName]="i" >
+            <!-- The repeated address template -->
+            <h6>#{{i + 1}}:  {{address.value.slug}} <button type="button" (click)="removeLocation(i)" mat-icon-button title="eliminar esta locación" color="accent"><mat-icon>delete</mat-icon></button></h6>
+
+            <div class="row" >
+              <div class="col">
+                <mat-select   formControlName='addType' (change)="changeAddType(i)" placeholder="Tipo de locación">
+
+                  <mat-option *ngFor="let type of addTypes" [value]="type.val" >{{ type.label }}</mat-option>
+                </mat-select>                
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input matInput formControlName='slug' placeholder="Denominación" >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row" >
+              <div class="col">
+                <mat-form-field>
+                  <input matInput formControlName='street1' placeholder="Calle número" >
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput formControlName='street2' placeholder="Información adicional" >
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input matInput formControlName='city' placeholder="Ciudad" >
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput formControlName='zip' placeholder="Código Postal" >
+                </mat-form-field>
+                
+              </div>
+            </div>
+
+            <div class="row" >
+              <div class="col">
+                <div class="row" >
+                  <div class="col">
+                    <mat-select  formControlName='state' (change)="changeProvincia(i)" placeholder="Provincia">
+                      <mat-option *ngFor="let state of provincias" [value]="state.val">{{ state.label }}</mat-option>
+                    </mat-select>                
+                  </div>
+                  <div class="col">
+                    <mat-form-field>
+                      <input matInput formControlName='statetext' placeholder="Provincia/ Estado" >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <mat-select   formControlName='country' placeholder="Provincia">
+                  <mat-option *ngFor="let country of countries" [value]="country.val">{{ country.label }}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+            
+            <div class="row" >
+              <div class="col">
+                <mat-form-field>
+                  <input matInput formControlName='description' placeholder="Descripción / Comentario" >
+                </mat-form-field>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>       
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button [disabled]="!form.valid" color="primary" type="submit" >Aceptar</button>
+            <button mat-button type="button" color="accent" (click)='editCancel()'>Cancelar</button>
+        </mat-card-actions>
+        </mat-card>
+
+      </form>
+
+    </mat-tab>
+
+  </mat-tab-group>
+  <mat-card-actions>
+      <button mat-button type="button" color="accent" (click)='editCancel()'>Volver</button>
+  </mat-card-actions>
+
+</mat-card-content>
+</mat-card>
+

@@ -1,0 +1,44 @@
+<p title="datos básicos" >
+  <span style="margin: 10px" >
+      <i class='far fa-folderpen' aria-hidden="true"></i></span>
+  <strong>{{ model.name }}</strong>
+</p>
+<p>
+  <span class="slug">{{ model.slug || 'nuevo elemento'}}</span>
+
+  <span style="margin: 10px" 
+    (click)='editToken()' title="abrir/ cerrar editor de relación">
+    <i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" aria-hidden="true"></i></span>  
+</p>
+<div *ngIf='openEditor'>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <mat-form-field>
+    <input matInput [formControl]="form.controls['name']" placeholder="Nombre" >
+    <small *ngIf="form.controls['name'].hasError('required') && 
+       form.controls['name'].touched" class="form-message text-danger">
+       Dato requerido</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [formControl]="form.controls['slug']" placeholder="Descripción corta" >
+    <small *ngIf="form.controls['slug'].hasError('required') && 
+       form.controls['slug'].touched" class="form-message text-danger">
+       Dato requerido</small>
+  </mat-form-field>
+
+  <div id="custom-editor">
+    <textarea 
+      mediumEditor
+      [formControl]="form.controls['description']" placeholder="Descripción"
+      [(editorModel)]="meContent"
+      [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+      [editorplaceholder]="mePlaceholder"
+      (modelValueChange)="descriptionUpdateContent($event)">
+    </textarea>
+  </div>
+  
+  <app-tags [taglist]='tags' (emitTags)='addTags($event)'></app-tags>
+
+
+</form>
+</div>

@@ -1,0 +1,49 @@
+* En subficha, ajustar la selección de tipos de fichas
+/es6-avanzado
+
+TP 4.01
+https://jsbin.com/ziradoq/2/edit?html,css,js,output
+
+https://www.reactivemanifesto.org/
+
+
+
+Reactive manifiesto
+https://www.reactivemanifesto.org/
+
+
+https://rxviz.com/examples/today-is
+https://en.wikipedia.org/wiki/Reactive_programming
+
+Buen tutorial de Staltz
+https://gist.github.com/staltz/868e7e9bc2a7b8c1f754
+
+
+ver
+http://www.geekozone.com/2016/12/reactive-programming-key-to-scalable.html
+https://porter.io/github.com/Reactive-Extensions/
+https://codeburst.io/how-to-build-a-command-line-app-in-node-js-using-typescript-google-cloud-functions-and-firebase-4c13b1699a27
+
+Libro
+https://pragprog.com/book/smreactjs/reactive-programming-with-rxjs
+https://xgrommx.github.io/rx-book/ (ver 4x)
+
+
+Firebase
+https://blog.realworldfullstack.io/real-world-app-part-12-cloud-functions-for-firebase-8359787e26f3
+
+
+https://www.joshmorony.com/adding-es6-typescript-support-to-a-nodejs-server/
+http://exploringjs.com/es6/index.html?utm_source=devfreebooks&utm_medium=medium&utm_campaign=DevFreeBooks
+
+
+https://devfreebooks.github.io/javascript/
+https://codeburst.io/javascript-best-of-2017-16bd48b68444
+
+https://en.wikipedia.org/wiki/Reactive_programming
+https://rxviz.com/examples/basic-interval
+
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+

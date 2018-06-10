@@ -1,0 +1,27 @@
+<div class="top-margin"></div>
+<ng-container *ngIf="isTopbranding">
+	<top-branding [record]='topbranding' ></top-branding>
+</ng-container>
+
+<ng-container *ngIf="isTopabout">
+	<top-about [record]='topabout' ></top-about>
+</ng-container>
+
+<ng-container *ngIf="isTopaboutlr">
+	<top-aboutlr [record]='topaboutlr' ></top-aboutlr>
+</ng-container>
+
+<ng-container *ngIf="isServicios">
+	<top-servicios [record]='servicios' ></top-servicios>
+</ng-container>
+
+<ng-container *ngIf="isDestacado">
+	<destacado [record]='destacado' ></destacado>
+</ng-container>
+
+<ng-container *ngIf="isContacto">
+	<top-contacto [record]='contacto' ></top-contacto>
+</ng-container>
+
+<!-- app-cardsviewgrid></app-cardsviewgrid -->
+

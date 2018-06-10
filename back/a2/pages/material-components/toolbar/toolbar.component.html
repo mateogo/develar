@@ -1,0 +1,35 @@
+<card [title]="'Basic toolbar'">
+  <mat-toolbar>My App</mat-toolbar>
+</card>
+
+<card [title]="'Multiple rows'">
+  <mat-toolbar>
+    <span>First Row</span>
+
+    <mat-toolbar-row>
+      <span>Second Row</span>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+      <span>Third Row</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</card>
+
+<card [title]="'Positioning toolbar content'">
+  <mat-toolbar color="primary">
+    <span>Title</span>
+
+    <span class="example-fill-remaining-space"></span>
+
+    <span>Right Aligned</span>
+  </mat-toolbar>
+</card>
+
+<card [title]="'Theming'" class="mb-0">
+  <mat-toolbar color="primary">Primary</mat-toolbar>
+  <br>
+  <mat-toolbar color="accent">Accent</mat-toolbar>
+  <br>
+  <mat-toolbar color="warn">Warning</mat-toolbar>
+</card>

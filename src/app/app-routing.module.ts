@@ -105,11 +105,17 @@ const loginRoutes: Routes = [
   }
 ];
 
-
 const notificationRoutes: Routes = [
   {
     path: '', 
     loadChildren: './notifications/notifications.module#NotificationsModule'
+  }
+];
+
+const issueRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: './issues/issues.module#IssuesModule'
   }
 ];
 
@@ -133,6 +139,11 @@ const adminRoutes: Routes = [
     path: 'proyectos',
     component: WorkgroupLayoutComponent,
     children: bookshelfRoutes
+  },
+  {
+    path: 'reclamos',
+    component: DefaultLayoutComponent,
+    children: issueRoutes
   },
   {
     path: 'notificaciones',

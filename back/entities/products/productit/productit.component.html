@@ -1,0 +1,118 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-subtitle>
+			<span style="min-width: 150px"><strong>Seleccionar producto y proveedor </strong></span>
+		</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+		<div class="d-flex">
+			<product-base	(updateProduct)='updateProduct($event)'></product-base>
+			<person-browse (updatePerson)='updatePerson($event)'></person-browse>
+		</div>
+
+		<p style="text-align:left"><small><strong>Producto seleccionado: </strong>
+				{{productName}} id: {{productId}}</small>
+			<span style="margin: 10px" 
+				(click)='removeParentProduct()' title="Remover relación producto"  >
+				<i class='fas fa-times' aria-hidden="true"></i></span>
+		</p>
+		<p style="text-align:left"><small><strong>Proveedor seleccionado: </strong>
+				{{vendorName}} id: {{vendorId}}</small>
+			<span style="margin: 10px" 
+				(click)='removeParentVendor()' title="Remover relación proveedor"  >
+				<i class='fas fa-times' aria-hidden="true"></i></span>
+		</p>
+	</mat-card-content>
+
+</mat-card>
+
+
+
+
+<mat-card >
+	<mat-card-header>
+		<mat-card-subtitle>
+			<span style="min-width: 150px"><strong>{{editorTitle}}</strong></span>
+		</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+<ng-container *ngIf='_openEditor'>
+
+	<div class="d-flex flex-column flex-md-row align-items-start justify-content-start">
+		<mat-form-field style="max-width: 140px; margin-right: 15px" >
+	  	<input matInput name="code" [(ngModel)]='token.code' placeholder="Código" >
+		</mat-form-field>	
+
+		<mat-form-field style="max-width: 250px; margin-right: 15px" >
+	    <mat-select #ptypeFld placeholder="Tipo/ rubro"
+	        [(ngModel)]='token.ptype'
+	        (change)="changeType(ptypeFld.value)" >
+	      <mat-option *ngFor="let ptype of typeList" 
+	        [value]="ptype.val" >{{ ptype.label }}</mat-option>
+	    </mat-select>
+		</mat-form-field>	
+
+		<mat-form-field style="max-width: 350px" >
+	  	<input matInput name="vendorurl" [(ngModel)]='token.vendorurl' placeholder="URL producto-proveedor" >
+		</mat-form-field>	
+	</div>
+
+	<div class="d-flex flex-column flex-md-row align-items-start justify-content-start">
+		<mat-form-field style="max-width: 140px; margin-right:15px" >
+	  	<input matInput name="pbrand" [(ngModel)]='token.pbrand' placeholder="Marca/ Rubro" >
+		</mat-form-field>	
+		<mat-form-field style="max-width: 140px; margin-right:15px" >
+	  	<input matInput name="pmodel" [(ngModel)]='token.pmodel' placeholder="Modelo/ Especificación" >
+		</mat-form-field>	
+		<mat-form-field style="max-width: 220px; margin-right:15px;" >
+	  	<input matInput name="slug" [(ngModel)]='token.slug' placeholder="descripción corta - asunto" >
+		</mat-form-field>	
+	</div>
+	
+
+
+	<div class="d-flex flex-column align-items-start flex-md-row justify-content-start">
+
+
+    <mat-form-field style="max-width: 90px;margin-right: 20px;" >
+      <mat-select #umeFld placeholder="UM"
+          [(ngModel)]='token.pume'
+          (change)="changePume(umeFld.value)" >
+        <mat-option *ngFor="let pume of pumeList" 
+          [value]="pume.val" >{{ pume.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field style="max-width: 90px;" >
+      <mat-select #monedaFld [(ngModel)]='token.moneda' placeholder="Moneda"  >
+        <mat-option *ngFor="let currency of currencyList" 
+          [value]="currency.val" >{{ currency.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+		<mat-form-field style="max-width: 120px;margin-right: 20px;" >
+	  	<input matInput name="pu" [(ngModel)]='token.pu' placeholder="Precio Unitario" >
+		</mat-form-field>	
+		<mat-form-field style="max-width: 220px; margin-right:15px;" >
+	  	<input matInput name="vendorpl" [(ngModel)]='token.vendorpl' placeholder="lista de precios" >
+		</mat-form-field>
+
+	</div>
+	<div *ngIf="editable" class="additional-info">
+	  <button mat-button type="button" color="accent"  
+	      (click)="save('continue')" >Actualizar item producto</button>
+	  <button mat-button type="button" color="accent"  
+	      (click)="saveNew('continue')" >Clonar / nuevo item producto</button>
+	</div>
+
+</ng-container>
+
+
+	</mat-card-content>
+</mat-card>
+
+<productit-table   (actionTriggered)='actionTriggered($event)' ></productit-table>
+

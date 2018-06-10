@@ -1,0 +1,19 @@
+@import '../../../assets/sass/variable';
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+
+
+	div.medium-editor-element {
+		min-height: 170px;
+		border-style: none none outset;
+		border-width: 0.1px;
+		border-color: #949494;
+
+
+	}
+
+}

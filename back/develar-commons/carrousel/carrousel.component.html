@@ -1,0 +1,9 @@
+<div class="carrousel">
+  <img src="{{ currentImage }}" >
+  <div class="controles" *ngIf="hasCarrousel()">
+    <a role="button" class="left" (click)="showPreviousImage($event)">
+      <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+    <a role="button" class="right"(click)="showNextImage($event)">
+      <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+  </div>
+</div>

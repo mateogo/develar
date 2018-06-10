@@ -3,7 +3,7 @@ html {
   line-height: 22px;
 }
 body {
-  background: #f2eded;
+  background: #bbc2ce;
   font-family: $main-ff;
   font-size: 1rem;
   font-weight: $main-fw;
@@ -115,6 +115,11 @@ button {
   margin-top: .1rem;
   position: absolute;
   top: 100%;
+
+  /deep/ .rtl & {
+    left: auto;
+    right: 0;
+  }
 }
 hr {
   border: 0;
@@ -139,4 +144,9 @@ hr {
 }
 ::-webkit-scrollbar:horizontal {
   height: 4px;
+}
+.rtl {
+  th {
+    text-align: right;
+  }
 }

@@ -1,0 +1,45 @@
+<mat-card [title]="'Issues'" >
+  <mat-card-content>
+
+    <div *ngIf='_openEditor'>
+    <mat-card>
+    <mat-card-header>
+      <mat-card-subtitle>Reclamos</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['title']" placeholder="Asunto" >
+        <small *ngIf="form.controls['title'].hasError('required') && 
+           form.controls['title'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+
+
+      <div id="custom-editor">
+        <textarea 
+          mediumEditor
+          [formControl]="form.controls['description']" 
+          [(editorModel)]="meContent"
+          [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+          [editorplaceholder]="mePlaceholder"
+          (modelValueChange)="contentUpdateContent($event)">
+        </textarea>
+      </div>
+
+      <div class="additional-info">
+        <button mat-button type="submit" color="primary" 
+        		[disabled]="!form.valid"  > Aceptar</button>
+        <button mat-button type="button"  color="accent"
+          (click)="editCancel()"  >Cancelar</button>
+      </div>
+    </form>
+    </mat-card-content>
+    </mat-card>
+
+
+    </div>
+  </mat-card-content>
+</mat-card>
+

@@ -1,0 +1,73 @@
+<div [align]="customalign" *ngIf="model" >
+<mat-card class="example-card">
+  <mat-card-header>
+    <div mat-card-avatar><img src="assets/content/{{ avatar }}" width="40" height="40"></div>
+    <mat-card-title><strong>{{ model.slug }}</strong></mat-card-title>
+    <mat-card-subtitle><strong>{{ model.cardId }}: </strong>{{ model.subtitle }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <app-carrousel [carrousel]='model.carrousel' [currentImage]='model.carrousel.mainimage' ></app-carrousel>
+    <div [innerHTML]='model.description' ></div>
+
+
+
+  </mat-card-content>
+  <mat-card-actions>
+    <ng-container *ngIf='showAssets'>
+      <mat-card-subtitle><strong>Materiales para descargar: </strong>
+        <ng-container *ngFor='let asset of assetList' >
+          <a mat-button color="accent" rel="noopener noreferrer" target="_blank" title="{{asset.slug}}"
+             href="download/{{asset.entityId}}" >{{asset.displayAs || 'identificación del objeto'}}</a> 
+        </ng-container>
+      </mat-card-subtitle>
+    </ng-container>
+  
+    <ng-container *ngIf='showResources'>
+      <mat-card-subtitle><strong>Referencias externas: </strong>
+        <ng-container *ngFor='let resource of resourceList' >
+          <a mat-button color="accent" rel="noopener noreferrer" target="_blank" title="{{resource.slug}}"
+             href="{{resource.entityId}}" >{{resource.displayAs || 'identificación del recurso'}}</a> 
+        </ng-container>
+      </mat-card-subtitle>
+    </ng-container>
+  
+    <button mat-button color="accent" (click)="goToDetail()">Ver detalle</button>
+    <button  *ngIf='isAdmin' mat-button color="accent" (click)="editCard()">Editar</button>
+  </mat-card-actions>
+
+</mat-card>
+
+<mat-card *ngFor="let rcard of relatedcards; let i=index" class="example-card">
+  <mat-card-header>
+    <mat-card-title><strong>{{ rcard.slug }}</strong></mat-card-title>
+    <mat-card-subtitle><strong>{{ rcard.cardId }}: </strong>{{ rcard.subtitle }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <app-carrousel  [carrousel]='rcard.carrousel' 
+                    [currentImage]='rcard.carrousel.mainimage' ></app-carrousel>
+
+    <p [innerHTML]='rcard.description' ></p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button color="accent" (click)="goToDetail()">Ver DETALLE</button>
+    <button *ngIf='isAdmin' mat-button color="accent" (click)="editCard()">Editar</button>
+  </mat-card-actions>
+</mat-card>
+</div>
+<!--
+<card-graph-controller [relatedList]='personList' [entityType]="'person'"  ></card-graph-controller>
+
+<card-graph-controller  [relatedList]='resourceList' 
+                        [addCardToList]='addResourceToList'
+                        [entityType]="'resource'"  ></card-graph-controller>
+
+
+<card-graph-controller  [relatedList]='assetList' 
+                        [addCardToList]='addAssetToList'
+                        [entityType]="'asset'"  ></card-graph-controller>
+
+
+-->

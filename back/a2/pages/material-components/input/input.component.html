@@ -1,0 +1,50 @@
+<card [title]="'Basic input'">
+  <mat-form-field>
+    <input matInput placeholder="Input placeholder" value="">
+  </mat-form-field>
+</card>
+
+<card [title]="'Prefix and Suffix'">
+  <mat-form-field>
+    <span matPrefix>Prefix</span>
+    <input matInput placeholder="Input placeholder" value="">
+    <span matSuffix>Suffix</span>
+  </mat-form-field>
+</card>
+
+<card [title]="'Hint Labels'">
+  <mat-form-field>
+    <input matInput placeholder="Input placeholder" maxlength="100" value="Value" #characterCountHintExample>
+    <mat-hint align="end">{{characterCountHintExample.value.length}} / 100</mat-hint>
+  </mat-form-field>
+</card>
+
+<card [title]="'Divider Color'">
+  <mat-form-field>
+    <input matInput placeholder="Default color" value="">
+  </mat-form-field>
+  <mat-form-field dividerColor="accent">
+    <input matInput placeholder="Accent color" value="">
+  </mat-form-field>
+  <mat-form-field dividerColor="warn">
+    <input matInput placeholder="Warning color" value="">
+  </mat-form-field>
+</card>
+
+<card [title]="'Textarea'">
+  <mat-form-field>
+    <textarea matInput placeholder="Textarea placeholder">1600 Amphitheatre Pkwy</textarea>
+  </mat-form-field>
+</card>
+
+<card [title]="'Autocomplete'" class="mb-0">
+  <mat-form-field class="mb-0">
+    <input matInput placeholder="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
+  </mat-form-field>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let state of filteredStates | async" [value]="state">
+      {{ state }}
+    </mat-option>
+  </mat-autocomplete>
+</card>

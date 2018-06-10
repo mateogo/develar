@@ -1,0 +1,35 @@
+<mat-card class="detail-card">
+  <mat-card-header>
+    <!-- div mat-card-avatar><img src="assets/content/avatar-2.jpg" width="40" height="40"></div -->
+    <mat-card-title><strong>{{ title }}</strong></mat-card-title>
+    <mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+  	<mat-list>
+
+      <mat-list-item *ngFor='let model of models' >
+        <img mat-list-avatar src="{{ model.avatar }}" width="40" height="40" alt="">
+        <!---  encabezado: nombre del recurso relacionado  -->
+        <h3 mat-line>
+          <a rel="noopener noreferrer" target="_blank"
+             href="{{model.entityId}}" >{{model.displayAs || 'URL del recurso'}}</a> 
+        </h3>
+
+        <!---  encabezado con boton de editar relación  -->
+        <p mat-line title="detalle del predicado" >
+          <span>{{ getPredicateLabel(model.predicate) }}</span>
+          <span class="slug"> -- {{ model.slug || 'elelmento relacionado'}}</span>
+        </p>
+
+        <p mat-line *ngIf="model.description" >
+          <span  class="description">{{ model.description }}</span>
+        </p>
+
+        <p mat-line><small>id: {{model.entityId}}</small></p>
+      </mat-list-item>
+
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+

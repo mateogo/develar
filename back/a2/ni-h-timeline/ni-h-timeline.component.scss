@@ -1,0 +1,259 @@
+@import '../../../assets/sass/variable';
+
+$shape: 0;
+$item-bg: #fff;
+$line-size: 2px;
+$line-color: main-color(50);
+
+:host {
+  direction: ltr;
+  display: block;
+  position: relative;
+  
+  .line {
+    border-left: $line-size solid $line-color;
+    height: 100%;
+    left: 6px;
+    margin-left: -($line-size / 2);
+    position: absolute;
+    top: 0;
+  }
+  .timeline-box {
+    .box-label {
+      display: flex;
+      padding: ($module / 2) 0;
+
+      .label-text {
+        background: main-color(A100);
+        border-radius: $shape;
+        color: #fff;
+        display: inline-block;
+        min-width: ($module * 4);
+        padding: ($module / 4) ($module / 2);
+        position: relative;
+        text-align: center;
+      }
+    }
+    .box-items {
+      display: flex;
+      flex-direction: column;
+
+      .item {
+        margin: $module 0;
+        padding-left: 50px;
+        position: relative;
+        @media #{$max543} {
+          padding-left: 32px;
+        }
+        
+        .item-point {
+          background: #fff;
+          border: 2px solid main-color(500);
+          border-radius: 50%;
+          display: block;
+          height: 12px;
+          left: 0;
+          position: absolute;
+          top: calc(#{$module * 1.5 / 2} + 1px);
+          width: 12px;
+        }
+        .item-date {
+          font-size: 0.875rem;
+          margin-bottom: ($module / 2);
+        }
+        .item-content {
+          background: $item-bg;
+          border-radius: $shape;
+          display: inline-block;
+          padding: ($module * 1.5 / 2) $module;
+          position: relative;
+          width: auto;
+
+          .rtl & {
+            direction: rtl;
+          }
+          &:before,
+          &:after {
+            border: 10px solid transparent;
+            content: '';
+            display: block;
+            height: 0;
+            position: absolute;
+            top: 14px;
+            width: 0;
+          }
+          &:before {
+            border-right-color: $item-bg;
+            right: 100%;
+          }
+          &:after {
+            display: none;
+            left: 100%;
+            border-left-color: $item-bg;
+          }
+          .item-title {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+  &.show-date {
+    .timeline-box {
+      .box-items {
+        .item {
+          .item-point {
+            top: calc(#{$module * 4.2 / 2} + 1px);
+          }
+        }
+      }
+    }
+  }
+  &.align-right {
+    .line {
+      left: auto;
+      margin: 0 (-$line-size / 2) 0 auto;
+      right: 6px;
+    }
+    .timeline-box {
+      .box-label {
+        justify-content: flex-end;
+      }
+      .box-items {
+        align-items: flex-end;
+
+        .item {
+          padding: 0 50px 0 0;
+          @media #{$max543} {
+            padding: 0 32px 0 0;
+          }
+
+          .item-point {
+            left: auto;
+            right: 0;
+          }
+          .item-date {
+            text-align: right;
+          }
+          .item-content {
+            &:before {
+              display: none;
+            }
+            &:after {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.align-center {
+    .line {
+      left: 50%;
+    }
+    .timeline-box {
+      .box-label {
+        justify-content: center;
+      }
+      .box-items {
+        align-items: center;
+
+        .item {
+          padding: 0;
+          text-align: center;
+          @media #{$max543} {
+            padding: 0;
+          }
+
+          .item-point {
+            left: 50%;
+            margin: -26px 0 0 -6px;
+            top: 0;
+          }
+          .item-date {
+            margin-bottom: 33px;
+            text-align: center;
+
+            span {
+              background: $item-bg;
+              border: 1px solid $line-color;
+              border-radius: $shape;
+              display: inline-block;
+              padding: ($module / 4) ($module / 2);
+            }
+          }
+          .item-content {
+            &:before {
+              border-color: transparent transparent #fff transparent;
+              left: 50%;
+              margin: -20px 0 0 -10px;
+              top: 0;
+            }
+          }
+        }
+      }
+    }
+    &.show-date {
+      .timeline-box {
+        .box-items {
+          .item {
+            .item-point {
+              margin-top: 40px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.align-between {
+    @media #{$min768} {
+      .line {
+        left: 50%;
+      }
+      .timeline-box {
+        .box-label {
+          justify-content: center;
+        }
+        .box-items {
+          .item {
+            width: 50%;
+
+            &:nth-child(even) {
+              align-self: flex-end;
+
+              .item-point {
+                left: 0;
+                margin-left: -6px;
+              }
+            }
+            &:nth-child(odd) {
+              padding: 0 50px 0 0;
+              text-align: right;
+              @media #{$max543} {
+                padding: 0 32px 0 0;
+              }
+
+              .item-point {
+                left: 100%;
+                margin-left: -6px;
+              }
+              .item-content {
+                text-align: left;
+
+                .rtl & {
+                  text-align: right;
+                }
+                &:before {
+                  display: none;
+                }
+                &:after {
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

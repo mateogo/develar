@@ -1,0 +1,134 @@
+<card [title]="'Perfil de Usuario (Id: )'" [align]="'center'">
+  <form [formGroup]="form" >
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['username']" placeholder="Nombre de Usuario" required>
+      <small *ngIf="form.controls['username'].hasError('required') && 
+         form.controls['username'].touched" class="form-message text-danger">
+         Dato requerido</small>
+
+      <small *ngIf="form.controls['username'].hasError('minlength') && form.controls['username'].touched" class="form-message text-danger">El nombre debe ser al menos de 5 letras</small>
+
+      <small *ngIf="form.controls['username'].hasError('maxlength') && form.controls['username'].touched" class="form-message text-danger">El nombre excede los 20 caracteres</small>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['displayName']" placeholder="Mostrar nombre como..." required>
+      <small *ngIf="form.controls['displayName'].hasError('required') && 
+         form.controls['displayName'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['provider']" placeholder="Método de autenticación (local | google)" required>
+      <small *ngIf="form.controls['provider'].hasError('required') && 
+         form.controls['provider'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['providerId']" placeholder="ID proveedor autenticación" >
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <input matInput formControlName="email"  placeholder="Correo Electrónico" >
+
+      <small *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" class="form-message text-danger">You must include an email address.</small>
+
+      <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="form-message text-danger">You must include a valid email address.</small>
+    </mat-form-field>
+
+    <div class="row">
+
+    <div class="col-md-4">
+    <div class="card_estados">
+      <mat-card>
+        <mat-card-subtitle>Estados </mat-card-subtitle>
+        <mat-card-content>
+
+          <mat-select   formControlName="estado" placeholder="Estado">
+            <mat-option *ngFor="let estado of estados" [value]="estado.val">{{ estado.label }}</mat-option>
+          </mat-select>
+
+          <mat-select   formControlName="navance" [panelClass]="'mat-sel-custom-css'" placeholder="Estado Aprobación">
+            <mat-option *ngFor="let avance of avances" [value]="avance.val">{{ avance.label }}</mat-option>
+          </mat-select>
+
+          <p *ngIf="termsofuse"><small> Téminos y condiciones: aprobado</small></p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    </div>
+
+    <div class="col-md-4">
+    <div class="card_estados">      
+      <mat-card>
+        <mat-card-subtitle>Accesos </mat-card-subtitle>
+        <mat-card-content>
+
+          <mat-select   formControlName="modulos"  placeholder="Módulo ">
+            <mat-option *ngFor="let modulo of lmodulos" [value]="modulo.val">{{ modulo.label }}</mat-option>
+          </mat-select>
+
+          <mat-select   formControlName="roles" placeholder="Roles a asignar">
+            <mat-option *ngFor="let role of lroles" [value]="role.val">{{ role.label }}</mat-option>
+          </mat-select>
+
+          <p><small>¿Habilitar acceso: <strong>{{form.controls['modulos'].value + ':' + form.controls['roles'].value}}?</strong><button type="button" mat-icon-button (click)="addModuleRoles()" color="primary" ><mat-icon>add</mat-icon></button></small></p> 
+
+          <div>
+            <small *ngFor='let modrol of moduleRoleArray' >
+             <button type="button" (click)="delModuleRoles(modrol)" style="min-width: 120px" color="primary" mat-icon-button title="elimine acceso" >{{modrol}}<mat-icon>clear</mat-icon></button>
+            </small>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    </div>
+
+    <div class="col-md-4">
+    <div class="card_estados">      
+      <mat-card>
+        <mat-card-subtitle>Modos de autenticación (local/google) </mat-card-subtitle>
+        <mat-card-content>
+          <mat-radio-group [formControl]="form.controls['externalProfile']" >
+            <span>Acceso vía Google</span>
+            <mat-radio-button  [value]="true">Ok
+            </mat-radio-button>
+            <mat-radio-button  [value]="false">Pendiente
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <mat-radio-group [formControl]="form.controls['localProfile']" >
+            <span>Autenticación local (usuario/ clave)</span>
+            <mat-radio-button  [value]='true'>Ok</mat-radio-button>
+            <mat-radio-button  [value]='false'>Pendiente</mat-radio-button>
+          </mat-radio-group>
+
+          
+
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+    </div>
+
+    </div>
+
+    <div *ngIf="model" class="row">
+      <div class="col">
+        <community-relation [user]='model' [openeditor]='_openEditor'></community-relation>
+      </div>
+    </div>
+
+
+   <button mat-raised-button [disabled]="!form.valid" color="primary" color="accent"
+          (click)='onSubmit()'>Actualizar</button>
+   <button mat-button  color="accent" (click)='editCancel()'>cancelar</button>
+   <button mat-button  color="accent" (click)='changePassword()'>cambiar contraseña</button>
+
+
+
+  </form>
+
+</card>

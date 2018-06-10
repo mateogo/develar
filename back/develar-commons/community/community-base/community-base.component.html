@@ -1,0 +1,109 @@
+<mat-form-field>
+  <input  #searchFld  matInput  id="search-box" 
+    name="slug"
+    [(ngModel)]='communitySlug'
+    [matAutocomplete]="slug"
+    (keyup)="search(searchFld.value)"  
+    placeholder="buscar comunidad por denominación..." />
+    
+    <span matSuffix style="margin: 10px" title="abrir/ cerrar editor de comunidad"
+      (click)='editToken()' >
+      <i aria-hidden="true"
+        [class]="_openEditor ? 'far fa-edit' : 'fas fa-pen-square'" ></i>
+    </span>  
+</mat-form-field>
+
+<mat-autocomplete #slug="matAutocomplete" >
+   <mat-option
+          *ngFor="let community of fetchedEntities | async" 
+          (onSelectionChange)="selectEntity(community)"
+          [value]='community.slug'>
+      {{community.slug}}
+    </mat-option>
+</mat-autocomplete>
+
+
+<div *ngIf='_openEditor'>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <div id="subcard" class="d-flex justify-content between align-items-center">
+    <mat-form-field>
+      <mat-select #classFld placeholder="Clase de comunidad"
+          [formControl]="form.controls['eclass']"
+          (change)="changeClass(classFld.value)" >
+        <mat-option *ngFor="let eclass of classOptionList" 
+          [value]="eclass.val" >{{ eclass.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['code']" placeholder="Código" >
+      <small *ngIf="form.controls['code'].hasError('required') && 
+         form.controls['code'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['slug']" placeholder="Descripción corta" >
+      <small *ngIf="form.controls['slug'].hasError('required') && 
+         form.controls['slug'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+  </div>
+
+
+  <mat-form-field>
+    <input matInput [formControl]="form.controls['name']" placeholder="Denominación" >
+    <small *ngIf="form.controls['name'].hasError('required') && 
+       form.controls['name'].touched" class="form-message text-danger">
+       Dato requerido</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [formControl]="form.controls['displayAs']" placeholder="Mostrar como..." >
+    <small *ngIf="form.controls['displayAs'].hasError('required') && 
+       form.controls['displayAs'].touched" class="form-message text-danger">
+       Dato requerido</small>
+  </mat-form-field>
+
+  <div id="custom-editor">
+    <textarea 
+      mediumEditor
+      [formControl]="form.controls['description']" placeholder="Descripción"
+      [(editorModel)]="meContent"
+      [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+      [editorplaceholder]="mePlaceholder"
+      (modelValueChange)="descriptionUpdateContent($event)">
+    </textarea>
+  </div>
+  
+  <div  class="d-flex justify-content between align-items-center">
+    <mat-form-field>
+      <mat-select #typeFld placeholder="Tipo de comunidad"
+          [formControl]="form.controls['etype']"
+          (change)="changeType(typeFld.value)" >
+        <mat-option *ngFor="let etype of typeOptionList" 
+          [value]="etype.val" >{{ etype.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['urlpath']" placeholder="URL de la comunidad" >
+      <small *ngIf="form.controls['urlpath'].hasError('required') && 
+         form.controls['urlpath'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+  </div>
+
+
+
+  <app-tags [taglist]='tags' (emitTags)='addTags($event)'></app-tags>
+</form>
+
+<div *ngIf="editable" class="additional-info">
+  <button mat-button type="button" color="accent"  
+      (click)="save('continue')" >actualizar datos maestros comunidad</button>
+  <button mat-button type="button" color="accent"  
+        (click)="saveNew('continue')" >Clonar / nueva comunidad</button>
+</div>
+
+</div>

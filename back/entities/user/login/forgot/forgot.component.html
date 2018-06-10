@@ -1,0 +1,20 @@
+<card [title]="'Blanqueo de clave'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Email" value="">
+    </mat-form-field>
+
+    <p class="text-left small">Enter your email address that you used to register. We'll send you an email with your username and a link to reset your password.</p>
+
+    <p class="text-left small">Ingresá tu dirección de correo electrónico utilizado en la registración. Te enviaremos un correo con las instrucciones para recuperar tu clave.</p>
+
+
+    <button mat-raised-button color="primary" type="submit" color="accent">Reset</button>
+
+    <div class="additional-info">
+      <a routerLink="/ingresar/login">Ingresar</a>
+      <span class="divider"></span>
+      <a routerLink="/ingresar/registrarse">REGISTRARSE</a>
+    </div>
+  </form>
+</card>

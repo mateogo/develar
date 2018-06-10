@@ -1,0 +1,27 @@
+  <mat-form-field>
+  	<mat-chip-list matPrefix #chiplist 
+  							[multiple]='multiple' >
+  		<mat-chip #theChip *ngFor='let token of entityList' 
+  			[removable]='removable'
+  			[value]='token'
+  			(remove)='remove(token)' color="accent" selected="true" >
+  			{{token.slug}}
+  			<mat-icon matChipRemove *ngIf='removable'>cancel</mat-icon>
+  		</mat-chip>
+
+  	</mat-chip-list>
+    <input #searchBox matInput placeholder="Seleccione comunidades (separe con coma)" 
+    		[matChipInputFor]='chiplist'
+    		[matChipInputSeparatorKeyCodes]='separatorKeysCodes'
+    		(matChipInputTokenEnd)='add($event)'
+    		[matAutocomplete]="auto" 
+    		(keyup)="search($event, searchBox.value)" >
+
+  </mat-form-field>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let model of models | async" 
+    		      (onSelectionChange)="selectEntity(model, searchBox)"
+    		      [value]="model">
+      {{ model.slug }}</mat-option>
+  </mat-autocomplete>
