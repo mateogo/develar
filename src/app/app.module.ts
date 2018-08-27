@@ -6,6 +6,9 @@ import { HttpClientModule}                  from '@angular/common/http';
 import { BrowserAnimationsModule }          from '@angular/platform-browser/animations';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 
+import { NgbModule }                        from '@ng-bootstrap/ng-bootstrap';
+
+
 
 import { DevelarCommonsModule }             from './develar-commons/develar-commons.module';
 
@@ -30,6 +33,7 @@ import { SharedService }                    from './develar-commons/shared-servi
     HttpClientModule,
     DevelarCommonsModule,
     AppRoutingModule,
+    NgbModule.forRoot()
   ],
 
   declarations : [

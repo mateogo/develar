@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //modules
+import { NgbModule }               from '@ng-bootstrap/ng-bootstrap';
 
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { BookshelfModule } from '../bookshelf/bookshelf.module';
@@ -27,6 +28,7 @@ import { PapersComponent } from './papers/papers.component';
 import { DetailCardComponent } from './detail/detail-card/detail-card.component';
 import { ShowAssetsComponent } from './detail/show-assets/show-assets.component';
 import { ShowResourcesComponent } from './detail/show-resources/show-resources.component';
+import { TopCarrouselComponent } from './top-carrousel/top-carrousel.component';
 
 @NgModule({
   imports: [
@@ -34,6 +36,7 @@ import { ShowResourcesComponent } from './detail/show-resources/show-resources.c
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     DevelarCommonsModule,
     BookshelfModule,
   ],
@@ -50,7 +53,8 @@ import { ShowResourcesComponent } from './detail/show-resources/show-resources.c
   	PapersComponent,
   	DetailCardComponent,
   	ShowAssetsComponent,
-  	ShowResourcesComponent
+  	ShowResourcesComponent,
+  	TopCarrouselComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

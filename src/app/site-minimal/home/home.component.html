@@ -1,4 +1,8 @@
 <div class="top-margin"></div>
+<ng-container *ngIf="isTopcarrousel">
+	<top-carrousel [record]='topcarrousel' ></top-carrousel>
+</ng-container>
+
 <ng-container *ngIf="isTopbranding">
 	<top-branding [record]='topbranding' ></top-branding>
 </ng-container>

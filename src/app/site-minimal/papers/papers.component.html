@@ -6,6 +6,10 @@
 	<top-branding [record]='topbranding' ></top-branding>	
 </ng-container>
 
+<ng-container *ngIf="isTopcarrousel">
+	<top-carrousel [record]='topcarrousel' ></top-carrousel>	
+</ng-container>
+
 <ng-container *ngIf="isTopabout">
 	<top-about [record]='topabout' ></top-about>	
 </ng-container>

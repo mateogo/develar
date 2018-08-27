@@ -14,6 +14,7 @@ const ASSETS_NOT_SHOW = ['mainimage'];
 const templateList: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'topbranding',    label: 'topbranding',        slug:'topbranding' },
+		{val: 'topcarrousel',   label: 'topcarrousel',       slug:'topcarrousel' },
 		{val: 'topcontacto',    label: 'topcontacto',        slug:'topcontacto' },
 		{val: 'topservicios',   label: 'topservicios',       slug:'topservicios' },
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
@@ -146,6 +147,7 @@ const cardCategory = {
 	webresource: [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'topbranding',    label: 'Top branding',       slug:'Top branding' },
+		{val: 'topcarrousel',   label: 'Top carrousel',      slug:'Top carrousel' },
 		{val: 'topabout',       label: 'Top about',          slug:'Top about' },
 		{val: 'topaboutlr',     label: 'Top about L-R',      slug:'Top about L-R'},
 		{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },

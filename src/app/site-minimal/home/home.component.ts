@@ -15,7 +15,7 @@ const ABOUTLR =   'topaboutlr';
 const DESTACADO = 'destacado';
 const SERVICIOS = 'topservicios';
 const CONTACTO =  'topcontacto';
-const CARROUSEL = 'carrousel';
+const CARROUSEL = 'topcarrousel';
 const SIDEMENU =  'sidemenu';
 const FICHA =     'ficha';
 
@@ -32,6 +32,9 @@ export class HomeComponent implements OnInit {
 
 	public isTopbranding = false;
   public topbranding: RecordCard;
+
+  public isTopcarrousel = false;
+  public topcarrousel: RecordCard;
 
   public isTopabout = false;
   public topabout: RecordCard;
@@ -105,10 +108,15 @@ export class HomeComponent implements OnInit {
       records.forEach(record => {
 
         let publish = record.publish;
+        console.log('renderHome: [%s] [%s]',publish.template,  publish.template === CARROUSEL)
         
         if(publish.template === BRANDING){
           this.topbranding = record;
           this.isTopbranding = true
+
+        }else if(publish.template === CARROUSEL){
+          this.topcarrousel = record;
+          this.isTopcarrousel = true
 
         }else if(publish.template === ABOUT){
           this.topabout = record;
