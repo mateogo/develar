@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'picris';
+const user = 'simplecomm';
 //const user = 'develar';
 
 const globals = {
