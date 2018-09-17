@@ -43,7 +43,7 @@
 		          "NODE_ENV": "production",
 		          "PORT": "8083",
 		          "DBASE": "simplecommdb",
-		          "SERVER": "http://simplecomm.co",
+		          "SERVER": "http://simplecomm.com.ar",
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/simplecomm"
 		  }
