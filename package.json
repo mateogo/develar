@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.5",
-    "@angular/cli": "^6.1.5",
+    "@angular/cli": "^6.2.2",
     "@angular/compiler-cli": "^6.1.4",
     "@ngrx/schematics": "^6.1.0",
     "@types/hammerjs": "2.0.35",
