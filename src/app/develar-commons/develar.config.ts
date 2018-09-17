@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'develar';
+const user = 'simplecomm';
 //const user = 'develar';
 
 const globals = {
@@ -27,7 +27,7 @@ const globals = {
 		logoAvatar: 'avatar-simplecomm.jpg',
 		logoUser: 'avatar-u-simplecomm.jpg',
 		company: 'simplecomm',
-		url: 'www.simplecomm.co'
+		url: 'www.simplecomm.com.ar'
 	},
 
 	masuno: {
