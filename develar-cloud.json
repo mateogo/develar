@@ -47,6 +47,18 @@
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/simplecomm"
 		  }
+		},
+		{
+			"name": "fundetec",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8084",
+		          "DBASE": "fundetecdb",
+		          "SERVER": "http://fundetec.digital",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/fundetec"
+		  }
 		}
 	]
 }
