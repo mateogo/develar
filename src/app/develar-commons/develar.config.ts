@@ -4,10 +4,17 @@
  *
  *
 *************/
-const user = 'simplecomm';
+const user = 'fundetec';
 //const user = 'develar';
 
 const globals = {
+
+	fundetec: {
+		logoAvatar: 'avatar-fundetec.jpg',
+		logoUser: 'avatar-u-fundetec.jpg',
+		company: 'fundetec',
+		url: 'www.fundetec.digital'
+	},
 
 	develar: {
 		logoAvatar: 'avatar-develar.jpg',
