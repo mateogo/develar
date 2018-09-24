@@ -3,9 +3,20 @@
 		<div class="container-fluid">
 			<div id='items' class="row align-items-end">
 				<div class='col-sm item' *ngFor='let node of nodes'>
-					<h4 class='item-title'> {{node.title}}</h4>
-					<div class='item-description' innerHtml='{{node.description}}'></div>
-					<img class='item-image' src='{{node.imageUrl}}' >
+					<ng-container *ngIf='node.url'>
+						<h3 class='item-title'> {{node.title}}</h3>
+						<div class='item-description' 
+								innerHtml='{{node.description}}'></div>
+						<a routerLink="{{node.url}}">
+							<img class='item-image' src='{{node.imageUrl}}' >
+						</a>
+					</ng-container>
+					<ng-container *ngIf='!node.url'>
+						<h3 class='item-title'> {{node.title}}</h3>
+						<div class='item-description' 
+								innerHtml='{{node.description}}'></div>
+						<img class='item-image' src='{{node.imageUrl}}' >
+					</ng-container>
 				</div>
 			</div>
 		</div>

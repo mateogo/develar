@@ -24,6 +24,10 @@ const routes: Routes = [
         component: HomeComponent,
       },
       {
+        path: 'view/:id',
+        component: DetailCardComponent,
+      },
+      {
         path: 'publicaciones/:topic/:id',
         component: DetailCardComponent,
       },
