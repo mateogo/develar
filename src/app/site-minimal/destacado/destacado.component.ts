@@ -11,7 +11,7 @@ export class DestacadoComponent implements OnInit {
 	@Input() record: RecordCard;
 
 	public mainimage: string = "";
-	public nodes: Array<About> = [];
+	public nodes: Array<Destacado> = [];
 
   constructor() { }
 
@@ -22,13 +22,15 @@ export class DestacadoComponent implements OnInit {
         title: s.slug,
   			imageUrl: s.mainimage,
   			description: s.description,
-  		} as About)
+        url: s.linkTo
+  		} as Destacado)
   	})
   }
 
 }
-interface About {
+interface Destacado {
 	imageUrl: string;
 	description: string;
+  url: string;
   title: string;
 }
