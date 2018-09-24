@@ -154,6 +154,7 @@ const templateList: Array<any> = [
 		{val: 'topcontacto',    label: 'topcontacto',        slug:'topcontacto' },
 		{val: 'topservicios',   label: 'topservicios',       slug:'topservicios' },
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
+		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
@@ -290,11 +291,8 @@ const cardCategory = {
 		{val: 'topaboutlr',     label: 'Top about L-R',      slug:'Top about L-R'},
 		{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
 		{val: 'destacado',      label: 'Top destacado',      slug:'Destacado' },
+		{val: 'footer',         label: 'Footer',             slug:'Footer' },
 		{val: 'formcontacto',   label: 'Form de contacto',   slug:'Formulario de contacto' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
 	]
 };
 

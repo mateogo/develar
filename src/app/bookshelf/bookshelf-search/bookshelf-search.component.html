@@ -2,7 +2,7 @@
 	<mat-form-field>
 		<mat-select #type placeholder="Tipo"
 				[(value)]='selectedType'
-				(change)="changeCardType(type.value)" >
+				(selectionChange)="changeCardType(type.value)" >
 		  <mat-option *ngFor="let litem of cardtypes" 
 		  	[value]="litem.val" >{{ litem.label }}</mat-option>
 		</mat-select>
@@ -11,7 +11,7 @@
 	<mat-form-field>
 		<mat-select #category   placeholder="Categoría"
 				[(value)]='selectedCategory' 
-				(change)="changeCardCategory(category.value)" >
+				(selectionChange)="changeCardCategory(category.value)" >
 		  <mat-option *ngFor="let litem of cardcategories" 
 		  	[value]="litem.val" >{{ litem.label }}</mat-option>
 		</mat-select>

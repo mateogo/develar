@@ -31,8 +31,6 @@ import { PersonTableComponent }    from './person-table/person-table.component';
     FormsModule,
     ReactiveFormsModule,
     NgxDatatableModule,
-    
-
     PersonRoutingModule,
     DevelarCommonsModule
   ],

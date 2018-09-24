@@ -18,7 +18,7 @@
 		  	<mat-form-field  style="max-width: 180px; margin-right: 15px;">
 		    <mat-select #predicatefld placeholder="Predicado / Relación"
 		        [(value)]='predicateSelected'
-		        (change)="changePredicate(predicatefld.value)" >
+		        (selectionChange)="changePredicate(predicatefld.value)" >
 		      <mat-option *ngFor="let predicate of predicateList" 
 		        [value]="predicate.val" >{{ predicate.label }}</mat-option>
 		    </mat-select>
@@ -27,7 +27,7 @@
 		  	<mat-form-field  style="max-width: 180px">
 		    <mat-select #viewfld placeholder="Vista productos"
 		        [(value)]='productViewSelected'
-		        (change)="changeTableView(viewfld.value)" >
+		        (selectionChange)="changeTableView(viewfld.value)" >
 		      <mat-option *ngFor="let view of viewList" 
 		        [value]="view.val" >{{ view.label }}</mat-option>
 		    </mat-select>

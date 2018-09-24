@@ -1,0 +1,32 @@
+@import '../../../assets/sass/variable';
+
+:host {
+	.mat-card {
+		background: main-color(900);
+		color: rgba(0, 0, 0, 0.87);
+	}
+	
+	#footer {
+		.footer-text {
+			font-size: 0.8em;
+			text-align: left;
+			color: main-color(50);
+		}
+
+		.image-box {
+			max-height: 80px;
+			max-width: 250px;
+		}
+
+		.footer-img {
+			max-height: 80px;
+			width: auto;
+		}
+
+	}
+
+	.bottom-image {
+	}
+
+
+}

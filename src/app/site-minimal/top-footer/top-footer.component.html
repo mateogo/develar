@@ -1,0 +1,45 @@
+<mat-card>
+	<mat-card-content>
+		<div class="container-fluid">
+			<div id='footer' class="row align-items-end">
+				<div class='col-md' *ngFor='let node of nodes'>
+
+					<ng-container *ngIf='node.hasImage'>
+					<div class="image-box">
+						<ng-container *ngIf='node.navigateTo'>
+							<a routerLink='{{ node.navigateTo }}'>
+								<img class='footer-img' src='{{ node.imageUrl }}' ></a>
+						</ng-container>
+
+						<ng-container *ngIf='node.linkTo'>
+		          <a rel="noopener noreferrer"  target="_blank" 
+		          	 title="{{node.linkTo}}" href="{{node.linkTo}}" >
+	          		<img class='footer-img' src='{{ node.imageUrl }}' ></a> 
+						</ng-container>
+						
+						<ng-container *ngIf='node.noLink'>
+	             <img class='footer-img' src='{{ node.imageUrl }}' >
+	           </ng-container>
+					</div>
+					</ng-container>
+
+					<div class='footer-text' innerHtml='{{node.description}}'></div>
+				
+				</div>
+			</div>
+		</div>
+		<div class="bottom-image">
+			<img mat-card-image src='{{mainimage}}' >
+		</div>
+	</mat-card-content>
+</mat-card>
+
+
+<!--
+		<div id='footer' class="d-flex flex-column flex-md-row justify-content-start align-items-center">
+			<div *ngFor='let node of nodes'>
+				<span innerHtml='{{node.description}}'></span>
+				<img src='{{node.imageUrl}}' >
+			</div>
+		</div>
+-->

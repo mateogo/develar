@@ -1,7 +1,12 @@
 @import '../../../assets/sass/variable';
 
-
 .carrousel {
+
+	.carrousel-image {
+		display: block;
+		margin: 0 auto;
+	}
+
 	.controles {
 		margin: 0 0 0 0;
 		font-size: 1.2em;
