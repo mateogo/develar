@@ -14,10 +14,6 @@
     <div [innerHTML]='model.description' ></div>
   </mat-card-content>
 
-  <mat-card-actions>
-    <button mat-button (click)="goToBrowse()">VOLVER</button>
-  </mat-card-actions>
-
 </mat-card>
 
 <show-assets *ngIf='showAssets' [models]="assetList" ></show-assets>
@@ -36,8 +32,5 @@
 
     <p [innerHTML]='rcard.description' ></p>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button (click)="goToBrowse()">Volver</button>
-  </mat-card-actions>
 </mat-card>
 </div>
