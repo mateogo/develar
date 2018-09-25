@@ -62,20 +62,6 @@ export class ProjectProductComponent implements OnInit, OnChanges {
   private modelScrptn;
 
 
-
-/**
-
-
-        <mat-form-field  style="max-width: 350px">
-        <mat-select #viewfld placeholder="Vista productos"
-            [(value)]='productViewSelected'
-            (change)="changeProductView(viewfld.value)" >
-          <mat-option *ngFor="let view of viewList" 
-            [value]="view.val" >{{ view.label }}</mat-option>
-        </mat-select>
-        </mat-form-field>
-
-**/
   constructor(
   		private route: ActivatedRoute,
   		private workgroupCtrl: WorkGroupController,

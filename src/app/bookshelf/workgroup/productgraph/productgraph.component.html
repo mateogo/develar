@@ -71,7 +71,7 @@
     <mat-form-field style="max-width: 90px;margin-right: 20px;" >
       <mat-select #freqFld placeholder="UM Freq"
           [(ngModel)]='token.fume'
-          (change)="changeFume(freqFld.value)" >
+          (selectionChange)="changeFume(freqFld.value)" >
         <mat-option *ngFor="let fume of fumeList" 
           [value]="fume.val" >{{ fume.label }}</mat-option>
       </mat-select>
@@ -80,7 +80,7 @@
     <mat-form-field style="max-width: 90px;" >
       <mat-select #prmoneda placeholder="Moneda"
           [(ngModel)]='token.moneda'
-          (change)="changeMoneda(prmoneda.value)" >
+          (selectionChange)="changeMoneda(prmoneda.value)" >
         <mat-option *ngFor="let currency of currencyList" 
           [value]="currency.val" >{{ currency.label }}</mat-option>
       </mat-select>

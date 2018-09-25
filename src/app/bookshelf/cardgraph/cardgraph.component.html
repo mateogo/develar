@@ -129,7 +129,7 @@
 		    <mat-form-field>
 		      <mat-select #prmoneda placeholder="Moneda"
 		          [(ngModel)]='token.moneda'
-		          (change)="changeMoneda(prmoneda.value)" >
+		          (selectionChange)="changeMoneda(prmoneda.value)" >
 		        <mat-option *ngFor="let currency of currencyList" 
 		          [value]="currency.val" >{{ currency.label }}</mat-option>
 		      </mat-select>

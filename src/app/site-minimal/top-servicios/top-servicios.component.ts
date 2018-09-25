@@ -135,9 +135,6 @@ export class TopServiciosComponent implements OnInit {
         }
       }
 
-
-
-
   		this.nodes.push({
         title: s.slug,
   			imageUrl: s.mainimage,

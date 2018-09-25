@@ -15,6 +15,7 @@ const CONTACTO = 'topcontacto';
 const CARROUSEL = 'topcarrousel';
 const SIDEMENU = 'sidemenu';
 const FICHA = 'ficha';
+const FOOTER =    'footer';
 
 const breadcrumb: BreadcrumbItem[] = [
   {
@@ -59,6 +60,9 @@ export class PapersComponent implements OnInit {
 
   public isPapers = false;
   public papers: RecordCard[] = [];
+
+  public isFooter = false;
+  public footer: RecordCard;
 
   public isUserAdmin = false;
 
@@ -198,6 +202,10 @@ export class PapersComponent implements OnInit {
         }else if(publish.template === CONTACTO){
           this.contacto = record;
           this.isContacto = true
+
+        }else if(publish.template === FOOTER){
+          this.footer = record;
+          this.isFooter = true
 
         }else if(publish.template === FICHA){
           this.papers.push(record);

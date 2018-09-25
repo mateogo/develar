@@ -4,7 +4,7 @@
   <mat-form-field  style="max-width: 400px">
     <mat-select #milestone placeholder="Hito / Etapa / Subproceso"
         [(value)]='milestoneSelected'
-        (change)="changeMilestone(milestone.value)" >
+        (selectionChange)="changeMilestone(milestone.value)" >
       <mat-option *ngFor="let milestone of milestones" 
         [value]="milestone.val" >{{ milestone.label }}</mat-option>
     </mat-select>

@@ -58,9 +58,9 @@
 			<mat-card-content>
 				<div class="d-flex justify-content-between align-items-center">
 					<mat-form-field>
-						<mat-select #cardtype placeholder="Tipo de ficha"
+						<mat-select #cardtype placeholder="TIPO de ficha"
 								[formControl]="form.controls['cardType']"  
-								(change)="changeCardType()" >
+								(selectionChange)="changeCardType()" >
 						  <mat-option *ngFor="let litem of cardtypes" 
 						  	[value]="litem.val" >{{ litem.label }}</mat-option>
 						</mat-select>

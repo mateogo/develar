@@ -18,6 +18,7 @@ const CONTACTO =  'topcontacto';
 const CARROUSEL = 'topcarrousel';
 const SIDEMENU =  'sidemenu';
 const FICHA =     'ficha';
+const FOOTER =    'footer';
 
 const HOME = 'home';
 
@@ -50,6 +51,9 @@ export class HomeComponent implements OnInit {
 
   public isContacto = false;
   public contacto: RecordCard;
+
+  public isFooter = false;
+  public footer: RecordCard;
 
   public isPapers = false;
   public papers: RecordCard[] = [];
@@ -108,7 +112,7 @@ export class HomeComponent implements OnInit {
       records.forEach(record => {
 
         let publish = record.publish;
-        console.log('renderHome: [%s] [%s]',publish.template,  publish.template === CARROUSEL)
+        //console.log('renderHome: [%s] [%s]',publish.template,  publish.template === CARROUSEL)
         
         if(publish.template === BRANDING){
           this.topbranding = record;
@@ -133,6 +137,10 @@ export class HomeComponent implements OnInit {
         }else if(publish.template === CONTACTO){
           this.contacto = record;
           this.isContacto = true
+
+        }else if(publish.template === FOOTER){
+          this.footer = record;
+          this.isFooter = true
 
         }else if(publish.template === FICHA){
           this.papers.push(record);

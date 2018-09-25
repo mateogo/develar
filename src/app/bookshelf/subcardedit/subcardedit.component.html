@@ -7,7 +7,8 @@
 		<td>
 		<mat-form-field>
 			<mat-select  #typeFld formControlName='cardType'  
-					(change)="changeCardType(typeFld.value)" placeholder="Tipo de relación">
+					(selectionChange)="changeCardType(typeFld.value)" 
+					 placeholder="Tipo de relación">
 			  <mat-option *ngFor="let litem of cardtypes" [value]="litem.val" >{{ litem.label }}</mat-option>
 			</mat-select>
 		</mat-form-field>

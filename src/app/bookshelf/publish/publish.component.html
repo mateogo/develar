@@ -17,7 +17,7 @@
 				<mat-form-field>
 	        <mat-select #scopeTpl placeholder="Alcance de la publicación"
 	            [formControl]="form.controls['scope']"
-	            (change)="scopeChange(scopeTpl.value)" >
+	            (selectionChange)="scopeChange(scopeTpl.value)" >
 	          <mat-option *ngFor="let scope of scopeList" 
 	            [value]="scope.val" >{{ scope.label }}</mat-option>
 	        </mat-select>
@@ -63,7 +63,7 @@
       <mat-form-field>
         <mat-select #templateFld placeholder="Componente de renderización"
             [formControl]="form.controls['template']"
-            (change)="templateChange(templateFld.value)" >
+            (selectionChange)="templateChange(templateFld.value)" >
           <mat-option *ngFor="let template of templateList" 
             [value]="template.val" >{{ template.label }}</mat-option>
         </mat-select>
