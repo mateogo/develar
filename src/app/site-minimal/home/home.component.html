@@ -7,6 +7,10 @@
 	<top-branding [record]='topbranding' ></top-branding>
 </ng-container>
 
+<ng-container *ngIf="isDestacado">
+	<destacado [record]='destacado' ></destacado>
+</ng-container>
+
 <ng-container *ngIf="isTopabout">
 	<top-about [record]='topabout' ></top-about>
 </ng-container>
@@ -17,10 +21,6 @@
 
 <ng-container *ngIf="isServicios">
 	<top-servicios [record]='servicios' ></top-servicios>
-</ng-container>
-
-<ng-container *ngIf="isDestacado">
-	<destacado [record]='destacado' ></destacado>
 </ng-container>
 
 <ng-container *ngIf="isContacto">
