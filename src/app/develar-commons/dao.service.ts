@@ -62,6 +62,10 @@ export class DaoService {
         backendURL: 'api/recordcards',
         searchURL:  'api/recordcards/search'
       },
+      antecedente:{
+        backendURL: 'api/antecedentes',
+        searchURL:  'api/antecedentes/search'
+      },
       product:{
         backendURL: 'api/products',
         searchURL:  'api/products/search'
@@ -215,6 +219,16 @@ export class DaoService {
 
     return this.http
                .get<T[]>(url, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
+  fetchAll<T>(type:string): Observable<T[]> {
+    let url = `${this.dao[type].backendURL}`;;
+
+    return this.http
+               .get<T[]>(url)
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
                  );

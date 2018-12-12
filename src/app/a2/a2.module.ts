@@ -3,7 +3,12 @@ import { CommonModule }   from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxDatatableModule }               from '@swimlane/ngx-datatable';
-import { CalendarModule }                   from 'angular-calendar';
+
+import { CalendarModule, DateAdapter }   from 'angular-calendar';
+import { adapterFactory }   from 'angular-calendar/date-adapters/date-fns';
+
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 import { ChartsModule }                     from 'ng2-charts';
 
 import { DevelarCommonsModule }             from '../develar-commons/develar-commons.module';
@@ -76,9 +81,14 @@ import { PageGoogleMapComponent }           from './pages/maps/google-map/google
     FormsModule,
     ReactiveFormsModule,
 
+
     ChartsModule,
     NgxDatatableModule,
-    CalendarModule.forRoot(),
+    LeafletModule.forRoot(),
+    CalendarModule.forRoot({
+        provide: DateAdapter,
+        useFactory: adapterFactory
+    }),
 
     DevelarCommonsModule,
 

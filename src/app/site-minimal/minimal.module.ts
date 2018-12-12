@@ -30,6 +30,13 @@ import { ShowAssetsComponent } from './detail/show-assets/show-assets.component'
 import { ShowResourcesComponent } from './detail/show-resources/show-resources.component';
 import { TopCarrouselComponent } from './top-carrousel/top-carrousel.component';
 import { TopFooterComponent } from './top-footer/top-footer.component';
+import { PbaLayoutComponent } from './layouts/pba-layout/pba-layout.component';
+import { PbaNavbarComponent } from './layouts/pba-navbar/pba-navbar.component';
+import { HomePbaComponent } from './home-pba/home-pba.component';
+import { AntecedentesPageComponent } from './antecedentes/antecedentes-page/antecedentes-page.component';
+import { SearchPersonComponent } from './antecedentes/search-person/search-person.component';
+import { SearchAntecedentesComponent } from './antecedentes/search-antecedentes/search-antecedentes.component';
+import { SearchScoringComponent } from './antecedentes/search-scoring/search-scoring.component';
 
 
 
@@ -59,7 +66,14 @@ import { TopFooterComponent } from './top-footer/top-footer.component';
   	DetailCardComponent,
   	ShowAssetsComponent,
   	ShowResourcesComponent,
-  	TopCarrouselComponent
+  	TopCarrouselComponent,
+  	PbaLayoutComponent,
+  	PbaNavbarComponent,
+  	HomePbaComponent,
+  	AntecedentesPageComponent,
+  	SearchPersonComponent,
+  	SearchAntecedentesComponent,
+  	SearchScoringComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

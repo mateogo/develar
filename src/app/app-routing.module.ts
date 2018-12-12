@@ -112,6 +112,13 @@ const notificationRoutes: Routes = [
   }
 ];
 
+const antecedentesRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: './antecedentes/antecedentes.module#AntecedentesModule'
+  }
+];
+
 const issueRoutes: Routes = [
   {
     path: '', 
@@ -149,6 +156,11 @@ const adminRoutes: Routes = [
     path: 'notificaciones',
     component: DefaultLayoutComponent,
     children: notificationRoutes
+  },
+  {
+    path: 'antecedentes',
+    component: DefaultLayoutComponent,
+    children: antecedentesRoutes
   },
   {
     path: '',
@@ -208,6 +220,10 @@ const routes: Routes = [
     path: 'ingresando',
     component: ExtraLayoutComponent,
     children: afterLogin
+  },
+  {
+    path: 'seguridadvial',
+    children: mainRoutes
   },
   {
     path: '',

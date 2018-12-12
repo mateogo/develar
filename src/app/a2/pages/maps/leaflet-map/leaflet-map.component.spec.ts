@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA }          from '@angular/core';
 
 import { PageLeafletMapComponent } from './leaflet-map.component';
 
@@ -9,8 +8,7 @@ describe('PageLeafletMapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageLeafletMapComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      declarations: [ PageLeafletMapComponent ]
     })
     .compileComponents();
   }));

@@ -1,0 +1,141 @@
+<mat-card class="alta-ficha" [title]="'Edición de Antecedentes'" >
+  <mat-card-content>
+
+  <ng-container *ngIf='!hasSuccess'>
+  <mat-card-header><h5>Ingrese su documento</h5></mat-card-header>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+
+		<div class="row">
+  	  <div id="conductor1" class="col-6">
+
+	      <mat-form-field>
+	        <mat-select #fldTdocConductor placeholder="Tipo de documento"
+	            [formControl]="form.controls['tdoc']"
+	            (selectionChange)="changeSelectionValue('tdoc',fldTdocConductor.value)" >
+	          <mat-option *ngFor="let item of tcompPersonaFisica" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+	      <mat-form-field>
+	        <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+	      </mat-form-field>
+
+  	  </div>
+  	  <div id="conductor2" class="col-6">
+  	  </div>
+  	</div>
+
+  </form>
+
+
+    <div class="additional-info">
+      <button mat-raised-button type="button" color="primary"  
+          (click)="searchPerson('continue')" >BUSCAR</button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf='hasSuccess'>
+
+		  	<h3>Bienvenido</h3>
+		  	<h4>{{model.apellido}}, {{model.nombre}}</h4>
+		  	<h5>Documento: {{model.ndoc}}</h5>
+
+  </ng-container>
+
+  </mat-card-content>
+
+</mat-card>
+
+
+
+  	<!-- 
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #fldTipo placeholder="Clase de producto"
+            [formControl]="form.controls['pclass']"
+            (change)="changeProductClass(fldTipo.value)" >
+          <mat-option *ngFor="let pclass of pclasssList" 
+            [value]="pclass.val" >{{ pclass.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['code']" placeholder="Código" >
+        <small *ngIf="form.controls['code'].hasError('required') && 
+           form.controls['code'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['slug']" placeholder="Descripción corta" >
+        <small *ngIf="form.controls['slug'].hasError('required') && 
+           form.controls['slug'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+    </div>
+
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['name']" placeholder="Nombre" >
+      <small *ngIf="form.controls['name'].hasError('required') && 
+         form.controls['name'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+
+    <div id="custom-editor">
+      <textarea 
+        mediumEditor
+        [formControl]="form.controls['description']" placeholder="Descripción"
+        [(editorModel)]="meContent"
+        [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+        [editorplaceholder]="mePlaceholder"
+        (modelValueChange)="descriptionUpdateContent($event)">
+      </textarea>
+    </div>
+    
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #prtype placeholder="Tipo de producto"
+            [formControl]="form.controls['ptype']"
+            (change)="changeProductType(prtype.value)" >
+          <mat-option *ngFor="let ptype of ptypeList" 
+            [value]="ptype.val" >{{ ptype.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['pbrand']" placeholder="Marca" >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['pmodel']" placeholder="Modelo" >
+      </mat-form-field>
+    </div>
+
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #prinventory placeholder="Inventario"
+            [formControl]="form.controls['pinventory']"
+            (change)="changeProductInventory(prinventory.value)" >
+          <mat-option *ngFor="let pinventory of pinventoryList" 
+            [value]="pinventory.val" >{{ pinventory.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select #prume placeholder="Despiece - fórmula"
+            [formControl]="form.controls['pformula']"
+            (change)="changeProductFormula(prume.value)" >
+          <mat-option *ngFor="let pformula of pformulaList" 
+            [value]="pformula.val" >{{ pformula.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select #prume placeholder="Unidad de medida"
+            [formControl]="form.controls['pume']"
+            (change)="changeProductUme(prume.value)" >
+          <mat-option *ngFor="let pume of pumeList" 
+            [value]="pume.val" >{{ pume.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <app-tags [taglist]='tags' (emitTags)='addTags($event)'></app-tags>
+  	-->
+

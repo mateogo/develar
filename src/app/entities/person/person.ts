@@ -34,9 +34,9 @@ export class Person {
 	id: string;
 	_id: string;
 	displayName: string;
-	email: string;
 	persontags: Array<any>;
 	personType: string;
+	email: string;
 	pfisica: {
 		nombre: string;
 		apellido: string;
@@ -74,6 +74,8 @@ export class Person {
 	nombre: string;
 	apellido: string;
 	password: string;
+	tdoc: string;
+	ndoc: string;
 	termscond: boolean;
 	estado: string;
 	navance: string;
@@ -84,11 +86,13 @@ export class Person {
 	moduleroles: Array<any>;
 
 	constructor(
-		displayName: string, email?:string, msj?:NotificationMessage){
+		displayName: string, email?:string, msj?:NotificationMessage, tdoc?:string, ndoc?:string){
 
 		this.displayName = displayName;
 		if(email) this.email = email;
 		if(msj) this.messages = [msj];
+		if(tdoc) this.tdoc = tdoc;
+		if(ndoc) this.ndoc = ndoc;
 	}
 
 }
@@ -203,6 +207,16 @@ const entityTableActions = [
       {val: 'navigate',     label: 'Navegar comunidad',    slug:'Cambiar a esta comunidad' },
 ]
 
+const tiposCompPersonaFisica: Array<any> = [
+		{val: 'DNI', 	     label: 'DNI',  slug:'DNI' },
+		{val: 'LE',        label: 'Libreta Enrolamiento',    slug:'Libreta Enrolam' },
+		{val: 'LC',        label: 'Libreta Cívica',    slug:'Libreta Cívica' },
+		{val: 'PAS',       label: 'Pasaporte',          slug:'Pasaporte' },
+		{val: 'CI',        label: 'Cédula de Identidad',          slug:'Cédula de Identidad' },
+		{val: 'EXT',       label: 'Extranjeros',          slug:'Extranjeros' },
+];
+
+
 function initNewModel(displayName:string, email:string){
   let entity = new Person(displayName, email);
   return entity;
@@ -245,6 +259,11 @@ class PersonModel {
 	get persontypes():Array<any>{
 		return ptypes;
 	}
+
+	get tipoDocumPF():Array<any>{
+		return tiposCompPersonaFisica;
+	}
+
 	get countries():Array<any>{
 		return countries;
 	}

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA }          from '@angular/core';
 
 import { PageDashboard2Component } from './dashboard-2.component';
 
@@ -9,8 +8,7 @@ describe('PageDashboard2Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageDashboard2Component ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      declarations: [ PageDashboard2Component ]
     })
     .compileComponents();
   }));

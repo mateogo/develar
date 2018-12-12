@@ -71,6 +71,10 @@ const personSch = new mongoose.Schema({
     persontags:     { type: String, required: false },
     personType:     { type: String, required: false, default: 'fisica' },
     email:          { type: String, required: false },
+    nombre:         { type: String, required: false },
+    apellido:       { type: String, required: false },
+    tdoc:           { type: String, required: false },
+    ndoc:           { type: String, required: false },
     locaciones:     [ addressSch ],
     messages:       [ notif_messageSch ],
 });
@@ -123,7 +127,7 @@ exports.findById = function (id, errcb, cb) {
 
     Person.findById(id, function(err, entity) {
         if (err){
-            console.log('[%s] findByID ERROR() argument [%s]', whoam, iarguments.length);
+            console.log('[%s] findByID ERROR() argument [%s]', whoami, iarguments.length);
             err.itsme = whoami;
             errcb(err);
         
@@ -146,6 +150,13 @@ function buildQuery(query){
         q["email"] = query.email;
     }
 
+    if(query.tdoc){
+        q["tdoc"] = query.tdoc;
+    }
+
+    if(query.ndoc){
+        q["ndoc"] = query.ndoc;
+    }
     return q;
 }
 
