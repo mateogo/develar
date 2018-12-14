@@ -208,6 +208,9 @@ export class AntEditComponent implements OnInit {
   changeSelectionValue(type, val){
     console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
-
+  
+  onSubmit(){
+      //todo
+  }
 
 }
