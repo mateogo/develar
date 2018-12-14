@@ -59,6 +59,18 @@
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/fundetec"
 		  }
+		},
+		{
+			"name": "lasargentinas",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8085",
+		          "DBASE": "lasargentinasdb",
+		          "SERVER": "http://lasargentinas.co",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/lasargentinas"
+		  }
 		}
 	]
 }

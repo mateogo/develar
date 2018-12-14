@@ -35,7 +35,7 @@
 <div class="row mb-lg-4">
   <div class="col-lg-6 map-col mb-4 mb-lg-0">
     <card [indents]="0" class="mb-0">
-      <div id="map"></div>
+      <div class="map-box" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)"></div>
     </card>
   </div>
 
@@ -63,7 +63,10 @@
           [labels]="pieChartLabels"
           [legend]="false"
           [options]="pieChartOptions"
-          [chartType]="pieChartType"></canvas>
+          [chartType]="pieChartType"
+          width="100%"
+          height="100%"
+        ></canvas>
       </div>
       <div class="info">
         <div class="title"><strong>930</strong> <small>Resolved</small></div>
@@ -82,7 +85,10 @@
           [labels]="doughnutChartLabels"
           [legend]="false"
           [options]="doughnutChartOptions"
-          [chartType]="doughnutChartType"></canvas>
+          [chartType]="doughnutChartType"
+          width="100%"
+          height="100%"
+        ></canvas>
       </div>
       <div class="info">
         <div class="title"><strong>466</strong> <small>Unresolved</small></div>
@@ -101,7 +107,10 @@
           [labels]="polarAreaChartLabels"
           [legend]="false"
           [options]="polarAreaChartOptions"
-          [chartType]="polarAreaChartType"></canvas>
+          [chartType]="polarAreaChartType"
+          width="100%"
+          height="100%"
+        ></canvas>
       </div>
       <div class="info">
         <div class="title"><strong>1,547</strong> <small>Issues</small></div>

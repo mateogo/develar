@@ -85,6 +85,33 @@
         <div class="row" >
           <div class="col">
             <mat-form-field>
+              <mat-select #fldTdoc placeholder="Tipo de documento"
+                  [formControl]="form.controls['tdoc']"
+                  (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
+                <mat-option *ngFor="let item of tcompPersonaFisica" 
+                  [value]="item.val" >{{ item.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+            </mat-form-field>
+
+          </div>
+          <div id="personafisica" class="col">
+            <mat-form-field>
+              <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+            </mat-form-field>
+            <mat-form-field>
+              <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
+            </mat-form-field>
+          </div>
+        </div>
+
+
+
+        <div class="row" >
+          <div class="col">
+            <mat-form-field>
               <input matInput [formControl]="form.controls['email']" placeholder="Correo electrónico" >
             </mat-form-field>
           </div>

@@ -3,9 +3,12 @@ import { RouterModule, Routes }         from '@angular/router';
 
 // site routed components
 import { HomeComponent }             from './home/home.component';
+import { HomePbaComponent }             from './home-pba/home-pba.component';
 
 import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.component';
-import { PapersComponent } from './papers/papers.component';
+import { PbaLayoutComponent }        from './layouts/pba-layout/pba-layout.component';
+
+import { PapersComponent }     from './papers/papers.component';
 import { DetailCardComponent } from './detail/detail-card/detail-card.component';
 
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
@@ -14,6 +17,19 @@ const routes: Routes = [
   {
     path: 'ingresar',
     redirectTo: '/ingresar/login',
+  },
+  {
+    path: 'antecedentes',
+    component: PbaLayoutComponent,
+    children: [
+
+      {
+        path: '',
+        component: HomePbaComponent,
+        pathMatch: 'full'
+      },
+
+    ]  
   },
   {
     path: '',

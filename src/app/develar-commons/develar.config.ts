@@ -15,6 +15,14 @@ const globals = {
 		url: 'www.fundetec.digital'
 	},
 
+	lasargentinas: {
+		logoAvatar: 'avatar-lasargentinas.jpg',
+		logoUser: 'avatar-u-lasargentinas.jpg',
+		company: 'lasargentinas',
+		url: 'www.lasargentinas.digital'
+	},
+
+
 	develar: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',

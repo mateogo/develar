@@ -95,6 +95,24 @@ function buildMailContent(data):string {
 
       `;
     return tmpl;
+  }else if(gldef.company === 'lasargentinas') {
+      const tmpl = `
+      <p>Estimadx  ${data.displayName}: </p>
+      <p>Agradecemos tu registración en el sitio Las Argentinas.</p>
+      <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad.</p>
+
+      <h2>Tus datos de acceso son:</h2>
+     
+       <p><strong>URL: </strong> ${gldef.url}</p>
+       <p><strong>Nombre de usuario: </strong> ${data.username}</p>
+       <p><strong>Correo electrónico: </strong> ${data.email}</p>
+       <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
+       <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
+
+      <h4>Equipo Las Argentinas</h4>
+
+      `;
+    return tmpl;
 
   }else {
       const tmpl = `
@@ -123,7 +141,7 @@ function buildMailContent(data):string {
   styleUrls: ['./sign-up.component.scss']
 })
 export class RegistrarUsuario implements OnInit {
-	pageTitle: string = 'Bienvenido a develar';
+	pageTitle: string = 'Bienvenid@ a la Intranet';
 
 	public form: FormGroup;
 	submitted = false;

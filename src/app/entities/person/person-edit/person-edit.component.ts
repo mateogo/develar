@@ -22,6 +22,10 @@ function initForSave(form: FormGroup, model: Person): Person {
   entity.email = fvalue.email;
   entity.personType = fvalue.personType;
   entity.locaciones = locacionesDeepCopy;
+  entity.nombre = fvalue.nombre;
+  entity.apellido = fvalue.apellido;
+  entity.tdoc = fvalue.tdoc;
+  entity.ndoc = fvalue.ndoc;
   console.log('initForSave [%s]', entity.personType);
 
 
@@ -45,6 +49,8 @@ export class PersonEditComponent implements OnInit {
   private addTypes = personModel.addressTypes;
   private countries = personModel.countries;
   public persontypes = personModel.persontypes;
+  public tcompPersonaFisica = personModel.tipoDocumPF;
+
   private showMaps = false;
   public renderMap = false;
   private zoom: number = 8;
@@ -68,7 +74,11 @@ export class PersonEditComponent implements OnInit {
       this.form = this.fb.group({
         displayName:[null, Validators.compose([Validators.required])],
         personType:[null, Validators.compose([Validators.required])],
-        email:[null]
+        email:[null],
+        nombre:[null],
+        apellido:[null],
+        tdoc:[null],
+        ndoc:[null],
         //address: this.fb.group(new Address())
       });
       this.setAddresses([]);
@@ -99,7 +109,11 @@ export class PersonEditComponent implements OnInit {
         this.form.reset({
           displayName:    this.model.displayName,
           email:    this.model.email,
-          personType:    this.model.personType
+          personType:    this.model.personType,
+          nombre: this.model.nombre,
+          apellido: this.model.apellido,
+          tdoc: this.model.tdoc,
+          ndoc: this.model.ndoc
         });
 
         this.setAddresses(this.model.locaciones)
@@ -206,6 +220,10 @@ export class PersonEditComponent implements OnInit {
 
   editCancel(){
     this.closeEditor(LIST);
+  }
+
+  changeSelectionValue(type, val){
+    console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
 }

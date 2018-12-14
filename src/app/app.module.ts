@@ -19,6 +19,12 @@ import { AppComponent }                     from './app.component';
 // Develar Components
 import { UserService }                      from './entities/user/user.service';
 import { SharedService }                    from './develar-commons/shared-service';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
 
 
 
@@ -33,7 +39,10 @@ import { SharedService }                    from './develar-commons/shared-servi
     HttpClientModule,
     DevelarCommonsModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([AppEffects]),
   ],
 
   declarations : [

@@ -1,0 +1,294 @@
+<mat-card class="alta-ficha" [title]="'Edición de Antecedentes'" >
+  <mat-card-header><h5>Antecedentes</h5></mat-card-header>
+  <mat-card-content>
+
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+
+    <div id="header" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #fldTipo placeholder="Tipo de Antecedente"
+            [formControl]="form.controls['tipo']"
+            (selectionChange)="changeSelectionValue('tipo', fldTipo.value)" >
+          <mat-option *ngFor="let item of tiposList" 
+            [value]="item.val" >{{ item.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select #fldComp placeholder="Tipo de Comprobante"
+            [formControl]="form.controls['tcomp']"
+            (selectionChange)="changeSelectionValue('tcomp',fldComp.value)" >
+          <mat-option *ngFor="let item of tcompAntecedentes" 
+            [value]="item.val" >{{ item.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['ncomp']" placeholder="Número/ Código identificatorio" >
+        <small *ngIf="form.controls['ncomp'].hasError('required') && 
+           form.controls['ncomp'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input #fldFecomp matInput [formControl]="form.controls['fe_comp']" placeholder="Fecha comprobante" >
+      </mat-form-field>
+
+    </div>
+
+    <ng-container *ngIf="isInfraccion">
+    		<h3>Infracción</h3>
+		<div class="row">    	
+    <div id="infraccion" class="col-6">
+	      <mat-form-field>
+	        <mat-select #fldFinfr placeholder="Fuente de captura"
+	            [formControl]="form.controls['finfraccion']"
+	            (selectionChange)="changeSelectionValue('finfraccion',fldFinfr.value)" >
+	          <mat-option *ngFor="let item of fuentesInfraccion" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldTinfr placeholder="Tipo de Infracción"
+	            [formControl]="form.controls['tinfraccion']"
+	            (selectionChange)="changeSelectionValue('tinfraccion',fldTinfr.value)" >
+	          <mat-option *ngFor="let item of tipoInfracciones" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <input  matInput [formControl]="form.controls['fe_infrTxt']" placeholder="Fecha infracción" >
+	      </mat-form-field>
+	      <mat-form-field>
+	        <input  matInput [formControl]="form.controls['dominio']" placeholder="Dominio Vehículo" >
+	      </mat-form-field>
+	      <mat-form-field>
+	        <input  matInput [formControl]="form.controls['lugar']" placeholder="Lugar" >
+	      </mat-form-field>
+	      <mat-form-field>
+	        <mat-select #fldJurisdiccion placeholder="Jurisdicción"
+	            [formControl]="form.controls['jurisdiccion']"
+	            (selectionChange)="changeSelectionValue('jurisdiccion',fldJurisdiccion.value)" >
+	          <mat-option *ngFor="let item of jurisdicciones" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+    		
+    	</div>
+
+    	<div id='infraccion-output' class='col-6'>
+
+	      <mat-form-field>
+	        <mat-select #fldImput1 placeholder="Imputación-1"
+	            [formControl]="form.controls['imputacion01']"
+	            (selectionChange)="changeSelectionValue('imputacion_1',fldImput1.value)" >
+	          <mat-option *ngFor="let item of tipoImputaciones" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldImput1 placeholder="Imputación-2"
+	            [formControl]="form.controls['imputacion02']"
+	            (selectionChange)="changeSelectionValue('imputacion_1',fldImput1.value)" >
+	          <mat-option *ngFor="let item of tipoImputaciones" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldImput1 placeholder="Imputación-3"
+	            [formControl]="form.controls['imputacion03']"
+	            (selectionChange)="changeSelectionValue('imputacion_1',fldImput1.value)" >
+	          <mat-option *ngFor="let item of tipoImputaciones" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+
+    	</div>
+  	</div>
+
+    <h5>Datos del Conductor</h5>
+		<div class="row">
+  	  <div id="conductor1" class="col-6">
+
+	      <mat-form-field>
+	        <mat-select #fldDatoConductor placeholder="Determinación del conductor"
+	            [formControl]="form.controls['dato_conductor']"
+	            (selectionChange)="changeSelectionValue('dato_conductor',fldDatoConductor.value)" >
+	          <mat-option *ngFor="let item of conductorOptions" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldTdocConductor placeholder="Tipo documento conductor"
+	            [formControl]="form.controls['tdoc_conductor']"
+	            (selectionChange)="changeSelectionValue('tdoc_conductor',fldTdocConductor.value)" >
+	          <mat-option *ngFor="let item of tcompPersonaFisica" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+	      <mat-form-field>
+	        <input  matInput [formControl]="form.controls['ndoc_conductor']" placeholder="Nro documento" >
+	      </mat-form-field>
+
+  	  </div>
+  	  <div id="conductor2" class="col-6">
+  	  </div>
+  	</div>
+
+    <h5>Estado Infracción</h5>
+		<div class="row">
+  	  <div id="estadoinfraccion" class="col-6">
+
+	      <mat-form-field>
+	        <mat-select #fldNivelEjecucion placeholder="Nivel de ejecucion"
+	            [formControl]="form.controls['nivel_ejecucion']"
+	            (selectionChange)="changeSelectionValue('nivel_ejecucion',fldNivelEjecucion.value)" >
+	          <mat-option *ngFor="let item of nivel_ejecucion" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldEstadoInfraccion placeholder="Estado infracción"
+	            [formControl]="form.controls['estado_infraccion']"
+	            (selectionChange)="changeSelectionValue('estado_infraccion',fldEstadoInfraccion.value)" >
+	          <mat-option *ngFor="let item of estado_infraccion" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+	      <mat-form-field>
+	        <mat-select #fldEstadoPago placeholder="Estado pago"
+	            [formControl]="form.controls['estado_pago']"
+	            (selectionChange)="changeSelectionValue('estado_pago',fldEstadoPago.value)" >
+	          <mat-option *ngFor="let item of estado_pago" 
+	            [value]="item.val" >{{ item.label }}</mat-option>
+	        </mat-select>
+	      </mat-form-field>
+
+  	  </div>
+  	  <div id="conductor2" class="col-6">
+  	  </div>
+  	</div>
+
+    </ng-container>
+
+  </form>
+
+
+
+
+    <div class="additional-info">
+      <button mat-raised-button type="button" color="primary"  
+          (click)="save('continue')" >ACEPTAR</button>
+      <button mat-button       type="button"  color="accent"
+          (click)="save('navigate')" >Aceptar y VOLVER</button>
+      <button mat-button       type="button" color="accent" 
+          (click)="editCancel()" >Cancelar</button>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>
+
+
+
+  	<!-- 
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #fldTipo placeholder="Clase de producto"
+            [formControl]="form.controls['pclass']"
+            (change)="changeProductClass(fldTipo.value)" >
+          <mat-option *ngFor="let pclass of pclasssList" 
+            [value]="pclass.val" >{{ pclass.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['code']" placeholder="Código" >
+        <small *ngIf="form.controls['code'].hasError('required') && 
+           form.controls['code'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['slug']" placeholder="Descripción corta" >
+        <small *ngIf="form.controls['slug'].hasError('required') && 
+           form.controls['slug'].touched" class="form-message text-danger">
+           Dato requerido</small>
+      </mat-form-field>
+    </div>
+
+
+    <mat-form-field>
+      <input matInput [formControl]="form.controls['name']" placeholder="Nombre" >
+      <small *ngIf="form.controls['name'].hasError('required') && 
+         form.controls['name'].touched" class="form-message text-danger">
+         Dato requerido</small>
+    </mat-form-field>
+
+
+    <div id="custom-editor">
+      <textarea 
+        mediumEditor
+        [formControl]="form.controls['description']" placeholder="Descripción"
+        [(editorModel)]="meContent"
+        [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}" 
+        [editorplaceholder]="mePlaceholder"
+        (modelValueChange)="descriptionUpdateContent($event)">
+      </textarea>
+    </div>
+    
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #prtype placeholder="Tipo de producto"
+            [formControl]="form.controls['ptype']"
+            (change)="changeProductType(prtype.value)" >
+          <mat-option *ngFor="let ptype of ptypeList" 
+            [value]="ptype.val" >{{ ptype.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['pbrand']" placeholder="Marca" >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['pmodel']" placeholder="Modelo" >
+      </mat-form-field>
+    </div>
+
+    <div id="subcard" class="d-flex justify-content between align-items-center">
+      <mat-form-field>
+        <mat-select #prinventory placeholder="Inventario"
+            [formControl]="form.controls['pinventory']"
+            (change)="changeProductInventory(prinventory.value)" >
+          <mat-option *ngFor="let pinventory of pinventoryList" 
+            [value]="pinventory.val" >{{ pinventory.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select #prume placeholder="Despiece - fórmula"
+            [formControl]="form.controls['pformula']"
+            (change)="changeProductFormula(prume.value)" >
+          <mat-option *ngFor="let pformula of pformulaList" 
+            [value]="pformula.val" >{{ pformula.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select #prume placeholder="Unidad de medida"
+            [formControl]="form.controls['pume']"
+            (change)="changeProductUme(prume.value)" >
+          <mat-option *ngFor="let pume of pumeList" 
+            [value]="pume.val" >{{ pume.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <app-tags [taglist]='tags' (emitTags)='addTags($event)'></app-tags>
+  	-->
+

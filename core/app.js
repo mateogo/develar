@@ -11,6 +11,8 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
+const recordcardRoutes = require('./routes/recordcardRoutes.js');
+const antecedenteRoutes = require('./routes/antecedenteRoutes.js');
 const userRouter = require('./routes/userRouter.js');
 const parserRoutes = require('./routes/parserRoutes.js');
 const assetRoutes = require('./routes/assetRoutes.js');
@@ -20,7 +22,6 @@ const productitRoutes = require('./routes/productitRoutes.js');
 const communityRoutes = require('./routes/communityRoutes.js');
 const tagRoutes = require('./routes/tagRoutes.js');
 const personRoutes = require('./routes/personRoutes.js');
-const recordcardRoutes = require('./routes/recordcardRoutes.js');
 const commonRouter = require('./routes/commonRouter.js');
 const gcseRoutes = require('./routes/gcseRoutes');
 const crawlRoutes = require('./routes/crawlerRoutes');
@@ -54,7 +55,7 @@ app.use(
     action: 'allow-from',
     domain: 'https://youtu.be'
   }));
-
+//app.use(validateSession);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -78,6 +79,7 @@ app.use('/api/parser', parserRoutes);
 app.use('/api/gcse', gcseRoutes);
 app.use('/api/crawl', crawlRoutes);
 app.use('/api/recordcards', recordcardRoutes);
+app.use('/api/antecedentes', antecedenteRoutes);
 app.use('/api/persons', personRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/assets', assetRoutes);
