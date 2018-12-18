@@ -25,6 +25,7 @@ import { HighlightService } from './minimal-highlighter.service';
 import { DestacadoComponent } from './destacado/destacado.component';
 
 import { PortfolioTokenComponent } from './portfolio/portfolio-token/portfolio-token.component';
+import { TopPortfolioComponent } from './top-portfolio/top-portfolio.component';
 
 import { TopServiciosComponent } from './top-servicios/top-servicios.component';
 import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
@@ -70,6 +71,7 @@ import { SearchScoringComponent } from './antecedentes/search-scoring/search-sco
   	DestacadoComponent,
     TopFooterComponent,
   	TopServiciosComponent,
+    TopPortfolioComponent,
     PortfolioTokenComponent,
     PortfolioPageComponent,
     PortfolioDetailComponent,
