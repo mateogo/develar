@@ -1,6 +1,12 @@
 <div class="site-container">
 
-	<public-navbar [title]="pageTitle" ></public-navbar>
+	<ng-container *ngIf="defaultNavbar">
+		<public-navbar [title]="pageTitle" ></public-navbar>
+	</ng-container>
+
+	<ng-container *ngIf="lasargenNavbar">
+		<lasargen-navbar [title]="pageTitle" ></lasargen-navbar>
+	</ng-container>
 
   <main class="main-content">
     <div class="main-content-wrap">

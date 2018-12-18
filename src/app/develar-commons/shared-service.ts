@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { gldef } from './develar.config';
 
 @Injectable()
 export class SharedService {
@@ -12,6 +13,10 @@ export class SharedService {
   // Service message commands
   emitChange(change: string) {
     this.emitChangeSource.next(change);
+  }
+  
+  get gldef(){
+  	return gldef;
   }
 
 }

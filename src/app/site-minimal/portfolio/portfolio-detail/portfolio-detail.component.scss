@@ -1,0 +1,64 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+
+
+	.detail-host {
+		margin: 50px 0 0 0;
+
+		breadcrumb {
+		  max-width: 1100px;
+			margin: 0 0 0 22px;
+			.breadcrumb{
+				font-weight: 400;
+				font-size: .8rem;
+			}
+
+		}
+
+		.detail-card {
+		  max-width: 1100px;
+		}
+	}
+
+
+
+}
+
+
+
+.carrousel {
+	.controles {
+		margin: 0 0 0 0;
+		font-size: 1.2em;
+		.left {
+			float: left;
+		}
+		.right {
+			float: right;
+		}
+
+	}
+}
+
+.fa {
+  font-size: 2.8em;
+}
+.mat-card-image:first-child {
+	margin-top: 0;
+}
+.mat-card-title {
+	font-size: 32px;
+}
+.mat-card-subtitle {
+	font-size: 24px;
+}
+
+.mat-card-content {
+	font-size: 18px;
+	text-align: left;
+}
+
+#currentcard {
+   min-width: 450px;
+}

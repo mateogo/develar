@@ -52,12 +52,48 @@ const antecedenteSch = new Schema({
   imputaciones: [imputacionesSch]
 });
 
+/**
+  {
+    tdoc_conductor: 'DNI',
+    ndoc_conductor: '113334444'
+  }
+  // entra
+  {
+    slug: 'gomez',
+  }
+
+  //sale
+  {
+    slug: {
+        $regex: gomez,
+        $options: 'i'
+
+    }
+  }
+
+  {
+    tconsulta: 'xconducor',
+    tdoc_conductor: 'DNI',
+    ndoc_conductor: '113334444'      
+  }
+
+
+  {
+    tconsulta: 'cursos',
+    tipo: 'curso',  
+  }
+
+
+
+*/
+
+
 function buildQuery(query){
     let q = {};
 
-    // if(query['slug']){
-    //   q["slug"] = {"$regex": query.slug, "$options": "i"};
-    // }
+  if(query['slug']){
+     q["slug"] = {"$regex": query.slug, "$options": "i"};
+   }
 
     if(query['tdoc_conductor']){
       q["tdoc_conductor"] = query['tdoc_conductor'];

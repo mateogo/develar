@@ -2,7 +2,6 @@
 
 :host {
   .main-content {
-    padding: 0 0 0 0;
     height: 100%;
     transition: padding .2s $animation;
     @media #{$max991} {
@@ -10,7 +9,7 @@
     }
 		.main-content-wrap {
 	    height: 100%;
-	    padding: 20 px 0 0 0;
+	    padding: 20px 0 0 0;
 	    width: 100%;
 	  }
   }

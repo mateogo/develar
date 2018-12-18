@@ -1,0 +1,18 @@
+<div class="detail-host" [align]="customalign" *ngIf="model" >
+
+<mat-card class="detail-card">
+  <mat-card-content>
+
+    <div class="carrousel">
+      <a routerLink="/red/mujeres/{{model._id}}">
+        <img class="carrousel-image" src="{{ mainImageUrl }}" >
+      </a>
+    </div>
+    <div [innerHTML]='model.slug' ></div>
+    <div [innerHTML]='model.subtitle' ></div>
+  </mat-card-content>
+
+</mat-card>
+
+
+</div>

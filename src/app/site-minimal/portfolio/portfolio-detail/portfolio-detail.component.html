@@ -1,0 +1,31 @@
+<div class="detail-host" [align]="customalign" *ngIf="model" >
+
+<mat-card class="detail-card">
+  <mat-card-content>
+
+    <div class="carrousel">
+      <a href="#">
+        <img class="carrousel-image" src="{{ mainImageUrl }}" >
+      </a>
+    </div>
+    <div [innerHTML]='model.slug' ></div>
+    <div [innerHTML]='model.subtitle' ></div>
+  	<div [innerHTML]='model.description' ></div>
+
+
+    <!--app-carrousel [carrousel]='model.carrousel' [currentImage]='model.carrousel.mainimage' ></app-carrousel -->
+
+		<div class="d-lg-flex flex-row flex-wrap">
+		  <div class="w-25 p-2" 
+		  		*ngFor='let image of carrousel'>
+       	 	<img class="carrousel-image" src="{{ image.url }}" >
+		  			
+		  </div>
+		</div>
+
+  </mat-card-content>
+
+</mat-card>
+
+
+</div>

@@ -14,8 +14,10 @@ export class TopContactoComponent implements OnInit {
 	@Input() record: RecordCard;
 
 	public mainimage: string = "";
+  public isAsuntoMail = false;
 	public title: string = "";
-  public formTitle: string = "estemos en contacto";
+  public formTitle: string = "Contacto";
+  public formSubTitle: string = 'envianos tus datos'
 	public description: string = "";
 	public nodes: Array<Notes> = [];
 
@@ -29,7 +31,7 @@ export class TopContactoComponent implements OnInit {
     ) { 
       this.form = this.fb.group({
         name:        [null, Validators.compose([Validators.required])],
-        slug:        [null, Validators.compose([Validators.required])],
+        slug:        [null],
         email:       [null, Validators.compose([Validators.required, Validators.email])],
         termsofuse:  [null],
         description: [null],
@@ -40,8 +42,10 @@ export class TopContactoComponent implements OnInit {
 
   	this.title = this.record.slug;
   	this.description = this.record.description;
+
   	this.mainimage = this.record.mainimage;
-    this.formTitle = this.record.subtitle;
+    this.formTitle = this.record.slug;
+    this.formSubTitle = this.record.subtitle;
 
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({
@@ -78,8 +82,8 @@ export class TopContactoComponent implements OnInit {
     this.contacto.name = fvalue.name;
     this.contacto.email = fvalue.email;
     this.contacto.termsofuse = fvalue.termsofuse;
-    this.contacto.slug = fvalue.slug;
-    this.contacto.description = fvalue.description;
+    this.contacto.slug = fvalue.slug || this.minimalCtrl.defaultEmailSubject;
+    this.contacto.description = fvalue.description || this.minimalCtrl.defaultEmailBody;
 
     this.minimalCtrl.saveContactPerson(this.contacto)
 

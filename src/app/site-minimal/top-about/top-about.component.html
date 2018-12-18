@@ -1,12 +1,20 @@
 <mat-card>
 	<mat-card-content>
 		<div class="container-fluid">
+
+			<div id="top" class="row align-items-center justify-content-center">
+				<div class="col">
+					<h4 class="top-title">{{title}}</h4>
+				</div>
+			</div>
+
 			<div id='about' class="row align-items-end">
 				<div class='col-md' *ngFor='let node of nodes'>
 					<div class='about-text' innerHtml='{{node.description}}'></div>
 					<img class='about-img' src='{{node.imageUrl}}' >
 				</div>
 			</div>
+
 		</div>
 		<div class="about-image">
 			<img mat-card-image src='{{mainimage}}' >

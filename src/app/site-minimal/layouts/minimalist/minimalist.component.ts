@@ -9,6 +9,16 @@ import { SharedService }   from '../../../develar-commons/shared-service';
 })
 export class MinimalistLayoutComponent implements OnInit {
   pageTitle: any;
+  navbarTmpl = 'default-navbar';
+
+  get defaultNavbar(){
+    return this.navbarTmpl === "default-navbar";
+  }
+
+  get lasargenNavbar(){
+    return this.navbarTmpl === "lasargentinas";
+  }
+
   @Input() openedSidebar: boolean = false;
 
   constructor( private _sharedService: SharedService ) {
@@ -17,6 +27,11 @@ export class MinimalistLayoutComponent implements OnInit {
         this.pageTitle = title;
       }
     );
+
+    if(_sharedService.gldef.company === "lasargentinas"){
+       this.navbarTmpl = 'lasargentinas';
+    }
+
 
   }
 

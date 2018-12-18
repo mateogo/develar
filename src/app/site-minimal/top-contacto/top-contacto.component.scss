@@ -1,4 +1,5 @@
 @import '../../../assets/sass/variable';
+$text-color: #0645f5;
 
 :host {
   #top {
@@ -11,6 +12,11 @@
     .top-image {
     }
 
+
+  }
+
+  #left-panel{
+    color: $text-color;
 
   }
 

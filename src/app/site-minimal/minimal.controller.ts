@@ -98,6 +98,13 @@ export class SiteMinimalController {
     return this.daoService.highlight('parser', query);
   }
 
+  get defaultEmailSubject(){
+    return this.sharedSrv.gldef.emailsubject;
+  }
+
+  get defaultEmailBody(){
+    return this.sharedSrv.gldef.emailbody;
+  }
 
 
   // initMinimalPage(){
@@ -138,9 +145,9 @@ export class SiteMinimalController {
     this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
 
-    // console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
-    // console.log('actualRoute: actualUrl[%s]', this.actualUrl );
-    // console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
+    console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
+    console.log('actualRoute: actualUrl[%s]', this.actualUrl );
+    console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
 
 
   }
@@ -193,6 +200,16 @@ export class SiteMinimalController {
     return listener;
   }
 
+  fetchPortfolioRecords(topic): Subject<RecordCard[]>{
+    let listener = new Subject<RecordCard[]>();
+
+
+    this.fetchPortfolios(topic, listener);
+
+
+    return listener;
+  }
+
 
   ////              recordcard             ////
   fetchRecordCard(model: RecordCard, modelId: string){
@@ -233,12 +250,12 @@ export class SiteMinimalController {
   }
 
   setPapersTitle(){
-    setTimeout(()=>{this.sharedSrv.emitChange('Publicaciones');},300)
+    //setTimeout(()=>{this.sharedSrv.emitChange('Portfolio');},300)
     
   }
 
   setHomeTitle(){
-    setTimeout(()=>{this.sharedSrv.emitChange(this.naviCmty.data.displayAs);},300)    
+    //setTimeout(()=>{this.sharedSrv.emitChange(this.naviCmty.data.displayAs);},300)    
   }
 
 
@@ -264,7 +281,7 @@ export class SiteMinimalController {
 
     }
 
-    this.sharedSrv.emitChange(this.recordCard.slug);
+    //this.sharedSrv.emitChange(this.recordCard.slug);
     
     //this.loadRelatedPersons(this.recordCard.persons);
     //this.loadRelatedProducts(this.recordCard.products);
@@ -317,8 +334,30 @@ export class SiteMinimalController {
       publish: true,
       'publish.tag': topic,
     }
+    console.dir(query);
 
     this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      console.log('daoService: [%s]', tokens && tokens.length);
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+  ////************* Portfolios  ************////
+  private fetchPortfolios(topic:string, recordEmitter:Subject<RecordCard[]>){
+    let query = {
+      publish: true,
+      'publish.tag': topic,
+    }
+    console.dir(query);
+
+    this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      console.log('daoService: [%s]', tokens && tokens.length);
       if(tokens){
         recordEmitter.next(tokens)
 
@@ -334,6 +373,7 @@ export class SiteMinimalController {
 
   ////************* Community ************////
   private fetchCurrentCommunity(commtyListener: Subject<CommunityToken>){
+    console.log('FetchCurrentCommunity [%s]', this.navigationUrl, this.naviCmty.isActive)
 
 
     if(this.navigationUrl){

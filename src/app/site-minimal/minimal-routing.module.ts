@@ -8,8 +8,10 @@ import { HomePbaComponent }             from './home-pba/home-pba.component';
 import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.component';
 import { PbaLayoutComponent }        from './layouts/pba-layout/pba-layout.component';
 
-import { PapersComponent }     from './papers/papers.component';
-import { DetailCardComponent } from './detail/detail-card/detail-card.component';
+import { PapersComponent }        from './papers/papers.component';
+import { DetailCardComponent }    from './detail/detail-card/detail-card.component';
+import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
+import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
 
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
@@ -27,6 +29,23 @@ const routes: Routes = [
         path: '',
         component: HomePbaComponent,
         pathMatch: 'full'
+      },
+
+    ]  
+  },
+  {
+    path: 'mujeres',
+    component: MinimalistLayoutComponent,
+    children: [
+
+      {
+        path: '',
+        component: PortfolioPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ':id',
+        component: PortfolioDetailComponent,
       },
 
     ]  

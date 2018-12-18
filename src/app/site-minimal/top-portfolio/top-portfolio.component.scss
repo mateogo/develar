@@ -1,0 +1,54 @@
+@import '../../../assets/sass/variable';
+
+:host {
+  transition: left 1s $animation;
+
+	#top {
+		margin: 15px 0 30px 0;
+
+		.top-title {
+			text-align: center;
+		}
+
+		.top-description {
+			text-align: center;
+			font-size: 1.5em;
+			/deep/ p {
+				margin-bottom: .2rem;
+			}
+		}
+	}
+
+
+	#items {
+		margin: 15px 0 30px 0;
+
+		.item {
+			padding-right: 1px;
+			padding-left: 1px;
+		}
+		
+		.item-title {
+			font-size: 1.5em;
+		}
+		
+		.item-description {
+		}
+
+		.detail-img {
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 25px;
+		}
+
+
+		.item-image {
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 5px;
+			margin-top: 5px;
+
+		}
+	}
+
+}

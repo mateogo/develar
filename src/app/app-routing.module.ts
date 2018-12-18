@@ -226,6 +226,10 @@ const routes: Routes = [
     children: mainRoutes
   },
   {
+    path: 'red',
+    children: mainRoutes
+  },
+  {
     path: '',
     children: mainRoutes,
     pathMatch: 'full'

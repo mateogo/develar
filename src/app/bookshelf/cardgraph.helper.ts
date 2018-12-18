@@ -275,6 +275,7 @@ export const predicateType = {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 			{val: 'mainimage',      label: 'mainimage',             slug:'mainimage' },
+			{val: 'featureimage',      label: 'featureimage',             slug:'featureimage' },
 			{val: 'images',         label: 'images',             slug:'images' },
 			{val: 'documento',      label: 'documento',             slug:'documento' },
 			{val: 'presentacion',   label: 'presentacion',             slug:'presentacion' },
@@ -288,6 +289,7 @@ export const predicateType = {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 			{val: 'mainimage',      label: 'Imagen principal',   slug:'Imagen principal de la ficha' },
+			{val: 'featureimage',   label: 'Imagen Destacada',   slug:'Imagen para vista detallada' },
 			{val: 'images',         label: 'Carrousel',          slug:'Lista de imágenes Carrousel' },
 			{val: 'avatar',         label: 'Avatar',             slug:'Avatar' },
 

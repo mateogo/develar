@@ -1,0 +1,45 @@
+<div class='papers-container'>
+
+<ng-container *ngIf="isTopbranding">
+	<top-branding [record]='topbranding' ></top-branding>	
+</ng-container>
+
+<ng-container *ngIf="isTopcarrousel">
+	<top-carrousel [record]='topcarrousel' ></top-carrousel>	
+</ng-container>
+
+<ng-container *ngIf="isTopabout">
+	<top-about [record]='topabout' ></top-about>	
+</ng-container>
+
+<ng-container *ngIf="isDestacado">
+	<destacado [record]='destacado' ></destacado>	
+</ng-container>
+
+<ng-container *ngIf="isServicios">
+	<top-servicios [record]='servicios' ></top-servicios>	
+</ng-container>
+
+<ng-container *ngIf="isContacto">
+	<top-contacto [record]='contacto' ></top-contacto>	
+</ng-container>
+
+
+<ng-container *ngIf="isPortfolios">
+	
+	<div class="d-lg-flex flex-row flex-wrap">
+	  <portfolio-token class="w-50 p-2" 
+	  		*ngFor='let portfolio of portfolios' 
+	  		[model]='portfolio'></portfolio-token>
+	</div>
+
+</ng-container>
+
+<ng-container *ngIf="isFooter">
+	<top-footer [record]='footer' ></top-footer>	
+</ng-container>
+
+
+</div>
+<!-- app-cardsviewgrid></app-cardsviewgrid -->
+

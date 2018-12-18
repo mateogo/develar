@@ -3,17 +3,22 @@
 		<div class="container-fluid">
 			<div id='top' class="row align-items-center justify-content-center" >
 
-				<div class='col-sm-6' >
-					<img class='top-image' src='{{mainimage}}' >
+				<div id='left-panel' class='col-sm-6' >
+					<!-- img class='top-image' src='{{mainimage}}' -->
+					<h1>{{ formTitle }} </h1>
+
+					<div class='contacto-description' 
+								innerHtml='{{description}}'></div>
+
 				</div>
 
-				<div class='col-sm-6'>
+				<div id='right-panel' class='col-sm-6'>
 				<!-- El form comienza acá -->
 				<form [formGroup]="form"  >
 
-					<h4> {{formTitle}} </h4>
+					<p> {{formSubTitle}} </p>
 					<mat-form-field>
-						<input matInput placeholder="su nombre" 
+						<input matInput placeholder="tu nombre" 
 								[formControl]="form.controls['name']" >
 			      <small class="form-message text-danger"
 			      	*ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" >
@@ -21,7 +26,7 @@
 					</mat-form-field>
 
 					<mat-form-field>
-						<input matInput name="email"  placeholder="su correo electrónico" 
+						<input matInput name="email"  placeholder="tu correo electrónico" 
 								[formControl]="form.controls['email']" >
 
 			      <small class="form-message text-danger"
@@ -35,6 +40,7 @@
 
 					</mat-form-field>
 
+					<ng-container *ngIf="isAsuntoMail">
 					<mat-form-field>
 						<input matInput name="slug" placeholder="consulta o asunto" 
 								[formControl]="form.controls['slug']" >
@@ -42,9 +48,10 @@
 			      	*ngIf="form.controls['slug'].hasError('required') && form.controls['slug'].touched" >
 			         Dato requerido</small>
 					</mat-form-field>
+				  </ng-container>
 
 					<mat-form-field>
-						<textarea matInput name="description" placeholder="su mensaje" 
+						<textarea matInput name="description" placeholder="tu mensaje" 
 								matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"
 								[formControl]="form.controls['description']" ></textarea>
 					</mat-form-field>

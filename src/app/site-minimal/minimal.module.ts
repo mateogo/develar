@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 
 import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { LasargenNavbarComponent } from './layouts/lasargen-navbar/lasargen-navbar.component';
 import { TopBrandingComponent } from './top-branding/top-branding.component';
 import { TopAboutComponent } from './top-about/top-about.component';
 import { TopAboutlrComponent } from './top-about-lr/top-aboutlr.component';
@@ -22,7 +23,13 @@ import { TopAboutlrComponent } from './top-about-lr/top-aboutlr.component';
 import { SiteMinimalController } from './minimal.controller';
 import { HighlightService } from './minimal-highlighter.service';
 import { DestacadoComponent } from './destacado/destacado.component';
+
+import { PortfolioTokenComponent } from './portfolio/portfolio-token/portfolio-token.component';
+
 import { TopServiciosComponent } from './top-servicios/top-servicios.component';
+import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
+import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
+
 import { TopContactoComponent } from './top-contacto/top-contacto.component';
 import { PapersComponent } from './papers/papers.component';
 import { DetailCardComponent } from './detail/detail-card/detail-card.component';
@@ -55,12 +62,17 @@ import { SearchScoringComponent } from './antecedentes/search-scoring/search-sco
   	MinimalistLayoutComponent,
   	HomeComponent,
   	NavbarComponent,
+    LasargenNavbarComponent,
+    PbaNavbarComponent,
   	TopBrandingComponent,
   	TopAboutComponent,
     TopAboutlrComponent,
   	DestacadoComponent,
     TopFooterComponent,
   	TopServiciosComponent,
+    PortfolioTokenComponent,
+    PortfolioPageComponent,
+    PortfolioDetailComponent,
   	TopContactoComponent,
   	PapersComponent,
   	DetailCardComponent,
@@ -68,7 +80,6 @@ import { SearchScoringComponent } from './antecedentes/search-scoring/search-sco
   	ShowResourcesComponent,
   	TopCarrouselComponent,
   	PbaLayoutComponent,
-  	PbaNavbarComponent,
   	HomePbaComponent,
   	AntecedentesPageComponent,
   	SearchPersonComponent,
