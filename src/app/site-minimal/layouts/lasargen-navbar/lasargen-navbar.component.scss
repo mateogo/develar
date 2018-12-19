@@ -35,11 +35,12 @@ $text-color: #00aec7;
   .logo {
     font-family: $second-ff;
     text-decoration: none;
+    margin-left: 20px;
 
     .logo-img {
+      max-height: 45px;
       width: auto;
       height: auto;
-      max-height: 45px;
       opacity: 0.9;
     }
     .logo-text {
@@ -62,95 +63,14 @@ $text-color: #00aec7;
     height: 100%;
     justify-content: space-between;
     padding: 0 22px;
-    @media #{$max991} {
-      flex-wrap: wrap;
-    }
 
-    .navbar-button {
-      cursor: pointer;
-      display: none;
-      height: 18px;
-      margin: 0;
-      position: relative;
-      transform: rotate(0deg);
-      width: 30px;
-      @media #{$max991} {
-        display: block;
-      }
-
-      span {
-        background: main-color(500);
-        display: block;
-        height: 3px;
-        opacity: 1;
-        position: absolute;
-        transform: rotate(0deg);
-        transition: .25s $animation;
-        width: 50%;
-
-        &:nth-child(even) {
-          left: 50%;
-        }
-        &:nth-child(odd) {
-          left: 0px;
-        }
-        &:nth-child(1),
-        &:nth-child(2) {
-          top: 0px;
-        }
-        &:nth-child(3),
-        &:nth-child(4) {
-          top: 10px;
-        }
-        &:nth-child(5),
-        &:nth-child(6) {
-          top: 20px;
-        }
-      }
-      &.open {
-        span {
-          &:nth-child(1),
-          &:nth-child(6) {
-            transform: rotate(45deg);
-          }
-          &:nth-child(2),
-          &:nth-child(5) {
-            transform: rotate(-45deg);
-          }
-          &:nth-child(1) {
-            left: 3px;
-            top: 6px;
-          }
-          &:nth-child(2) {
-            left: calc(50% - 3px);
-            top: 6px;
-          }
-          &:nth-child(3) {
-            left: -50%;
-            opacity: 0;
-          }
-          &:nth-child(4) {
-            left: 100%;
-            opacity: 0;
-          }
-          &:nth-child(5) {
-            left: 3px;
-            top: 15px;
-          }
-          &:nth-child(6) {
-            left: calc(50% - 3px);
-            top: 15px;
-          }
-        }
-      }
-    }
     .page-title {
       font-size: 1.6rem;
       font-weight: normal;
       line-height: 1;
       margin: 0;
       width: 100%;
-      @media #{$max991} {
+      @media #{$max543} {
         display: none;
       }
     }
@@ -400,7 +320,7 @@ $text-color: #00aec7;
           }
         }
         &.opened {
-          /deep/ {
+          ::ng-deep {
             .mat-icon-button,
             .mat-button {
               color: main-color(A100);
