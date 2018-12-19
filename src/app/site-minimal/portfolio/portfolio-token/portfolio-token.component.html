@@ -1,18 +1,21 @@
 <div class="detail-host" [align]="customalign" *ngIf="model" >
 
-<mat-card class="detail-card">
-  <mat-card-content>
+	<mat-card class="detail-card">
 
-    <div class="carrousel">
-      <a routerLink="/red/mujeres/{{model._id}}">
-        <img class="carrousel-image" src="{{ mainImageUrl }}" >
-      </a>
-    </div>
-    <div [innerHTML]='model.slug' ></div>
-    <div [innerHTML]='model.subtitle' ></div>
-  </mat-card-content>
+	  <mat-card-content>
+	    <div class="carrousel">
+	      <a routerLink="/trabajan/red/{{model._id}}">
+	        <img class="carrousel-image" src="{{ mainImageUrl }}" >
+	      </a>
 
-</mat-card>
+	      <div class="portfolio">
+			    <p class="portfolio-name text-center text-uppercase"><span  [innerHTML]='model.slug' ></span></p>
+			    <p class="portfolio-slug text-center" ><span [innerHTML]='model.subtitle' ></span></p>
+	      </div>
 
+	    </div>
+	  </mat-card-content>
+
+	</mat-card>
 
 </div>

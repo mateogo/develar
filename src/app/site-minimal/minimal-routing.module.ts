@@ -34,12 +34,17 @@ const routes: Routes = [
     ]  
   },
   {
-    path: 'mujeres',
+    path: 'red',
     component: MinimalistLayoutComponent,
     children: [
 
       {
         path: '',
+        component: PortfolioPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'info/:id',
         component: PortfolioPageComponent,
         pathMatch: 'full'
       },
@@ -69,6 +74,11 @@ const routes: Routes = [
       {
         path: 'publicaciones/:topic',
         component: PapersComponent,
+      },
+      {
+        path: 'info/:id',
+        component: PortfolioPageComponent,
+        pathMatch: 'full'
       },
 
 		  {

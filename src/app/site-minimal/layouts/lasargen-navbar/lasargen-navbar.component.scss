@@ -152,8 +152,9 @@ $text-color: #00aec7;
             }
           }
         }
+        //DROPDOWN ******************
         .dropdown-menu {
-          background: main-color(500);
+          background: main-color(800);
           box-shadow: 0 5px 10px 2px rgba(#000,.25);
           display: none;
           left: 50%;
@@ -230,7 +231,7 @@ $text-color: #00aec7;
           > ul {
             list-style-type: none;
             margin: 0;
-            max-height: 325px;
+            max-height: 450px;
             overflow: auto;
             padding: 0;
 
@@ -240,6 +241,95 @@ $text-color: #00aec7;
               &:last-child {
                 border-bottom: 0;
               }
+
+              .group-title {
+                color: rgba(#fff,.7);
+                display: block;
+                font-size: 1rem;
+                font-weight: 600;
+                padding: 6px 22px 5px;
+                text-transform: uppercase;
+              }
+
+//>
+              .sub {
+                list-style-type: none;
+                overflow: hidden;
+                margin: 0;
+                max-height: 0;
+                transition: max-height .1s $animation;
+              }
+              
+              .icon {
+                padding: 7px;
+
+              }
+
+              &.active {
+                &:after {
+                  transform: translateX(4px);
+                }
+                > .item-link {
+
+                  .icon {
+                    color: main-color(A100);
+                  }
+                }
+              }
+              &.has-sub {
+                position: relative;
+
+                > .item-link {
+                  position: relative;
+
+                  .caret {
+                    margin-top: .55rem;
+                    position: absolute;
+                    right: 13px;
+                    top: 6px;
+                    transition: transform .1s $animation;
+                  }
+                }
+                &.active {
+                  > .item-link {
+
+                    align-items: center;
+                    color: #fff;
+                    display: flex;
+                    padding: 11px;
+                    transition: background .2s $animation;
+
+                    &:hover {
+                      background: main-color(A100);
+                    }
+
+                    .caret {
+                      transform: rotate(90deg);
+                    }
+                  }
+                  > .sub {
+                    max-height: 1000px;
+
+                    > .menu-item {
+                      &.active {
+                        &:first-child {
+                          > .item-link {
+                            &:before {
+                              border-top-color: rgba(#fff,.1);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+//<<<<
+
+              //DROPDOWN ******************
+
+
               > a {
                 align-items: center;
                 color: #fff;

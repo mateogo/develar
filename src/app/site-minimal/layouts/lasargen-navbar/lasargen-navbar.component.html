@@ -12,6 +12,58 @@
     <!--- 3.0-logged MENSAJES  -->
     <!--- 3.0 FIN MENSAJES -->
 
+
+    <!--- 3.1-MENU DE NAVEGACION  -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+
+      <button mat-button title="bienvenido" (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+      <div class="dropdown-menu">
+
+        <ul>
+          <li
+            class="menu-item"
+            *ngFor="let item of mainMenuItems"
+            [ngClass]="{
+              'has-sub': item.sub,
+              'active': item.active,
+              'menu-item-group': item.groupTitle
+            }"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          >
+            <!-- Group title -->
+            <span class="group-title" *ngIf="item.groupTitle">{{ item.title }}</span>
+
+            <!-- Simple item -->
+            <a routerLink="{{ item.routing }}" class="item-link" *ngIf="!item.groupTitle && !item.sub">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+            </a>
+
+            <!-- Item with sub -->
+            <a class="item-link" *ngIf="!item.groupTitle && item.sub" (click)="toggle($event, item, this)">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+              <i class="caret fa fa-angle-right" *ngIf="item.sub"></i>
+            </a>
+
+            <!-- Menu sub -->
+            <ul class="sub" *ngIf="!item.groupTitle && item.sub">
+              <li
+                class="menu-item"
+                *ngFor="let itemSub of item.sub"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+              >
+                <a routerLink="{{ itemSub.routing }}" class="item-link">{{ itemSub.title }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <!--- 3.0-MENU DE NAVEGACION -->
+
+
     <!--- 4.0-logged LOGIN  -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
         <button mat-button title="usuario registrado" (click)="open($event)">
@@ -91,7 +143,94 @@
   <div class="nav-items">
 
     <!--- 2.1-not Logged EVENTOS -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-icon-button (click)="open($event)" title="eventos y agenda">
+        <i class='far fa-calendar-check'></i>
+      </button>
+
+      <div class="dropdown-menu">
+        <h4 class="menu-title">Eventos </h4>
+
+        <ul>
+          <li>
+            <a href="#">
+              <mat-icon>mood</mat-icon>
+              <div class="content">
+                <span class="desc">Foros del Sur presenta <strong>Las Argentinas</strong>.</span>
+                <span class="date">Enero 2019</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <mat-icon>mood</mat-icon>
+              <div class="content">
+                <span class="desc">Lanzamiento del sitio <strong>Las Argentinas</strong>.</span>
+                <span class="date">Enero 2019 - Argentina</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <div class="menu-footer">
+          <a href="#">Ver todos los eventos</a>
+        </div>
+      </div>
+    </div>
     <!--- 2.1 FIN DE EVENTOS -->
+
+
+
+    <!--- 3.1-MENU DE NAVEGACION  -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+
+      <button mat-button title="bienvenido" (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+      <div class="dropdown-menu">
+
+        <ul>
+          <li
+            class="menu-item"
+            *ngFor="let item of mainMenuItems"
+            [ngClass]="{
+              'has-sub': item.sub,
+              'active': item.active,
+              'menu-item-group': item.groupTitle
+            }"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          >
+            <!-- Group title -->
+            <span class="group-title" *ngIf="item.groupTitle">{{ item.title }}</span>
+
+            <!-- Simple item -->
+            <a routerLink="{{ item.routing }}" class="item-link" *ngIf="!item.groupTitle && !item.sub">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+            </a>
+
+            <!-- Item with sub -->
+            <a class="item-link" *ngIf="!item.groupTitle && item.sub" (click)="toggle($event, item, this)">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+              <i class="caret fa fa-angle-right" *ngIf="item.sub"></i>
+            </a>
+
+            <!-- Menu sub -->
+            <ul class="sub" *ngIf="!item.groupTitle && item.sub">
+              <li
+                class="menu-item"
+                *ngFor="let itemSub of item.sub"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+              >
+                <a routerLink="{{ itemSub.routing }}" class="item-link">{{ itemSub.title }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <!--- 3.0-MENU DE NAVEGACION -->
+
 
     <!--- 4.1-not Logged INGRESAR -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">

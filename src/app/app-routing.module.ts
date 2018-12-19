@@ -226,7 +226,7 @@ const routes: Routes = [
     children: mainRoutes
   },
   {
-    path: 'red',
+    path: 'trabajan',
     children: mainRoutes
   },
   {

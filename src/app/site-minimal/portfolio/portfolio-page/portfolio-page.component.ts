@@ -75,6 +75,8 @@ export class PortfolioPageComponent implements OnInit {
 
   public unBindList = [];
 
+  private token: string;
+
 
 
   constructor(
@@ -86,6 +88,7 @@ export class PortfolioPageComponent implements OnInit {
 
   ngOnInit() {
     let first = true;    
+    this.token = this.route.snapshot.paramMap.get('id')
 
     let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
 
@@ -114,7 +117,12 @@ export class PortfolioPageComponent implements OnInit {
     //this.isUserAdmin = this.minimalCtrl.isUserAdmin;
 
     //Topic
-    this.topic = 'portfolio'
+    if(this.token){
+      this.topic = this.token;
+
+    }else{
+      this.topic = 'portfolio';
+    }
 
     this.minimalCtrl.setPapersTitle();
     

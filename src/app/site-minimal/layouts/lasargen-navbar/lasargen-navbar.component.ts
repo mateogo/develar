@@ -7,6 +7,9 @@ import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
 import { gldef } from '../../../develar-commons/develar.config';
 
+import { MainMenuItem } from '../../menu-helper';
+import { MinimalMenuService } from '../../minimal-menu.service';
+
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
@@ -29,6 +32,8 @@ export class LasargenNavbarComponent implements OnInit {
 
   public hideLogin = false;
 
+  public mainMenuItems: MainMenuItem[];
+
   private socket: SocketIOClient.Socket; 
   private connected = false;
   private username: string = "";
@@ -37,13 +42,22 @@ export class LasargenNavbarComponent implements OnInit {
   private messageNew = false;
 
 
+
   constructor(
     private userService: UserService,
+    private mainMenuService: MinimalMenuService,
     private router: Router) {
+
+    mainMenuService.menuListener$.subscribe(
+        items => {
+          this.mainMenuItems = items;
+        }
+      );
   }
 
   ngOnInit() { 
     this.initSocket();
+    this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu)
 
     this.initUser()
 
@@ -177,4 +191,21 @@ export class LasargenNavbarComponent implements OnInit {
     if(this.hideLogin) return;
     this.router.navigate(['/ingresar/login'])
   }
+
+  toggle(event: Event, item: any, el: any) {
+    event.preventDefault();
+
+    let items: any[] = el.mainMenuItems;
+
+    if (item.active) {
+      item.active = false;
+    } else {
+      for (let i = 0; i < items.length; i++) {
+        items[i].active = false;
+      }
+      item.active = true;
+    }
+  }
+
+  
 }

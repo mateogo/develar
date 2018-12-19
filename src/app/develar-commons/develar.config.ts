@@ -13,6 +13,7 @@ const globals = {
 		logoUser: 'avatar-u-fundetec.jpg',
 		logoCompany: 'logo-publico.png',
 		company: 'fundetec',
+		mainmenu: 'DEFAULT',
 		emailsubject: '[fundetec] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.fundetec.digital'
@@ -23,6 +24,7 @@ const globals = {
 		logoUser: 'avatar-u-lasargentinas.jpg',
 		logoCompany: 'logo-lasargentinas.png',
 		company: 'lasargentinas',
+		mainmenu: 'LASARGEN',
 		emailsubject: '[Las Argentinas] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.lasargentinas.digital'
@@ -33,6 +35,7 @@ const globals = {
 		logoUser: 'avatar-u-develar.jpg',
 		logoCompany: 'logo-publico.png',
 		company: 'develar',
+		mainmenu: 'DEFAULT',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.develar.co'
@@ -43,6 +46,7 @@ const globals = {
 		logoUser: 'avatar-u-diamante.jpg',
 		logoCompany: 'logo-publico.png',
 		company: 'picris',
+		mainmenu: 'DEFAULT',
 		emailsubject: '[Picris] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.picris.co'
@@ -53,6 +57,7 @@ const globals = {
 		logoUser: 'avatar-u-simplecomm.jpg',
 		logoCompany: 'logo-publico.png',
 		company: 'simplecomm',
+		mainmenu: 'DEFAULT',
 		emailsubject: '[Simplecomm] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.simplecomm.com.ar'
@@ -63,6 +68,7 @@ const globals = {
 		logoUser: 'avatar-u-masuno.png',
 		logoCompany: 'logo-publico.png',
 		company: 'masuno',
+		mainmenu: 'DEFAULT',
 		emailsubject: '[+UNO] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.masuno.digital'
