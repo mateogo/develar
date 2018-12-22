@@ -8,10 +8,11 @@
   		</div>
   		<div class="col">
   			<ng-container *ngIf='searchSuccess'>
-  				<button mat-button color="accent"
-  						(click)="searchAntededentes()">buscar antecedentes</button>
-  				<button mat-button color="accent"
-  						(click)="searchScoring()">Consultar calificación de conductor</button>
+          <a href="#" role="button" (click)="searchAntededentes($event)" >
+          <img class="search-button" src="assets/content/boton-antecedentes.jpg"></a>
+
+          <a href="#" role="button" (click)="searchScoring($event)" >
+          <img class="search-button"  src="assets/content/boton-puntos.jpg"></a>
   			</ng-container>
   		</div>
   	</div>

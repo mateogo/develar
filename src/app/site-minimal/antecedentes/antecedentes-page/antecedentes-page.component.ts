@@ -31,7 +31,10 @@ export class AntecedentesPageComponent implements OnInit {
   ngOnInit() {
   }
 
-  searchAntededentes(){
+  searchAntededentes(e){
+    e.preventDefault();
+    e.stopPropagation();
+
     this.hasAntecedentes = false;
 
   	this.loadAntecedentes();
@@ -46,7 +49,10 @@ export class AntecedentesPageComponent implements OnInit {
   	}
   }
 
-  searchScoring(){
+  searchScoring(e){
+    e.preventDefault();
+    e.stopPropagation();
+
   	console.log('busco scoring')
     this.hasAntecedentes = false;
 

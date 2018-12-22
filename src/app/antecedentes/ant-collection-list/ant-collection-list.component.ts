@@ -1,11 +1,11 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { 	MatDialog, 
-					MatDialogRef, 
-					MatSelectChange,
-					MatCheckboxChange,
-					MatPaginator,
-					MatSort } from '@angular/material';
+import {   MatDialog, 
+          MatDialogRef, 
+          MatSelectChange,
+          MatCheckboxChange,
+          MatPaginator,
+          MatSort } from '@angular/material';
 
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 
@@ -33,7 +33,7 @@ import { Antecedente, AntecedenteTable }  from '../model/antecedente';
 
 const removeRelation = {
   width:  '330px',
-  height: '700px',
+  height: '400px',
   hasBackdrop: true,
   backdropClass: 'yellow-backdrop',
   data: {
@@ -60,7 +60,7 @@ const removeRelation = {
   providers: [GenericDialogComponent]
 })
 export class AntCollectionListComponent implements OnInit, OnChanges {
-  @Input() displayedColumns = [ 'select','tipo', 'ncomp','jurisdiccion', 'ndoc_conductor'];
+  @Input() displayedColumns = [ 'select','tipo', 'ncomp','jurisdiccion', 'ndoc_conductor', 'editar', 'eliminar'];
   @Input() isColSelectionAllowed = true;
   @Input() dataRecordsSource: BehaviorSubject<Antecedente[]>;
   @Input() actionList: Array<any> = [];
@@ -72,13 +72,17 @@ export class AntCollectionListComponent implements OnInit, OnChanges {
 
 
   //private table_columns = ["select", "predicate", "milestoneLabel", "displayAs",  "slug", "entityId", "qtx", "qt", "ume", "freq", 'fume' , "pu", 'moneda', "total", 'ars', 'usd','eur', 'brl'];
-  private table_columns = [ 'select','tipo', 'ncomp','jurisdiccion', 'ndoc_conductor'];
+  private table_columns = [ 'select','tipo', 'ncomp','jurisdiccion', 'ndoc_conductor', 'editar', 'eliminar'];
   private table_columns_sel = {
                                "select":  false,
                                "tipo":  false,
+                               "fecha": false,
                                "ncomp":   false,
                                "jurisdiccion":   false,
                                "ndoc_conductor": false,
+                               "puntos": false,
+                               "eliminar": false,
+                               "editar": false,
                               }
 
   private readonly CERO   = 0;
@@ -100,8 +104,8 @@ export class AntCollectionListComponent implements OnInit, OnChanges {
   public selection = new SelectionModel<Antecedente>(true, []);
 
   constructor(
-  		//private notificationCtrl: NotificationController,
-			public dialogService: MatDialog
+      //private notificationCtrl: NotificationController,
+      public dialogService: MatDialog
     ){
     //this.dataRecordsSource = this.notificationCtrl.tableDataSource;
   }

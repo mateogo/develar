@@ -1,20 +1,53 @@
   <h1>Cantidad de antecedentes: {{ antecedentes.length }}</h1>
 
   <div *ngFor="let token of antecedentes" >
-  	<mat-card>
+  	<mat-card class="ant-token">
   		<mat-card-content>
-  			<p><strong>Tipo Antecedente: </strong>{{ token.tipo}} </p>
-  			<p><strong>{{token.tcomp}}: </strong>{{token.ncomp}} </p>
-  			<p><strong>Tipo Infracción: </strong>{{token.tinfraccion}} </p>
-        <p><strong>Fecha: </strong>{{token.fe_infrTxt}} </p>
-        <p><strong>Lugar: </strong>{{token.lugar}} </p>
-        <p><strong>Jurisdiccion: </strong>{{token.jurisdiccion}} </p>
-        <h5>Vehículo</h5>
-        <p><strong>Dominio: </strong>{{token.dominio}} </p>
 
-        <h5>Titular / Conductor</h5>
-        <p><strong>{{token.tdoc_conductor}}: </strong>{{token.ndoc_conductor}} </p>
+        <div class="portfolio d-flex flex-row align-items-start flex-wrap">
+          <div class="col">
+            <h3>Antecedente</h3>
+          </div>
+          <div class="col">
+            <p><strong>Tipo Antecedente: </strong>{{ token.tipo}} </p>            
+          </div>
 
+          <div class="col">
+            <p><strong>{{token.tcomp}}: </strong>{{token.ncomp}} </p>
+          </div>
+
+        </div>
+          
+        <div class="portfolio d-flex flex-row align-items-start flex-wrap">
+          <div class="col">
+            <h5>Tipo de Infracción</h5>
+          </div>
+ 
+          <div class="col">
+            <p><strong>Tipo Infracción: </strong>{{token.tinfraccion}} </p>
+            <p><strong>Fecha: </strong>{{token.fe_infrTxt}} </p>            
+          </div>
+          <div class="col">
+            <p><strong>Lugar: </strong>{{token.lugar}} </p>
+            <p><strong>Jurisdiccion: </strong>{{token.jurisdiccion}} </p>
+          </div>
+        </div>
+
+        <div class="portfolio d-flex flex-row align-items-start flex-wrap">
+          <div class="col">
+            <h5>Datos del vehículo</h5>
+          </div>
+
+          <div class="col">
+            <h5>Vehículo</h5>
+            <p><strong>Dominio: </strong>{{token.dominio}} </p>
+          </div>
+
+          <div class="col">
+            <h5>Titular / Conductor</h5>
+            <p><strong>{{token.tdoc_conductor}}: </strong>{{token.ndoc_conductor}} </p>
+          </div>
+        </div>
 
   		</mat-card-content>
   	</mat-card>
