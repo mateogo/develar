@@ -9,7 +9,7 @@ const whoami =  "models/recordcardModel: ";
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const utils = require('../services/commons.utils');
 const tagModel = require('./tagModel');
 
 const self = this;
@@ -257,6 +257,8 @@ function buildQuery(query, user){
 }
 
 function initNewRecordcard(token, person){
+    let dateFrom = Date.now();
+    let dateTo = utils.parseDateStr('31/12/2019');
 
     let recordcard = new Record({
 
@@ -294,6 +296,17 @@ function initNewRecordcard(token, person){
         assets: [],
         viewimages: [],
         products: [],
+        publish: {
+            toPublish: true,
+            scope:     'publico',
+            dateFrom:  dateFrom,
+            dateTo:    dateTo,
+            topics:    ['portfolio'],
+            template:  'portfolio',
+            slug:      'Publicación automática',
+
+
+        }
     });
     return recordcard;
 }

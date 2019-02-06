@@ -109,7 +109,6 @@ export class PortfolioTokenComponent implements OnInit {
   portfolioDetail(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('portfolioDetail')
 
   }
 
@@ -144,9 +143,7 @@ export class PortfolioTokenComponent implements OnInit {
   }
 
   fetchMainImage(images){
-    console.log('fetechImages: [%s]', images.length);
     let image = images.find(img => img.predicate === 'mainimage');
-    console.dir(image);
     if(image){
       this.mainImageUrl = '/download/' + image.entityId;
     }else{

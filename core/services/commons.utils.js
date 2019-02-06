@@ -200,7 +200,7 @@ exports.highlightCode = function(code){
     return token;
 }
 
-var parseDateStr = function(str) {
+exports.parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)
 
     var mx = str.match(/(\d+)/g);

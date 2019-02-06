@@ -94,7 +94,6 @@ export class PortfolioPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initHomePage();
 
@@ -132,7 +131,7 @@ export class PortfolioPageComponent implements OnInit {
     // });
 
     let sscrp1 = this.minimalCtrl.fetchPortfolioRecords(this.topic).subscribe(records => {
-      console.log('fetchRecords: [%s]', records.length);
+      //console.log('fetchRecords: [%s]', records.length);
       this.renderHomePage(records);
     });
 
@@ -148,7 +147,6 @@ export class PortfolioPageComponent implements OnInit {
       records.forEach(record => {
 
         let publish = record.publish;
-        console.log('publish: [%s]', publish.template)
 
         if(publish.template === BRANDING){
           this.topbranding = record;
@@ -175,7 +173,6 @@ export class PortfolioPageComponent implements OnInit {
           this.isFooter = true
 
         }else if(publish.template === PORTFOLIO){
-          console.log('es Portfolio')
           this.portfolios.push(record);
 
         }else if(publish.template === SERVICIOS){
