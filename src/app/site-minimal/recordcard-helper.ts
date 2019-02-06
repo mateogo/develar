@@ -72,6 +72,7 @@ const subCardCategory = {
 const cardTypes: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'ficha',          label: 'Ficha',              slug:'Ficha principal' },
+		{val: 'vital',          label: 'Ficha Vital',        slug:'Ficha Curriculum' },
 		{val: 'propuesta',      label: 'Proposal',           slug:'Propuesta comercial' },
 		{val: 'proyecto',       label: 'Proyecto',           slug:'Proyecto' },
 		{val: 'subficha',       label: 'Sub-ficha',          slug:'Ficha secundaria' },
@@ -105,6 +106,15 @@ const cardCategory = {
 		{val: 'desarrollo',     label: 'Desarrollo',         slug:'Desarrollo' },
 		{val: 'investigacion',  label: 'Investigación',      slug:'Investigación' },
 		{val: 'auditoria',      label: 'Auditoría',          slug:'Auditoría' },
+	],
+
+	vital: [
+		{val: 'no_definido', 	 label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'principal',     label: 'Faceta principal',   slug:'Faceta principal' },
+		{val: 'graduacion',    label: 'Graduación',         slug:'Graduación' },
+		{val: 'proyecto',      label: 'Proyecto personal',  slug:'Proyecto personal' },
+		{val: 'premio',        label: 'Premio recibido',    slug:'Premio recibido' },
+		{val: 'portfolio',     label: 'Portfolio',          slug:'Portfolio' },
 	],
 
 	curso: [
@@ -171,14 +181,15 @@ export const predicateType = {
 	person: {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
-			{val: 'client',          label: 'client',              slug:'client' },
-			{val: 'referral',          label: 'referral',              slug:'referral' },
-			{val: 'sponsor',          label: 'sponsor',              slug:'sponsor' },
-			{val: 'cro',          label: 'cro',              slug:'cro' },
+			{val: 'fichacv',          label: 'Ficha Curriculum',              slug:'Ficha Curriculum' },
+			{val: 'client',          label: 'Cliente',              slug:'Cliente' },
+			{val: 'referral',          label: 'Referencia',              slug:'Referencia' },
+			{val: 'sponsor',          label: 'Sponsor',              slug:'Sponsor' },
+			{val: 'cro',          label: 'Productor',              slug:'Productor' },
 			{val: 'contacto',          label: 'Contacto',              slug:'contacto' },
 			{val: 'director',          label: 'Director',              slug:'director' },
 			{val: 'prjleader',          label: 'Project leader',              slug:'prjleader' },
-			{val: 'qa',          label: 'qa',              slug:'qa' },
+			{val: 'qa',          label: 'Analista calidad',              slug:'Analista calidad' },
 			{val: 'autor',          label: 'Autor',              slug:'Autor' },
 			{val: 'coautor',        label: 'Co-Autor',           slug:'Co-Autor' },
 			{val: 'revisor',        label: 'Revisor',            slug:'Revisor' },
@@ -191,6 +202,8 @@ export const predicateType = {
 			{val: 'referente',      label: 'Referente',          slug:'Referente clave / Especialista' },
 			{val: 'relacionado',    label: 'Relacionado',        slug:'Entidad relacionada' },
 		]
+
+
 	},
 	resource: {
 		predicates: [

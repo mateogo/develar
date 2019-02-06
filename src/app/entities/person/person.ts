@@ -58,6 +58,7 @@ export class Person {
 	messages: Array<NotificationMessage>
 	locaciones: Array<Address>;
 	contactos: Array<any>;
+	fichas: Array<RecordCardRelation>;
 	audit:{
 		hasUser: Boolean;
 		fcreate: Date;
@@ -71,11 +72,15 @@ export class Person {
 		userid: string;
 		username: string;
 	}
+	communitylist: Array<string>;
 	nombre: string;
 	apellido: string;
 	password: string;
 	tdoc: string;
 	ndoc: string;
+	tprofesion: string;
+	especialidad: string;
+	ambito: string;
 	termscond: boolean;
 	estado: string;
 	navance: string;
@@ -91,7 +96,7 @@ export class Person {
 		this.displayName = displayName;
 		if(email) this.email = email;
 		if(msj) this.messages = [msj];
-		if(tdoc) this.tdoc = tdoc;
+		if(tdoc) this.tdoc = tdoc; else this.tdoc = "DNI";
 		if(ndoc) this.ndoc = ndoc;
 	}
 
@@ -112,7 +117,25 @@ export class NotificationMessage {
 	}
 }
 
+export class RecordCardRelation {
+	slug: string;
+	subtitle: string;
+	cardId: string;
+	topic: string;
+	cardType: string;
+	cardCategory: string;
+	constructor(data?){
+		if(data){
+			this.slug = data.slug || '';
+			this.subtitle = data.subtitle || '';
+			this.topic = data.topic || '';
+		}
 
+		this.cardType = 'vital';
+		this.cardCategory = 'principal';
+	}
+
+}
 
 export class Address {
 	slug: string = '';
@@ -217,6 +240,23 @@ const tiposCompPersonaFisica: Array<any> = [
 ];
 
 
+
+const profesiones: Array<any> = [
+   	{val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'agronomx',       label: 'Agrónoma',     slug:'Agrónoma' },
+		{val: 'antropologx',    label: 'Antropóloga',  slug:'Antropóloga' },
+		{val: 'artesanx',       label: 'Artesana',     slug:'Artesana' },
+		{val: 'biologx',        label: 'Bióloga',      slug:'Bióloga' },
+		{val: 'bioquimicx',     label: 'Bioquímica',   slug:'Bioquímica' },
+		{val: 'economista',     label: 'Economista',   slug:'Economista' },
+		{val: 'entrenadorx',    label: 'Entrenadora',  slug:'Entrenadora' },
+		{val: 'informaticx',    label: 'Informática',  slug:'Informática' },
+		{val: 'musicx',         label: 'Música',       slug:'Música' },
+		{val: 'obrerx',         label: 'Obrera',       slug:'Obrera' },
+		{val: 'soldadorx',      label: 'Soldadora',    slug:'Soldadora' },
+];
+
+
 function initNewModel(displayName:string, email:string){
   let entity = new Person(displayName, email);
   return entity;
@@ -243,6 +283,12 @@ class PersonModel {
     return address;
   }
 
+	initRelatedCard(data?):RecordCardRelation {
+		data = data || {};
+    const ficha = new RecordCardRelation(data);
+    return ficha;
+  }
+
   fetchAddrTypeLabel(value):string{
     return addressTypes.find(item => item.val === value).slug;
   }
@@ -262,6 +308,10 @@ class PersonModel {
 
 	get tipoDocumPF():Array<any>{
 		return tiposCompPersonaFisica;
+	}
+
+	get profesiones():Array<any>{
+		return profesiones;
 	}
 
 	get countries():Array<any>{

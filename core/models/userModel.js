@@ -372,7 +372,7 @@ function saveNewGoogleUser(profile, cb){
             cb(null, user);
         }
 
-    })    
+    })
 }
 
 function initNewGoogleUser(google_profile, accessToken, cb ){

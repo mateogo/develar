@@ -8,8 +8,8 @@
   <mat-card-content>
 
   <mat-tab-group>
-    <mat-tab label="Persona">
-    
+
+    <mat-tab label="Persona">    
       <mat-card>
       <mat-card-header>
       <mat-card-title><strong>{{model.displayName}} </strong></mat-card-title>
@@ -18,6 +18,42 @@
       </mat-card-header>
 
       <mat-card-content>
+        <div class="row" >
+          <div class="col">
+            <p><strong>{{ model.apellido }}, {{ model.nombre}} </strong></p>
+          </div>
+        </div>
+        
+        <div class="row" >
+          <div class="col">
+            <p>{{ model.email }}</p>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="col">
+            <p><strong>{{model.tdoc}}: </strong>{{model.ndoc}}</p>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="col">
+            <p><strong>Profesión/Actividad: </strong>{{model.tprofesion}} - 
+              <strong>Especialidad: </strong>{{model.especialidad}} - 
+              <strong>Ámbito de actuación: </strong>{{model.ambito}}
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="model.fichas && model.fichas.length">
+          <hr>
+          <mat-card-subtitle>Bio-fichas</mat-card-subtitle>
+          <mat-list>
+            <mat-list-item *ngFor='let ficha of model.fichas'>
+              <a mat-line routerLink="/develar/fichas/editar/{{ficha.cardId}}"><q><i>{{ ficha.subtitle }}</i></q>  - {{ ficha.topic}}</a>
+            </mat-list-item>
+          </mat-list>
+        </div>
 
         <div *ngIf='model.messages && model.messages.length'>
           <mat-card-subtitle>Notificaciones</mat-card-subtitle>
@@ -31,8 +67,6 @@
 
       </mat-card-content>
       </mat-card>
-
-
 
 
       <div *ngFor="let address of model.locaciones; let i=index " >
@@ -82,6 +116,7 @@
             </mat-form-field>
           </div>
         </div>
+
         <div class="row" >
           <div class="col">
             <mat-form-field>
@@ -92,15 +127,23 @@
                   [value]="item.val" >{{ item.label }}</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+
+          <div class="col">
             <mat-form-field>
               <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
             </mat-form-field>
-
           </div>
+        </div>
+
+        <div class="row" >
           <div id="personafisica" class="col">
             <mat-form-field>
               <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
             </mat-form-field>
+          </div>
+
+          <div class="col">
             <mat-form-field>
               <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
             </mat-form-field>
@@ -113,6 +156,29 @@
           <div class="col">
             <mat-form-field>
               <input matInput [formControl]="form.controls['email']" placeholder="Correo electrónico" >
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col">
+            <mat-form-field>
+              <mat-select #fldTProfesion placeholder="Profesión/ Actividad"
+                  [formControl]="form.controls['tprofesion']"
+                  (selectionChange)="changeSelectionValue('tdoc',fldTProfesion.value)" >
+                <mat-option *ngFor="let item of tprofPersonaFisica" 
+                  [value]="item.val" >{{ item.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col">
+            <mat-form-field>
+              <input  matInput [formControl]="form.controls['especialidad']" placeholder="Especialidad" >
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <input  matInput [formControl]="form.controls['ambito']" placeholder="Ámbito" >
             </mat-form-field>
           </div>
         </div>

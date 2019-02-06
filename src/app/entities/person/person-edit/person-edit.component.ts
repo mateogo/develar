@@ -26,6 +26,9 @@ function initForSave(form: FormGroup, model: Person): Person {
   entity.apellido = fvalue.apellido;
   entity.tdoc = fvalue.tdoc;
   entity.ndoc = fvalue.ndoc;
+  entity.tprofesion = fvalue.tprofesion;
+  entity.especialidad = fvalue.especialidad;
+  entity.ambito = fvalue.ambito;
   console.log('initForSave [%s]', entity.personType);
 
 
@@ -50,6 +53,7 @@ export class PersonEditComponent implements OnInit {
   private countries = personModel.countries;
   public persontypes = personModel.persontypes;
   public tcompPersonaFisica = personModel.tipoDocumPF;
+  public tprofPersonaFisica = personModel.profesiones;
 
   private showMaps = false;
   public renderMap = false;
@@ -78,6 +82,9 @@ export class PersonEditComponent implements OnInit {
         nombre:[null],
         apellido:[null],
         tdoc:[null],
+        tprofesion:[null],
+        especialidad:[null],
+        ambito:[null],
         ndoc:[null],
         //address: this.fb.group(new Address())
       });
@@ -113,6 +120,9 @@ export class PersonEditComponent implements OnInit {
           nombre: this.model.nombre,
           apellido: this.model.apellido,
           tdoc: this.model.tdoc,
+          tprofesion: this.model.tprofesion,
+          especialidad: this.model.especialidad,
+          ambito: this.model.ambito,
           ndoc: this.model.ndoc
         });
 

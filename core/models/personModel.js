@@ -9,6 +9,9 @@ const whoami =  "models/personModel: ";
 
 const mongoose = require('mongoose');
 
+const recordCardModel = require('../models/recordcardModel.js');
+
+
 const crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'd3v3l4r';
@@ -65,6 +68,21 @@ const notif_messageSch = new mongoose.Schema({
     content:    {type: String,  required: true,  defalut: ''},
 })
 
+const recordCardSch = new mongoose.Schema({
+    slug:         {type: String,  required: false, defalut: ''},
+    subtitle:     {type: String,  required: false, defalut: ''},
+    cardId:       {type: String,  required: false, defalut: ''},
+    topic:        {type: String,  required: false, defalut: ''},
+    cardType:     {type: String,  required: false, defalut: ''},
+    cardCategory: {type: String,  required: false, defalut: ''},
+});
+
+const userSch = new mongoose.Schema({
+    userid:       {type: String,  required: false, defalut: ''},
+    username:     {type: String,  required: false, defalut: ''},
+})
+
+
 
 const personSch = new mongoose.Schema({
     displayName:    { type: String, required: true },
@@ -75,8 +93,14 @@ const personSch = new mongoose.Schema({
     apellido:       { type: String, required: false },
     tdoc:           { type: String, required: false },
     ndoc:           { type: String, required: false },
+    tprofesion:     { type: String, required: false },
+    especialidad:   { type: String, required: false },
+    ambito:         { type: String, required: false },
+    user:           { type: userSch, required: false },
+    communitylist:  { type: Array,   required: false },
     locaciones:     [ addressSch ],
     messages:       [ notif_messageSch ],
+    fichas:         [ recordCardSch ]
 });
 
 personSch.pre('save', function (next) {
@@ -236,6 +260,57 @@ exports.update = function (id, person, errcb, cb) {
 
 };
 
+const createNewRecordcarRelation = function (person, errcb, cb){
+    const ficha = person.fichas[0];
+    const id = person._id;
+
+    recordCardModel.createRecordCardFromPerson(ficha, person,
+        function(err, recordCard){
+            if(err){
+                console.log('[%s]createRecordardFromPerson error ', whoami)
+                err.itsme = whoami;
+                errcb(err);
+
+            }else{
+                ficha.cardId = recordCard._id;
+
+                Person.findByIdAndUpdate(id, person, function(err, entity) {
+                    if (err){
+                        console.log('[%s] person update error  in createNewRecordardRelation', whoami)
+                        err.itsme = whoami;
+                        errcb(err);
+                    
+                    }else{
+                        cb(entity);
+                    }
+                });
+            }
+        });
+
+}
+
+
+const createNewPerson = function(person, errcb,cb){
+    // FASE-1: Alta de la Persona
+    Person.create(person, function(err, entity) {
+        if (err){
+            console.log('[%s] validation error as validate() argument ',whoami)
+            err.itsme = whoami;
+            errcb(err);
+        
+        }else{
+            if(entity.fichas && entity.fichas.length){
+                createNewRecordcarRelation(entity, errcb, cb)
+
+            }else{
+
+                cb(entity);
+            }
+        }
+    });
+}
+
+
 
 /**
  * Sign up a new person
@@ -246,15 +321,7 @@ exports.update = function (id, person, errcb, cb) {
 exports.create = function (person, errcb, cb) {
     delete person._id;
 
-    Person.create(person, function(err, entity) {
-        if (err){
-            console.log('[%s] validation error as validate() argument ',whoami)
-            err.itsme = whoami;
-            errcb(err);
-        
-        }else{
-            cb(entity);
-        }
-    });
+    createNewPerson(person, errcb, cb);
+
 
 };

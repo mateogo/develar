@@ -256,6 +256,62 @@ function buildQuery(query, user){
     return q;
 }
 
+function initNewRecordcard(token, person){
+
+    let recordcard = new Record({
+
+        cardId: 'Bio-Principal',
+        topic: token.topic,
+        slug: token.slug,
+        subtitle: token.subtitle,
+        linkTo: '',
+        description: '',
+        mainimage: '',
+        cardType: token.cardType,
+        cardCategory: token.cardCategory,
+        images: [],
+        parent: '',
+        parents: [],
+
+        //
+        userId: person.user.userId,
+        user: person.user.username,
+        taglist: [],
+        communitylist: [person.communitylist[0]],
+        relatedcards: [],
+        persons: [
+            {
+                displayAs:   person.displayName,
+                slug:        person.ambito,
+                predicate:   'fichacv',
+                avatar:      '',
+                description: person.especialidad,
+                entityId:    person._id,
+                entity:      'person'
+            }
+        ],
+        resources: [],
+        assets: [],
+        viewimages: [],
+        products: [],
+    });
+    return recordcard;
+}
+
+exports.createRecordCardFromPerson = function(token, person, cb){
+    console.log('createRecordcardFromPerson INIT')
+    const recordcard = initNewRecordcard(token, person);
+    recordcard.save(err => {
+        if(err){
+            console.log('[%s] error al crear RecordCardFromPerson', whoami);
+            cb(err, null);
+        }else {
+            cb(null, recordcard);
+        }
+
+    });
+}
+
 /**
  * Retrieve records from query /search/?name=something
  * @param cb

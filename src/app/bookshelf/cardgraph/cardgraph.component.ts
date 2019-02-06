@@ -52,6 +52,11 @@ export class CardgraphComponent implements OnInit {
     console.log('updateEntity BUBLED: [%s] [%s]', entity._id, entity.displayName);
     this.token.displayAs = entity.displayName;
     this.token.entityId = entity._id;
+    this.token.slug = graphUtilities.getProfesionesLabel(entity.tprofesion);
+    this.token.description = entity.especialidad;
+
+    return ;
+
   }
   
   updateProductEntity(entity){

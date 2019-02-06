@@ -223,14 +223,15 @@ export const predicateType = {
 	person: {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
-			{val: 'client',          label: 'client',              slug:'client' },
-			{val: 'referral',          label: 'referral',              slug:'referral' },
-			{val: 'sponsor',          label: 'sponsor',              slug:'sponsor' },
-			{val: 'cro',          label: 'cro',              slug:'cro' },
+			{val: 'fichacv',          label: 'Ficha Curriculum',              slug:'Ficha Curriculum' },
+			{val: 'client',          label: 'Cliente',              slug:'Cliente' },
+			{val: 'referral',          label: 'Referencia',              slug:'Referencia' },
+			{val: 'sponsor',          label: 'Sponsor',              slug:'Sponsor' },
+			{val: 'cro',          label: 'Productor',              slug:'Productor' },
 			{val: 'contacto',          label: 'Contacto',              slug:'contacto' },
 			{val: 'director',          label: 'Director',              slug:'director' },
 			{val: 'prjleader',          label: 'Project leader',              slug:'prjleader' },
-			{val: 'qa',          label: 'qa',              slug:'qa' },
+			{val: 'qa',          label: 'Analista calidad',              slug:'Analista calidad' },
 			{val: 'autor',          label: 'Autor',              slug:'Autor' },
 			{val: 'coautor',        label: 'Co-Autor',           slug:'Co-Autor' },
 			{val: 'revisor',        label: 'Revisor',            slug:'Revisor' },
@@ -297,8 +298,23 @@ export const predicateType = {
 	}
 
 
-
 }
+
+
+const	profesiones =  [
+	   	{val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
+			{val: 'agronomx',       label: 'Agrónoma',     slug:'Agrónoma' },
+			{val: 'artesanx',       label: 'Artesana',     slug:'Artesana' },
+			{val: 'informatico',    label: 'Informática',  slug:'Informática' },
+			{val: 'antropologo',    label: 'Antropóloga',  slug:'Antropóloga' },
+			{val: 'biologo',        label: 'Bióloga',      slug:'Bióloga' },
+			{val: 'musico',         label: 'Música',       slug:'Música' },
+			{val: 'economista',     label: 'Economista',   slug:'Economista' },
+			{val: 'entrenador',     label: 'Entrenadora',  slug:'Entrenadora' },
+			{val: 'obrero',         label: 'Obrera',       slug:'Obrera' },
+			{val: 'soldador',       label: 'Soldadora',    slug:'Soldadora' },
+		];
+
 
 const productTableActions = [
 			{val: 'no_definido', 	label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -913,9 +929,15 @@ const extendedUtilites = {
 }
 
 
+
 export const graphUtilities = {
 	getPredicateLabel(type, item){
 		return predicateLabel(type, item)
+	},
+
+	getProfesionLabel(){
+		return 
+
 	},
 
 	getPredicateOptions(type){
@@ -938,6 +960,10 @@ export const graphUtilities = {
 	getTableActionOptions(){
 		return productTableActions;
 
+	},
+
+	getProfesionesLabel(token){
+		return 		profesiones.find(item => item.val === token).label;
 	},
 
 	initNewCardGraph(type, list):CardGraph{
