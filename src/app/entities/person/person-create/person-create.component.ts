@@ -110,4 +110,7 @@ export class PersonCreateComponent implements OnInit {
     console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
+  changePersonType(){
+  }
+
 }
