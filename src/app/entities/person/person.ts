@@ -254,6 +254,7 @@ const profesiones: Array<any> = [
 		{val: 'musicx',         label: 'Música',       slug:'Música' },
 		{val: 'obrerx',         label: 'Obrera',       slug:'Obrera' },
 		{val: 'soldadorx',      label: 'Soldadora',    slug:'Soldadora' },
+		{val: 'transportista',  label: 'Transportista', slug:'Transportista' },
 ];
 
 

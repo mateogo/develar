@@ -39,39 +39,47 @@ export const LASARGEN: MainMenuItem[] = [
     groupTitle: false,
     sub: [
       {
-        title: 'Infraestructura y logística',
+        title: 'Agrónoma',
         routing: '/trabajan/red'
       },
       {
-        title: 'Defensa y Seguridad',
+        title: 'Antropóloga',
         routing: '/trabajan/red'
       },
       {
-        title: 'Salud y Ciencia',
+        title: 'Artesana',
         routing: '/trabajan/red'
       },
       {
-        title: 'Derechos humanos y Justicia',
+        title: 'Bióloga',
         routing: '/trabajan/red'
       },
       {
-        title: 'Educación, cultura y deportes',
+        title: 'Bioquímica',
         routing: '/trabajan/red'
       },
       {
-        title: 'Economía y Administración',
+        title: 'Informática',
         routing: '/trabajan/red'
       },
       {
-        title: 'Comercio y servicios',
+        title: 'Transportista',
         routing: '/trabajan/red'
       },
       {
-        title: 'Industria y Agricultura',
+        title: 'Música',
         routing: '/trabajan/red'
       },
       {
-        title: 'Ecología y Medio ambiente',
+        title: 'Entrenadora',
+        routing: '/trabajan/red'
+      },
+      {
+        title: 'Obrera',
+        routing: '/trabajan/red'
+      },
+      {
+        title: 'Soldadora',
         routing: '/trabajan/red'
       },
     ],
