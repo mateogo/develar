@@ -144,8 +144,18 @@
   <h1 class="page-title">{{ title }}</h1>
 
   <div class="nav-items">
+    <!--- 2.1-not Logged SUMATE -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button class="text-item" mat-button (click)="contactForm($event)"><span>Sumate |</span></button>
+    </div>
+
+    <!--- 2.0-not Logged SEARCH -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button class="text-item" mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
+    </div>
 
     <!--- 2.1-not Logged EVENTOS -->
+    <!----
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-icon-button (click)="open($event)" title="eventos y agenda">
         <i class='far fa-calendar-check'></i>
@@ -180,6 +190,7 @@
         </div>
       </div>
     </div>
+    ------------------------>
     <!--- 2.1 FIN DE EVENTOS -->
 
 

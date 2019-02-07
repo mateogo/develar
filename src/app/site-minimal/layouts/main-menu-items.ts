@@ -23,7 +23,7 @@ export const LASARGEN: MainMenuItem[] = [
         routing: '/trabajan/info/acercade'
       },
       {
-        title: 'Participá',
+        title: 'Sumate',
         routing: '/trabajan/info/contacto'
       }
     ],
@@ -39,19 +39,19 @@ export const LASARGEN: MainMenuItem[] = [
     groupTitle: false,
     sub: [
       {
-        title: 'Agrónoma',
+        title: 'Agronomía',
         routing: '/trabajan/red'
       },
       {
-        title: 'Antropóloga',
+        title: 'Antropología',
         routing: '/trabajan/red'
       },
       {
-        title: 'Artesana',
+        title: 'Artesanía',
         routing: '/trabajan/red'
       },
       {
-        title: 'Bióloga',
+        title: 'Biología',
         routing: '/trabajan/red'
       },
       {
@@ -59,11 +59,23 @@ export const LASARGEN: MainMenuItem[] = [
         routing: '/trabajan/red'
       },
       {
-        title: 'Informática',
+        title: 'Construcción',
         routing: '/trabajan/red'
       },
       {
-        title: 'Transportista',
+        title: 'Deporte',
+        routing: '/trabajan/red'
+      },
+      {
+        title: 'Economía',
+        routing: '/trabajan/red'
+      },
+      {
+        title: 'Industria',
+        routing: '/trabajan/red'
+      },
+      {
+        title: 'Informática',
         routing: '/trabajan/red'
       },
       {
@@ -71,15 +83,7 @@ export const LASARGEN: MainMenuItem[] = [
         routing: '/trabajan/red'
       },
       {
-        title: 'Entrenadora',
-        routing: '/trabajan/red'
-      },
-      {
-        title: 'Obrera',
-        routing: '/trabajan/red'
-      },
-      {
-        title: 'Soldadora',
+        title: 'Transporte',
         routing: '/trabajan/red'
       },
     ],

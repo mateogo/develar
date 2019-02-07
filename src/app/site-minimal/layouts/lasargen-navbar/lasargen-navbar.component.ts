@@ -185,6 +185,19 @@ export class LasargenNavbarComponent implements OnInit {
 
   }
 
+  contactForm(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.router.navigate(['/trabajan/info/contacto'])
+  }
+
+  searchPage(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.router.navigate(['/trabajan/red'])
+
+  }
+
   loginUser(e){
     e.stopPropagation();
     e.preventDefault();

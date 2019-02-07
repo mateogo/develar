@@ -127,8 +127,6 @@ export class PortfolioDetailComponent implements OnInit {
     this.loadRelatedResources(entity.resources);
     this.loadRelatedTags(entity.taglist);
     this.loadRelatedCards(entity.relatedcards);
-    console.dir(entity.viewimages);
-    console.dir(entity.carrousel);
     this.fetchMainImage(entity.viewimages);
     this.buildCarrousel(entity.viewimages);
 

@@ -3,14 +3,17 @@ $text-color: #00aec7;
 
 :host {
   display: block;
-  position: fixed;
   height: 45px;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
   z-index: 800;
   opacity: 0.9;
   background: #ffffff;
+
+  //opacity: 1;
+  //background: #0645f5;
 
   //background: #ffffff; //blanco
   //background: #00aec7; // celeste
@@ -19,6 +22,13 @@ $text-color: #00aec7;
   //border-bottom: 1px solid #dfe4ed;
   @media #{$max991} {
     left: 0;
+  }
+  .text-item {
+    color: #0bc869;
+    font-size: 1.6rem;
+    font-weight: 900;
+    font-style: italic;
+
   }
 
   .rtl & {

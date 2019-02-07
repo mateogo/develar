@@ -3,31 +3,35 @@
 		<div class="container-fluid">
 			<div id='top' class="row align-items-center justify-content-center" >
 
-				<div id='left-panel' class='col-sm-6' >
+				<div id='first-panel' class='col' >
 					<!-- img class='top-image' src='{{mainimage}}' -->
-					<h1>{{ formTitle }} </h1>
+					<h1 class="top-title">{{ formTitle }} </h1>
+					<p>_______________________</p>
 
-					<div class='contacto-description' 
+					<div class='top-description' 
 								innerHtml='{{description}}'></div>
 
 				</div>
+			</div>
 
-				<div id='right-panel' class='col-sm-6'>
+			<div id='bottom' class="row align-items-center justify-content-center" >
+				<div id='second-panel' class='col'>
 				<!-- El form comienza acá -->
 				<form [formGroup]="form"  >
 
-					<p> {{formSubTitle}} </p>
 					<mat-form-field>
-						<input matInput placeholder="tu nombre" 
+						<input matInput
 								[formControl]="form.controls['name']" >
+						<mat-placeholder class="placeholder">tu nombre</mat-placeholder>
 			      <small class="form-message text-danger"
 			      	*ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" >
 			         Dato requerido</small>
 					</mat-form-field>
 
 					<mat-form-field>
-						<input matInput name="email"  placeholder="tu correo electrónico" 
+						<input matInput name="email"
 								[formControl]="form.controls['email']" >
+						<mat-placeholder class="placeholder">tu correo electrónico</mat-placeholder>
 
 			      <small class="form-message text-danger"
 			      	*ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" >
@@ -42,8 +46,10 @@
 
 					<ng-container *ngIf="isAsuntoMail">
 					<mat-form-field>
-						<input matInput name="slug" placeholder="consulta o asunto" 
+						<input matInput name="slug"
 								[formControl]="form.controls['slug']" >
+						<mat-placeholder class="placeholder">asunto</mat-placeholder>
+
 			      <small class="form-message text-danger"
 			      	*ngIf="form.controls['slug'].hasError('required') && form.controls['slug'].touched" >
 			         Dato requerido</small>
@@ -51,9 +57,11 @@
 				  </ng-container>
 
 					<mat-form-field>
-						<textarea matInput name="description" placeholder="tu mensaje" 
+						<textarea matInput name="description" 
 								matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"
 								[formControl]="form.controls['description']" ></textarea>
+						<mat-placeholder class="placeholder">tu mensaje</mat-placeholder>
+
 					</mat-form-field>
 
 					<mat-checkbox  [formControl]="form.controls['termsofuse']" >

@@ -2,50 +2,66 @@
 $text-color: #0645f5;
 
 :host {
-  #top {
-    text-align: center;
+  .mat-card {
+    font-family: "Lato", "Open Sans", sans-serif;
+    background: #0645f5;
+    .mat-card-content {
+      color: #ffffff;
+      font-size: 1.3em;
+ 
+      #top {
+        text-align: center;
 
-    .top-title {
-    }
-    .top-description {
-    }
-    .top-image {
-    }
+        #first-panel{
+          h1.top-title {
+            font-weight: 900;
+            color: #ffffff;
+          }
+          .top-description {
+          }
+          .top-image {
+          }
+        }
+      }
 
+      //input::placeholder;
 
+      mat-placeholder {
+        color: #5dade0;
+      }
+
+      .mat-focused .placeholder{
+        color: rgba(255, 128, 255, 0.54);
+      }
+
+    
+      #bottom {
+        text-align: center;
+
+        #second-panel{
+          form {
+            color: #ffffff;
+
+          }
+
+          .top-description {
+          }
+
+          .top-image {
+          }
+        }
+      }
+
+    }
   }
+  
 
-  #left-panel{
-    color: $text-color;
-
+  #second-panel{
+    max-width: 600px;
   }
 
   .accept {
     white-space: normal;
-  }
-
-  #items {
-    margin: 15px 0 30px 0;
-
-    .item {
-      padding-right: 1px;
-      padding-left: 1px;
-    }
-    
-    .item-title {
-      text-align: center;
-      font-size: 1.5em;
-    }
-    
-    .item-description {
-      text-align: center;
-      min-height: 145px;
-      font-size: 1.5em;
-    }
-
-    .item-image {
-      margin: 15px 0 15px 0;
-    }
   }
 
 }
