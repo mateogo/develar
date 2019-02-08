@@ -138,12 +138,20 @@ export class SiteMinimalController {
     this.emitNewNotification(notif);
   }
 
+  setHomeView(isHome){
+    this.sharedSrv.homeView(isHome);    
+  }
+
   actualRoute(snap: string, mRoute: UrlSegment[]){
     this.hasActiveUrlPath = false;
     this.actualUrl = snap;
     this.actualUrlSegments = mRoute;
     this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
+
+    //console.log('minimalController toCall sharedService');
+    //setTimeout(()=>{this.sharedSrv.homeView(true);},500)
+
 
     console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
     console.log('actualRoute: actualUrl[%s]', this.actualUrl );

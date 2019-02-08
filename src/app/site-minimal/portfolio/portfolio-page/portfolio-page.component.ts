@@ -115,6 +115,10 @@ export class PortfolioPageComponent implements OnInit {
     //******************************************************
     //this.isUserAdmin = this.minimalCtrl.isUserAdmin;
 
+    console.log('setHomeView');
+    this.minimalCtrl.setHomeView(false);
+
+
     //Topic
     if(this.token){
       this.topic = this.token;

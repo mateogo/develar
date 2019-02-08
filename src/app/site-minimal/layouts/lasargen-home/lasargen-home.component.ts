@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import * as io from 'socket.io-client';
 
@@ -16,30 +15,22 @@ import { Actor, Conversation, MessageToPrint, notificationModel } from '../../..
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 const DEFAULT_LOGO = 'assets/img/' + gldef.logoCompany;
 
-
-const BG_COLOR_DEFAULT = "#ffffff";
-const BG_COLOR_LASARGEN_HOME = "#0645f5"; //75787B //0645f5
-
-
 @Component({
   moduleId: module.id,
-  selector: 'lasargen-navbar',
-  templateUrl: './lasargen-navbar.component.html',
-  styleUrls: ['./lasargen-navbar.component.scss']
+  selector: 'lasargen-home-navbar',
+  templateUrl: './lasargen-home.component.html',
+  styleUrls: ['./lasargen-home.component.scss']
 })
-export class LasargenNavbarComponent implements OnInit {
+export class LasargenHomeNavbarComponent implements OnInit {
   @Input() title: string;
-  @Input() isHomeView$: Observable<boolean>;
 
   currentUser: User;
   public loggedIn = false;
   public avatar: string = DEFAULT_AVATAR
   public avatar2 = gldef.logoAvatar;
   public logoUrl = DEFAULT_LOGO;
-  public navbarStyle = {};
 
   public hideLogin = false;
-  public isHomeView = true;
 
   public mainMenuItems: MainMenuItem[];
 
@@ -66,7 +57,6 @@ export class LasargenNavbarComponent implements OnInit {
 
   ngOnInit() { 
     this.initSocket();
-    console.log('********* NAVBAR COMPONENT INIT **********');
     this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu)
 
     this.initUser()
@@ -74,32 +64,6 @@ export class LasargenNavbarComponent implements OnInit {
     this.userService.userEmitter.subscribe(user =>{
       this.initUser();
     })
-
-    if(this.isHomeView$){
-      this.isHomeView$.subscribe(
-        isHome => {
-          console.log('*************navbar isHomeView [%s]', isHome);
-          if(isHome){
-            this.isHomeView = true;
-            this.navbarStyle = {
-              background: BG_COLOR_LASARGEN_HOME
-            }
-
-          }else{
-            this.isHomeView = false;
-            this.navbarStyle = {
-              background: BG_COLOR_DEFAULT
-            }
-
-          }
-
-        }
-      );
-
-    }
-
-
-
   }
 
   initSocket(){

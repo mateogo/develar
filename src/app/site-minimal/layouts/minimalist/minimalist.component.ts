@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SharedService }   from '../../../develar-commons/shared-service';
+import { Observable } from 'rxjs';
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,7 @@ import { SharedService }   from '../../../develar-commons/shared-service';
 export class MinimalistLayoutComponent implements OnInit {
   pageTitle: any;
   navbarTmpl = 'default-navbar';
+  isHomeView$: Observable<boolean>;
 
   get defaultNavbar(){
     return this.navbarTmpl === "default-navbar";
@@ -27,6 +29,10 @@ export class MinimalistLayoutComponent implements OnInit {
         this.pageTitle = title;
       }
     );
+
+    console.log('*** minimalist: isHomeView$')
+
+    this.isHomeView$ = _sharedService.isHomeViewEmitted$;
 
     if(_sharedService.gldef.company === "lasargentinas"){
        this.navbarTmpl = 'lasargentinas';

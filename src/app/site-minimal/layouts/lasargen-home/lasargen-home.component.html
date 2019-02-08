@@ -1,7 +1,7 @@
-<div [ngStyle]='navbarStyle' class="site-navbar">
+<div class="site-navbar">
   <ng-container *ngIf="loggedIn">
 
-  <a *ngIf="!isHomeView" href="#" class="logo">
+	<a href="#" class="logo">
 	  <img class="logo-img" src="{{logoUrl}}" alt="" >
 	</a>
 
@@ -137,7 +137,7 @@
 
   <ng-container *ngIf="!loggedIn">
 
-  <a *ngIf="!isHomeView" href="#" class="logo">
+  <a href="#" class="logo">
     <img class="logo-img" src="{{logoUrl}}" alt="" >
   </a>
 
