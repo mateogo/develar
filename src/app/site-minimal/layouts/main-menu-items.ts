@@ -13,7 +13,7 @@ export const LASARGEN: MainMenuItem[] = [
     budgeColor: ''
   },
   {
-    title: 'La red',
+    title: 'LA RED',
     icon: 'fa fa-home',
     active: true,
     groupTitle: false,
@@ -94,7 +94,7 @@ export const LASARGEN: MainMenuItem[] = [
   },
 
   {
-    title: 'Equipo',
+    title: 'EQUIPO',
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,

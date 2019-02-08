@@ -45,18 +45,36 @@
 
 	.portfolio {
 		position: absolute;
-		bottom: 60px;
-		color: #fff;
+		bottom: 50px;
+		color: #ffffff;
+		text-align: center;
+		width: 100%;
 
 		.portfolio-name {
 
 			font-size: 1em;
 			font-weight: 600;
-			> span {
-				background: #323232;
-				opacity: 0.8
+			margin-bottom: 0;
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
 
-			};
+			// };
+
+		}
+
+		.portfolio-separator {
+
+			//font-size: 1em;
+			color: #ffffff;
+			font-weight: 400;
+			margin-bottom: 5px;
+			margin-top: -15px;
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
+
+			// };
 
 		}
 
@@ -65,11 +83,11 @@
 			font-size: 0.8em;
 			font-weight: 400;
 
-			> span {
-				background: #323232;
-				opacity: 0.8
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
 
-			};
+			// };
 
 		}
 	}
