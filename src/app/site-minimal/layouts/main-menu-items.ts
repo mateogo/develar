@@ -101,7 +101,7 @@ export const LASARGEN: MainMenuItem[] = [
     sub: [
       {
         title: 'Ingresar',
-        routing: '/develar/antecedentes'
+        routing: '/ingresar/login'
       },
     ],
     routing: '',

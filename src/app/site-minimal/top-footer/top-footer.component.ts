@@ -12,6 +12,8 @@ export class TopFooterComponent implements OnInit {
 
 	public mainimage: string = "";
 	public nodes: Array<Footer> = [];
+  public isModoUNO = false;
+  public isModoDOS = true;
 
   constructor() { }
 

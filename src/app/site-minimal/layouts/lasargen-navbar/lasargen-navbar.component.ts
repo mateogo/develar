@@ -36,7 +36,12 @@ export class LasargenNavbarComponent implements OnInit {
   public avatar: string = DEFAULT_AVATAR
   public avatar2 = gldef.logoAvatar;
   public logoUrl = DEFAULT_LOGO;
+
   public navbarStyle = {};
+  public navbarItemStyle = {};
+
+  public aboutText = "-Guía Activa-";
+  public contactText = "Sumate";
 
   public hideLogin = false;
   public isHomeView = true;
@@ -84,11 +89,17 @@ export class LasargenNavbarComponent implements OnInit {
             this.navbarStyle = {
               background: BG_COLOR_LASARGEN_HOME
             }
+            this.navbarItemStyle = {
+              color: '#fff'
+            }
 
           }else{
             this.isHomeView = false;
             this.navbarStyle = {
               background: BG_COLOR_DEFAULT
+            }
+            this.navbarItemStyle = {
+              
             }
 
           }

@@ -133,7 +133,7 @@
   </ng-container>
 
 
-  <!--- NAVEGACIÓN USUARIO NO-LOGEADO NAVEGACIÓN PÚBLICO -->
+  <!--- ********* NAVEGACIÓN USUARIO NO-LOGEADO NAVEGACIÓN PÚBLICO  *********-->
 
   <ng-container *ngIf="!loggedIn">
 
@@ -141,17 +141,23 @@
     <img class="logo-img" src="{{logoUrl}}" alt="" >
   </a>
 
+  <div *ngIf="isHomeView" class="logo logo-text">
+    <span class="logo-img" alt="" >{{ aboutText }} </span>
+  </div>
+
+
   <h1 class="page-title">{{ title }}</h1>
 
   <div class="nav-items">
     <!--- 2.1-not Logged SUMATE -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
-      <button class="text-item" mat-button (click)="contactForm($event)"><span>Sumate |</span></button>
+      <button class="text-item" mat-button (click)="contactForm($event)"><span>{{contactText}} |</span></button>
     </div>
 
     <!--- 2.0-not Logged SEARCH -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
-      <button class="text-item" mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
+      <button [ngStyle]='navbarItemStyle' class="text-icon-search" 
+      mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
     </div>
 
     <!--- 2.1-not Logged EVENTOS -->
@@ -198,7 +204,8 @@
     <!--- 3.1-MENU DE NAVEGACION  -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
 
-      <button mat-button title="bienvenido" (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+      <button mat-button [ngStyle]='navbarItemStyle' title="bienvenido" 
+        (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
       <div class="dropdown-menu">
 
         <ul>
@@ -247,7 +254,7 @@
 
 
     <!--- 4.1-not Logged INGRESAR -->
-    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+    <div *ngIf="!isHomeView" class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-button (click)="loginUser($event)">Ingresar</button>
     </div>
     <div class="items-overlay" (click)="close2($event)"></div>
