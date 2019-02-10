@@ -138,6 +138,7 @@ export class PublicationConfig {
 	scope: string = "privado";
 	dateFrom: number = 0;
 	dateTo: number = 0;
+	publishOrder: string = "";
 	topics: Array<string> = [];
 	template: string = "";
 	slug: string = "";
@@ -150,6 +151,7 @@ export class PublicationConfig {
 			this.scope = data.scope;
 			this.dateFrom = data.dateFrom;
 			this.dateTo = data.dateTo;
+			this.publishOrder = data.publishOrder;
 			this.topics = data.topics;
 			this.template = data.template;
 			this.slug = data.slug;
@@ -170,8 +172,10 @@ export class SubCard {
 	subtitle: string = "";
 	linkTo: string = "";
 	slug: string = "";
+	excerpt: string = "";	
 	description: string = "";
 	mainimage: string = "";
+	imagecredit: string = "";
 	cardType: string = "";
 	cardCategory: string = "";
 	images:  Array<string> = [];
@@ -193,8 +197,10 @@ export class RecordCard {
 	subtitle: string = "";
 	linkTo: string = "";
 	slug: string = "";
+	excerpt: string = "";		
 	description: string = "";
 	mainimage: string = "";
+	imagecredit: string = "";
 	cardType: string = "";
 	cardCategory: string = "";
 	images: Array<string>;

@@ -43,6 +43,10 @@
 		         Dato requerido</small>
 		    </mat-form-field>
 
+		    <mat-form-field>
+		      <input matInput [formControl]="form.controls['excerpt']" placeholder="Abstract/ Resumen" >
+		    </mat-form-field>
+
 				<community-selector  [entityList]='communityList' 
 								(emitEntities)='updateSelCommunities($event)'></community-selector>
 
@@ -157,6 +161,9 @@
 
 				<asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
 
+		    <mat-form-field>
+		      <input matInput [formControl]="form.controls['imagecredit']" placeholder="Créditos por las imágenes" >
+		    </mat-form-field>
 
 			</mat-card-content>
 			</mat-card>

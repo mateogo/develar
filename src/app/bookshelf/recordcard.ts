@@ -11,6 +11,7 @@ export class PublicationConfig {
 	scope: string = "privado";
 	dateFrom: number = 0;
 	dateTo: number = 0;
+	publishOrder: string = "";
 	topics: Array<string> = [];
 	template: string = "";
 	slug: string = "";
@@ -21,6 +22,7 @@ export class PublicationConfig {
 		if(data){
 			this.toPublish = data.toPublish;
 			this.scope = data.scope;
+			this.publishOrder = data.publishOrder;
 			this.dateFrom = data.dateFrom;
 			this.dateTo = data.dateTo;
 			this.topics = data.topics;
@@ -61,8 +63,10 @@ export class SubCard {
 	subtitle: string = "";
 	linkTo: string = "";
 	slug: string = "";
+	excerpt: string = "";
 	description: string = "";
 	mainimage: string = "";
+	imagecredit: string = "";
 	cardType: string = "";
 	cardCategory: string = "";
 	images:  Array<string> = [];
@@ -85,8 +89,10 @@ export class RecordCard {
 	subtitle: string = "";
 	linkTo: string = "";
 	slug: string = "";
+	excerpt: string = "";
 	description: string = "";
 	mainimage: string = "";
+	imagecredit: string = "";
 	cardType: string = "";
 	cardCategory: string = "";
 	images: Array<string>;
@@ -386,7 +392,9 @@ function initRelatedCard(smodel):RecordCard{
 	card.subtitle = smodel.subtitle;
 	card.linkTo = smodel.linkTo;
 	card.slug = smodel.slug;
+	card.excerpt = smodel.excerpt;
 	card.description = smodel.description;
+	card.imagecredit = smodel.imagecredit;
 	card.mainimage = smodel.mainimage;
 	card.cardType = smodel.cardType;
 	card.cardCategory = smodel.cardCategory;

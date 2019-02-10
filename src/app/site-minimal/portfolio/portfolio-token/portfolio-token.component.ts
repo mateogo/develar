@@ -41,6 +41,8 @@ const breadcrumb: BreadcrumbItem[] = [
 export class PortfolioTokenComponent implements OnInit {
 	@Input() customalign: string = 'center';
   @Input() title: string = "";
+  @Input() cardWidth: string = "600px";
+  @Input() cardSize: string = "200px"
 
   @Input()
   set model(entity: RecordCard){
@@ -79,6 +81,13 @@ export class PortfolioTokenComponent implements OnInit {
   private modelScrptn;
   private breadcrumb: BreadcrumbItem[] = breadcrumb;
   private isPrismed = false;
+  private cardStyle = {
+    "max-width": "400px"
+  }
+
+  private imgMaxSize = {
+    "max-width": "100%"
+  }
 
 
 
@@ -93,6 +102,16 @@ export class PortfolioTokenComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id')
+    if(this.cardWidth){
+      this.cardStyle['max-width'] = this.cardWidth;
+
+    }
+
+    if(this.cardSize){
+      this.imgMaxSize["max-width"] = this.cardSize;
+    }
+
+
 
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
     this.buildBreadCrumb();

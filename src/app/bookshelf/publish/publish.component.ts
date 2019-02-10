@@ -58,6 +58,7 @@ export class PublishComponent implements OnInit {
 			toPublish: [null,   Validators.compose([Validators.required])],
 			dateFrom: [null,   Validators.compose([Validators.required])],
 			dateTo: [null,   Validators.compose([Validators.required])],
+      publishOrder: [null],
 			template: [null],
     });
 
@@ -93,6 +94,7 @@ export class PublishComponent implements OnInit {
 			toPublish: model.toPublish,
 			dateFrom: this.fromTxt,
 			dateTo: this.toTxt ,
+      publishOrder: model.publishOrder,
 			template: model.template
   	})
 
@@ -104,6 +106,7 @@ export class PublishComponent implements OnInit {
 		this._model.slug = fvalue.slug;
 		this._model.scope = fvalue.scope;
 		this._model.toPublish = fvalue.toPublish;
+    this._model.publishOrder = fvalue.publishOrder;
 		this._model.dateFrom = devutils.dateFromTx(fvalue.dateFrom).getTime();
 		this._model.dateTo = devutils.dateFromTx(fvalue.dateTo).getTime();
  

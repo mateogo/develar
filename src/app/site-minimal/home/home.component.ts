@@ -19,6 +19,7 @@ const CARROUSEL = 'topcarrousel';
 const SIDEMENU =  'sidemenu';
 const FICHA =     'ficha';
 const FOOTER =    'footer';
+const PORTFOLIO = 'portfolio';
 
 const HOME = 'home';
 
@@ -56,7 +57,12 @@ export class HomeComponent implements OnInit {
   public footer: RecordCard;
 
   public isPapers = false;
+  public portfolios: RecordCard[] = [];
+  public portfolioCardSize = '200px';
+
+  public isPortfolios = false;
   public papers: RecordCard[] = [];
+
 
   public unBindList = [];
 
@@ -146,6 +152,9 @@ export class HomeComponent implements OnInit {
         }else if(publish.template === FICHA){
           this.papers.push(record);
 
+        }else if(publish.template === PORTFOLIO){
+          this.portfolios.push(record);
+
         }else if(publish.template === SERVICIOS){
           this.servicios = record;
           this.isServicios = true
@@ -156,12 +165,26 @@ export class HomeComponent implements OnInit {
         this.isPapers = true;
       }
 
-
-
-
-
+      if(this.portfolios && this.portfolios.length){
+        this.sortProperly(this.portfolios);
+        this.isPortfolios = true;
+      }
 
     }
+  }
+
+
+  sortProperly(records){
+    records.sort((fel, sel)=> {
+      if(!fel.publish.publishOrder) fel.publish.publishOrder = "zzzzzzz";
+      if(!sel.publish.publishOrder) sel.publish.publishOrder = "zzzzzzz";
+
+      if(fel.publish.publishOrder<sel.publish.publishOrder) return -1;
+      else if(fel.publish.publishOrder>sel.publish.publishOrder) return 1;
+      else return 0;
+    })
+
+
   }
 
 

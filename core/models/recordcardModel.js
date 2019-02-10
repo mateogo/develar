@@ -24,6 +24,7 @@ const self = this;
 const publicationSch = new Schema( {
     toPublish: { type: Boolean, required: false},
     scope:     { type: String, required: false},
+    publishOrder: {type: String, required: false},
     dateFrom:  { type: Number, required: false},
     dateTo:    { type: Number, required: false},
     topics:    { type: Array, required: false},
@@ -47,9 +48,11 @@ const subrecordSch = new Schema({
     topic:        { type: String, required: false },
     slug:         { type: String, required: true  },
     subtitle:     { type: String, required: false },
+    excerpt:      { type: String, required: false },
     linkTo:       { type: String, required: false },
     description:  { type: String, required: false },
     mainimage:    { type: String, required: false },
+    imagecredit:  { type: String, required: false },
     cardType:     { type: String, required: false },
     cardCategory: { type: String, required: false },
     images:       { type: Array,  required: false },
@@ -91,9 +94,11 @@ const recordSch = new Schema({
     topic:        { type: String, required: false },
     slug:         { type: String, required: true  },
     subtitle:     { type: String, required: false },
+    excerpt:      { type: String, required: false },
     linkTo:       { type: String, required: false },
     description:  { type: String, required: false },
     mainimage:    { type: String, required: false },
+    imagecredit:  { type: String, required: false },
     cardType:     { type: String, required: false },
     cardCategory: { type: String, required: false },
     images:       { type: Array,  required: false },
@@ -149,9 +154,11 @@ function updatePromotedCard(card, subcard){
     card.topic        = subcard.topic;
     card.slug         = subcard.slug;
     card.subtitle     = subcard.subtitle;
+    card.excerpt      = subcard.excerpt;
     card.linkTo       = subcard.linkTo;
     card.description  = subcard.description;
     card.mainimage    = subcard.mainimage;
+    card.imagecredit  = subcard.imagecredit;
     card.cardType     = subcard.cardType;
     card.cardCategory = subcard.cardCategory;
     card.images       = subcard.images;
@@ -266,9 +273,11 @@ function initNewRecordcard(token, person){
         topic: token.topic,
         slug: token.slug,
         subtitle: token.subtitle,
+        excerpt: token.excerpt,
         linkTo: '',
         description: '',
         mainimage: '',
+        imagecredit: '',
         cardType: token.cardType,
         cardCategory: token.cardCategory,
         images: [],
@@ -299,6 +308,7 @@ function initNewRecordcard(token, person){
         publish: {
             toPublish: true,
             scope:     'publico',
+            publishOrder: '',
             dateFrom:  dateFrom,
             dateTo:    dateTo,
             topics:    ['portfolio'],

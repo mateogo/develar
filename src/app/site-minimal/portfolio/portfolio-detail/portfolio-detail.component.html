@@ -11,18 +11,28 @@
       </a>
     </div>
     <h4><q><i>{{model.subtitle}}</i></q></h4>
-  	<div [innerHTML]='model.description' ></div>
+    <div *ngIf='showExcerpt' >
+      <div [innerHTML]='model.excerpt' ></div>
+      <a class="toggleText" role="button" (click)='showMore($event)'>LEER MAS...</a>
+    </div>
+    <div *ngIf='showDescription' >
+      <div [innerHTML]='model.description' ></div>
+      <div *ngIf='hasExcerpt'>
+        <a class="toggleText" role="button" (click)='showLess($event)'>OCULTAR TEXTO</a>
+      </div>
+    </div>
 
 
     <!--app-carrousel [carrousel]='model.carrousel' [currentImage]='model.carrousel.mainimage' ></app-carrousel -->
 
 		<div class="d-lg-flex flex-row flex-wrap">
-		  <div class="w-33 p-2" 
+		  <div class="w-33 p-2 mt-5" 
 		  		*ngFor='let image of carrousel'>
        	 	<img class="carrousel-image" src="{{ image.url }}" >
 		  			
 		  </div>
 		</div>
+    <div class="image-credit"><p>{{ model.imagecredit }}</p></div>
 
   </mat-card-content>
 

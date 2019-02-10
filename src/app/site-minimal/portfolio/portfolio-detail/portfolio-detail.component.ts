@@ -81,6 +81,10 @@ export class PortfolioDetailComponent implements OnInit {
   private isPrismed = false;
   private carrousel = [];
 
+  public hasExcerpt = false;
+  public showExcerpt = false;
+  public showDescription = true;
+
 
   constructor(
   		private minimalCtrl: SiteMinimalController,
@@ -130,8 +134,20 @@ export class PortfolioDetailComponent implements OnInit {
     this.fetchMainImage(entity.viewimages);
     this.buildCarrousel(entity.viewimages);
 
+    if(entity.excerpt){
+      this.showExcerpt = true;
+      this.showDescription = false;
+      this.hasExcerpt = true;
+
+    }else{
+      this.showExcerpt = false;
+      this.showDescription = true;
+      this.hasExcerpt = false;
+
+    }
+
     this.model = entity;
-   
+
 
 
   }
@@ -244,6 +260,27 @@ export class PortfolioDetailComponent implements OnInit {
     this.breadcrumb[0].link = this.minimalCtrl.communityRoute;
     this.breadcrumb[1].link = this.minimalCtrl.communityRoute;
     this.breadcrumb[2].link = this.minimalCtrl.publicationRoute;
+  }
+
+  showMore(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.showExcerpt = false;
+    this.showDescription = true;
+  }
+
+  showLess(e){
+    e.stopPropagation();
+    e.preventDefault();
+
+    if(this.hasExcerpt){
+      this.showExcerpt = true;
+      this.showDescription = false;
+
+    }else{
+      this.showExcerpt = false;
+      this.showDescription = false;
+    }
   }
 
 

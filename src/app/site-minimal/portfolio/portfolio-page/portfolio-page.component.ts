@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { Observable } from 'rxjs';
@@ -39,6 +39,7 @@ const breadcrumb: BreadcrumbItem[] = [
   styleUrls: ['./portfolio-page.component.scss']
 })
 export class PortfolioPageComponent implements OnInit {
+  @Input() cardSize: string = "100%"
 
   private topic = "";
 
@@ -76,6 +77,7 @@ export class PortfolioPageComponent implements OnInit {
   public unBindList = [];
 
   private token: string;
+
 
 
 
@@ -136,11 +138,25 @@ export class PortfolioPageComponent implements OnInit {
 
     let sscrp1 = this.minimalCtrl.fetchPortfolioRecords(this.topic).subscribe(records => {
       //console.log('fetchRecords: [%s]', records.length);
+      this.sortProperly(records);
       this.renderHomePage(records);
     });
 
 
     this.unBindList.push(sscrp1);
+
+  }
+
+  sortProperly(records){
+    records.sort((fel, sel)=> {
+      if(!fel.publish.publishOrder) fel.publish.publishOrder = "zzzzzzz";
+      if(!sel.publish.publishOrder) sel.publish.publishOrder = "zzzzzzz";
+
+      if(fel.publish.publishOrder<sel.publish.publishOrder) return -1;
+      else if(fel.publish.publishOrder>sel.publish.publishOrder) return 1;
+      else return 0;
+    })
+
 
   }
 

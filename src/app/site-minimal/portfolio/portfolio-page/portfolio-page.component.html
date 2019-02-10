@@ -27,10 +27,12 @@
 
 <ng-container *ngIf="isPortfolios">
 	
-	<div class="portfolio d-flex flex-row align-items-start flex-wrap">
-	  <portfolio-token class="flex-fill p-2" 
+	<div class="portfolio d-flex flex-row justify-content-center align-items-start flex-wrap">
+	  <portfolio-token class="p-1" 
 	  		*ngFor='let portfolio of portfolios' 
-	  		[model]='portfolio'></portfolio-token>
+	  		[cardSize]='cardSize'
+	  		[model]='portfolio' >
+	  		</portfolio-token>
 	</div>
 
 </ng-container>
@@ -42,4 +44,5 @@
 
 </div>
 <!-- app-cardsviewgrid></app-cardsviewgrid -->
+<!-- div class="portfolio d-flex flex-row align-items-start flex-wrap" -->
 

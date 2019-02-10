@@ -6,7 +6,7 @@
 
 	    <div class="carrousel">
 	      <a routerLink="/trabajan/red/{{model._id}}">
-	        <img class="carrousel-image" src="{{ mainImageUrl }}" >
+	        <img [ngStyle]="imgMaxSize" class="img-fluid carrousel-image" src="{{ mainImageUrl }}" >
 	      </a>
 
 	    	<div class="portfolio">
@@ -21,3 +21,4 @@
 	</mat-card>
 
 </div>
+<!--- [ngStyle]='cardStyle'  -->

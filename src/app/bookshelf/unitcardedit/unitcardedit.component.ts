@@ -27,10 +27,12 @@ function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], pers
 
 	entity.slug = fvalue.slug;
   entity.subtitle = fvalue.subtitle;
+  entity.excerpt = fvalue.excerpt;
   entity.cardId = fvalue.cardId;
 	entity.description = fvalue.description;
   entity.images = cardHelper.buildImageList(fvalue.images);
   entity.mainimage = fvalue.mainimage;
+  entity.imagecredit = fvalue.imagecredit;
   entity.cardType = fvalue.cardType;
   entity.topic = fvalue.topic;
   entity.cardCategory = fvalue.cardCategory;
@@ -120,11 +122,13 @@ export class UnitcardeditComponent implements OnInit {
         cardId:       [null, Validators.compose([Validators.required])],
     		slug:         [null, Validators.compose([Validators.required])],
         subtitle:     [null, Validators.compose([Validators.required])],
+        excerpt:      [null],
     		cardType:     [null],
         topic:        [null],
         cardCategory: [null],
     		description:  [null, Validators.compose([Validators.required])],
         mainimage:    [null],
+        imagecredit:  [null],
         images:       [null]
   	  });
       //const relatedcards = [cardHelper.initSubCard({slug: 'SUB CONTENIDO'})];
@@ -146,6 +150,8 @@ export class UnitcardeditComponent implements OnInit {
             cardId:       this.model.cardId,
 					  slug:         this.model.slug,
             subtitle:     this.model.subtitle,
+            excerpt:      this.model.excerpt,
+            imagecredit:  this.model.imagecredit,
 					  cardType:     this.model.cardType || "ficha",
             topic:        this.model.topic || "general",
             cardCategory: this.model.cardCategory|| 'documento',

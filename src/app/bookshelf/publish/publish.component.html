@@ -51,6 +51,10 @@
 			         form.controls['dateTo'].touched" class="form-message text-danger">
 			         Dato requerido</small>
 				</mat-form-field>
+				<mat-form-field>
+			 		<input matInput placeholder="Orden de publicación"
+			 			[formControl]="form.controls['publishOrder']"  >
+				</mat-form-field>				
 			</div>
 			<p><small >Publicar desde: <strong>{{ fromTxt }}</strong> hasta: <strong>{{ toTxt }}</strong></small></p>
 

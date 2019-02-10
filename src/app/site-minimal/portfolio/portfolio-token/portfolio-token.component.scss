@@ -16,7 +16,20 @@
 		}
 
 		.detail-card {
-		  max-width: 400px;
+
+			// @media #{$min544} {
+	  //    	width: 50%; 
+	  //  	}
+
+			// @media #{$min768} {
+	  //    	width: 33%; 
+	  //  	}
+
+			// @media #{$min1200} {
+	  //    	width: 25%; 
+	  //  	}
+
+
 		  padding: 2px;
 		}
 	}
@@ -28,6 +41,8 @@
 	position: relative;
 
 	.carrousel-image {
+		//max-width: 200px;
+		height: auto;
 
 	}
 
@@ -45,15 +60,15 @@
 
 	.portfolio {
 		position: absolute;
-		bottom: 50px;
+		bottom: 5%;
 		color: #ffffff;
 		text-align: center;
 		width: 100%;
 
 		.portfolio-name {
 
-			font-size: 1em;
-			font-weight: 600;
+			font-size: 0.8em;
+			font-weight: 700;
 			margin-bottom: 0;
 			// > span {
 			// 	background: #323232;
@@ -80,8 +95,8 @@
 
 		.portfolio-slug {
 
-			font-size: 0.8em;
-			font-weight: 400;
+			font-size: 0.6em;
+			font-weight: 700;
 
 			// > span {
 			// 	background: #323232;
