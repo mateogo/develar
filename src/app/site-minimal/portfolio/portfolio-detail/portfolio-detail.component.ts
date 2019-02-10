@@ -107,6 +107,8 @@ export class PortfolioDetailComponent implements OnInit {
       this.initCardData(model);
     })
 
+    this.minimalCtrl.setHomeView(false);
+
     this.minimalCtrl.fetchRecordCard(this.model, id);
   }
 

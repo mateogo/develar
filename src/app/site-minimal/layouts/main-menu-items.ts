@@ -40,51 +40,51 @@ export const LASARGEN: MainMenuItem[] = [
     sub: [
       {
         title: 'Agronomía',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a9b991c317419f2cd8859'
       },
       {
         title: 'Antropología',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a90831c317419f2cd8616'
       },
       {
         title: 'Artesanía',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a96931c317419f2cd873b'
       },
       {
         title: 'Biología',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5aa3e11c317419f2cd8a6f'
       },
       {
         title: 'Bioquímica',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a7bfe63ee3254df9502f1'
       },
       {
         title: 'Construcción',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5aa0421c317419f2cd8971'
       },
       {
         title: 'Deporte',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c1adc90c1ba687e54a8e0a4'
       },
       {
         title: 'Economía',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c1adf4bc1ba687e54a8e13c'
       },
       {
         title: 'Industria',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a948f1c317419f2cd86da'
       },
       {
         title: 'Informática',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a9e071c317419f2cd88c3'
       },
       {
         title: 'Música',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a8d891c317419f2cd85cf'
       },
       {
         title: 'Transporte',
-        routing: '/trabajan/red'
+        routing: '/trabajan/red/5c5a92791c317419f2cd866a'
       },
     ],
     routing: '',
