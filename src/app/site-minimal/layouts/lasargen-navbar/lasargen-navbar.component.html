@@ -56,7 +56,7 @@
                 *ngFor="let itemSub of item.sub"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
               >
-                <a routerLink="{{ itemSub.routing }}" class="item-link">{{ itemSub.title }}</a>
+                <a routerLink="{{ itemSub.routing }}" class="item-link"  >{{ itemSub.title }}</a>
               </li>
             </ul>
           </li>
@@ -242,7 +242,8 @@
                 *ngFor="let itemSub of item.sub"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
               >
-                <a routerLink="{{ itemSub.routing }}" class="item-link">{{ itemSub.title }}</a>
+                <a routerLink="{{ itemSub.routing }}" class="item-link">
+                  {{ itemSub.title }}</a>
               </li>
             </ul>
           </li>

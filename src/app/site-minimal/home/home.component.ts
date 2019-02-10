@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
 
   public isPapers = false;
   public portfolios: RecordCard[] = [];
-  public portfolioCardSize = '200px';
+  public portfolioCardSize = '100%';
 
   public isPortfolios = false;
   public papers: RecordCard[] = [];
