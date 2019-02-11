@@ -93,8 +93,9 @@ export class PortfolioPageComponent implements OnInit {
     setTimeout(() => this.minimalCtrl.setHomeView(false),500);
 
     this.route.url.subscribe(url=> {
-      this.token = this.route.snapshot.paramMap.get('id')
 
+      this.token = this.route.snapshot.paramMap.get('id');
+ 
       if(first){
         let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
 

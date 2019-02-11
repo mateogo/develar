@@ -112,3 +112,10 @@ export const LASARGEN: MainMenuItem[] = [
 
 
 ];
+//    cloud
+//    5c5aa3e11c317419f2cd8a6f: bibiana
+//     5c5a7bfe63ee3254df9502f1: bioquimica
+
+//    local
+//    5c602cc2ad8cd10781150896: bibiana
+//     5c5a67974c4cca0988801bdb: bioquimica

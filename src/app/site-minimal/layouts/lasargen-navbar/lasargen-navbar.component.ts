@@ -74,7 +74,6 @@ export class LasargenNavbarComponent implements OnInit {
 
   ngOnInit() { 
     this.initSocket();
-    console.log('********* NAVBAR COMPONENT INIT **********');
     this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu)
 
     this.initUser()
@@ -86,7 +85,6 @@ export class LasargenNavbarComponent implements OnInit {
     if(this.isHomeView$){
       this.isHomeView$.subscribe(
         isHome => {
-          console.log('*************navbar isHomeView [%s]', isHome);
           if(isHome){
             this.isHomeView = true;
             this.navbarStyle = {

@@ -30,8 +30,6 @@ export class MinimalistLayoutComponent implements OnInit {
       }
     );
 
-    console.log('*** minimalist: isHomeView$')
-
     this.isHomeView$ = _sharedService.isHomeViewEmitted$;
 
     if(_sharedService.gldef.company === "lasargentinas"){
