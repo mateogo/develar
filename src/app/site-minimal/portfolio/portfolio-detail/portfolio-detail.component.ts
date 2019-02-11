@@ -110,7 +110,7 @@ export class PortfolioDetailComponent implements OnInit {
       this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
       this.buildBreadCrumb();
 
-      this.minimalCtrl.fetchRecordCard(this.model, id);
+      this.minimalCtrl.fetchRecordCard(null, id);
 
     });
 
