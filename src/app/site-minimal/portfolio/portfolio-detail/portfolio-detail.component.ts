@@ -98,20 +98,23 @@ export class PortfolioDetailComponent implements OnInit {
   //http://develar-local.co:4200/red/mujeres/5c189e465063c40dc9f92892
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id')
-
-    this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
-    this.buildBreadCrumb();
-
     this.modelScrptn = this.minimalCtrl.recordCardListener.subscribe(model =>{
       this.initCardData(model);
     })
+    setTimeout(()=>this.minimalCtrl.setHomeView(false),500);
 
-    this.minimalCtrl.setHomeView(false);
 
-    this.minimalCtrl.fetchRecordCard(this.model, id);
+    this.route.url.subscribe(url=> {
+      let id = this.route.snapshot.paramMap.get('id')
+
+      this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
+      this.buildBreadCrumb();
+
+      this.minimalCtrl.fetchRecordCard(this.model, id);
+
+    });
+
   }
-
 
   /**
    * Highlight blog post when it's ready
@@ -178,20 +181,6 @@ export class PortfolioDetailComponent implements OnInit {
 
 
   tryPrism(record: RecordCard){
-
-
-    // console.log('tryPrism BEGINS');
-    // let query =  {
-    //   text: record.description
-    // };
-
-    // this.minimalCtrl.highlightCode(query).then(code =>{
-    //   record.description = code.result;
-    //   this.initCardData(record);
-    //   console.dir(code);
-    // })
-    
-    //this.initCardData(record);
 
   }
 

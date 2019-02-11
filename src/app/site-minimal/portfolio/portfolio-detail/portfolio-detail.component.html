@@ -25,10 +25,10 @@
 
     <!--app-carrousel [carrousel]='model.carrousel' [currentImage]='model.carrousel.mainimage' ></app-carrousel -->
 
-		<div class="d-lg-flex flex-row flex-wrap">
-		  <div class="w-33 p-2 mt-5" 
+		<div class="row justify-content-center mt-5">
+		  <div class="p-2 col-md   photo-gallery" 
 		  		*ngFor='let image of carrousel'>
-       	 	<img class="carrousel-image" src="{{ image.url }}" >
+       	 	<img class="gallery-image" src="{{ image.url }}" >
 		  			
 		  </div>
 		</div>
@@ -40,3 +40,16 @@
 
 
 </div>
+
+
+
+<!--
+    <div class="d-lg-flex flex-row flex-wrap">
+      <div class="p-2 mt-5 photo-gallery" 
+          *ngFor='let image of carrousel'>
+          <img class="carrousel-image" src="{{ image.url }}" >
+            
+      </div>
+    </div>
+
+-->

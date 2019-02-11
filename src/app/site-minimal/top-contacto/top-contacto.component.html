@@ -44,6 +44,17 @@
 
 					</mat-form-field>
 
+					<ng-container *ngIf="isLocacion">
+					<mat-form-field>
+						<input matInput
+								[formControl]="form.controls['locacion']" >
+						<mat-placeholder class="placeholder">tu ciudad o región</mat-placeholder>
+			      <small class="form-message text-danger"
+			      	*ngIf="form.controls['locacion'].hasError('required') && form.controls['locacion'].touched" >
+			         Dato requerido</small>
+					</mat-form-field>
+					</ng-container>
+
 					<ng-container *ngIf="isAsuntoMail">
 					<mat-form-field>
 						<input matInput name="slug"
@@ -60,7 +71,7 @@
 						<textarea matInput name="description" 
 								matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"
 								[formControl]="form.controls['description']" ></textarea>
-						<mat-placeholder class="placeholder">tu mensaje</mat-placeholder>
+						<mat-placeholder class="placeholder">contanos a qué te dedicás</mat-placeholder>
 
 					</mat-form-field>
 

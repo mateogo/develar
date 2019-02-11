@@ -20,11 +20,11 @@ export const LASARGEN: MainMenuItem[] = [
     sub: [
       {
         title: 'Quiénes somos',
-        routing: '/trabajan/info/acercade'
+        routing:'/trabajan/info/acercade'
       },
       {
         title: 'Sumate',
-        routing: '/trabajan/info/contacto'
+        routing:'/trabajan/info/contacto'
       }
     ],
     routing: '',

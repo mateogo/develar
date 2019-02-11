@@ -60,16 +60,18 @@
 
 	.portfolio {
 		position: absolute;
-		bottom: 5%;
+		bottom: 0.1%;
 		color: #ffffff;
 		text-align: center;
 		width: 100%;
+		background: rgba(0,0,0,.4);
+		height: 80px;
 
 		.portfolio-name {
 
 			font-size: 0.8em;
 			font-weight: 700;
-			margin-bottom: 0;
+			margin: 8px 0 0 0;
 			// > span {
 			// 	background: #323232;
 			// 	opacity: 0.8
@@ -80,11 +82,11 @@
 
 		.portfolio-separator {
 
-			//font-size: 1em;
+			font-size: 0.8em;
 			color: #ffffff;
 			font-weight: 400;
-			margin-bottom: 5px;
-			margin-top: -15px;
+			margin: -15px 0 5px 0;
+			//margin-top: -15px;
 			// > span {
 			// 	background: #323232;
 			// 	opacity: 0.8
@@ -95,7 +97,7 @@
 
 		.portfolio-slug {
 
-			font-size: 0.6em;
+			font-size: 0.7em;
 			font-weight: 700;
 
 			// > span {

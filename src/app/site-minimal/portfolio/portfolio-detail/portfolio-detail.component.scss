@@ -61,6 +61,18 @@
 	}
 
 
+	.photo-gallery {
+		//width: 33%;
+		text-align: center;
+
+
+		.gallery-image{
+			//text-align: center;
+		}
+	}
+
+
+
 }
 
 
@@ -68,7 +80,6 @@
 .carrousel {
 	margin: $module (-$module) $module;
 	//padding: 0 0 0 0;
-
 	.controles {
 		margin: 0 0 0 0;
 		font-size: 1.2em;

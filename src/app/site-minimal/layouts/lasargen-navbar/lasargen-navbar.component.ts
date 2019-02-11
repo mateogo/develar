@@ -20,6 +20,9 @@ const DEFAULT_LOGO = 'assets/img/' + gldef.logoCompany;
 const BG_COLOR_DEFAULT = "#ffffff";
 const BG_COLOR_LASARGEN_HOME = "#0645f5"; //75787B //0645f5
 
+const NAVBAR_ITEM_COLOR_DEFAULT = "#0645f5";
+const NAVBAR_ITEM_COLOR_LASARGEN_HOME = "#ffffff"; //75787B //0645f5
+
 
 @Component({
   moduleId: module.id,
@@ -90,7 +93,7 @@ export class LasargenNavbarComponent implements OnInit {
               background: BG_COLOR_LASARGEN_HOME
             }
             this.navbarItemStyle = {
-              color: '#fff'
+              color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
             }
 
           }else{
@@ -99,9 +102,8 @@ export class LasargenNavbarComponent implements OnInit {
               background: BG_COLOR_DEFAULT
             }
             this.navbarItemStyle = {
-              
+              color: NAVBAR_ITEM_COLOR_DEFAULT              
             }
-
           }
 
         }

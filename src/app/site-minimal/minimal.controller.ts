@@ -153,9 +153,9 @@ export class SiteMinimalController {
     //setTimeout(()=>{this.sharedSrv.homeView(true);},500)
 
 
-    console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
-    console.log('actualRoute: actualUrl[%s]', this.actualUrl );
-    console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
+    // console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
+    // console.log('actualRoute: actualUrl[%s]', this.actualUrl );
+    // console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
 
 
   }
@@ -313,7 +313,8 @@ export class SiteMinimalController {
   private upsertContact(data: SolicitudDeContacto){
     let query = {email: data.email};
     let msj = this.buildNotificationData(data);
-    let person = new Person(data.name, data.email,msj) 
+    let person = new Person(data.name, data.email, msj);
+    person.locacion = data.locacion;
 
     this.daoService.upsert<Person>('person', query, person).subscribe(p => {
       return p;
@@ -342,10 +343,8 @@ export class SiteMinimalController {
       publish: true,
       'publish.tag': topic,
     }
-    console.dir(query);
 
     this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
-      console.log('daoService: [%s]', tokens && tokens.length);
       if(tokens){
         recordEmitter.next(tokens)
 
@@ -362,10 +361,8 @@ export class SiteMinimalController {
       publish: true,
       'publish.tag': topic,
     }
-    console.dir(query);
 
     this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
-      console.log('daoService: [%s]', tokens && tokens.length);
       if(tokens){
         recordEmitter.next(tokens)
 
@@ -381,8 +378,6 @@ export class SiteMinimalController {
 
   ////************* Community ************////
   private fetchCurrentCommunity(commtyListener: Subject<CommunityToken>){
-    console.log('FetchCurrentCommunity [%s]', this.navigationUrl, this.naviCmty.isActive)
-
 
     if(this.navigationUrl){
       this.loadCommunityFromDb(this.navigationUrl, commtyListener);
@@ -567,6 +562,7 @@ export class  SolicitudDeContacto {
   name: string;
   email: string;
   slug: string;
+  locacion: string;
   termsofuse: boolean = false;
   description: string;
   

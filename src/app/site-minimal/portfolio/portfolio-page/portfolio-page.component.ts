@@ -89,19 +89,32 @@ export class PortfolioPageComponent implements OnInit {
 
 
   ngOnInit() {
-    let first = true;    
-    this.token = this.route.snapshot.paramMap.get('id')
+    var first = true;
+    setTimeout(() => this.minimalCtrl.setHomeView(false),500);
 
-    let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
+    this.route.url.subscribe(url=> {
+      this.token = this.route.snapshot.paramMap.get('id')
 
-      if(readyToGo && first){
-        first = false;
+      if(first){
+        let sscrp2 = this.minimalCtrl.onReady.subscribe(readyToGo =>{
 
+          if(readyToGo && first){
+            first = false;
+
+            this.initHomePage();
+
+          }
+        })
+        this.unBindList.push(sscrp2);
+      }else{
         this.initHomePage();
-
       }
-    })
-    this.unBindList.push(sscrp2);
+
+    });
+
+
+
+
   }
 
   ngOnDestroy(){
@@ -111,15 +124,23 @@ export class PortfolioPageComponent implements OnInit {
 
 
   initHomePage(){
+    // this.minimalCtrl.actualRoute(snap: string: mRoute: UrlSegmen[])
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
     
+    this.isTopbranding = false;
+    this.isTopcarrousel = false;
+    this.isTopabout = false;
+    this.isDestacado = false;
+    this.isServicios = false;
+    this.isContacto = false;
+    this.isTopPortfolio = false;
+    this.isPortfolios = false;
+    this.isFooter = false;
+
+
 
     //******************************************************
     //this.isUserAdmin = this.minimalCtrl.isUserAdmin;
-
-    console.log('setHomeView');
-    this.minimalCtrl.setHomeView(false);
-
 
     //Topic
     if(this.token){
@@ -131,13 +152,8 @@ export class PortfolioPageComponent implements OnInit {
 
     this.minimalCtrl.setPapersTitle();
     
-    // let sscrp1 = this.minimalCtrl.fetchContextRecords(this.topic).subscribe(records => {
-    //   console.log('fetchRecords: [%s]', records.length);
-    //   this.renderHomePage(records);
-    // });
 
     let sscrp1 = this.minimalCtrl.fetchPortfolioRecords(this.topic).subscribe(records => {
-      //console.log('fetchRecords: [%s]', records.length);
       this.sortProperly(records);
       this.renderHomePage(records);
     });

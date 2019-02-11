@@ -15,6 +15,7 @@ export class TopContactoComponent implements OnInit {
 
 	public mainimage: string = "";
   public isAsuntoMail = false;
+  public isLocacion = true;
 	public title: string = "";
   public formTitle: string = "Contacto";
   public formSubTitle: string = 'envianos tus datos'
@@ -32,6 +33,7 @@ export class TopContactoComponent implements OnInit {
       this.form = this.fb.group({
         name:        [null, Validators.compose([Validators.required])],
         slug:        [null],
+        locacion:        [null, Validators.compose([Validators.required])],
         email:       [null, Validators.compose([Validators.required, Validators.email])],
         termsofuse:  [null],
         description: [null],
@@ -67,6 +69,7 @@ export class TopContactoComponent implements OnInit {
     this.form.reset({
         name:        this.contacto.name,
         slug:        this.contacto.slug,
+        locacion:    this.contacto.locacion,
         email:       this.contacto.email,
         termsofuse:  this.contacto.termsofuse,
         description: this.contacto.description
@@ -81,6 +84,7 @@ export class TopContactoComponent implements OnInit {
     let fvalue = this.form.value;
     this.contacto.name = fvalue.name;
     this.contacto.email = fvalue.email;
+    this.contacto.locacion = fvalue.locacion;
     this.contacto.termsofuse = fvalue.termsofuse;
     this.contacto.slug = fvalue.slug || this.minimalCtrl.defaultEmailSubject;
     this.contacto.description = fvalue.description || this.minimalCtrl.defaultEmailBody;

@@ -37,6 +37,7 @@ export class Person {
 	persontags: Array<any>;
 	personType: string;
 	email: string;
+	locacion: string;
 	pfisica: {
 		nombre: string;
 		apellido: string;

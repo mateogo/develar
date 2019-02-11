@@ -20,6 +20,7 @@ function initForSave(form: FormGroup, model: Person): Person {
   const entity = model; 
   entity.displayName = fvalue.displayName;
   entity.email = fvalue.email;
+  entity.locacion = fvalue.locacion;
   entity.personType = fvalue.personType;
   entity.locaciones = locacionesDeepCopy;
   entity.nombre = fvalue.nombre;
@@ -79,6 +80,7 @@ export class PersonEditComponent implements OnInit {
         displayName:[null, Validators.compose([Validators.required])],
         personType:[null, Validators.compose([Validators.required])],
         email:[null],
+        locacion: [null],
         nombre:[null],
         apellido:[null],
         tdoc:[null],
@@ -116,6 +118,7 @@ export class PersonEditComponent implements OnInit {
         this.form.reset({
           displayName:    this.model.displayName,
           email:    this.model.email,
+          locacion: this.model.locacion,
           personType:    this.model.personType,
           nombre: this.model.nombre,
           apellido: this.model.apellido,

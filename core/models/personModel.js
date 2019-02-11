@@ -89,6 +89,7 @@ const personSch = new mongoose.Schema({
     persontags:     { type: String, required: false },
     personType:     { type: String, required: false, default: 'fisica' },
     email:          { type: String, required: false },
+    locacion:       { type: String, required: false },
     nombre:         { type: String, required: false },
     apellido:       { type: String, required: false },
     tdoc:           { type: String, required: false },
@@ -211,6 +212,7 @@ exports.upsert = function (req, errcb, cb) {
 function updateData(model, data){
     if(data.displayName) model.displayName = data.displayName;
     if(data.email)  model.email = data.email;
+    if(data.locacion) model.locacion = data.locacion;
     if(data.persontags)  model.persontags = data.persontags;
     if(data.messages && data.messages.length){
       model.messages.push(data.messages[0]);

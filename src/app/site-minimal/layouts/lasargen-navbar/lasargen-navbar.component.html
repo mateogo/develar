@@ -12,7 +12,6 @@
     <!--- 3.0-logged MENSAJES  -->
     <!--- 3.0 FIN MENSAJES -->
 
-
     <!--- 3.1-MENU DE NAVEGACION  -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
 
@@ -254,10 +253,11 @@
     <!--- 3.0-MENU DE NAVEGACION -->
 
 
-    <!--- 4.1-not Logged INGRESAR -->
+    <!--- 4.1-not Logged INGRESAR
     <div *ngIf="!isHomeView" class="nav-item" [ngClass]="{ 'opened' : false }">
       <button mat-button (click)="loginUser($event)">Ingresar</button>
     </div>
+     -->
     <div class="items-overlay" (click)="close2($event)"></div>
 
   </div>
