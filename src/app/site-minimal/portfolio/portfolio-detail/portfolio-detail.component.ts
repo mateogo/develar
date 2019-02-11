@@ -168,6 +168,7 @@ export class PortfolioDetailComponent implements OnInit {
   }
 
   buildCarrousel(images){
+    this.carrousel = [];
     let image = images.forEach(img => {
       if(img.predicate === 'images'){
         img.url = '/download/' + img.entityId;
