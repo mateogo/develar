@@ -155,7 +155,7 @@
 
     <!--- 2.0-not Logged SEARCH -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
-      <button [ngStyle]='navbarItemStyle' class="text-icon-search" 
+      <button [ngStyle]='navbarItemStyle' class="text-icon" title="buscar"
       mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
     </div>
 
@@ -203,7 +203,7 @@
     <!--- 3.1-MENU DE NAVEGACION  -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
 
-      <button mat-button [ngStyle]='navbarItemStyle' title="bienvenido" 
+      <button mat-button [ngStyle]='navbarItemStyle' class="text-icon" title="menu de navegación" 
         (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
       <div class="dropdown-menu">
 

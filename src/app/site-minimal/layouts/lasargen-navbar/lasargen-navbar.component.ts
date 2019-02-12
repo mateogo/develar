@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+
 import { Observable } from 'rxjs';
 
 import * as io from 'socket.io-client';
@@ -59,10 +60,18 @@ export class LasargenNavbarComponent implements OnInit {
   private messageNew = false;
 
 
+  private hasActiveUrlPath = false;
+  private actualUrl = "";
+  private actualUrlSegments: UrlSegment[] = [];
+  private navigationUrl = "";
+
+
+
 
   constructor(
     private userService: UserService,
     private mainMenuService: MinimalMenuService,
+    private route: ActivatedRoute,
     private router: Router) {
 
     mainMenuService.menuListener$.subscribe(
@@ -78,6 +87,28 @@ export class LasargenNavbarComponent implements OnInit {
 
     this.initUser()
 
+    this.route.url.subscribe(url=> {
+      console.log('navbar URL: [%s]', url);
+      this.actualUrl = this.router.routerState.snapshot.url;
+
+      if(!this.actualUrl || this.actualUrl === "/"){
+        this.setupHomeView(true);
+
+      } else {
+        this.setupHomeView(false);
+
+      }
+
+      //console.log('minimalController toCall sharedService');
+      //setTimeout(()=>{this.sharedSrv.homeView(true);},500)
+
+      // console.log('navigationUrl[%s]', this.navigationUrl );
+      // console.log('actualUrl[%s]', this.actualUrl );
+      // console.log('actualUrlSegments[%s]', this.actualUrlSegments );
+
+    });
+
+
     this.userService.userEmitter.subscribe(user =>{
       this.initUser();
     })
@@ -85,24 +116,24 @@ export class LasargenNavbarComponent implements OnInit {
     if(this.isHomeView$){
       this.isHomeView$.subscribe(
         isHome => {
-          if(isHome){
-            this.isHomeView = true;
-            this.navbarStyle = {
-              background: BG_COLOR_LASARGEN_HOME
-            }
-            this.navbarItemStyle = {
-              color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
-            }
+          // if(isHome){
+          //   this.isHomeView = true;
+          //   this.navbarStyle = {
+          //     background: BG_COLOR_LASARGEN_HOME
+          //   }
+          //   this.navbarItemStyle = {
+          //     color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
+          //   }
 
-          }else{
-            this.isHomeView = false;
-            this.navbarStyle = {
-              background: BG_COLOR_DEFAULT
-            }
-            this.navbarItemStyle = {
-              color: NAVBAR_ITEM_COLOR_DEFAULT              
-            }
-          }
+          // }else{
+          //   this.isHomeView = false;
+          //   this.navbarStyle = {
+          //     background: BG_COLOR_DEFAULT
+          //   }
+          //   this.navbarItemStyle = {
+          //     color: NAVBAR_ITEM_COLOR_DEFAULT              
+          //   }
+          // }
 
         }
       );
@@ -267,5 +298,28 @@ export class LasargenNavbarComponent implements OnInit {
     }
   }
 
-  
+  setupHomeView(isHome){
+
+    if(isHome){
+      this.isHomeView = true;
+      this.navbarStyle = {
+        background: BG_COLOR_LASARGEN_HOME
+      }
+      this.navbarItemStyle = {
+        color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
+      }
+
+    }else{
+      this.isHomeView = false;
+      this.navbarStyle = {
+        background: BG_COLOR_DEFAULT
+      }
+      this.navbarItemStyle = {
+        color: NAVBAR_ITEM_COLOR_DEFAULT              
+      }
+    }
+
+  }
+
+
 }

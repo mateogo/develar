@@ -25,18 +25,38 @@ $text-color: #00aec7;
   }
 
   .text-item {
-    color: #0bc869;
-    font-size: 2rem;
-    font-weight: 900;
-    font-style: italic;
+    @media #{$max543} {
+      color: #0bc869;
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-style: italic;
+      margin-left: 10px;
+    }
+
+    @media #{$min544} {
+      color: #0bc869;
+      font-size: 2.1rem;
+      font-weight: 900;
+      font-style: italic;
+      margin-left: 5px;
+    }
+
 
   }
 
-  .text-icon-search {
-    color: #0bc869;
-    font-size: 1.6rem;
-    font-weight: 700;
-    font-style: italic;
+  .text-icon {
+
+    @media #{$max543} {
+      font-size: 1rem;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    @media #{$min544} {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-style: italic;
+    }
 
   }
 
@@ -53,9 +73,20 @@ $text-color: #00aec7;
 
   .logo {
     text-decoration: none;
-    margin-left: 20px;
 
     .logo-img {
+      @media #{$max543} {
+        min-width: 100px;
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+
+      @media #{$min544} {
+        min-width: 130px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
       max-height: 45px;
       width: auto;
       height: auto;
@@ -121,7 +152,7 @@ $text-color: #00aec7;
           .mat-button {
           //color: rgba(#000,.3);
             cursor: pointer;
-            min-width: 44px;
+            min-width: 20px;
             padding: 0;
             transition: color .2s $animation;
 
