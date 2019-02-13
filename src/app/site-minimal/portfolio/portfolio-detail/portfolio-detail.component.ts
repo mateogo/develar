@@ -85,6 +85,7 @@ export class PortfolioDetailComponent implements OnInit {
   public showExcerpt = false;
   public showDescription = true;
 
+  public isFooter = true;
 
   constructor(
   		private minimalCtrl: SiteMinimalController,

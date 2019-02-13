@@ -253,6 +253,10 @@ function buildQuery(query, user){
             q["publish.topics"] = query['publish.tag'];
         }
 
+        if(query['publish.template']){
+            q["publish.template"] = query['publish.template'];
+        }
+
         q["publish.toPublish"] = true;
         q["publish.dateFrom"] = {$lte: actual};
         q["publish.dateTo"] = {$gte: actual};

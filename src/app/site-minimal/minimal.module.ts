@@ -45,6 +45,7 @@ import { AntecedentesPageComponent } from './antecedentes/antecedentes-page/ante
 import { SearchPersonComponent } from './antecedentes/search-person/search-person.component';
 import { SearchAntecedentesComponent } from './antecedentes/search-antecedentes/search-antecedentes.component';
 import { SearchScoringComponent } from './antecedentes/search-scoring/search-scoring.component';
+import { TopFooterPageComponent } from './top-footer-page/top-footer-page.component';
 
 
 
@@ -86,7 +87,8 @@ import { SearchScoringComponent } from './antecedentes/search-scoring/search-sco
   	AntecedentesPageComponent,
   	SearchPersonComponent,
   	SearchAntecedentesComponent,
-  	SearchScoringComponent
+  	SearchScoringComponent,
+  	TopFooterPageComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

@@ -34,6 +34,11 @@
 		</div>
     <div class="image-credit"><p>{{ model.imagecredit }}</p></div>
 
+
+    <ng-container *ngIf="isFooter">
+      <footer-page></footer-page>
+    </ng-container>
+
   </mat-card-content>
 
 </mat-card>

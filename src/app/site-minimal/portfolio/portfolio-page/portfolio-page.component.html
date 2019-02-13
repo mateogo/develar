@@ -24,9 +24,7 @@
 	<top-contacto [record]='contacto' ></top-contacto>	
 </ng-container>
 
-
 <ng-container *ngIf="isPortfolios">
-	
 	<div class="portfolio d-flex flex-row justify-content-center align-items-start flex-wrap">
 	  <portfolio-token class="p-1" 
 	  		*ngFor='let portfolio of portfolios' 
@@ -34,13 +32,11 @@
 	  		[model]='portfolio' >
 	  		</portfolio-token>
 	</div>
-
 </ng-container>
 
 <ng-container *ngIf="isFooter">
-	<top-footer [record]='footer' ></top-footer>	
+	<footer-page></footer-page>
 </ng-container>
-
 
 </div>
 <!-- app-cardsviewgrid></app-cardsviewgrid -->

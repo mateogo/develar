@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
   public isContacto = false;
   public contacto: RecordCard;
 
-  public isFooter = false;
+  public isFooter = true;
   public footer: RecordCard;
 
   public isPapers = false;
@@ -146,8 +146,8 @@ export class HomeComponent implements OnInit {
           this.isContacto = true
 
         }else if(publish.template === FOOTER){
-          this.footer = record;
-          this.isFooter = true
+          // this.footer = record;
+          // this.isFooter = true
 
         }else if(publish.template === FICHA){
           this.papers.push(record);

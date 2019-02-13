@@ -192,6 +192,28 @@ export class SiteMinimalController {
 
   }
 
+  fetchFooterRecords():Subject<RecordCard[]>{
+    let listener = new Subject<RecordCard[]>();
+
+    let query = {
+      communityId: this.naviCmty.id,
+      publish: true,
+      'publish.template': 'footer',
+    }
+
+    this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      if(tokens){
+        listener.next(tokens)
+
+      }else{
+        listener.next([]);
+      }
+
+    });
+
+    return listener;
+  }
+
   fetchContextRecords(topic): Subject<RecordCard[]>{
     let listener = new Subject<RecordCard[]>();
 

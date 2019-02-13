@@ -67,7 +67,7 @@ export class PortfolioPageComponent implements OnInit {
   public isPortfolios = false;
   public portfolios: RecordCard[] = [];
 
-  public isFooter = false;
+  public isFooter = true;
   public footer: RecordCard;
 
   public isUserAdmin = false;
@@ -136,7 +136,7 @@ export class PortfolioPageComponent implements OnInit {
     this.isContacto = false;
     this.isTopPortfolio = false;
     this.isPortfolios = false;
-    this.isFooter = false;
+    this.isFooter = true;
 
 
 
@@ -206,8 +206,8 @@ export class PortfolioPageComponent implements OnInit {
           this.isContacto = true
 
         }else if(publish.template === FOOTER){
-          this.footer = record;
-          this.isFooter = true
+          // this.footer = record;
+          // this.isFooter = true
 
         }else if(publish.template === PORTFOLIO){
           this.portfolios.push(record);
