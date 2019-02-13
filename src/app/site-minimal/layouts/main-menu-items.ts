@@ -16,6 +16,11 @@ export const SOCIAL_MEDIA: SocialMediaItem[] = [
     icon: 'fab fa-youtube',
     url: 'https://www.youtube.com/channel/UC3v929SgY4je4ZCrv8pgdFw',
   },
+  {
+    title: 'Seguinos en Youtube',
+    icon: 'fab fa-facebook-f',
+    url: 'https://www.facebook.com/Las-Argentinas-Trabajamos-823424687995613',
+  },
 
 
  ];
