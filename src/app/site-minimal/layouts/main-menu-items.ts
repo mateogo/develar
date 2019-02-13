@@ -1,4 +1,24 @@
-import { MainMenuItem } from '../menu-helper';
+import { MainMenuItem, SocialMediaItem } from '../menu-helper';
+
+export const SOCIAL_MEDIA: SocialMediaItem[] = [
+  {
+    title: 'Seguinos en Twitter',
+    icon: 'fab fa-twitter',
+    url: 'https://twitter.com/LTrabajamos',
+  },
+  {
+    title: 'Seguinos en Instagram',
+    icon: 'fab fa-instagram',
+    url: 'https://www.instagram.com/lasargentinastrabajamos/',
+  },
+  {
+    title: 'Seguinos en Youtube',
+    icon: 'fab fa-youtube',
+    url: 'https://www.youtube.com/channel/UC3v929SgY4je4ZCrv8pgdFw',
+  },
+
+
+ ];
 
 export const LASARGEN: MainMenuItem[] = [
   {

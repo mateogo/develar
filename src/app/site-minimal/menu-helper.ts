@@ -9,3 +9,10 @@ export class MainMenuItem {
   budge:        string
   budgeColor:   string;
 }
+
+export class SocialMediaItem {
+	title: string;
+	icon: string;
+	url: string;
+	
+}

@@ -136,7 +136,7 @@
 
   <ng-container *ngIf="!loggedIn">
 
-  <a *ngIf="!isHomeView" href="#" class="logo">
+  <a *ngIf="!isHomeView" routerLink="/" class="logo">
     <img class="logo-img" src="{{logoUrl}}" alt="" >
   </a>
 
@@ -148,9 +148,30 @@
   <h1 class="page-title">{{ title }}</h1>
 
   <div class="nav-items">
+
+
     <!--- 2.1-not Logged SUMATE -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
       <button class="text-item" mat-button (click)="contactForm($event)"><span>{{contactText}} |</span></button>
+    </div>
+
+
+    <!--- 2.1-not Logged RRSS -->
+    <div *ngIf="isHomeView" class="nav-item">
+      <ng-container *ngFor="let social of socialItems">
+        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' class="text-social" 
+            href="{{ social.url }}"  title="{{ social.title }}">
+              <i class='{{ social.icon }}'></i></a>
+      </ng-container>
+    </div>
+
+    <div *ngIf="!isHomeView" class="nav-item">
+      <ng-container *ngFor="let social of socialItems">
+        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' 
+            class="text-social not-phone" 
+            href="{{ social.url }}"  title="{{ social.title }}">
+              <i class='{{ social.icon }}'></i></a>
+      </ng-container>
     </div>
 
     <!--- 2.0-not Logged SEARCH -->

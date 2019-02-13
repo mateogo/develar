@@ -58,9 +58,17 @@
 
 				
 				</div>
+				<div id='redes'>
+					<ng-container *ngFor='let social of socialItems'>
+				        <a mat-icon target="_blank" rel="noopener"  class="text-social" 
+				            href="{{ social.url }}"  title="{{ social.title }}">
+				              <i class='{{ social.icon }}'></i></a>
+			  	</ng-container>
+			  </div>
+
+
 			</div>
 		</div>
-
 	</mat-card-content>
 </mat-card>
 

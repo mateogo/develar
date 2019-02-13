@@ -9,7 +9,7 @@ import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
 import { gldef } from '../../../develar-commons/develar.config';
 
-import { MainMenuItem } from '../../menu-helper';
+import { MainMenuItem, SocialMediaItem } from '../../menu-helper';
 import { MinimalMenuService } from '../../minimal-menu.service';
 
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
@@ -51,6 +51,7 @@ export class LasargenNavbarComponent implements OnInit {
   public isHomeView = true;
 
   public mainMenuItems: MainMenuItem[];
+  public socialItems: SocialMediaItem[];
 
   private socket: SocketIOClient.Socket; 
   private connected = false;
@@ -79,11 +80,20 @@ export class LasargenNavbarComponent implements OnInit {
           this.mainMenuItems = items;
         }
       );
+
+    mainMenuService.socialListener$.subscribe(
+        items => {
+          this.socialItems = items;
+        }
+      );
+
+
   }
 
   ngOnInit() { 
     this.initSocket();
     this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu)
+    this.mainMenuService.loadSocialItems('SOCIAL_MEDIA')
 
     this.initUser()
 

@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RecordCard } from '../recordcard.model';
 
+import { MainMenuItem, SocialMediaItem } from '../menu-helper';
+import { MinimalMenuService } from '../minimal-menu.service';
+
 
 @Component({
   selector: 'top-footer',
@@ -14,11 +17,24 @@ export class TopFooterComponent implements OnInit {
 	public nodes: Array<Footer> = [];
   public isModoUNO = false;
   public isModoDOS = true;
+  public socialItems: SocialMediaItem[];
 
-  constructor() { }
+  constructor(
+    private mainMenuService: MinimalMenuService) {
+
+        mainMenuService.socialListener$.subscribe(
+          items => {
+            this.socialItems = items;
+          }
+       );
+
+     }
 
   ngOnInit() {
   	this.mainimage = this.record.mainimage;
+
+    this.mainMenuService.loadSocialItems('SOCIAL_MEDIA')
+
   	this.record.relatedcards.forEach(s => {
       let link:string , navigate:string , noLink = true;
 

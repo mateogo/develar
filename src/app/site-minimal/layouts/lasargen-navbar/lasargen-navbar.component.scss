@@ -44,6 +44,30 @@ $text-color: #00aec7;
 
   }
 
+  .text-social {
+    margin: 0 15px 0 0;
+
+    @media #{$max543} {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    @media #{$min544} {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+  }
+
+  .not-phone {
+    @media #{$max543} {
+      display: none;
+    }
+    @media #{$min544} {
+      //display: none;
+    }
+  }
+
   .text-icon {
 
     @media #{$max543} {
