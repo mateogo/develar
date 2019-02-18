@@ -47,6 +47,8 @@ import { SearchPersonComponent } from './antecedentes/search-person/search-perso
 import { SearchAntecedentesComponent } from './antecedentes/search-antecedentes/search-antecedentes.component';
 import { SearchScoringComponent } from './antecedentes/search-scoring/search-scoring.component';
 import { TopFooterPageComponent } from './top-footer-page/top-footer-page.component';
+import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
+import { PostDetailComponent } from './foros/post-detail/post-detail.component';
 
 
 
@@ -90,7 +92,9 @@ import { TopFooterPageComponent } from './top-footer-page/top-footer-page.compon
   	SearchPersonComponent,
   	SearchAntecedentesComponent,
   	SearchScoringComponent,
-  	TopFooterPageComponent
+  	TopFooterPageComponent,
+  	PostDetailContainerComponent,
+  	PostDetailComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

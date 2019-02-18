@@ -71,6 +71,18 @@
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/lasargentinas"
 		  }
-		}
+		},
+		{
+			"name": "utopias",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8086",
+		          "DBASE": "utopiasdb",
+		          "SERVER": "http://utopias.digital",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/utopias"
+		  }
+		}		
 	]
 }
