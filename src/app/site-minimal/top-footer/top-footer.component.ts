@@ -3,6 +3,7 @@ import { RecordCard } from '../recordcard.model';
 
 import { MainMenuItem, SocialMediaItem } from '../menu-helper';
 import { MinimalMenuService } from '../minimal-menu.service';
+import { gldef } from '../../develar-commons/develar.config';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class TopFooterComponent implements OnInit {
   ngOnInit() {
   	this.mainimage = this.record.mainimage;
 
-    this.mainMenuService.loadSocialItems('SOCIAL_MEDIA')
+    this.mainMenuService.loadSocialItems(gldef.socialmedia)
 
   	this.record.relatedcards.forEach(s => {
       let link:string , navigate:string , noLink = true;

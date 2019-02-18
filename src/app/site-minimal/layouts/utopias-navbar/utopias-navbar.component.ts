@@ -27,11 +27,11 @@ const NAVBAR_ITEM_COLOR_LASARGEN_HOME = "#ffffff"; //75787B //0645f5
 
 @Component({
   moduleId: module.id,
-  selector: 'lasargen-navbar',
-  templateUrl: './lasargen-navbar.component.html',
-  styleUrls: ['./lasargen-navbar.component.scss']
+  selector: 'utopias-navbar',
+  templateUrl: './utopias-navbar.component.html',
+  styleUrls: ['./utopias-navbar.component.scss']
 })
-export class LasargenNavbarComponent implements OnInit {
+export class UtopiasNavbarComponent implements OnInit {
   @Input() title: string;
   @Input() isHomeView$: Observable<boolean>;
 
@@ -44,8 +44,8 @@ export class LasargenNavbarComponent implements OnInit {
   public navbarStyle = {};
   public navbarItemStyle = {};
 
-  public aboutText = "-Guía Activa-";
-  public contactText = "Sumate";
+  public aboutText = "Utopías y Realidades del Movimiento Nacional";
+  public contactText = "registrate";
 
   public hideLogin = false;
   public isHomeView = true;
@@ -92,8 +92,8 @@ export class LasargenNavbarComponent implements OnInit {
 
   ngOnInit() { 
     this.initSocket();
-    this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu)
-    this.mainMenuService.loadSocialItems(gldef.socialmedia)
+    this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu);
+    this.mainMenuService.loadSocialItems(gldef.socialmedia);
 
     this.initUser()
 
@@ -313,10 +313,10 @@ export class LasargenNavbarComponent implements OnInit {
     if(isHome){
       this.isHomeView = true;
       this.navbarStyle = {
-        background: BG_COLOR_LASARGEN_HOME
+        background: BG_COLOR_DEFAULT
       }
       this.navbarItemStyle = {
-        color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
+        color: NAVBAR_ITEM_COLOR_DEFAULT
       }
 
     }else{
@@ -325,7 +325,7 @@ export class LasargenNavbarComponent implements OnInit {
         background: BG_COLOR_DEFAULT
       }
       this.navbarItemStyle = {
-        color: NAVBAR_ITEM_COLOR_DEFAULT              
+        color: NAVBAR_ITEM_COLOR_DEFAULT
       }
     }
 

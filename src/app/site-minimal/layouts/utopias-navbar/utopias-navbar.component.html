@@ -1,0 +1,289 @@
+<div [ngStyle]='navbarStyle' class="site-navbar">
+  <ng-container *ngIf="loggedIn">
+
+  <a *ngIf="!isHomeView" href="#" class="logo">
+	  <img class="logo-img" src="{{logoUrl}}" alt="" >
+	</a>
+
+  <h1 class="page-title">{{ title }}</h1>
+
+  <div class="nav-items">
+
+    <!--- 3.0-logged MENSAJES  -->
+    <!--- 3.0 FIN MENSAJES -->
+
+    <!--- 3.1-MENU DE NAVEGACION  -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+
+      <button mat-button title="bienvenido" (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+      <div class="dropdown-menu">
+
+        <ul>
+          <li
+            class="menu-item"
+            *ngFor="let item of mainMenuItems"
+            [ngClass]="{
+              'has-sub': item.sub,
+              'active': item.active,
+              'menu-item-group': item.groupTitle
+            }"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          >
+            <!-- Group title -->
+            <span class="group-title" *ngIf="item.groupTitle">{{ item.title }}</span>
+
+            <!-- Simple item -->
+            <a routerLink="{{ item.routing }}" 
+                class="item-link" *ngIf="!item.groupTitle && !item.sub">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+            </a>
+
+            <!-- Item with sub -->
+            <a  routerLink="{{ item.routing }}" 
+                class="item-link" *ngIf="!item.groupTitle && item.sub" 
+                (click)="toggle($event, item, this)">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+              <i class="caret fa fa-angle-right" *ngIf="item.sub"></i>
+            </a>
+
+            <!-- Menu sub -->
+            <ul class="sub" *ngIf="!item.groupTitle && item.sub">
+              <li
+                class="menu-item"
+                *ngFor="let itemSub of item.sub"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+              >
+                <a routerLink="{{ itemSub.routing }}" class="item-link"  >{{ itemSub.title }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <!--- 3.0-MENU DE NAVEGACION -->
+
+
+    <!--- 4.0-logged LOGIN  -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+        <button mat-button title="usuario registrado" (click)="open($event)">
+            <div class="avatar">
+              <img src="{{ avatar }}" width="37" height="37" alt=""></div>
+            <div class="name">
+              {{currentUser.username }}</div>
+        </button>
+
+        <div class="dropdown-menu mini-menu">
+          <ng-container *ngIf="isAdminUser()">
+          <ul>
+            <li>
+              <a role="button" (click)='editUser($event)' >
+                <i class="fa fa-home"></i> Mi Perfil</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='editUser($event)'  >
+                <i class="far fa-user"></i> Mi cuenta</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='changeCommunity($event)'>
+                  <i class="far fa-user"></i> Cambiar Comunidad</a>
+            </li>
+            <li>
+              <a href="#admin" role="button" (click)='navigateAdmin($event)'>
+                  <i class="fa fa-users"></i> Navegar admin</a>
+            </li>
+            <li>
+              <a routerLink="/develar/a2/calendar">
+                <i class="fas fa-calendar-alt"></i> Calendar</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='refreshUser($event)' >
+                <i class="fa fa-cogs"></i> Settings</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='changePasswd($event)'  >
+                <i class="far fa-user"></i> Cambiar clave</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='logout($event)'  >
+                <i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+
+          </ul>
+          </ng-container>
+          <ng-container *ngIf="!isAdminUser()">
+          <ul>
+            <li>
+              <a href="#" role="button" (click)='logout($event)'  >
+                <i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='changePasswd($event)'  >
+                <i class="far fa-user"></i> Cambiar clave</a>
+            </li>
+          </ul>
+          </ng-container>
+        </div>
+    </div>
+    <div class="items-overlay" (click)="close1($event)"></div>
+  </div>
+  </ng-container>
+
+
+  <!--- ********* NAVEGACIÓN USUARIO NO-LOGEADO NAVEGACIÓN PÚBLICO  *********-->
+
+  <ng-container *ngIf="!loggedIn">
+
+  <a *ngIf="!isHomeView" routerLink="/" class="logo">
+    <img class="logo-img" src="{{logoUrl}}" alt="" >
+  </a>
+
+  <div *ngIf="isHomeView" class="logo logo-text">
+    <img class="logo-img" src="{{logoUrl}}" alt="" >
+    <!-- span class="logo-img" alt="" >{{ aboutText }} </span -->
+  </div>
+
+
+  <h1 class="page-title">{{ title }}</h1>
+
+  <div class="nav-items">
+
+
+    <!--- 2.1-not Logged SUMATE -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button class="text-item" mat-button (click)="contactForm($event)"><span>{{contactText}} |</span></button>
+    </div>
+
+
+    <!--- 2.1-not Logged RRSS -->
+    <div *ngIf="isHomeView" class="nav-item">
+      <ng-container *ngFor="let social of socialItems">
+        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' class="text-social" 
+            href="{{ social.url }}"  title="{{ social.title }}">
+              <i class='{{ social.icon }}'></i></a>
+      </ng-container>
+    </div>
+
+    <div *ngIf="!isHomeView" class="nav-item">
+      <ng-container *ngFor="let social of socialItems">
+        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' 
+            class="text-social not-phone" 
+            href="{{ social.url }}"  title="{{ social.title }}">
+              <i class='{{ social.icon }}'></i></a>
+      </ng-container>
+    </div>
+
+    <!--- 2.0-not Logged SEARCH -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button [ngStyle]='navbarItemStyle' class="text-icon" title="buscar"
+      mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
+    </div>
+
+    <!--- 2.1-not Logged EVENTOS -->
+    <!----
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-icon-button (click)="open($event)" title="eventos y agenda">
+        <i class='far fa-calendar-check'></i>
+      </button>
+
+      <div class="dropdown-menu">
+        <h4 class="menu-title">Eventos </h4>
+
+        <ul>
+          <li>
+            <a href="#">
+              <mat-icon>mood</mat-icon>
+              <div class="content">
+                <span class="desc">Foros del Sur presenta <strong>Utopias</strong>.</span>
+                <span class="date">Enero 2019</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <mat-icon>mood</mat-icon>
+              <div class="content">
+                <span class="desc">Lanzamiento del sitio <strong>Utopias</strong>.</span>
+                <span class="date">Enero 2019 - Argentina</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <div class="menu-footer">
+          <a href="#">Ver todos los eventos</a>
+        </div>
+      </div>
+    </div>
+    ------------------------>
+    <!--- 2.1 FIN DE EVENTOS -->
+
+
+
+    <!--- 3.1-MENU DE NAVEGACION  -->
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+
+      <button mat-button [ngStyle]='navbarItemStyle' class="text-icon" title="menu de navegación" 
+        (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+      <div class="dropdown-menu">
+
+        <ul>
+          <li
+            class="menu-item"
+            *ngFor="let item of mainMenuItems"
+            [ngClass]="{
+              'has-sub': item.sub,
+              'active': item.active,
+              'menu-item-group': item.groupTitle
+            }"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          >
+            <!-- Group title -->
+            <span class="group-title" *ngIf="item.groupTitle">{{ item.title }}</span>
+
+            <!-- Simple item -->
+            <a routerLink="{{ item.routing }}" class="item-link" *ngIf="!item.groupTitle && !item.sub">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+            </a>
+
+            <!-- Item with sub -->
+            <a class="item-link" *ngIf="!item.groupTitle && item.sub" (click)="toggle($event, item, this)">
+              <span class="item-badge" *ngIf="item.budge" [ngStyle]="{'background': item.budgeColor}">{{ item.budge }}</span>
+              <span class="icon" *ngIf="item.icon" [ngClass]="item.icon"></span>{{ item.title }}
+              <i class="caret fa fa-angle-right" *ngIf="item.sub"></i>
+            </a>
+
+            <!-- Menu sub -->
+            <ul class="sub" *ngIf="!item.groupTitle && item.sub">
+              <li
+                class="menu-item"
+                *ngFor="let itemSub of item.sub"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+              >
+                <a routerLink="{{ itemSub.routing }}" class="item-link">
+                  {{ itemSub.title }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <!--- 3.0-MENU DE NAVEGACION -->
+
+
+    <!--- 4.1-not Logged INGRESAR
+    <div *ngIf="!isHomeView" class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-button (click)="loginUser($event)">Ingresar</button>
+    </div>
+     -->
+    <div class="items-overlay" (click)="close2($event)"></div>
+
+  </div>
+  </ng-container>
+
+</div>
+

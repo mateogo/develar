@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { LasargenNavbarComponent } from './layouts/lasargen-navbar/lasargen-navbar.component';
+import { UtopiasNavbarComponent } from './layouts/utopias-navbar/utopias-navbar.component';
 import { TopBrandingComponent } from './top-branding/top-branding.component';
 import { TopAboutComponent } from './top-about/top-about.component';
 import { TopAboutlrComponent } from './top-about-lr/top-aboutlr.component';
@@ -65,6 +66,7 @@ import { TopFooterPageComponent } from './top-footer-page/top-footer-page.compon
   	HomeComponent,
   	NavbarComponent,
     LasargenNavbarComponent,
+    UtopiasNavbarComponent,
     PbaNavbarComponent,
   	TopBrandingComponent,
   	TopAboutComponent,

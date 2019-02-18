@@ -93,7 +93,6 @@ export class HomeComponent implements OnInit {
   }
 
   initHomePage(){
-    console.log('** HOME **  HOME ******')
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     if(this.minimalCtrl.navigateToUserCommunity()){

@@ -21,6 +21,11 @@ export class MinimalistLayoutComponent implements OnInit {
     return this.navbarTmpl === "lasargentinas";
   }
 
+  get utopiasNavbar(){
+    return this.navbarTmpl === "utopias";
+  }
+
+
   @Input() openedSidebar: boolean = false;
 
   constructor( private _sharedService: SharedService ) {
@@ -34,6 +39,10 @@ export class MinimalistLayoutComponent implements OnInit {
 
     if(_sharedService.gldef.company === "lasargentinas"){
        this.navbarTmpl = 'lasargentinas';
+    }
+
+    if(_sharedService.gldef.company === "utopias"){
+       this.navbarTmpl = 'utopias';
     }
 
 

@@ -21,6 +21,12 @@ export class MinimalMenuService {
 		this.menuChange.next(menu);
 	};
 
+  loadSocialMedia(items){
+    console.log('loadSocialMedia: [%s]', items && items.length);
+    this.socialChange.next(items);
+  };
+
+
   loadDefaultMenuItems(token){
     let defaultMenu = Promise.resolve(itemList[token]);
 
@@ -29,8 +35,9 @@ export class MinimalMenuService {
 
 
   loadSocialItems(token){
-    let defaultMenu = Promise.resolve(itemList[token]);
-    defaultMenu.then(socialItems => this.socialChange.next(socialItems));
+    let socialItems = Promise.resolve(itemList[token]);
+    console.log('**loadSocialItems: [%s]', token);
+    socialItems.then(items => this.loadSocialMedia(items));
   }
 
 

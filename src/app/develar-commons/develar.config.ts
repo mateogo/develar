@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'lasargentinas';
+const user = 'utopias';
 
 const globals = {
 
@@ -14,6 +14,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'fundetec',
 		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[fundetec] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.fundetec.digital'
@@ -25,6 +26,7 @@ const globals = {
 		logoCompany: 'logo-lasargentinas.png',
 		company: 'lasargentinas',
 		mainmenu: 'LASARGEN',
+		socialmedia: 'LASARGEN_SOCIAL_MEDIA',
 		emailsubject: '[Las Argentinas] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.lasargentinas.digital'
@@ -36,6 +38,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'develar',
 		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.develar.co'
@@ -47,6 +50,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'picris',
 		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Picris] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.picris.co'
@@ -58,6 +62,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'simplecomm',
 		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Simplecomm] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.simplecomm.com.ar'
@@ -69,9 +74,22 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'masuno',
 		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[+UNO] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.masuno.digital'
+	},
+
+	utopias: {
+		logoAvatar: 'avatar-utopias.png',
+		logoUser: 'avatar-u-utopias.png',
+		logoCompany: 'logo-utopias.png',
+		company: 'utopias',
+		mainmenu: 'DEFAULT',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[UTOPIAS] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		url: 'www.utopias.digital'
 	}
 
 }

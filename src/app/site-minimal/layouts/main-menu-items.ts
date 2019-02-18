@@ -1,6 +1,6 @@
 import { MainMenuItem, SocialMediaItem } from '../menu-helper';
 
-export const SOCIAL_MEDIA: SocialMediaItem[] = [
+export const LASARGEN_SOCIAL_MEDIA: SocialMediaItem[] = [
   {
     title: 'Seguinos en Twitter',
     icon: 'fab fa-twitter',
@@ -24,6 +24,34 @@ export const SOCIAL_MEDIA: SocialMediaItem[] = [
 
 
  ];
+
+export const DEFAULT_SOCIAL_MEDIA: SocialMediaItem[] = [
+  {
+    title: 'Seguinos en Twitter',
+    icon: 'fab fa-twitter',
+    url: 'https://twitter.com/LTrabajamos',
+  },
+
+
+ ];
+
+
+
+export const UTOPIA_SOCIAL_MEDIA: SocialMediaItem[] = [
+  {
+    title: 'Seguinos en Twitter',
+    icon: 'fab fa-twitter',
+    url: 'https://twitter.com/LTrabajamos',
+  },
+  {
+    title: 'Seguinos en Instagram',
+    icon: 'fab fa-instagram',
+    url: 'https://www.instagram.com/lasargentinastrabajamos/',
+  },
+
+
+ ];
+
 
 export const LASARGEN: MainMenuItem[] = [
   {
@@ -137,6 +165,148 @@ export const LASARGEN: MainMenuItem[] = [
 
 
 ];
+
+export const UTOPIAS: MainMenuItem[] = [
+  {
+    title: 'Utopías',
+    icon: '',
+    active: true,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'LA RED',
+    icon: 'fa fa-home',
+    active: true,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Quiénes somos',
+        routing:'/trabajan/info/acercade'
+      },
+      {
+        title: 'Sumate',
+        routing:'/trabajan/info/contacto'
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'ÁREAS',
+    icon: 'fa fa-th',
+    active: true,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Política',
+        routing: '/trabajan/red/5c5a9b991c317419f2cd8859'
+      },
+
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'EQUIPO',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Ingresar',
+        routing: '/ingresar/login'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+
+];
+
+
+export const DEFAULT: MainMenuItem[] = [
+  {
+    title: 'Utopías',
+    icon: '',
+    active: true,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'LA RED',
+    icon: 'fa fa-home',
+    active: true,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Quiénes somos',
+        routing:'/trabajan/info/acercade'
+      },
+      {
+        title: 'Sumate',
+        routing:'/trabajan/info/contacto'
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'ÁREAS',
+    icon: 'fa fa-th',
+    active: true,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Política',
+        routing: '/trabajan/red/5c5a9b991c317419f2cd8859'
+      },
+
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'EQUIPO',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Ingresar',
+        routing: '/ingresar/login'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+
+];
+
 //    cloud
 //    5c5aa3e11c317419f2cd8a6f: bibiana
 //     5c5a7bfe63ee3254df9502f1: bioquimica
