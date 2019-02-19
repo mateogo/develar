@@ -930,11 +930,6 @@ export const graphUtilities = {
 		return predicateLabel(type, item)
 	},
 
-	getProfesionLabel(){
-		return 
-
-	},
-
 	getPredicateOptions(type){
 		return predicateType[type].predicates;
 	},
@@ -958,7 +953,11 @@ export const graphUtilities = {
 	},
 
 	getProfesionesLabel(token){
-		return 		profesiones.find(item => item.val === token).label;
+		if(!token) return "";
+		let item = profesiones.find(item => item.val === token);
+		if(item) return item.label;
+		else return "";
+
 	},
 
 	initNewCardGraph(type, list):CardGraph{
