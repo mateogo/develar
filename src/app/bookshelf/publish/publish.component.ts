@@ -74,7 +74,7 @@ export class PublishComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('********* publish componente INIT: [%s]', this._model.slug);
+    //console.log('********* publish componente INIT: [%s]', this._model.slug);
   	this._model = cardHelper.buildPublishToken(this._model)
 
   	this.formReset(this._model);
@@ -92,7 +92,7 @@ export class PublishComponent implements OnInit {
     }else{
       this.topicList = [];
     }
-    console.log('form reset: topicList: [%s]', this.topicList.length);
+    //console.log('form reset: topicList: [%s]', this.topicList.length);
 
   	this.form.reset({
       slug: model.slug,
@@ -134,32 +134,37 @@ export class PublishComponent implements OnInit {
   // ****** PROMOTE ******************
   promoteData(){
     this._model = this.formSubmit();
-    console.log('promoteData [%s] [%s]',this._model.slug, this._model.template );
+    //console.log('promoteData [%s] [%s]',this._model.slug, this._model.template );
     this.publishEmitter.next(this._model);
   }
 
 
   templateChange(tpl){
-  	console.log('Select Change: [%s]', tpl)
+  	//console.log('Select Change: [%s]', tpl)
   }
+
   scopeChange(scope){
-  	console.log('Select scope change: [%s]', scope)
+  	//console.log('Select scope change: [%s]', scope)
+  }
+
+  destaqueChange(scope){
+    //console.log('Select scope change: [%s]', scope)
   }
 
   addTopicos(topics: Array<string>){
-  	console.log('addTopicos: [%s]', topics.length)
+  	//console.log('addTopicos: [%s]', topics.length)
     if(topics && topics.length){
       this.topicList = topics;
     }
   }
 
   publishChange(e){
-    console.log('publish Change: [%s] [%s]', e, this.form.controls['toPublish'].value);
+    //console.log('publish Change: [%s] [%s]', e, this.form.controls['toPublish'].value);
     this.openeditor = this.form.controls['toPublish'].value
   }
 
   dateRangeChange(){
-    console.log('dateRangeChange:  [%s] to: [%s]', this.form.controls['dateFrom'].value, this.form.controls['dateTo'].value),
+    //console.log('dateRangeChange:  [%s] to: [%s]', this.form.controls['dateFrom'].value, this.form.controls['dateTo'].value),
     this.toTxt = devutils.dateFromTx(this.form.controls['dateTo'].value).toString();
     this.fromTxt = devutils.dateFromTx(this.form.controls['dateFrom'].value).toString();
 

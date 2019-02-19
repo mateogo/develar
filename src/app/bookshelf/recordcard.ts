@@ -164,11 +164,11 @@ const templateList: Array<any> = [
 		{val: 'topservicios',   label: 'topservicios',       slug:'topservicios' },
 		{val: 'topportfolio',   label: 'topportfolio',       slug:'topportfolio' }, 
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
-		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
-		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
+		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
+		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
 		{val: 'ficha',          label: 'ficha',              slug:'ficha' },
 		{val: 'post',           label: 'nota',               slug:'Nota' },
@@ -290,11 +290,10 @@ const cardCategory = {
 		{val: 'ejemplo', 	      label: 'Ejemplo',            slug:'Ejemplo' },
 	],
 
-
 	post: [
 		{val: 'no_definido', 	 label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'politica',      label: 'Política',           slug:'Política' },
-		{val: 'derechos',      label: 'Derechos ganados',   slug:'Derechos ganados' },
+		{val: 'derechos',      label: 'Derechos Humanos',   slug:'Derechos Humanos' },
 		{val: 'internacional', label: 'Internacional',      slug:'Internacional' },
 		{val: 'economia',      label: 'Economía',           slug:'Economía' },
 		{val: 'libros',        label: 'Libros',             slug:'Libros' },

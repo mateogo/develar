@@ -31,14 +31,14 @@ export class PostTopContainerComponent implements OnInit {
   ngOnInit() {
 
     var first = true;
-    if(this.destaque === 'destaque2'){
-      this.isDestaque = false;
+    if(this.destaque === 'destaque1'){
       this.isPrincipal = true;
+      this.isDestaque = false;
     }
 
-   if(this.destaque === 'destaque1'){
-      this.isDestaque = true;
+   if(this.destaque === 'destaque2'){
       this.isPrincipal = false;
+      this.isDestaque = true;
     }
 
 		if(first){

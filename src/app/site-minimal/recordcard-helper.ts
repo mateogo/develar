@@ -26,6 +26,7 @@ const templateList: Array<any> = [
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
 		{val: 'ficha',          label: 'ficha',              slug:'ficha' },
+		{val: 'post',           label: 'nota',               slug:'Nota' },
 ];
 
 const scopeList: Array<any> = [
@@ -35,6 +36,12 @@ const scopeList: Array<any> = [
 		{val: 'publico',        label: 'Público',       slug:'Acceso general' },
 ];
 
+const destaqueList: Array<any> = [
+		{val: 'no_definido', 	  label: 'Seleccione opción',   slug:'Seleccione opción' },
+		{val: 'destaque1',        label: 'Destaque 1Col',             slug:'Destaque 1Col' },
+		{val: 'destaque2',        label: 'Destaque 2Col',             slug:'Destaque 2Col' },
+		{val: 'destaque3',        label: 'Destaque 3Col',             slug:'Destaque 3Col' },
+];
 
 const subCardTypes: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -72,6 +79,7 @@ const subCardCategory = {
 const cardTypes: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'ficha',          label: 'Ficha',              slug:'Ficha principal' },
+		{val: 'post',           label: 'Nota/Posteo',        slug:'Nota  Post' },
 		{val: 'vital',          label: 'Ficha Vital',        slug:'Ficha Curriculum' },
 		{val: 'propuesta',      label: 'Proposal',           slug:'Propuesta comercial' },
 		{val: 'proyecto',       label: 'Proyecto',           slug:'Proyecto' },
@@ -135,6 +143,17 @@ const cardCategory = {
 		{val: 'ejemplo', 	      label: 'Ejemplo',            slug:'Ejemplo' },
 	],
 
+	post: [
+		{val: 'no_definido', 	 label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'politica',      label: 'Política',           slug:'Política' },
+		{val: 'derechos',      label: 'Derechos Humanos',   slug:'Derechos Humanos' },
+		{val: 'internacional', label: 'Internacional',      slug:'Internacional' },
+		{val: 'economia',      label: 'Economía',           slug:'Economía' },
+		{val: 'libros',        label: 'Libros',             slug:'Libros' },
+		{val: 'noticias',      label: 'Noticias',           slug:'Noticias' },
+		{val: 'eventos',       label: 'Eventos',            slug:'Eventos' },
+	],
+
 	subficha: [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'documento',      label: 'Documento',          slug:'Documento general' },
@@ -166,13 +185,9 @@ const cardCategory = {
 		{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
 		{val: 'topportfolio',   label: 'Top portfolio',      slug:'Top portfolio' },
 		{val: 'destacado',      label: 'Top destacado',      slug:'Destacado' },
-		{val: 'footer',         label: 'Top footer',         slug:'Footer' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
+		{val: 'footer',         label: 'Top footer',         slug:'Footer' },
 		{val: 'formcontacto',   label: 'Form de contacto',   slug:'Formulario de contacto' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
-		{val: 'comercial',      label: 'comercial',          slug:'comercial' },
 	]
 };
 
