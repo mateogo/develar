@@ -29,6 +29,7 @@ const publicationSch = new Schema( {
     dateTo:    { type: Number, required: false},
     topics:    { type: Array, required: false},
     template:  { type: String, required: false},
+    destaque:  { type: String, required: false},
     slug:      { type: String, required: false},
 });
 
@@ -96,6 +97,9 @@ const recordSch = new Schema({
     subtitle:     { type: String, required: false },
     excerpt:      { type: String, required: false },
     linkTo:       { type: String, required: false },
+    publishDateTx:{ type: String, required: false },
+    publishDate:  { type: String, required: false },
+
     description:  { type: String, required: false },
     mainimage:    { type: String, required: false },
     imagecredit:  { type: String, required: false },
@@ -257,6 +261,10 @@ function buildQuery(query, user){
             q["publish.template"] = query['publish.template'];
         }
 
+        if(query['publish.destaque']){
+            q["publish.destaque"] = query['publish.destaque'];
+        }
+
         q["publish.toPublish"] = true;
         q["publish.dateFrom"] = {$lte: actual};
         q["publish.dateTo"] = {$gte: actual};
@@ -317,6 +325,7 @@ function initNewRecordcard(token, person){
             dateTo:    dateTo,
             topics:    ['portfolio'],
             template:  'portfolio',
+            destaque:  '',
             slug:      'Publicación automática',
 
 

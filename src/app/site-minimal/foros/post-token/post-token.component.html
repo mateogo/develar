@@ -1,0 +1,24 @@
+<div class="post-token" [align]="customalign" *ngIf="model" >
+
+	<mat-card class="token-card  mat-elevation-z">
+
+	  <mat-card-content class="post">
+
+	    <div class="carrousel">
+	      <a  role="button" (click)="postDetail($event)" href="">
+	        <img [ngStyle]="imgMaxSize" class="img-fluid carrousel-image" src="{{ mainImageUrl }}" >
+	      </a>
+
+	    	<div class="post">
+					<p [innerHTML]='model.slug'  [ngStyle]="postName" class="post-name text-uppercase"></p>
+					<p [innerHTML]='post_author' [ngStyle]="postAuthor" class="post-author text-uppercase"></p>
+					<p *ngIf="!isFullWidth" [innerHTML]='model.excerpt' class="post-slug" ></p>
+				</div>
+	    </div>
+
+	  </mat-card-content>
+
+	</mat-card>
+
+</div>
+<!--- [ngStyle]='cardStyle'  -->

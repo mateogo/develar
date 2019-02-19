@@ -56,6 +56,8 @@ export class HomeComponent implements OnInit {
   public isFooter = true;
   public footer: RecordCard;
 
+  public isPosts = true;
+
   public isPapers = false;
   public portfolios: RecordCard[] = [];
   public portfolioCardSize = '100%';

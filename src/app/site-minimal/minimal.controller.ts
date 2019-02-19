@@ -240,6 +240,17 @@ export class SiteMinimalController {
     return listener;
   }
 
+  fetchTopPostsRecords(topic): Subject<RecordCard[]>{
+    let listener = new Subject<RecordCard[]>();
+
+
+    this.fetchTopPosts(topic, listener);
+
+
+    return listener;
+  }
+
+
 
   ////              recordcard             ////
   fetchRecordCard(model: RecordCard, modelId: string){
@@ -394,6 +405,27 @@ export class SiteMinimalController {
 
     });
   }
+
+  ////************* Portfolios  ************////
+  private fetchTopPosts(topic:string, recordEmitter:Subject<RecordCard[]>){
+    let query = {
+      publish: true,
+      'publish.template': 'post',
+      'publish.destaque': topic,
+    }
+
+    this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+
 
   ////************* Contact person by email  ************////
 

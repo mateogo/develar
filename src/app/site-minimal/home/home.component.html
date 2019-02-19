@@ -21,6 +21,14 @@
 	</div>
 </ng-container>
 
+<ng-container *ngIf="isPosts">
+	<post-top-container [destaque]="'destaque2'"></post-top-container>
+</ng-container>
+
+<ng-container *ngIf="isPosts">
+	<post-top-container [destaque]="'destaque1'"></post-top-container>
+</ng-container>
+
 <ng-container *ngIf="isTopabout">
 	<top-about [record]='topabout' ></top-about>
 </ng-container>

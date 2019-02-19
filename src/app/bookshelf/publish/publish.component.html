@@ -73,6 +73,14 @@
         </mat-select>
       </mat-form-field>
 	
+			<mat-form-field>
+			  <mat-select #destaqueTpl placeholder="Participación en destacados"
+			      [formControl]="form.controls['destaque']"
+			      (selectionChange)="destaqueChange(destaqueTpl.value)" >
+			    <mat-option *ngFor="let destaque of destaqueList" 
+			      [value]="destaque.val" >{{ destaque.label }}</mat-option>
+			  </mat-select>
+			</mat-form-field>
 
 	    </ng-container>
 		</form>

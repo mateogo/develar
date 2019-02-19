@@ -226,6 +226,10 @@ const routes: Routes = [
     children: mainRoutes
   },
   {
+    path: 'notas',
+    children: mainRoutes
+  },
+  {
     path: 'trabajan',
     children: mainRoutes
   },

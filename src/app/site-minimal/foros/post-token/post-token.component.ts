@@ -1,23 +1,28 @@
-import { Component, OnInit, Input, EventEmitter, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewChecked } from '@angular/core';
 
 import { RecordCard, SubCard, CardGraph, BreadcrumbItem } from '../../recordcard.model';
 
 import { GraphUtils, CardHelper }       from '../../recordcard-helper';
 
 import { SiteMinimalController } from '../../minimal.controller';
+
 import { HighlightService } from '../../minimal-highlighter.service';
 
 import { gldef } from '../../../develar-commons/develar.config';
 
 @Component({
-  selector: 'post-detail',
-  templateUrl: './post-detail.component.html',
-  styleUrls: ['./post-detail.component.scss']
+  selector: 'post-token',
+  templateUrl: './post-token.component.html',
+  styleUrls: ['./post-token.component.scss']
 })
-export class PostDetailComponent implements OnInit {
+export class PostTokenComponent implements OnInit {
+
 
 	@Input() customalign: string = 'center';
   @Input() title: string = "";
+  @Input() imageType: string ="mainimage";
+  @Input() viewMode: string = "colMode"
+
 
   @Input()
   set model(entity: RecordCard){
@@ -35,6 +40,7 @@ export class PostDetailComponent implements OnInit {
   get relatedcards(){
     return this.currentSubcardList;
   }
+  @Output() detailView = new EventEmitter<RecordCard>();
   
 
   private currentModel: RecordCard;
@@ -43,7 +49,11 @@ export class PostDetailComponent implements OnInit {
   private showAssets = false;
   private showResources = false;
 
+  public isFullWidth = false;
+
   public avatar = gldef.logoAvatar;
+  public mainImageUrl = ''
+  public post_author = ''
 
 	private modelId: string;
   private models: RecordCard[];
@@ -51,18 +61,13 @@ export class PostDetailComponent implements OnInit {
   private assetList: CardGraph[];
   private resourceList: CardGraph[];
   private tagList: Array<string>;
-  private mainImageUrl: string;
-	public post_author = ''
 
   private modelScrptn;
   private isPrismed = false;
-  private carrousel = [];
+  public postName = {};
+  public postAuthor = {};
 
-  public hasExcerpt = false;
-  public showExcerpt = false;
-  public showDescription = true;
 
-  public isFooter = true;
 
   constructor(
   		private minimalCtrl: SiteMinimalController,
@@ -71,13 +76,49 @@ export class PostDetailComponent implements OnInit {
 
   }
 
-  //http://develar-local.co:4200/red/mujeres/5c189e465063c40dc9f92892
-
   ngOnInit() {
+    if(this.viewMode === "fullWidth"){      
+      this.isFullWidth = true;
+      this.postName = {
+        'text-align': 'center',
+        'font-size': '1.4em'
+      }
+     this.postAuthor = {
+        'text-align': 'center',
+        'font-size': '1em'
+      }
 
-    this.initCardData(this.model)
+    }else{
+      this.isFullWidth = false;
+      this.postName = {
+        'text-align': 'left',
+        'font-size': '1.2em'
+      }
+      this.postAuthor = {
+        'text-align': 'left',
+        'font-size': '0.7em'
+      }
+
+    }
+
+    this.initCardData(this.model);
+
+  //   this.modelScrptn = this.minimalCtrl.recordCardListener.subscribe(model =>{
+  //     this.initCardData(model);
+  //   })
+
+  //   this.minimalCtrl.fetchRecordCard(this.model, id);
+
+  }  
+
+  postDetail(e){
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('Alo!!!!')
+    this.detailView.emit(this.model);
 
   }
+
 
   /**
    * Highlight blog post when it's ready
@@ -99,20 +140,8 @@ export class PostDetailComponent implements OnInit {
     this.loadRelatedResources(entity.resources);
     this.loadRelatedTags(entity.taglist);
     this.loadRelatedCards(entity.relatedcards);
+
     this.fetchMainImage(entity.viewimages);
-    this.buildCarrousel(entity.viewimages);
-
-    if(entity.excerpt){
-      this.showExcerpt = true;
-      this.showDescription = false;
-      this.hasExcerpt = true;
-
-    }else{
-      this.showExcerpt = false;
-      this.showDescription = true;
-      this.hasExcerpt = false;
-
-    }
 
     this.model = entity;
 
@@ -121,7 +150,14 @@ export class PostDetailComponent implements OnInit {
   }
 
   fetchMainImage(images){
-    let image = images.find(img => img.predicate === 'featureimage') || images.find(img => img.predicate === 'mainimage');
+    let image;
+    if(this.imageType === 'mainimage'){
+      image = images.find(img => img.predicate === 'mainimage') || images.find(img => img.predicate === 'featureimage');
+
+    }else if(this.imageType === 'featureimage'){
+      image = images.find(img => img.predicate === 'featureimage') || images.find(img => img.predicate === 'mainimage');
+
+    }
 
     if(image){
       this.mainImageUrl = '/download/' + image.entityId;
@@ -130,20 +166,6 @@ export class PostDetailComponent implements OnInit {
     }
 
   }
-
-  buildCarrousel(images){
-    this.carrousel = [];
-    let image = images.forEach(img => {
-      if(img.predicate === 'images'){
-        img.url = '/download/' + img.entityId;
-        this.carrousel.push(img);
-      }
-    });
-
-  }
-
-
-
 
   tryPrism(record: RecordCard){
 
@@ -207,27 +229,6 @@ export class PostDetailComponent implements OnInit {
 
     if(this.assetList.length) this.showAssets = true;
     else this.showAssets = false;
-  }
-
-  showMore(e){
-    e.stopPropagation();
-    e.preventDefault();
-    this.showExcerpt = false;
-    this.showDescription = true;
-  }
-
-  showLess(e){
-    e.stopPropagation();
-    e.preventDefault();
-
-    if(this.hasExcerpt){
-      this.showExcerpt = true;
-      this.showDescription = false;
-
-    }else{
-      this.showExcerpt = false;
-      this.showDescription = false;
-    }
   }
 
 

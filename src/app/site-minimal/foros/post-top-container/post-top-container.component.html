@@ -1,0 +1,25 @@
+<ng-container *ngIf="hasTopPosts">
+	<div class="container-fluid">
+		<ng-container *ngIf="isDestaque">		
+			<div class="top-posts row">
+			  <post-token class="col-md" 
+			  		*ngFor='let post of posts' 
+			  		[viewMode]="'colMode' "
+			  		[imageType]="'mainimage'"
+			  		(detailView)='modelListener($event)'
+			  		[model]='post' >
+			  		</post-token>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isPrincipal">		
+			<div class="row" *ngFor='let post of posts' >
+			  <post-token class="col" 
+			  		[viewMode]="'fullWidth' "
+			  		[imageType]="'featureimage'"
+			  		(detailView)='modelListener($event)'
+			  		[model]='post' >
+			  		</post-token>
+			</div>
+		</ng-container>
+	</div>
+</ng-container>

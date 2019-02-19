@@ -12,6 +12,7 @@ import { PapersComponent }        from './papers/papers.component';
 import { DetailCardComponent }    from './detail/detail-card/detail-card.component';
 import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
 import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
+import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
 
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
@@ -53,6 +54,16 @@ const routes: Routes = [
         component: PortfolioDetailComponent,
       },
 
+    ]  
+  },
+  {
+    path: 'navegar',
+    component: MinimalistLayoutComponent,
+    children: [
+      {
+        path: ':id',
+        component: PostDetailContainerComponent,
+      },
     ]  
   },
   {

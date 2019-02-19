@@ -1,0 +1,130 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+
+	.post-token {
+		margin: 5px 0 25px 0;
+		padding-right: 5px;
+		padding-left: 5px;
+
+		.detail-card {
+		  padding: 2px;
+		}
+
+	}
+
+}
+.token-card{
+	background: #f2eded;
+	padding: 0 0 0 0;
+}
+
+.carrousel {
+	position: relative;
+
+	.carrousel-image {
+		//max-width: 200px;
+		height: auto;
+
+	}
+
+	.controles {
+		margin: 0 0 0 0;
+		font-size: 1.2em;
+		.left {
+			float: left;
+		}
+		.right {
+			float: right;
+		}
+
+	}
+
+	.post {
+		//bottom: 0.1%;
+		background: #f2eded;
+
+		color: rgb(127,127,127);
+		text-align: left;
+
+		.post-name {
+
+			color: rgb(35, 35, 35);
+			font-size: 1.2em;
+			font-weight: 900;
+			margin: 8px 0 0 0;
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
+
+			// };
+
+		}
+
+		.post-separator {
+
+			font-size: 0.8em;
+			color: #ffffff;
+			font-weight: 400;
+			margin: -15px 0 5px 0;
+			//margin-top: -15px;
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
+
+			// };
+
+		}
+
+		.post-author {
+
+			font-size: 0.7em;
+			font-weight: 700;
+
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
+
+			// };
+
+		}
+
+		.post-slug {
+
+			font-size: 0.7em;
+			font-weight: 700;
+
+			// > span {
+			// 	background: #323232;
+			// 	opacity: 0.8
+
+			// };
+
+		}
+	}
+}
+
+.fa {
+  font-size: 2.8em;
+}
+
+.mat-card-image:first-child {
+	margin-top: 0;
+}
+
+.mat-card-title {
+	font-size: 32px;
+}
+
+.mat-card-subtitle {
+	font-size: 24px;
+}
+
+.mat-card-content {
+	font-size: 18px;
+	text-align: left;
+}
+
+#currentcard {
+   min-width: 450px;
+}

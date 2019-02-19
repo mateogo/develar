@@ -11,6 +11,9 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { RecordCard, SubCard, cardHelper, PublicationConfig }    from '../recordcard';
 import { Asset }                              from '../../develar-commons/develar-entities';
 
+import { devutils } from '../../develar-commons/utils';
+
+
 import { RecordCardService }              from '../bookshelf.service';
 import { UserService }                    from '../../entities/user/user.service';
 import { DaoService }                     from '../../develar-commons/dao.service';
@@ -26,6 +29,9 @@ function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], pers
 	const entity = model;
 
 	entity.slug = fvalue.slug;
+  entity.publishDateTx = fvalue.publishDateTx;
+  entity.publishDate = fvalue.publishDateTx ? devutils.dateFromTx(fvalue.publishDateTx).getTime() : 0;
+
   entity.subtitle = fvalue.subtitle;
   entity.excerpt = fvalue.excerpt;
   entity.cardId = fvalue.cardId;
@@ -123,6 +129,7 @@ export class UnitcardeditComponent implements OnInit {
     		slug:         [null, Validators.compose([Validators.required])],
         subtitle:     [null, Validators.compose([Validators.required])],
         excerpt:      [null],
+        publishDateTx: [null],
     		cardType:     [null],
         topic:        [null],
         cardCategory: [null],
@@ -150,6 +157,7 @@ export class UnitcardeditComponent implements OnInit {
             cardId:       this.model.cardId,
 					  slug:         this.model.slug,
             subtitle:     this.model.subtitle,
+            publishDateTx: this.model.publishDateTx,
             excerpt:      this.model.excerpt,
             imagecredit:  this.model.imagecredit,
 					  cardType:     this.model.cardType || "ficha",

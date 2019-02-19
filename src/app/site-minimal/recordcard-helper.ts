@@ -938,6 +938,23 @@ export class GraphUtils {
 		return util.buildCardGraphList(list);
 	};
 
+	static fetchAuthorString(list: CardGraphPerson[]):string {
+		let author = ""
+		list.forEach(token => {
+			if(token.predicate === "autor"){
+				if(author){
+					author = author + "; " + token.displayAs;
+
+				}else{
+					author = token.displayAs;
+
+				}
+			}
+		});
+
+		return author;
+	}
+
 	static buildMilestonesList(entity: RecordCard): Array<SelectData>{
 	  let arr: Array<SubCard> = entity.relatedcards.filter(card => card.cardType === 'milestone') || [];
 	  let selectArray:Array<SelectData> = arr.map(data => {

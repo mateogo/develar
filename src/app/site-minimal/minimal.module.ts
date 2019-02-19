@@ -49,6 +49,8 @@ import { SearchScoringComponent } from './antecedentes/search-scoring/search-sco
 import { TopFooterPageComponent } from './top-footer-page/top-footer-page.component';
 import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
 import { PostDetailComponent } from './foros/post-detail/post-detail.component';
+import { PostTopContainerComponent } from './foros/post-top-container/post-top-container.component';
+import { PostTokenComponent } from './foros/post-token/post-token.component';
 
 
 
@@ -94,7 +96,9 @@ import { PostDetailComponent } from './foros/post-detail/post-detail.component';
   	SearchScoringComponent,
   	TopFooterPageComponent,
   	PostDetailContainerComponent,
-  	PostDetailComponent
+  	PostDetailComponent,
+  	PostTopContainerComponent,
+  	PostTokenComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

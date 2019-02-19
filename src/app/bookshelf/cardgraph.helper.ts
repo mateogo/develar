@@ -1,7 +1,5 @@
 import { RecordCard, SubCard, SelectData, cardHelper } from './recordcard';
 
-
-
 /****************************************/
 /**            CardGraph                */
 /****************************************/
@@ -223,19 +221,19 @@ export const predicateType = {
 	person: {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
-			{val: 'fichacv',          label: 'Ficha Curriculum',              slug:'Ficha Curriculum' },
-			{val: 'client',          label: 'Cliente',              slug:'Cliente' },
-			{val: 'referral',          label: 'Referencia',              slug:'Referencia' },
-			{val: 'sponsor',          label: 'Sponsor',              slug:'Sponsor' },
-			{val: 'cro',          label: 'Productor',              slug:'Productor' },
-			{val: 'contacto',          label: 'Contacto',              slug:'contacto' },
-			{val: 'director',          label: 'Director',              slug:'director' },
-			{val: 'prjleader',          label: 'Project leader',              slug:'prjleader' },
-			{val: 'qa',          label: 'Analista calidad',              slug:'Analista calidad' },
 			{val: 'autor',          label: 'Autor',              slug:'Autor' },
 			{val: 'coautor',        label: 'Co-Autor',           slug:'Co-Autor' },
 			{val: 'revisor',        label: 'Revisor',            slug:'Revisor' },
 			{val: 'traductor',      label: 'Traductor',          slug:'Traductor' },
+			{val: 'fichacv',        label: 'Ficha Curriculum',   slug:'Ficha Curriculum' },
+			{val: 'client',         label: 'Cliente',            slug:'Cliente' },
+			{val: 'referral',       label: 'Referencia',         slug:'Referencia' },
+			{val: 'sponsor',        label: 'Sponsor',            slug:'Sponsor' },
+			{val: 'cro',            label: 'Productor',          slug:'Productor' },
+			{val: 'contacto',       label: 'Contacto',           slug:'contacto' },
+			{val: 'director',       label: 'Director',           slug:'director' },
+			{val: 'prjleader',      label: 'Project leader',     slug:'prjleader' },
+			{val: 'qa',             label: 'Analista calidad',   slug:'Analista calidad' },
 			{val: 'autorizante',    label: 'Autorizante',        slug:'Autorizante' },
 			{val: 'citado',         label: 'Citado',             slug:'Citado' },
 			{val: 'editor',         label: 'Editor',             slug:'Editor' },
@@ -297,7 +295,6 @@ export const predicateType = {
 		]
 	}
 
-
 }
 
 
@@ -326,7 +323,6 @@ const productTableActions = [
 			{val: 'killpredicate',     label: 'Eliminar relación producto',      slug:'Elimina el producto de esta relación' },
 ]
 
-
 const monedas = [
 			{val: 'ARS',    label: 'pesos',           slug:'Pesos Argentinos' },
 			{val: 'USD',    label: 'usd',             slug:'Dolar USA' },
@@ -344,7 +340,6 @@ const viewOptions = [
 			{val: 'producto',     label: 'xProducto',      slug:'Vista resumen por producto' },
 			{val: 'ume',          label: 'xUn de medida',  slug:'Vista resumen por unidad de medida' },
 			{val: 'moneda',       label: 'xMoneda',        slug:'Vista resumen por moneda' },
-
 ]
 
 const fumeList = [
