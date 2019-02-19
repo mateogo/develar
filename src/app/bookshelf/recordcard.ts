@@ -28,6 +28,7 @@ export class PublicationConfig {
 			this.dateTo = data.dateTo;
 			this.topics = data.topics;
 			this.template = data.template;
+			this.destaque = data.destaque;
 			this.slug = data.slug;
 		}
 	}

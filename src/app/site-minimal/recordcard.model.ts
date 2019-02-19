@@ -141,6 +141,7 @@ export class PublicationConfig {
 	publishOrder: string = "";
 	topics: Array<string> = [];
 	template: string = "";
+	destaque: string = "";
 	slug: string = "";
 	constructor(data?){
 		this.scope = 'publico';
@@ -154,6 +155,7 @@ export class PublicationConfig {
 			this.publishOrder = data.publishOrder;
 			this.topics = data.topics;
 			this.template = data.template;
+			this.destaque = data.destaque;
 			this.slug = data.slug;
 		}
 	}
@@ -196,6 +198,8 @@ export class RecordCard {
 	topic: string = "general";
 	subtitle: string = "";
 	linkTo: string = "";
+	publishDateTx: string = "";
+	publishDate: number;
 	slug: string = "";
 	excerpt: string = "";		
 	description: string = "";

@@ -10,7 +10,7 @@
         <img class="carrousel-image" src="{{ mainImageUrl }}" >
       </a>
     </div>
-    <h4><q><i>{{model.subtitle}}</i></q></h4>
+    <h4><i>{{model.subtitle}}</i></h4>
     <div *ngIf='showExcerpt' >
       <div [innerHTML]='model.excerpt' ></div>
       <a class="toggleText" role="button" (click)='showMore($event)'>LEER MAS...</a>
