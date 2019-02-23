@@ -36,19 +36,17 @@ export const DEFAULT_SOCIAL_MEDIA: SocialMediaItem[] = [
  ];
 
 
-
 export const UTOPIA_SOCIAL_MEDIA: SocialMediaItem[] = [
   {
     title: 'Seguinos en Twitter',
     icon: 'fab fa-twitter',
-    url: 'https://twitter.com/LTrabajamos',
+    url: 'https://twitter.com/AmadoBoudouArg' 
   },
   {
-    title: 'Seguinos en Instagram',
-    icon: 'fab fa-instagram',
-    url: 'https://www.instagram.com/lasargentinastrabajamos/',
+    title: 'Seguinos en Facebook',
+    icon: 'fab fa-facebook-f',
+    url: 'https://www.facebook.com/agustincabc',
   },
-
 
  ];
 

@@ -117,8 +117,7 @@ function buildMailContent(data):string {
   }else {
       const tmpl = `
       <p>Estimadx  ${data.displayName}: </p>
-      <p>Agradecemos tu registración en la aplicación DEVELAR, un espacio de producción colaborativa.</p>
-      <p>Al ingresar con tus credenciales tendrás acceso a los recursos de tu comunidad.</p>
+      <p>Agradecemos tu registración en ${gldef.url}, un espacio de producción colaborativa.</p>
 
       <h2>Tus datos de acceso son:</h2>
      
@@ -128,7 +127,7 @@ function buildMailContent(data):string {
        <p><strong>Clave de acceso provisoria: </strong> abc1234</p>
        <h4>Estamos atentos por cualquier asistencia que pudieras necesitar.</h4>
 
-      <h4>Equipo de desarrollo</h4>
+      <h4>Equipo de Producción</h4>
 
       `;
     return tmpl;

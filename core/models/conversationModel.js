@@ -661,17 +661,17 @@ function buildActorList(role, rolestring, users, actors){
 function buildEmitterMailContent(data){
   const admin_tpl = `
     <p>Estimadx  ${data.displayName}: </p>
-    <p>Agradecemos su interés por contactarse con nuestra compañía.</p>
-    <p>Será contactado por uno de nuestros representantes a la brevedad.</p>
+    <p>Agradecemos tu interés por este espacio.</p>
+    <p>Será contactado por un miembro del equipo a la brevedad.</p>
 
-    <h2>Los datos enviados por Usted son:</h2>
+    <h2>Los datos enviados que enviaste son:</h2>
    
      <p><strong>Nombre del emisor: </strong> ${data.displayName}</p>
      <p><strong>Correo electrónico: </strong> ${data.email}</p>
      <p><strong>Asunto: </strong> ${data.slug}</p>
      <p><strong>Mensaje: </strong> ${data.description}</p>
 
-    <h4>Equipo de Marketing</h4>
+    <h4>Equipo de Producción</h4>
     <h4>Enviado en forma automática, no responder.</h4>
     `;
 
@@ -721,7 +721,7 @@ function sendUsersNotifications (notif, actors){
         from: 'intranet.develar@gmail.com',
         body: body,
         to: actor.usermail,
-        prefix: 'Simplecomm',
+        prefix: 'develar',
         subject: 'Nuevo contacto vía Web'
       }
 
@@ -748,7 +748,7 @@ function buildAdminMailContent(data){
 
      <h4>¡¡Favor contactar al usuario dentro de las 24:00hs!!</h4>
 
-    <h4>Equipo de Marketing</h4>
+    <h4>Equipo de Producción</h4>
     <h4>Enviado en forma automática, no responder.</h4>
     `;
 

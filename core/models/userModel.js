@@ -789,7 +789,7 @@ function buildAdminMailContent(data){
 
      <h4>¡¡Favor contactar al usuario dentro de las 24:00hs!!</h4>
 
-    <h4>Equipo de Marketing</h4>
+    <h4>Equipo de Producción</h4>
     <h4>Enviado en forma automática, no responder.</h4>
     `;
 

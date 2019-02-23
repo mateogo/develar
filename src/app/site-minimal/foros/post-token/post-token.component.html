@@ -10,7 +10,12 @@
 	      </a>
 
 	    	<div class="post">
-					<p [innerHTML]='model.slug'  [ngStyle]="postName" class="post-name text-uppercase"></p>
+
+					<a  role="button" (click)="postDetail($event)" href="">
+						<p [innerHTML]='model.slug'  [ngStyle]="postName" class="post-name text-uppercase"></p>
+					</a>
+
+
 					<p [innerHTML]='post_author' [ngStyle]="postAuthor" class="post-author text-uppercase"></p>
 					<p *ngIf="!isFullWidth" [innerHTML]='model.excerpt' class="post-slug" ></p>
 				</div>
