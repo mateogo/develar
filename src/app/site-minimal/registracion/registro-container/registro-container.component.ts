@@ -61,6 +61,7 @@ export class RegistroContainerComponent implements OnInit {
   public blockState = {state: 'void'};
   public showLogin = false;
   public showRegistration = false;
+  public showComponent = true;
 
   public detailImage: RelatedImage;
 
