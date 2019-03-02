@@ -20,6 +20,7 @@ const SIDEMENU =  'sidemenu';
 const FICHA =     'ficha';
 const FOOTER =    'footer';
 const PORTFOLIO = 'portfolio';
+const REGISTRO =  'registro';
 
 const HOME = 'home';
 
@@ -50,8 +51,14 @@ export class HomeComponent implements OnInit {
   public isServicios = false;
   public servicios: RecordCard;
 
+  public isRegistro = false;
+  public registro: RecordCard;
+
+
   public isContacto = false;
   public contacto: RecordCard;
+
+  public showProductos = false;
 
   public isFooter = true;
   public footer: RecordCard;
@@ -95,6 +102,7 @@ export class HomeComponent implements OnInit {
   }
 
   initHomePage(){
+
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     if(this.minimalCtrl.navigateToUserCommunity()){
@@ -155,6 +163,10 @@ export class HomeComponent implements OnInit {
 
         }else if(publish.template === PORTFOLIO){
           this.portfolios.push(record);
+
+        }else if(publish.template === REGISTRO){
+          this.registro = record;
+          this.isRegistro = true
 
         }else if(publish.template === SERVICIOS){
           this.servicios = record;
@@ -242,5 +254,54 @@ export class HomeComponent implements OnInit {
   	// 		console.log('Token URL: token')
   	// 	})
   	// })
+
+
+    // console.log('HOME initHomePage');
+    // console.log('this.router.routerState.snapshot.url',this.router.routerState.snapshot.url.split('?')[0]);
+
+    // this.route.paramMap.subscribe(t =>{
+    //   console.log('paramMap: [%s] [%s]', t.keys, t.get('community'))
+
+    // });
+
+    // console.log('snapshot: parent [%s]', this.route.snapshot.parent);
+    // console.log('snapshot: children [%s]', this.route.snapshot.children);
+    // console.log('snapshot: routeConfig [%s]', this.route.snapshot.routeConfig);
+    // console.log('snapshot: toString [%s]', this.route.snapshot.toString());
+
+    // console.log('pathFromRoot length[%s]', this.route.pathFromRoot.length);
+
+    // this.route.pathFromRoot.forEach(t => {
+    //   console.log('pathFromRoot url[%s]  root[%s]  snapshot[%s]', t.url, t.root, t.snapshot.url)
+
+    // })
+
+    // console.log('this.router.url',this.router.url);
+    // this.route.url.subscribe(url =>{
+    //   console.log('URL subscribe [%s]', url.length)
+    //   url.forEach(t =>{
+    //     console.log('url Tokens: [%s]',t)
+    //   })
+
+
+    // })
+    // console.log('URL TREE')
+    // const urlTree = this.router.parseUrl(this.router.url);
+    // console.dir(urlTree.root.children)
+    // // urlTree.root.children['primary'].segments.map(it => {
+    // //   console.log('URL TREE it [%s]',it.path)
+
+
+    // // })
+
+    // //window.location.href.split('?')[0]
+
+
+    console.log('this.route.snapshot.url',this.route.snapshot.url);
+
+    console.log('this.route.snapshot.url',this.route.snapshot.paramMap.get('community'));
+
+    console.log('route  snapshotURL : [%s]',this.route.snapshot.url.toString());
+
 
 ********/

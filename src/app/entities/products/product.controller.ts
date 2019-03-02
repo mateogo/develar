@@ -9,7 +9,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 
 
-import { Product, Productit, ProductitTable, ProductBaseData, productModel } from './product.model';
+import { Product, Productit, Productsn, ProductEvent, ProductitTable, ProductsnTable, ProductBaseData, productModel } from './product.model';
 import { devutils } from '../../develar-commons/utils';
 
 
@@ -18,6 +18,7 @@ import { Tag }                 from '../../develar-commons/develar-entities';
 import { DaoService }  from '../../develar-commons/dao.service';
 import { UserService } from '../../entities/user/user.service';
 import { User }        from '../../entities/user/user';
+import { Person }      from '../../entities/person/person';
 
 
 const whoami = 'entity.controller';
@@ -66,15 +67,15 @@ function initForSave(basicData: ProductBaseData, model: Product, user: User): Pr
   return model;
 };
 
-function initItemForSave(model: Product, user: User): Product {
-  //console.log('initItemForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
-  model.user = user.username;
-  model.userId = user._id;
-
-
+function initItemForSave(model: Productit, user: User): Productit {
+ 
   return model;
 };
 
+function initProductSerialForSave(model: Productsn, user: User): Productsn {
+ 
+  return model;
+};
 
 @Injectable()
 export class ProductController {
@@ -90,11 +91,33 @@ export class ProductController {
 
   private productit;
   private productitId;
+
+  private productsn: Productsn;
+  private productsnId;
+
   private emitProductItem = new Subject<Productit>();
+  private emitProductSerial = new Subject<Productsn>();
+  private emitSerialsByOwner = new Subject<Productsn[]>();
   
   private productitList: Productit[] = [];
+  private productsnList: Productsn[] = [];
+
+  /*****************
+    myProducts PAGE
+  *****************/
+  private myProductsListener: Subject<boolean>;
+  private pageUser: User;
+  private pagePerson: Person;
+
+
+
+
   private emitProductTable = new BehaviorSubject<ProductitTable[]>([]);
   private _selectionModel: SelectionModel<ProductitTable>
+
+  private emitProductsnTable = new BehaviorSubject<ProductsnTable[]>([]);
+  private _selectionsnModel: SelectionModel<ProductsnTable>
+
   private _tableActions: Array<any> = productModel.tableActionOptions;
 
   private handleError(error: any): Promise<any> {
@@ -141,11 +164,179 @@ export class ProductController {
     if(type==='product'){
       this.productmaster = response;
       this.initBaseData();
+
     }else if(type === 'productit'){
       this.productit = response;
       this.initProductItemData();
+
+    }else if(type === 'productsn'){
+      this.productsn = response;
+      this.initProductSerialData();
     }
   }
+
+  /*****************
+    myProducts PAGE
+  *****************/
+  initMyProductsListener():Subject<boolean>{
+    let initListener = new Subject<boolean>();
+    this.initMyProductPage(initListener);
+
+    return initListener;
+  }
+
+  private initMyProductPage(listener:Subject<boolean>){
+    this.pageUser = this.userService.currentUser;
+    this.userService.getPerson().then(token => {
+      this.pagePerson = token;
+      //console.log('pagePerson: [%s]', this.pagePerson.displayName);
+      listener.next(true);
+
+    });
+  }
+
+  get actualOwner():Person {
+    return this.pagePerson;
+  }
+
+
+
+  /*****************
+    productSn PRODUCT-IDENTIFIED by SERIAL NUMBER
+  *****************/
+  findSerialsByQuery<T>(type:string, query: any){
+    this.daoService.search<Productsn>(type, query).subscribe(list => {
+      this.productsnList = list;
+      this.updateSerialTableData();
+    })
+  }
+
+  updateSerialTableData(){
+    let tableData = productModel.buildSerialTable(this.productsnList);
+    this.emitProductsnTable.next(tableData);
+  }
+
+
+  get productSerialListener():Subject<Productsn>{
+    return this.emitProductSerial;
+  }
+
+  get serialsByOwner():Subject<Productsn[]>{
+    return this.emitSerialsByOwner;
+  }
+
+
+  fetchSerialsByOwner(){
+    if(!this.pagePerson){
+      console.log('Not Person for fetch serials of');
+      return;
+
+    }
+    let query = {
+      actualOwnerId: this.pagePerson._id
+    }
+
+    console.log('ready to FetchSerials:[%s]', query.actualOwnerId);
+    this.daoService.search<Productsn>('productsn', query ).subscribe(list => {
+      console.log('daoService:[%s]',list && list.length);
+      this.productsnList = list;
+      this.emitSerialsByOwner.next(list);
+      this.updateSerialTableData();
+    })
+
+  }
+
+
+  initProductSerialEdit(model: Productsn, modelId: string){
+    if(model){
+      this.productsn = model;
+      this.initProductSerialData();
+    }else if(modelId){
+      this.findById<Productsn>('productsn', modelId);
+    }else{
+      this.initNewProductSerial();
+    }
+  }
+
+  initNewProductSerial(){
+    this.productsn = productModel.initNewProductSerial('instancia de producto identificado');
+    this.initProductSerialData();
+  }
+
+  initProductSerialData(){
+    this.productsnId = this.productsn._id
+    this.emitProductSerial.next(this.productsn);
+    this.changePageTitle('Instancias identificadas de Producto');
+
+  }
+
+  // ****** Search ******************
+  searchProductSerialBySlug(slug): Observable<Productsn[]>{
+    return this.daoService.search<Productsn>('productsn', {slug: slug});
+  }
+
+
+
+  // ****** SAVE ******************
+  saveSerialToken(token:string, parentProduct:Product, event:ProductEvent){
+    this.productsn = productModel.buildNewProductSerial(token, parentProduct, event);
+    console.dir(this.productsn);
+
+    this.daoService.create<Productsn>('productsn', this.productsn).then( (model) =>{
+              console.log('update OK, opening snakbar[%s] [%s]', this.productsn.slug, model.slug)
+              return model;
+            });
+
+  }
+
+
+
+
+  saveSerialList(serialList:Array<string>, parentProduct:Product, event: ProductEvent){
+    serialList.forEach(token => {
+      this.saveSerialToken(token, parentProduct, event);
+    })
+
+  }
+
+  saveProductSerialRecord(){
+    this.productsn = initProductSerialForSave(this.productsn, this.userService.currentUser);
+
+    if(this.productsnId){
+      return this.daoService.update<Productsn>('productsn', this.productsnId, this.productsn).then((model) =>{
+              console.log('update OK, opening snakbar[%s] [%s]', this.productsn.slug, model.slug)
+              this.openSnackBar('Actualización exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+
+    }else{
+      return this.daoService.create<Productsn>('productsn', this.productsn).then((model) =>{
+              console.log('create OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+
+    }
+  }
+
+  updateProductSerialRecord(token: Productsn){
+    this.productsn = token;
+    this.productsnId = token._id;
+    console.log('updateProductSerialRecord: [%s] [%s] [%s]', token._id, token.slug, token.productId);
+    return this.saveProductSerialRecord();
+
+  }
+
+  cloneProductSerialRecord(){
+      this.productsn = initProductSerialForSave(this.productsn, this.userService.currentUser);
+      return this.daoService.create<Productsn>('productsn', this.productsn).then((model) =>{
+              console.log('create OK, opening snakbar')
+              this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+              return model;
+            });
+  }
+
 
 
   /*****************
@@ -332,6 +523,9 @@ export class ProductController {
     },1000)
   }
 
+  /*****************
+    Table ProductIt Common
+  *****************/
   buildCommonData(list: Productit[]): Productit{
     if(list.length === 1) return list[0];
 
@@ -381,6 +575,53 @@ export class ProductController {
   }
 
 
+  /*****************
+    Table ProductSerialCommon
+  *****************/
+
+  buildCommonSerialData(list: Productsn[]): Productsn{
+    if(list.length === 1) return list[0];
+
+    let memo: Productsn = Object.assign({}, list[0]);
+    let keys = Object.keys(memo);
+
+    memo = list.reduce((memo, item) =>{
+      keys.forEach(key => {
+        if( memo[key] !== item[key]) {
+          if(typeof memo[key] == "number" ) memo[key] = 0;
+          else if( memo[key] instanceof Array) memo[key] = [];
+          else if(memo[key] instanceof Object) memo[key] = {};
+          else memo[key] = "";
+        }
+
+      })
+      return memo;
+    }, memo);
+    return memo;
+  }
+
+
+  actualProductSerialNewData(edited: Productsn){
+    let base = {};
+    Object.keys(edited).forEach(key =>{
+      if(edited[key]) base[key] = edited[key];
+    })
+    return base;
+  }
+
+  updateProductSerialCommonData(actual: Productsn, edited){
+    Object.assign(actual, edited);
+    return actual;
+  }
+
+
+  /*****************
+    Table Product common
+  *****************/
+  get tableActions(){
+    return this._tableActions;
+  }
+
 
   /*****************
     Table ProductItem
@@ -395,10 +636,6 @@ export class ProductController {
 
   set selectionModel(selection: SelectionModel<ProductitTable>){
     this._selectionModel = selection;
-  }
-
-  get tableActions(){
-    return this._tableActions;
   }
   
   updateProductListItem(item ):void{
@@ -415,7 +652,6 @@ export class ProductController {
     // this.productList.unshift(token);
     // return token;
   }
-
 
   fetchSelectedList():Productit[]{
     let list = this.filterSelectedList();
@@ -435,6 +671,49 @@ export class ProductController {
     return list;
   }
 
+
+  /*****************
+    Table ProductSn (serial number identified products)
+  *****************/
+  get productsnDataSource(): BehaviorSubject<ProductsnTable[]>{
+    return this.emitProductsnTable;
+  }
+
+  get selectionsnModel(): SelectionModel<ProductsnTable>{
+    return this._selectionsnModel;
+  }
+
+  set selectionsnModel(selection: SelectionModel<ProductsnTable>){
+    this._selectionsnModel = selection;
+  }
+
+  updateProductSerialListItem(item ):void{
+    let pr: Productsn = this.productsnList.find((product:any) => product._id === item._id);
+    if(pr){
+      pr.slug = item.slug;
+    }
+  }
+
+  addProductsnToList(){
+  }
+
+  fetchSelectedProductSerialList():Productsn[]{
+    let list = this.filterSelectedProductSerialList();
+    return list;
+  }
+
+  filterSelectedProductSerialList():Productsn[]{
+    let list: Productsn[];
+    let selected = this.selectionsnModel.selected as any;
+
+    list = this.productsnList.filter((product: any) =>{
+      let valid = selected.find(model => {
+        return (model._id === product._id)
+      });
+      return valid;
+    });
+    return list;
+  }
 
 
 }

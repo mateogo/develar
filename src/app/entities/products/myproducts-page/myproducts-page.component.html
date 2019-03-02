@@ -1,0 +1,74 @@
+<mat-card >
+
+	<mat-card-content>
+		<button mat-raised-button color="primary" (click)="addNewCerradura()">Alta nueva cerradura</button>
+
+	</mat-card-content>
+
+</mat-card>
+
+<mat-card >
+	<ng-container *ngIf="_openTokenEditor">
+
+	<mat-card-content>
+		<productsn-assign [actualOwner]="actualOwner"  ></productsn-assign>
+	</mat-card-content>
+	</ng-container>
+</mat-card>
+
+
+
+<mat-card >
+	<ng-container *ngIf='_openEditor'>
+	<mat-card-header>
+		<mat-card-subtitle>
+			<span style="min-width: 150px"><strong>{{editorTitle}}</strong></span>
+		</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+		<div class="d-flex flex-column flex-md-row align-items-start justify-content-start">
+
+			<mat-form-field style="max-width: 220px; margin-right: 15px" >
+		  	<input matInput name="code" [(ngModel)]='token.code' placeholder="Código" >
+			</mat-form-field>	
+			<mat-form-field style="max-width: 220px; margin-right: 15px" >
+		  	<input matInput name="productName" [(ngModel)]='token.productName' placeholder="Producto padre" >
+			</mat-form-field>	
+
+
+		</div>
+
+		<div class="d-flex flex-column flex-md-row align-items-start justify-content-start">
+			<mat-form-field style="max-width: 220px; margin-right:15px;" >
+		  	<input matInput name="slug" [(ngModel)]='token.slug' placeholder="Ubicación" >
+			</mat-form-field>	
+			<mat-form-field style="max-width: 220px; margin-right:15px;" >
+		  	<input matInput name="actualOwnerName" [(ngModel)]='token.actualOwnerName'
+		  		 placeholder="Tenedor / cliente" >
+			</mat-form-field>	
+		</div>
+		
+		<div class="d-flex flex-column align-items-start flex-md-row justify-content-start">
+			<mat-form-field style="max-width: 220px; margin-right:15px;" >
+		  	<input matInput name="feTxt" [(ngModel)]='token.feTxt' placeholder="Fecha novedad" >
+			</mat-form-field>	
+			<mat-form-field style="max-width: 220px; margin-right:15px;" >
+		  	<input matInput name="estado" [(ngModel)]='token.estado'
+		  		 placeholder="Estado registro" >
+			</mat-form-field>	
+		</div>
+
+		<div *ngIf="editable" class="additional-info">
+		  <button mat-button type="button" color="accent"  
+		      (click)="save('continue')" >Actualizar instancia</button>
+		  <button mat-button type="button" color="accent"  
+		      (click)="closeEditor()" >Cancelar / cerrar</button>
+		</div>
+	</mat-card-content>
+	</ng-container>
+
+</mat-card>
+
+<productsn-table   (actionTriggered)='actionTriggered($event)' ></productsn-table>
+

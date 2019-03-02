@@ -33,7 +33,6 @@ const NAVBAR_ITEM_COLOR_LASARGEN_HOME = "#ffffff"; //75787B //0645f5
 })
 export class LasargenNavbarComponent implements OnInit {
   @Input() title: string;
-  @Input() isHomeView$: Observable<boolean>;
 
   currentUser: User;
   public loggedIn = false;
@@ -98,8 +97,9 @@ export class LasargenNavbarComponent implements OnInit {
     this.initUser()
 
     this.route.url.subscribe(url=> {
-      console.log('navbar URL: [%s]', url);
+
       this.actualUrl = this.router.routerState.snapshot.url;
+      this.actualUrl = this.actualUrl ? this.actualUrl.split('?')[0] : this.actualUrl;
 
       if(!this.actualUrl || this.actualUrl === "/"){
         this.setupHomeView(true);
@@ -109,48 +109,12 @@ export class LasargenNavbarComponent implements OnInit {
 
       }
 
-      //console.log('minimalController toCall sharedService');
-      //setTimeout(()=>{this.sharedSrv.homeView(true);},500)
-
-      // console.log('navigationUrl[%s]', this.navigationUrl );
-      // console.log('actualUrl[%s]', this.actualUrl );
-      // console.log('actualUrlSegments[%s]', this.actualUrlSegments );
-
     });
 
 
     this.userService.userEmitter.subscribe(user =>{
       this.initUser();
     })
-
-    if(this.isHomeView$){
-      this.isHomeView$.subscribe(
-        isHome => {
-          // if(isHome){
-          //   this.isHomeView = true;
-          //   this.navbarStyle = {
-          //     background: BG_COLOR_LASARGEN_HOME
-          //   }
-          //   this.navbarItemStyle = {
-          //     color: NAVBAR_ITEM_COLOR_LASARGEN_HOME
-          //   }
-
-          // }else{
-          //   this.isHomeView = false;
-          //   this.navbarStyle = {
-          //     background: BG_COLOR_DEFAULT
-          //   }
-          //   this.navbarItemStyle = {
-          //     color: NAVBAR_ITEM_COLOR_DEFAULT              
-          //   }
-          // }
-
-        }
-      );
-
-    }
-
-
 
   }
 

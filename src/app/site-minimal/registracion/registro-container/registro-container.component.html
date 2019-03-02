@@ -1,0 +1,53 @@
+<ng-container *ngIf='!showComponent'>
+<mat-card>
+	<mat-card-content>
+
+			<div id='top' class="row align-items-center justify-content-center">
+				<div class='col' >
+					<h4  class='top-title'>{{title}}</h4>
+					<div class='top-description' innerHtml='{{description}}'></div>
+				</div>
+			</div>
+
+			<ng-container *ngIf='!showDetail'>
+				<div [@blockIn]='blockState.state' id='items' class="row">
+
+					<div class='col-md-6 item'>
+						<ng-container *ngIf='!showLogin'>
+	          	<a role="button" title="{{nodes[0].linkTo}}" href="#" 
+	             		(click)="togglePanel($event, 0, nodes[0])">
+	             <img class='item-image' src='{{ nodes[0].imageUrl }}'
+	             			[@heroState]='nodes[0].state' ></a>
+	           </ng-container>
+
+						<ng-container *ngIf="showLogin">
+							<user-sign-in-1  ></user-sign-in-1>
+						</ng-container>
+					</div>
+
+					<div class='col-md-6 item'>
+						<ng-container *ngIf="!showRegistration">
+	          	<a role="button" title="{{nodes[1].linkTo}}" href="#" 
+	             		(click)="togglePanel($event, 1, nodes[1])">
+	             <img class='item-image' src='{{ nodes[1].imageUrl }}'
+	             			[@heroState]='nodes[1].state' ></a>
+	           </ng-container>
+
+						<ng-container *ngIf="showRegistration">
+							<registrar-usuario></registrar-usuario>
+						</ng-container>
+					</div>
+
+				</div>
+			</ng-container>
+
+			<ng-container *ngIf='showDetail'>
+      	<a role="button" class="item-link" title="{{detailImage.slug}}" href="#" 
+         		(click)="servicePlain($event)">
+         <img mat-card-image src='{{ detailImage.url }}'
+         			[@flyInOut]='flyState.state' ></a>
+			</ng-container>
+			
+	</mat-card-content>
+</mat-card>
+</ng-container>

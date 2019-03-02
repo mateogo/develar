@@ -1,0 +1,15 @@
+<div>
+
+	<h4>Incorporar nueva cerradura</h4>
+  <mat-form-field class="example-full-width">
+    <input matInput matInput name="codeList" [(ngModel)]='codeList' 
+    		placeholder="Ingrese número de serie" >
+  </mat-form-field>
+
+  <div *ngIf="editable" class="additional-info">
+	  <button mat-button type="button" color="accent"  
+	      (click)="save('continue')" >Incorporar número de serie</button>
+	  <button mat-button type="button" color="accent"  
+	      (click)="cancel('continue')" >Cancelar</button>
+	</div>
+</div>

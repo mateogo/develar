@@ -7,6 +7,7 @@ import { BehaviorSubject ,  Subject }       from 'rxjs';
 import * as io from 'socket.io-client';
 
 import { User, CurrentCommunity } from './user';
+import { Person } from '../person/person';
 import { Community } from '../../develar-commons/community/community.model';
 
 const estados = [
@@ -47,6 +48,7 @@ var nextUser = 40;
 export class UserService {
 	private _socket: SocketIOClient.Socket;
 	private usersUrl = 'api/users';  // URL to web api
+	private personUrl = 'api/persons';  // URL to web api
 	private headers = new Headers({'Content-Type': 'application/json'});
 	private _currentUser: User;
 	private _userEmitter: BehaviorSubject<User>;
@@ -104,6 +106,15 @@ export class UserService {
 			.catch(this.handleError);
 	}
 
+
+	getPerson(): Promise<Person> {
+		let id = this._currentUser.personId;
+		const url = `${this.personUrl}/${id}`;
+		return this.http.get(url)
+				.toPromise()
+				.then(response => response.json() as Person)
+				.catch(this.handleError);
+	}
 
 
 	getUser(id: string): Promise<User> {

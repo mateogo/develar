@@ -1,4 +1,5 @@
-<card [title]="'Registrate en develar'" [align]="'center'">
+<mat-card>
+  <mat-card-content>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" >
     <mat-form-field>
       <input matInput [formControl]="form.controls['username']" placeholder="Nombre de Usuario" required>
@@ -40,7 +41,7 @@
 
     <button mat-raised-button [disabled]="!form.valid" color="primary" type="submit" color="accent">Registrarme</button>
 
-    <div class="additional-info">
+    <div *ngIf="true" class="additional-info">
       Ya tenés cuenta?
       <a routerLink="/ingresar/login">Ingresar</a>
 
@@ -50,4 +51,5 @@
     </div>
   </form>
 
-</card>
+  </mat-card-content>
+</mat-card>

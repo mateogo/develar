@@ -22,7 +22,6 @@ export class MinimalMenuService {
 	};
 
   loadSocialMedia(items){
-    console.log('loadSocialMedia: [%s]', items && items.length);
     this.socialChange.next(items);
   };
 
@@ -36,7 +35,6 @@ export class MinimalMenuService {
 
   loadSocialItems(token){
     let socialItems = Promise.resolve(itemList[token]);
-    console.log('**loadSocialItems: [%s]', token);
     socialItems.then(items => this.loadSocialMedia(items));
   }
 

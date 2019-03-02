@@ -15,6 +15,7 @@ const whoami =  "models/userModel: ";
 const mongoose = require('mongoose');
 const mailer = require('../services/sendmail')
 const config = require('../config/config');
+const person = require('./personModel');
 
 const DOMAIN = config.serverUrl;
 
@@ -80,6 +81,7 @@ const userSch = new mongoose.Schema({
 
     communityId:    { type: String, required: false },
     communityUrlpath: { type: String, required: false },
+    personId:       { type: String, required: false },
     grupos:         { type: String, required: false },
     roles:          { type: String, required: false },
     modulos:        { type: String, required: false },
@@ -505,7 +507,7 @@ exports.update = function (id, user, errcb, cb) {
             errcb(err);
         
         }else{
-            cb(entity);
+            createPersonFromUser(entity, cb);
         }
     });
 
@@ -549,11 +551,23 @@ exports.signup = function (user, errcb, cb) {
             errcb(err);
         
         }else{
-            cb(entity);
+            createPersonFromUser(entity, cb)
         }
     });
 
 };
+
+const createPersonFromUser = function(user, cb){
+    person.createPersonFromUser(user, function(person){
+        if(person){
+            user.personId = person._id;
+            user.save().then(err => {
+                cb(user);
+            });
+
+        }
+    });
+}
 
 /**
  * Sign up a new user
@@ -723,7 +737,8 @@ function createNewUser(user, errcb, cb){
         
         }else{
             if(user){
-                buildUserEmail(user);
+                //oJo
+                //buildUserEmail(user);
             }
 
         }

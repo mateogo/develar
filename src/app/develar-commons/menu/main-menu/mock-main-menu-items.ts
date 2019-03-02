@@ -281,6 +281,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         title: 'Items producto',
         routing: '/develar/entidades/productos/items'
       },
+      {
+        title: 'Seriales de producto',
+        routing: '/develar/entidades/productos/seriales'
+      },
     ],
     routing: '',
     externalLink: '',

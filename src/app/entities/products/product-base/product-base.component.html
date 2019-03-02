@@ -1,27 +1,24 @@
-<div class="search">
-  <h5>buscar producto existente... </h5>
-  <mat-form-field>
-    <input  #searchBox  matInput  id="search-box" 
-      name="slug"
-      [(ngModel)]='slugFld'
-      [matAutocomplete]="slug"
-      (keyup)="search(searchBox.value)"  
-      placeholder="buscar por denominación..." />
-      
-      <span matSuffix style="margin: 10px" title="abrir/ cerrar editor de producto"
-        (click)='editToken()' >
-        <i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" aria-hidden="true"></i>
-      </span>  
-  </mat-form-field>
-  <mat-autocomplete #slug="matAutocomplete" >
-     <mat-option
-            *ngFor="let product of products | async" 
-            (onSelectionChange)="selectEntity(product)"
-            [value]='product.slug'>
-        {{product.slug}}
-      </mat-option>
-  </mat-autocomplete>
-</div>
+<mat-form-field>
+  <input  #searchBox  matInput  id="search-box" 
+    name="slug"
+    [(ngModel)]='slugFld'
+    [matAutocomplete]="slug"
+    (keyup)="search(searchBox.value)"  
+    placeholder="buscar producto por denominación..." />
+    
+    <span matSuffix style="margin: 10px" title="abrir/ cerrar editor de producto"
+      (click)='editToken()' >
+      <i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" aria-hidden="true"></i>
+    </span>  
+</mat-form-field>
+<mat-autocomplete #slug="matAutocomplete" >
+   <mat-option
+          *ngFor="let product of products | async" 
+          (onSelectionChange)="selectEntity(product)"
+          [value]='product.slug'>
+      {{product.slug}}
+    </mat-option>
+</mat-autocomplete>
 
 
 <div *ngIf='openEditor'>

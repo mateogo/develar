@@ -21,6 +21,11 @@
 	</div>
 </ng-container>
 
+<ng-container *ngIf="isRegistro">
+	<registro-container [record]='registro' ></registro-container>
+</ng-container>
+
+
 <ng-container *ngIf="isPosts">
 	<post-top-container [destaque]="'destaque1'"></post-top-container>
 </ng-container>
@@ -43,6 +48,10 @@
 
 <ng-container *ngIf="isContacto">
 	<top-contacto [record]='contacto' ></top-contacto>
+</ng-container>
+
+<ng-container *ngIf="showProductos">
+	<myproducts></myproducts>
 </ng-container>
 
 <ng-container *ngIf="isFooter">

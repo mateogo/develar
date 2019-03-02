@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import * as io from 'socket.io-client';
 
@@ -33,10 +33,12 @@ export class NavbarComponent implements OnInit {
   private messageList: Array<MessageToPrint> = [];
   private messageLength = 0
   private messageNew = false;
+  private actualUrl:string ;
 
 
   constructor(
     private userService: UserService,
+    private route: ActivatedRoute,
     private router: Router) {
   }
 
@@ -48,6 +50,19 @@ export class NavbarComponent implements OnInit {
     this.userService.userEmitter.subscribe(user =>{
       this.initUser();
     })
+
+    this.route.url.subscribe(url=> {
+      this.actualUrl = this.router.routerState.snapshot.url;
+      this.actualUrl = this.actualUrl ? this.actualUrl.split('?')[0] : this.actualUrl;
+
+      if(!this.actualUrl || this.actualUrl === "/"){
+        this.setupHomeView(true);
+
+      } else {
+        this.setupHomeView(false);
+
+      }
+    });
   }
 
   initSocket(){
@@ -66,7 +81,6 @@ export class NavbarComponent implements OnInit {
       this.emitLogin();    
   }
 
-
   emitLogin () {
     if(!this.loggedIn) return;
     this.username = this.currentUser.username;
@@ -84,7 +98,6 @@ export class NavbarComponent implements OnInit {
     this.messageList = this.messageList.sort((a, b)=>  (b.fe - a.fe))
     this.messageNew = true;
   }
-
 
   open(event) {
     let clickedComponent = event.target.closest('.nav-item');
@@ -166,6 +179,9 @@ export class NavbarComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     this.router.navigate(['/ingresar/clave', this.currentUser._id])
+  }
+
+  setupHomeView(isHome){
 
   }
 

@@ -313,6 +313,51 @@ const createNewPerson = function(person, errcb,cb){
 }
 
 
+// const newPersonFromUser = function(user, cb){
+//     let person = initPersonFromUser(user);
+
+//     person.save().then(err => {
+//         cb(person);
+//     });
+// }
+
+const initPersonFromUser = function(user ){
+    let person = new Person();
+
+    person.displayName = user.username;
+    person.personType = 'fisica'
+    person.email = user.email;
+    person.tdoc = 'DNI';
+    person.ndoc = '';
+    person.ambito = 'cliente';
+    person.user = {
+        userid: user._id,
+        username: user.username
+    }
+    return person;
+}
+
+const updatePersonFromUser = function(person, user){
+    person.user = {
+        userid: user._id,
+        username: user.username
+    }
+    return person;
+}
+
+exports.createPersonFromUser = function(user, cb){
+    let personByEmail = buildQuery({email: user.email});
+
+    Person.findOne(personByEmail).then(token =>{
+        if(!token) token = initPersonFromUser(user);
+        token = updatePersonFromUser(token, user);
+        token.save().then(err => {
+            cb(token);
+        });
+    });    
+}
+
+
 
 /**
  * Sign up a new person

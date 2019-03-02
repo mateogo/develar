@@ -8,6 +8,8 @@ import { NgbModule }               from '@ng-bootstrap/ng-bootstrap';
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { BookshelfModule } from '../bookshelf/bookshelf.module';
 import { MinimalRoutingModule } from './minimal-routing.module';
+import { LoginModule }  from '../entities/user/login/login.module';
+import { ProductModule }  from '../entities/products/product.module';
 
 
 //site component
@@ -51,6 +53,8 @@ import { PostDetailContainerComponent } from './foros/post-detail-container/post
 import { PostDetailComponent } from './foros/post-detail/post-detail.component';
 import { PostTopContainerComponent } from './foros/post-top-container/post-top-container.component';
 import { PostTokenComponent } from './foros/post-token/post-token.component';
+import { RegistroContainerComponent } from './registracion/registro-container/registro-container.component';
+import { MyproductsPageComponent } from './productos/myproducts-page/myproducts-page.component';
 
 
 
@@ -64,6 +68,8 @@ import { PostTokenComponent } from './foros/post-token/post-token.component';
     NgbModule,
     DevelarCommonsModule,
     BookshelfModule,
+    LoginModule,
+    ProductModule
   ],
   declarations: [
   	MinimalistLayoutComponent,
@@ -98,7 +104,9 @@ import { PostTokenComponent } from './foros/post-token/post-token.component';
   	PostDetailContainerComponent,
   	PostDetailComponent,
   	PostTopContainerComponent,
-  	PostTokenComponent
+  	PostTokenComponent,
+  	RegistroContainerComponent,
+  	MyproductsPageComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

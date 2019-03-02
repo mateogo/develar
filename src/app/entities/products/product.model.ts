@@ -48,6 +48,51 @@ export class Product {
   }
 }
 
+export class ProductEvent {
+  id:          string;
+  _id:         string;
+  eventType:   string = "alta";
+  slug:        string = "";
+
+  fe:          number = 0;
+  feTxt:       string = "";
+  locationId:  string = "";
+  ownerId:     string = "";
+  ownerName:   string = "";
+  estado:      string = "activa";
+
+}
+
+/****** Product Identified by Serial Number ********/
+export class Productsn {
+  id:          string;
+  _id:         string;
+  code:        string = "";
+  slug:        string = "";
+
+  fe:          number = 0;
+  feTxt:       string = "";
+
+  productId: string = "";
+  productName: string = "";
+
+  actualLocationId: string = "";
+  actualOwnerId: string = "";
+  actualOwnerName: string = "";
+
+  qt: number;
+  ume: string;
+
+  estado:      string = "activo";
+
+  events: Array<ProductEvent> = [];
+
+  constructor(){
+
+  }
+}
+
+
 /****** Product Item ********/
 export class Productit {
   id:          string;
@@ -82,6 +127,34 @@ export class Productit {
   }
 }
 
+export interface ProductsnTable{
+  code: string;
+  feTxt: string;
+  slug: string;
+}
+
+class ProductsnTableData implements ProductsnTable {
+  _id: string = "";
+  feTxt: string ="";
+  code: string = "";
+  slug: string = "";
+  productName: string = "";
+  actualOwnerName: string = "";
+  estado: string = "";
+  editflds = [0,0,0,0,0,0,0,0]
+  constructor(data: any){
+    this._id = data._id;
+    this.feTxt = data.feTxt;
+    this.slug = data.slug;
+    this.code = data.code;
+    this.actualOwnerName = data.actualOwnerName;
+    this.estado = data.estado;
+    this.productName = data.productName;
+  }  
+}
+
+
+
 export interface ProductitTable{
   displayAs: string;
   code: string;
@@ -97,8 +170,6 @@ export interface ProductitTable{
   productname: string;
   moneda: string;
 }
-
-
 
 class ProductitTableData implements ProductitTable {
   _id: string = "";
@@ -147,8 +218,6 @@ function umeTx(ume, fume, fumetx, qt, freq){
   }
   return text;
 }
-
-
 
 
 /*************
@@ -384,7 +453,6 @@ const productTableActions = [
       {val: 'editone',      label: 'Editar registro',    slug:'editone' },
 ]
 
-
 function initNewModel(name:string, parent:string, perms: Perms, taglist: Array<string>){
   let product = new Product();
   product.name = name || "nuevo producto";
@@ -404,12 +472,35 @@ function initNewProductItModel(slug:string){
   return product;
 }
 
+function initNewProductSerialModel(slug:string){
+  let product = new Productsn();
+  product.slug = slug || "nueva instancia producto identificado";
+  return product;
+}
+
+function buildNewSerial(code: string, parent: Product, event:ProductEvent){
+  let product = new Productsn();
+  product.code = code;
+  product.productId = parent._id;
+  product.productName = parent.slug;
+  product.qt = 1;
+  product.ume = "unidad";
+  product.fe = event.fe;
+  product.feTxt = event.feTxt;
+  product.estado = event.estado;
+  product.actualLocationId = event.locationId;
+  product.actualOwnerId = event.ownerId;
+  product.actualOwnerName = event.ownerName;
+  product.slug = event.slug || "nueva instancia producto identificado";
+  product.events.push(event);
+  return product;
+}
+
 const daoConfig = {
   type: 'product',
   backendURL: 'api/products',
   searchURL: 'api/products/search'
 }
-
 
 class ProductModel {
   constructor(){
@@ -423,6 +514,14 @@ class ProductModel {
     return initNewProductItModel(name);
   }
 
+  initNewProductSerial(name:string){
+    return initNewProductSerialModel(name);
+  }
+
+  buildNewProductSerial(code: string, parent: Product, event:ProductEvent){
+    let serial = buildNewSerial(code, parent, event);
+    return serial;
+  }
 
   daoConfig(){
     return daoConfig;
@@ -469,9 +568,21 @@ class ProductModel {
     return list;
   }
 
+  buildSerialTable(plist: Array<Productsn>): ProductsnTable[]{
+    let list: Array<ProductsnTable>;
 
+    list = plist.map(item => {
+      let token: ProductsnTable = new ProductsnTableData(item);
+      return token;
+    });
+
+    return list;
+  }
 
 
 }
 
 export const productModel = new ProductModel();
+
+
+//Julio Fernandez baraibar

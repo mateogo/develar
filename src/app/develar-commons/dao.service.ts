@@ -78,6 +78,10 @@ export class DaoService {
         backendURL: 'api/productits',
         searchURL:  'api/productits/search'
       },
+      productsn:{
+        backendURL: 'api/productserial',
+        searchURL:  'api/productserial/search'
+      },
       community:{
         backendURL: 'api/communities',
         searchURL:  'api/communities/search',

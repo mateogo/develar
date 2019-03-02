@@ -100,6 +100,7 @@ export class User {
 	fealta: number;
 	communityId: string;
 	communityUrlpath: string;
+	personId: string;
 	verificado: VerifiedUser;
 	currentCommunity: CurrentCommunity;
 	localProfile:  boolean;

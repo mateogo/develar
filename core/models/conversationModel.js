@@ -662,9 +662,9 @@ function buildEmitterMailContent(data){
   const admin_tpl = `
     <p>Estimadx  ${data.displayName}: </p>
     <p>Agradecemos tu interés por este espacio.</p>
-    <p>Será contactado por un miembro del equipo a la brevedad.</p>
+    <p>Serás contactadx por un miembrx del equipo a la brevedad.</p>
 
-    <h2>Los datos enviados que enviaste son:</h2>
+    <h2>Los datos enviados son:</h2>
    
      <p><strong>Nombre del emisor: </strong> ${data.displayName}</p>
      <p><strong>Correo electrónico: </strong> ${data.email}</p>

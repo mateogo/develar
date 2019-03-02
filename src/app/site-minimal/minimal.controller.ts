@@ -44,6 +44,7 @@ export class SiteMinimalController {
   private communityEmitter: BehaviorSubject<CommunityToken> = new BehaviorSubject(new CommunityToken());
 
   private hasActiveUrlPath = false;
+  private _route: ActivatedRoute;
   private actualUrl = "";
   private actualUrlSegments: UrlSegment[] = [];
   private navigationUrl = "";
@@ -142,11 +143,21 @@ export class SiteMinimalController {
     this.sharedSrv.homeView(isHome);    
   }
 
+  get route():ActivatedRoute{
+    return this._route;
+  }
+
+  set route(actualRoute: ActivatedRoute){
+    this._route = actualRoute;
+  }
+
   actualRoute(snap: string, mRoute: UrlSegment[]){
     this.hasActiveUrlPath = false;
-    this.actualUrl = snap;
+
+    this.actualUrl = snap ? snap.split('?')[0] : snap;
+
     this.actualUrlSegments = mRoute;
-    this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
+    this.navigationUrl = this.fetchNavigationUrl(this.actualUrl, this.actualUrlSegments.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
 
     //console.log('minimalController toCall sharedService');
@@ -448,6 +459,7 @@ export class SiteMinimalController {
   fetchDefaultCommunityFromDB(commtyListener: Subject<CommunityToken>){
     this.naviCmty.isActive = false;
     this.naviCmty.isLoading = true;
+    console.log('fetchDefaultCommunityFromDB:451')
     this.daoService.search<Community>('community', {eclass: 'home'}).subscribe(records => {
       this.naviCmty.isLoading = false;
 

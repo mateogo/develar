@@ -205,6 +205,7 @@ export class RegistrarUsuario implements OnInit {
   }
 
   sendMailTo(model: User){
+    if(true) return;
     console.log('sendMailTo: [%s] [%s]', model.email, model.username)
     const content = this.userService.sendMailFactory();
     content.mailTo = model.email;
@@ -253,3 +254,8 @@ export class RegistrarUsuario implements OnInit {
 		return JSON.stringify(this.model);
 	}
 }
+
+//5c79390194d6640893c65d39
+
+//5a81c3e50154ba0874d5b62f
+//597008d3b13931027e9fa691

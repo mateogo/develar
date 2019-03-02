@@ -1,0 +1,24 @@
+<div>
+
+	<div class="d-flex justify-content-between">
+	<p style="text-align:left"><small><strong>Producto padre: </strong>
+			{{productName}}</small>
+	</p>
+	<p style="text-align:right"><small><strong>Entidad seleccionada: </strong>
+			{{actualOwnerName}}</small>
+	</p>
+	</div>
+
+
+  <mat-form-field class="example-full-width">
+    <textarea matInput matInput name="codeList" [(ngModel)]='codeList' 
+    		placeholder="Ingrese lista de números de serie" ></textarea>
+  </mat-form-field>
+
+  <div *ngIf="editable" class="additional-info">
+	  <button mat-button type="button" color="accent"  
+	      (click)="save('continue')" >Crear códigos de serie</button>
+	  <button mat-button type="button" color="accent"  
+	      (click)="cancel('continue')" >Cancelar</button>
+	</div>
+</div>

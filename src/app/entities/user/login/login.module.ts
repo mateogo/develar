@@ -35,6 +35,8 @@ import { CredentialsComponent } from './credentials/credentials.component';
     CredentialsComponent
   ],
   exports:[
+    UserSignIn1Component,
+    RegistrarUsuario,  
   ],
   providers: [],
   entryComponents: [DialogUserComponent]

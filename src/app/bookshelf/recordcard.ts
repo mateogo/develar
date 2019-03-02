@@ -168,6 +168,7 @@ const templateList: Array<any> = [
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
+		{val: 'registro',       label: 'Registro',           slug:'Registro' } ,
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
@@ -334,6 +335,7 @@ const cardCategory = {
 		{val: 'topportfolio',   label: 'Top portfolio',      slug:'Top portfolio' },
 		{val: 'destacado',      label: 'Top destacado',      slug:'Destacado' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
+		{val: 'registro',       label: 'Registro',           slug:'Registro' },
 		{val: 'footer',         label: 'Footer',             slug:'Footer' },
 		{val: 'formcontacto',   label: 'Form de contacto',   slug:'Formulario de contacto' },
 	]
