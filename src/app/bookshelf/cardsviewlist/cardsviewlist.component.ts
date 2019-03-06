@@ -37,7 +37,6 @@ export class CardsviewlistComponent implements OnInit {
 	loadingIndicator: boolean = true;
 
 	getModels(): void{
-    console.log('********** view list ************')
 		this.recordcardService.loadRecordCards<RecordCard>({})
 			.then(models =>{
 				this.models = models;

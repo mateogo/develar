@@ -44,7 +44,6 @@ export class RecordCardService {
 
   getRecordCard(id: string): Promise<RecordCard> {
     const url = `${this.recordcardsUrl}/${id}`;
-    console.log('[%s]: Ready to GET:[%s] ', url, id);
 
     return this.http.get(url)
         .toPromise()
@@ -53,7 +52,6 @@ export class RecordCardService {
   }
 
   getRecordCards(): Promise<RecordCard[]>{
-    console.log('[%s]: Ready to FindAll', this.recordcardsUrl);
 
     return this.http.get(this.recordcardsUrl)
       .toPromise()
@@ -62,7 +60,6 @@ export class RecordCardService {
   }
 
   create(recordcard:RecordCard): Promise<RecordCard>{
-    console.log('Service: recordcard: [%s], [%s]', recordcard.id, recordcard.slug);
   	return this.http
   		.post(this.recordcardsUrl, JSON.stringify(recordcard), {headers: this.headers})
   		.toPromise()
@@ -72,7 +69,6 @@ export class RecordCardService {
 
   update(recordcard: RecordCard): Promise<any> {
     const url = `${this.recordcardsUrl}/${recordcard._id}`;
-    console.log('[%s]: Ready to update:[%s] [%s] ', url, recordcard._id, recordcard.slug);
     return this.http
       .put(url, JSON.stringify(recordcard), {headers: this.headers})
       .toPromise()
@@ -82,7 +78,6 @@ export class RecordCardService {
 
   promote(recordcard: RecordCard): Promise<any> {
     const url = `${this.recordcardsUrl}/promote/${recordcard._id}`;
-    console.log('[%s]: Ready to promote:[%s] [%s] ', url, recordcard._id, recordcard.slug);
     return this.http
       .put(url, JSON.stringify(recordcard), {headers: this.headers})
       .toPromise()

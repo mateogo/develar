@@ -19,8 +19,9 @@ export class PostTopContainerComponent implements OnInit {
   public unBindList = [];
   public hasTopPosts = false;
   public posts: RecordCard[];
-  public isDestaque = true;
-  public isPrincipal = false;
+  public isDestaque1 = false;
+  public isDestaque2 = true;
+  public isDestaque3 = true;
 
 
   constructor(
@@ -32,13 +33,21 @@ export class PostTopContainerComponent implements OnInit {
 
     var first = true;
     if(this.destaque === 'destaque1'){
-      this.isPrincipal = true;
-      this.isDestaque = false;
+      this.isDestaque1 = true;
+      this.isDestaque2 = false;
+      this.isDestaque3 = false;
     }
 
    if(this.destaque === 'destaque2'){
-      this.isPrincipal = false;
-      this.isDestaque = true;
+      this.isDestaque1 = false;
+      this.isDestaque2 = true;
+      this.isDestaque3 = false;
+    }
+
+   if(this.destaque === 'destaque3'){
+      this.isDestaque1 = false;
+      this.isDestaque2 = false;
+      this.isDestaque3 = true;
     }
 
 		if(first){

@@ -41,6 +41,7 @@ const destaqueList: Array<any> = [
 		{val: 'destaque1',        label: 'Destaque 1Col',             slug:'Destaque 1Col' },
 		{val: 'destaque2',        label: 'Destaque 2Col',             slug:'Destaque 2Col' },
 		{val: 'destaque3',        label: 'Destaque 3Col',             slug:'Destaque 3Col' },
+		{val: 'destaque4',        label: 'Destaque 4Col',             slug:'Destaque 4Col' },
 ];
 
 const subCardTypes: Array<any> = [
