@@ -8,15 +8,19 @@
     <div class="carrousel">
         <img class="carrousel-image" src="{{ mainImageUrl }}" >
     </div>
-    <h4><i>{{model.subtitle}}</i></h4>
-    <div *ngIf='showExcerpt' >
-      <div class="text-justify" [innerHTML]='model.excerpt' ></div>
-      <a class="toggleText" role="button" (click)='showMore($event)'>LEER MAS...</a>
+    <div class="d-flex flex-row justify-content-start">
+      <h4 class="post-subtitle"><i>{{model.subtitle}}</i></h4>
     </div>
-    <div *ngIf='showDescription' >
-      <div class="text-justify" [innerHTML]='model.description' ></div>
-      <div *ngIf='hasExcerpt'>
-        <a class="toggleText" role="button" (click)='showLess($event)'>OCULTAR TEXTO</a>
+    <div class="d-flex flex-row justify-content-center">
+      <div *ngIf='showExcerpt' >
+        <div class="text-justify post-text" [innerHTML]='model.excerpt' ></div>
+        <a class="toggleText" role="button" (click)='showMore($event)'>LEER MAS...</a>
+      </div>
+      <div *ngIf='showDescription' >
+        <div class="text-justify post-text" [innerHTML]='model.description' ></div>
+        <div *ngIf='hasExcerpt'>
+          <a class="toggleText" role="button" (click)='showLess($event)'>OCULTAR TEXTO</a>
+        </div>
       </div>
     </div>
 

@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'lasargentinas';
+const user = 'utopias';
 
 const globals = {
 
@@ -14,6 +14,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'fundetec',
 		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[fundetec] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -26,6 +27,7 @@ const globals = {
 		logoCompany: 'logo-lasargentinas.png',
 		company: 'lasargentinas',
 		mainmenu: 'LASARGEN',
+		mainmenutpl: 'lasargentinas',
 		socialmedia: 'LASARGEN_SOCIAL_MEDIA',
 		emailsubject: '[Las Argentinas] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -38,6 +40,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'develar',
 		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -50,6 +53,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'picris',
 		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Picris] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -62,6 +66,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'simplecomm',
 		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Simplecomm] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -74,6 +79,7 @@ const globals = {
 		logoCompany: 'logo-publico.png',
 		company: 'masuno',
 		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[+UNO] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -86,7 +92,8 @@ const globals = {
 		logoCompany: 'logo-utopias.png',
 		company: 'utopias',
 		mainmenu: 'DEFAULT',
-		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		mainmenutpl: 'utopias',
+		socialmedia: 'UTOPIA_SOCIAL_MEDIA',
 		emailsubject: '[UTOPIAS] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		url: 'www.utopias.digital'

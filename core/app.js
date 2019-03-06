@@ -70,11 +70,12 @@ app.use(express.static(config.publicPath));
 passportconf(app);
 
 const myLogger = function (req, res, next) {
+  console.log('++++++++My logger ++++++++++')
   next();
 };
 
 app.use(myLogger);
-
+console.log('++++++++dynamic begins ++++++++++')
 app.use('/pug', routes);
 app.use('/api/parser', parserRoutes);
 app.use('/api/gcse', gcseRoutes);
@@ -99,6 +100,7 @@ app.use('/download', downloadRoutes)
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
+  console.log('**************************Catchig 404');
   res.sendFile(path.join(config.publicPath,'index.html'))
   // const err = new Error('Not Found');
   // err.status = 404;

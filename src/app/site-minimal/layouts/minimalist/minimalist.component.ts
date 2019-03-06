@@ -37,14 +37,9 @@ export class MinimalistLayoutComponent implements OnInit {
 
     this.isHomeView$ = _sharedService.isHomeViewEmitted$;
 
-    if(_sharedService.gldef.company === "lasargentinas"){
-       this.navbarTmpl = 'lasargentinas';
+    if(_sharedService.gldef.mainmenutpl){
+       this.navbarTmpl = _sharedService.gldef.mainmenutpl;
     }
-
-    if(_sharedService.gldef.company === "utopias"){
-       this.navbarTmpl = 'utopias';
-    }
-
 
   }
 

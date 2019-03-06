@@ -40,7 +40,7 @@ export const UTOPIA_SOCIAL_MEDIA: SocialMediaItem[] = [
   {
     title: 'Seguinos en Twitter',
     icon: 'fab fa-twitter',
-    url: 'https://twitter.com/AmadoBoudouArg' 
+    url: 'https://twitter.com/utopiasMN' 
   },
   {
     title: 'Seguinos en Facebook',
