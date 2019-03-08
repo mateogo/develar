@@ -153,14 +153,16 @@
 
     <!--- 2.1-not Logged SUMATE -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
-      <button class="text-item" mat-button (click)="contactForm($event)"><span>{{contactText}} |</span></button>
+      <button class="text-item" mat-button (click)="contactForm($event)">
+        <span>{{contactText}}</span></button>
     </div>
 
 
     <!--- 2.1-not Logged RRSS -->
     <div *ngIf="isHomeView" class="nav-item">
       <ng-container *ngFor="let social of socialItems">
-        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' class="text-social" 
+        <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' 
+            class="text-social not-phone" 
             href="{{ social.url }}"  title="{{ social.title }}">
               <i class='{{ social.icon }}'></i></a>
       </ng-container>
@@ -177,7 +179,7 @@
 
     <!--- 2.0-not Logged SEARCH -->
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
-      <button [ngStyle]='navbarItemStyle' class="text-icon" title="buscar"
+      <button [ngStyle]='navbarItemStyle' class="text-icon  not-phone" title="buscar"
       mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
     </div>
 
