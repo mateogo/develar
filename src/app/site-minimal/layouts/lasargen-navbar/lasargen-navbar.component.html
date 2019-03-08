@@ -2,7 +2,7 @@
   <ng-container *ngIf="loggedIn">
 
   <a *ngIf="!isHomeView" routerLink="/" class="logo">
-	  <img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
+	  <img class="logo-img" src="{{logoUrl}}" alt="las argentinas trabajamos" >
 	</a>
 
   <h1 class="page-title">{{ title }}</h1>
@@ -138,7 +138,7 @@
   <ng-container *ngIf="!loggedIn">
 
   <a *ngIf="!isHomeView" routerLink="/" class="logo">
-    <img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
+    <img class="logo-img" src="{{logoUrl}}" alt="las argentinas trabajamos" >
   </a>
 
   <div *ngIf="isHomeView" class="logo">
