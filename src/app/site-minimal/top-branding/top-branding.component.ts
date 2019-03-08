@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RecordCard } from '../recordcard.model';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'top-branding',
@@ -10,26 +10,60 @@ import { RecordCard } from '../recordcard.model';
 export class TopBrandingComponent implements OnInit {
 	@Input() record: RecordCard;
 
-	public mainimage: string = "";
-	public nodes: Array<About> = [];
+  public nodes: Array<About> = [];
 
-  constructor() { }
+	public mainimage: string = "";
+  public hasImage = false;
+
+  public excerpt: string = "";
+  public hasExcerpt = false;
+
+  public linkTo: string = "";
+  public hasLinkTo = false;
+  public linkText: string = "";
+
+  constructor(
+    private router: Router){ }
 
   ngOnInit() {
-  	this.mainimage = this.record.mainimage;
   	this.record.relatedcards.forEach(s => {
   		this.nodes.push({
         title: s.slug,
   			imageUrl: s.mainimage,
+        linkTo: s.linkTo,
+        subtitle: s.subtitle,
   			description: s.description,
   		} as About)
-  	})
+  	});
+
+    this.mainimage = this.record.mainimage;
+    this.hasImage = this.mainimage ? true : false;
+
+    if(this.nodes && this.nodes.length){
+
+      this.excerpt = this.nodes[0].description;
+      this.linkTo = this.nodes[0].linkTo;
+      this.linkText = this.nodes[0].subtitle || 'Enviar';
+
+      this.hasExcerpt = this.excerpt ? true : false;
+      this.hasLinkTo = this.linkTo ? true : false;
+    }
+
+  }
+
+  contactForm(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.router.navigate(['/trabajan/info/contacto'])
   }
 
 }
+
 interface About {
 	imageUrl: string;
 	description: string;
+  subtitle: string;
+  linkTo: string;
   title: string;
 }
 

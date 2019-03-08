@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'utopias';
+const user = 'lasargentinas';
 
 const globals = {
 
@@ -12,6 +12,7 @@ const globals = {
 		logoAvatar: 'avatar-fundetec.jpg',
 		logoUser: 'avatar-u-fundetec.jpg',
 		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
 		company: 'fundetec',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
@@ -24,7 +25,8 @@ const globals = {
 	lasargentinas: {
 		logoAvatar: 'avatar-lasargentinas.jpg',
 		logoUser: 'avatar-u-lasargentinas.jpg',
-		logoCompany: 'logo-lasargentinas.png',
+		logoCompany: 'logo-lasargentinas-1.png',
+		logoCompany2: 'logo-lasargentinas-4.png',
 		company: 'lasargentinas',
 		mainmenu: 'LASARGEN',
 		mainmenutpl: 'lasargentinas',
@@ -38,6 +40,7 @@ const globals = {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',
 		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
 		company: 'develar',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
@@ -51,6 +54,7 @@ const globals = {
 		logoAvatar: 'avatar-picris.jpg',
 		logoUser: 'avatar-u-diamante.jpg',
 		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
 		company: 'picris',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
@@ -64,6 +68,7 @@ const globals = {
 		logoAvatar: 'avatar-simplecomm.jpg',
 		logoUser: 'avatar-u-simplecomm.jpg',
 		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
 		company: 'simplecomm',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
@@ -77,6 +82,7 @@ const globals = {
 		logoAvatar: 'avatar-masuno.png',
 		logoUser: 'avatar-u-masuno.png',
 		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
 		company: 'masuno',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
@@ -90,6 +96,7 @@ const globals = {
 		logoAvatar: 'avatar-utopias.png',
 		logoUser: 'avatar-u-utopias.png',
 		logoCompany: 'logo-utopias.png',
+		logoCompany2: 'logo-utopias.png',
 		company: 'utopias',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'utopias',

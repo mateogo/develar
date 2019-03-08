@@ -9,7 +9,7 @@ $text-color: #00aec7;
   right: 0;
   top: 0;
   z-index: 800;
-  opacity: 0.9;
+  opacity: 1;
   //background: #ffffff;
 
   //opacity: 1;
@@ -93,10 +93,28 @@ $text-color: #00aec7;
   }
   .name {
     //color: rgba(#ededed,.9);
-  }
+      }
 
   .logo {
     text-decoration: none;
+
+    .logo-alt-img {
+      @media #{$max543} {
+        min-width: 100px;
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+
+      @media #{$min544} {
+        min-width: 130px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      max-height: 120px;
+      width: auto;
+      height: auto;
+    }
 
     .logo-img {
       @media #{$max543} {
@@ -114,7 +132,7 @@ $text-color: #00aec7;
       max-height: 45px;
       width: auto;
       height: auto;
-      opacity: 0.9;
+      opacity: 1;
     }
   }
 
@@ -139,7 +157,7 @@ $text-color: #00aec7;
   }
 
   .site-navbar {
-    align-items: center;
+    align-items: start;
     display: flex;
     flex-wrap: nowrap;
     height: 100%;

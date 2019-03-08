@@ -2,7 +2,7 @@
   <ng-container *ngIf="loggedIn">
 
   <a *ngIf="!isHomeView" routerLink="/" class="logo">
-	  <img class="logo-img" src="{{logoUrl}}" alt="" >
+	  <img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
 	</a>
 
   <h1 class="page-title">{{ title }}</h1>
@@ -70,7 +70,8 @@
     <div class="nav-item" [ngClass]="{ 'opened' : false }">
         <button mat-button title="usuario registrado" (click)="open($event)">
             <div class="avatar">
-              <img src="{{ avatar }}" width="37" height="37" alt=""></div>
+              <img src="{{ avatar }}" width="37" height="37" 
+                   alt="las argentinas trabajamos"></div>
             <div class="name">
               {{currentUser.username }}</div>
         </button>
@@ -137,13 +138,13 @@
   <ng-container *ngIf="!loggedIn">
 
   <a *ngIf="!isHomeView" routerLink="/" class="logo">
-    <img class="logo-img" src="{{logoUrl}}" alt="" >
+    <img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
   </a>
 
-  <div *ngIf="isHomeView" class="logo logo-text">
-    <span class="logo-img" alt="" >{{ aboutText }} </span>
+  <div *ngIf="isHomeView" class="logo">
+    <img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
+    <!-- span class="logo-alt-img" alt="las argentinas trabajamos" >{{ aboutText }} </span -->
   </div>
-
 
   <h1 class="page-title">{{ title }}</h1>
 

@@ -1,12 +1,21 @@
-<!--
-<div class="branding-logo">
-	<img src='{{mainimage}}' title="logo">
-</div>
--->
 <mat-card>
 	<mat-card-content>
-	<div class="top-image">
-			<img mat-card-image src='{{mainimage}}' >
+	<div class="top-image d-flex flex-column justify-content-center align-items-center">
+			<ng-container *ngIf="hasImage">
+				<img mat-card-image src='{{mainimage}}' >
+			</ng-container>
+			<ng-container *ngIf="hasExcerpt">
+				<div class="main-text">
+					<span  innerHtml='{{ excerpt }}'></span>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="hasLinkTo">
+				<div class="link-box">
+					<button  mat-button title="Sumate a la red de Las Argentinas Trabajamos" 
+					 					class="link-button"
+					         (click)="contactForm($event)">{{ linkText }} </button>
+				</div>
+			</ng-container>
 		</div>
 	</mat-card-content>
 </mat-card>

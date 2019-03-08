@@ -16,6 +16,7 @@ import { Actor, Conversation, MessageToPrint, notificationModel } from '../../..
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 const DEFAULT_LOGO = 'assets/img/' + gldef.logoCompany;
+const ALTERNATIVE_LOGO = 'assets/img/' + gldef.logoCompany2;
 
 
 const BG_COLOR_DEFAULT = "#ffffff";
@@ -39,12 +40,13 @@ export class LasargenNavbarComponent implements OnInit {
   public avatar: string = DEFAULT_AVATAR
   public avatar2 = gldef.logoAvatar;
   public logoUrl = DEFAULT_LOGO;
+  public logoAltUrl = ALTERNATIVE_LOGO;
 
   public navbarStyle = {};
   public navbarItemStyle = {};
 
   public aboutText = "-Guía Activa-";
-  public contactText = "Sumate";
+  public contactText = "";
 
   public hideLogin = false;
   public isHomeView = true;
