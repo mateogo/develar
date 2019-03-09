@@ -99,40 +99,44 @@ $text-color: #00aec7;
     text-decoration: none;
 
     .logo-alt-img {
-      @media #{$max543} {
-        min-width: 100px;
-        margin-left: 5px;
-        margin-right: 10px;
-      }
-
-      @media #{$min544} {
-        min-width: 130px;
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-
       max-height: 120px;
       width: auto;
       height: auto;
-    }
 
-    .logo-img {
       @media #{$max543} {
         min-width: 100px;
+        margin-top: 15px;
+        margin-right: 20px;
         margin-left: 5px;
-        margin-right: 10px;
       }
 
       @media #{$min544} {
         min-width: 130px;
-        margin-left: 20px;
+        margin-top: 15px;
         margin-right: 20px;
+        margin-left: 5px;
       }
 
+    }
+
+    .logo-img {
       max-height: 45px;
       width: auto;
       height: auto;
       opacity: 1;
+
+      @media #{$max543} {
+        min-width: 100px;
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+
+      @media #{$min544} {
+        min-width: 130px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
     }
   }
 
