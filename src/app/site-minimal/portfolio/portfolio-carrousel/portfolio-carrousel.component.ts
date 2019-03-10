@@ -105,26 +105,26 @@ export class PortfolioCarrouselComponent implements OnInit {
     if(this.tokens && this.tokens.length){
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
-    this.refresh = 1;
+    this.refresh += 1;
+    this.flyState.state = "in";
 
-    // setTimeout(() => {
-    //   this.displayStyle = { "visibility": PANEL_VISIBLE};
-    //   this.transitionStyle = { "visibility": PANEL_HIDDEN};
-    //   this.refresh  = 1;
-    //   this.flyState.state = "in";
-    //   this.trState.state = 'active'
+    setTimeout(() => {
+      this.flyState.state = "void";
 
-    //   setTimeout(() => {
-    //     this.flyState.state = "void";
-    //     this.trState.state = 'inactive';
-
-    //   }, 700)
-
-    // }, 500)
+    }, 800)
   }
 
 }
 
+      // this.displayStyle = { "visibility": PANEL_VISIBLE};
+      // this.transitionStyle = { "visibility": PANEL_HIDDEN};
+      // this.refresh  = 1;
+      // this.trState.state = 'active'
+
+      // setTimeout(() => {
+      //   this.trState.state = 'inactive';
+
+      // }, 700)
 
 
 
