@@ -27,8 +27,8 @@ const PANEL_VISIBLE = "visible";
         backgroundColor: '#cfd8dc',
         transform: 'scale(1.1)'
       })),
-      transition('inactive => active', animate('200ms ease-in')),
-      transition('active => inactive', animate('200ms ease-out'))
+      transition('inactive => active', animate('400ms ease-in')),
+      transition('active => inactive', animate('400ms ease-out'))
     ]),
     trigger('flyInOut', [
       state('in', style({transform: 'translateX(0)'})),
@@ -95,22 +95,26 @@ export class PortfolioCarrouselComponent implements OnInit {
   }
 
   showToken(){
+    this.displayStyle = { "visibility": PANEL_HIDDEN};
+
     this.tokens = this.carrouseles[this.page].tokens;
 
     if(this.tokens && this.tokens.length){
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
-
-    this.refresh  += 1;
-    this.flyState.state = "in";
-    this.trState.state = 'active'
-
     setTimeout(() => {
-      this.flyState.state = "void";
-      this.trState.state = 'inactive';
+      this.displayStyle = { "visibility": PANEL_VISIBLE};
+      this.refresh  += 1;
+      this.flyState.state = "in";
+      this.trState.state = 'active'
 
-    }, 800)
+      setTimeout(() => {
+        this.flyState.state = "void";
+        this.trState.state = 'inactive';
 
+      }, 700)
+
+    }, 500)
   }
 
 }
