@@ -1,12 +1,13 @@
 <div>
 	<ng-container *ngIf='refresh'>
-		<div [@blockIn]='blockState.state' class="row carrousel">
+		<div class="row carrousel">
 			<ng-container *ngFor="let token of tokens">
 				<div class="col-4 carrousel-item">
 	        <img class="carrousel-img" src="{{ token.imgUrl }}"
-	   		     [@heroState]='token.slug'>
+	   		     [@blockIn]='blockState.state' >
 				</div>
 			</ng-container>
+			<!-- div class="carrousel-slide"><h1>{{refresh}}</h1></div -->
 		</div>
 		
 	</ng-container>

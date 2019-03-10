@@ -94,11 +94,17 @@ export class PortfolioCarrouselComponent implements OnInit {
 
   showToken(){
     this.tokens = this.carrouseles[this.page].tokens;
+    this.flyState.state = "in";
+    this.blockState.state = "in";
+    //this.refresh = 0;
 
     if(this.tokens && this.tokens.length){
-      this.blockState.state = "in";
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;
-      this.refresh  += 1;
+      
+      setTimeout(() => {
+        this.refresh  += 1;
+        this.blockState.state = "void";}, 5)
+
     }
 
   }
