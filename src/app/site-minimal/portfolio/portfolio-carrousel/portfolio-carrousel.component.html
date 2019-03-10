@@ -1,5 +1,5 @@
-<div  [@flyInOut]='flyState.state' *ngIf='refresh'>
-	<div  class="row carrousel">
+<div *ngIf='refresh'>
+	<div [@heroState]='trState.state' [ngStyle]='displayStyle' class="row carrousel">
 		<ng-container *ngFor="let token of tokens">
 			<div class="col-4 carrousel-item">
         <img class="carrousel-img" src="{{ token.imgUrl }}">

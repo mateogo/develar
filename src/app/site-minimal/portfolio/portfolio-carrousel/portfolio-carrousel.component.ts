@@ -10,6 +10,9 @@ import {
 
 import { Subject } from 'rxjs';
 
+const PANEL_HIDDEN = "hidden";
+const PANEL_VISIBLE = "visible";
+
 @Component({
   selector: 'portfolio-carrousel',
   templateUrl: './portfolio-carrousel.component.html',
@@ -53,6 +56,8 @@ export class PortfolioCarrouselComponent implements OnInit {
   private cRows = 2;
   private cCol = 3;
   private cLimit = 6;
+
+  public displayStyle = { "visibility": PANEL_VISIBLE};
 
   public tokens: Array<CarrouselToken> = [];
   public interval: Subject<boolean> = new Subject();
@@ -98,9 +103,11 @@ export class PortfolioCarrouselComponent implements OnInit {
 
     this.refresh  += 1;
     this.flyState.state = "in";
+    this.trState.state = 'active'
 
     setTimeout(() => {
       this.flyState.state = "void";
+      this.trState.state = 'inactive';
 
     }, 800)
 

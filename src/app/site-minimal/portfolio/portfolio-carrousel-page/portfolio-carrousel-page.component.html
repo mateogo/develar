@@ -1,0 +1,23 @@
+<ng-container *ngIf='hasCarrousel'>
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<portfolio-carrousel [carrouseles]='carrouseles'></portfolio-carrousel>
+		</div>
+	</div>
+		
+	<div class="row">
+		<div class="col">
+			<ng-container *ngIf="hasLinkTo">
+				<div class="link-box">
+					<button  mat-button title="Ver galería de las argentinas trabajamos" 
+				 					class="link-button"
+				         (click)="searchPage($event)">{{ linkText }} </button>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+	</div>
+</ng-container>
+
+

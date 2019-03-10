@@ -9,10 +9,10 @@ import { RecordCard } from '../../recordcard.model';
 
 @Component({
   selector: 'porfolio-carrousel-page',
-  templateUrl: './porfolio-carrousel-page.component.html',
-  styleUrls: ['./porfolio-carrousel-page.component.scss']
+  templateUrl: './portfolio-carrousel-page.component.html',
+  styleUrls: ['./portfolio-carrousel-page.component.scss']
 })
-export class PorfolioCarrouselPageComponent implements OnInit {
+export class PortfolioCarrouselPageComponent implements OnInit {
   @Input() cardSize: string = "100%"
   @Input() destaque: string = "destaque1";
 
