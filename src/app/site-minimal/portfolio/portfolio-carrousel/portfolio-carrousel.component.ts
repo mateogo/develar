@@ -18,7 +18,7 @@ const PANEL_VISIBLE = "visible";
   templateUrl: './portfolio-carrousel.component.html',
   styleUrls: ['./portfolio-carrousel.component.scss'],
   animations: [
-    trigger('heroState', [
+    trigger('zoomOut', [
       state('inactive', style({
         backgroundColor: '#eee',
         transform: 'scale(1)'
@@ -70,6 +70,7 @@ export class PortfolioCarrouselComponent implements OnInit {
   public trState = {state: 'inactive'};
   public flyState = {state: 'void'};
   public blockState = {state: 'void'};
+  public fly = false;
 
 
 
@@ -106,10 +107,12 @@ export class PortfolioCarrouselComponent implements OnInit {
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
     this.refresh += 1;
+    this.fly = true;
     this.flyState.state = "in";
 
     setTimeout(() => {
       this.flyState.state = "void";
+      this.fly = false;
 
     }, 800)
   }
