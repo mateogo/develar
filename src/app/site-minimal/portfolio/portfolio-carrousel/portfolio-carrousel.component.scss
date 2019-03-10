@@ -13,6 +13,15 @@
 			}
 		}
 	}
+	
+	.transition {
+		min-width: 400px;
+		min-height: 500px;
+		background: #202020;
+		opacity: 0.8;
+		z-index: 900;
+
+	}
 
 
 }

@@ -58,6 +58,7 @@ export class PortfolioCarrouselComponent implements OnInit {
   private cLimit = 6;
 
   public displayStyle = { "visibility": PANEL_VISIBLE};
+  public transitionStyle = { "visibility": PANEL_HIDDEN};
 
   public tokens: Array<CarrouselToken> = [];
   public interval: Subject<boolean> = new Subject();
@@ -95,26 +96,31 @@ export class PortfolioCarrouselComponent implements OnInit {
   }
 
   showToken(){
-    this.displayStyle = { "visibility": PANEL_HIDDEN};
+    // this.displayStyle = { "visibility": PANEL_HIDDEN};
+    // this.transitionStyle = { "visibility": PANEL_VISIBLE};
+    // this.refresh  = 0;
 
     this.tokens = this.carrouseles[this.page].tokens;
 
     if(this.tokens && this.tokens.length){
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
-    setTimeout(() => {
-      this.displayStyle = { "visibility": PANEL_VISIBLE};
-      this.refresh  += 1;
-      this.flyState.state = "in";
-      this.trState.state = 'active'
+    this.refresh = 1;
 
-      setTimeout(() => {
-        this.flyState.state = "void";
-        this.trState.state = 'inactive';
+    // setTimeout(() => {
+    //   this.displayStyle = { "visibility": PANEL_VISIBLE};
+    //   this.transitionStyle = { "visibility": PANEL_HIDDEN};
+    //   this.refresh  = 1;
+    //   this.flyState.state = "in";
+    //   this.trState.state = 'active'
 
-      }, 700)
+    //   setTimeout(() => {
+    //     this.flyState.state = "void";
+    //     this.trState.state = 'inactive';
 
-    }, 500)
+    //   }, 700)
+
+    // }, 500)
   }
 
 }
