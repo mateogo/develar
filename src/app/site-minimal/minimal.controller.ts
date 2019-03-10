@@ -261,6 +261,13 @@ export class SiteMinimalController {
     return listener;
   }
 
+  fetchPublishingRecords(templ:string, stempl:string): Subject<RecordCard[]>{
+    let listener = new Subject<RecordCard[]>();
+
+    this.fetchTokenToPublish(templ, stempl, listener);
+
+    return listener;
+  }
 
 
   ////              recordcard             ////
@@ -318,7 +325,7 @@ export class SiteMinimalController {
 
   ////************* RecordCard ************////
   initNewRecordCard(){
-    //this.model = recordcardModel.initNew('','',null,null);
+    //this.model = recorddModel.initNew('','',null,null);
     this.initRecordCard();
   }
 
@@ -424,6 +431,27 @@ export class SiteMinimalController {
       'publish.template': 'post',
       'publish.destaque': topic,
     }
+
+    this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+
+  ////************* Recordcars con publish:true  ************////
+  private fetchTokenToPublish(templ:string, stempl: string, recordEmitter:Subject<RecordCard[]>){
+    let query = {
+      publish: true,
+    }
+
+    if(templ) query['publish.template'] = templ;
+    if(stempl) query['publish.destaque'] = stempl;
 
     this.daoService.search<RecordCard>('recordcard', query).subscribe(tokens =>{
       if(tokens){

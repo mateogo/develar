@@ -55,6 +55,9 @@ import { PostTopContainerComponent } from './foros/post-top-container/post-top-c
 import { PostTokenComponent } from './foros/post-token/post-token.component';
 import { RegistroContainerComponent } from './registracion/registro-container/registro-container.component';
 import { MyproductsPageComponent } from './productos/myproducts-page/myproducts-page.component';
+import { PorfolioCarrouselPageComponent } from './portfolio/porfolio-carrousel-page/porfolio-carrousel-page.component';
+import { PorfolioCarrouselComponent } from './portfolio/porfolio-carrousel/porfolio-carrousel.component';
+import { PortfolioCarrouselComponent } from './portfolio/portfolio-carrousel/portfolio-carrousel.component';
 
 
 
@@ -106,7 +109,10 @@ import { MyproductsPageComponent } from './productos/myproducts-page/myproducts-
   	PostTopContainerComponent,
   	PostTokenComponent,
   	RegistroContainerComponent,
-  	MyproductsPageComponent
+  	MyproductsPageComponent,
+  	PorfolioCarrouselPageComponent,
+  	PorfolioCarrouselComponent,
+  	PortfolioCarrouselComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

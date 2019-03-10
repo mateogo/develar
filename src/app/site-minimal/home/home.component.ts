@@ -66,11 +66,15 @@ export class HomeComponent implements OnInit {
   public isPosts = true;
 
   public isPapers = false;
+  public papers: RecordCard[] = [];
+
+  private showPortfolioComponent = false;
+  public isPortfolios = false;
   public portfolios: RecordCard[] = [];
   public portfolioCardSize = '100%';
 
-  public isPortfolios = false;
-  public papers: RecordCard[] = [];
+
+  public isPortfolioCarrousel = true;
 
 
   public unBindList = [];
@@ -162,7 +166,9 @@ export class HomeComponent implements OnInit {
           this.papers.push(record);
 
         }else if(publish.template === PORTFOLIO){
-          this.portfolios.push(record);
+          if(this.showPortfolioComponent){
+            this.portfolios.push(record);
+          }
 
         }else if(publish.template === REGISTRO){
           this.registro = record;

@@ -11,6 +11,11 @@
 	<destacado [record]='destacado' ></destacado>
 </ng-container>
 
+<ng-container *ngIf="isPortfolioCarrousel">
+	<porfolio-carrousel-page></porfolio-carrousel-page>
+</ng-container>
+
+
 <ng-container *ngIf="isPortfolios">
 	<div class="portfolio d-flex flex-row justify-content-center align-items-start flex-wrap">
 	  <portfolio-token class="p-1" 

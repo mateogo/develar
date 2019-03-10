@@ -1,0 +1,17 @@
+<ng-container *ngIf='hasCarrousel'>
+	<div class="d-flex flex-column align-items-center top-container">
+		<portfolio-carrousel [carrouseles]='carrouseles'></portfolio-carrousel>
+		
+		<ng-container *ngIf="hasLinkTo">
+			<div class="link-box">
+				<button  mat-button title="Ver galería de las argentinas trabajamos" 
+				 					class="link-button"
+				         (click)="searchPage($event)">{{ linkText }} </button>
+			</div>
+		</ng-container>
+	</div>
+
+
+</ng-container>
+
+
