@@ -1,11 +1,55 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
+
 
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'portfolio-carrousel',
   templateUrl: './portfolio-carrousel.component.html',
-  styleUrls: ['./portfolio-carrousel.component.scss']
+  styleUrls: ['./portfolio-carrousel.component.scss'],
+  animations: [
+    trigger('heroState', [
+      state('inactive', style({
+        backgroundColor: '#eee',
+        transform: 'scale(1)'
+      })),
+      state('active',   style({
+        backgroundColor: '#cfd8dc',
+        transform: 'scale(1.1)'
+      })),
+      transition('inactive => active', animate('200ms ease-in')),
+      transition('active => inactive', animate('200ms ease-out'))
+    ]),
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(500)
+      ]),
+      transition('* => void', [
+        animate(500, style({transform: 'translateX(100%)'}))
+      ])
+    ]),
+    trigger('blockIn', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(500)
+      ])
+    ])
+  ]
+
+
+
+
+
 })
 export class PortfolioCarrouselComponent implements OnInit {
 	@Input() carrouseles: Array<PortfolioCarrousel> = [];
@@ -20,11 +64,19 @@ export class PortfolioCarrouselComponent implements OnInit {
   public page = 0;
   private intervalId;
 
+  public trState = {state: 'inactive'};
+  public flyState = {state: 'void'};
+  public blockState = {state: 'void'};
+
+
+
+
   constructor() { }
 
   ngOnInit() {
 
     this.interval.subscribe(tic => {
+
       this.showToken();
     })
 
@@ -37,13 +89,14 @@ export class PortfolioCarrouselComponent implements OnInit {
     //interval.next(true);
     this.intervalId = setInterval(function(){
       interval.next(true);
-    }, 10000);
+    }, 5000);
   }
 
   showToken(){
     this.tokens = this.carrouseles[this.page].tokens;
 
     if(this.tokens && this.tokens.length){
+      this.blockState.state = "in";
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;
       this.refresh  += 1;
     }

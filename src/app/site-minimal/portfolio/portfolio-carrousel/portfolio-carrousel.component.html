@@ -1,9 +1,10 @@
 <div>
 	<ng-container *ngIf='refresh'>
-		<div class="row carrousel">
+		<div [@blockIn]='blockState.state' class="row carrousel">
 			<ng-container *ngFor="let token of tokens">
 				<div class="col-4 carrousel-item">
-	        <img class="carrousel-img" src="{{ token.imgUrl }}" >
+	        <img class="carrousel-img" src="{{ token.imgUrl }}"
+	   		     [@heroState]='token.slug'>
 				</div>
 			</ng-container>
 		</div>
