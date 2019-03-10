@@ -33,7 +33,7 @@ export class PortfolioCarrouselComponent implements OnInit {
 
 
   render(interval: Subject<boolean>){
-    //this.showToken();
+    this.showToken();
     //interval.next(true);
     this.intervalId = setInterval(function(){
       interval.next(true);
