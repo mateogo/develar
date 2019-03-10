@@ -32,9 +32,10 @@ const PANEL_VISIBLE = "visible";
     ]),
     trigger('flyInOut', [
       state('in', style({transform: 'translateX(0)'})),
-      transition('void => *', [
+      state('void', style({transform: 'translateX(0)'})),
+      transition('void => in', [
         style({transform: 'translateX(100%)'}),
-        animate(600)
+        animate(800)
       ])
     ]),
     trigger('blockIn', [
@@ -97,24 +98,25 @@ export class PortfolioCarrouselComponent implements OnInit {
   }
 
   showToken(){
-    // this.displayStyle = { "visibility": PANEL_HIDDEN};
-    // this.transitionStyle = { "visibility": PANEL_VISIBLE};
-    // this.refresh  = 0;
-
     this.tokens = this.carrouseles[this.page].tokens;
 
     if(this.tokens && this.tokens.length){
       this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
     this.refresh += 1;
-    this.fly = true;
-    this.flyState.state = "in";
 
     setTimeout(() => {
-      this.flyState.state = "void";
-      this.fly = false;
+      this.fly = true;
 
-    }, 800)
+
+      setTimeout(() => {
+        this.fly = false;
+
+      }, 900)
+
+
+
+    }, 200)
   }
 
 }
