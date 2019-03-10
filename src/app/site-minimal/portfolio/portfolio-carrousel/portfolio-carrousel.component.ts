@@ -7,7 +7,6 @@ import {
   transition
 } from '@angular/animations';
 
-
 import { Subject } from 'rxjs';
 
 const PANEL_HIDDEN = "hidden";
@@ -46,11 +45,6 @@ const PANEL_VISIBLE = "visible";
       ])
     ])
   ]
-
-
-
-
-
 })
 export class PortfolioCarrouselComponent implements OnInit {
 	@Input() carrouseles: Array<PortfolioCarrousel> = [];
@@ -108,15 +102,12 @@ export class PortfolioCarrouselComponent implements OnInit {
     setTimeout(() => {
       this.fly = true;
 
-
       setTimeout(() => {
         this.fly = false;
 
       }, 900)
 
-
-
-    }, 200)
+    }, 100)
   }
 
 }
