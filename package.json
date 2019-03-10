@@ -85,6 +85,7 @@
     "squeezebox": "^1.4.1",
     "tslib": "^1.9.3",
     "underscore": "^1.9.1",
+    "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.20"
   },
   "devDependencies": {
