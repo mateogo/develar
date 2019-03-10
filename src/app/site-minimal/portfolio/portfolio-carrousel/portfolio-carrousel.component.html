@@ -1,15 +1,12 @@
-<div>
-	<ng-container *ngIf='refresh'>
-		<div class="row carrousel">
-			<ng-container *ngFor="let token of tokens">
-				<div class="col-4 carrousel-item">
-	        <img class="carrousel-img" src="{{ token.imgUrl }}"
-	   		     [@blockIn]='blockState.state' >
-				</div>
-			</ng-container>
-			<!-- div class="carrousel-slide"><h1>{{refresh}}</h1></div -->
-		</div>
-		
-	</ng-container>
-
+<div  [@flyInOut]='flyState.state' *ngIf='refresh'>
+	<div  class="row carrousel">
+		<ng-container *ngFor="let token of tokens">
+			<div class="col-4 carrousel-item">
+        <img class="carrousel-img" src="{{ token.imgUrl }}">
+			</div>
+		</ng-container>
+		<!-- div class="carrousel-slide"><h1>{{refresh}}</h1></div -->
+	</div>
+	
 </div>
+

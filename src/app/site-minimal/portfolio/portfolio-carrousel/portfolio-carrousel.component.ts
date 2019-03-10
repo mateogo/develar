@@ -30,11 +30,8 @@ import { Subject } from 'rxjs';
     trigger('flyInOut', [
       state('in', style({transform: 'translateX(0)'})),
       transition('void => *', [
-        style({transform: 'translateX(-100%)'}),
-        animate(500)
-      ]),
-      transition('* => void', [
-        animate(500, style({transform: 'translateX(100%)'}))
+        style({transform: 'translateX(100%)'}),
+        animate(600)
       ])
     ]),
     trigger('blockIn', [
@@ -94,18 +91,18 @@ export class PortfolioCarrouselComponent implements OnInit {
 
   showToken(){
     this.tokens = this.carrouseles[this.page].tokens;
-    this.flyState.state = "in";
-    this.blockState.state = "in";
-    //this.refresh = 0;
 
     if(this.tokens && this.tokens.length){
-      this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;
-      
-      setTimeout(() => {
-        this.refresh  += 1;
-        this.blockState.state = "void";}, 5)
-
+      this.page = this.page === this.carrouseles.length-1 ? 0 : this.page + 1;      
     }
+
+    this.refresh  += 1;
+    this.flyState.state = "in";
+
+    setTimeout(() => {
+      this.flyState.state = "void";
+
+    }, 800)
 
   }
 

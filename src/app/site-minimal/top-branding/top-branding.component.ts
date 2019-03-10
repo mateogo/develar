@@ -2,6 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RecordCard } from '../recordcard.model';
 import { Router } from '@angular/router';
 
+import { gldef } from '../../develar-commons/develar.config';
+
+const ALTERNATIVE_LOGO = 'assets/img/' + gldef.logoCompany2;
+
+
 @Component({
   selector: 'top-branding',
   templateUrl: './top-branding.component.html',
@@ -11,6 +16,9 @@ export class TopBrandingComponent implements OnInit {
 	@Input() record: RecordCard;
 
   public nodes: Array<About> = [];
+
+  public hasLogoAlt = false;
+  public logoAltUrl = ALTERNATIVE_LOGO;
 
 	public mainimage: string = "";
   public hasImage = false;
@@ -35,6 +43,10 @@ export class TopBrandingComponent implements OnInit {
   			description: s.description,
   		} as About)
   	});
+
+    if(gldef.logoCompany2 && gldef.logoCompany2 !== gldef.logoCompany ){
+      this.hasLogoAlt = true;
+    }
 
     this.mainimage = this.record.mainimage;
     this.hasImage = this.mainimage ? true : false;

@@ -1,5 +1,27 @@
 @import '../../../assets/sass/variable';
 
+.logo {
+  z-index: 9999;
+
+  .logo-alt-img {
+    width: auto;
+    height: auto;
+    z-index: 9999;
+
+    @media #{$max543} {
+      max-height: 100px;
+      margin-top: -15px;
+    }
+
+    @media #{$min544} {
+      max-height: 130px;
+      margin-top: -15px;
+    }
+
+  }
+}
+
+
 :host {
   .mat-card {
     background: #0545f5;
@@ -7,18 +29,18 @@
   }
 
 
+
   .top-image {
  
     @media #{$max543} {
-      min-height: 250px;
+      min-height: 50px;
     }
 
     @media #{$min544} {
-      min-height: 450px;
+      min-height: 350px;
     }
 
     .main-text{
-        margin: 65px 15px 0 15px;
         text-align: center;
         color: #fff;
         max-width: 600px;
@@ -26,10 +48,12 @@
         font-style: italic;
 
         @media #{$max543} {
+          margin: 10px 15px 0 15px;
           font-size: 1.7em;
         }
 
         @media #{$min544} {
+          margin: 65px 15px 0 15px;
           font-size: 2em;
         }
 

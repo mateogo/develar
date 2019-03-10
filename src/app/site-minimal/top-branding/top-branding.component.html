@@ -1,14 +1,22 @@
 <mat-card>
 	<mat-card-content>
+	<div *ngIf="hasLogoAlt" class="logo">
+		<img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" >
+	</div>
+
+
 	<div class="top-image d-flex flex-column justify-content-center align-items-center">
+
 			<ng-container *ngIf="hasImage">
 				<img mat-card-image src='{{mainimage}}' >
 			</ng-container>
+
 			<ng-container *ngIf="hasExcerpt">
 				<div class="main-text">
 					<span  innerHtml='{{ excerpt }}'></span>
 				</div>
 			</ng-container>
+
 			<ng-container *ngIf="hasLinkTo">
 				<div class="link-box">
 					<button  mat-button title="Sumate a la red de Las Argentinas Trabajamos" 
