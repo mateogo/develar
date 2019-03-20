@@ -152,7 +152,7 @@ exports.findById = function (id, errcb, cb) {
 
     Person.findById(id, function(err, entity) {
         if (err){
-            console.log('[%s] findByID ERROR() argument [%s]', whoami, iarguments.length);
+            //console.log('[%s] findByID ERROR() argument [%s]', whoami, iarguments.length);
             err.itsme = whoami;
             errcb(err);
         

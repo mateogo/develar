@@ -60,10 +60,11 @@ export class HomeComponent implements OnInit {
 
   public showProductos = false;
 
+  // isFooter === true busca
   public isFooter = true;
   public footer: RecordCard;
 
-  public isPosts = true;
+  public isPosts = false;
 
   public isPapers = false;
   public papers: RecordCard[] = [];
@@ -140,7 +141,7 @@ export class HomeComponent implements OnInit {
 
         }else if(publish.template === CARROUSEL){
           this.topcarrousel = record;
-          this.isTopcarrousel = true
+          this.isTopcarrousel = true;
 
         }else if(publish.template === ABOUT){
           this.topabout = record;
@@ -159,8 +160,8 @@ export class HomeComponent implements OnInit {
           this.isContacto = true
 
         }else if(publish.template === FOOTER){
-          // this.footer = record;
-          // this.isFooter = true
+          this.footer = record;
+          this.isFooter = true
 
         }else if(publish.template === FICHA){
           this.papers.push(record);
@@ -172,7 +173,7 @@ export class HomeComponent implements OnInit {
 
         }else if(publish.template === REGISTRO){
           this.registro = record;
-          this.isRegistro = true
+          this.isRegistro = true;
 
         }else if(publish.template === SERVICIOS){
           this.servicios = record;
@@ -191,6 +192,7 @@ export class HomeComponent implements OnInit {
 
     }
   }
+
 
 
   sortProperly(records){

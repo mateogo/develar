@@ -26,7 +26,7 @@ const globals = {
 		logoAvatar: 'avatar-lasargentinas.jpg',
 		logoUser: 'avatar-u-lasargentinas.jpg',
 		logoCompany: 'logo-lasargentinas-1.png',
-		logoCompany2: 'logo-lasargentinas-4.png',
+		logoCompany2: 'logo-lasargentinas-5.png',
 		company: 'lasargentinas',
 		mainmenu: 'LASARGEN',
 		mainmenutpl: 'lasargentinas',

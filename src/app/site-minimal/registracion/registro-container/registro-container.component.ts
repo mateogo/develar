@@ -59,9 +59,10 @@ export class RegistroContainerComponent implements OnInit {
   public trState = {state: 'inactive'};
   public flyState = {state: 'void'};
   public blockState = {state: 'void'};
-  public showLogin = false;
+  public showLogin = true;
   public showRegistration = false;
   public showComponent = true;
+
 
   public detailImage: RelatedImage;
 
@@ -73,8 +74,10 @@ export class RegistroContainerComponent implements OnInit {
   	this.title = this.record.slug;
   	this.description = this.record.description;
   	this.mainimage = this.record.mainimage;
+    console.log('REGISTRO!! [%s]', this.description);
 
   	this.record.relatedcards.forEach(s => {
+      console.log('relatedCards')
       let link:string , navigate:string , noLink = true;
       
       let flipImage: RelatedImage = this.flipImage(s);

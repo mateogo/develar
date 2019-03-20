@@ -75,6 +75,7 @@ export class PortfolioCarrouselPageComponent implements OnInit {
 
 
   initHomePage(){
+    console.log('portfolio-page INIT *********+')
 
     let sscrp1 = this.minimalCtrl.fetchPublishingRecords(this.templ, this.stempl).subscribe(records => {
       this.sortProperly(records);

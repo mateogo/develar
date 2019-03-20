@@ -48,8 +48,8 @@
         font-style: italic;
 
         @media #{$max543} {
-          margin: 10px 15px 0 15px;
-          font-size: 1.7em;
+          margin: 0 15px 0 15px;
+          font-size: 1.2em;
         }
 
         @media #{$min544} {
@@ -60,13 +60,12 @@
     }
 
     .link-box{
-      margin: 15px 0 25px 0;
+      margin: 15px 0 0 0;
       text-align: center;
-      min-width: 70px;
       background: #0bc869;
  
       @media #{$max543} {
-        font-size: 1.5em;
+        font-size: 1.2em;
       }
 
       @media #{$min544} {
@@ -75,6 +74,7 @@
 
       .link-button {
         color: #ffffff;
+        line-height: 24px;
         font-size: 1em;
         font-weight: 700;
         font-style: italic;

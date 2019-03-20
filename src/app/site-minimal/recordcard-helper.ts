@@ -23,6 +23,7 @@ const templateList: Array<any> = [
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
+		{val: 'registro',       label: 'Registro',           slug:'Registro' } ,
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
 		{val: 'ficha',          label: 'ficha',              slug:'ficha' },

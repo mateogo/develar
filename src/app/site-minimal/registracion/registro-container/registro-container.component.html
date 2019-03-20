@@ -1,4 +1,3 @@
-<ng-container *ngIf='!showComponent'>
 <mat-card>
 	<mat-card-content>
 
@@ -10,14 +9,13 @@
 			</div>
 
 			<ng-container *ngIf='!showDetail'>
-				<div [@blockIn]='blockState.state' id='items' class="row">
+				<div id='items' class="row">
 
 					<div class='col-md-6 item'>
 						<ng-container *ngIf='!showLogin'>
 	          	<a role="button" title="{{nodes[0].linkTo}}" href="#" 
 	             		(click)="togglePanel($event, 0, nodes[0])">
-	             <img class='item-image' src='{{ nodes[0].imageUrl }}'
-	             			[@heroState]='nodes[0].state' ></a>
+	             <img class='item-image' src='{{ nodes[0].imageUrl }}'></a>
 	           </ng-container>
 
 						<ng-container *ngIf="showLogin">
@@ -29,8 +27,7 @@
 						<ng-container *ngIf="!showRegistration">
 	          	<a role="button" title="{{nodes[1].linkTo}}" href="#" 
 	             		(click)="togglePanel($event, 1, nodes[1])">
-	             <img class='item-image' src='{{ nodes[1].imageUrl }}'
-	             			[@heroState]='nodes[1].state' ></a>
+	             <img class='item-image' src='{{ nodes[1].imageUrl }}'></a>
 	           </ng-container>
 
 						<ng-container *ngIf="showRegistration">
@@ -44,10 +41,8 @@
 			<ng-container *ngIf='showDetail'>
       	<a role="button" class="item-link" title="{{detailImage.slug}}" href="#" 
          		(click)="servicePlain($event)">
-         <img mat-card-image src='{{ detailImage.url }}'
-         			[@flyInOut]='flyState.state' ></a>
+         <img mat-card-image src='{{ detailImage.url }}' ></a>
 			</ng-container>
 			
 	</mat-card-content>
 </mat-card>
-</ng-container>

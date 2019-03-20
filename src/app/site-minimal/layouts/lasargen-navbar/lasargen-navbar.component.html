@@ -142,7 +142,7 @@
   </a>
 
   <div *ngIf="isHomeView" class="logo">
-    <!-- img class="logo-alt-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos" -- >
+    <img class="logo-img" src="{{logoAltUrl}}" alt="las argentinas trabajamos">
     <!-- span class="logo-alt-img" alt="las argentinas trabajamos" >{{ aboutText }} </span -->
   </div>
 
@@ -162,7 +162,7 @@
     <div *ngIf="isHomeView" class="nav-item">
       <ng-container *ngFor="let social of socialItems">
         <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' 
-            class="text-social not-phone" 
+            class="text-social" 
             href="{{ social.url }}"  title="{{ social.title }}">
               <i class='{{ social.icon }}'></i></a>
       </ng-container>
@@ -171,14 +171,14 @@
     <div *ngIf="!isHomeView" class="nav-item">
       <ng-container *ngFor="let social of socialItems">
         <a target="_blank" rel="noopener" [ngStyle]='navbarItemStyle' 
-            class="text-social not-phone" 
+            class="text-social" 
             href="{{ social.url }}"  title="{{ social.title }}">
               <i class='{{ social.icon }}'></i></a>
       </ng-container>
     </div>
 
     <!--- 2.0-not Logged SEARCH -->
-    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+    <div class="nav-item not-phone" [ngClass]="{ 'opened' : false }">
       <button [ngStyle]='navbarItemStyle' class="text-icon  not-phone" title="buscar"
       mat-button (click)="searchPage($event)"><i class='fas fa-search'></i></button>
     </div>
