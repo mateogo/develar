@@ -12,6 +12,7 @@ const HOME_TYPE = 'webresource';
 const BRANDING =  'topbranding';
 const ABOUT =     'topabout';
 const ABOUTLR =   'topaboutlr';
+const MISSION =   'topmission';
 const DESTACADO = 'destacado';
 const SERVICIOS = 'topservicios';
 const CONTACTO =  'topcontacto';
@@ -45,6 +46,9 @@ export class HomeComponent implements OnInit {
   public isTopaboutlr = false;
   public topaboutlr: RecordCard;
 
+  public isTopmission = false;
+  public topmission: RecordCard;
+
   public isDestacado = false;
   public destacado: RecordCard;
 
@@ -53,7 +57,6 @@ export class HomeComponent implements OnInit {
 
   public isRegistro = false;
   public registro: RecordCard;
-
 
   public isContacto = false;
   public contacto: RecordCard;
@@ -150,6 +153,10 @@ export class HomeComponent implements OnInit {
         }else if(publish.template === ABOUTLR){
           this.topaboutlr = record;
           this.isTopaboutlr = true
+
+        }else if(publish.template === MISSION){
+          this.topmission = record;
+          this.isTopmission = true
 
         }else if(publish.template === DESTACADO){
           this.destacado = record;

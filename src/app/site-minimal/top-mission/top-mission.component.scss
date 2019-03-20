@@ -1,0 +1,66 @@
+@import '../../../assets/sass/variable';
+// azul 0645f5
+// verde 0bc869
+
+:host {
+	.top-title {
+		margin: 5px 0 10px 0;
+		.top-title {
+			text-align: center;
+			color: #0645f5;
+			font-size: 1.5rem;
+			font-weight: 900;
+
+		}
+	}
+
+	.mission {
+
+		.mission-text {
+			vertical-align: middle;
+			text-align: left;
+
+	    @media #{$max543} {
+	      font-size: 1rem;
+	      font-weight: 400;
+	      font-style: italic;
+	      margin-left: 10px;
+				padding: 10px 15px 10px 5px;
+	    }
+
+	    @media #{$min544} {
+	      font-size: 1.2rem;
+	      font-weight: 400;
+	      font-style: italic;
+	      margin-left: 10px;
+				padding: 10px 15px 10px 5px;
+	    }
+
+		}
+
+		.mission-slug {
+			width: 100%;
+			color: #fff;
+			//background-color: #0645f5;
+			text-align: center;
+			vertical-align: bottom;
+			line-height: 55px;
+			font-size: 2em;
+			font-weight: 400;
+			font-style: italic;
+
+		}
+
+		.mission-img {
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 25px;
+		}
+
+	}
+
+	.mission-bottom-image {
+	}
+
+
+}

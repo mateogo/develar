@@ -13,21 +13,22 @@ const ASSETS_NOT_SHOW = ['mainimage'];
 
 const templateList: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'ficha',          label: 'Ficha',              slug:'ficha' },
+		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
+		{val: 'post',           label: 'Nota',               slug:'Nota' },
 		{val: 'topbranding',    label: 'topbranding',        slug:'topbranding' },
 		{val: 'topcarrousel',   label: 'topcarrousel',       slug:'topcarrousel' },
 		{val: 'topcontacto',    label: 'topcontacto',        slug:'topcontacto' },
 		{val: 'topservicios',   label: 'topservicios',       slug:'topservicios' },
-		{val: 'topportfolio',   label: 'topportfolio',       slug:'topportfolio' },
+		{val: 'topportfolio',   label: 'topportfolio',       slug:'topportfolio' }, 
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
+		{val: 'topmission',     label: 'topmission',         slug:'topmission' },
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
-		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
-		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'registro',       label: 'Registro',           slug:'Registro' } ,
+		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
-		{val: 'ficha',          label: 'ficha',              slug:'ficha' },
-		{val: 'post',           label: 'nota',               slug:'Nota' },
 ];
 
 const scopeList: Array<any> = [

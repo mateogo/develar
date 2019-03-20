@@ -51,6 +51,10 @@
 	<top-aboutlr [record]='topaboutlr' ></top-aboutlr>
 </ng-container>
 
+<ng-container *ngIf="isTopmission">
+	<top-mission [record]='topmission' ></top-mission>
+</ng-container>
+
 <ng-container *ngIf="isServicios">
 	<top-servicios [record]='servicios' ></top-servicios>
 </ng-container>

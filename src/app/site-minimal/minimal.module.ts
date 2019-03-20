@@ -57,6 +57,7 @@ import { RegistroContainerComponent } from './registracion/registro-container/re
 import { MyproductsPageComponent } from './productos/myproducts-page/myproducts-page.component';
 import { PortfolioCarrouselPageComponent } from './portfolio/portfolio-carrousel-page/portfolio-carrousel-page.component';
 import { PortfolioCarrouselComponent } from './portfolio/portfolio-carrousel/portfolio-carrousel.component';
+import { TopMissionComponent } from './top-mission/top-mission.component';
 
 
 
@@ -110,7 +111,8 @@ import { PortfolioCarrouselComponent } from './portfolio/portfolio-carrousel/por
   	RegistroContainerComponent,
   	MyproductsPageComponent,
   	PortfolioCarrouselPageComponent,
-  	PortfolioCarrouselComponent
+  	PortfolioCarrouselComponent,
+  	TopMissionComponent
   ],
   providers:[
     SiteMinimalController, HighlightService

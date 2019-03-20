@@ -159,6 +159,9 @@ export interface SelectData {
 
 const templateList: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'ficha',          label: 'ficha',              slug:'ficha' },
+		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
+		{val: 'post',           label: 'nota',               slug:'Nota' },
 		{val: 'topbranding',    label: 'topbranding',        slug:'topbranding' },
 		{val: 'topcarrousel',   label: 'topcarrousel',       slug:'topcarrousel' },
 		{val: 'topcontacto',    label: 'topcontacto',        slug:'topcontacto' },
@@ -166,14 +169,12 @@ const templateList: Array<any> = [
 		{val: 'topportfolio',   label: 'topportfolio',       slug:'topportfolio' }, 
 		{val: 'topabout',       label: 'topabout',           slug:'topabout' },
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
+		{val: 'topmission',     label: 'topmission',         slug:'topmission' },
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
-		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
 		{val: 'registro',       label: 'Registro',           slug:'Registro' } ,
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
-		{val: 'ficha',          label: 'ficha',              slug:'ficha' },
-		{val: 'post',           label: 'nota',               slug:'Nota' },
 ];
 
 const scopeList: Array<any> = [
@@ -333,7 +334,8 @@ const cardCategory = {
 		{val: 'topcarrousel',   label: 'Top carrousel',      slug:'Top carrousel' },
 		{val: 'topabout',       label: 'Top about',          slug:'Top about' },
 		{val: 'topaboutlr',     label: 'Top about L-R',      slug:'Top about L-R'},
-		{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
+		{val: 'topmission',     label: 'Top misión',         slug:'Top misión'},
+  	{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
 		{val: 'topportfolio',   label: 'Top portfolio',      slug:'Top portfolio' },
 		{val: 'destacado',      label: 'Top destacado',      slug:'Destacado' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },

@@ -1,22 +1,23 @@
   <mat-form-field>
-  	<mat-chip-list matPrefix #chiplist 
+  	<mat-chip-list #chiplist 
   							[multiple]='multiple' >
-  		<mat-chip #theChip *ngFor='let tag of taglist' 
+  		<mat-chip *ngFor='let tag of taglist' 
   			[removable]='removable'
+        [selectable]='selectable'
   			[value]='tag'
-  			(remove)='remove(tag)' color="accent" selected="true" >
+  			(removed)='remove(tag)' color="accent" selected="true" >
   			{{tag}}
   			<mat-icon matChipRemove *ngIf='removable'>cancel</mat-icon>
   		</mat-chip>
+      <input #searchBox matInput placeholder="Indique lista de etiquetas (,)" 
+          [matChipInputFor]='chiplist'
+          [matChipInputSeparatorKeyCodes]='separatorKeysCodes'
+          (matChipInputTokenEnd)='add($event)'
+          [matAutocomplete]="auto" 
+          (keyup)="search($event, searchBox.value)" >
+
 
   	</mat-chip-list>
-    <input #searchBox matInput placeholder="Indique lista de etiquetas (,)" 
-    		[matChipInputFor]='chiplist'
-    		[matChipInputSeparatorKeyCodes]='separatorKeysCodes'
-    		(matChipInputTokenEnd)='add($event)'
-    		[matAutocomplete]="auto" 
-    		(keyup)="search($event, searchBox.value)" >
-
   </mat-form-field>
 
   <mat-autocomplete #auto="matAutocomplete">

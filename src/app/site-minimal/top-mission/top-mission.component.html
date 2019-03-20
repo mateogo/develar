@@ -1,0 +1,26 @@
+<mat-card>
+	<mat-card-content>
+		<div class="container-fluid">
+
+			<div class="row align-items-start justify-content-center top-title">
+				<div class="col">
+					<h4 class="top-title">{{title}}</h4>
+				</div>
+			</div>
+
+			<div class="row align-items-start mission">
+				<div class='col-md' *ngFor='let node of nodes; let i=index'>
+					<div [ngStyle]='slugStyle[i % 2]' class='mission-slug' >{{ node.slug }}</div>
+					<div [ngStyle]='textStyle[i % 2]' class='mission-text' 
+								innerHtml='{{node.description}}'></div>
+					<img class='mission-img' src='{{node.imageUrl}}' >
+				</div>
+			</div>
+
+		</div>
+		<div class="mission-bottom-image">
+			<img mat-card-image src='{{mainimage}}' >
+		</div>
+	</mat-card-content>
+</mat-card>
+
