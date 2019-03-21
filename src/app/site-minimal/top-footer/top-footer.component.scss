@@ -1,4 +1,6 @@
 @import '../../../assets/sass/variable';
+// azul 0645f5
+// verde 0bc869
 
 :host {
 	.mat-card {
@@ -6,50 +8,101 @@
 		// color: rgba(0, 0, 0, 0.87);
 	}
 
-	#redes {
-		font-size: 1.5em;
-		text-align: right;
-		color: rgba(0, 0, 0, 0.87);
-	}
-	
-	.text-social {
-		margin:  0 15px 0 0;
-	}
+	.footer {
 
-	#footer {
-		.footer-text {
-			font-size: 0.8em;
-			text-align: right;
-			color: rgba(0, 0, 0, 0.87);
-			//color: main-color(50);
+		margin: 20px 0 20px 0;
+		
+		.social-box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			width: 100%;
 
-			.separator {
-				border-bottom: 1px solid rgba(0, 0, 0, 0.87);
-				margin: 0 0 15px 0;
-				width: 100%;
+			.text-social {
+				.social-token{
+					font-size: 3em;
+					//color: rgba(0, 0, 0, 0.87);
+					color: #0bc869;
+					margin:  0 35px 0 0;				
+				}
+			}
+
+		}
+
+
+		.footer-box {
+			display: flex;
+			max-height: 40px;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			width: 100%;
+
+			.footer-img {
+				max-height: 35px;
+				width: auto;
+			}
+
+			.footer-text {
+				font-size: 0.8em;
+				color: rgba(0, 0, 0, 0.87);
+				//color: main-color(50);
+
+				.separator {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+					margin: 0 0 15px 0;
+					width: 100%;
+				}
 			}
 
 
-		}
-
-		.image-box {
-			max-height: 40px;
-			max-width: 250px;
-		}
-
-		.footer-img {
-			max-height: 35px;
-			width: auto;
-		}
+		}	
 
 	}
 
 
+	.branding {
 
+		.branding-box {
+			height: 180px;
+			max-height: 180px;
+			margin: 15px 0 15px 0;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			width: 100%;
+			text-align: center;
+			//background-color: rgba(33, 33, 33, .3);
+			
+			.branding-img {
+				width: auto;
+				max-height: 140px;
+				//align-items: center;
+			}
+
+			.branding-text {
+				font-size: 1em;
+				text-align: center;
+				color: rgba(0, 0, 0, 0.87);
+				//color: main-color(50);
+
+				.separator {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+					margin: 0 0 15px 0;
+					width: 100%;
+				}
+
+			}
+
+		}
+
+	}
 
 
 	.bottom-image {
 	}
-
 
 }

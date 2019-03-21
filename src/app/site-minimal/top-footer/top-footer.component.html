@@ -30,45 +30,81 @@
 		</div>
 
 		<div *ngIf="isModoDOS" class="container-fluid">
-			<div id='footer' class='d-md-flex flex-row justify-content-between align-items-center'>
-				<div *ngFor='let node of nodes'>
 
-					<ng-container *ngIf='node.hasImage'>
-					<div class="image-box">
-						<ng-container *ngIf='node.navigateTo'>
-							<a routerLink='{{ node.navigateTo }}'>
-								<img class='footer-img' src='{{ node.imageUrl }}' ></a>
+			<!--  Logos branding: company && auspicios -->
+			<div *ngIf="isHomeView" class='row branding'>
+				<ng-container *ngFor='let bnode of bnodes'>
+
+					<div class="col-md-6 col-sm-12 branding-box">
+						<ng-container *ngIf='bnode.navigateTo'>
+							<a routerLink='{{ bnode.navigateTo }}'>
+								<img class='branding-img' src='{{ bnode.imageUrl }}' ></a>
 						</ng-container>
 
-						<ng-container *ngIf='node.linkTo'>
+						<ng-container *ngIf='bnode.linkTo'>
 		          <a rel="noopener noreferrer"  target="_blank" 
-		          	 title="{{node.linkTo}}" href="{{node.linkTo}}" >
-	          		<img class='footer-img' src='{{ node.imageUrl }}' ></a> 
+		          	 title="{{bnode.linkTo}}" href="{{bnode.linkTo}}" >
+	          		<img class='branding-img' src='{{ bnode.imageUrl }}' ></a> 
 						</ng-container>
 						
-						<ng-container *ngIf='node.noLink'>
-	             <img class='footer-img' src='{{ node.imageUrl }}' >
+						<ng-container *ngIf='bnode.noLink'>
+							<div class="row">
+								<div *ngIf="bnode.description" class='col-sm-12 branding-text'>
+									<p  innerHtml='{{bnode.description}}' ></p>
+								</div>
+								<div class="col-sm-12" >
+									<img class='branding-img' src='{{ bnode.imageUrl }}' >
+								</div>
+							</div>
 	           </ng-container>
-					</div>
-					</ng-container>
 
-					<div *ngIf="node.description" class='footer-text'>
-						<p  innerHtml='{{node.description}}' ></p>
 					</div>
+				</ng-container>
+			</div>
 
-				
-				</div>
-				<div id='redes'>
+			<div class='row footer'>
+
+				<div class="col-md-6 col-sm-12 social-box">
+					<div class="text-social">
 					<ng-container *ngFor='let social of socialItems'>
-				        <a mat-icon target="_blank" rel="noopener"  class="text-social" 
+				        <a class="social-token" mat-icon target="_blank" rel="noopener" 
 				            href="{{ social.url }}"  title="{{ social.title }}">
 				              <i class='{{ social.icon }}'></i></a>
 			  	</ng-container>
-			  </div>
+			  	</div>
+		  	</div>
 
+				<div class="col-md-6 col-sm-12">
+					<div class=row>
+						<ng-container *ngFor='let fnode of fnodes'>
+							<div class="col-sm-12  footer-box">
+								<ng-container *ngIf='fnode.navigateTo'>
+									<a routerLink='{{ fnode.navigateTo }}'>
+										<img class='footer-img' src='{{ fnode.imageUrl }}' ></a>
+								</ng-container>
 
+								<ng-container *ngIf='fnode.linkTo'>
+				          <a rel="noopener noreferrer"  target="_blank" 
+				          	 title="{{fnode.linkTo}}" href="{{fnode.linkTo}}" >
+			          		<img class='footer-img' src='{{ fnode.imageUrl }}' ></a> 
+								</ng-container>
+								
+								<ng-container *ngIf='fnode.noLink'>
+			             <img class='footer-img' src='{{ fnode.imageUrl }}' >
+			           </ng-container>
+
+								<ng-container *ngIf="fnode.description">
+									<p  class='footer-text' innerHtml='{{fnode.description}}' ></p>
+								</ng-container>
+							</div>
+						</ng-container>
+
+					</div>
+
+		  	</div>
 			</div>
 		</div>
+
 	</mat-card-content>
 </mat-card>
 
