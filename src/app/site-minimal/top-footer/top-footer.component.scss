@@ -17,12 +17,13 @@
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			width: 100%;
+
 
 			.text-social {
+				text-align: center;
+				
 				.social-token{
 					font-size: 3em;
-					//color: rgba(0, 0, 0, 0.87);
 					color: #0bc869;
 					margin:  0 35px 0 0;				
 				}
@@ -30,40 +31,39 @@
 
 		}
 
-
-		.footer-box {
+		.footer-row {
 			display: flex;
-			max-height: 40px;
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			width: 100%;
 
-			.footer-img {
-				max-height: 35px;
-				width: auto;
-			}
+			.footer-box {
 
-			.footer-text {
-				font-size: 0.8em;
-				color: rgba(0, 0, 0, 0.87);
-				//color: main-color(50);
+				.footer-text {
+					font-size: 0.8em;
+					color: rgba(0, 0, 0, 0.8);
+					//color: main-color(50);
 
-				.separator {
-					border-bottom: 1px solid rgba(0, 0, 0, 0.87);
-					margin: 0 0 15px 0;
-					width: 100%;
+					.separator {
+						border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+						margin: 0 0 15px 0;
+						width: 100%;
+					}
+				}
+
+				.footer-img {
+					max-height: 35px;
+					width: auto;
 				}
 			}
-
-
 		}	
-
 	}
 
 
 	.branding {
-
+		background-color: rgba(220, 220, 220, .4);
+		margin: 0 -32px 0 -32px;
+	
 		.branding-box {
 			height: 180px;
 			max-height: 180px;
@@ -75,30 +75,32 @@
 			flex-direction: column;
 			width: 100%;
 			text-align: center;
-			//background-color: rgba(33, 33, 33, .3);
-			
-			.branding-img {
-				width: auto;
-				max-height: 140px;
-				//align-items: center;
-			}
+	
+			.branding-row{
+				justify-content: center;
+				align-items: center;
 
-			.branding-text {
-				font-size: 1em;
-				text-align: center;
-				color: rgba(0, 0, 0, 0.87);
-				//color: main-color(50);
-
-				.separator {
-					border-bottom: 1px solid rgba(0, 0, 0, 0.87);
-					margin: 0 0 15px 0;
-					width: 100%;
+				.branding-img {
+					width: auto;
+					max-height: 140px;
+					//align-items: center;
+				}
+				.branding-text {
+					font-size: 1em;
+					text-align: center;
+					color: rgba(0, 0, 0, 0.87);
+					margin-bottom: 15px;
+					color: #0645f5;
+					
+					.separator {
+						border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+						margin: 0 0 15px 0;
+						width: 100%;
+					}
 				}
 
 			}
-
 		}
-
 	}
 
 

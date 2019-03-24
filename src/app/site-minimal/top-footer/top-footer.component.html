@@ -29,7 +29,7 @@
 			</div>
 		</div>
 
-		<div *ngIf="isModoDOS" class="container-fluid">
+		<div *ngIf="isModoDOS" >
 
 			<!--  Logos branding: company && auspicios -->
 			<div *ngIf="isHomeView" class='row branding'>
@@ -48,11 +48,12 @@
 						</ng-container>
 						
 						<ng-container *ngIf='bnode.noLink'>
-							<div class="row">
-								<div *ngIf="bnode.description" class='col-sm-12 branding-text'>
+							<div class="row branding-row">
+								<div *ngIf="bnode.description" 
+											class='col-md-4 col-sm-12  branding-text'>
 									<p  innerHtml='{{bnode.description}}' ></p>
 								</div>
-								<div class="col-sm-12" >
+								<div class="col-md-8 col-sm-12" >
 									<img class='branding-img' src='{{ bnode.imageUrl }}' >
 								</div>
 							</div>
@@ -74,8 +75,8 @@
 			  	</div>
 		  	</div>
 
-				<div class="col-md-6 col-sm-12">
-					<div class=row>
+				<div class="col-md-6 col-sm-12  footer-row">
+					<div class="row">
 						<ng-container *ngFor='let fnode of fnodes'>
 							<div class="col-sm-12  footer-box">
 								<ng-container *ngIf='fnode.navigateTo'>
@@ -94,7 +95,8 @@
 			           </ng-container>
 
 								<ng-container *ngIf="fnode.description">
-									<p  class='footer-text' innerHtml='{{fnode.description}}' ></p>
+									<div  class='footer-text' innerHtml='{{fnode.description}}' >
+									</div>
 								</ng-container>
 							</div>
 						</ng-container>

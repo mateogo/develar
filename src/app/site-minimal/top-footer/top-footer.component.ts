@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { RecordCard } from '../recordcard.model';
+import { RecordCard, SubCard } from '../recordcard.model';
 
 import { MainMenuItem, SocialMediaItem } from '../menu-helper';
 import { MinimalMenuService } from '../minimal-menu.service';
@@ -71,10 +71,14 @@ export class TopFooterComponent implements OnInit {
 
     this.mainMenuService.loadSocialItems(gldef.socialmedia)
 
-  	this.record.relatedcards.forEach(s => {
-      let link:string , navigate:string , noLink = true, isFooter = true, isBranding = false;
+  	this.sortProperly(this.record.relatedcards).forEach(s => {
+      let link:string , navigate:string , noLink = false, isFooter = true, isBranding = false;
 
       if(s.description === "<p><br></p>") s.description = "";
+
+      if(s.mainimage){
+        noLink = true;
+      }
 
       if(s.linkTo){
         noLink = false;
@@ -86,8 +90,7 @@ export class TopFooterComponent implements OnInit {
         }
       }
 
-      if(s.topic == BRANDING){
-        console.log('isBranding')
+      if(s.topic == BRANDING && s.cardId !== 'no-print'){
         isBranding = true;
         isFooter = false;
         this.bnodes.push({
@@ -103,8 +106,7 @@ export class TopFooterComponent implements OnInit {
         } as Footer)
 
 
-      }else if (s.topic == FOOTER){
-        console.log('isFOOTER')
+      }else if (s.topic == FOOTER && s.cardId !== 'no-print'){
         isBranding = false;
         isFooter = true;
 
@@ -122,7 +124,7 @@ export class TopFooterComponent implements OnInit {
 
 
 
-      }else{
+      } else if (s.cardId !== 'no-print') {
         this.fnodes.push({
           imageUrl: s.mainimage,
           description: s.description,
@@ -150,6 +152,21 @@ export class TopFooterComponent implements OnInit {
     }
 
   }
+
+  sortProperly(records: SubCard[]){
+    records.sort((fel, sel)=> {
+      if(!fel.cardId) fel.cardId = "zzzzzzz";
+      if(!sel.cardId) sel.cardId = "zzzzzzz";
+
+      if(fel.cardId < sel.cardId) return -1;
+      else if(fel.cardId > sel.cardId) return 1;
+      else return 0;
+    })
+    return records;
+
+
+  }
+
 
 
 }

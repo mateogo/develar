@@ -37,14 +37,14 @@
     }
 
     @media #{$min544} {
-      min-height: 350px;
+      min-height: 220px;
     }
 
     .main-text{
         text-align: center;
         color: #fff;
-        max-width: 600px;
-        font-weight: 900;
+        max-width: 800px;
+        font-weight: 700;
         font-style: italic;
 
         @media #{$max543} {
@@ -53,8 +53,8 @@
         }
 
         @media #{$min544} {
-          margin: 65px 15px 0 15px;
-          font-size: 2em;
+          margin: 15px 15px 0 15px;
+          font-size: 2.1em;
         }
 
     }
