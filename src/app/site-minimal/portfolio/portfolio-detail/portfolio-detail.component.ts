@@ -141,8 +141,8 @@ export class PortfolioDetailComponent implements OnInit {
     this.buildCarrousel(entity.viewimages);
 
     if(entity.excerpt){
-      this.showExcerpt = true;
-      this.showDescription = false;
+      this.showExcerpt = false;
+      this.showDescription = true;
       this.hasExcerpt = true;
 
     }else{
