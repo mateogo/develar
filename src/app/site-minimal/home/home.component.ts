@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
   public isFooter = true;
   public footer: RecordCard;
 
-  public isPosts = false;
+  public isPosts = true;
 
   public isPapers = false;
   public papers: RecordCard[] = [];

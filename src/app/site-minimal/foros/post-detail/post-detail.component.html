@@ -4,6 +4,8 @@
   <mat-card-content>
     <h1>{{ model.slug}}</h1>
     <h3>{{ model.topic }}</h3>
+    <h3  [innerHTML]='post_author' 
+         class="post-author text-uppercase"></h3>
 
     <div class="carrousel">
         <img class="carrousel-image" src="{{ mainImageUrl }}" >

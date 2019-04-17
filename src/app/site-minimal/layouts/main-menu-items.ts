@@ -37,12 +37,6 @@ export const UTOPIA_SOCIAL_MEDIA: SocialMediaItem[] = [
     icon: 'fab fa-twitter',
     url: 'https://twitter.com/utopiasMN' 
   },
-  {
-    title: 'Seguinos en Facebook',
-    icon: 'fab fa-facebook-f',
-    url: 'https://www.facebook.com/agustincabc',
-  },
-
  ];
 
 
@@ -299,6 +293,13 @@ export const DEFAULT: MainMenuItem[] = [
 
 
 ];
+
+
+  // {
+  //   title: 'Seguinos en Facebook',
+  //   icon: 'fab fa-facebook-f',
+  //   url: 'https://www.facebook.com/agustincabc',
+  // },
 
 //    cloud
 //    5c5aa3e11c317419f2cd8a6f: bibiana

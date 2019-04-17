@@ -959,13 +959,14 @@ export class GraphUtils {
 
 	static fetchAuthorString(list: CardGraphPerson[]):string {
 		let author = ""
+
 		list.forEach(token => {
 			if(token.predicate === "autor"){
-				if(author){
+				if(author) {
 					author = author + "; " + token.displayAs;
 
 				}else{
-					author = token.displayAs;
+					author = "Por: " + token.displayAs;
 
 				}
 			}
