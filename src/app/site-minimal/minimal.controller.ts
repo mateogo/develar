@@ -82,7 +82,9 @@ export class SiteMinimalController {
       this.userLoading = true;
       this.updateUserStatus(user);
     })
-    setTimeout(() => {if(!this.userLoading) this.onReady.next(true)}, 1000);
+    setTimeout(() => {
+      if(!this.userLoading) this.onReady.next(true)
+    }, 1000);
   }
 
 

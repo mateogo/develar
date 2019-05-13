@@ -1,0 +1,33 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+		<mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+		 	<div class="d-flex flex-row justify-content-start align-items-center flex-wrap">
+		 		<ng-container *ngFor="let token of tokens">
+		 			<turno-sector [sector]="token" 
+		 										[type]="'turnos'"
+		 										[name]="'ayudadirecta'"
+		 										(turnos$)='showTurnos($event)'></turno-sector>
+		 		</ng-container>
+			</div>
+	
+			<ng-container *ngIf="showStockTurnos">
+		 	<div class="d-flex flex-row justify-content-start align-items-center flex-wrap">
+				<ng-container *ngFor="let turno of turnos">
+					<turno-view [turno]="turno"
+						  [showToggle]='true'
+						  [card_size]="'medium'"
+						  [puesto]= "'llamado'"
+							(turnoaction$)="actionEvent($event)" ></turno-view>
+				</ng-container>
+		  </div>
+		  </ng-container> 
+	
+  	</div>
+
+  </mat-card-content>
+</mat-card>

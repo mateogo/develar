@@ -45,8 +45,45 @@ function comparePasswd (passwd, actualpasswd, cb){
  * Creación de un Schema
  */
 
+
+const oficiosSch = new mongoose.Schema({
+    tdato:         {type: String, required: true,  default: "formal"},
+    tocupacion:    {type: String, required: true,  default: "empleadx"},
+    ocupacion:     {type: String, required: true,  default: "Empleado"},
+    lugar:         {type: String, required: false,  default: ""},
+    qdiasmes:      {type: String, required: false,  default: ""},
+    remuneracion:  {type: Number, required: false,  default: ""},
+    ume_remun:     {type: String, required: false,  default: ""},
+    estado:        {type: String, required: false,  default: ""},
+    desde:         {type: String, required: false,  default: ""},
+    hasta:         {type: String, required: false,  default: ""},
+    comentario:    {type: String, required: false,  default: ""},
+});
+
+
+const familySch = new mongoose.Schema({
+    vinculo:     {type: String, required: true,  default: "pariente"},
+    nombre:      {type: String, required: true,  default: ""},
+    apellido:    {type: String, required: false, default: ""},
+    tdoc:        {type: String, required: false, default: ""},
+    ndoc:        {type: String, required: false, default: ""},
+    fenac:       {type: Number, required: false, default: 0 },
+    fenactx:     {type: String, required: false, default: ""},
+    ecivil:      {type: String, required: false, default: ""},
+    nestudios:   {type: String, required: false, default: ""},
+    tprofesion:  {type: String, required: false, default: ""},
+    ocupacion:   {type: String, required: false, default: ""},
+    tocupacion:  {type: String, required: false, default: ""},
+    ingreso:     {type: String, required: false, default: ""},
+    estado:      {type: String, required: false, default: ""},
+    desde:       {type: String, required: false, default: ""},
+    hasta:       {type: String, required: false, default: ""},
+    comentario:  {type: String, required: false, default: ""},
+});
+
 const addressSch = new mongoose.Schema({
     slug:        {type: String,  required: true,  defalut: ''},
+    estado:      {type: String,  required: false, defalut: 'activo'},
     description: {type: String,  required: false, defalut: ''},
     isDefault:   {type: Boolean, required: false, defalut: false},
     addType:     {type: String,  required: false, defalut: 'principal'},
@@ -83,6 +120,14 @@ const userSch = new mongoose.Schema({
 })
 
 
+const contactDataSch = new mongoose.Schema( {
+    tdato:       { type: String, required: true },
+    data:        { type: String, required: true },
+    type:        { type: String, required: false },
+    slug:        { type: String, required: false },
+    isPrincipal: { type: String, required: false },
+});
+
 
 const personSch = new mongoose.Schema({
     displayName:    { type: String, required: true },
@@ -99,7 +144,16 @@ const personSch = new mongoose.Schema({
     ambito:         { type: String, required: false },
     user:           { type: userSch, required: false },
     communitylist:  { type: Array,   required: false },
+    contactdata:    [ contactDataSch ],
+    oficios:        [ oficiosSch ],
+    nacionalidad:   { type: String, required: false },
+    fenac:          { type: Number, required: false },
+    fenactx:        { type: String, required: false },
+    nestudios:      { type: String, required: false },
+    ecivil:         { type: String, required: false },
     locaciones:     [ addressSch ],
+    familiares:     [ familySch ],
+
     messages:       [ notif_messageSch ],
     fichas:         [ recordCardSch ]
 });
@@ -162,6 +216,7 @@ exports.findById = function (id, errcb, cb) {
     });
 
 };
+
 
 
 function buildQuery(query){
@@ -249,7 +304,7 @@ exports.findByQuery = function (query, errcb, cb) {
  */
 exports.update = function (id, person, errcb, cb) {
 
-    Person.findByIdAndUpdate(id, person, function(err, entity) {
+    Person.findByIdAndUpdate(id, person, { new: true }, function(err, entity) {
         if (err){
             console.log('[%s]validation error as validate() argument ', whoami)
             err.itsme = whoami;
@@ -276,7 +331,7 @@ const createNewRecordcarRelation = function (person, errcb, cb){
             }else{
                 ficha.cardId = recordCard._id;
 
-                Person.findByIdAndUpdate(id, person, function(err, entity) {
+                Person.findByIdAndUpdate(id, person, { new: true }, function(err, entity) {
                     if (err){
                         console.log('[%s] person update error  in createNewRecordardRelation', whoami)
                         err.itsme = whoami;

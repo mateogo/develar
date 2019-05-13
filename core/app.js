@@ -12,6 +12,8 @@ const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
 const recordcardRoutes = require('./routes/recordcardRoutes.js');
+const serialRoutes = require('./routes/serialRoutes.js');
+const turnosRoutes = require('./routes/turnosRoutes.js');
 const antecedenteRoutes = require('./routes/antecedenteRoutes.js');
 const userRouter = require('./routes/userRouter.js');
 const parserRoutes = require('./routes/parserRoutes.js');
@@ -82,6 +84,8 @@ app.use('/api/gcse', gcseRoutes);
 app.use('/api/crawl', crawlRoutes);
 app.use('/api/recordcards', recordcardRoutes);
 app.use('/api/antecedentes', antecedenteRoutes);
+app.use('/api/seriales', serialRoutes);
+app.use('/api/turnos', turnosRoutes);
 app.use('/api/persons', personRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/assets', assetRoutes);

@@ -1,0 +1,28 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+		<mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+ 
+  		<h5>Turnos de Atención</h5>
+  		<person-fetch 
+        (person$)=personFetched($event)></person-fetch>
+
+      <ng-container *ngIf="personFound">
+
+        <h5>Seleccione el sector de atención</h5>
+        <h6>{{ currentPerson.displayName}} </h6>
+        <turno-select (turno$)="nuevoTurno($event)"></turno-select>
+      </ng-container>
+
+      <ng-container *ngIf="altaPersona">
+        <person-alta (person$)=personFetched($event)
+                     (cancel$)=cancelNewPerson($event)></person-alta>
+      </ng-container>
+
+  	</div>
+  </mat-card-content>
+</mat-card>

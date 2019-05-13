@@ -100,6 +100,31 @@ export const MAINMENUITEMS: MainMenuItem[] = [
   },
 
   {
+    title: 'Desarrollo Social',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Recepción',
+        routing: '/dsocial/gestion/recepcion'
+      },
+      {
+        title: 'Turnos ASD',
+        routing: '/dsocial/gestion/ayudadirecta'
+      },
+      {
+        title: 'Atención Social',
+        routing: '/dsocial/gestion/atencionsocial'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
     title: 'Antecedentes',
     icon: 'fa fa-user-circle',
     active: false,

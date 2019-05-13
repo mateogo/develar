@@ -4,10 +4,23 @@
  *
  *
 *************/
-const user = 'utopias';
+const user = 'modernizacion';
 
 const globals = {
 
+	modernizacion: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'develar',
+		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[develar] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		url: 'www.develar.co'
+	},
 	fundetec: {
 		logoAvatar: 'avatar-fundetec.jpg',
 		logoUser: 'avatar-u-fundetec.jpg',

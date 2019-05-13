@@ -25,6 +25,7 @@ import {	MatButtonModule,
 					MatToolbarModule
        } from '@angular/material';
 
+import {MatBadgeModule} from '@angular/material/badge';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
@@ -54,6 +55,7 @@ import {MatSortModule} from '@angular/material/sort';
 		MatExpansionModule,
 		MatToolbarModule,
 		MatTableModule,
+		MatBadgeModule,
 		MatPaginatorModule,
 		MatSortModule
 	],
@@ -83,6 +85,7 @@ import {MatSortModule} from '@angular/material/sort';
 		MatExpansionModule,
 		MatToolbarModule,
 		MatTableModule,
+		MatBadgeModule,
 		MatPaginatorModule,
 		MatSortModule
 	]

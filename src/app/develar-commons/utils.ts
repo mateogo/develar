@@ -34,6 +34,15 @@ const dateToStr = function(date) {
     return da+"/"+mo+"/"+ye;
 };
 
+const calcularEdad = function(dob: Date) { 
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms); 
+  
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
+}
+
+
+
 const parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)
 
@@ -281,6 +290,10 @@ class Devutils {
 	dateFromTx(datex){
 		return parseDateStr(datex);
 	}
+
+    edadActual(date: Date){
+        return calcularEdad(date);
+    }
 
 	txFromDate(date){
 		return dateToStr(date);

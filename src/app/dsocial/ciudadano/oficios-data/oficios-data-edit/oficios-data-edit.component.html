@@ -1,0 +1,125 @@
+<mat-card >
+  <mat-card-content>
+  <form [formGroup]="form">
+    <!--- tdato, tocupacion, ocupacion--->
+    <div class="row" >
+      
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTDato placeholder="Tipo de Ocupación"
+              [formControl]="form.controls['tdato']"
+              (selectionChange)="changeSelectionValue('tdato',fldTDato.value)" >
+            <mat-option *ngFor="let item of tiposdedatos" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTOcupacion placeholder="Tipo de Oficio/Empleo/Labor"
+              [formControl]="form.controls['tocupacion']"
+              (selectionChange)="changeSelectionValue('tocupacion',fldTOcupacion.value)" >
+            <mat-option *ngFor="let item of ocupaciones" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['ocupacion']" placeholder="Descripción" >
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!---lugar--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['lugar']" 
+          		placeholder="Lugar/ámbito de desempeño" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!---qdiasmes; remuneracion; ume_remun;--->
+    <div class="row" >
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['qdiasmes']" 
+          		placeholder="Días/mes de ocupación promedio" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['remuneracion']" 
+          		placeholder="Remuneración (importe)" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldUmeRemun placeholder="Unidad de remuneración"
+              [formControl]="form.controls['ume_remun']"
+              (selectionChange)="changeSelectionValue('ume_remun',fldUmeRemun.value)" >
+            <mat-option *ngFor="let item of umeList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+    </div>
+
+    <!---estado; desde; hasta; comentario --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstadoOcup placeholder="Estado actual ocupación"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstadoOcup.value)" >
+            <mat-option *ngFor="let item of estados" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['desde']" placeholder="Fecha inicio del vínculo" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['hasta']" placeholder="Fecha finalización" >
+        </mat-form-field>
+      </div>
+
+
+    </div>
+
+    <!--- Comentario --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['comentario']" placeholder="Observación / Comentario" >
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+      		(click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+      		(click)="onCancel()" >Cancelar</button>
+    </div>
+
+  </form>
+  </mat-card-content>
+</mat-card>

@@ -126,6 +126,22 @@ const issueRoutes: Routes = [
   }
 ];
 
+const ayudaSocialRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: './dsocial/dsocial.module#DsocialModule'
+  }
+];
+
+const dsocialRoutes: Routes = [
+  {
+    path: 'gestion',
+    component: DefaultLayoutComponent,
+    children: ayudaSocialRoutes
+  },
+];
+
+
 const adminRoutes: Routes = [
   {
     path: 'fichas',
@@ -224,6 +240,10 @@ const routes: Routes = [
   {
     path: 'seguridadvial',
     children: mainRoutes
+  },
+  {
+    path: 'dsocial',
+    children: dsocialRoutes
   },
   {
     path: 'notas',

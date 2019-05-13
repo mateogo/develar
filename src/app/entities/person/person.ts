@@ -13,6 +13,42 @@ export interface PersonTable {
 	email: string;
 };
 
+export interface UpdateItemListEvent {
+      action: string;
+      type: string;
+      items: Array<PersonContactData|Address|FamilyData|OficiosData>;
+};
+
+export interface UpdatePersonEvent {
+	action: string;
+	token: string;
+	person: Person;
+};
+
+export interface UpdateContactEvent {
+	action: string;
+	type: string;
+	token: PersonContactData;
+};
+
+export interface UpdateAddressEvent {
+      action: string;
+      type: string;
+      token: Address;
+};
+
+export interface UpdateFamilyEvent {
+      action: string;
+      type: string;
+      token: FamilyData;
+};
+
+export interface UpdateOficiosEvent {
+      action: string;
+      type: string;
+      token: OficiosData;
+};
+
 class PersonTableData implements PersonTable {
 	personType: string;
 	displayName: string;
@@ -27,6 +63,49 @@ class PersonTableData implements PersonTable {
     this.displayName = data.displayName;
     this.email = data.email;
   }  
+}
+
+export class PersonContactData {
+	tdato: string;
+	data: string;
+	type: string;
+	slug: string;
+	isPrincipal: boolean;
+}
+
+export class OficiosData {
+    tdato: string;  // empleo formal/ informal / desocupado/ changa / oficio / independiente
+    tocupacion: string; // operario / empleado/ jefe
+    ocupacion: string; // libre
+    lugar: string;
+    qdiasmes: string;
+    remuneracion: number = 0;
+    ume_remun: string;
+    estado: string;
+    desde: string;
+    hasta: string;
+    comentario: string;
+}
+
+
+export class FamilyData {
+    nombre: string;
+    apellido: string;
+    tdoc: string = 'DNI';
+    ndoc: string;
+    vinculo: string;
+    fenac: number = 0;
+    fenactx: string;
+    ecivil: string;
+    nestudios: string;
+    tprofesion: string;
+    ocupacion: string;
+    tocupacion: string;
+    ingreso: string;
+    estado: string;
+    desde: string;
+    hasta: string;
+    comentario: string;
 }
 
 
@@ -74,13 +153,21 @@ export class Person {
 		username: string;
 	}
 	communitylist: Array<string>;
+	contactdata: Array<PersonContactData>;
+    familiares: Array<FamilyData>;
+    oficios: Array<OficiosData>;
 	nombre: string;
 	apellido: string;
 	password: string;
 	tdoc: string;
 	ndoc: string;
 	tprofesion: string;
+	nestudios: string;
 	especialidad: string;
+	nacionalidad: string;
+	fenac: number;
+	fenactx: string;
+	ecivil: string;
 	ambito: string;
 	termscond: boolean;
 	estado: string;
@@ -139,51 +226,168 @@ export class RecordCardRelation {
 }
 
 export class Address {
-	slug: string = '';
-	description: string = '';
-	isDefault: boolean = false;
-	addType: string = 'principal';
-  street1: string = '';
-  street2: string = '';
-  city: string = '';
-  state: string = '';
-  statetext:string= '';
-  zip: string = '';
-  country: string = 'AR';
+    slug: string = '';
+    description: string = '';
+    isDefault: boolean = false;
+    addType: string = 'principal';
+    street1: string = '';
+    street2: string = '';
+    city: string = '';
+    state: string = '';
+    statetext:string= '';
+    zip: string = '';
+    country: string = 'AR';
+    estado: string = 'activo';
 }
 
+
+const oficios_estado: Array<any> = [
+        {val: 'activo',       label: 'Activo',       slug:'Activo' },
+        {val: 'terminado',    label: 'Terminado',    slug:'Terminado' },
+        {val: 'encurso',      label: 'En curso',     slug:'En curso' },
+        {val: 'despedido',    label: 'Despedido',    slug:'Despedido' },
+        {val: 'renunciado',   label: 'Renunciado',   slug:'Renunciado' },
+        {val: 'cierre',       label: 'Cierre',       slug:'Cierre' },
+        {val: 'otro',         label: 'Otro',         slug:'Otro' },
+];
+
+const oficios_tdato: Array<any> = [
+    {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+    {val: 'formal',       label: 'Formal' },
+    {val: 'informal',     label: 'Informal' },
+    {val: 'desocupado',   label: 'Desocupado' },
+    {val: 'changa',       label: 'Changa' },
+    {val: 'oficio',       label: 'Oficio' },
+    {val: 'otro',         label: 'Otro' },
+
+];
+
+const oficios_umeremun: Array<any> = [
+    {val: 'jornal',      label: 'Jornal' },
+    {val: 'semanal',     label: 'Semanal' },
+    {val: 'quincenal',   label: 'Quincenal' },
+    {val: 'mes',         label: 'Mensual' },
+    {val: 'anio',        label: 'Anual' },
+    {val: 'otro',        label: 'Otro' },
+
+];
+
+const oficios_tocupacion: Array<any> = [
+       {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
+        {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
+        {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
+        {val: 'profesional',     label: 'Profesional',    slug:'agronomx' },
+        {val: 'estudiante',      label: 'Estudiante',     slug:'agronomx' },
+        {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
+        {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
+        {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
+        {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
+        {val: 'docente',         label: 'Docente',        slug:'Docente' },
+        {val: 'desocupax',       label: 'Desocupado/a',    slug:'Desocupado/a' },
+        {val: 'otro',            label: 'Otra ocupación',  slug:'Otra ocupación' },
+];
+
+
+
+const profesiones: Array<any> = [
+       {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
+        {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
+        {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
+        {val: 'profesional',     label: 'Profesional',    slug:'agronomx' },
+        {val: 'estudiante',      label: 'Estudiante',     slug:'agronomx' },
+        {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
+        {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
+        {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
+        {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
+        {val: 'docente',         label: 'Docente',        slug:'Docente' },
+        {val: 'desocupax',       label: 'Desocupado/a',    slug:'Desocupado/a' },
+        {val: 'otro',            label: 'Otra ocupación',  slug:'Otra ocupación' },
+];
+
+
+const contact_tdato: Array<any> = [
+		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+		{val: 'CEL',   label: 'CEL',    slug:'CEL' },
+		{val: 'MAIL',  label: 'MAIL',   slug:'MAIL' },
+		{val: 'FAM', 	 label: 'FAM',    slug:'FAM' },
+		{val: 'CON', 	 label: 'CON',    slug:'CON' },
+		{val: 'RSOC',  label: 'RSOC',   slug:'RSOC' },
+		{val: 'TEL',   label: 'TEL',    slug:'TEL' },
+		{val: 'WEB',   label: 'WEB',    slug:'WEB' },
+];
+
+
+const vinculo_familiar: Array<any> = [
+        {val: 'no_definido',       label: 'Seleccione opción',slug:'Seleccione opción' },
+        {val: 'pareja',   label: 'Pareja',    slug:'Pareja' },
+        {val: 'esposx',   label: 'Esposo/a',  slug:'Esposo/a' },
+        {val: 'hijx',     label: 'Hijo/a',    slug:'Hijo/a' },
+        {val: 'padre',    label: 'Padre',     slug:'Padre' },
+        {val: 'madre',    label: 'Madre',     slug:'Madre' },
+        {val: 'tix',      label: 'Tío/a',     slug:'Tío/a' },
+        {val: 'hermanx',  label: 'Hermana/o', slug:'Hermana/o' },
+        {val: 'abuelx',   label: 'Abuela/o',  slug:'Abuela/o' },
+        {val: 'nietx',    label: 'Nieto/a',   slug:'Nieto/a' },
+        {val: 'sobrinx',  label: 'Sobrino/a', slug:'Sobrino/a' },
+        {val: 'pariente', label: 'Pariente',  slug:'Pariente' },
+        {val: 'otro',     label: 'Otro',      slug:'Otro' },
+];
+
+const estado_vinculo: Array<any> = [
+        {val: 'no_definido',  label: 'Seleccione opción',slug:'Seleccione opción' },
+        {val: 'activo',       label: 'Activo',         slug:'Activo' },
+        {val: 'fallecido',    label: 'Fallecido/a',    slug:'Fallecido/a' },
+        {val: 'separado',     label: 'Separado/a',     slug:'Separado/a' },
+        {val: 'abandonado',   label: 'Abandonado/a',   slug:'Abandonado/a' },
+        {val: 'otro',         label: 'Otro',           slug:'Otro' },
+];
+
+
+const contact_type: Array<any> = [
+		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+		{val: 'PER',    label: 'PER',    slug:'PER' },
+		{val: 'LAB',    label: 'LAB',   slug:'LAB' },
+		{val: 'PADRE',  label: 'PADRE',    slug:'PADRE' },
+		{val: 'MADRE',  label: 'MADRE',    slug:'MADRE' },
+		{val: 'REFS',   label: 'REFS',   slug:'REFS' },
+		{val: 'MEDICO', label: 'MEDICO',    slug:'MEDICO' },
+		{val: 'AMIGO',  label: 'AMIGO',    slug:'AMIGO' },
+];
+
+
+
 const states = [
-						{val: 'no_definido', 	  label: 'Seleccione opción', country:'Seleccione opción' },
-	          {val: "CABA",           label: 'CABA', country: 'AR'},
-	          {val: "buenosaires",    label: 'Buenos Aires',  country: 'AR'},
-						{val: "catamarca",      label: 'Catamarca',     country: 'AR'},
-						{val: "chaco",          label: 'Chaco',         country: 'AR'},
-						{val: "chubut",         label: 'Chubut',        country: 'AR'},
-						{val: "cordoba",        label: 'Córdoba',       country: 'AR'},
-						{val: "corrientes",     label: 'Corrientes',    country: 'AR'},
-						{val: "entrerios",      label: 'Entre Ríos',    country: 'AR'},
-						{val: "formosa",        label: 'Formosa',       country: 'AR'},
-						{val: "jujuy",          label: 'Jujuy',         country: 'AR'},
-						{val: "lapampa",        label: 'La Pampa',      country: 'AR'},
-						{val: "larioja",        label: 'La Rioja',      country: 'AR'},
-						{val: "mendoza",        label: 'Mendoza',       country: 'AR'},
-						{val: "misiones",       label: 'Misiones',      country: 'AR'},
-						{val: "neuquen",        label: 'Neuquén',       country: 'AR'},
-						{val: "rionegro",       label: 'Río Negro',     country: 'AR'},
-						{val: "salta",          label: 'Salta',         country: 'AR'},
-						{val: "sanjuan",        label: 'San Juan',      country: 'AR'},
-						{val: "sanluis",        label: 'San Luis',      country: 'AR'},
-						{val: "santacruz",      label: 'Santa Cruz',    country: 'AR'},
-						{val: "santafe",        label: 'Santa Fe',      country: 'AR'},
-						{val: "santiagodelestero", label: 'Santiago del Estero',  country: 'AR'},
-						{val: "tierradelfuego",  label: 'Tierra del Fuego',       country: 'AR'},
-						{val: "tucuman",         label: 'Tucumán',      country: 'AR'},
+        {val: 'no_definido', 	  label: 'Seleccione opción', country:'Seleccione opción' },
+        {val: "CABA",           label: 'CABA', country: 'AR'},
+        {val: "buenosaires",    label: 'Buenos Aires',  country: 'AR'},
+        {val: "catamarca",      label: 'Catamarca',     country: 'AR'},
+        {val: "chaco",          label: 'Chaco',         country: 'AR'},
+        {val: "chubut",         label: 'Chubut',        country: 'AR'},
+        {val: "cordoba",        label: 'Córdoba',       country: 'AR'},
+        {val: "corrientes",     label: 'Corrientes',    country: 'AR'},
+        {val: "entrerios",      label: 'Entre Ríos',    country: 'AR'},
+        {val: "formosa",        label: 'Formosa',       country: 'AR'},
+        {val: "jujuy",          label: 'Jujuy',         country: 'AR'},
+        {val: "lapampa",        label: 'La Pampa',      country: 'AR'},
+        {val: "larioja",        label: 'La Rioja',      country: 'AR'},
+        {val: "mendoza",        label: 'Mendoza',       country: 'AR'},
+        {val: "misiones",       label: 'Misiones',      country: 'AR'},
+        {val: "neuquen",        label: 'Neuquén',       country: 'AR'},
+        {val: "rionegro",       label: 'Río Negro',     country: 'AR'},
+        {val: "salta",          label: 'Salta',         country: 'AR'},
+        {val: "sanjuan",        label: 'San Juan',      country: 'AR'},
+        {val: "sanluis",        label: 'San Luis',      country: 'AR'},
+        {val: "santacruz",      label: 'Santa Cruz',    country: 'AR'},
+        {val: "santafe",        label: 'Santa Fe',      country: 'AR'},
+        {val: "santiagodelestero", label: 'Santiago del Estero',  country: 'AR'},
+        {val: "tierradelfuego",  label: 'Tierra del Fuego',       country: 'AR'},
+        {val: "tucuman",         label: 'Tucumán',      country: 'AR'},
 ];
 
 
 const dummyaddresses: Address[] = [
-      {street1: '123 Main',street2: '123 Main',  isDefault:false, addType: 'particular', slug: '', description: '',   city: 'Anywhere',  state: 'CA', statetext: 'CALIFORNIA', zip: '94801', country:''},
-      {street1: '456 Maple',street2: '456 Maple', isDefault:true, addType: 'comercial',  slug: '', description: '',   city: 'Somewhere', state: 'VA', statetext: 'VISCONSIN',  zip: '23226', country:''}
+      {street1: '123 Main',street2: '123 Main',  isDefault:false, addType: 'particular', slug: '', description: '',   city: 'Anywhere',  state: 'CA', statetext: 'CALIFORNIA', estado: 'activo', zip: '94801', country:''},
+      {street1: '456 Maple',street2: '456 Maple', isDefault:true, addType: 'comercial',  slug: '', description: '',   city: 'Somewhere', state: 'VA', statetext: 'VISCONSIN', estado: 'activo',  zip: '23226', country:''}
 ];
 
 
@@ -210,6 +414,245 @@ const countries: Array<any> = [
 		{val: 'AR', 	          label: 'Argentina ',slug:'Argentina' }
 ];
 
+const paisesOL = [
+	    {val: "no_definido", label: 'Seleccione País'},
+      {val: "AR", label:'Argentina'},
+      {val: "BO", label:'Bolivia'},
+      {val: "BR", label:'Brasil'},
+      {val: "CL", label:'Chile'},
+      {val: "CO", label:'Colombia'},
+     	{val: "CR", label:'Costa Rica'},
+      {val: "CU", label:'Cuba'},
+      {val: "EC", label:'Ecuador'},
+      {val: "GT", label:'Guatemala'},
+      {val: "GY", label:'Guayana'},
+      {val: "GF", label:'Guayana Francesa'},
+      {val: "HN", label:'Honduras'},
+      {val: "MX", label:'México'},
+      {val: "PY", label:'Paraguay'},
+      {val: "PE", label:'Perú'},
+      {val: "UY", label:'Uruguay'},
+      {val: "VE", label:'Venezuela'},
+      {val: "xx", label:'---------------'},
+      {val: "AF", label:'Afganistán'},
+      {val: "AL", label:'Albania'},
+      {val: "DE", label:'Alemania'},
+      {val: "AD", label:'Andorra'},
+      {val: "AO", label:'Angola'},
+      {val: "AI", label:'Anguilla'},
+      {val: "AQ", label:'Antártida'},
+      {val: "AG", label:'Antigua y Barbuda'},
+      {val: "AN", label:'Antillas Holandesas'},
+      {val: "SA", label:'Arabia Saudí'},
+      {val: "DZ", label:'Argelia'},
+      {val: "AM", label:'Armenia'},
+      {val: "AW", label:'Aruba'},
+      {val: "AU", label:'Australia'},
+      {val: "AT", label:'Austria'},
+      {val: "AZ", label:'Azerbaiyán'},
+      {val: "BS", label:'Bahamas'},
+      {val: "BH", label:'Bahrein'},
+      {val: "BD", label:'Bangladesh'},
+      {val: "BB", label:'Barbados'},
+      {val: "BE", label:'Bélgica'},
+      {val: "BZ", label:'Belice'},
+      {val: "BJ", label:'Benin'},
+      {val: "BM", label:'Bermudas'},
+      {val: "BY", label:'Bielorrusia'},
+      {val: "MM", label:'Birmania'},
+      {val: "BA", label:'Bosnia y Herzegovina'},
+      {val: "BW", label:'Botswana'},
+      {val: "BN", label:'Brunei'},
+      {val: "BG", label:'Bulgaria'},
+      {val: "BF", label:'Burkina Faso'},
+      {val: "BI", label:'Burundi'},
+      {val: "BT", label:'Bután'},
+      {val: "CV", label:'Cabo Verde'},
+      {val: "KH", label:'Camboya'},
+      {val: "CM", label:'Camerún'},
+      {val: "CA", label:'Canadá'},
+      {val: "TD", label:'Chad'},
+      {val: "CN", label:'China'},
+      {val: "CY", label:'Chipre'},
+      {val: "VA", label:'Ciudad del Vaticano (Santa Sede)'},
+      {val: "KM", label:'Comores'},
+      {val: "CG", label:'Congo'},
+      {val: "CD", label:'Congo, República Democrática del'},
+      {val: "KR", label:'Corea'},
+      {val: "KP", label:'Corea del Norte'},
+      {val: "CI", label:'Costa de Marfíl'},
+      {val: "HR", label:'Croacia (Hrvatska)'},
+      {val: "DK", label:'Dinamarca'},
+      {val: "DJ", label:'Djibouti'},
+      {val: "DM", label:'Dominica'},
+      {val: "EG", label:'Egipto'},
+      {val: "SV", label:'El Salvador'},
+      {val: "AE", label:'Emiratos Árabes Unidos'},
+      {val: "ER", label:'Eritrea'},
+      {val: "SI", label:'Eslovenia'},
+      {val: "ES", label:'España'},
+      {val: "US", label:'Estados Unidos'},
+      {val: "EE", label:'Estonia'},
+      {val: "ET", label:'Etiopía'},
+      {val: "FJ", label:'Fiji'},
+      {val: "PH", label:'Filipinas'},
+      {val: "FI", label:'Finlandia'},
+      {val: "FR", label:'Francia'},
+      {val: "GA", label:'Gabón'},
+      {val: "GM", label:'Gambia'},
+      {val: "GE", label:'Georgia'},
+      {val: "GH", label:'Ghana'},
+      {val: "GI", label:'Gibraltar'},
+      {val: "GD", label:'Granada'},
+      {val: "GR", label:'Grecia'},
+      {val: "GL", label:'Groenlandia'},
+      {val: "GP", label:'Guadalupe'},
+      {val: "GU", label:'Guam'},
+      {val: "GN", label:'Guinea'},
+      {val: "GQ", label:'Guinea Ecuatorial'},
+      {val: "GW", label:'Guinea-Bissau'},
+      {val: "HT", label:'Haití'},
+      {val: "HU", label:'Hungría'},
+      {val: "IN", label:'India'},
+      {val: "ID", label:'Indonesia'},
+      {val: "IQ", label:'Irak'},
+      {val: "IR", label:'Irán'},
+      {val: "IE", label:'Irlanda'},
+      {val: "BV", label:'Isla Bouvet'},
+      {val: "CX", label:'Isla de Christmas'},
+      {val: "IS", label:'Islandia'},
+      {val: "KY", label:'Islas Caimán'},
+      {val: "CK", label:'Islas Cook'},
+      {val: "CC", label:'Islas de Cocos o Keeling'},
+      {val: "FO", label:'Islas Faroe'},
+      {val: "HM", label:'Islas Heard y McDonald'},
+      {val: "FK", label:'Islas Malvinas'},
+      {val: "MP", label:'Islas Marianas del Norte'},
+      {val: "MH", label:'Islas Marshall'},
+      {val: "UM", label:'Islas menores de Estados Unidos'},
+      {val: "PW", label:'Islas Palau'},
+      {val: "SB", label:'Islas Salomón'},
+      {val: "SJ", label:'Islas Svalbard y Jan Mayen'},
+      {val: "TK", label:'Islas Tokelau'},
+      {val: "TC", label:'Islas Turks y Caicos'},
+      {val: "VI", label:'Islas Vírgenes (EE.UU.)'},
+      {val: "VG", label:'Islas Vírgenes (Reino Unido)'},
+      {val: "WF", label:'Islas Wallis y Futuna'},
+      {val: "IL", label:'Israel'},
+      {val: "IT", label:'Italia'},
+      {val: "JM", label:'Jamaica'},
+      {val: "JP", label:'Japón'},
+      {val: "JO", label:'Jordania'},
+      {val: "KZ", label:'Kazajistán'},
+      {val: "KE", label:'Kenia'},
+      {val: "KG", label:'Kirguizistán'},
+      {val: "KI", label:'Kiribati'},
+      {val: "KW", label:'Kuwait'},
+      {val: "LA", label:'Laos'},
+      {val: "LS", label:'Lesotho'},
+      {val: "LV", label:'Letonia'},
+      {val: "LB", label:'Líbano'},
+      {val: "LR", label:'Liberia'},
+      {val: "LY", label:'Libia'},
+      {val: "LI", label:'Liechtenstein'},
+      {val: "LT", label:'Lituania'},
+      {val: "LU", label:'Luxemburgo'},
+      {val: "MK", label:'Macedonia, Ex-República Yugoslava de'},
+      {val: "MG", label:'Madagascar'},
+      {val: "MY", label:'Malasia'},
+      {val: "MW", label:'Malawi'},
+      {val: "MV", label:'Maldivas'},
+      {val: "ML", label:'Malí'},
+      {val: "MT", label:'Malta'},
+      {val: "MA", label:'Marruecos'},
+      {val: "MQ", label:'Martinica'},
+      {val: "MU", label:'Mauricio'},
+      {val: "MR", label:'Mauritania'},
+      {val: "YT", label:'Mayotte'},
+      {val: "FM", label:'Micronesia'},
+      {val: "MD", label:'Moldavia'},
+      {val: "MC", label:'Mónaco'},
+      {val: "MN", label:'Mongolia'},
+      {val: "MS", label:'Montserrat'},
+      {val: "MZ", label:'Mozambique'},
+      {val: "NA", label:'Namibia'},
+      {val: "NR", label:'Nauru'},
+      {val: "NP", label:'Nepal'},
+      {val: "NI", label:'Nicaragua'},
+      {val: "NE", label:'Níger'},
+      {val: "NG", label:'Nigeria'},
+      {val: "NU", label:'Niue'},
+      {val: "NF", label:'Norfolk'},
+      {val: "NO", label:'Noruega'},
+      {val: "NC", label:'Nueva Caledonia'},
+      {val: "NZ", label:'Nueva Zelanda'},
+      {val: "OM", label:'Omán'},
+      {val: "NL", label:'Países Bajos'},
+      {val: "PA", label:'Panamá'},
+      {val: "PG", label:'Papúa Nueva Guinea'},
+      {val: "PK", label:'Paquistán'},
+      {val: "PN", label:'Pitcairn'},
+      {val: "PF", label:'Polinesia Francesa'},
+      {val: "PL", label:'Polonia'},
+      {val: "PT", label:'Portugal'},
+      {val: "PR", label:'Puerto Rico'},
+      {val: "QA", label:'Qatar'},
+      {val: "UK", label:'Reino Unido'},
+      {val: "CF", label:'República Centroafricana'},
+      {val: "CZ", label:'República Checa'},
+      {val: "ZA", label:'República de Sudáfrica'},
+      {val: "DO", label:'República Dominicana'},
+      {val: "SK", label:'República Eslovaca'},
+      {val: "RE", label:'Reunión'},
+      {val: "RW", label:'Ruanda'},
+      {val: "RO", label:'Rumania'},
+      {val: "RU", label:'Rusia'},
+      {val: "EH", label:'Sahara Occidental'},
+      {val: "KN", label:'Saint Kitts y Nevis'},
+      {val: "WS", label:'Samoa'},
+      {val: "AS", label:'Samoa Americana'},
+      {val: "SM", label:'San Marino'},
+      {val: "VC", label:'San Vicente y Granadinas'},
+      {val: "SH", label:'Santa Helena'},
+      {val: "LC", label:'Santa Lucía'},
+      {val: "ST", label:'Santo Tomé y Príncipe'},
+      {val: "SN", label:'Senegal'},
+      {val: "SC", label:'Seychelles'},
+      {val: "SL", label:'Sierra Leona'},
+      {val: "SG", label:'Singapur'},
+      {val: "SY", label:'Siria'},
+      {val: "SO", label:'Somalia'},
+      {val: "LK", label:'Sri Lanka'},
+      {val: "PM", label:'St. Pierre y Miquelon'},
+      {val: "SZ", label:'Suazilandia'},
+      {val: "SD", label:'Sudán'},
+      {val: "SE", label:'Suecia'},
+      {val: "CH", label:'Suiza'},
+      {val: "SR", label:'Surinam'},
+      {val: "TH", label:'Tailandia'},
+      {val: "TW", label:'Taiwán'},
+      {val: "TZ", label:'Tanzania'},
+      {val: "TJ", label:'Tayikistán'},
+      {val: "TF", label:'Territorios franceses del Sur'},
+      {val: "TP", label:'Timor Oriental'},
+      {val: "TG", label:'Togo'},
+      {val: "TO", label:'Tonga'},
+      {val: "TT", label:'Trinidad y Tobago'},
+      {val: "TN", label:'Túnez'},
+      {val: "TM", label:'Turkmenistán'},
+      {val: "TR", label:'Turquía'},
+      {val: "TV", label:'Tuvalu'},
+      {val: "UA", label:'Ucrania'},
+      {val: "UG", label:'Uganda'},
+      {val: "UZ", label:'Uzbekistán'},
+      {val: "VU", label:'Vanuatu'},
+      {val: "VN", label:'Vietnam'},
+      {val: "YE", label:'Yemen'},
+      {val: "YU", label:'Yugoslavia'},
+      {val: "ZM", label:'Zambia'},
+      {val: "ZW", label:'Zimbabue'},
+    ];
+
 
 const ptypes: Array<any> = [
 		{val: 'no_definido', label: 'Seleccione opción',slug:'Seleccione opción' },
@@ -232,31 +675,41 @@ const entityTableActions = [
 ]
 
 const tiposCompPersonaFisica: Array<any> = [
-		{val: 'DNI', 	     label: 'DNI',  slug:'DNI' },
-		{val: 'LE',        label: 'Libreta Enrolamiento',    slug:'Libreta Enrolam' },
-		{val: 'LC',        label: 'Libreta Cívica',    slug:'Libreta Cívica' },
-		{val: 'PAS',       label: 'Pasaporte',          slug:'Pasaporte' },
-		{val: 'CI',        label: 'Cédula de Identidad',          slug:'Cédula de Identidad' },
-		{val: 'EXT',       label: 'Extranjeros',          slug:'Extranjeros' },
+		{val: 'DNI', 	     label: 'DNI',                slug:'DNI' },
+		{val: 'LE',        label: 'LE',                 slug:'Libreta Enrolam' },
+		{val: 'LC',        label: 'LC',                 slug:'Libreta Cívica' },
+		{val: 'PROV',      label: 'PROVISORIA',         slug:'Identif Provisoria' },
+		{val: 'CUIL',      label: 'CUIL',               slug:'CUIL' },
+		{val: 'CUIT',      label: 'CUIT',               slug:'CUIT' },
+		{val: 'PAS',       label: 'PASP',               slug:'Pasaporte' },
+		{val: 'CI',        label: 'CI',                 slug:'Cédula de Identidad' },
+		{val: 'EXT',       label: 'DNI-EXT',            slug:'Extranjeros' },
+];
+
+const estadoCivil: Array<any> = [
+		{val: 'solterx', 	     label: 'Soltero/a',        slug:'Soltero/a' },
+		{val: 'casadx',        label: 'Casado/a',         slug:'Casado/a' },
+		{val: 'divorciadx',    label: 'Divorciado/a',     slug:'Divorciado/a' },
+		{val: 'conviviendx',   label: 'Conviviendo',      slug:'Conviviendo' },
+		{val: 'otra',          label: 'Otra',             slug:'Otra' },
+];
+
+const nivelEstudios: Array<any> = [
+		{val: 'primario', 	    label: 'Primario',          slug:'Primario' },
+		{val: 'secundariox',    label: 'Secundario (incompleto)',    slug:'Secundario (incompleto)' },
+		{val: 'secundario',     label: 'Secundario',        slug:'Secundario' },
+		{val: 'terciariox',     label: 'Terciario (incompleto)',     slug:'Terciario (incompleto)' },
+		{val: 'terciario',      label: 'Terciario',         slug:'Terciario' },
+		{val: 'universitariox', label: 'Universitario (incompleto)', slug:'Universitario (incompleto)' },
+		{val: 'universitario',  label: 'Universitario',     slug:'Universitario' },
+		{val: 'posgradox',      label: 'Posgrado (incompleto)',      slug:'Posgrado (incompleto)' },
+		{val: 'posgrado',       label: 'Posgrado',          slug:'Posgrado' },
+		{val: 'doctoradox',     label: 'Doctorado (incompleto)',     slug:'Doctorado (incompleto)' },
+		{val: 'doctorado',      label: 'Doctorado',         slug:'Doctorado' },
+		{val: 'otra',           label: 'Otra',              slug:'Otra' },
 ];
 
 
-
-const profesiones: Array<any> = [
-   	{val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
-		{val: 'agronomx',       label: 'Agrónoma',     slug:'Agrónoma' },
-		{val: 'antropologx',    label: 'Antropóloga',  slug:'Antropóloga' },
-		{val: 'artesanx',       label: 'Artesana',     slug:'Artesana' },
-		{val: 'biologx',        label: 'Bióloga',      slug:'Bióloga' },
-		{val: 'bioquimicx',     label: 'Bioquímica',   slug:'Bioquímica' },
-		{val: 'economista',     label: 'Economista',   slug:'Economista' },
-		{val: 'entrenadorx',    label: 'Entrenadora',  slug:'Entrenadora' },
-		{val: 'informaticx',    label: 'Informática',  slug:'Informática' },
-		{val: 'musicx',         label: 'Música',       slug:'Música' },
-		{val: 'obrerx',         label: 'Obrera',       slug:'Obrera' },
-		{val: 'soldadorx',      label: 'Soldadora',    slug:'Soldadora' },
-		{val: 'transportista',  label: 'Transportista', slug:'Transportista' },
-];
 
 
 function initNewModel(displayName:string, email:string){
@@ -264,88 +717,212 @@ function initNewModel(displayName:string, email:string){
   return entity;
 }
 
+function getLabel(item, list:Array<any>): string {
+		if(!item) return '';
+
+		let p = list.find(token => token.val === item)
+
+		if(p){
+			return p.label;
+		}
+		return ''
+	}
+
+
 
 class PersonModel {
 	constructor(){
 
 	}
-	
-  initNew(displayName:string, email:string){
-    return initNewModel(displayName, email);
-  }
 
-	get addressTypes():Array<any>{
-		return addressTypes;
-	}
+    //Oficios
+// const oficios_estado: Array<any> = [
+// const oficios_tdato: Array<any> = [
+// const oficios_tocupacion: Array<any> = [
+// const oficios_umeremun: Array<any> = [
+    // Datos de Contacto
+    get oficiosEstadoList():Array<any>{
+        return oficios_estado;
+    }
+    get oficiosTDatoList():Array<any>{
+        return oficios_tdato;
+    }
+    get oficiosUmeRemunList():Array<any>{
+        return oficios_umeremun;
+    }
+    get oficiosTOcupacionList():Array<any>{
+        return oficios_tocupacion;
+    }
 
-	initAddress(data?):Address {
-		data = data || {};
-    const address = new Address();
-    Object.assign(address, data);
-    return address;
-  }
+    getOficiosEstadoLabel(item){
+        return getLabel(item, oficios_estado);
+    }
+    getOficiosTDatoLabel(item){
+        return getLabel(item, oficios_tdato);
+    }
+    getOficiosUMELabel(item){
+        return getLabel(item, oficios_umeremun);
+    }
+    getOficiosTOcupacionLabel(item){
+        return getLabel(item, oficios_tocupacion);
+    }
 
-	initRelatedCard(data?):RecordCardRelation {
-		data = data || {};
+    // Datos de Contacto
+    get contactTipoList():Array<any>{
+    	return contact_tdato;
+    }
+
+    getContactTipoDato(item): string {
+    	return getLabel(item, contact_tdato);
+    }
+
+    get contactTypeList():Array<any>{
+    	return contact_type;
+    }
+
+    getContactType(item): string {
+    	return getLabel(item, contact_type);
+    }
+    // END Datos de Contacto
+
+
+    initNew(displayName:string, email:string){
+        return initNewModel(displayName, email);
+    }
+
+    getPersonDocum(p:Person|FamilyData):String{
+    	let ndoc = (p.tdoc ? p.tdoc + ': ' : '') + (p.ndoc ? p.ndoc : '');
+    	return ndoc ? ndoc : 'Docum no informado';
+    }
+
+
+    get addressTypes():Array<any>{
+    	return addressTypes;
+    }
+
+    initAddress(data?):Address {
+        data = data || {};
+        const address = new Address();
+        Object.assign(address, data);
+        return address;
+    }
+
+    initRelatedCard(data?):RecordCardRelation {
+    	data = data || {};
     const ficha = new RecordCardRelation(data);
     return ficha;
-  }
+    }
 
-  fetchAddrTypeLabel(value):string{
+    fetchAddrTypeLabel(value):string{
     return addressTypes.find(item => item.val === value).slug;
-  }
+    }
 
-  fetchProvinceLabel(value):string{
+    fetchProvinceLabel(value):string{
     return states.find(item => item.val === value).label;
-  }
+    }
 
 
-  get dummyaddresses():Array<any>{
-  	return dummyaddresses;
-  }
+    get dummyaddresses():Array<any>{
+    	return dummyaddresses;
+    }
 
-	get persontypes():Array<any>{
-		return ptypes;
-	}
+    get estadoCivilOL():Array<any>{
+    	return estadoCivil;
+    }
 
-	get tipoDocumPF():Array<any>{
-		return tiposCompPersonaFisica;
-	}
+    getEstadoCivilLabel(item): string {
+    	return getLabel(item, estadoCivil);
+    }
 
-	get profesiones():Array<any>{
-		return profesiones;
-	}
 
-	get countries():Array<any>{
-		return countries;
-	}
+    get persontypes():Array<any>{
+    	return ptypes;
+    }
 
-	personType(code):string {
-		if(!code) return ''
-		return ptypes.find(item => item.val === code).label;
-	}
+    getPersonDisplayName(p:Person|FamilyData):String{
+        let token = 'Sin nombre';
+        if((p as Person).displayName){
+            token = (p as Person).displayName;
+        }
 
-	get provincias():Array<any>{
-		const country = 'AR';
-		var prov:Array<any> = states.filter(item => item.country === country);
-		return  prov;
-	}
+    	if(p.nombre && p.apellido){
+    		token = p.apellido + ", " + p.nombre;
+    	}
+    	return token;
+    }
 
-  get tableActionOptions(){
-    return entityTableActions;
-  }
+    get tipoDocumPF():Array<any>{
+    	return tiposCompPersonaFisica;
+    }
 
-  buildPersonTable(elist: Array<Person>): PersonTable[]{
-    let list: Array<PersonTable>;
+    get paises(): Array<any> {
+    	return paisesOL;
+    }
 
-    list = elist.map(item => {
-      let token: PersonTable = new PersonTableData(item);
-      return token;
-    });
+    getNacionalidad(pais): string {
+    	return getLabel(pais, paisesOL);
+    }
 
-    return list;
-  }
+    get estadosVinculo(): Array<any> {
+        return estado_vinculo;
+    }
+    getEstadoVinculo(item): string {
+        return getLabel(item, estado_vinculo);       
+    }
 
+    get vinculosFamiliares(): Array<any>{
+        return vinculo_familiar;
+    }
+
+    getVinculo(item): string {
+        return getLabel(item, vinculo_familiar);       
+    }
+
+    get profesiones():Array<any>{
+    	return profesiones;
+    }
+
+    getProfesion(item): string {
+    	return getLabel(item, profesiones);
+    }
+
+    get nivelEstudios():Array<any> {
+    	return nivelEstudios;
+    }
+
+    getNivelEducativo(item):string {
+    	return getLabel(item, nivelEstudios);
+    }
+
+    get countries():Array<any>{
+    	return countries;
+    }
+
+    personType(code):string {
+    	if(!code) return ''
+    	return ptypes.find(item => item.val === code).label;
+    }
+
+    get provincias():Array<any>{
+    	const country = 'AR';
+    	var prov:Array<any> = states.filter(item => item.country === country);
+    	return  prov;
+    }
+
+    get tableActionOptions(){
+        return entityTableActions;
+    }
+
+    buildPersonTable(elist: Array<Person>): PersonTable[]{
+        let list: Array<PersonTable>;
+
+        list = elist.map(item => {
+          let token: PersonTable = new PersonTableData(item);
+          return token;
+        });
+
+        return list;
+    }
 
 }
 

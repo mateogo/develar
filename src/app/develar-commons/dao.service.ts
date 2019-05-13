@@ -50,6 +50,16 @@ export class DaoService {
 
   buildDaoData(){
     this.dao = {
+      serial:{
+        backendURL: 'api/seriales',
+        searchURL:  'api/seriales/search',
+        nextItemURL: 'api/seriales/nextitem'
+      },
+      turno:{
+        backendURL: 'api/turnos',
+        searchURL:  'api/turnos/search',
+        nextItemURL: 'api/turnos/nextitem'
+      },
       folder:{
         backendURL: 'api/folders',
         searchURL:  'api/folders/search'
@@ -190,6 +200,15 @@ export class DaoService {
       .catch(this.handleError);
   }
 
+  partialUpdate<T>(type: string, id: string, entity: any): Promise<T> {
+    let url = `${this.dao[type].backendURL}/${id}`;
+    return this.http
+      .put<T>(url, JSON.stringify(entity), {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+
   delete<T>(type:string, id: string): Promise<void>{
     let url = `${this.dao[type].backendURL}/${id}`;
   	return this.http
@@ -200,12 +219,22 @@ export class DaoService {
   }
 
   search<T>(type:string, query): Observable<T[]> {
-    let searchUrl = `${this.dao[type].searchURL}`;;
+    let searchUrl = `${this.dao[type].searchURL}`;
     let params = this.buildParams(query);
     return this.http
                .get<T[]>(searchUrl, { params })
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
+  nextSerial<T>(type:string, query): Observable<T> {
+    let searchUrl = `${this.dao[type].nextItemURL}`;
+    let params = this.buildParams(query);
+    return this.http
+               .post<T>(searchUrl, JSON.stringify(query), {headers: this.headers})
+               .pipe(
+                   catchError(this.handleObsError<T>('search'))
                  );
   }
 

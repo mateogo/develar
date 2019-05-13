@@ -37,6 +37,7 @@ var db;
 module.exports = function(settings){
 
   mongoose.Promise = BBPromise;
+  mongoose.set('useFindAndModify', false);
   console.log('Mongo Connect: [%s]', settings.dbase);
 
   mongoose.connect(settings.dbase, {
