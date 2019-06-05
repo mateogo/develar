@@ -29,7 +29,7 @@ Debatillo:
  */
 var mongoose = require('mongoose');
 var BBPromise = require('bluebird');
-var debug = require('debug')('develar:server');
+var debug = require('debug')('develar-local.co:server');
 
 var db;
 // Connect to MongoDB database

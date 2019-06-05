@@ -30,7 +30,11 @@
 		 		<oficios-panel [items]='oficiosList'
 		 							(updateItems)='updateOficiosList($event)' ></oficios-panel>
 			</div>
-
+			
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<solasis-panel [items]='asistenciasList'
+		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
+			</div>
 	
   	</div>
   </mat-card-content>

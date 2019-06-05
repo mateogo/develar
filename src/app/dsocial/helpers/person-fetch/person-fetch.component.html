@@ -12,20 +12,26 @@
 		</mat-form-field>
 
 	</div>
+<!--
 	<div class="col-sm-12 col-md-3">
 		<mat-form-field>
 			<input matInput 
 				[(ngModel)]='nDoc' placeholder="Núm documento">
 		</mat-form-field>
 	</div>
+-->
 	<div class="col-sm-12 col-md-3">
-		<persona-buscar (person$)=personFetched($event)></persona-buscar>
+		<persona-buscar (person$)=personFetched($event)
+										(searchTerms)=searchTerm($event)></persona-buscar>
 	</div>
+
+<!--
 	<div class="col-sm-12 col-md-2 person-search">
 		<button mat-flat-button color="primary"
 			(click)="fetchPerson()"
 			class="person-search-button" >Buscar</button>
 	</div>
+-->
 	<div class="col-sm-12 col-md-2 person-search">
 		<button mat-flat-button color="warning"
 			(click)="altaPerson()"

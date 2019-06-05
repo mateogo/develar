@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Person, Address, UpdateAddressEvent } from '../../../../entities/person/person';
+import { Person, Address, EncuestaAmbiental, UpdateAddressEvent, UpdateEncuestaEvent } from '../../../../entities/person/person';
 
 const UPDATE = 'update';
+const TOKEN_TYPE = 'address';
 
 @Component({
   selector: 'address-base',
@@ -14,11 +15,28 @@ export class AddressDataBaseComponent implements OnInit {
 
 	public showView = true;
 	public showEdit = false;
+
+  public encuesta: EncuestaAmbiental;
+
+  public showViewEncuesta = false;
+  public showEditEncuesta = false;
+
 	public openEditor = false;
 
   constructor() { }
 
   ngOnInit() {
+    this.encuesta = this.encuesta ? this.encuesta : new EncuestaAmbiental();
+  }
+
+  editToken(){
+    this.openEditor = !this.openEditor;
+    this.showView = !this.showView;
+    this.showEdit = !this.showEdit;
+
+    this.showViewEncuesta = false;
+    this.showEditEncuesta = false;
+
   }
 
   manageToken(event: UpdateAddressEvent){
@@ -29,20 +47,49 @@ export class AddressDataBaseComponent implements OnInit {
   	this.emitEvent(event);
   }
 
-  emitEvent(event:UpdateAddressEvent){
+  emitEvent(event: UpdateAddressEvent){
   	if(event.action === UPDATE){
   		this.updateToken.next(event);
   	}
   }
 
-	editToken(){
-		this.openEditor = !this.openEditor;
-		this.showView = !this.showView;
-		this.showEdit = !this.showEdit;
-	}
+  editEncuesta(){
+    this.openEditor = !this.openEditor;
+    this.showView = false;
+    this.showEdit = false;
+
+    this.showViewEncuesta = !this.showViewEncuesta;
+    this.showEditEncuesta = !this.showEditEncuesta;
+  }
+
+  viewEncuesta(){
+    this.openEditor = !this.openEditor;
+    this.showView = false;
+    this.showEdit = false;
+
+    this.showViewEncuesta = !this.showViewEncuesta;
+    this.showEditEncuesta = !this.showEditEncuesta;
+  }
+
+  manageEncuesta(event: UpdateEncuestaEvent ){
+    console.log('update ENCUESTA: [%s]', event.action);
+    this.openEditor = false;
+    this.showEdit = false;
+    this.showView = true;
+    this.token.encuesta = event.token;
+    
+    this.emitEvent({
+      action: event.action,
+      type: TOKEN_TYPE,
+      token: this.token
+    });
+
+    this.updateToken.next();
+
+
+
+  }
 
 	removeToken(){
 	}
-
-
 }

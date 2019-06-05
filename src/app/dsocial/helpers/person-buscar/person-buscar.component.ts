@@ -23,6 +23,7 @@ export class PersonBuscarComponent implements OnInit {
   @Input() entityName;
 
 	@Output() person$ = new EventEmitter<Person>();
+  @Output() searchTerms = new Subject<string>();
   @Output() lookUpModels = new EventEmitter<Observable<Person[]>>()
 
   public persons: Observable<Person[]>;
@@ -30,7 +31,7 @@ export class PersonBuscarComponent implements OnInit {
   public displayNameFld: string;
   public openEditor = true;
 
-  private searchTerms = new Subject<string>();
+  //private searchTerms = new Subject<string>();
 
   constructor(
        	private dsCtrl: DsocialController,

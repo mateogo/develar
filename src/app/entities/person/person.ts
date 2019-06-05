@@ -37,6 +37,12 @@ export interface UpdateAddressEvent {
       token: Address;
 };
 
+export interface UpdateEncuestaEvent {
+      action: string;
+      type: string;
+      token: EncuestaAmbiental;
+};
+
 export interface UpdateFamilyEvent {
       action: string;
       type: string;
@@ -48,6 +54,55 @@ export interface UpdateOficiosEvent {
       type: string;
       token: OficiosData;
 };
+
+export class Address {
+    slug: string = '';
+    description: string = '';
+    isDefault: boolean = false;
+    addType: string = 'principal';
+    street1: string = '';
+    street2: string = '';
+    city: string = '';
+    state: string = '';
+    statetext:string= '';
+    zip: string = '';
+    country: string = 'AR';
+    estado: string = 'activo';
+    encuesta: EncuestaAmbiental;
+}
+
+
+export class EncuestaAmbiental {
+      _id: string;
+      id_address: string;
+      id_person: string;
+      estado: string;
+      ferel: number;
+      fereltxt: string;
+      tsocial: string;
+
+      tipoviv: string;
+      matviv: string;
+      domterreno: string;
+      aniosresid: number;
+      qvivxlote: number;
+
+      techoviv: string;
+      pisoviv: string;
+      qdormitorios: number;
+      tventilacion: string;
+      tcocina: string;
+      ecocina: string;
+      tbanio: string;
+      ebanio: string;
+      tmobiliario: string;
+      emobiliario: string;
+
+      agua: string;
+      electricidad: string;
+      cloaca: string;
+      gas: string;
+}
 
 class PersonTableData implements PersonTable {
 	personType: string;
@@ -225,20 +280,83 @@ export class RecordCardRelation {
 
 }
 
-export class Address {
-    slug: string = '';
-    description: string = '';
-    isDefault: boolean = false;
-    addType: string = 'principal';
-    street1: string = '';
-    street2: string = '';
-    city: string = '';
-    state: string = '';
-    statetext:string= '';
-    zip: string = '';
-    country: string = 'AR';
-    estado: string = 'activo';
-}
+
+const estados_viv: Array<any> = [
+        {val: 'incompleto',     type:'completo',  label: 'Incompleto' },
+        {val: 'basico',         type:'completo',  label: 'Básico' },
+        {val: 'completo',       type:'completo',  label: 'Completo' },
+
+        {val: 'insuficiente',   type:'suficiente',  label: 'Insuficiente'  },
+        {val: 'suficiente',     type:'suficiente',  label: 'Suficiente'  },
+        
+        {val: 'adecuado',       type:'adecuado',  label: 'Adecuado'  },
+        {val: 'inadecuado',     type:'adecuado',  label: 'Inadecuado'  },
+        
+        {val: 'bueno',          type:'calificacion',  label: 'Bueno'  },
+        {val: 'regular',        type:'calificacion',  label: 'Regular'  },
+        {val: 'malo',           type:'calificacion',  label: 'Malo'  },
+
+
+];
+
+const tipos_viv: Array<any> = [
+        {val: 'interno',      type:'interno', label: 'interno' },
+        {val: 'externo',      type:'interno', label: 'externo' },
+
+        {val: 'cocinagas',     type:'cocina',  label: 'A gas'  },
+        {val: 'cocinaelec',    type:'cocina',  label: 'Eléctrica' },
+        {val: 'anafe',         type:'cocina',  label: 'Anafe'  },
+        
+
+        {val: 'insuficiente', type:'suficiente',  label: 'Insuficiente'  },
+        {val: 'basico',       type:'suficiente',  label: 'Básico' },
+        {val: 'suficiente',   type:'suficiente',  label: 'Suficiente'  },
+        
+        {val: 'propio',       type:'terreno', label: 'Propio' },
+        {val: 'alquilado',    type:'terreno', label: 'Alquilado' },
+        {val: 'cedido',       type:'terreno', label: 'Cedido' },
+        {val: 'sindocum',     type:'terreno', label: 'SinDocum' },
+        {val: 'credhipo',     type:'terreno', label: 'Crédito Hipot' },
+
+        {val: 'casa',         type:'tvivienda', label: 'Casa' }, 
+        {val: 'depto',        type:'tvivienda', label: 'Departamento' },
+        {val: 'casilla',      type:'tvivienda', label: 'Casilla' },
+        {val: 'otro',         type:'tvivienda', label: 'Otro' },
+
+        {val: 'chapa',        type:'mvivienda', label: 'Chapa' },
+        {val: 'ladrillo',     type:'mvivienda', label: 'Ladrillo' },
+        {val: 'madera',       type:'mvivienda', label: 'Madera' },
+        {val: 'otro',         type:'mvivienda', label: 'Otro' },
+
+        {val: 'mampos',       type:'techo', label: 'mampos' },
+        {val: 'chapa',        type:'techo', label: 'chapa' },
+        {val: 'madera',       type:'techo', label: 'madera' },
+        {val: 'tejas',        type:'techo', label: 'tejas' },
+        {val: 'otro',         type:'techo', label: 'otro' },
+
+        {val: 'mosaico',      type:'piso', label: 'mosaico' },
+        {val: 'cemento',      type:'piso', label: 'cemento' },
+        {val: 'ladrillo',     type:'piso', label: 'ladrillo' },
+        {val: 'tierra',       type:'piso', label: 'tierra' },
+        {val: 'otro',         type:'piso', label: 'otro' },
+
+        {val: 'red',          type:'agua', label: 'red' },
+        {val: 'pozo',         type:'agua', label: 'pozo' },
+        {val: 'otro',         type:'agua', label: 'otro' },
+
+        {val: 'red',          type:'electricidad', label: 'red' },
+        {val: 'colgado',      type:'electricidad', label: 'colgado' },
+        {val: 'otro',         type:'electricidad', label: 'otro' },
+
+        {val: 'cloaca',       type:'cloaca', label: 'cloaca' },
+        {val: 'pozociego',    type:'cloaca', label: 'pozociego' },
+        {val: 'otro',         type:'cloaca', label: 'otro' },
+
+        {val: 'red',          type:'gas', label: 'red' },
+        {val: 'envasado',     type:'gas', label: 'envasado' },
+        {val: 'otro',         type:'gas', label: 'otro' },
+
+];
 
 
 const oficios_estado: Array<any> = [
@@ -382,12 +500,6 @@ const states = [
         {val: "santiagodelestero", label: 'Santiago del Estero',  country: 'AR'},
         {val: "tierradelfuego",  label: 'Tierra del Fuego',       country: 'AR'},
         {val: "tucuman",         label: 'Tucumán',      country: 'AR'},
-];
-
-
-const dummyaddresses: Address[] = [
-      {street1: '123 Main',street2: '123 Main',  isDefault:false, addType: 'particular', slug: '', description: '',   city: 'Anywhere',  state: 'CA', statetext: 'CALIFORNIA', estado: 'activo', zip: '94801', country:''},
-      {street1: '456 Maple',street2: '456 Maple', isDefault:true, addType: 'comercial',  slug: '', description: '',   city: 'Somewhere', state: 'VA', statetext: 'VISCONSIN', estado: 'activo',  zip: '23226', country:''}
 ];
 
 
@@ -754,6 +866,24 @@ class PersonModel {
         return oficios_tocupacion;
     }
 
+    getEstadosVivienda(token):Array<any>{
+      let arr = estados_viv.filter(t => token === t.type );
+      return arr;
+    }
+    getEstadoVivLabel(item, token):string {      
+      return getLabel(item, estados_viv.filter(t => token === t.type ));
+    }
+
+    getTiposVivienda(token):Array<any>{
+      let arr = tipos_viv.filter(t => token === t.type );
+      return arr;
+    }
+    getTiposVivLabel(item, token):string {      
+      return getLabel(item, tipos_viv.filter(t => token === t.type ));
+    }
+
+
+
     getOficiosEstadoLabel(item){
         return getLabel(item, oficios_estado);
     }
@@ -790,7 +920,7 @@ class PersonModel {
         return initNewModel(displayName, email);
     }
 
-    getPersonDocum(p:Person|FamilyData):String{
+    getPersonDocum(p:Person|FamilyData):string{
     	let ndoc = (p.tdoc ? p.tdoc + ': ' : '') + (p.ndoc ? p.ndoc : '');
     	return ndoc ? ndoc : 'Docum no informado';
     }
@@ -821,11 +951,6 @@ class PersonModel {
     return states.find(item => item.val === value).label;
     }
 
-
-    get dummyaddresses():Array<any>{
-    	return dummyaddresses;
-    }
-
     get estadoCivilOL():Array<any>{
     	return estadoCivil;
     }
@@ -839,16 +964,16 @@ class PersonModel {
     	return ptypes;
     }
 
-    getPersonDisplayName(p:Person|FamilyData):String{
-        let token = 'Sin nombre';
-        if((p as Person).displayName){
-            token = (p as Person).displayName;
-        }
+    getPersonDisplayName(p:Person|FamilyData):string{
+      let token = 'Sin nombre';
+      if((p as Person).displayName){
+        token = (p as Person).displayName;
+      }
 
-    	if(p.nombre && p.apellido){
-    		token = p.apellido + ", " + p.nombre;
-    	}
-    	return token;
+      if(p.nombre && p.apellido){
+        token = p.apellido + ", " + p.nombre;
+      }
+      return token;
     }
 
     get tipoDocumPF():Array<any>{

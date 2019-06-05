@@ -10,21 +10,22 @@ export interface Ciudadano {
 }
 
 export interface SectorAtencion {
+	val: string;
 	serial: string;
 	label: string;
 	style: object;
 }
 
 export const sectores: SectorAtencion[] = [
-			{serial:'regionvi',    label: 'Región VI',         style: {'background-color': "#f2aded"}},
-			{serial:'materiales',  label: 'Discapacidad',      style: {'background-color': "#f2bded"}}, 
-			{serial:'masvida',     label: 'MasVida',           style: {'background-color': "#f2cded"}},
-			{serial:'alimentos',   label: 'Alimentos',         style: {'background-color': "#f2cded"}},
-			{serial:'tsocial',     label: 'Trabajador Social', style: {'background-color': "#f2cded"}},
-			{serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
-			{serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
-			{serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
-			{serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}}
+			{val:'regionvi',    serial:'regionvi',    label: 'Región VI',         style: {'background-color': "#f2aded"}},
+			{val:'discapacidad',serial:'discapacidad',label: 'Discapacidad',      style: {'background-color': "#f2bded"}}, 
+			{val:'masvida',     serial:'masvida',     label: 'MasVida',           style: {'background-color': "#f2cded"}},
+			{val:'alimentos',   serial:'alimentos',   label: 'Alimentos',         style: {'background-color': "#f2cded"}},
+			{val:'tsocial',     serial:'tsocial',     label: 'Trabajador Social', style: {'background-color': "#f2cded"}},
+			{val:'nutricion',   serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
+			{val:'inhumacion',  serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
+			{val:'terceraedad', serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
+			{val:'pensiones',   serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}}
 	];
 
 
@@ -95,6 +96,56 @@ export class DsocialModel {
 		serial.slug = 'Turnos en atención al público en Desarrollo Social';
 		serial.compPrefix = 'TUR';
 		serial.compName = 'T/Mostrador';
+		serial.showAnio = false;
+		serial.resetDay = true;
+		serial.fe_ult = 0;
+
+		return serial;
+	}
+
+	static asistenciaSerial(type, name, sector){
+		let serial = new Serial();
+		serial.type = type; // asistencia
+		serial.name = name; // solicitud
+		serial.tserial = 'sasistencia';
+		serial.sector = sector; // materiales; alimentos; nutricion; etc;
+		serial.tdoc = 'solicitud';
+		serial.letra = 'X';
+		serial.anio = 0;
+		serial.mes = 0;
+		serial.dia = 0;
+		serial.estado = 'activo';
+		serial.punto = 0;
+		serial.pnumero = 10000;
+		serial.offset = 0;
+		serial.slug = 'Solicitudes de asistencia en Desarrollo Social';
+		serial.compPrefix = 'SOL';
+		serial.compName = 'S/Asistencia';
+		serial.showAnio = false;
+		serial.resetDay = true;
+		serial.fe_ult = 0;
+
+		return serial;
+	}
+
+	static remitoalmacenSerial(type, name, sector){
+		let serial = new Serial();
+		serial.type = type; // remitoalmacen
+		serial.name = name; // ayudadirecta
+		serial.tserial = 'remitoalmacen';
+		serial.sector = sector; // materiales; alimentos; nutricion; etc;
+		serial.tdoc = 'remito';
+		serial.letra = 'X';
+		serial.anio = 0;
+		serial.mes = 0;
+		serial.dia = 0;
+		serial.estado = 'activo';
+		serial.punto = 0;
+		serial.pnumero = 10000;
+		serial.offset = 0;
+		serial.slug = 'Vales de entrega Almacén';
+		serial.compPrefix = 'REM';
+		serial.compName = 'R/Entrega';
 		serial.showAnio = false;
 		serial.resetDay = true;
 		serial.fe_ult = 0;

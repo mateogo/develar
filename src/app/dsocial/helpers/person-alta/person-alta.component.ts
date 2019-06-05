@@ -1,6 +1,9 @@
 import { Component, OnInit,Output, Input, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+
+import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Person, personModel } from '../../../entities/person/person';
 import { User } from '../../../entities/user/user';
 import { DsocialController } from '../../dsocial.controller';
@@ -35,6 +38,7 @@ export class PersonAltaComponent implements OnInit {
     public currentUser: User;
     public communityId = '';
 
+
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -51,21 +55,23 @@ export class PersonAltaComponent implements OnInit {
         this.form = this.fb.group({
             personType: [null, Validators.compose([Validators.required])],
             nombre: [null, Validators.compose([Validators.required])],
-            apellido: [null, Validators.compose([Validators.required])],
+            apellido: [null, Validators.compose( [Validators.required])],
             tdoc: [null],
-            ndoc: [null],
+            ndoc: [null, [Validators.required], [this.emailValidator(this.dsCtrl)] ],
         });
 
         this.resetForm(this.model);
     }
 
     onSubmit() {
-        console.log('AIJUNAAAAAA')
         this.model = initForSave(this.form, this.model, this.currentUser);
-        this.dsCtrl.createPerson(this.model)
-            .then(person => {
-                this.person$.emit(person);
-            });
+
+        console.log('OnSubmitTestPersonByDNI')
+
+        this.dsCtrl.createPerson(this.model).then(person => {
+            this.person$.emit(person);
+        });
+
     }
 
     cancel(){
@@ -100,5 +106,25 @@ export class PersonAltaComponent implements OnInit {
     changePersonType() {
     }
 
+    public hasError = (controlName: string, errorName: string) =>{
+        console.log('hasError [%s] [%s]', controlName, errorName);
+        console.log(this.form.controls[controlName].hasError(errorName) )
+        return this.form.controls[controlName].hasError(errorName);
+    }
 
+    emailValidator(service: DsocialController): AsyncValidatorFn {
+        return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            const value = control.value
+
+            return service.testPersonByDNI('DNI',value).pipe(
+                map(t => {
+                    console.log('mapping: [%s]', t && t.length);
+                    return t && t.length>0 ? { 'mailerror': 'email con problemas' }: null;
+                })
+
+             )
+
+        }) ;
+     } ;
+    
 }

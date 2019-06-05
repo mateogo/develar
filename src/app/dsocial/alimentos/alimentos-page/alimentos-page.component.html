@@ -1,0 +1,41 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+		<mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+			<div 	*ngIf="hasCurrentPerson" >
+				<core-base [person]='currentPerson'
+									(updatePerson)='updateCore($event)' ></core-base>
+			</div>
+
+			<ng-container 	*ngIf="hasCurrentPerson" >
+				<solicitudes-panel [items]='asistenciasList'
+						(updateItem)='asistenciaSelected($event)' ></solicitudes-panel>
+			</ng-container>
+
+
+
+			<ng-container 	*ngIf="emitRemito" >
+				<remitoalmacen-page [asistencia]='currentAsistencia' [remito]='remitoalmacen'
+						(updateRemito)='createRemito($event)' ></remitoalmacen-page>
+			</ng-container>
+
+  	</div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card">
+  <mat-card-content *ngIf="showHistorial" >
+		<div class="d-flex justify-content-between panel-header">
+			<div class="panel-header-text">{{ titleRemitos }}</div>
+		</div>
+
+
+		<ng-container *ngFor="let remito of remitosList" >
+			<remitoalmacen-view [token]='remito' ></remitoalmacen-view>
+		</ng-container>
+	</mat-card-content>
+</mat-card>

@@ -15,6 +15,8 @@ export class PersonFetchComponent implements OnInit {
 
   public tDoc = "DNI";
   public nDoc = "";
+  public searchToken;
+
   public datosDocumento = {};
 	public tcompPersonaFisica:Array<any> = personModel.tipoDocumPF;
 
@@ -47,16 +49,19 @@ export class PersonFetchComponent implements OnInit {
   }
 
   altaPerson(){
-    console.log('altapersona embebida')
     this.datosDocumento['tdoc'] = this.tDoc;
-    this.datosDocumento['ndoc'] = this.nDoc;
+    this.datosDocumento['ndoc'] = this.searchToken;
 
     this.altaPersona = true;
 
   }
 
+  searchTerm(event){
+    this.searchToken = event;
+
+  }
+
   personFetched(person:Person){
-    console.log('alta persona embebidaOK');
     this.currentPerson = person;
     this.person$.emit([this.currentPerson]);
     this.altaPersona = false;

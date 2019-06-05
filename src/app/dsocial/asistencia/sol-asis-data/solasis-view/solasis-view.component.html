@@ -1,0 +1,10 @@
+<p class='text-destacado'>{{ cName }}:{{ cNum }} - Emisión: {{ fecha }}   {{ avance }}  </p>
+<p class='text-normal'>{{ cPrefix }}::{{ action }} -- Solicita: {{slug}} </p>
+<p class='text-normal'>{{description}} </p>
+<hr>
+<ng-container *ngIf='isAlimentos'>
+	<p class='text-normal'><strong>Tipo de Alimento </strong>
+			- {{ type }}: Frecuencia: {{ freq }} - Cantidad unidades:  {{ qty }} </p>
+	<p class='text-normal'>Período convenido: Desde: {{ fechad }} Hasta: {{ fechah }}</p>
+	<p class='text-normal'>{{observacion}} </p>
+</ng-container>

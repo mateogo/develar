@@ -4,7 +4,7 @@
  *  Use:
  *     Exporta un objeto con las configuraciones basicas para devel, test, production
  */
-const debug = require('debug')('develar:server');
+const debug = require('debug')('develar-local.co:server');
 
 
 const path = require('path');
@@ -15,7 +15,7 @@ const environment = global.environment || process.env.NODE_ENV || 'development';
 
 const PORT = normalizePort(process.env.PORT || '8080');
 const DBASE = process.env.DBASE || 'develar';
-const SERVER = process.env.SERVER || 'http://develar.co';
+const SERVER = process.env.SERVER || 'http://develar-local.co';
 const FAVICON = process.env.FAVICON || 'favicon.ico';
 const PUBLIC = process.env.PUBLIC || '/public';
 
@@ -26,7 +26,7 @@ const storagePath = path.join(publicPath, STORAGE);
 const app_file =  path.join(rootPath, '/core/app');
 
 const DEV_SERVER = 'http://develar-local.co:4200';
-const QA_SERVER = 'http://develar-local.co:4200';
+const QA_SERVER =  'http://develar-local.co:4200';
 
 const MONGOSRV = 'mongodb://localhost/';
 const GOOGLE_LOGIN_RETURN = '/api/users/login/google/return'

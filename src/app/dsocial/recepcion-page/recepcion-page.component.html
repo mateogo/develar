@@ -14,13 +14,9 @@
       <ng-container *ngIf="personFound">
 
         <h5>Seleccione el sector de atención</h5>
-        <h6>{{ currentPerson.displayName}} </h6>
+        <h4>{{ displayName }} </h4>
+        <h6>{{ displayDoc }} </h6>
         <turno-select (turno$)="nuevoTurno($event)"></turno-select>
-      </ng-container>
-
-      <ng-container *ngIf="altaPersona">
-        <person-alta (person$)=personFetched($event)
-                     (cancel$)=cancelNewPerson($event)></person-alta>
       </ng-container>
 
   	</div>

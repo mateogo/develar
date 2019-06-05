@@ -299,6 +299,10 @@ class Devutils {
 		return dateToStr(date);
 	}
 
+    txNormalize(datex: string){
+        return this.txFromDate(this.dateFromTx(datex))
+    }
+
 }
 
 export const devutils = new Devutils();

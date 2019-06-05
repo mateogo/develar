@@ -79,6 +79,7 @@ const tserialConfig = [
     },
 
 ]
+// uso serialTypeConfit[type]
 const serialTypeConfig = {
   turnos: {
     name: ['ayudadirecta'],
@@ -114,21 +115,38 @@ const serialTypeConfig = {
     slug: 'serial para asignar un número de documento provisorio en la atención al público',
   },
 
-  voucher: {
+  asistencia: {
+    name: ['asistencia'],
+    tserial: ['sasistencia'],
+    sector: ['dsocial'],
+    tdoc: ['solicitud'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'SOL',
+    compName: 'S/Asistencia',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'serial para numerar las solicitudes de asistencia de Desarrollo social',
+  },
+
+  remitoalmacen: {
     name: ['ayudadirecta'],
-    tserial: ['turnodiario'],
+    tserial: ['remitoalmacen'],
     sector: ['regionvi', 'materiales', 'masvida', 'alimentos', 'tsocial', 'nutricion', 'inhumacion', 'terceraedad', 'pensiones' ],
     tdoc: ['turno'],
     letra: ['X'],
     punto: 0,
     pnumero: 1,
-    offset: 0,
-    compPrefix: 'TUR',
-    compName: 'Turno Mostrador',
+    offset: 10000,
+    compPrefix: 'REM',
+    compName: 'R/Entrega',
     showAnio: false,
     resetDay: true,
-    createOnTheFly: false,
-    slug: 'serial de turnos mostrador de atencion en sede de Desarrollo Social',
+    createOnTheFly: true,
+    slug: 'Serial de vales de entrega almacen DSocial',
   }
 
 }
@@ -160,8 +178,6 @@ function buildQuery(query){
   let date = new Date();
   let anio = date.getFullYear();
 
-
-
     let q = {};
     if(query['type']){
         q["type"] = query['type'];
@@ -174,7 +190,6 @@ function buildQuery(query){
     if(query['sector']){
         q["sector"] = query['sector'];
     }
-
 
     if(query['tserial']){
         q["tserial"] = query['tserial'];
@@ -208,8 +223,6 @@ function buildQuery(query){
         q["estado"] = 'activo';
     }
 
-
-
     return q;
 }
 
@@ -237,7 +250,7 @@ exports.upsertNext = function (query, errcb, cb) {
 
     Record.find(regexQuery, function(err, entities) {
         if (err) {
-            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            console.log('[%s] upsertNext ERROR: [%s]', whoami, err)
             errcb(err);
         }else{
           if(!entities || entities.length === 0 ){
@@ -279,6 +292,7 @@ function createNewSerial(query, regexQuery, errcb, cb){
   });
 }
 
+
 function initNewSerial(query, regexQuery){
   let baseData = serialTypeConfig[query.type]|| {};
   if(!baseData.letra) baseData.letra = ['X'];
@@ -291,12 +305,12 @@ function initNewSerial(query, regexQuery){
   serial.tserial = query.tserial;
   serial.sector = query.sector;
   serial.tdoc = query.tdoc;
-  serial.letra = query.letra || baseData.letra
+  serial.letra = query.letra || baseData.letra[0];
   serial.punto = parseInt(query.punto || '0', 10) || baseData.punto || 0;
-  serial.pnumero = 1;
+  serial.pnumero = baseData.pnumero;
   serial.offset = baseData.offset || 0;
-  serial.compPrefix = baseData.compPrefix || 'COMP';
-  serial.compName =  baseData.compName || 'Comprobante';
+  serial.compPrefix = query.compPrefix ||  baseData.compPrefix || 'COMP';
+  serial.compName = query.compName ||  baseData.compName || 'Comprobante';
   serial.showAnio =  baseData.showAnio || false;
   serial.resetDay = baseData.resetDay || false;
   serial.createOnTheFly =  baseData.createOnTheFly || false;
@@ -304,7 +318,7 @@ function initNewSerial(query, regexQuery){
   serial.mes = currentDate.getMonth();
   serial.dia = currentDate.getDate();
   serial.estado = 'activo';
-  serial.slug = baseData.slug || '';
+  serial.slug = query.slug ||baseData.slug || '';
   serial.fe_ult = currentDate.getTime();
   return serial;
 }

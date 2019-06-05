@@ -1,0 +1,25 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+
+  		<ng-container *ngIf="showView">
+		 	<div class="row">
+		 		<div class="col-md-3">
+		 			<ng-container *ngIf="isAlimento">
+					<a class="edit-control" role="button"
+						(click)='generarVoucher($event)' title="generar voucher de alimentos">Voucher alimentos 
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></a>
+
+					</ng-container>
+		 		</div>
+
+		 		<div class="col-md-9">
+		 			<solasis-view [token]='token'></solasis-view>
+		 		</div>
+			
+			</div>
+		  </ng-container>
+	
+	
+  </mat-card-content>
+</mat-card>

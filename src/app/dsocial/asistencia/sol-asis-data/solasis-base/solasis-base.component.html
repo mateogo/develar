@@ -1,0 +1,50 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+
+  		<ng-container *ngIf="showView">
+		 	<div class="row">
+		 		
+		 		<div class="col-md-1">
+		 			<div>
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+
+					<span class="edit-control"
+						(click)='editAlimento()' title="Editar modalidad">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+					</div>
+		 		</div>
+
+		 		<div class="col-md-11">
+		 			<solasis-view [token]='token'></solasis-view>
+
+		  		<ng-container *ngIf="showEdit">
+				 	<div class="row">
+				 		<div class="col-sm-12 col-md-12">
+				 			<solasis-edit [token]='token'
+				 								(updateToken)='manageToken($event)' ></solasis-edit>
+				 		</div>
+					</div>
+				  </ng-container>
+		  		
+		 		  <ng-container *ngIf="showEditAlimento">
+				 	<div class="row">
+				 		<div class="col-sm-12 col-md-12">
+				 			<alimentos-edit [token]='alimento'
+				 								(updateToken)='manageAlimento($event)' ></alimentos-edit>
+				 		</div>
+					</div>
+				  </ng-container>
+
+
+
+		 		</div>
+			</div>
+		  </ng-container>
+	
+	
+  </mat-card-content>
+</mat-card>

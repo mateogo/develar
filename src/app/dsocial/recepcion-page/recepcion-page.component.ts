@@ -22,6 +22,8 @@ export class RecepcionPageComponent implements OnInit {
 
   public tDoc = "DNI";
   public nDoc = "";
+  public displayName = "";
+  public displayDoc = "";
 
   public currentPerson: Person;
   public personFound = false;
@@ -64,14 +66,27 @@ export class RecepcionPageComponent implements OnInit {
   personFetched(persons: Person[]){
     console.log('Bubbled')
     if(persons.length){
-      this.personFound = true;
-      this.altaPersona = false;
       this.currentPerson = persons[0];
 
+      this.initPersonDataForDisplay(this.currentPerson)
+
+      this.personFound = true;
+      this.altaPersona = false;
+
     }else{
-      this.altaPersona = true;
+      this.altaPersona = false;
       this.personFound = false;
     }
+  }
+
+  initPersonDataForDisplay(p: Person){
+
+    if(p.nombre || p.apellido){
+      this.displayName = personModel.getPersonDisplayName(p)
+      this.displayDoc = personModel.getPersonDocum(p);
+
+    }
+
   }
 
   cancelNewPerson(){

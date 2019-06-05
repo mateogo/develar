@@ -81,6 +81,35 @@ const familySch = new mongoose.Schema({
     comentario:  {type: String, required: false, default: ""},
 });
 
+
+const encuestaSch = new mongoose.Schema({
+    id_address:   {type: String, required: false, default: ''},
+    id_person:    {type: String, required: false, default: ''},
+    estado:       {type: String, required: false, default: 'activo'},
+    ferel:        {type: String, required: false, default: ''},
+    fereltxt:     {type: String, required: false, default: ''},
+    tsocial:      {type: String, required: false, default: ''},
+    tipoviv:      {type: String, required: false, default: ''},
+    domterreno:   {type: String, required: false, default: ''},
+    aniosresid:   {type: Number, required: false, default: 0 },
+    qvivxlote:    {type: Number, required: false, default: 0 },
+    matviv:       {type: String, required: false, default: ''},
+    techoviv:     {type: String, required: false, default: ''},
+    pisoviv:      {type: String, required: false, default: ''},
+    qdormitorios: {type: Number, required: false, default: 1 },
+    tventilacion: {type: String, required: false, default: ''},
+    tcocina:      {type: String, required: false, default: ''},
+    ecocina:      {type: String, required: false, default: ''},
+    tbanio:       {type: String, required: false, default: ''},
+    ebanio:       {type: String, required: false, default: ''},
+    tmobiliario:  {type: String, required: false, default: ''},
+    emobiliario:  {type: String, required: false, default: ''},
+    agua:         {type: String, required: false, default: ''},
+    electricidad: {type: String, required: false, default: ''},
+    cloaca:       {type: String, required: false, default: ''},
+    gas:          {type: String, required: false, default: ''},
+});
+
 const addressSch = new mongoose.Schema({
     slug:        {type: String,  required: true,  defalut: ''},
     estado:      {type: String,  required: false, defalut: 'activo'},
@@ -93,6 +122,7 @@ const addressSch = new mongoose.Schema({
     state:       {type: String,  required: false, defalut: ''},
     statetext:   {type: String,  required: false, defalut: ''},
     zip:         {type: String,  required: false, defalut: ''},
+    encuesta:    {type: encuestaSch, required: false},
     country:     {type: String,  required: false, defalut: 'AR'},
     lat:         {type: Number,  required: false, defalut: -34.59},
     lng:         {type: Number,  required: false, defalut: -58.41}

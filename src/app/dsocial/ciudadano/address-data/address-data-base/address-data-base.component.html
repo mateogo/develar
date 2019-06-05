@@ -9,6 +9,18 @@
 						(click)='editToken()' title="Editar datos">
 						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></span>
+
+					<span class="edit-control"
+						(click)='editEncuesta()' title="Editar Encuesta vivienda">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+
+					<span class="edit-control"
+						(click)='viewEncuesta()' title="Ver Encuesta vivienda">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+
+
 					</div>
 		 		</div>
 
@@ -16,7 +28,7 @@
 		 			<address-view [token]='token'></address-view>
 		 		</div>
 			</div>
-		 </ng-container>
+		  </ng-container>
 	
   		<ng-container *ngIf="showEdit">
 		 	<div class="row">
@@ -25,7 +37,24 @@
 		 								(updateToken)='manageToken($event)' ></address-edit>
 		 		</div>
 			</div>
-		 </ng-container>
+		  </ng-container>
+  		
+  		<ng-container *ngIf="showViewEncuesta">
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+		 			<encuesta-view [token]='encuesta' ></encuesta-view>
+		 		</div>
+			</div>
+		  </ng-container>
+
+ 		  <ng-container *ngIf="showEditEncuesta">
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+		 			<encuesta-edit [token]='encuesta'
+		 								(updateToken)='manageEncuesta($event)' ></encuesta-edit>
+		 		</div>
+			</div>
+		  </ng-container>
 	
   </mat-card-content>
 </mat-card>

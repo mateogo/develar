@@ -6,7 +6,6 @@ import { CustomValidators } from 'ng2-validation';
 import { Person, Address, personModel} from './../person';
 import { PersonService} from './../person.service';
 import { devutils }from '../../../develar-commons/utils'
-//, states, dummyaddresses, addressTypes, countries 
 
 const LIST = '../'
 
@@ -15,8 +14,7 @@ function initForSave(form: FormGroup, model: Person): Person {
   const locacionesDeepCopy: Address[] = fvalue.guaridas.map(
       (address: Address) => Object.assign({}, address)
     );
-  //const entity = new Person(model.displayName);
-  //Object.assign(entity, model);
+
   const entity = model; 
   entity.displayName = fvalue.displayName;
   entity.email = fvalue.email;
@@ -110,7 +108,6 @@ export class PersonEditComponent implements OnInit {
       .then(entity =>{
         // OjO Trucho
         if(!entity) console.log('ver qué hacer: NO EXISTE EL USER');
-        //if(!entity.locaciones || !entity.locaciones.length) entity.locaciones = dummyaddresses;
          
         this.model = entity;
 

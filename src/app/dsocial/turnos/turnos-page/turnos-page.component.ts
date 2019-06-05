@@ -91,7 +91,7 @@ export class TurnosPageComponent implements OnInit {
 
       this.dsCtrl.fetchPersonById(personId).then(p => {
         this.dsCtrl.updateCurrentPerson(p);
-        this.router.navigate(['../', this.dsCtrl.atencionRoute(), personId], {relativeTo: this.route});
+        this.router.navigate(['../', this.dsCtrl.atencionRoute(taction.turno.sector), personId], {relativeTo: this.route});
       })
     }
   }

@@ -60,6 +60,16 @@ export class DaoService {
         searchURL:  'api/turnos/search',
         nextItemURL: 'api/turnos/nextitem'
       },
+      asistencia:{
+        backendURL: 'api/asistencias',
+        searchURL:  'api/asistencias/search',
+        nextItemURL: 'api/asistencias/nextitem'
+      },
+      remitoalmacen:{
+        backendURL: 'api/remitosalmacen',
+        searchURL:  'api/remitosalmacen/search',
+        nextItemURL: 'api/remitosalmacen/nextitem'
+      },
       folder:{
         backendURL: 'api/folders',
         searchURL:  'api/folders/search'

@@ -19,6 +19,15 @@ import {  Person,
           UpdateAddressEvent,
           PersonContactData 
         } from '../../../entities/person/person';
+
+import {   Asistencia, 
+          Alimento, 
+          UpdateAsistenciaEvent, 
+          UpdateAlimentoEvent, 
+          UpdateAsistenciaListEvent,
+          AsistenciaHelper } from '../../asistencia/asistencia.model';
+
+
 import { Turno, TurnoAction, TurnoslModel }  from '../../turnos/turnos.model';
 
 const UPDATE = 'update';
@@ -44,6 +53,7 @@ export class TsocialPageComponent implements OnInit {
   public addressList: Address[];
   public familyList:  FamilyData[];
   public oficiosList: OficiosData[];
+  public asistenciasList: Asistencia[];
 
 
   //public contactData = new PersonContactData();
@@ -115,14 +125,31 @@ export class TsocialPageComponent implements OnInit {
   initCurrentPerson(p: Person){
     if(p){
       this.currentPerson = p;
-      this.hasCurrentPerson = true;
       //this.contactData = p.contactdata[0];
       this.contactList = p.contactdata || [];
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
       this.oficiosList = p.oficios || [];
+      
+      this.initAsistenciasList()
+
 
     }
+
+    // todo: Search For S/Asistencias
+
+
+  }
+
+  initAsistenciasList(){
+    this.asistenciasList = [];
+    this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
+      if(list && list.length) this.asistenciasList = list;
+
+      this.hasCurrentPerson = true;
+
+    })
+
 
   }
 
@@ -211,6 +238,15 @@ export class TsocialPageComponent implements OnInit {
     this.dsCtrl.updatePerson(update);
   }
 
+  updateAsistenciaList(event: UpdateAsistenciaListEvent){
+    console.log('Sol/asistencia: [%s]', event.action);
+    if(event.action === UPDATE){
+      console.log('Sol Asistencia BUBBLED to TSOCIAL')
+      this.initAsistenciasList();
+    }
+  }
+
+
 
 
   // updateContactData(event:UpdateContactEvent){
@@ -263,5 +299,9 @@ export class TsocialPageComponent implements OnInit {
 /***
 http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
 http://develar-local.co:4200/dsocial/gestion/atencionsocial/5a00cb6c3ba0cd0c576a1870
+
+https://api.brown.gob.ar/empleados?legajo=5765
+
+https://api.brown.gob.ar/
 
 **/
