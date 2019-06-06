@@ -44,7 +44,9 @@ export class AddressEvalEditComponent implements OnInit {
   public electricidadList = personModel.getTiposVivienda('electricidad');
   public cloacaList = personModel.getTiposVivienda('cloaca');
   public gasList = personModel.getTiposVivienda('gas');
-
+  // public aniosresid;
+  // public qvivxlote;
+  // public tviv;
 
 	public form: FormGroup;
 

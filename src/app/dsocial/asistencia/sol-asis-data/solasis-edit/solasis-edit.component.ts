@@ -22,6 +22,7 @@ export class SolasisEditComponent implements OnInit {
 
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
+  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
 	public form: FormGroup;
 
 

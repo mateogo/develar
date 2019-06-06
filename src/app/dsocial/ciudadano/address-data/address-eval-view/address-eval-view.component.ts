@@ -27,6 +27,9 @@ export class AddressEvalViewComponent implements OnInit {
 	public electricidad;
 	public cloaca;
 	public gas;
+  public aniosresid;
+  public qvivxlote;
+  public tviv;
 
   constructor() { }
 

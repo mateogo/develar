@@ -30,9 +30,7 @@ export class CoreDataEditComponent implements OnInit {
   public estadoCivil        = personModel.estadoCivilOL;
 
 
-  private provincias = personModel.provincias;
-  private addTypes   = personModel.addressTypes;
-  private paises     = personModel.paises;
+  public paises     = personModel.paises;
 
   private action = "";
   private token = CORE;

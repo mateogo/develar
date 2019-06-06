@@ -6,7 +6,7 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-        <mat-select   formControlName='personType' (change)="changePersonType()" placeholder="Tipo de persona">
+        <mat-select #fldPersonType   formControlName='personType' (change)="changeSelectionValue('personType',fldPersonType )" placeholder="Tipo de persona">
           <mat-option *ngFor="let tper of persontypes" [value]="tper.val" >{{ tper.label }}</mat-option>
         </mat-select>
         </mat-form-field>

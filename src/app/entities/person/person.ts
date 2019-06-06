@@ -526,6 +526,17 @@ const countries: Array<any> = [
 		{val: 'AR', 	          label: 'Argentina ',slug:'Argentina' }
 ];
 
+const ciudadesBrown: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'adrogue',         label: 'Adrogué ',slug:'Argentina' },
+    {val: 'malvinas',        label: 'Malvinas ',slug:'Argentina' },
+    {val: 'burzaco',         label: 'Burzaco ',slug:'Argentina' },
+    {val: 'orione',          label: 'Orione ',slug:'Argentina' },
+    {val: 'glew',            label: 'Glew ',slug:'Argentina' },
+];
+
+
+
 const paisesOL = [
 	    {val: "no_definido", label: 'Seleccione País'},
       {val: "AR", label:'Argentina'},
@@ -1022,6 +1033,11 @@ class PersonModel {
     get countries():Array<any>{
     	return countries;
     }
+
+    get ciudades():Array<any>{
+      return ciudadesBrown;
+    }
+
 
     personType(code):string {
     	if(!code) return ''

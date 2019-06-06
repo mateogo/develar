@@ -120,9 +120,13 @@ const default_option_list: Array<any> = [
 ];
 
 const asisActionOptList: Array<any> = [
+        {val: 'encuesta',    type:'EncuestaSocAmb', label: 'Encuesta' },
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
-        {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
         {val: 'materiales',  type:'Materiales',   label: 'Materiales' },
+        {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
+        {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
+        {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
+        {val: 'pension',     type:'Pensión',      label: 'Pensión' },
 
 ];
 
@@ -156,6 +160,16 @@ const tableActions = [
       {val: 'autorizar',      label: 'Autorizar solicitud',    slug:'Autorizar solicitud' },
 ]
 
+const ciudadesBrown: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'adrogue',         label: 'Adrogué ',slug:'Argentina' },
+    {val: 'malvinas',        label: 'Malvinas ',slug:'Argentina' },
+    {val: 'burzaco',         label: 'Burzaco ',slug:'Argentina' },
+    {val: 'orione',          label: 'Orione ',slug:'Argentina' },
+    {val: 'glew',            label: 'Glew ',slug:'Argentina' },
+];
+
+
 
 const optionsLists = {
 	 default: default_option_list,
@@ -165,6 +179,7 @@ const optionsLists = {
    frecuencia: frecuenciaOptList,
    tableactions: tableActions,
    sectores: sectores,
+   ciudades: ciudadesBrown
 
 }
 

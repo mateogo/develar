@@ -22,6 +22,7 @@ export class AddressDataEditComponent implements OnInit {
   public countriesList =  personModel.paises;
   public provinciasList = personModel.provincias;
   public addTypeList =    personModel.addressTypes;
+  public ciudadesList =   personModel.ciudades;
 
 	public form: FormGroup;
 
@@ -97,10 +98,10 @@ export class AddressDataEditComponent implements OnInit {
 			street1:     token.street1,
 			street2:     token.street2,
 			city:        token.city,
-			state:       token.state,
-			statetext:   token.statetext,
+			state:       token.state ||'buenosaires',
+			statetext:   token.statetext || 'Brown' ,
 			zip:         token.zip,
-			country:     token.country,
+			country:     token.country || 'AR',
 		});
 
 		return form;
