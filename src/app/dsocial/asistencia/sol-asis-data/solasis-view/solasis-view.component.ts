@@ -35,6 +35,7 @@ export class SolasisViewComponent implements OnInit {
 
 	public modalidad: Alimento;
 	public isAlimentos = false;
+  public detailView = false;
 
 
   public type;
@@ -67,6 +68,11 @@ export class SolasisViewComponent implements OnInit {
 
   	if(this.token.action === ALIMENTOS && this.modalidad) this.initDatosModalidad(this.modalidad);
 
+  }
+  verdDetalle(e){
+    e.stopPropagation()
+    e.preventDefault();
+    this.detailView = !this.detailView;
   }
 
   initDatosModalidad(token: Alimento){

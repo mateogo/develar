@@ -13,6 +13,7 @@ import { 	Asistencia,
 
 const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
+const NAVIGATE = 'navigate';
 
 @Component({
   selector: 'solasis-panel',
@@ -49,6 +50,9 @@ export class SolasisPanelComponent implements OnInit {
         this.emitEvent(event);
 
       });      
+    } else if(event.action === NAVIGATE){
+      this.emitEvent(event);
+
     }
   }
 
@@ -73,8 +77,16 @@ export class SolasisPanelComponent implements OnInit {
   		action: UPDATE,
   		type: TOKEN_TYPE,
   		items: this.items
-  	});
-  	}
+  	  });
+
+  	} else if(event.action === NAVIGATE){
+      this.updateItems.next({
+      action: NAVIGATE,
+      type: TOKEN_TYPE,
+      items: this.items
+      });
+
+    }
   }
 
 }

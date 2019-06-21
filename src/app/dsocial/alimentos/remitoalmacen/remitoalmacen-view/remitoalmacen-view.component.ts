@@ -61,8 +61,15 @@ export class RemitoalmacenViewComponent implements OnInit {
 
   	this.action = AsistenciaHelper.getOptionLabel('actions', this.token.action);
   	this.entrega = AlimentosHelper.getOptionLabel('tmov', this.token.tmov);
+
   	this.items = this.token.entregas;
   	this.kitEntrega = AlimentosHelper.getOptionLabel('kitentrega', this.token.kitEntrega);
+
+
+  }
+
+  umeLabel(item:ItemAlmacen ) {
+  	return AlimentosHelper.getOptionLabel('ume', item.ume) || 'Un';
 
   }
 

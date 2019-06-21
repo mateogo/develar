@@ -3,11 +3,18 @@
 
   <mat-card-content>
     <notification-create 
+    	[context]="context"
     	[openeditor]='_openEditor'
     	(messageUpdated)='messageUpdated($event)'></notification-create>
   </mat-card-content>
 
   <mat-card-actions></mat-card-actions>
+
+	<ng-container *ngIf="showTable">
+		<notification-table   (actionTriggered)='actionTriggered($event)' ></notification-table>
+	</ng-container>
+
 </mat-card>
 
-<notification-table   (actionTriggered)='actionTriggered($event)' ></notification-table>
+
+

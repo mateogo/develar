@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
+import { NotificationsModule }    from '../notifications/notifications.module';
+
 
 import { DsocialRoutingModule } from './dsocial-routing.module';
 import { RecepcionPageComponent } from './recepcion-page/recepcion-page.component';
@@ -50,8 +52,19 @@ import { RemitoalmacenCreateComponent } from './alimentos/remitoalmacen/remitoal
 import { RemitoalmacenViewComponent } from './alimentos/remitoalmacen/remitoalmacen-view/remitoalmacen-view.component';
 import { SolListPageComponent } from './asistencia/sol-list/sol-list-page/sol-list-page.component';
 import { SolListTableComponent } from './asistencia/sol-list/sol-list-table/sol-list-table.component';
+import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
+import { RemitoalmacenTableComponent } from './alimentos/remitoalmacen/remitoalmacen-table/remitoalmacen-table.component';
+import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    FormsModule,
+    DsocialRoutingModule,
+    ReactiveFormsModule,
+    DevelarCommonsModule,
+    NotificationsModule,
+  ],
   declarations: [
   	RecepcionPageComponent, 
   	PersonFetchComponent, 
@@ -96,14 +109,10 @@ import { SolListTableComponent } from './asistencia/sol-list/sol-list-table/sol-
     RemitoalmacenCreateComponent,
     RemitoalmacenViewComponent,
     SolListPageComponent,
-    SolListTableComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DevelarCommonsModule,
-    DsocialRoutingModule
+    SolListTableComponent,
+    RemitoalmacenBrowseComponent,
+    RemitoalmacenTableComponent,
+    SegumientoPageComponent
   ]
 })
 export class DsocialModule { }

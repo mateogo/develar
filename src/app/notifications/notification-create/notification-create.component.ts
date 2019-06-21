@@ -11,7 +11,7 @@ import { UserService } from '../../entities/user/user.service';
 
 import { devutils } from '../../develar-commons/utils';
 import { User } from '../../entities/user/user';
-import { UserConversation, MessageToken, Actor, notificationModel } from '../notification.model';
+import { UserConversation, ConversationContext, MessageToken, Actor, notificationModel } from '../notification.model';
 
 import { NotificationController } from '../notification.controller';
 
@@ -34,6 +34,8 @@ export class NotificationCreateComponent implements OnInit {
   @Input()
     get openeditor(){ return this._openEditor;}
     set openeditor(val){ this._openEditor = val;}
+
+  @Input() context:ConversationContext;
 
   @Output() messageUpdated = new EventEmitter<MessageToken>();
 
@@ -128,7 +130,7 @@ export class NotificationCreateComponent implements OnInit {
     this.meContent = "";
 
     if(!this.message.isNewConversation){
-      this.messageActionLabel =  'El '+ entity.fetxt + ' escribió: ' + this.message.content;
+      this.messageActionLabel =  '<strong>'+ entity.fetxt + ' </strong> ' + this.message.content;
       console.log('showConversation: [%s]', this.message.conversationId);
       this.conversationId = this.message.conversationId;
       this.conversationEmitter.next(this.conversationId);
@@ -170,7 +172,7 @@ export class NotificationCreateComponent implements OnInit {
 		console.log('onSubmit');
 		this.message = this.formSubmit();
 		this.actors = this.notifCtrl.buildActorList(this.userList);
-		this.notifCtrl.saveMessageToken(this.message, this.actors);
+		this.notifCtrl.saveMessageToken(this.message, this.actors, this.context);
     this.messageUpdated.next(this.message);
 
 	}

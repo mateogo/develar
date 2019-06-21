@@ -83,6 +83,7 @@ export interface AsistenciaAction {
 export interface UpdateAsistenciaEvent {
 	action: string;
 	type: string;
+	selected?: boolean;
 	token: Asistencia;
 };
 
@@ -97,7 +98,6 @@ export interface UpdateAsistenciaListEvent {
       type: string;
       items: Array<Asistencia>;
 };
-
 
 
 export class AsistenciaslModel {

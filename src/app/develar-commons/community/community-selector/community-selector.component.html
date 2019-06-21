@@ -4,7 +4,7 @@
   		<mat-chip #theChip *ngFor='let token of entityList' 
   			[removable]='removable'
   			[value]='token'
-  			(remove)='remove(token)' color="accent" selected="true" >
+  			(removed)='remove(token)' color="accent" selected="true" >
   			{{token.slug}}
   			<mat-icon matChipRemove *ngIf='removable'>cancel</mat-icon>
   		</mat-chip>

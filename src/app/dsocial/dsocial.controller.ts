@@ -21,10 +21,11 @@ import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, TurnoslModel }         from './turnos/turnos.model';
 import { Asistencia, AsistenciaTable, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from './asistencia/asistencia.model';
-import { RemitoAlmacen, RemitoAlmacenModel, AlimentosHelper } from './alimentos/alimentos.model';
+import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, AlimentosHelper } from './alimentos/alimentos.model';
 
 const ATTENTION_ROUTE = "atencionsocial";
 const ALIMENTOS_ROUTE = "alimentos";
+const SEGUIMIENTO_ROUTE = "seguimiento";
 const CORE = 'core';
 const CONTACT = 'contact';
 const ADDRESS = 'address';
@@ -61,6 +62,10 @@ export class DsocialController {
   private _selectionModel: SelectionModel<AsistenciaTable>
   private solicitudesList: Array<Asistencia> = [];
 
+
+  private emitRemitosDataSource = new BehaviorSubject<RemitoAlmacenTable[]>([]);
+  private _remitosSelectionModel: SelectionModel<RemitoAlmacenTable>
+  private remitosList: Array<RemitoAlmacen> = [];
 
 
 	constructor(
@@ -251,7 +256,7 @@ export class DsocialController {
   }
 
 
-  /******* FETCH ASISTENCIA ********/
+  /******* Remito By Person ********/
   fetchRemitoAlmacenByPerson(person:Person){
     let query = {
       personId: person._id,
@@ -259,6 +264,77 @@ export class DsocialController {
     }
     return this.daoService.search<RemitoAlmacen>('remitoalmacen', query);
   }
+
+  fetchRemitoAlmacenByQuery(query:any){
+    let listener = new Subject<RemitoAlmacen[]>();
+    this.loadRemitoAlmacensByQuery(listener, query);
+    return listener;
+  }
+
+  private loadRemitoAlmacensByQuery(listener: Subject<RemitoAlmacen[]>, query){
+
+    this.daoService.search<RemitoAlmacen>('remitoalmacen', query).subscribe(list =>{
+      if(list && list.length){
+        this.remitosList = list;
+
+      }else{
+        this.remitosList = [];
+
+      }
+
+      listener.next(this.remitosList);
+
+    })
+  }
+
+
+  /*****  SAsistencia TABLE table Table    ****/
+  get remitosDataSource(): BehaviorSubject<RemitoAlmacenTable[]>{
+    return this.emitRemitosDataSource;
+  }
+
+  get remitosSelectionModel(): SelectionModel<RemitoAlmacenTable>{
+    return this._remitosSelectionModel;
+  }
+  set remitosSelectionModel(selection: SelectionModel<RemitoAlmacenTable>){
+    this._remitosSelectionModel = selection;
+  }
+
+  get remitoTableActions(){
+    return AlimentosHelper.getOptionlist('tableactions');
+  }
+
+  lookUpRemitoAlmacen(token: RemitoAlmacenTable): RemitoAlmacen{
+    let remito: RemitoAlmacen;
+    remito = this.remitosList.find(t => t._id === token._id);
+
+    if(!remito) remito = new RemitoAlmacen();
+    return remito;
+  }
+
+
+  updateRemitosTableData(){
+    let tableData = AlimentosHelper.buildDataTable(this.remitosList);
+    this.emitRemitosDataSource.next(tableData);
+  }
+
+  updateAvanceRemito(type, avance, remitoId: string){
+    let token = {
+      avance: avance
+    }
+    this.daoService.update(type, remitoId, token).then(t =>{
+      console.log(t.sector)
+    })
+  }
+
+
+  // updateAsistenciaListItem(item ):void{
+  //   // let pr: Asistencia = this.asistencia.find((product:any) => product._id === item._id);
+  //   // if(pr){
+  //   //   pr.pu = item.pu;
+  //   //   pr.slug = item.slug;
+  //   // }
+  // }
 
 
 
@@ -382,6 +458,10 @@ export class DsocialController {
     this._selectionModel = selection;
   }
 
+  get tableActions(){
+    return AsistenciaHelper.getOptionlist('tableactions');
+  }
+
 
   updateTableData(){
     let tableData = AsistenciaHelper.buildDataTable(this.solicitudesList);
@@ -397,7 +477,6 @@ export class DsocialController {
     })
   }
 
-
   updateAsistenciaListItem(item ):void{
     // let pr: Asistencia = this.asistencia.find((product:any) => product._id === item._id);
     // if(pr){
@@ -407,12 +486,7 @@ export class DsocialController {
   }
 
 
-  /************************
-    Table Product common /
-  **********************/
-  get tableActions(){
-    return AsistenciaHelper.getOptionlist('tableactions');
-  }
+
 
 
   /***************************/
@@ -614,6 +688,9 @@ export class DsocialController {
 
       }else if (sector === 'tsocial'){
         return ATTENTION_ROUTE;
+
+      }else if (sector === 'seguimiento'){
+        return SEGUIMIENTO_ROUTE;
 
       }else {
         return ATTENTION_ROUTE;

@@ -1,10 +1,16 @@
 <p class='text-destacado'>{{ cName }}:{{ cNum }} - Emisión: {{ fecha }}   {{ avance }}  </p>
 <p class='text-normal'>{{ cPrefix }}::{{ action }} -- Solicita: {{slug}} </p>
-<p class='text-normal'>{{description}} </p>
-<hr>
-<ng-container *ngIf='isAlimentos'>
-	<p class='text-normal'><strong>Tipo de Alimento </strong>
-			- {{ type }}: Frecuencia: {{ freq }} - Cantidad unidades:  {{ qty }} </p>
-	<p class='text-normal'>Período convenido: Desde: {{ fechad }} Hasta: {{ fechah }}</p>
-	<p class='text-normal'>{{observacion}} </p>
+<p class='text-normal'>{{description}} 
+	<a role="button" class="detail-toggle" (click)="verdDetalle($event)" title="ver detalle">
+		Ver detalle <i class="fa fa-angle-right" aria-hidden="true"></i>
+	</a>
+</p>
+<ng-container *ngIf="detailView">
+	<hr>
+	<ng-container *ngIf='isAlimentos'>
+		<p class='text-normal'><strong>Tipo de Alimento </strong>
+				- {{ type }}: Frecuencia: {{ freq }} - Cantidad unidades:  {{ qty }} </p>
+		<p class='text-normal'>Período convenido: Desde: {{ fechad }} Hasta: {{ fechah }}</p>
+		<p class='text-normal'>{{observacion}} </p>
+	</ng-container>
 </ng-container>

@@ -45,10 +45,13 @@
           (modelValueChange)="contentUpdateContent($event)">
         </textarea>
       </div>
+
+      <div class="d-flex justify-content between align-items-center">
 			<user-chip 
 				    [users]='userEmitter' 
             [inputlabel]='"seleccionar destinatarios..."'
             (emitUsers)='updateUserList($event)' ></user-chip>
+      </div>
 
       <div class="additional-info">
         <button mat-button type="submit" color="primary" 
@@ -57,12 +60,16 @@
           (click)="editCancel()"  >Cancelar</button>
       </div>
     </form>
-    </mat-card-content></mat-card>
 
     <ng-container *ngIf='showConversation'>
+      <p class="conversation-detail">Historial de conversación</p>
       <conversation-detail [conversationListener]='conversationEmitter'></conversation-detail>
 
     </ng-container>
+
+    </mat-card-content>
+    </mat-card>
+
 
     </div>
   </mat-card-content>

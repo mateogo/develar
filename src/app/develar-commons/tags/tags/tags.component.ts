@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter,Input, Output, HostListener } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatChipInputEvent, MatChipEvent,MatChipSelectionChange, MatChipListChange} from '@angular/material';
+import { MatChipInputEvent, MatChipEvent, MatChipSelectionChange, MatChipListChange} from '@angular/material';
 
 import { Observable ,  Subject, of }        from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
@@ -128,6 +128,7 @@ export class TagComponent implements OnInit {
   }
 
   remove(token: any): void {
+    console.log('REMOVE')
     let index = this.taglist.indexOf(token);
 
     if (index >= 0) {

@@ -53,6 +53,19 @@ router.get('/search', function (req, res) {
 /**
  * fetch user-conversation documents
  */
+router.get('/conversation', function (req, res) {
+    service.findConversationByQuery(req.query, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+/**
+ * fetch user-conversation documents
+ */
 router.get('/userconversation', function (req, res) {
     service.findUserConversationByQuery(req.query, function(err) {
         res.status(400).json(err);
@@ -62,6 +75,7 @@ router.get('/userconversation', function (req, res) {
 
     });
 });
+
 
 /**
  * Retrieve Entity by ID

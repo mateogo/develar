@@ -19,6 +19,7 @@ export class Atendido {
 export class Parent {
 		id:      string;
 		type:    string;
+		kit:     string;
 		action:  string;
 		compNum: string;
 
@@ -44,6 +45,31 @@ export class ItemAlmacen {
 
 }
 
+
+export class RemitoAlmacenTable {
+		_id: string;
+		compPrefix:  string = 'REM';
+		compName:    string = 'R/Entrega';
+		compNum:     string = '00000';
+		kitEntrega:  string;
+		qty:         number = 1; 
+		deposito:    string = 'almacen';
+		tmov:        string = 'entrega';
+		fecomp_tsa:  number;
+		fecomp_txa:  string;
+		action:      string = 'alimentos';
+		slug:        string;
+		description: string;
+		sector:      string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		kit:         string = 'Estándard';
+		person:      string;
+		parent: Parent;
+		requeridox:  Requirente;
+		atendidox:   Atendido;
+		entregas:    Array<ItemAlmacen>;
+};
 
 export class RemitoAlmacen {
 		_id: string;
@@ -79,6 +105,11 @@ export interface UpdateRemitoEvent {
 	token: RemitoAlmacen;
 };
 
+export interface UpdateRemitoListEvent {
+      action: string;
+      type: string;
+      items: Array<RemitoAlmacen>;
+};
 
 
 export class RemitoAlmacenModel {
@@ -121,6 +152,86 @@ export class RemitoAlmacenModel {
 	}
 
 }
+const umeOptList = [
+        {val:'no_definido'  , label:'Unidad de Medida'},
+        {val:'noop'         , label:'no contable'},
+        {val:'unidad'       , label:'UN'},
+        {val:'global'       , label:'Global'},
+        {val:'porcentaje'   , label:'%'},
+        {val:'hora'         , label:'hs'},
+        {val:'dia'          , label:'día'},
+        {val:'semana'       , label:'sem'},
+        {val:'mes'          , label:'mes'},
+        {val:'contrato'     , label:'contrato'},
+        {val:'profesional'  , label:'profesional'},
+        {val:'documento'    , label:'documento'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'pasaje'       , label:'pje'},
+        {val:'tramo'        , label:'tram'},
+        {val:'alojamiento'  , label:'aloj'},
+        {val:'catering'     , label:'catering'},
+        {val:'seguridad'    , label:'seg'},
+        {val:'limpieza'     , label:'limpieza'},
+        {val:'eqcomunic'    , label:'comunicación'},
+        {val:'banioquim'    , label:'baño quím'},
+        {val:'carpa'        , label:'carpa'},
+        {val:'no_definido'  , label:'-------------'},        
+        {val:'asistencia'   , label:'asistencia(s)'},
+        {val:'persona'      , label:'persona(s)'},
+        {val:'alquiler'     , label:'alquiler'},
+        {val:'equipo'       , label:'equipo(s)'},
+        {val:'tecnica'      , label:'técnica(s)'},
+        {val:'escenario'    , label:'escenario(s)'},
+        {val:'lucese'       , label:'luces Esc'},
+        {val:'energiae'     , label:'energía Esc'},
+        {val:'pantallae'    , label:'pantalla Esc'},
+        {val:'sonidoe'      , label:'sonido Esc'},
+        {val:'backline'     , label:'back line'},
+        {val:'proyector'    , label:'proyector'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'seguro'       , label:'seguros'},
+        {val:'constseco'    , label:'constr en seco'},
+        {val:'mobiliario'   , label:'mobiliario'},
+        {val:'trnsobra'     , label:'transporte obra arte'},
+        {val:'trnscarga'    , label:'transporte carga'},
+        {val:'trnspjero'    , label:'transporte pasajero'},
+        {val:'marco'        , label:'marcos'},
+        {val:'montaje'      , label:'montajes'},
+        {val:'reproduccion' , label:'reproducciones'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'sadaic'       , label:'SADAIC'},
+        {val:'argentores'   , label:'ARGENTORES'},
+        {val:'derechos'     , label:'Derechos'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'banner'       , label:'banners'},
+        {val:'cartel'       , label:'cartelería'},
+        {val:'folleto'      , label:'folletos'},
+        {val:'publicacion'  , label:'publicación'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'merchandising', label:'merchandising'},
+        {val:'no_definido'  , label:'-------------'},
+        {val:'grafica'      , label:'gráfica'},
+        {val:'buso'         , label:'bienes de uso'},
+        {val:'consumible'   , label:'consumible'},
+        {val:'instalacion'  , label:'instalación'},
+        {val:'obraartistica', label:'obra artística'},
+        {val:'ciclo'        , label:'ciclo'},
+        {val:'produccion'   , label:'producción'},
+        {val:'presentacions', label:'presentaciones'},
+        {val:'cubierto'     , label:'cubierto'},
+        {val:'viaje'        , label:'viaje'},
+        {val:'habitacion'   , label:'habitación'},
+        {val:'funcion'      , label:'función'},
+        {val:'congreso'     , label:'congreso'},
+        {val:'litro'        , label:'litro'},
+        {val:'L'            , label:'litro'},
+        {val:'metro'        , label:'metro'},
+        {val:'kilo'         , label:'kilo'},
+        {val:'kg'           , label:'kilo'},
+        {val:'lata'         , label:'lata'},
+        {val:'otros'        , label:'otros'}
+];
+
 
 
 const default_option_list: Array<any> = [
@@ -196,6 +307,12 @@ const productByKit = {
 
 }
 
+const tableActionsOptList = [
+      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'entregar',     label: 'Entregar alimentos',    slug:'Entregar alimentos' },
+]
+
+
 const tmovOptList: Array<any> = [
         {val: 'entrega',        type:'S',  label: 'Entrega' },
         {val: 'ingreso',        type:'E',  label: 'Ingreso' },
@@ -212,6 +329,8 @@ const optionsLists = {
    kitentrega: kitEntregaOptList,
    kititems: productByKit,
    tmov: tmovOptList,
+   tableactions: tableActionsOptList,
+   ume: umeOptList
 };
 
 
@@ -236,7 +355,11 @@ export class AlimentosHelper {
 	}
 
 	static getOptionLabel(type, val){
+
+		if(!val || !type) return 'no-definido';
+
 		let list = this.getOptionlist(type);
+
 		return getLabel(list, val);
 	}
 
@@ -249,6 +372,36 @@ export class AlimentosHelper {
 		}
 
 		return req;
+	}
+
+	static buildDataTable(list: RemitoAlmacen[]){
+		return list.map(token => {
+			let td = new RemitoAlmacenTable();
+			td._id        = token._id;
+			td.compPrefix = token.compPrefix;
+			td.compName   = token.compName;
+			td.compNum    = token.compNum;
+			td.qty        = token.qty;
+			td.deposito   = token.deposito;
+			td.tmov       = token.tmov;
+			td.fecomp_tsa = token.fecomp_tsa;
+			td.fecomp_txa = token.fecomp_txa;
+			td.action     = token.action;
+			td.slug       = token.slug;
+			td.description = token.description;
+			td.sector     = token.sector;
+			td.estado     = token.estado;
+			td.avance     = token.avance;
+			td.parent     = token.parent;
+			td.kitEntrega = (this.getOptionLabel('kitentrega',(token.kitEntrega || 'standard'))) || 'ESTÁNDAR';
+			td.kit        = (token.parent && this.getOptionLabel('kitentrega',(token.parent.kit || 'standard'))) || 'ESTÁNDAR';
+			td.person     = (token.requeridox && token.requeridox.slug) || 'beneficiario';
+			td.requeridox = token.requeridox;
+			td.atendidox  = token.atendidox;
+			td.entregas   = token.entregas;
+			return td;
+		})
+
 	}
 
 

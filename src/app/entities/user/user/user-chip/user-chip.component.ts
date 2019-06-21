@@ -31,11 +31,11 @@ export class UserChipComponent implements OnInit {
 	searchTerms = new Subject<any>();
 	
 	separatorKeysCodes =  [ENTER, COMMA, TAB];
-	removable: boolean  = true;
-	visible:   boolean = true;
-	selectable: boolean  = true;
-	multiple:  boolean = false;
-	addOnBlur: boolean = true;
+	removable  = true;
+	visible    = true;
+	selectable = true;
+	addOnBlur  = true;
+  multiple   = true;
 	
 
   buildQuery(data){
@@ -71,10 +71,11 @@ export class UserChipComponent implements OnInit {
       })
     }
 
-  	this.models = this.searchTerms.pipe(
+  	this.models = this.searchTerms
+      .pipe(
           debounceTime(300),
           distinctUntilChanged(),
-          switchMap(term =>    
+          switchMap(term =>
             this.daoService.search<User>('user', term))
 
       );
@@ -95,6 +96,12 @@ export class UserChipComponent implements OnInit {
 
   @HostListener('blur') onBlur() {
       this.promoteUsers();
+  }
+
+  selectionChange(e:MatChipSelectionChange){
+    // let s = e.source;
+    // console.log('selectionChange [%s] [%s]', e.selected, s.value);
+    // //s.toggleSelected() 
   }
 
 
@@ -133,7 +140,8 @@ export class UserChipComponent implements OnInit {
     ifld.value = "";
   }
 
-  remove(token: any): void {
+  remove(token: User): void {
+    console.log('REMOVE [%s]', token.email )
     let index = this.userlist.indexOf(token);
 
     if (index >= 0) {

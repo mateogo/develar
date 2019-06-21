@@ -10,12 +10,13 @@ import { UserService } from '../entities/user/user.service';
 
 import { User } from '../entities/user/user';
 
-import { UserConversation, MessageToken, Actor, notificationModel, ConversationTable, Conversation, MessageToPrint } from './notification.model';
+import { UserConversation, ConversationContext, MessageToken, Actor, notificationModel, ConversationTable, Conversation, MessageToPrint } from './notification.model';
 
-function buildNewMessage(token: MessageToken , user: User, actors: Actor[] ): MessageToken  {
+function buildNewMessage(token: MessageToken , user: User, actors: Actor[], context: ConversationContext ): MessageToken  {
   token.userId = user._id;
   token.usermail = user.email;
   token.username = user.username;
+  token.context = context;
 
   token.isNewConversation = true;
   token.isArchive = false;
@@ -68,10 +69,14 @@ export class NotificationController {
   private cnvrstnId;
   private emitCnvrstn = new Subject<MessageToPrint[]>();
 
+  private cnvrstnContext: ConversationContext;
+
 
 
   //table browse
   private userconversationList: UserConversation[] = [];
+  private conversationList: Conversation[] = [];
+
   private emitConversationTable = new BehaviorSubject<ConversationTable[]>([]);
   private _selectionModel: SelectionModel<ConversationTable>
   private _tableActions: Array<any> = notificationModel.tableActionOptions;
@@ -236,21 +241,21 @@ export class NotificationController {
   	return actor;
   }
 
-  saveMessageToken(message:MessageToken, actors:Array<Actor>){
-    if(message.isNewConversation) this.saveNewMessage(message, actors);
-    else this.updateMessage(message, actors);
+  saveMessageToken(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+    if(message.isNewConversation) this.saveNewMessage(message, actors, context);
+    else this.updateMessage(message, actors, context);
   }
 
-  saveNewMessage(message:MessageToken, actors:Array<Actor>){
+  saveNewMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
       console.log('save NEW message')
-  	this.message = buildNewMessage(message, this.userService.currentUser, actors);
+  	this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
   	this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
   		console.log('iajuuuuuuu......');
   		this.initNewMessage();
   	})
   }
 
-  updateMessage(message:MessageToken, actors:Array<Actor>){
+  updateMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
       console.log('update EXISTING message')
     this.message = initMessageAnswer(message, this.userService.currentUser, actors);
     this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
@@ -259,8 +264,8 @@ export class NotificationController {
     })
   }
 
-  cloneItemRecord(message:MessageToken, actors:Array<Actor>){
-      this.message = buildNewMessage(message, this.userService.currentUser, actors);
+  cloneItemRecord(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+      this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
       return this.daoService.create<MessageToken>(this.recordtype, this.message).then((model) =>{
               this.openSnackBar('Grabación nuevo registro exitoso id: ' + model._id, 'cerrar');
               return model;
@@ -274,16 +279,71 @@ export class NotificationController {
     return this.daoService.search<UserConversation>(type, query);
   }
 
-  fetchUserConversatinos(){
-    if(!this.userService.currentUser._id) return ;
+  addContextDataToQuery(query: any, context: ConversationContext){
+    if(!query) query = {};
 
-    let query = {userId: this.userService.currentUser._id};
+    if(context){
+      if(context.personId){
+          query['personId'] = context.personId;
+      }
+
+      if(context.asistenciaId){
+          query['asistenciaId'] = context.asistenciaId;
+      }
+    }
+
+    return query;
+  }
+
+  fetchConversations(context: ConversationContext){
+    let query = {};
+
+    this.cnvrstnContext = context;
+
+    if(this.userService.currentUser._id){
+      query['userId'] = this.userService.currentUser._id;
+    }
+
+    this.addContextDataToQuery(query, context);
+
+    this.daoService.fetch<Conversation>(this.recordtype, 'conversation', query).subscribe(list => {
+      console.log('Fetch ConversationByQuery [%s]', list && list.length);
+      console.dir(query);
+
+      this.conversationList = list;
+      this.buildTableDataFromConversation();
+    })
+
+    this.fetchByQuery<Conversation>(this.recordtype, 'conversation', query);
+  }
+
+  buildTableDataFromConversation(){
+    let tableData = notificationModel.buildTableFromConversation(this.conversationList);
+    this.emitConversationTable.next(tableData);
+  }
+
+
+  fetchUserConversations(context: ConversationContext){
+    let query = {};
+
+    this.cnvrstnContext = context;
+
+    if(this.userService.currentUser._id){
+      query['userId'] = this.userService.currentUser._id;
+    }
+
+    this.addContextDataToQuery(query, context);
+
+
     this.fetchByQuery<UserConversation>(this.recordtype, 'userconversation', query);
   }
 
 
   fetchByQuery<T>(type:string, url:string, query: any){
+
     this.daoService.fetch<UserConversation>(type, url, query).subscribe(list => {
+      console.log('Fetch UserConversationByQuery [%s]', list && list.length);
+      console.dir(query);
 
       this.userconversationList = list;
       this.updateTableData();
@@ -291,7 +351,7 @@ export class NotificationController {
   }
 
   updateTableData(){
-    let tableData = notificationModel.buildCommunityTable(this.userconversationList);
+    let tableData = notificationModel.buildTableFromUserConversation(this.userconversationList);
     this.emitConversationTable.next(tableData);
   }
 
@@ -390,6 +450,9 @@ export class NotificationController {
       content: token,
       userId: this.userService.currentUser._id
     }
+
+    this.addContextDataToQuery(query, this.cnvrstnContext);
+
     return this.daoService.search<UserConversation>(this.recordtype, query)
   }
 

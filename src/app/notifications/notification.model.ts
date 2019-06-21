@@ -64,6 +64,12 @@ export class MessageToPrint {
 
 }
 
+export class ConversationContext{
+	personId:string;
+	personName: string;
+	asistenciaId: string;
+}
+
 
 export class Conversation {
 	id: string;
@@ -73,6 +79,8 @@ export class Conversation {
 	creatorId: string = "";
 	slug: string = "";
 	fe: number = 0;
+
+	context?: ConversationContext;
 
 	ts_server: number = 0;
 	fe_lastmsj: number = 0;
@@ -103,6 +111,8 @@ export class UserConversation {
 	content: string = "";
 	fe: number = 0;
 
+	context?: ConversationContext;
+
 	last_message: UserMessage;
 
 	role: string = "";
@@ -129,6 +139,7 @@ export class MessageToken {
 
 	isNewConversation: boolean = true;
 	conversationId: string = "";
+	context?: ConversationContext;
 	userId: string = "";
 	content: string = "";
 	slug: string = "";
@@ -330,7 +341,7 @@ class NotificationModel {
     return entityTableActions;
   }
 
-  buildCommunityTable(usr_convlist: Array<UserConversation>): ConversationTable[]{
+  buildTableFromUserConversation(usr_convlist: Array<UserConversation>): ConversationTable[]{
     let list: Array<ConversationTable>;
 
     list = usr_convlist.map(item => {
@@ -340,6 +351,33 @@ class NotificationModel {
 
     return list;
   }
+
+  buildTableFromConversation(convlist: Array<Conversation>): ConversationTable[]{
+    let list: Array<ConversationTable>;
+
+    list = convlist.map(item => {
+    	let data = {};
+
+    	data['_id'] =   item._id;
+    	data['conversationId'] = item._id;
+			data['fetxt'] = devutils.txFromDate(new Date(item.fe));
+			data['fe'] =    item.fe;
+			data['to'] =    actorsList(data, 'to');
+			data['from'] =  actorsList(data, 'from');
+			data['slug'] =  item.content;
+			data['topic'] = item.topic;
+			data['type'] =  item.type;
+			data['folder'] = '';
+
+
+
+      let token = new ConversationTableData(data);
+      return token;
+    });
+
+    return list;
+  }
+
 
 
 }

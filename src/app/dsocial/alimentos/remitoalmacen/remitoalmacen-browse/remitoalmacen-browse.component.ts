@@ -20,14 +20,12 @@ import {  Person,
           PersonContactData 
         } from '../../../../entities/person/person';
 
-import {   Asistencia, 
-          Alimento, 
-          UpdateAsistenciaEvent, 
-          UpdateAlimentoEvent, 
-          UpdateAsistenciaListEvent,
-          AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
-import { RemitoAlmacen, UpdateRemitoEvent } from '../../alimentos.model';
+import { 	RemitoAlmacen, 
+					UpdateRemitoEvent,
+					UpdateRemitoListEvent,
+					RemitoAlmacenTable } from '../../alimentos.model';
+
 import { Turno, TurnoAction, TurnoslModel }  from '../../../turnos/turnos.model';
 
 const UPDATE = 'update';
@@ -35,20 +33,23 @@ const TOKEN_TYPE = 'remitoalmacen';
 
 
 @Component({
-  selector: 'remitoalmacen-page',
-  templateUrl: './remitoalmacen-page.component.html',
-  styleUrls: ['./remitoalmacen-page.component.scss']
+  selector: 'remitoalmacen-browse',
+  templateUrl: './remitoalmacen-browse.component.html',
+  styleUrls: ['./remitoalmacen-browse.component.scss']
 })
-export class RemitoalmacenPageComponent implements OnInit {
+export class RemitoalmacenBrowseComponent implements OnInit {
+	@Input() items: Array<RemitoAlmacen>;
+	@Output() updateItems = new EventEmitter<UpdateRemitoListEvent>();
+
 	@Input() remito: RemitoAlmacen;
-  @Input() asistencia: Asistencia;
+  @Input() asistencia: RemitoAlmacen;
 	@Output() updateRemito = new EventEmitter<UpdateRemitoEvent>();
 
 
   public unBindList = [];
 
   // template helper
-  public title = "Emisión de Vale de Entrega";
+  public title = "Vales de Alimentos";
   public subtitle = "Ayuda directa";
 
   public tDoc = "DNI";
@@ -59,7 +60,6 @@ export class RemitoalmacenPageComponent implements OnInit {
   public addressList: Address[];
   public familyList:  FamilyData[];
   public oficiosList: OficiosData[];
-  public asistenciasList: Asistencia[];
 
 
   //public contactData = new PersonContactData();
@@ -74,8 +74,14 @@ export class RemitoalmacenPageComponent implements OnInit {
   
   public sectors:SectorAtencion[] = sectores;
 
+  // RemitosAlmacen
+  public remitosList: RemitoAlmacen[];
+  public itemsFound = false;
+  public selectedVoucher: RemitoAlmacen;
 
   public showPanel = true;
+  public showTable = false;
+  public showView = false;
 
 
   constructor(
@@ -126,9 +132,39 @@ export class RemitoalmacenPageComponent implements OnInit {
         this.loadPerson(this.personId);
     }
 
+    this.fetchRemitos();
+
 
     console.log('Remito ALMACEN PAGE INIT')
   }
+
+  fetchRemitos(){
+    this.dsCtrl.fetchRemitoAlmacenByQuery({avance: 'emitido'}).subscribe(list => {
+      if(list && list.length > 0){
+        this.remitosList = list;
+        this.dsCtrl.updateRemitosTableData();
+
+        this.showTable = true;
+
+      }
+
+    })
+
+  }
+
+  onSubmit(){
+    this.dsCtrl.updateAvanceRemito('remitoalmacen', 'entregado', this.selectedVoucher._id);
+    setTimeout(()=>{
+      this.fetchRemitos();
+      setTimeout(()=>{this.showView = false;}, 1000)      
+    },1000)
+
+  }
+
+  onCancel(){
+    this.showView = false;
+  }
+
 
   initCurrentPerson(p: Person){
     if(p){
@@ -184,7 +220,7 @@ export class RemitoalmacenPageComponent implements OnInit {
       this.remito.parent = {
         id: this.asistencia._id,
         type: 'asistencia',
-        kit: this.asistencia.modalidad && this.asistencia.modalidad.type,
+        kit: this.asistencia.parent && this.asistencia.parent.type,
         action: this.asistencia.action,
         compNum: this.asistencia.compNum
       }
@@ -197,6 +233,26 @@ export class RemitoalmacenPageComponent implements OnInit {
 
   }
 
+  tableAction(action){
+    console.log('action bubbled[%s]', action);
+    let selection = this.dsCtrl.remitosSelectionModel;
+    let selected = selection.selected as RemitoAlmacenTable[];
+    console.log('selected: [%s]', selected[0].person);
+    if(selected && selected.length){
+      this.selectedVoucher = this.dsCtrl.lookUpRemitoAlmacen(selected[0]);
+      this.showView = true
+
+    }else{
+      this.showView = false;
+    }
+
+    // selected.forEach(t =>{
+
+    //   this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
+    //   console.log(t.compNum);
+
+    // })
+  }
 
 
   /**********************/

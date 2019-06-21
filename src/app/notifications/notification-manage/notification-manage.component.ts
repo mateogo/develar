@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy, Input, Output, OnChanges, HostListener, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { BehaviorSubject } from 'rxjs';
+
 import { devutils } from '../../develar-commons/utils';
 
 import { NotificationController }    from '../notification.controller';
 
-import { UserConversation, ConversationTable, MessageToken }    from '../notification.model';
+import { UserConversation, ConversationContext, ConversationTable, MessageToken }    from '../notification.model';
 
 const whoami = "ntofication management component"
 
@@ -15,6 +17,7 @@ const whoami = "ntofication management component"
   styleUrls: ['./notification-manage.component.scss']
 })
 export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() context$: BehaviorSubject<ConversationContext>;
 
 	
 	public _openEditor: boolean = false;
@@ -29,6 +32,9 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   private userconverEditList: UserConversation[];
 
   private conversations: UserConversation[] = [];
+
+  public showTable = false;
+  public context: ConversationContext;
 
 
   constructor(
@@ -48,18 +54,27 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnInit() {
     console.log('NOTIFICATION-MANAGE INIT ***************+')
-    this.updateTableList();
 
     this._modelSbscrptn = this.notificationCtrl.userconversationListener.subscribe(entity =>{
       this.initEntityData(entity);
       this.userconver = entity;
     })
 
+
     this.notificationCtrl.initUserConversation(this.userconver, this.userconverId);
 
+    if(this.context$){
+      this.context$.subscribe(data =>{
+        this.context = data;
+        this.updateTableList();
+      });
 
+    }else {
+      this.updateTableList();
+    }
 
   }
+
 
   updateSelRecords(list: ConversationTable[]){
     console.log('updateSelRecords:[%s]', list.length)
@@ -67,7 +82,8 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   updateTableList(){
     console.log('fetch Userconversations!!!!')
-    this.notificationCtrl.fetchUserConversatinos();
+    this.notificationCtrl.fetchUserConversations(this.context);
+    setTimeout(()=>{this.showTable = true;}, 1000);
   }
 
   initEntityData(entity){
@@ -194,3 +210,6 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   }
 
 }
+
+
+//{ 'context.personId': '59701fab9c481d0391eb39b9', userId: '597008d3b13931027e9fa691' }

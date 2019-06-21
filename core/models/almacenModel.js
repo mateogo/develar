@@ -20,6 +20,7 @@ const requirenteSch = new Schema({
 const parentSch = new Schema({
     id:      { type: String, required: false },
     type:    { type: String, required: false },
+    kit:     { type: String, required: false },
     action:  { type: String, required: false },
     compNum: { type: String, required: false },
 });
@@ -98,6 +99,10 @@ function buildQuery(query){
 
   if(query['action']){
       q["action"] = query['action'];
+  }
+
+  if(query['avance']){
+      q["avance"] = query['avance'];
   }
 
   if(query['sector']){

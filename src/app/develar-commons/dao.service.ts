@@ -257,7 +257,7 @@ export class DaoService {
 
 
   fetch<T>(type:string, searchUrl:string,  query): Observable<T[]> {
-    let url = `${this.dao[type].backendURL}/${searchUrl}`;;
+    let url = `${this.dao[type].backendURL}/${searchUrl}`;
     let params = this.buildParams(query);
 
     return this.http
@@ -268,7 +268,7 @@ export class DaoService {
   }
 
   fetchAll<T>(type:string): Observable<T[]> {
-    let url = `${this.dao[type].backendURL}`;;
+    let url = `${this.dao[type].backendURL}`;
 
     return this.http
                .get<T[]>(url)

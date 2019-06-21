@@ -1,21 +1,18 @@
   <mat-form-field>
-  	<mat-chip-list matPrefix #chiplist 
-  							[multiple]='multiple' >
-  		<mat-chip #theChip *ngFor='let user of userlist' 
-  			[removable]='removable'
-  			[value]='user'
-  			(remove)='remove(user)' color="accent" selected="true" >
+  	<mat-chip-list #chiplist [multiple]='multiple' [selectable]='selectable' >
+  		<mat-chip *ngFor='let user of userlist' 
+        [removable]='removable'
+        (selectionChange)="selectionChange($event)"
+        (removed)='remove(user)' [selected]="true" >
   			{{user.email}}
   			<mat-icon matChipRemove *ngIf='removable'>cancel</mat-icon>
   		</mat-chip>
-
-  	</mat-chip-list>
-    <input #searchBox matInput placeholder="{{inputlabel}}" 
-    		[matChipInputFor]='chiplist'
-    		[matChipInputSeparatorKeyCodes]='separatorKeysCodes'
-    		(matChipInputTokenEnd)='add($event)'
-    		[matAutocomplete]="auto" 
-    		(keyup)="search($event, searchBox.value)" >
+      <input #searchBox matInput placeholder="{{inputlabel}}" 
+      		[matChipInputFor]='chiplist'
+      		[matChipInputSeparatorKeyCodes]='separatorKeysCodes'
+      		[matAutocomplete]="auto" 
+      		(keyup)="search($event, searchBox.value)" >
+    </mat-chip-list>
 
   </mat-form-field>
 

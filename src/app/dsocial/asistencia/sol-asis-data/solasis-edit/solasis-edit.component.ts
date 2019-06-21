@@ -57,6 +57,7 @@ export class SolasisEditComponent implements OnInit {
   	this.updateToken.next({
   		action: action,
   		type: TOKEN_TYPE,
+      selected: true,
   		token: this.token
   	});
 

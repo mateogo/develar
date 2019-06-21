@@ -1,5 +1,13 @@
 <div class="remito-container">
-	<p class='text-destacado'>{{ token.fecomp_txa }} {{ token.compName }}: {{ token.compNum }} {{ token.slug }}</p>
+	<p class='text-destacado'>{{ token.fecomp_txa }} {{ token.compName }}: {{ token.compNum }} 
+		 <strong> Beneficiario: </strong>{{ token.requeridox.slug }}</p>
 	<p class='text-normal'>{{ action }}: {{ entrega }} {{ kitEntrega }} </p>
+	<p class='text-normal'>{{ token.slug }} </p>
 	<p class='text-normal'>{{ token.description }} </p>
+
+	<p class="text-destacado" >Kit entrega</p>
+	<div *ngFor="let item of items">
+		<p class='text-normal'>{{ item.slug }}: {{ item.qty }} ({{umeLabel(item)}}) </p>
+	</div>
+
 </div>

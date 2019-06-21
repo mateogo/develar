@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { DsocialController } from '../../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../dsocial.model';
@@ -20,7 +20,7 @@ import {  Person,
           PersonContactData 
         } from '../../../entities/person/person';
 
-import {   Asistencia, 
+import {  Asistencia, 
           Alimento, 
           UpdateAsistenciaEvent, 
           UpdateAlimentoEvent, 
@@ -30,21 +30,22 @@ import {   Asistencia,
 
 import { Turno, TurnoAction, TurnoslModel }  from '../../turnos/turnos.model';
 
+import { ConversationContext }  from '../../../notifications/notification.model';
+
 const UPDATE = 'update';
-const NAVIGATE = 'navigate';
+const SELECT = 'select';
 
 @Component({
-  selector: 'tsocial-page',
-  templateUrl: './tsocial-page.component.html',
-  styleUrls: ['./tsocial-page.component.scss']
+  selector: 'segumiento-page',
+  templateUrl: './segumiento-page.component.html',
+  styleUrls: ['./segumiento-page.component.scss']
 })
-export class TsocialPageComponent implements OnInit {
+export class SegumientoPageComponent implements OnInit {
 
   public unBindList = [];
 
   // template helper
-  public title = "Asistencia al Vecino";
-  public subtitle = "Atención del Trabajador Social";
+  public title = "Seguimiento de atención";
 
   public tDoc = "DNI";
   public nDoc = "";
@@ -55,6 +56,11 @@ export class TsocialPageComponent implements OnInit {
   public familyList:  FamilyData[];
   public oficiosList: OficiosData[];
   public asistenciasList: Asistencia[];
+
+  public context: ConversationContext;
+  public context$: BehaviorSubject<ConversationContext>;
+
+
 
 
   //public contactData = new PersonContactData();
@@ -68,6 +74,8 @@ export class TsocialPageComponent implements OnInit {
   public currentTurno:Turno;
   
   public sectors:SectorAtencion[] = sectores;
+
+	public showList = false;
 
 
   constructor(
@@ -131,8 +139,17 @@ export class TsocialPageComponent implements OnInit {
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
       this.oficiosList = p.oficios || [];
+
+      this.context = {
+        personId: this.currentPerson._id,
+        personName: this.currentPerson.displayName,
+        asistenciaId: null
+      }
+
+      this.emitContext(this.context);
       
       this.initAsistenciasList()
+
 
 
     }
@@ -145,7 +162,10 @@ export class TsocialPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      if(list && list.length) this.asistenciasList = list;
+      if(list && list.length) {
+      	this.asistenciasList = list;
+      	this.showList = true;
+      }
 
       this.hasCurrentPerson = true;
 
@@ -242,19 +262,37 @@ export class TsocialPageComponent implements OnInit {
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
     console.log('Sol/asistencia: [%s]', event.action);
     if(event.action === UPDATE){
-      console.log('Sol Asistencia BUBBLED to TSOCIAL')
+      console.log('Sol Asistencia BUBBLED to UPDATE')
       this.initAsistenciasList();
     }
-
-    if(event.action === NAVIGATE){
-      console.log('Sol Asistencia BUBBLED to NAVIGATE')
-
-      this.router.navigate(['../../', this.dsCtrl.atencionRoute('seguimiento'), 
-         this.personId], {relativeTo: this.route});   
-     }
-
+    if(event.action === SELECT){
+      console.log('Sol Asistencia BUBBLED to SELECT')
+      //this.initAsistenciasList();
+    }
   }
 
+  selectAsistencia(event: UpdateAsistenciaEvent){
+  	console.log('followUP: [%s]', event.token.compNum);
+    if(event.selected){
+      this.context.asistenciaId = event.token._id;
+      console.log('SELECTED')
+    }else{
+      this.context.asistenciaId = null;
+      console.log('NOT SELECTED')
+
+    }
+
+    this.emitContext(this.context);
+  }
+
+  emitContext(context: ConversationContext){
+    if(!this.context$){
+      this.context$ = new BehaviorSubject<ConversationContext>(context);
+    }
+
+    this.context$.next(context);
+
+  }
 
 
 
@@ -305,12 +343,3 @@ export class TsocialPageComponent implements OnInit {
   }
 
 }
-/***
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/5a00cb6c3ba0cd0c576a1870
-
-https://api.brown.gob.ar/empleados?legajo=5765
-
-https://api.brown.gob.ar/
-
-**/

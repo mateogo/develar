@@ -2,23 +2,34 @@
   <mat-card-content>
 
   		<ng-container *ngIf="showView">
-		 	<div class="row">
+		 	<div [ngStyle]=selectedStyle class="row">
 		 		
-		 		<div class="col-md-1">
-		 			<div>
-					<span class="edit-control"
-						(click)='editToken()' title="Editar datos">
-						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
-						aria-hidden="true"></i></span>
+		 		<div class="col-md-2 d-flex justify-content-between align-items-center">
+		 			<div *ngIf="editMode">
+						<span class="edit-control"
+							(click)='editToken()' title="Editar datos">
+							<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+							aria-hidden="true"></i></span>
 
-					<span class="edit-control"
-						(click)='editAlimento()' title="Editar modalidad">
-						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
-						aria-hidden="true"></i></span>
+						<span class="edit-control"
+							(click)='editAlimento()' title="Editar modalidad">
+							<i [class]="openEditor ? 'fas fa-pencil-alt' : 'fas fa-pencil-alt'" 
+							aria-hidden="true"></i></span>
+
+						<span class="edit-control"
+							(click)='navigateSeguimiento()' title="Realizar seguimiento">
+							<i [class]="openEditor ? 'far fa-bell' : 'far fa-bell'" 
+							aria-hidden="true"></i></span>
 					</div>
+
+		 			<div *ngIf="selectMode" class="d-flex justify-content-between align-items-center">
+		      		<button mat-raised-button color="accent" 
+		        		  (click)="tokenSelected()" >Seleccionar</button>
+		 			</div>
+
 		 		</div>
 
-		 		<div class="col-md-11">
+		 		<div class="col-md-10">
 		 			<solasis-view [token]='token'></solasis-view>
 
 		  		<ng-container *ngIf="showEdit">

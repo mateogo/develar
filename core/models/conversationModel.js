@@ -107,10 +107,18 @@ const messageTokenSch = new Schema({
 });
 
 
+const contextSch = new Schema({
+  personId:      {type: String, required: false},
+  personName:    {type: String, required: false},
+  asistenciaId:  {type: String, required: false}
+});
+
+
 const   conversationSch = new Schema({
   content:   {type: String, required: true },
   creatorId: {type: String, required: true },
   slug:      {type: String, required: true },
+  context:   {type: contextSch, required: false},
   fe:        {type: Number, required: true },
   ts_server: {type: Number, required: false },
   type:      {type: String, required: false },
@@ -123,6 +131,7 @@ const   conversationSch = new Schema({
 
 const userConversationSch = new Schema({
   conversationId: {type: String, required: true},
+  context:        {type: contextSch, required: false},
   last_message:   {type: messageTokenSch, required: true},
   userId:         {type: String,  required: true},
   role:           {type: String,  required: true},
@@ -144,6 +153,14 @@ function buildQuery(query){
 
     if(query.name){
         q["name"] = {"$regex": query.name, "$options": "i"};
+    }
+
+    if(query.personId){
+      q["context.personId"] = query.personId;
+    }
+
+    if(query.asistenciaId){
+      q["context.asistenciaId"] = query.asistenciaId;
     }
 
     if(query.content){
@@ -270,15 +287,35 @@ exports.findByQuery = function (query, errcb, cb) {
     });
 };
 
-/** VER SI BORRAR
+/** 
  * Retrieve records from query /search/?name=something
  * @param cb
  * @param errcb
  */
 exports.findUserConversationByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
+    console.dir(regexQuery);
 
     UserConversation.find(regexQuery, function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            cb(entities);
+        }
+    });
+};
+
+/** 
+ * Retrieve records from query /search/?name=something
+ * @param cb
+ * @param errcb
+ */
+exports.findConversationByQuery = function (query, errcb, cb) {
+    let regexQuery = buildQuery(query);
+    console.dir(regexQuery);
+
+    Conversation.find(regexQuery, function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
@@ -452,6 +489,7 @@ function createNewConversation(record, errcb, cb){
 function initNewConversation(record){
   let conversation = {
     content: record.content,
+    context: record.context,
     creatorId: record.userId,
     slug: record.content.substr(0, 30),
     fe: record.fe || Date.now(),
@@ -543,6 +581,7 @@ function initUsrConversation(conversation, actor, record){
   let token = {
     conversationId: conversation._id,
     userId: actor.userId,
+    context: conversation.context,
     last_message: msj,
     role: role,
     hasRead: false,

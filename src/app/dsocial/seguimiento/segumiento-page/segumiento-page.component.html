@@ -1,0 +1,27 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<core-base [person]='currentPerson'
+		 							(updatePerson)='updateCore($event)' ></core-base>
+			</div>
+	
+		 	<div 	*ngIf="hasCurrentPerson" >
+	  		<ng-container *ngIf="showList">
+			 		<div  *ngFor="let asistencia of asistenciasList" >
+			 			<solasis-base [token]='asistencia'
+			 										[viewMode]="'select'"
+													(updateToken)='selectAsistencia($event)'></solasis-base>
+					</div>
+			 	</ng-container>
+				
+				<notification-manage [context$]="context$"></notification-manage>
+			</div>
+	
+  	</div>
+  </mat-card-content>
+</mat-card>

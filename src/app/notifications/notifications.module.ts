@@ -35,6 +35,13 @@ import { NotificationsSocketComponent } from './notifications-socket/notificatio
   	NotificationConversationComponent,
   	NotificationsSocketComponent
   ],
+  exports: [
+    NotificationCreateComponent,
+    NotificationBrowseComponent,
+    NotificationManageComponent,
+    NotificationConversationComponent,
+
+  ],
   providers: [
   	NotificationController
   ]

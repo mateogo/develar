@@ -118,8 +118,16 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/atencionsocial'
       },
       {
+        title: 'Seguimiento',
+        routing: '/dsocial/gestion/seguimiento'
+      },
+      {
         title: 'Alimentos',
         routing: '/dsocial/gestion/alimentos'
+      },
+      {
+        title: 'Almacén',
+        routing: '/dsocial/gestion/almacen'
       },
       {
         title: 'Solicitud de Asistencia',
