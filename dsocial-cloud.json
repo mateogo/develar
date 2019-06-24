@@ -1,0 +1,17 @@
+{
+      "apps": [
+		{
+			"name": "dsocial",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8080",
+		          "DBASE": "dsocial",
+		          "SERVER": "http://dsocial-local.co",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/dsocial"
+		  }
+		}
+
+	]
+}
