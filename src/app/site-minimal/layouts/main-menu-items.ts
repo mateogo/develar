@@ -24,7 +24,17 @@ export const DEFAULT_SOCIAL_MEDIA: SocialMediaItem[] = [
   {
     title: 'Seguinos en Twitter',
     icon: 'fab fa-twitter',
-    url: 'https://twitter.com/LTrabajamos',
+    url: 'https://twitter.com/',
+  },
+  {
+    title: 'Seguinos en Instagram',
+    icon: 'fab fa-instagram',
+    url: 'https://www.instagram.com/',
+  },
+  {
+    title: 'Seguinos en Facebook',
+    icon: 'fab fa-facebook-f',
+    url: 'https://www.facebook.com/',
   },
 
 

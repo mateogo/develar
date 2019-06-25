@@ -31,11 +31,12 @@
 
 		<div *ngIf="isModoDOS" >
 
-			<!--  Logos branding: company && auspicios -->
+			<!-- SOLO HOME VIEW -- muestra las subfichas con topic===branding
+				Logos branding: company && auspicios -->
 			<div *ngIf="isHomeView" class='row branding'>
 				<ng-container *ngFor='let bnode of bnodes'>
 
-					<div class="col-md-6 col-sm-12 branding-box">
+					<div class="col-md-12 col-sm-12 branding-box">
 						<ng-container *ngIf='bnode.navigateTo'>
 							<a routerLink='{{ bnode.navigateTo }}'>
 								<img class='branding-img' src='{{ bnode.imageUrl }}' ></a>
@@ -60,9 +61,11 @@
 	           </ng-container>
 
 					</div>
+
 				</ng-container>
 			</div>
 
+			<!--  Logos branding: company && auspicios -->
 			<div class='row footer'>
 
 				<div class="col-md-6 col-sm-12 social-box">
