@@ -66,9 +66,42 @@
 			</div>
 
 			<!--  Logos branding: company && auspicios -->
+			<ng-container *ngFor='let fnode of fnodes'>
 			<div class='row footer'>
+			
+				<div class="col-md-6 col-sm-12  footer-row">
+					<div class="footer-box">
+						<ng-container *ngIf='fnode.navigateTo'>
+							<a routerLink='{{ fnode.navigateTo }}'>
+								<img class='footer-img' src='{{ fnode.imageUrl }}' ></a>
+						</ng-container>
+
+						<ng-container *ngIf='fnode.linkTo'>
+		          <a rel="noopener noreferrer"  target="_blank" 
+		          	 title="{{fnode.linkTo}}" href="{{fnode.linkTo}}" >
+	          		<img class='footer-img' src='{{ fnode.imageUrl }}' ></a> 
+						</ng-container>
+						
+						<ng-container *ngIf='fnode.noLink'>
+	             <img class='footer-img' src='{{ fnode.imageUrl }}' >
+	           </ng-container>
+
+					</div>
+				</div>
 
 				<div class="col-md-6 col-sm-12 social-box">
+					<ng-container *ngIf="fnode.description">
+						<div  class='footer-text' innerHtml='{{fnode.description}}' >
+						</div>
+					</ng-container>
+		  	</div>
+
+			</div>
+			</ng-container>
+
+			<!--  Redes sociales -->
+			<div class='row footer'>
+				<div class="col-md-12 col-sm-12 social-box">
 					<div class="text-social">
 					<ng-container *ngFor='let social of socialItems'>
 				        <a class="social-token" mat-icon target="_blank" rel="noopener" 
@@ -77,37 +110,8 @@
 			  	</ng-container>
 			  	</div>
 		  	</div>
+		  </div>
 
-				<div class="col-md-6 col-sm-12  footer-row">
-					<div class="row">
-						<ng-container *ngFor='let fnode of fnodes'>
-							<div class="col-sm-12  footer-box">
-								<ng-container *ngIf='fnode.navigateTo'>
-									<a routerLink='{{ fnode.navigateTo }}'>
-										<img class='footer-img' src='{{ fnode.imageUrl }}' ></a>
-								</ng-container>
-
-								<ng-container *ngIf='fnode.linkTo'>
-				          <a rel="noopener noreferrer"  target="_blank" 
-				          	 title="{{fnode.linkTo}}" href="{{fnode.linkTo}}" >
-			          		<img class='footer-img' src='{{ fnode.imageUrl }}' ></a> 
-								</ng-container>
-								
-								<ng-container *ngIf='fnode.noLink'>
-			             <img class='footer-img' src='{{ fnode.imageUrl }}' >
-			           </ng-container>
-
-								<ng-container *ngIf="fnode.description">
-									<div  class='footer-text' innerHtml='{{fnode.description}}' >
-									</div>
-								</ng-container>
-							</div>
-						</ng-container>
-
-					</div>
-
-		  	</div>
-			</div>
 		</div>
 
 	</mat-card-content>

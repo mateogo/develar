@@ -83,7 +83,7 @@ const subCardCategory = {
 const cardTypes: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'ficha',          label: 'Ficha',              slug:'Ficha principal' },
-		{val: 'post',           label: 'Nota/Posteo',        slug:'Nota  Post' },
+		{val: 'post',           label: 'Nota',               slug:'Nota  Post' },
 		{val: 'vital',          label: 'Ficha Vital',        slug:'Ficha Curriculum' },
 		{val: 'propuesta',      label: 'Proposal',           slug:'Propuesta comercial' },
 		{val: 'proyecto',       label: 'Proyecto',           slug:'Proyecto' },
@@ -149,6 +149,8 @@ const cardCategory = {
 
 	post: [
 		{val: 'no_definido', 	 label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val: 'accion',        label: 'Acción territorial', slug:'Acción territorial' },
+		{val: 'agenda',        label: 'Agenda',             slug:'Agenda' },
 		{val: 'politica',      label: 'Política',           slug:'Política' },
 		{val: 'derechos',      label: 'Derechos Humanos',   slug:'Derechos Humanos' },
 		{val: 'internacional', label: 'Internacional',      slug:'Internacional' },
