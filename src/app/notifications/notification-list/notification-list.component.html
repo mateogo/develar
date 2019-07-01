@@ -1,0 +1,37 @@
+<mat-card>
+	<mat-card-header>
+		<div class="d-flex flex-row justify-content-end align-items-center toggle-panel">
+		<mat-button-toggle-group>
+		  <mat-button-toggle class="toggle-button" 
+		      (click)="justInbox($event)"
+		      title="Solo recibidos" >
+		         <span><i [class]="toggleInbox ? 'fas fa-inbox' : 'fas fa-inbox'"
+		          aria-hidden="true"></i></span>
+
+		  </mat-button-toggle>
+		  <mat-button-toggle class="toggle-button" 
+		      (click)="justSent($event)" 
+		      [checked]="true" 
+		      title="Solo enviados" >
+	         <span><i [class]="toggleSent ? 'fas fa-shipping-fast' : 'fas fa-sign-out-alt'"
+		          aria-hidden="true"></i></span>
+		  </mat-button-toggle>
+		  <mat-button-toggle class="toggle-button"  
+		      (click)="justImportant($event)"
+		      title="Solo importantes" >
+		        <span><i [class]="toggleImportant ? 'fas fa-exclamation-circle' : 'fas fa-exclamation'"
+		          aria-hidden="true"></i></span>
+		  </mat-button-toggle>
+		</mat-button-toggle-group>
+		</div>
+	</mat-card-header>
+
+	<mat-card-content>
+	<ng-container *ngFor="let item of conversationList" >
+		<notification-base 
+				[conversationToken]='item'
+				(actionTriggered)="triggerAction($event)" ></notification-base>
+	</ng-container>
+
+	</mat-card-content>
+</mat-card>

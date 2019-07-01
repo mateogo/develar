@@ -24,7 +24,7 @@ function buildNewMessage(token: MessageToken , user: User, actors: Actor[], cont
   token.folder = 'sent';
   token.importance = 2;
   token.isPinned = false;
-  token.slug = token.content.substr(1,30);
+  token.slug = token.content.substr(1,150);
   token.type = "message";
   token.topic = 'info';
   token.fe = Date.now();
@@ -43,7 +43,7 @@ function initMessageAnswer(token: MessageToken , user: User, actors: Actor[] ): 
   token.isArchive = false;
   token.isInInbox = true;
   token.folder = 'sent';
-  token.slug = token.content.substr(1,30);
+  token.slug = token.content.substr(1,150);
   token.fe = Date.now();
   token.fe_expir = token.fe;
   token.actors = actors;
@@ -56,18 +56,20 @@ export class NotificationController {
 
   private readonly recordtype = 'notification'
 
-  private message: MessageToken;
   private messageId;
+  private message: MessageToken;
   private emitMessage = new Subject<MessageToken>();
 
-  private usrconv: UserConversation;
   private usrconvId;
+  private usrconv: UserConversation;
   private emitUserconv = new Subject<UserConversation>();
 
-  private cnvrstn: Conversation;
-  private cnvrstnList: Array<MessageToPrint>;
   private cnvrstnId;
+  private cnvrstn: Conversation;
+  
   private emitCnvrstn = new Subject<MessageToPrint[]>();
+  private cnvrstnList: Array<MessageToPrint>;
+
 
   private cnvrstnContext: ConversationContext;
 
@@ -90,11 +92,17 @@ export class NotificationController {
 		private userService: UserService,
 		) {}
 
-  // INIT USER CONVERSATION
+
+  /*************************/
+  /*  USER CONVERSATION   */
+  /***********************/
+
   get userconversationListener():Subject<UserConversation>{
     return this.emitUserconv;
   }
 
+
+  // Repone una userConversation  by entity o by id; Emite resultado
   initUserConversation(entity: UserConversation, entityId: string){
     console.log('notification initMessage');
     if(entity){
@@ -102,7 +110,7 @@ export class NotificationController {
       this.emitMessageConversationToken();
 
     }else if(entityId){
-      this.findById(this.recordtype, entityId);
+      this.findUserConversationById(entityId);
 
     }else{
       this.initNewUserConversation()
@@ -119,32 +127,13 @@ export class NotificationController {
     this.emitUserconv.next(this.usrconv);
     this.buildMessageTokenFromConversation(this.usrconv);
   }
-  /// END
 
-
-
-  // INIT CONVERSATION CONTENT
-  get conversationListener():Subject<MessageToPrint[]>{
-    return this.emitCnvrstn;
-  }
-  get currentConversation():Conversation{
-    return this.cnvrstn;
-  }
-
-  buildMessageListFromConversation(conv: Conversation){
-    console.log('build message conversation BEGIN')
-    this.cnvrstn = conv;
-    this.cnvrstnList = notificationModel.buildMessageListFromConversation(conv);
-    this.emitConversationToken();
-  }
-
-	initConversationList(conversationId: string){
-		console.log('initConversationList');
-
-    this.daoService.findById<Conversation>(this.recordtype, conversationId)
-      .then((response: Conversation) => {
+  private findUserConversationById(modelId: string):Promise<UserConversation>{
+    return this.daoService.findEntityById<UserConversation>(this.recordtype,'userconversation', modelId)
+      .then((response: UserConversation) => {
         if(response){
-          this.buildMessageListFromConversation(response);
+          this.usrconv = response;
+          this.emitMessageConversationToken();
           return response;
         }
       })
@@ -152,147 +141,137 @@ export class NotificationController {
         console.log(err);
         return err;
       });
-	}
-
-  private emitConversationToken(){
-    this.emitCnvrstn.next(this.cnvrstnList)
   }
+  /// END Repone una userConversation
 
-  // INIT MESSAGE TOKEN
-  get messageListener():Subject<MessageToken>{
-    return this.emitMessage;
-  }
-
-  buildMessageTokenFromConversation(usrc: UserConversation){
-    console.log('build message conversation BEGIN')
-    this.message = notificationModel.buildMessageFromConversation(usrc);
-    this.messageId = this.message._id;
-    this.emitMessageToken();
-  }
-
-  initMessageEdit(message: MessageToken, messageId: string){
-    console.log('notification initMessage');
-    if(message){
-      this.message = message;
-      this.emitMessageToken();
-
-    }else if(messageId){
-      this.findById(this.recordtype, messageId);
-
-    }else{
-      this.initNewMessage()
+  searchByContent(token): Observable<UserConversation[]>{
+    if(!(token && token.trim())){
+      return of([] as UserConversation[]);
     }
+
+    let query = {
+      content: token,
+      userId: this.userService.currentUser._id
+    }
+
+    this.addContextDataToQuery(query, this.cnvrstnContext);
+
+    return this.daoService.search<UserConversation>(this.recordtype, query)
   }
 
-  private initNewMessage(){
-    this.message = notificationModel.initNewMessageToken({content: ''});
-    console.log('initNewMessage [%s]', this.message.content);
-    this.emitMessageToken();
-  }
-
-  private emitMessageToken(){
-    this.emitMessage.next(this.message)
-
-  }
-
-  cancelMessageEditing(){
-    this.initNewMessage();
-  }
-
-
-  //// END
-
-
-  findById(type:string, modelId: string):Promise<MessageToken>{
-    return this.daoService.findById<MessageToken>('message', modelId)
-      .then((response: MessageToken) => {
-        if(response){
-          this.message = response;
-          this.emitMessageToken();
-        }
-        return response
-
-      })
-      .catch(err => {
-        console.log(err);
-        return err;
-      });
-  }
-
-
-  buildActorList(userList: Array<User>){
-		let actors:Array<Actor> = [];
-		let cuser = this.userService.currentUser;
-
-		actors.push( this.buildActorData(cuser._id, cuser.username, cuser.email, 'from'));
-		userList.forEach(user => {
-			actors.push(this.buildActorData(user._id, user.username, user.email, 'to'));
-		})
-		return actors;
-  }
-
-  buildActorData(id, username, email, role){
-  	let actor = {
-			userId: id,
-			username: username,
-			usermail: email,
-			role: role
-  	}
-  	return actor;
-  }
-
-  saveMessageToken(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-    if(message.isNewConversation) this.saveNewMessage(message, actors, context);
-    else this.updateMessage(message, actors, context);
-  }
-
-  saveNewMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-      console.log('save NEW message')
-  	this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
-  	this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
-  		console.log('iajuuuuuuu......');
-  		this.initNewMessage();
-  	})
-  }
-
-  updateMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-      console.log('update EXISTING message')
-    this.message = initMessageAnswer(message, this.userService.currentUser, actors);
-    this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
-      console.log('iajuuuuuuu......');
-      this.initNewMessage();
-    })
-  }
-
-  cloneItemRecord(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-      this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
-      return this.daoService.create<MessageToken>(this.recordtype, this.message).then((model) =>{
-              this.openSnackBar('Grabación nuevo registro exitoso id: ' + model._id, 'cerrar');
-              return model;
-            });
-  }
-
-  /**********************************
-    Table Browse: UserConversation
-  **********************************/
   findByQuery<T>(type:string, query: any){
     return this.daoService.search<UserConversation>(type, query);
   }
 
-  addContextDataToQuery(query: any, context: ConversationContext){
-    if(!query) query = {};
+  fetchUserConversations(context: ConversationContext, restrict?: any){
+    console.log('fetchUserConversation CONTROLLER BEGIN')
+    let query = {};
 
-    if(context){
-      if(context.personId){
-          query['personId'] = context.personId;
-      }
+    this.cnvrstnContext = context;
 
-      if(context.asistenciaId){
-          query['asistenciaId'] = context.asistenciaId;
-      }
+    if(this.userService.currentUser._id){
+      query['userId'] = this.userService.currentUser._id;
     }
 
-    return query;
+    this.addContextDataToQuery(query, context);
+
+
+    this.fetchUserConversationByQuery<UserConversation>(this.recordtype, 'userconversation', query, restrict);
+  }
+
+  private fetchUserConversationByQuery<T>(type:string, url:string, query: any, restrict?: any){
+
+    this.daoService.fetch<UserConversation>(type, url, query).subscribe(list => {
+      console.log('Fetch UserConversationByQuery [%s]', list && list.length);
+
+      this.userconversationList = this.restrictList(list, restrict);
+      this.updateTableData();
+    })
+  }
+
+  private restrictList(list: UserConversation[], restrict: any): UserConversation[]{
+    if(restrict && !restrict.clean){
+
+      list = list.filter((t, i)=>{
+        let verify = true;
+        if(restrict.inbox){
+          verify = verify && ( t.folder === "inbox");
+        }
+
+        if(restrict.sent){
+          verify = verify && ( t.folder === "sent");
+        }
+
+        console.log('important[%s] Importance[%s]', restrict.important, t.importance)
+        if(restrict.important){
+          verify = verify && ( t.importance > 2);
+        }
+
+        return verify;
+      });
+    }
+
+    return list;
+  }
+
+  // TABLE LIST DATA
+  private updateTableData(){
+    let tableData = notificationModel.buildTableFromUserConversation(this.userconversationList);
+    this.emitConversationTable.next(tableData);
+  }
+
+
+
+  /*************************/
+  /*  MessageToPrint      */
+  /***********************/
+
+  get conversationListener():Subject<MessageToPrint[]>{
+    return this.emitCnvrstn;
+  }
+
+  buildMessageListFromConversation(conv: Conversation){
+    console.log('build message conversation BEGIN')
+    this.cnvrstn = conv;
+
+    //MessageToPrint[]
+    this.cnvrstnList = notificationModel.buildMessageListFromConversation(conv);
+    this.emitConversationToken();
+  }
+
+  //emits MessageToPrint[]
+  private emitConversationToken(){
+    this.emitCnvrstn.next(this.cnvrstnList)
+  }
+
+
+  /*************************/
+  /*  Conversation      */
+  /***********************/
+  get currentConversation():Conversation{
+    return this.cnvrstn;
+  }
+
+
+  // Repone una conversation list
+	initConversationList(conversationId: string){
+    this.daoService.findById<Conversation>(this.recordtype, conversationId)
+      .then((response: Conversation) => {
+        if(response){
+          this.buildMessageListFromConversation(response);
+        }
+        return response;
+      });
+	}
+
+  findConversationById(modelId: string):Promise<Conversation>{
+    return this.daoService.findById<Conversation>(this.recordtype, modelId)
+      .then((response: Conversation) => {
+        if(response){
+          this.cnvrstn = response;
+        }
+        return response
+      });
   }
 
   fetchConversations(context: ConversationContext){
@@ -314,47 +293,101 @@ export class NotificationController {
       this.buildTableDataFromConversation();
     })
 
-    this.fetchByQuery<Conversation>(this.recordtype, 'conversation', query);
+    //this.fetchByQuery<Conversation>(this.recordtype, 'conversation', query);
   }
 
-  buildTableDataFromConversation(){
+  private buildTableDataFromConversation(){
     let tableData = notificationModel.buildTableFromConversation(this.conversationList);
     this.emitConversationTable.next(tableData);
   }
 
 
-  fetchUserConversations(context: ConversationContext){
-    let query = {};
-
-    this.cnvrstnContext = context;
-
-    if(this.userService.currentUser._id){
-      query['userId'] = this.userService.currentUser._id;
-    }
-
-    this.addContextDataToQuery(query, context);
 
 
-    this.fetchByQuery<UserConversation>(this.recordtype, 'userconversation', query);
+  /*************************/
+  /*  MessageToken        */
+  /***********************/
+  get messageListener():Subject<MessageToken>{
+    return this.emitMessage;
   }
 
+  initMessageEdit(message: MessageToken){
+    console.log('notification initMessage');
+    if(message){
+      this.message = message;
+      this.emitMessageToken();
 
-  fetchByQuery<T>(type:string, url:string, query: any){
+      // }else if(messageId){
+      //   //????
+      //this.findById(this.recordtype, messageId);
 
-    this.daoService.fetch<UserConversation>(type, url, query).subscribe(list => {
-      console.log('Fetch UserConversationByQuery [%s]', list && list.length);
-      console.dir(query);
+    }else{
+      this.initNewMessage()
+    }
+  }
 
-      this.userconversationList = list;
-      this.updateTableData();
+  private buildMessageTokenFromConversation(usrc: UserConversation){
+    console.log('build message conversation BEGIN')
+    this.message = notificationModel.buildMessageFromConversation(usrc);
+    this.messageId = this.message._id;
+    this.emitMessageToken();
+  }
+
+  private initNewMessage(){
+    this.message = notificationModel.initNewMessageToken({content: ''});
+    console.log('initNewMessage [%s]', this.message.content);
+    this.emitMessageToken();
+  }
+
+  private emitMessageToken(){
+    //Subject<MessageToken>
+    this.emitMessage.next(this.message)
+  }
+
+  cancelMessageEditing(){
+    this.initNewMessage();
+  }
+
+  saveMessageToken(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+    if(message.isNewConversation) this.saveNewMessage(message, actors, context);
+    else this.updateMessage(message, actors, context);
+  }
+
+  saveNewMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+      console.log('save NEW message')
+    this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
+    this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
+      console.log('iajuuuuuuu......');
+      this.initNewMessage();
     })
   }
 
-  updateTableData(){
-    let tableData = notificationModel.buildTableFromUserConversation(this.userconversationList);
-    this.emitConversationTable.next(tableData);
+  updateMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+      console.log('update EXISTING message')
+    this.message = initMessageAnswer(message, this.userService.currentUser, actors);
+    this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
+      console.log('iajuuuuuuu......');
+      this.initNewMessage();
+    })
   }
 
+  cloneItemRecord(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
+      this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
+      return this.daoService.create<MessageToken>(this.recordtype, this.message).then((model) =>{
+              this.openSnackBar('Grabación nuevo registro exitoso id: ' + model._id, 'cerrar');
+              return model;
+            });
+  }
+
+
+  /*************************/
+  /*  Utils               */
+  /***********************/
+
+
+  /**********************************
+    Table Browse: UserConversation
+  **********************************/
 
   get tableDataSource(): BehaviorSubject<ConversationTable[]>{
     return this.emitConversationTable;
@@ -392,7 +425,7 @@ export class NotificationController {
     return list;
   }
 
-  filterSelectedList():UserConversation[]{
+  private filterSelectedList():UserConversation[]{
     let list: UserConversation[];
     let selected = this.selectionModel.selected as any;
     console.log('filterSelectedList: [%s]', this.userconversationList.length);
@@ -405,9 +438,49 @@ export class NotificationController {
     return list;
   }
   
+
   /*****************
     Utils
   *****************/
+
+  addContextDataToQuery(query: any, context: ConversationContext){
+    if(!query) query = {};
+
+    if(context){
+      if(context.personId){
+          query['personId'] = context.personId;
+      }
+
+      if(context.asistenciaId){
+          query['asistenciaId'] = context.asistenciaId;
+      }
+    }
+
+    return query;
+  }
+
+
+  buildActorList(userList: Array<User>){
+    let actors:Array<Actor> = [];
+    let cuser = this.userService.currentUser;
+
+    actors.push( this.buildActorData(cuser._id, cuser.username, cuser.email, 'from'));
+    userList.forEach(user => {
+      actors.push(this.buildActorData(user._id, user.username, user.email, 'to'));
+    })
+    return actors;
+  }
+
+  buildActorData(id, username, email, role){
+    let actor = {
+      userId: id,
+      username: username,
+      usermail: email,
+      role: role
+    }
+    return actor;
+  }
+
   openSnackBar(message: string, action: string) {
     let snck = this.snackBar.open(message, action, {
       duration: 3000,
@@ -438,22 +511,5 @@ export class NotificationController {
     return this.userService.socket;
   }
 
-  /*****************
-    Search
-  *****************/
-  searchByContent(token): Observable<UserConversation[]>{
-    if(!(token && token.trim())){
-      return of([] as UserConversation[]);
-    }
-
-    let query = {
-      content: token,
-      userId: this.userService.currentUser._id
-    }
-
-    this.addContextDataToQuery(query, this.cnvrstnContext);
-
-    return this.daoService.search<UserConversation>(this.recordtype, query)
-  }
 
 }

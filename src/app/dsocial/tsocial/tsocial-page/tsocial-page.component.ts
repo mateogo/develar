@@ -60,6 +60,7 @@ export class TsocialPageComponent implements OnInit {
   //public contactData = new PersonContactData();
 
   public hasCurrentPerson = false;
+  private hasPersonIdOnURL = true;
   public personFound = false;
   public altaPersona = false;
   private personId: string;
@@ -80,6 +81,9 @@ export class TsocialPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
+    if(!this.personId){
+      this.hasPersonIdOnURL = false;
+    }
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
@@ -96,31 +100,36 @@ export class TsocialPageComponent implements OnInit {
 
 
   initCurrentPage(){
+    console.log('TSocial PAGE INIT')
+    console.log('Turno:[%s]',  this.dsCtrl.activeTurno);
+
     this.dsCtrl.personListener.subscribe(p => {
       console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
 
-
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
-    
-    if(this.dsCtrl.activePerson && this.personId){
-      if(this.dsCtrl.activePerson._id !== this.personId){
-        this.loadPerson(this.personId);
 
-      }else{
-        //this.initCurrentPerson(this.dsCtrl.activePerson);
+    if(!this.personId){
+      if(this.dsCtrl.activePerson){
+        this.personId = this.dsCtrl.activePerson._id;
+
+      } else {
+        //ooops: no active Perso
+        this.navigateToRecepcion()
       }
-    }
 
-    if(!this.dsCtrl.activePerson && this.personId){
+    } else {
+      if(!this.dsCtrl.activePerson || this.dsCtrl.activePerson._id !== this.personId){
         this.loadPerson(this.personId);
+
+      } else {
+        this.initCurrentPerson(this.dsCtrl.activePerson);
+
+      }
+
     }
-
-
-    console.log('TSocial PAGE INIT')
-    console.log('Turno:[%s]',  this.dsCtrl.activeTurno);
   }
 
   initCurrentPerson(p: Person){
@@ -249,8 +258,14 @@ export class TsocialPageComponent implements OnInit {
     if(event.action === NAVIGATE){
       console.log('Sol Asistencia BUBBLED to NAVIGATE')
 
-      this.router.navigate(['../../', this.dsCtrl.atencionRoute('seguimiento'), 
-         this.personId], {relativeTo: this.route});   
+      if(this.hasPersonIdOnURL){
+        this.router.navigate(['../../', this.dsCtrl.atencionRoute('seguimiento'), 
+           this.personId], {relativeTo: this.route});
+
+      }else{
+        this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento'), 
+           this.personId], {relativeTo: this.route});
+      }
      }
 
   }
@@ -288,8 +303,13 @@ export class TsocialPageComponent implements OnInit {
   /**********************/
   /*      Turnos        */
   /**********************/
-  nuevoTurno(sector: SectorAtencion){
+  navigateToRecepcion(){
+    this.router.navigate(['../../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
 
+  }
+
+
+  nuevoTurno(sector: SectorAtencion){
   }
 
   actionEvent(taction:TurnoAction){

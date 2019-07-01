@@ -13,11 +13,12 @@ import { Actor, Conversation, MessageToPrint } from '../notification.model';
 export class NotificationConversationComponent implements OnInit {
 	@Input() conversationListener: Observable<string>;
 
-	public messages: MessageToPrint[] = [];
+	public  messages: MessageToPrint[] = [];
   private conversationSlug = "detalle de conversación";
   private conversation: Conversation;
-  public openDetail = false;
+  public  openDetail = false;
   private conversationId: string;
+  public toggleIcon = false;
 
   constructor(
     public notifCtrl: NotificationController
@@ -27,8 +28,6 @@ export class NotificationConversationComponent implements OnInit {
 
   ngOnInit() {
     console.log('conversation componente INIT')
-
-
 
   	this.notifCtrl.conversationListener.subscribe(list => {
   		this.initConversationRender(list);
@@ -43,12 +42,12 @@ export class NotificationConversationComponent implements OnInit {
   }
 
   initConversationRender(msjList: MessageToPrint[]){
-    console.log('initConversationRender: [%s]', msjList.length);
     if(msjList && msjList.length){
       this.conversation = this.notifCtrl.currentConversation;
-      this.conversationSlug = this.conversation.slug;
+      this.conversationSlug = this.conversation.content ;
       this.messages = msjList;
       this.openDetail = true;
+      console.log('initConversationRender: [%s]', msjList.length, this.conversation.slug);
     }else{
       this.openDetail = false;
     }

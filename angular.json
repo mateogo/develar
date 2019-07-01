@@ -21,10 +21,7 @@
               "src/assets/img/favicon.ico"
             ],
             "styles": [
-              "src/assets/css/fontawesome-all.css",
-              "src/assets/css/fa-regular.css",
-              "src/assets/css/fa-solid.css",
-              "src/assets/css/fa-brands.css",
+              "src/assets/css/all.css",
               "src/assets/sass/bootstrap.scss",
               "src/assets/sass/loader.scss",
               "src/assets/sass/custom-material-theme.scss",
@@ -87,10 +84,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/assets/css/fontawesome-all.css",
-              "src/assets/css/fa-regular.css",
-              "src/assets/css/fa-solid.css",
-              "src/assets/css/fa-brands.css",
+              "src/assets/css/all.css",
               "src/assets/sass/bootstrap.scss",
               "src/assets/sass/loader.scss",
               "src/assets/sass/custom-material-theme.scss",

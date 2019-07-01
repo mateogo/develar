@@ -115,14 +115,17 @@ const contextSch = new Schema({
 
 
 const   conversationSch = new Schema({
-  content:   {type: String, required: true },
   creatorId: {type: String, required: true },
-  slug:      {type: String, required: true },
+
+  content:   {type: String, required: true },
   context:   {type: contextSch, required: false},
   fe:        {type: Number, required: true },
+
+  slug:      {type: String, required: true },
   ts_server: {type: Number, required: false },
   type:      {type: String, required: false },
   topic:     {type: String, required: false },
+
   fe_expir:  {type: Number, required: false },
   isArchive: {type: Boolean, required: false },
   messages:  {type: [messageTokenSch], required: true },
@@ -131,19 +134,22 @@ const   conversationSch = new Schema({
 
 const userConversationSch = new Schema({
   conversationId: {type: String, required: true},
-  context:        {type: contextSch, required: false},
-  last_message:   {type: messageTokenSch, required: true},
   userId:         {type: String,  required: true},
+
+  content:        {type: String,  required: true},
+  context:        {type: contextSch, required: false},
+  fe:             {type: Number,  required: false},
+
+  last_message:   {type: messageTokenSch, required: true},
   role:           {type: String,  required: true},
   hasRead:        {type: Boolean, required: true},
-  isArchive:      {type: Boolean, required: true},
   isInInbox:      {type: Boolean, required: true},
   folder:         {type: String,  required: true},
   importance:     {type: Number,  required: true},
   isPinned:       {type: Boolean, required: false},
+
   fe_expir:       {type: Number,  required: false},
-  fe:             {type: Number,  required: false},
-  content:        {type: String,  required: true},
+  isArchive:      {type: Boolean, required: true},
 });
 
 
@@ -240,6 +246,27 @@ exports.findById = function (id, errcb, cb) {
     Conversation.findById(id, function(err, entity) {
         if (err){
             console.log('[%s] Conversation findByID ERROR() argument [%s]', whoami, arguments.length);
+            err.itsme = whoami;
+            errcb(err);
+        
+        }else{
+            cb(entity);
+        }
+    });
+
+};
+
+/**
+ * find by ID
+ * @param id
+ * @param cb
+ * @param errcb
+ */
+exports.findUserConversationById = function (id, errcb, cb) {
+
+    UserConversation.findById(id, function(err, entity) {
+        if (err){
+            console.log('[%s] UserConversation findByID ERROR() argument [%s]', whoami, arguments.length);
             err.itsme = whoami;
             errcb(err);
         

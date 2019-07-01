@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, Output, HostListener, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router, ActivatedRoute }            from '@angular/router';
 
 import { Subject ,  Observable ,  BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
 
 
 import { DaoService } from '../../develar-commons/dao.service';
@@ -15,20 +13,18 @@ import { UserConversation, ConversationContext, MessageToken, Actor, notificatio
 
 import { NotificationController } from '../notification.controller';
 
-
-
 @Component({
-  selector: 'notification-create',
-  templateUrl: './notification-create.component.html',
-  styleUrls: ['./notification-create.component.scss']
+  selector: 'notification-edit',
+  templateUrl: './notification-edit.component.html',
+  styleUrls: ['./notification-edit.component.scss']
 })
-export class NotificationCreateComponent implements OnInit {
+export class NotificationEditComponent implements OnInit {
   @Input()
-  set model(entity: MessageToken){
-    this._model = entity;
+  set messageToken(entity: MessageToken){
+    this._messageToken = entity;
   }
-  get model(){
-    return this._model;
+  get messageToken(){
+    return this._messageToken;
   }
 
   @Input()
@@ -39,7 +35,7 @@ export class NotificationCreateComponent implements OnInit {
 
   @Output() messageUpdated = new EventEmitter<MessageToken>();
 
-  private _model: MessageToken
+  private _messageToken: MessageToken
   private actors: Array<Actor> = []
 
 	private userList: Array<User> = [];
@@ -56,7 +52,6 @@ export class NotificationCreateComponent implements OnInit {
   private messageActionLabel = "nuevo mensaje";
 
   private searchTerms = new Subject<string>();
-  public fetchedEntities: Observable<UserConversation[]>;
 
   private showConversation = false;
   private conversationId: string = "";
@@ -78,8 +73,6 @@ export class NotificationCreateComponent implements OnInit {
 
   constructor(
   	private fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute,
     public notifCtrl: NotificationController
   	) { 
 
@@ -91,19 +84,13 @@ export class NotificationCreateComponent implements OnInit {
 
   ngOnInit() {
 
-    this.fetchedEntities = this.searchTerms.pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap(term => this.notifCtrl.searchByContent(term))
-      )
-
   	this.notifCtrl.messageListener.subscribe(model => {
   		this.initEditorData(model);
   		this.formReset(model);
 
   	})
 
-    this.notifCtrl.initMessageEdit(this._model);
+    this.notifCtrl.initMessageEdit(this.messageToken);
   }
 
   formReset(model:MessageToken){
@@ -130,7 +117,7 @@ export class NotificationCreateComponent implements OnInit {
     this.meContent = "";
 
     if(!this.message.isNewConversation){
-      this.messageActionLabel =  '<strong>'+ entity.fetxt + ' </strong> ' + this.message.content;
+      this.messageActionLabel =  '<strong>'+ 'Emitir nuevo mensaje/ notificación: ' + ' </strong> ' + this.message.content;
       console.log('showConversation: [%s]', this.message.conversationId);
       this.conversationId = this.message.conversationId;
       this.conversationEmitter.next(this.conversationId);

@@ -1,0 +1,54 @@
+	<div class="row">
+	<div class="col-sm-12 col-md-12">
+	  	<div class="d-flex justify-content-between panel-header">
+	  		<div>
+	 	  		<span class="text-item">{{ conversationToken.fetxt }} </span>
+	 	  		<span class="text-item"><strong>Emisor: </strong>{{ conversationToken.from }}</span>
+	 	  		<span class="text-item"><strong>Para: </strong>{{ conversationToken.to }}</span>
+ 	  		<br>
+	  		</div>
+
+			<div class="panel-header-control" ><span 
+				(click)='verDetalle()' title="Ver detalle">
+				<i [class]="openView ? 'far fa-envelope-open' : 'far fa-envelope'"
+					aria-hidden="true"></i></span>
+			</div>
+	  	</div>
+
+	  	<!-- p >
+	  		<span> leido: {{ conversationToken.hasRead }}</span>
+	  		<span> archivado: {{ conversationToken.isArchive }}</span>
+	  		<span> enInbox?: {{ conversationToken.isInInbox }}</span>
+	  		<span> Importancia: {{ conversationToken.importance }}</span>
+	  		<span> Pinned: {{ conversationToken.isPinned }}</span>
+	  		<span> Expira: {{ conversationToken.fe_expir }}</span>
+
+	  	</p -->
+	  </div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+	  	<div class="d-flex justify-content-between panel-header-text">
+	  		<p innerHTML="{{ displayMessage() }}" ></p>
+
+	  	</div>
+	  </div>
+</div>
+
+<ng-container *ngIf='showConversation'>
+  <conversation-detail [conversationListener]='conversationEmitter'></conversation-detail>
+
+</ng-container>
+
+<ng-container *ngIf='showEditor'>
+	<notification-edit 
+		[context]="context"
+		[openeditor]='_openEditor'
+		(messageUpdated)='messageUpdated($event)'></notification-edit>
+
+</ng-container>
+
+
+
+<hr>

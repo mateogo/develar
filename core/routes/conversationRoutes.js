@@ -78,6 +78,20 @@ router.get('/userconversation', function (req, res) {
 
 
 /**
+ * fetch user-conversation documents
+ */
+router.get('/userconversation/:id', function (req, res) {
+    service.findUserConversationById(req.params.id, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+/**
  * Retrieve Entity by ID
  */
 router.get('/:id', function (req, res) {

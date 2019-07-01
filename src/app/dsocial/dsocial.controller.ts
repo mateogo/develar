@@ -692,6 +692,9 @@ export class DsocialController {
       }else if (sector === 'seguimiento'){
         return SEGUIMIENTO_ROUTE;
 
+      }else if (sector === 'recepcion'){
+        return ATTENTION_ROUTE;
+
       }else {
         return ATTENTION_ROUTE;
       }

@@ -101,16 +101,16 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
   public selection = new SelectionModel<ConversationTable>(true, []);
 
   constructor(
-  		private notificationCtrl: NotificationController,
+  		private notifCtrl: NotificationController,
 			public dialogService: MatDialog
     ){
-    this.dataRecordsSource = this.notificationCtrl.tableDataSource;
+    this.dataRecordsSource = this.notifCtrl.tableDataSource;
   }
 
   ngOnInit(){
     this.dataSource = new ConversationDataSource(this.dataRecordsSource, this.paginator, this.sort)
-    this.notificationCtrl.selectionModel = this.selection;
-    this.actionList = this.notificationCtrl.tableActions;
+    this.notifCtrl.selectionModel = this.selection;
+    this.actionList = this.notifCtrl.tableActions;
 
     this.displayedColumns.forEach(elem =>{
       this.table_columns_sel[elem] = true;
@@ -122,7 +122,7 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
 
     //load records
     //console.log('notification-browse fetch users')
-    //this.notificationCtrl.fetchUserConversations(null);
+    //this.notifCtrl.fetchUserConversations(null);
   }
 
   ngOnChanges(){
@@ -148,7 +148,7 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
     console.log('open Editor. Click [%s] [%s]', item._id, item.slug);
     item.editflds[col] = item.editflds[col] > 1 ? 0 : item.editflds[col] + 1
     item.total = item.pu * item.qt;
-    this.notificationCtrl.updateEditedDataInTable(item);
+    this.notifCtrl.updateEditedDataInTable(item);
   }
 
   changeAction(action: MatSelectChange){

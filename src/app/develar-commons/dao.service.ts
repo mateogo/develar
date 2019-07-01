@@ -116,7 +116,8 @@ export class DaoService {
       notification:{
         backendURL: 'api/conversations',
         searchURL:  'api/conversations/search',
-        emitnotificationURL: 'api/conversations/emitnotification'
+        emitnotificationURL: 'api/conversations/emitnotification',
+        userconversation:  'api/conversations/userconversation'
       },
       person:{
         backendURL: 'api/persons',
@@ -137,6 +138,15 @@ export class DaoService {
 
   findById<T>(type: string, id: string): Promise<T> {
     let url = `${this.dao[type].backendURL}/${id}`;
+
+    return this.http.get(url)
+        .toPromise()
+        .catch(this.handleError);
+  }
+
+  findEntityById<T>(type: string, entity:string, id: string): Promise<T> {
+    console.log('findEntityByID')
+    let url = `${this.dao[type][entity]}/${id}`;
 
     return this.http.get(url)
         .toPromise()

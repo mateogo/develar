@@ -34,11 +34,12 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   private conversations: UserConversation[] = [];
 
   public showTable = false;
+  public showEditor = false;
   public context: ConversationContext;
 
 
   constructor(
-      private notificationCtrl: NotificationController,
+      private notifCtrl: NotificationController,
       private router: Router
     ) { }
 
@@ -55,13 +56,13 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   ngOnInit() {
     console.log('NOTIFICATION-MANAGE INIT ***************+')
 
-    this._modelSbscrptn = this.notificationCtrl.userconversationListener.subscribe(entity =>{
+    this._modelSbscrptn = this.notifCtrl.userconversationListener.subscribe(entity =>{
       this.initEntityData(entity);
       this.userconver = entity;
     })
 
 
-    this.notificationCtrl.initUserConversation(this.userconver, this.userconverId);
+    this.notifCtrl.initUserConversation(this.userconver, this.userconverId);
 
     if(this.context$){
       this.context$.subscribe(data =>{
@@ -82,7 +83,7 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   updateTableList(){
     console.log('fetch Userconversations!!!!')
-    this.notificationCtrl.fetchUserConversations(this.context);
+    this.notifCtrl.fetchUserConversations(this.context);
     setTimeout(()=>{this.showTable = true;}, 1000);
   }
 
@@ -101,17 +102,17 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   //   }else{
   //     this.initToSave()
-  //     this.notificationCtrl.saveNewMessage(target, actors);
+  //     this.notifCtrl.saveNewMessage(target, actors);
   //   }
   // }
 
   //saveMany(target){
-    // let base = this.notificationCtrl.actualNewData(this.userconver);
+    // let base = this.notifCtrl.actualNewData(this.userconver);
     // delete base['_id'];
 
     // this.userconverEditList.forEach(token =>{
     //   console.log('forEach: [%s] [%s]', token.slug, token._id);
-    //   token = this.notificationCtrl.updateCommonData(token, base);
+    //   token = this.notifCtrl.updateCommonData(token, base);
     //   //this.userconver = token;
     //   this.saveToken(token)
     // });
@@ -119,18 +120,18 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   //}
 
   // saveToken(entity: MessageToken, actor){
-  //   this.notificationCtrl.updateMessage(entity, actor);
+  //   this.notifCtrl.updateMessage(entity, actor);
   // }
   // saveNew(entity: MessageToken, actor){
   //   this.initToSave()
-  //   this.notificationCtrl.cloneItemRecord(entity, actor).then(entity =>{
+  //   this.notifCtrl.cloneItemRecord(entity, actor).then(entity =>{
   //     //this.userconverId = entity._id;
-  //     //this.notificationCtrl.initUserConversation(entity, entity._id);
+  //     //this.notifCtrl.initUserConversation(entity, entity._id);
   //   });
   // }
 
   resetEditMany(){
-    this.notificationCtrl.initUserConversation(this.userconver, this.userconver._id)
+    this.notifCtrl.initUserConversation(this.userconver, this.userconver._id)
     this._editMany = false;
     this.userconverEditList = [];
   }
@@ -156,7 +157,7 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   editTableSelectedEntityList(){
     console.log('editSelected**************')
-    this.userconverEditList = this.notificationCtrl.fetchSelectedList();
+    this.userconverEditList = this.notifCtrl.fetchSelectedList();
     this.editMany();
   }
 
@@ -171,7 +172,7 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
     }else{
       this._editorTitle = title;
     }
-    this.notificationCtrl.changePageTitle(this._editorTitle);
+    this.notifCtrl.changePageTitle(this._editorTitle);
   }
 
   editMany(){
@@ -179,16 +180,16 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
     this._editMany = false;
     if(!this.userconverEditList || !this.userconverEditList.length) return;
     let usrconv = this.userconverEditList[0];
-    this.notificationCtrl.initUserConversation(usrconv, usrconv._id);
+    this.notifCtrl.initUserConversation(usrconv, usrconv._id);
 
 
 
     // this._editMany = this.userconverEditList.length > 1 ? true : false;
 
-    // this.userconver = this.notificationCtrl.buildCommonData(this.userconverEditList);
+    // this.userconver = this.notifCtrl.buildCommonData(this.userconverEditList);
     // this.userconverId = this.userconver._id;
 
-    // this.notificationCtrl.initController(this.userconver, this.userconverId);
+    // this.notifCtrl.initController(this.userconver, this.userconverId);
     // this.openEditor();
   }
 
@@ -199,7 +200,7 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
   volver(target:string ){
     if(target === "public"){
-      this.router.navigate(['/' + this.notificationCtrl.currentPublicUrl()]);
+      this.router.navigate(['/' + this.notifCtrl.currentPublicUrl()]);
 
 
     }

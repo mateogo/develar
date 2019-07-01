@@ -1,0 +1,39 @@
+.conversation-detail {
+	font-size: 1.2em;
+}
+
+// .panel-header-control {
+// 		margin: 0 35px 0 0;
+// 		font-weight: 400;
+// 		font-size: 1.4rem;
+// 		text-align: right;
+// }
+
+
+.toggle-panel{
+	width: 100%;
+
+}
+
+.toggle-button {
+	font-size: 1.5em;
+	//line-height: 1em;
+	//background: #6ccd5a;
+}
+
+.mat-button-toggle-group {
+	// text-align: right;
+	//background-color: #6ccd5a;
+ flex-wrap: wrap;
+
+}
+
+.mat-button-toggle{
+//	background-color: #6ccd5a;
+//	color: #6cac5a ;
+
+}
+
+mat-card-content {
+		margin: 0 0 8px 0;
+}

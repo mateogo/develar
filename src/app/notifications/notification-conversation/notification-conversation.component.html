@@ -1,19 +1,14 @@
 <mat-card *ngIf="openDetail">
-	<!---
 	<mat-card-header>
-		<mat-card-subtitle><strong>Conversación: </strong>
-			<span innerHTML='{{ conversationSlug }}'></span></mat-card-subtitle>
+		<mat-card-title><span innerHTML='{{ conversationSlug }}'></span></mat-card-title>
 	</mat-card-header>
-	-->
 	<mat-card-content>
 		<mat-list>
-
 			<mat-list-item *ngFor='let message of messages'>
 					<p matLine><small>{{ message.feTxt }} </small></p>
 					<p matLine><small> De: {{ message.from }} Para: {{ message.to }}</small></p>
 					<p matLine><small><strong><span innerHTML='{{ message.content }}'  ></span></strong></small></p>
 			</mat-list-item>
-
 		</mat-list>
 	</mat-card-content>
 </mat-card>

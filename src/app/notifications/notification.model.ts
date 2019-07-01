@@ -215,6 +215,8 @@ export class MessageToken {
 
 
 export interface ConversationTable{
+  _id: string;
+
   fetxt:   string;
   fe:      number;
   to:      string;
@@ -223,6 +225,19 @@ export interface ConversationTable{
 
   topic:   string ;
   type:    string ;
+
+  conversationId: string;
+	context?: ConversationContext;
+
+  folder:  string;
+
+	hasRead: boolean;
+	isArchive: boolean;
+	isInInbox: boolean;
+	importance: number;
+	isPinned: boolean;
+	fe_expir: number;
+
 }
 
 function actorsList(data, match_role){
@@ -247,30 +262,51 @@ function actorsList(data, match_role){
 class ConversationTableData implements ConversationTable {
   _id: string = "";
   conversationId = "";
+  context?: ConversationContext;
 
   fetxt:   string;
   fe:      number;
   to:      string;
   from:    string;
+  content: string;
   slug:    string;
   folder:  string;
 
   topic:   string ;
   type:    string ;
 
+	hasRead: boolean = false;
+	isArchive: boolean = false;
+	isInInbox: boolean = true;
+	importance: number = 2;
+	isPinned: boolean = false;
+	fe_expir: number = 0;
+
   editflds = [0,0,0,0,0,0,0,0]
 
   constructor(data: any){
     this._id =   data._id;
     this.conversationId = data.conversationId;
+
+    this.context = data.context ? data.context : {};
+
 		this.fetxt = devutils.txFromDate(new Date(data.fe));
 		this.fe =    data.fe;
+		this.content = data.content;
 		this.to =    actorsList(data, 'to');
 		this.from =  actorsList(data, 'from');
 		this.slug =  data.last_message.content;
 		this.topic = data.topic;
 		this.type =  data.type;
 		this.folder = data.folder;
+
+		this.hasRead = data.hasRead;
+		this.isArchive = data.isArchive;
+		this.isInInbox = data.isInInbox;
+		this.importance = data.importance;
+		this.isPinned = data.isPinned;
+		this.fe_expir = data.fe_expir;
+
   }
 }
 
@@ -308,8 +344,35 @@ function _messagesFromConversation(conv: Conversation): Array<MessageToPrint>{
 		messages.push(new MessageToPrint(msj)) ;
 	})
 
+	sortProperlyByNumber(messages, 'fe', true);
+
 	return messages;
 }
+
+
+function sortProperlyByString(records, field, reverse){
+    records.sort((fel, sel)=> {
+      if(!fel[field]) fel[field] = "zzzzzzz";
+      if(!sel[field]) sel[field] = "zzzzzzz";
+
+      if(fel[field]<sel[field]) return -1;
+      else if(fel[field]>sel[field]) return 1;
+      else return 0;
+    })
+}
+
+function sortProperlyByNumber(records, field, reverse){
+    records.sort((fel, sel)=> {
+      if(!fel[field]) fel[field] = 0;
+      if(!sel[field]) sel[field] = 0;
+
+      if(fel[field]<sel[field]) return (reverse ? 1 : -1);
+      else if(fel[field]>sel[field]) return (reverse ? -1 : 1);
+      else return 0;
+    })
+}
+
+
 
 /**************
 Public API
@@ -348,6 +411,7 @@ class NotificationModel {
       let token = new ConversationTableData(item);
       return token;
     });
+    sortProperlyByNumber(list, 'fe', true);
 
     return list;
   }

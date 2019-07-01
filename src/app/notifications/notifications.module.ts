@@ -17,6 +17,9 @@ import { NotificationBrowseComponent } from './notification-browse/notification-
 import { NotificationManageComponent } from './notification-manage/notification-manage.component';
 import { NotificationConversationComponent } from './notification-conversation/notification-conversation.component';
 import { NotificationsSocketComponent } from './notifications-socket/notifications-socket.component';
+import { NotificationListComponent } from './notification-list/notification-list.component';
+import { NotificationBaseComponent } from './notification-base/notification-base.component';
+import { NotificationEditComponent } from './notification-edit/notification-edit.component';
 
 @NgModule({
   imports: [
@@ -33,7 +36,10 @@ import { NotificationsSocketComponent } from './notifications-socket/notificatio
   	NotificationBrowseComponent,
   	NotificationManageComponent,
   	NotificationConversationComponent,
-  	NotificationsSocketComponent
+  	NotificationsSocketComponent,
+  	NotificationListComponent,
+  	NotificationBaseComponent,
+  	NotificationEditComponent
   ],
   exports: [
     NotificationCreateComponent,
