@@ -49,7 +49,7 @@ export class NotificationEditComponent implements OnInit {
   private messageEditList: UserConversation[];
 
   public _openEditor: boolean = false;
-  private messageActionLabel = "nuevo mensaje";
+  public messageActionLabel = "nuevo mensaje";
 
   private showConversation = false;
   private conversationId: string = "";
