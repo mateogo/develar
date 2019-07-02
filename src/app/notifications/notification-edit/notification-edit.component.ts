@@ -39,7 +39,7 @@ export class NotificationEditComponent implements OnInit {
   private actors: Array<Actor> = []
 
 	private userList: Array<User> = [];
-  private userEmitter = new BehaviorSubject<string[]>([]);
+  public userEmitter = new BehaviorSubject<string[]>([]);
 
 	public form: FormGroup;
 
