@@ -35,8 +35,6 @@ export class ContactDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateContactEvent){
-  	console.log('update Contact-Panel: [%s]', event.action);
-
   	this.emitEvent(event);
   }
 
@@ -55,7 +53,6 @@ export class ContactDataPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateContactEvent){
-    console.log('=== Contact DATA Panel ====');
   
   	if(event.action === UPDATE){
   		this.updateItems.next({

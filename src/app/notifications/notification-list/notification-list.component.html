@@ -11,15 +11,20 @@
 		  </mat-button-toggle>
 		  <mat-button-toggle class="toggle-button" 
 		      (click)="justSent($event)" 
-		      [checked]="true" 
 		      title="Solo enviados" >
 	         <span><i [class]="toggleSent ? 'fas fa-shipping-fast' : 'fas fa-sign-out-alt'"
 		          aria-hidden="true"></i></span>
 		  </mat-button-toggle>
 		  <mat-button-toggle class="toggle-button"  
 		      (click)="justImportant($event)"
-		      title="Solo importantes" >
+		      title="Nivel de importancia (1/2/3). Pulse el botón para ver registros de importancia creciente" >
 		        <span><i [class]="toggleImportant ? 'fas fa-exclamation-circle' : 'fas fa-exclamation'"
+		          aria-hidden="true"></i></span>
+		  </mat-button-toggle>
+		  <mat-button-toggle class="toggle-button"  
+		      (click)="addNewConversation($event)"
+		      title="Agregar nueva conversación" >
+		        <span><i [class]="toggleImportant ? 'fas fa-plus' : 'far fa-plus'"
 		          aria-hidden="true"></i></span>
 		  </mat-button-toggle>
 		</mat-button-toggle-group>
@@ -27,11 +32,22 @@
 	</mat-card-header>
 
 	<mat-card-content>
-	<ng-container *ngFor="let item of conversationList" >
-		<notification-base 
-				[conversationToken]='item'
-				(actionTriggered)="triggerAction($event)" ></notification-base>
-	</ng-container>
+		<ng-container *ngIf="showEdit" >
+			<notification-create 
+  				[model]="newMessage"
+  				[openeditor]='true'
+  				[context]="context"
+  				(messageUpdated)="createAction($event)" ></notification-create>
+
+		</ng-container>
+
+
+
+		<ng-container *ngFor="let item of conversationList" >
+			<notification-base 
+					[conversationToken]='item'
+					(actionTriggered)="baseAction($event)" ></notification-base>
+		</ng-container>
 
 	</mat-card-content>
 </mat-card>

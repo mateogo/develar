@@ -126,7 +126,7 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    console.log('********** ngOnChanges;')
+    //console.log('********** ngOnChanges;')
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -145,7 +145,6 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
 
   // editor en la celda de la tabla
   openEditor(item, col){
-    console.log('open Editor. Click [%s] [%s]', item._id, item.slug);
     item.editflds[col] = item.editflds[col] > 1 ? 0 : item.editflds[col] + 1
     item.total = item.pu * item.qt;
     this.notifCtrl.updateEditedDataInTable(item);
@@ -180,7 +179,7 @@ export class NotificationBrowseComponent implements OnInit, OnChanges {
     removeRelation.data.itemplate = templ;
     this.openDialog(removeRelation).subscribe(result => {
       if(result==='accept'){
-        console.log('Accepted selected');
+
         this.buildColumDef();
       } 
 
@@ -207,7 +206,7 @@ export class ConversationDataSource extends DataSource<any> {
               private _paginator: MatPaginator,
               private _sort: MatSort){
     super();
-    console.log('Constructor Community Data Source: [%s]', this._sort)
+
   }
 
   connect(): Observable<ConversationTable[]> {

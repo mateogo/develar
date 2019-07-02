@@ -28,6 +28,7 @@ export class CoreDataEditComponent implements OnInit {
   public tprofPersonaFisica = personModel.profesiones;
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
+  public sexoOptList        = personModel.sexoList;
 
 
   public paises     = personModel.paises;
@@ -70,7 +71,7 @@ export class CoreDataEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
 
@@ -81,7 +82,7 @@ export class CoreDataEditComponent implements OnInit {
     form = this.fb.group({
       displayName:  [null, Validators.compose([Validators.required])],
       personType:   [null, Validators.compose([Validators.required])],
-      email:        [null],
+      email:        [null, Validators.compose([Validators.email])],
       locacion:     [null],
       nombre:       [null],
       apellido:     [null],
@@ -94,6 +95,7 @@ export class CoreDataEditComponent implements OnInit {
       nestudios:    [null],
       fenactx:      [null],
       ecivil:       [null],
+      sexo:         [null],
     });
     return form;
   }
@@ -114,7 +116,9 @@ export class CoreDataEditComponent implements OnInit {
       nacionalidad: person.nacionalidad,
       nestudios:    person.nestudios,
       fenactx:      person.fenactx,
-      ecivil:       person.ecivil
+      ecivil:       person.ecivil,
+      sexo:         person.sexo
+
 
 		});
 
@@ -139,17 +143,15 @@ export class CoreDataEditComponent implements OnInit {
     entity.nacionalidad = fvalue.nacionalidad;
     entity.nestudios =    fvalue.nestudios;
     entity.fenactx =      fvalue.fenactx;
-    entity.ecivil =       fvalue.ecivil
+    entity.ecivil =       fvalue.ecivil;
+    entity.sexo =         fvalue.sexo;
 
     if(fvalue.fenactx){
       entity.fenac = devutils.dateFromTx(fvalue.fenactx).getTime();
-      console.log('getTime: [%s]', entity.fenac, fvalue.fenactx )
-      console.log(devutils.dateFromTx(fvalue.fenactx).toString())
+
     }else{
       entity.fenac = 0;
     }
-
-		console.log('initForSave [%s]', entity.personType);
 		return entity;
 	}
 

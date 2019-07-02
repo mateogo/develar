@@ -106,7 +106,6 @@ export class AlimentosPageComponent implements OnInit {
 
   initCurrentPage(){
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
@@ -124,8 +123,6 @@ export class AlimentosPageComponent implements OnInit {
         this.loadPerson(this.personId);
     }
 
-    console.log('Alimentos PAGE INIT')
-    console.log('Turno:[%s]',  this.dsCtrl.activeTurno);
   }
 
 
@@ -149,7 +146,6 @@ export class AlimentosPageComponent implements OnInit {
   /*     Remito        */
   /********************/
   createRemito(event: UpdateAsistenciaEvent){
-    console.log('AlimentosPage: createRemito: [%s]', event.action);
     this.refreshState();
 
   }
@@ -161,7 +157,6 @@ export class AlimentosPageComponent implements OnInit {
     let sector = 'alimentos';
     let serial: Serial;
     let person = this.currentPerson;
-    console.log('ready to open REMITO: [%s]', this.currentAsistencia.compNum);
     this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person)
     this.emitRemito = true;
 
@@ -224,9 +219,8 @@ export class AlimentosPageComponent implements OnInit {
   /*    Sol/Asistencia   */
   /**********************/
   asistenciaSelected(event: UpdateAsistenciaEvent){
-    console.log('AlimentosPage: openEditor: [%s]', event.action);
+
     if(event.action === CREATE){
-      console.log('createRemito BUBBLED')
       this.currentAsistencia = event.token;
       this.initNewRemito();
     }
@@ -251,13 +245,11 @@ export class AlimentosPageComponent implements OnInit {
   }
 
   actionEvent(taction:TurnoAction){
-    console.log('actionEvent BUBLED: [%s]', taction.action);
     this.processTurnoEvent(taction);
   }
 
   processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
-      console.log('Turno UPDATE cb');
     })
 
   }

@@ -57,7 +57,11 @@ export class PersonAltaComponent implements OnInit {
             nombre: [null, Validators.compose([Validators.required])],
             apellido: [null, Validators.compose( [Validators.required])],
             tdoc: [null],
-            ndoc: [null, [Validators.required], [this.emailValidator(this.dsCtrl)] ],
+            ndoc: [null, [Validators.required, 
+                          Validators.minLength(7),
+                          Validators.maxLength(10),
+                          Validators.pattern('[0-9]*')], 
+                          [this.dniExistenteValidator(this.dsCtrl)] ],
         });
 
         this.resetForm(this.model);
@@ -65,8 +69,6 @@ export class PersonAltaComponent implements OnInit {
 
     onSubmit() {
         this.model = initForSave(this.form, this.model, this.currentUser);
-
-        console.log('OnSubmitTestPersonByDNI')
 
         this.dsCtrl.createPerson(this.model).then(person => {
             this.person$.emit(person);
@@ -79,7 +81,6 @@ export class PersonAltaComponent implements OnInit {
     }
 
     documProvisorio(){
-        console.log('asignar número provisorio');
         this.dsCtrl.fetchSerialDocumProvisorio().subscribe(serial =>{
             this.model = initForSave(this.form, this.model, this.currentUser);
             this.model.tdoc = "PROV"
@@ -107,19 +108,16 @@ export class PersonAltaComponent implements OnInit {
     }
 
     public hasError = (controlName: string, errorName: string) =>{
-        console.log('hasError [%s] [%s]', controlName, errorName);
-        console.log(this.form.controls[controlName].hasError(errorName) )
         return this.form.controls[controlName].hasError(errorName);
     }
 
-    emailValidator(service: DsocialController): AsyncValidatorFn {
+    dniExistenteValidator(service: DsocialController): AsyncValidatorFn {
         return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            const value = control.value
+            let value = control.value;
 
             return service.testPersonByDNI('DNI',value).pipe(
                 map(t => {
-                    console.log('mapping: [%s]', t && t.length);
-                    return t && t.length>0 ? { 'mailerror': 'email con problemas' }: null;
+                    return t && t.length>0 ? { 'mailerror': 'DNI existente' }: null;
                 })
 
              )

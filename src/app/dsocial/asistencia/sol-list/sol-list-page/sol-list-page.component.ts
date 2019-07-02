@@ -77,7 +77,6 @@ export class SolListPageComponent implements OnInit {
 
   initCurrentPage(){
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
       this.currentPerson = p;
 
     })
@@ -118,9 +117,7 @@ export class SolListPageComponent implements OnInit {
 
 
   asistenciaSelected(event: UpdateAsistenciaEvent){
-    console.log('AlimentosPage: openEditor: [%s]', event.action);
     if(event.action === UPDATE){
-      console.log('asistencia Selected UPDATE BUBBLED')
 
     }
   }
@@ -139,7 +136,6 @@ export class SolListPageComponent implements OnInit {
 
 
   updateItem(event: UpdateAsistenciaEvent){
-  	console.log('update Asistencia-Panel: [%s]', event.action);
     if(event.action === UPDATE){
       // this.dsCtrl.manageAsistenciaRecord('asistencia',event.token).subscribe(t =>{
       //   if(t){
@@ -158,7 +154,6 @@ export class SolListPageComponent implements OnInit {
   }
 
   emitEvent(event:UpdateAsistenciaEvent){
-    console.log('=== Asistencia DATA Panel ====');
   
   	if(event.action === UPDATE){
   		this.updateItems.next({
@@ -170,12 +165,10 @@ export class SolListPageComponent implements OnInit {
   }
 
   tableAction(action){
-    console.log('action bubbled[%s]', action);
     let selection = this.dsCtrl.selectionModel;
     let selected = selection.selected as AsistenciaTable[];
     selected.forEach(t =>{
       this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
-      console.log(t.compNum);
 
     })
     setTimeout(()=>{

@@ -181,6 +181,7 @@ const personSch = new mongoose.Schema({
     fenactx:        { type: String, required: false },
     nestudios:      { type: String, required: false },
     ecivil:         { type: String, required: false },
+    sexo:           { type: String, required: false },
     locaciones:     [ addressSch ],
     familiares:     [ familySch ],
 

@@ -32,7 +32,6 @@ export class TurnoSectorComponent implements OnInit {
 
   refreshTurnos(emit:boolean){
     this.dsCtrl.turnosPorSector$(this.type, this.name, this.sector.serial).subscribe(turnos =>{
-      console.log('turnos [%s]', turnos.length);
       this.stockTurnos = turnos
       this.items = turnos.length;
 
@@ -56,7 +55,6 @@ export class TurnoSectorComponent implements OnInit {
   turnoFor(e, sector){
   	e.stopPropagation();
   	e.preventDefault();
-  	console.log('sector [%s]', sector.label);
   	this.fetchTurnos(sector);
   }
 

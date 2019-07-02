@@ -89,7 +89,6 @@ export class TsocialPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -100,11 +99,7 @@ export class TsocialPageComponent implements OnInit {
 
 
   initCurrentPage(){
-    console.log('TSocial PAGE INIT')
-    console.log('Turno:[%s]',  this.dsCtrl.activeTurno);
-
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
@@ -175,7 +170,6 @@ export class TsocialPageComponent implements OnInit {
   // Contact Data
   updateContactList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateContactData')
       this.upsertContactList(event);
     }
   }
@@ -194,7 +188,6 @@ export class TsocialPageComponent implements OnInit {
   // Address Data
   updateAddressList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateAddressData')
       this.upsertAddressList(event);
     }
   }
@@ -213,7 +206,6 @@ export class TsocialPageComponent implements OnInit {
   // Family Data
   updateFamilyList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateFamilyData')
       this.upsertFamilyList(event);
     }
   }
@@ -232,7 +224,6 @@ export class TsocialPageComponent implements OnInit {
   // Oficios Data
   updateOficiosList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateOficiosData')
       this.upsertOficiosList(event);
     }
   }
@@ -249,15 +240,12 @@ export class TsocialPageComponent implements OnInit {
   }
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
-    console.log('Sol/asistencia: [%s]', event.action);
+
     if(event.action === UPDATE){
-      console.log('Sol Asistencia BUBBLED to TSOCIAL')
       this.initAsistenciasList();
     }
 
     if(event.action === NAVIGATE){
-      console.log('Sol Asistencia BUBBLED to NAVIGATE')
-
       if(this.hasPersonIdOnURL){
         this.router.navigate(['../../', this.dsCtrl.atencionRoute('seguimiento'), 
            this.personId], {relativeTo: this.route});
@@ -313,13 +301,11 @@ export class TsocialPageComponent implements OnInit {
   }
 
   actionEvent(taction:TurnoAction){
-    console.log('actionEvent BUBLED: [%s]', taction.action);
     this.processTurnoEvent(taction);
   }
 
   processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
-      console.log('Turno UPDATE cb');
     })
 
   }

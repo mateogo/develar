@@ -18,6 +18,7 @@ export class CoreDataViewComponent implements OnInit {
   public nacionalidad;
   public estado;
   public neducativo;
+  public sexo;
 
   constructor() { }
 
@@ -29,6 +30,7 @@ export class CoreDataViewComponent implements OnInit {
     this.nacionalidad = personModel.getNacionalidad(this.person.nacionalidad)
     this.estado = personModel.getEstadoCivilLabel(this.person.ecivil);
     this.neducativo = personModel.getNivelEducativo(this.person.nestudios);
+    this.sexo = this.person.sexo;
 
     if(this.person.fenac){
       this.edad = devutils.edadActual(new Date(this.person.fenac));

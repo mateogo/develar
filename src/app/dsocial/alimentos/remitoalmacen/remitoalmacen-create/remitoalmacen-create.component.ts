@@ -69,15 +69,12 @@ kitentrega
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
     this.updateItems(type, val);
 
   }
 
   updateItems(type, val){
-    console.log('udateItems: [%s] [%s]', type, val);
     let kit = AlimentosHelper.getKitItems('kititems', val);
-    console.log('kit: [%s]', kit);
 
     this.itemsAlmacen = kit.map((token, k) => {
       return {

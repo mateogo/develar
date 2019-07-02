@@ -93,7 +93,6 @@ export class RemitoalmacenPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -105,7 +104,6 @@ export class RemitoalmacenPageComponent implements OnInit {
 
   initCurrentPage(){
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
@@ -125,9 +123,6 @@ export class RemitoalmacenPageComponent implements OnInit {
     if(!this.dsCtrl.activePerson && this.personId){
         this.loadPerson(this.personId);
     }
-
-
-    console.log('Remito ALMACEN PAGE INIT')
   }
 
   initCurrentPerson(p: Person){
@@ -151,7 +146,7 @@ export class RemitoalmacenPageComponent implements OnInit {
   /*      Events        */
   /**********************/
   createRemito(event: UpdateRemitoEvent){
-  	console.log('CREATE remitoalmacen-page: [%s] [%s]', event.action, (this.remito === event.token));
+
     if(event.action === UPDATE){
       this.initNewRemito(event);
 
@@ -170,7 +165,6 @@ export class RemitoalmacenPageComponent implements OnInit {
   }
 
   initNewRemito(event: UpdateRemitoEvent){
-    console.log('Init New Remito')
     this.remito = event.token;
     this.remito.deposito =   this.remito.deposito || 'almacen';
     this.remito.tmov =       this.remito.tmov || 'entrega';

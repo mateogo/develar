@@ -318,6 +318,13 @@ const entityTableActions = [
       {val: 'navigate',      label: 'Navegar comunidad',    slug:'Cambiar a esta comunidad' },
 ]
 
+const importanciaOptList = [ 
+      {val: 1,       label: 'Normal',      slug:'Normal' },
+      {val: 2,       label: 'Alta',        slug:'Alta' },
+      {val: 3,       label: 'Crítica',     slug:'Crítica' },
+]
+
+
 function _initNewMessageToken(data?): MessageToken{
 	let msj = new MessageToken(data);
 	return msj;
@@ -402,6 +409,10 @@ class NotificationModel {
 
   get tableActionOptions(){
     return entityTableActions;
+  }
+
+  get importanceOptions(){
+    return importanciaOptList;
   }
 
   buildTableFromUserConversation(usr_convlist: Array<UserConversation>): ConversationTable[]{

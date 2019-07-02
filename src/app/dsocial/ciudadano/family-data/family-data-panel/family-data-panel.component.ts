@@ -33,8 +33,6 @@ export class FamilyDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateFamilyEvent){
-  	console.log('update Family-Panel: [%s]', event.action);
-
   	this.emitEvent(event);
   }
 
@@ -51,7 +49,6 @@ export class FamilyDataPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateFamilyEvent){
-    console.log('=== Family DATA Panel ====');
   
   	if(event.action === UPDATE){
   		this.updateItems.next({

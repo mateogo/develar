@@ -29,6 +29,17 @@
         </mat-form-field>
       </div>
 
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSexo placeholder="Sexo"
+              [formControl]="form.controls['sexo']"
+              (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
+            <mat-option *ngFor="let item of sexoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
     </div>
 
     <!---nombre; apellido--->
@@ -54,6 +65,48 @@
           <small *ngIf="form.controls['displayName'].hasError('required') && 
              form.controls['displayName'].touched" class="form-message text-danger">
              Dato requerido</small>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!---nestudios; fenac; sexo --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldNacionalidad placeholder="Nacionalidad"
+              [formControl]="form.controls['nacionalidad']"
+              (selectionChange)="changeSelectionValue('nacionalidad',fldNacionalidad.value)" >
+            <mat-option *ngFor="let item of paises" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstadoCivil placeholder="Estado Civil"
+              [formControl]="form.controls['ecivil']"
+              (selectionChange)="changeSelectionValue('ecivil',fldEstadoCivil.value)" >
+            <mat-option *ngFor="let item of estadoCivil" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldNestudios placeholder="Nivel educativo"
+              [formControl]="form.controls['nestudios']"
+              (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)" >
+            <mat-option *ngFor="let item of nivelEstudios" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>
@@ -93,48 +146,6 @@
       </div>
     </div>
 
-    <!---nestudios; fenac; sexo --->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldNestudios placeholder="Nivel educativo"
-              [formControl]="form.controls['nestudios']"
-              (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)" >
-            <mat-option *ngFor="let item of nivelEstudios" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldNacionalidad placeholder="Nacionalidad"
-              [formControl]="form.controls['nacionalidad']"
-              (selectionChange)="changeSelectionValue('nacionalidad',fldNacionalidad.value)" >
-            <mat-option *ngFor="let item of paises" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldEstadoCivil placeholder="Estado Civil"
-              [formControl]="form.controls['ecivil']"
-              (selectionChange)="changeSelectionValue('ecivil',fldEstadoCivil.value)" >
-            <mat-option *ngFor="let item of estadoCivil" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </div>
 
     <hr>
     <div class="additional-info">

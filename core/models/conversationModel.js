@@ -386,7 +386,7 @@ exports.fetchNonReadUserConversations = function (usrId) {
  */
 exports.update = function (id, record, errcb, cb) {
 
-    Record.findByIdAndUpdate(id, record, { new: true } ,function(err, entity) {
+    UserConversation.findByIdAndUpdate(id, record, { new: true } ,function(err, entity) {
         if (err){
             console.log('[%s] validation error as validate() argument', whoami)
             err.itsme = whoami;
@@ -624,6 +624,7 @@ function initUsrConversation(conversation, actor, record){
     token.folder = record.folder ;
     token.isArchive = record.isArchive ;
     token.isPinned = record.isPinned ;
+    token.hasRead = true;
 
   }else {
     token.folder = 'inbox' ;
@@ -647,12 +648,13 @@ function updateUsrConversation(userconv, conversation, actor, record){
   userconv.fe_expir = record.fe_expir ;
   userconv.fe = record.fe;
   userconv.content = record.content;
+  userconv.importance = record.importance || 2 ;
 
   if(role === 'from'){
     userconv.folder = record.folder ;
     userconv.isArchive = record.isArchive ;
-    userconv.importance = record.importance ;
     userconv.isPinned = record.isPinned ;
+    userconv.hasRead = true;
 
   }else {
     userconv.folder = 'inbox' ;

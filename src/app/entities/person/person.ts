@@ -223,6 +223,7 @@ export class Person {
 	fenac: number;
 	fenactx: string;
 	ecivil: string;
+  sexo: string;
 	ambito: string;
 	termscond: boolean;
 	estado: string;
@@ -535,6 +536,11 @@ const ciudadesBrown: Array<any> = [
     {val: 'glew',            label: 'Glew ',slug:'Argentina' },
 ];
 
+const sexoOptList: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'M',        label: 'Masculino',slug:'Masculino' },
+    {val: 'F',        label: 'Femenino ',slug:'Femenino' },
+];
 
 
 const paisesOL = [
@@ -814,6 +820,7 @@ const estadoCivil: Array<any> = [
 		{val: 'casadx',        label: 'Casado/a',         slug:'Casado/a' },
 		{val: 'divorciadx',    label: 'Divorciado/a',     slug:'Divorciado/a' },
 		{val: 'conviviendx',   label: 'Conviviendo',      slug:'Conviviendo' },
+    {val: 'viudx',         label: 'Viudo/a',          slug:'Viudo/a' },
 		{val: 'otra',          label: 'Otra',             slug:'Otra' },
 ];
 
@@ -877,6 +884,10 @@ class PersonModel {
         return oficios_tocupacion;
     }
 
+    get sexoList():Array<any>{
+      return sexoOptList;
+    }
+
     getEstadosVivienda(token):Array<any>{
       let arr = estados_viv.filter(t => token === t.type );
       return arr;
@@ -894,7 +905,6 @@ class PersonModel {
     }
 
 
-
     getOficiosEstadoLabel(item){
         return getLabel(item, oficios_estado);
     }
@@ -906,6 +916,9 @@ class PersonModel {
     }
     getOficiosTOcupacionLabel(item){
         return getLabel(item, oficios_tocupacion);
+    }
+    getSexoLabel(item){
+        return getLabel(item, sexoOptList);
     }
 
     // Datos de Contacto

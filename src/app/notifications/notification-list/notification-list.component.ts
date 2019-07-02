@@ -9,7 +9,7 @@ import { map }   from 'rxjs/operators';
 import { GenericDialogComponent } from '../../develar-commons/generic-dialog/generic-dialog.component';
 
 import { NotificationController } from '../notification.controller';
-import { ConversationTable, ConversationContext }  from '../notification.model';
+import { ConversationTable, ConversationContext, MessageToken }  from '../notification.model';
 
 /**
  * @displayedColumns
@@ -70,9 +70,16 @@ export class NotificationListComponent implements OnInit {
   public conversationList: ConversationTable[] = [];
   private conversationEmitter = new BehaviorSubject<string>("");
 
-  public toggleImportant = false;
-  public toggleSent = false;
-  public toggleInbox = false;
+  public toggleImportant = true;
+  public toggleSent = true;
+  public toggleInbox = true;
+  public importantIndex = 0;
+  public restrict = {};
+
+  public showEdit = false;
+  private showEditToggle = false;
+
+  public newMessage: MessageToken;
 
 
   //public selection = new SelectionModel<ConversationTable>(true, []);
@@ -87,7 +94,6 @@ export class NotificationListComponent implements OnInit {
     this.dataRecordsSource = this.notifCtrl.tableDataSource;
 
     this.dataRecordsSource.subscribe(items =>{
-    	console.log('NOTIFICATION data Source: [%s]', items && items.length);
     	this.initListData(items);
 
     })
@@ -98,7 +104,6 @@ export class NotificationListComponent implements OnInit {
   verDetalle(token: ConversationTable){
   	this.openView = !this.openView;
   	if(this.openView){
-	  	console.log('OpenDetali Dialog')
 	  	this.conversationId = token.conversationId;
 	    this.conversationEmitter.next(this.conversationId);
 	    this.showConversation = true;
@@ -115,19 +120,35 @@ export class NotificationListComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log('********** ngOnChanges;')
+    //console.log('********** ngOnChanges;')
   }
 
   triggerAction(action: string){
-    let restrict = {};
-    restrict[action] = true;
-    this.updateTableList(restrict);
+    this.restrict = {};
+
+    if(action === 'important'){
+      this.restrict[action] = this.importantIndex;
+
+    }else{
+      this.restrict[action] = true;
+    }
+    this.updateTableList(this.restrict);
+
     //this.actionTriggered.next(action);
     //this.selection.clear();
   }
 
+  baseAction($event){
+    this.updateTableList(this.restrict);
+  }
+
+  createAction($event){
+    this.updateTableList(this.restrict);
+  }
+
+
+
   updateTableList(restrict?){
-    console.log('fetch Userconversations!!!!')
     this.notifCtrl.fetchUserConversations(this.context, restrict);
 
   }
@@ -135,6 +156,19 @@ export class NotificationListComponent implements OnInit {
   openDialog(config) {
     let dialogRef = this.dialogService.open(GenericDialogComponent, config);
     return dialogRef.afterClosed()
+  }
+
+  addNewConversation($event){
+    this.showEditToggle = !this.showEditToggle;
+
+    if(this.showEditToggle){
+      this.newMessage = new MessageToken();
+      this.showEdit = true;
+
+    }else{
+      this.showEdit = false;
+
+    }
   }
 
 
@@ -145,20 +179,15 @@ export class NotificationListComponent implements OnInit {
   }
 
   justInbox($event){
-    console.log('+++++justInbox +++++++')
-    this.toggleInbox = !this.toggleInbox;
     this.triggerAction(this.toggleInbox ? 'inbox': 'clean');
   }
 
   justSent($event){
-    console.log('+++++justSent +++++++')
-    this.toggleSent = !this.toggleSent;
     this.triggerAction(this.toggleSent ? 'sent': 'clean');
   }
 
   justImportant($event){
-    console.log('+++++justImportant +++++++')
-    this.toggleImportant = !this.toggleImportant;
+    this.importantIndex = this.importantIndex > 2 ? 1 : this.importantIndex + 1;
     this.triggerAction(this.toggleImportant ? 'important': 'clean');
   }
 

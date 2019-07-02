@@ -53,7 +53,6 @@ export class TurnosPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -63,7 +62,6 @@ export class TurnosPageComponent implements OnInit {
   }
 
   showTurnos(turnos: Turno[]){
-    console.log('Turnos [%s]', turnos.length);
     this.turnos = turnos;
     this.showStockTurnos = true;
   }
@@ -77,7 +75,6 @@ export class TurnosPageComponent implements OnInit {
   }
 
   actionEvent(taction:TurnoAction){
-    console.log('actionEvent BUBLED: [%s]', taction.action);
     this.processTurnoEvent(taction);
     this.navigateTo(taction)
   }
@@ -98,7 +95,6 @@ export class TurnosPageComponent implements OnInit {
 
   processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
-      console.log('Turno UPDATE cb');
     })
   }
 

@@ -27,6 +27,11 @@ export class AddressDataBaseComponent implements OnInit {
 
   ngOnInit() {
     this.encuesta = this.encuesta ? this.encuesta : new EncuestaAmbiental();
+
+    if(!this.token.street1 && !this.token.city){
+      this.editToken();
+    }
+
   }
 
   editToken(){
@@ -40,7 +45,6 @@ export class AddressDataBaseComponent implements OnInit {
   }
 
   manageToken(event: UpdateAddressEvent){
-  	console.log('update Contact-Base: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;
@@ -72,7 +76,6 @@ export class AddressDataBaseComponent implements OnInit {
   }
 
   manageEncuesta(event: UpdateEncuestaEvent ){
-    console.log('update ENCUESTA: [%s]', event.action);
     this.openEditor = false;
     this.showEdit = false;
     this.showView = true;

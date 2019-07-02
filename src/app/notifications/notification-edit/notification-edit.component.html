@@ -22,6 +22,14 @@
             [inputlabel]='"seleccionar destinatarios..."'
             (emitUsers)='updateUserList($event)' ></user-chip>
       </div>
+      <mat-form-field>
+        <mat-select #fldImportancia placeholder="Nivel de importancia"
+            [formControl]="form.controls['importance']"
+            (selectionChange)="changeSelectionValue('importance',fldImportancia.value)" >
+          <mat-option *ngFor="let item of importanceOpttList" 
+            [value]="item.val" >{{ item.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <div class="additional-info">
         <button mat-button type="submit" color="primary" 

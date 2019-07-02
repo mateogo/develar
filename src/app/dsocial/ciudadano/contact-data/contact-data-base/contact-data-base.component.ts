@@ -20,10 +20,14 @@ export class ContactDataBaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    if(!this.token.data && !this.token.type){
+      this.editToken();
+    }
+
   }
 
   updateContact(event: UpdateContactEvent){
-  	console.log('update Contact-Base: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;

@@ -62,7 +62,7 @@ export class ContactDataEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
 

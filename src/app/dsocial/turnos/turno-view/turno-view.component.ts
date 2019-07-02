@@ -90,7 +90,6 @@ public btnGroupStyle = {
 
   procesarTurno(action){
     // action = [atender|baja|cumplido|derivar]
-    console.log('action [%s]',action);
     let taction: TurnoAction = {
         id_turno: this.turno._id,
         action: action,

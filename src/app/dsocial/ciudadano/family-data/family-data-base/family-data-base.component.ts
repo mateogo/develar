@@ -19,10 +19,12 @@ export class FamilyDataBaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(!this.token.apellido && !this.token.nombre){
+      this.editToken();
+    }
   }
 
   manageToken(event: UpdateFamilyEvent){
-  	console.log('update Contact-Base: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;

@@ -49,7 +49,6 @@ export class RecepcionPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -64,7 +63,6 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   personFetched(persons: Person[]){
-    console.log('Bubbled')
     if(persons.length){
       this.currentPerson = persons[0];
 
@@ -95,11 +93,10 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   nuevoTurno(sector: SectorAtencion){
-    console.log('Nuevo Turno Requerido: [%s]',sector.label);
     this.personFound = false;
     this.altaPersona = false;
     this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', sector.serial, this.currentPerson).subscribe(turno =>{
-      console.log('turno: [%s]', turno.compNum);
+
     })
 
   }

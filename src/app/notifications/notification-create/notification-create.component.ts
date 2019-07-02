@@ -131,7 +131,7 @@ export class NotificationCreateComponent implements OnInit {
 
     if(!this.message.isNewConversation){
       this.messageActionLabel =  '<strong>'+ entity.fetxt + ' </strong> ' + this.message.content;
-      console.log('showConversation: [%s]', this.message.conversationId);
+
       this.conversationId = this.message.conversationId;
       this.conversationEmitter.next(this.conversationId);
       this.showConversation = true;
@@ -143,7 +143,6 @@ export class NotificationCreateComponent implements OnInit {
     this.message.content = "";
     this._openEditor = true;
 
-    console.log('initEditorData actors?[%s]', (this.message && this.message.actors && this.message.actors.length))
     if(this.message && this.message.actors && this.message.actors.length){
       this.promoteUsers(this.message.actors);
     }
@@ -159,17 +158,15 @@ export class NotificationCreateComponent implements OnInit {
 
   updateUserList(users: Array<User>){
   	this.userList = users;
-  	console.log('update Userlist [%s]', this.userList.length)
   }
   
 
   // medium editor content Update
 	contentUpdateContent(data){
-		console.log('updateContent')
+		//console.log('updateContent')
 	}
 
 	onSubmit(){
-		console.log('onSubmit');
 		this.message = this.formSubmit();
 		this.actors = this.notifCtrl.buildActorList(this.userList);
 		this.notifCtrl.saveMessageToken(this.message, this.actors, this.context);
@@ -183,7 +180,6 @@ export class NotificationCreateComponent implements OnInit {
   }
 
   selectEntity(token){
-    console.log('selectEntity: Token: [%s]', token.userId)
     if(token){
       this.notifCtrl.initUserConversation(token, token._id);
     }

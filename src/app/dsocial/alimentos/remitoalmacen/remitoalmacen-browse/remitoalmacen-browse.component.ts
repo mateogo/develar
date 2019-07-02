@@ -99,7 +99,6 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -111,7 +110,6 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 
   initCurrentPage(){
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
@@ -134,8 +132,6 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 
     this.fetchRemitos();
 
-
-    console.log('Remito ALMACEN PAGE INIT')
   }
 
   fetchRemitos(){
@@ -187,7 +183,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   /*      Events        */
   /**********************/
   createRemito(event: UpdateRemitoEvent){
-  	console.log('CREATE remitoalmacen-page: [%s] [%s]', event.action, (this.remito === event.token));
+
     if(event.action === UPDATE){
       this.initNewRemito(event);
 
@@ -206,7 +202,6 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   }
 
   initNewRemito(event: UpdateRemitoEvent){
-    console.log('Init New Remito')
     this.remito = event.token;
     this.remito.deposito =   this.remito.deposito || 'almacen';
     this.remito.tmov =       this.remito.tmov || 'entrega';
@@ -234,10 +229,8 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   }
 
   tableAction(action){
-    console.log('action bubbled[%s]', action);
     let selection = this.dsCtrl.remitosSelectionModel;
     let selected = selection.selected as RemitoAlmacenTable[];
-    console.log('selected: [%s]', selected[0].person);
     if(selected && selected.length){
       this.selectedVoucher = this.dsCtrl.lookUpRemitoAlmacen(selected[0]);
       this.showView = true

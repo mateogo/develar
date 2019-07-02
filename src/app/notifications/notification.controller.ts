@@ -36,8 +36,6 @@ function buildNewMessage(token: MessageToken , user: User, actors: Actor[], cont
 };
 
 function initMessageAnswer(token: MessageToken , user: User, actors: Actor[] ): MessageToken  {
-  console.log('initMessageAnswer')
-  console.dir(token);
 
   token.isNewConversation = false;
   token.isArchive = false;
@@ -58,7 +56,7 @@ export class NotificationController {
 
   private messageId;
   private message: MessageToken;
-  private emitMessage = new Subject<MessageToken>();
+  private emitMessage$ = new Subject<MessageToken>();
 
   private usrconvId;
   private usrconv: UserConversation;
@@ -104,7 +102,6 @@ export class NotificationController {
 
   // Repone una userConversation  by entity o by id; Emite resultado
   initUserConversation(entity: UserConversation, entityId: string){
-    console.log('notification initMessage');
     if(entity){
       this.usrconv = entity;
       this.emitMessageConversationToken();
@@ -119,7 +116,6 @@ export class NotificationController {
 
   private initNewUserConversation(){
     this.usrconv = notificationModel.initNewUserConversation();
-    console.log('initNewUserConversation' );
     this.emitMessageConversationToken();
   }
 
@@ -164,7 +160,6 @@ export class NotificationController {
   }
 
   fetchUserConversations(context: ConversationContext, restrict?: any){
-    console.log('fetchUserConversation CONTROLLER BEGIN')
     let query = {};
 
     this.cnvrstnContext = context;
@@ -182,7 +177,6 @@ export class NotificationController {
   private fetchUserConversationByQuery<T>(type:string, url:string, query: any, restrict?: any){
 
     this.daoService.fetch<UserConversation>(type, url, query).subscribe(list => {
-      console.log('Fetch UserConversationByQuery [%s]', list && list.length);
 
       this.userconversationList = this.restrictList(list, restrict);
       this.updateTableData();
@@ -190,6 +184,7 @@ export class NotificationController {
   }
 
   private restrictList(list: UserConversation[], restrict: any): UserConversation[]{
+
     if(restrict && !restrict.clean){
 
       list = list.filter((t, i)=>{
@@ -202,9 +197,8 @@ export class NotificationController {
           verify = verify && ( t.folder === "sent");
         }
 
-        console.log('important[%s] Importance[%s]', restrict.important, t.importance)
         if(restrict.important){
-          verify = verify && ( t.importance > 2);
+          verify = verify && ( t.importance >= restrict.important);
         }
 
         return verify;
@@ -220,6 +214,13 @@ export class NotificationController {
     this.emitConversationTable.next(tableData);
   }
 
+  updateUserConversationById(id: string, token:any){
+    this.daoService.update(this.recordtype, id, token).then(t =>{
+      
+    });
+
+  }
+
 
 
   /*************************/
@@ -231,7 +232,6 @@ export class NotificationController {
   }
 
   buildMessageListFromConversation(conv: Conversation){
-    console.log('build message conversation BEGIN')
     this.cnvrstn = conv;
 
     //MessageToPrint[]
@@ -286,8 +286,6 @@ export class NotificationController {
     this.addContextDataToQuery(query, context);
 
     this.daoService.fetch<Conversation>(this.recordtype, 'conversation', query).subscribe(list => {
-      console.log('Fetch ConversationByQuery [%s]', list && list.length);
-      console.dir(query);
 
       this.conversationList = list;
       this.buildTableDataFromConversation();
@@ -308,11 +306,10 @@ export class NotificationController {
   /*  MessageToken        */
   /***********************/
   get messageListener():Subject<MessageToken>{
-    return this.emitMessage;
+    return this.emitMessage$;
   }
 
   initMessageEdit(message: MessageToken){
-    console.log('notification initMessage');
     if(message){
       this.message = message;
       this.emitMessageToken();
@@ -327,7 +324,6 @@ export class NotificationController {
   }
 
   private buildMessageTokenFromConversation(usrc: UserConversation){
-    console.log('build message conversation BEGIN')
     this.message = notificationModel.buildMessageFromConversation(usrc);
     this.messageId = this.message._id;
     this.emitMessageToken();
@@ -335,13 +331,12 @@ export class NotificationController {
 
   private initNewMessage(){
     this.message = notificationModel.initNewMessageToken({content: ''});
-    console.log('initNewMessage [%s]', this.message.content);
     this.emitMessageToken();
   }
 
   private emitMessageToken(){
     //Subject<MessageToken>
-    this.emitMessage.next(this.message)
+    this.emitMessage$.next(this.message)
   }
 
   cancelMessageEditing(){
@@ -354,19 +349,17 @@ export class NotificationController {
   }
 
   saveNewMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-      console.log('save NEW message')
     this.message = buildNewMessage(message, this.userService.currentUser, actors, context);
+
     this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
-      console.log('iajuuuuuuu......');
       this.initNewMessage();
     })
   }
 
   updateMessage(message:MessageToken, actors:Array<Actor>, context: ConversationContext){
-      console.log('update EXISTING message')
     this.message = initMessageAnswer(message, this.userService.currentUser, actors);
+
     this.daoService.create<MessageToken>(this.recordtype, this.message).then(msj => {
-      console.log('iajuuuuuuu......');
       this.initNewMessage();
     })
   }
@@ -398,7 +391,6 @@ export class NotificationController {
   }
 
   set selectionModel(selection: SelectionModel<ConversationTable>){
-    console.log('selection Model from table!!!!')
     this._selectionModel = selection;
   }
 
@@ -428,12 +420,10 @@ export class NotificationController {
   private filterSelectedList():UserConversation[]{
     let list: UserConversation[];
     let selected = this.selectionModel.selected as any;
-    console.log('filterSelectedList: [%s]', this.userconversationList.length);
 
     list = this.userconversationList.filter((token: any) =>{
       return selected.find(tableItem => (token._id === tableItem._id));
     });
-    console.log('filter DONE: list:[%s]', list && list.length)
 
     return list;
   }

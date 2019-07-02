@@ -56,7 +56,6 @@ export class SolicitudesBaseComponent implements OnInit {
   generarVoucher(e){
     e.preventDefault();
     e.stopPropagation();
-    console.log('GenerarVoucherALIMENTOS BEGIN')
 
     this.emitEvent({
       action: ACTION,

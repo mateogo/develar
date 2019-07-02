@@ -42,7 +42,6 @@ export class SolicitudesPanelComponent implements OnInit {
 
 
   tokenSelected(event: UpdateAsistenciaEvent){
-    console.log('create Remito: Solicitudes-Panel: [%s]', event.action);
     if(event.action === ACTION){
       this.emitEvent(event);
 
@@ -52,7 +51,6 @@ export class SolicitudesPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateAsistenciaEvent){
-    console.log('=== Asistencia DATA Panel ====');
     this.updateItem.next(event);
   
   }

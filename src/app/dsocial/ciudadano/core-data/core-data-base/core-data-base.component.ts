@@ -28,7 +28,6 @@ export class CoreDataBaseComponent implements OnInit {
   }
 
   updateCore(event: UpdatePersonEvent){
-  	console.log('update Core: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;

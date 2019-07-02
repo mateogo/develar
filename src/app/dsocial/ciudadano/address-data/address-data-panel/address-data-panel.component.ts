@@ -32,8 +32,6 @@ export class AddressDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateAddressEvent){
-  	console.log('update Address-Panel: [%s]', event.action);
-
   	this.emitEvent(event);
   }
 
@@ -51,7 +49,6 @@ export class AddressDataPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateAddressEvent){
-    console.log('=== Address DATA Panel ====');
   
   	if(event.action === UPDATE){
   		this.updateItems.next({

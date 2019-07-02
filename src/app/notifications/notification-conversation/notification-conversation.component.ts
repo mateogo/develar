@@ -27,7 +27,6 @@ export class NotificationConversationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('conversation componente INIT')
 
   	this.notifCtrl.conversationListener.subscribe(list => {
   		this.initConversationRender(list);
@@ -47,7 +46,7 @@ export class NotificationConversationComponent implements OnInit {
       this.conversationSlug = this.conversation.content ;
       this.messages = msjList;
       this.openDetail = true;
-      console.log('initConversationRender: [%s]', msjList.length, this.conversation.slug);
+
     }else{
       this.openDetail = false;
     }

@@ -97,7 +97,6 @@ export class SegumientoPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        console.log('readyToGo');
 
         this.initCurrentPage();
 
@@ -107,11 +106,7 @@ export class SegumientoPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    console.log('SEGUIMIENTO PAGE INIT')
-    console.log('Turno:[%s]',  this.dsCtrl.activeTurno);
-
     this.dsCtrl.personListener.subscribe(p => {
-      console.log('personListener [%s]', (p? p.displayName :'NO-PERSON'))
 
       this.initCurrentPerson(p);
     })
@@ -194,7 +189,6 @@ export class SegumientoPageComponent implements OnInit {
   // Contact Data
   updateContactList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateContactData')
       this.upsertContactList(event);
     }
   }
@@ -213,7 +207,6 @@ export class SegumientoPageComponent implements OnInit {
   // Address Data
   updateAddressList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateAddressData')
       this.upsertAddressList(event);
     }
   }
@@ -232,7 +225,6 @@ export class SegumientoPageComponent implements OnInit {
   // Family Data
   updateFamilyList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateFamilyData')
       this.upsertFamilyList(event);
     }
   }
@@ -251,7 +243,6 @@ export class SegumientoPageComponent implements OnInit {
   // Oficios Data
   updateOficiosList(event:UpdateItemListEvent){
     if(event.action === UPDATE){
-      console.log('tsocial: READY to UpdateOficiosData')
       this.upsertOficiosList(event);
     }
   }
@@ -268,25 +259,19 @@ export class SegumientoPageComponent implements OnInit {
   }
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
-    console.log('Sol/asistencia: [%s]', event.action);
     if(event.action === UPDATE){
-      console.log('Sol Asistencia BUBBLED to UPDATE')
       this.initAsistenciasList();
     }
     if(event.action === SELECT){
-      console.log('Sol Asistencia BUBBLED to SELECT')
       //this.initAsistenciasList();
     }
   }
 
   selectAsistencia(event: UpdateAsistenciaEvent){
-  	console.log('followUP: [%s]', event.token.compNum);
     if(event.selected){
       this.context.asistenciaId = event.token._id;
-      console.log('SELECTED')
     }else{
       this.context.asistenciaId = null;
-      console.log('NOT SELECTED')
 
     }
 
@@ -345,13 +330,11 @@ export class SegumientoPageComponent implements OnInit {
   }
 
   actionEvent(taction:TurnoAction){
-    console.log('actionEvent BUBLED: [%s]', taction.action);
     this.processTurnoEvent(taction);
   }
 
   processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
-      console.log('Turno UPDATE cb');
     })
 
   }

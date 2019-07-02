@@ -51,14 +51,14 @@ export class NotificationEditComponent implements OnInit {
   public _openEditor: boolean = false;
   private messageActionLabel = "nuevo mensaje";
 
-  private searchTerms = new Subject<string>();
-
   private showConversation = false;
   private conversationId: string = "";
   private conversationEmitter = new BehaviorSubject<string>("");
 
   public meContent = "";
   public mePlaceholder = "Ingrese su mensaje...";
+
+  public importanceOpttList = notificationModel.importanceOptions;
 
 
 
@@ -78,6 +78,7 @@ export class NotificationEditComponent implements OnInit {
 
     this.form = this.fb.group({
       content:    [null,  Validators.compose([Validators.required])],
+      importance: [null],
     });
 
   }
@@ -96,18 +97,21 @@ export class NotificationEditComponent implements OnInit {
   formReset(model:MessageToken){
   	this.form.reset({
   		content: model.content,
+      importance: (model.importance || 1)
   	})
   }
 
   formSubmit(){
 		let fvalue = this.form.value;
 		this.message.content = fvalue.content;
+    this.message.importance = fvalue.importance
 		return this.message;
   }
 
   editCancel(){
     this.notifCtrl.cancelMessageEditing()
     this._openEditor = false;
+    this.messageUpdated.next(this.message);
 
   }
 
@@ -118,7 +122,7 @@ export class NotificationEditComponent implements OnInit {
 
     if(!this.message.isNewConversation){
       this.messageActionLabel =  '<strong>'+ 'Emitir nuevo mensaje/ notificación: ' + ' </strong> ' + this.message.content;
-      console.log('showConversation: [%s]', this.message.conversationId);
+
       this.conversationId = this.message.conversationId;
       this.conversationEmitter.next(this.conversationId);
       this.showConversation = true;
@@ -128,9 +132,9 @@ export class NotificationEditComponent implements OnInit {
     }
     
     this.message.content = "";
+    this.message.importance = 1;
     this._openEditor = true;
 
-    console.log('initEditorData actors?[%s]', (this.message && this.message.actors && this.message.actors.length))
     if(this.message && this.message.actors && this.message.actors.length){
       this.promoteUsers(this.message.actors);
     }
@@ -146,46 +150,34 @@ export class NotificationEditComponent implements OnInit {
 
   updateUserList(users: Array<User>){
   	this.userList = users;
-  	console.log('update Userlist [%s]', this.userList.length)
+
   }
   
 
   // medium editor content Update
 	contentUpdateContent(data){
-		console.log('updateContent')
+		//console.log('updateContent')
 	}
 
+  changeSelectionValue(type, value){
+
+  }
+
 	onSubmit(){
-		console.log('onSubmit');
 		this.message = this.formSubmit();
 		this.actors = this.notifCtrl.buildActorList(this.userList);
 		this.notifCtrl.saveMessageToken(this.message, this.actors, this.context);
-    this.messageUpdated.next(this.message);
 
+    setTimeout(()=>{
+      this.messageUpdated.next(this.message);
+    },1000);
+    
 	}
 
-  // ****** SEARCH ******************
-  search(term){
-    this.searchTerms.next(term)
-  }
-
-  selectEntity(token){
-    console.log('selectEntity: Token: [%s]', token.userId)
-    if(token){
-      this.notifCtrl.initUserConversation(token, token._id);
-    }
-  }
 
   // ****** PROMOTE ******************
   promoteData(){
     this.message = this.formSubmit();
-  }
-
-  editToken(){
-    if(this._openEditor){
-      this.promoteData();
-    }
-    this._openEditor = !this._openEditor;
   }
 
 }

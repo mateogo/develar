@@ -14,6 +14,7 @@ import { NotificationController } from '../notification.controller';
 
 import { ConversationTable, MessageToken }  from '../notification.model';
 
+const importanceMarker = "*****";
 
 @Component({
   selector: 'notification-base',
@@ -37,8 +38,10 @@ export class NotificationBaseComponent implements OnInit {
   public actionList: Array<any> = [];
   public conversationId: string;
   public context;
+  public importanceLabel = "***";
 
   private conversationEmitter = new BehaviorSubject<string>("");
+
 
 
     // [context]="context"
@@ -59,12 +62,22 @@ export class NotificationBaseComponent implements OnInit {
   		this.initTokenData();
   	}
 
+
+    this.notifCtrl.messageListener.subscribe(model => {
+
+    })
+
+
+
   }
 
   initTokenData(){
   	//TODO
+    let index = this.conversationToken.importance;
+
     this.conversationId = this.conversationToken.conversationId;
     this.context = this.conversationToken.context;
+    this.importanceLabel = importanceMarker.substr(0, this.conversationToken.importance);
 
 
   }
@@ -72,13 +85,17 @@ export class NotificationBaseComponent implements OnInit {
   verDetalle(){
   	this.openView = !this.openView;
   	if(this.openView){
-	  	console.log('OpenDetali Dialog')
 
 	    this.conversationEmitter.next(this.conversationId);
       this.notifCtrl.initUserConversation(null, this.conversationToken._id);
 
+      this.updateUserconversationHasRead(this.conversationToken);
+
 	    this.showConversation = true;
       this.showEditor = true;
+
+      // this.notifCtrl.saveMessageToken(this.message, this.actors, this.context);
+
 
   	}else{
 	    this.showConversation = false;
@@ -87,6 +104,14 @@ export class NotificationBaseComponent implements OnInit {
   	}
 
   }
+
+  updateUserconversationHasRead(convToken: ConversationTable){
+    if(!convToken.hasRead){
+      convToken.hasRead = true;
+      this.notifCtrl.updateUserConversationById(convToken._id, {hasRead: true});      
+    }
+  }
+
 
   displayMessage(){
   	if(this.conversationToken.hasRead){
@@ -100,13 +125,12 @@ export class NotificationBaseComponent implements OnInit {
   }
 
   messageUpdated(message: MessageToken){
-    console.log('messageUpdate EMITTED +*******');
     this.triggerAction('update');
 
   }
 
   ngOnChanges(){
-    console.log('********** ngOnChanges;')
+    //console.log('********** ngOnChanges;')
   }
 
   triggerAction(action: string){

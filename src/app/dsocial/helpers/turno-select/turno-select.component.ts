@@ -20,7 +20,6 @@ export class TurnoSelectComponent implements OnInit {
   turnoFor(e, token){
   	e.stopPropagation();
   	e.preventDefault();
-  	console.log('token [%s]', token.label);
   	this.fetchTurnos(token);
   }
 

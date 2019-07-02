@@ -8,11 +8,12 @@
  	  		<br>
 	  		</div>
 
-			<div class="panel-header-control" ><span 
-				(click)='verDetalle()' title="Ver detalle">
-				<i [class]="openView ? 'far fa-envelope-open' : 'far fa-envelope'"
-					aria-hidden="true"></i></span>
-			</div>
+				<div class="panel-header-control" >
+					<span>{{ importanceLabel }} </span>
+					<span (click)='verDetalle()' title="Ver detalle">
+						<i [class]="openView ? 'far fa-envelope-open' : 'far fa-envelope'"
+							aria-hidden="true"></i></span>
+				</div>
 	  	</div>
 
 	  	<!-- p >

@@ -53,6 +53,10 @@ export class SolasisBaseComponent implements OnInit {
 
     }
 
+    if(!this.token.compNum || this.token.compNum === "00000"){
+      this.editToken()
+    }
+
   }
 
   editToken(){
@@ -83,7 +87,6 @@ export class SolasisBaseComponent implements OnInit {
   }
 
   manageToken(event: UpdateAsistenciaEvent){
-  	console.log('update Contact-Base: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	//this.showView = true;
@@ -114,7 +117,6 @@ export class SolasisBaseComponent implements OnInit {
   }
 
   manageAlimento(event: UpdateAlimentoEvent ){
-    console.log('update MODALIDAD ALIMENTO: [%s]', event.action);
     this.openEditor = false;
     this.showEdit = false;
     //this.showView = true;
@@ -129,7 +131,6 @@ export class SolasisBaseComponent implements OnInit {
   }
 
   tokenSelected(){
-    console.log('tokenSelected')
     this.toggleSelectd = !this.toggleSelectd;
 
     this.emitEvent({

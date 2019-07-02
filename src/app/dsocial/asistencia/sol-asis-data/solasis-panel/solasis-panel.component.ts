@@ -40,7 +40,6 @@ export class SolasisPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateAsistenciaEvent){
-  	console.log('update Asistencia-Panel: [%s]', event.action);
     if(event.action === UPDATE){
       this.dsCtrl.manageAsistenciaRecord('asistencia',event.token).subscribe(t =>{
         if(t){
@@ -70,7 +69,6 @@ export class SolasisPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateAsistenciaEvent){
-    console.log('=== Asistencia DATA Panel ====');
   
   	if(event.action === UPDATE){
   		this.updateItems.next({

@@ -44,18 +44,15 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this._modelSbscrptn.unsubscribe()
 
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
+    //console.log('ngOnChanges;')
   }
 
   ngOnInit() {
-    console.log('NOTIFICATION-MANAGE INIT ***************+')
-
     this._modelSbscrptn = this.notifCtrl.userconversationListener.subscribe(entity =>{
       this.initEntityData(entity);
       this.userconver = entity;
@@ -78,11 +75,10 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
 
 
   updateSelRecords(list: ConversationTable[]){
-    console.log('updateSelRecords:[%s]', list.length)
+    //console.log('updateSelRecords:[%s]', list.length)
   }
 
   updateTableList(){
-    console.log('fetch Userconversations!!!!')
     this.notifCtrl.fetchUserConversations(this.context);
     setTimeout(()=>{this.showTable = true;}, 1000);
   }
@@ -147,8 +143,6 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   }
 
   messageUpdated(message: MessageToken){
-    console.log('messageUpdate EMITTED +*******');
-
     setTimeout(()=>{
       this.updateTableList();
     },1000);
@@ -156,7 +150,6 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   }
 
   editTableSelectedEntityList(){
-    console.log('editSelected**************')
     this.userconverEditList = this.notifCtrl.fetchSelectedList();
     this.editMany();
   }
@@ -176,7 +169,6 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   }
 
   editMany(){
-    console.log('editMany [%s]', this.userconverEditList.length)
     this._editMany = false;
     if(!this.userconverEditList || !this.userconverEditList.length) return;
     let usrconv = this.userconverEditList[0];
@@ -194,7 +186,6 @@ export class NotificationManageComponent implements OnInit, OnChanges, OnDestroy
   }
 
   actionTriggered(action){
-    console.log(`${whoami}  actionTriggered: ${action}`);
     if(action === 'editone')      this.editTableSelectedEntityList();
   }
 

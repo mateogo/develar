@@ -72,7 +72,7 @@ export class FamilyDataEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{
@@ -82,7 +82,9 @@ export class FamilyDataEditComponent implements OnInit {
       nombre:       [null],
       apellido:     [null],
       tdoc:         [null],
-      ndoc:         [null],
+      ndoc:         [null, [ Validators.minLength(7),
+                             Validators.maxLength(10),
+                             Validators.pattern('[0-9]*')]],
     	vinculo:      [null],
       fenactx:      [null],
       ecivil:       [null],

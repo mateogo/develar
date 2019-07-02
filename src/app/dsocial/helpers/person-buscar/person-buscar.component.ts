@@ -55,13 +55,11 @@ export class PersonBuscarComponent implements OnInit {
   }
 
   selectEntity(person:Person){
-  	console.log('PersonSelected: [%s] inputFld:[%s]', person._id, this.displayNameFld);
   	this.currentPerson = person;
     this.person$.emit(person);
   }
 
   showEntity(){
-    console.log('add Entity: BEGIN [%s]', this.displayNameFld);
     if(!this.currentPerson) return;
 
     let content = this.buildNewPersonAlertMessage(this.displayNameFld);

@@ -32,8 +32,6 @@ export class OficiosDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateOficiosEvent){
-  	console.log('update Oficios-Panel: [%s]', event.action);
-
   	this.emitEvent(event);
   }
 
@@ -50,8 +48,6 @@ export class OficiosDataPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateOficiosEvent){
-    console.log('=== Oficios DATA Panel ====');
-  
   	if(event.action === UPDATE){
   		this.updateItems.next({
   		action: UPDATE,

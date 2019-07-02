@@ -93,7 +93,6 @@ export class DsocialController {
   /****** Person EVENTS ******/
   /***************************/
   updatePerson(event: UpdatePersonEvent){
-    console.log('CONTROLLER event BUBBLED');
 
     if(event.token === CORE){
       this.upsertPersonCore(event.person._id, event.person);
@@ -239,7 +238,6 @@ export class DsocialController {
 
     remitoalmacen.fecomp_tsa = devutils.dateFromTx(remitoalmacen.fecomp_txa).getTime();
 
-    console.log('CREATE REMITO - toObtain Serial')
     this.fetchSerialRemitoalmacen(type, name, sector).subscribe(serial =>{
       remitoalmacen.compPrefix = serial.compPrefix ;
       remitoalmacen.compName = serial.compName;
@@ -323,7 +321,7 @@ export class DsocialController {
       avance: avance
     }
     this.daoService.update(type, remitoId, token).then(t =>{
-      console.log(t.sector)
+
     })
   }
 
@@ -399,7 +397,6 @@ export class DsocialController {
 
     asistencia.fecomp_tsa = devutils.dateFromTx(asistencia.fecomp_txa).getTime();
 
-    console.log('CREATE ASISTENCIA - toObtain Serial')
     this.fetchSerialAsistencias(type, name, sector).subscribe(serial =>{
       asistencia.compPrefix = serial.compPrefix ;
       asistencia.compName = serial.compName;
@@ -473,7 +470,7 @@ export class DsocialController {
       avance: avance
     }
     this.daoService.update(type, asistenciaId, token).then(t =>{
-      console.log(t.sector)
+
     })
   }
 
@@ -712,11 +709,6 @@ export class DsocialController {
     this.actualUrlSegments = mRoute;
     this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
-
-    console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
-    console.log('actualRoute: actualUrl[%s]', this.actualUrl );
-    console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
-
   }
 
   private fetchNavigationUrl(snap, urlmodule){

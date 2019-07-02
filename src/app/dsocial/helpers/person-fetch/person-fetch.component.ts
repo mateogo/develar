@@ -39,7 +39,7 @@ export class PersonFetchComponent implements OnInit {
   	this.personListener.subscribe(tokens => {
   		if(tokens && tokens.length){
   			this.person$.emit(tokens);
-  			console.log('Persons emittted: [%s]', tokens.length);
+
   		}else{
   			this.person$.emit([]);
   		}

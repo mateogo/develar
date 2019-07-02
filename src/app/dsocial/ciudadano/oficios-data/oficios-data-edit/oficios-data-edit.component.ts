@@ -65,7 +65,7 @@ export class OficiosDataEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{

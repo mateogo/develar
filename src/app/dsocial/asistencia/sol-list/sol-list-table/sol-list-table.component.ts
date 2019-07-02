@@ -130,7 +130,7 @@ export class SolListTableComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log('********** ngOnChanges;')
+    //console.log('********** ngOnChanges;')
   }
 
 
@@ -151,7 +151,6 @@ export class SolListTableComponent implements OnInit {
 
 
   openEditor(item, col){
-    console.log('open Editor. Click [%s] [%s]', item._id, item.slug);
     item.editflds[col] = item.editflds[col] > 1 ? 0 : item.editflds[col] + 1
     item.total = item.pu * item.qt;
     this.dsCtrl.updateAsistenciaListItem(item);
@@ -186,7 +185,6 @@ export class SolListTableComponent implements OnInit {
     removeRelation.data.itemplate = templ;
     this.openDialog(removeRelation).subscribe(result => {
       if(result==='accept'){
-        console.log('Accepted selected');
         this.buildColumDef();
       } 
 
@@ -213,7 +211,6 @@ export class TableDataSource extends DataSource<any> {
               private _paginator: MatPaginator,
               private _sort: MatSort){
     super();
-    console.log('Constructor Asitencia Data Source: [%s]', this._sort)
 
   }
 

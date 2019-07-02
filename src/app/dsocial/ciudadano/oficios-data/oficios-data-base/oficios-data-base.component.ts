@@ -19,10 +19,14 @@ export class OficiosDataBaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(!this.token.tdato && !this.token.tocupacion){
+      this.editToken();
+    }
+
+
   }
 
   manageToken(event: UpdateOficiosEvent){
-  	console.log('update Contact-Base: [%s]', event.action);
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;
