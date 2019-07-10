@@ -119,6 +119,7 @@ const addressSch = new mongoose.Schema({
     street1:     {type: String,  required: false, defalut: ''},
     street2:     {type: String,  required: false, defalut: ''},
     city:        {type: String,  required: false, defalut: ''},
+    barrio:      {type: String,  required: false, defalut: ''},
     state:       {type: String,  required: false, defalut: ''},
     statetext:   {type: String,  required: false, defalut: ''},
     zip:         {type: String,  required: false, defalut: ''},

@@ -292,7 +292,12 @@ export class TsocialPageComponent implements OnInit {
   /*      Turnos        */
   /**********************/
   navigateToRecepcion(){
-    this.router.navigate(['../../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+    if(this.hasPersonIdOnURL){
+      this.router.navigate(['../../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+
+    } else {
+      this.router.navigate(['../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+    }
 
   }
 

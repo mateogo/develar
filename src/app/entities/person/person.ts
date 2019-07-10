@@ -63,6 +63,7 @@ export class Address {
     street1: string = '';
     street2: string = '';
     city: string = '';
+    barrio?: string = '';
     state: string = '';
     statetext:string= '';
     zip: string = '';
@@ -510,6 +511,7 @@ const addressTypes: Array<any> = [
 		{val: 'principal',      label: 'Principal',        slug:'Locación principal' },
 		{val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
 		{val: 'fiscal', 	      label: 'Fiscal',           slug:'Domicilio fiscal' },
+    {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
 		{val: 'comercial', 	    label: 'Comercial',        slug:'Domicilio comercial' },
 		{val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
 		{val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
@@ -528,13 +530,221 @@ const countries: Array<any> = [
 ];
 
 const ciudadesBrown: Array<any> = [
-    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
-    {val: 'adrogue',         label: 'Adrogué ',slug:'Argentina' },
-    {val: 'malvinas',        label: 'Malvinas ',slug:'Argentina' },
-    {val: 'burzaco',         label: 'Burzaco ',slug:'Argentina' },
-    {val: 'orione',          label: 'Orione ',slug:'Argentina' },
-    {val: 'glew',            label: 'Glew ',slug:'Argentina' },
+    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',   slug:'Adrogué' },
+    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',   slug:'Burzaco' },
+    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',   slug:'Rafael Calzada' },
+    {val: 'claypole',            cp:'1849', label: 'Claypole',   slug:'Claypole' },
+    {val: 'donorione',           cp:'1850', label: 'Don Orione', slug:'Don Orione' },
+    {val: 'glew',                cp:'1856', label: 'Glew',       slug:'Glew' },
+    {val: 'longchamps',          cp:'1854', label: 'Longchamps', slug:'Longchamps' },
+    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',slug:'Malvinas Argentinas' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',   slug:'J.Mármol' },
+    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
+    {val: 'solano',              cp:'1846', label: 'San Fco Solano',   slug:'San Fco Solano' },
+    {val: 'sanjose',             cp:'1846', label: 'San José',   slug:'San José' },
 ];
+
+
+const barriosNotDefined: Array<any> = [
+    {val: 'no_definido',  label: 'No definido',slug:'No definido' },
+    {val: 'centro',       label: 'Centro ',slug:'Centro' }
+];
+
+const barriosOptList = {
+  adrogue: [
+    {val: 'adrogue',    label: 'Adrogué Ctro' },
+    {val: 'vattuone',   label: 'Vattuone'     },
+  ],
+
+  burzaco: [
+    {val: 'burzaco',    label: 'Burzaco Ctro' },
+    {val: 'elhornero',    label: 'El Hornero' },
+    {val: 'lapilarica',    label: 'La Pilarica' },
+    {val: 'elcanario',    label: 'El Canario' },
+    {val: 'barriolindo',    label: 'Barrio Lindo' },
+    {val: 'lacumbre',    label: 'La Cumbre' },
+    {val: 'arzano',    label: 'Arzano' },
+    {val: 'elencuentro',    label: 'El Encuentro' },
+    {val: 'betharran',    label: 'Betharrán' },
+    {val: 'lalucy',    label: 'La Lucy' },
+    {val: 'solis',    label: 'Solís' },
+    {val: 'sanpablo',    label: 'San Pablo' },
+    {val: 'almafuerte',    label: 'Almafuerte' },
+    {val: 'elrecuerdo',    label: 'El Recuerdo' },
+    {val: 'laciudadoculta',    label: 'La Ciudad Oculta' },
+    {val: 'laprimavera',    label: 'La Primavera' },
+    {val: 'donalejandro',    label: 'Don Alejandro' },
+    {val: 'lacarlota',    label: 'La Carlota' },
+    {val: 'sakura',    label: 'Sakura' },
+    {val: 'eltriangulo',    label: 'El Triángulo' },
+    {val: 'viplastic',    label: 'Viplastic' },
+    {val: 'parqueroma',    label: 'Parque Roma' },
+    {val: 'ibañez',    label: 'Ibañez' },
+    {val: 'sanjuandecorimayo',    label: 'San Juan de Corimayo' },
+    {val: 'parquedecorimayo',    label: 'Parque Corimayo' },
+    {val: 'corimayo',    label: 'Corimayo' },
+    {val: 'primerajunta',    label: 'Primera Junta' },
+    {val: 'lasrosas',    label: 'Las Rosas' },
+    {val: 'elgaucho',    label: 'El Gaucho' },
+    {val: 'lomasdeburzaco',    label: 'Lomas de Burzaco' },
+    {val: 'luzyfuerza',    label: 'Luz y Fuerza' },
+  ],
+
+  calzada: [
+    {val: 'calzada',    label: 'Calzada Ctro' },
+    {val: '14denoviembre',    label: '14 de Noviembre' },
+    {val: '2deabril',    label: '2 de Abril' },
+    {val: 'sangeronimo',    label: 'San Gerónimo' },
+    {val: 'asuncion',    label: 'Asunción' },
+    {val: 'zabala',    label: 'Zabala' },
+    {val: 'sanjavier',    label: 'San Javier' },
+  ],
+
+  claypole: [
+    {val: 'claypole',    label: 'Claypole Centro' },
+    {val: 'laesther',    label: 'La Esther' },
+    {val: 'elcastillo',    label: 'El Castillo' },
+    {val: 'donorione',    label: 'Don Orione' },
+    {val: 'suther',    label: 'Suther' },
+    {val: 'martinfierro',    label: 'Martín Fierro' },
+    {val: 'cerrito',    label: 'Cerrito' },
+    {val: 'conjhabitdonorione',    label: 'Conj Habit Don Orione' },
+    {val: 'sideco',    label: 'Sideco' },
+    {val: 'eltriangulo',    label: 'El Triángulo' },
+    {val: 'lajovita',    label: 'La Jovita' },
+    {val: 'lastunas',    label: 'Las Tunas' },
+    {val: 'horizonte',    label: 'Horizonte' },
+    {val: 'santaclara',    label: 'Santa Clara' },
+    {val: 'barrioparque',    label: 'Barrio Parque' },
+    {val: 'eltrebol',    label: 'El Trébol' },
+    {val: 'saenz',    label: 'Sáenz' },
+    {val: 'medallamilagrosa',    label: 'Medalla Milagrosa' },
+    {val: 'pintemar',    label: 'Pintemar' },
+    {val: 'sanlucas',    label: 'San Lucas' },
+    {val: 'marianomoreno',    label: 'Mariano Moreno' },
+    {val: 'monteverde',    label: 'Monteverde' },
+    {val: 'sanluis',    label: 'San Luis' },
+  ],
+
+  donorione: [
+    {val: 'donorione',    label: 'Don Orione' },
+  ],
+
+  glew: [
+    {val: 'glew',    label: 'Glew Centro' },
+    {val: 'gorriti',    label: 'Gorriti' },
+    {val: 'uocra',    label: 'UOCRA' },
+    {val: 'parqueroma',    label: 'Parque Roma' },
+    {val: 'progreso',    label: 'Progreso' },
+    {val: 'cotepa',    label: 'Cotepa' },
+    {val: 'eltrebol',    label: 'El Trébol' },
+    {val: 'losalamos',    label: 'Los Alamos' },
+    {val: 'quintacastillo',    label: 'Quinta del Castillo' },
+    {val: 'upcn',    label: 'UPCN' },
+    {val: 'telepostal',    label: 'Telepostal' },
+    {val: 'losaromos',    label: 'Los Aromos' },
+    {val: 'ipona',    label: 'Ipona' },
+    {val: 'villaparís',    label: 'Villa París' },
+    {val: 'amancay',    label: 'Amancay' },
+    {val: 'altosdeglew',    label: 'Los Altos de Glew' },
+    {val: 'supa',    label: 'Supa' },
+    {val: 'almafuerte',    label: 'Almafuerte' },
+    {val: 'kanmar',    label: 'Kanmar' },
+  ],
+
+  longchamps: [
+    {val: 'longchamps',    label: 'Longchamps Centro' },
+    {val: 'rayodesol',    label: 'Rayo de Sol' },
+    {val: 'ampliacionsantarita',    label: 'Ampl. Santa Rita' },
+    {val: 'santarita',    label: 'Santa Rita' },
+    {val: 'jorgenewber',    label: 'Jorge Newber' },
+    {val: 'lacarmen',    label: 'La Carmen' },
+    {val: 'ferroviario',    label: 'Ferroviario' },
+    {val: 'losfrutales',    label: 'Los Frutales' },
+    {val: 'santaadela',    label: 'Santa Adela' },
+    {val: 'camporamos',    label: 'Campo Ramos' },
+    {val: 'doñasol',    label: 'Doña Sol' },
+    {val: 'santamaria',    label: 'Santa María' },
+    {val: 'sakura',    label: 'Sakura' },
+    {val: 'laesperanza',    label: 'La Esperanza' },
+    {val: 'eltriángulo',    label: 'El Triángulo' },
+    {val: 'longchampseste',    label: 'Longchamps Este' },
+    {val: 'casasblancas',    label: 'Casas Blancas' },
+    {val: 'amutun1',    label: 'Amutun 1' },
+    {val: 'amutun2',    label: 'Municipal' },
+    {val: 'municipal',    label: 'Amutun 2' },
+    {val: 'losstud',    label: 'Los Stud' },
+    {val: 'donluis',    label: 'Don Luis' },
+    {val: 'villaparis',    label: 'Villa París' },
+    {val: 'amancay',    label: 'Amancay' },
+  ],
+
+  malvinasargentinas: [
+    {val: 'malvinasargentinas',    label: 'Malvinas Argentinas' },
+    {val: 'elcanario',    label: 'El Canario' },
+    {val: 'barriolindo',    label: 'Barrio Lindo' },
+    {val: 'lomaverde',    label: 'Loma Verde' },
+    {val: 'elencuentro',    label: 'El Encuentro' },
+    {val: 'betharran',    label: 'Betharrán' },
+   ],
+
+  marmol: [
+    {val: 'marmol',    label: 'Mármol Ctro' },
+    {val: 'martinarin',    label: 'Martín Arín' },
+    {val: 'arca',    label: 'Arca' },
+   ],
+
+  ministrorivadavia: [
+    {val: 'ministrorivadavia',    label: 'Ministro Rivadavia Ctro' },
+    {val: 'tsuji',    label: 'Tsuje' },
+    {val: 'parquerivadavia',    label: 'Parque Rivadavia' },
+    {val: 'lujan',    label: 'Luján' },
+    {val: 'gralbelgrano',    label: 'Gral Belgrano' },
+    {val: 'lospinos',    label: 'Los Pinos' },
+    {val: 'gendarmeria',    label: 'Gendarmería' },
+  ],
+  solano: [
+    {val: 'solano',    label: 'Solano' },
+    {val: 'nuevapompeya',    label: 'Nueva Pompeya' },
+    {val: 'loschalet',    label: 'Los Chalet' },
+    {val: 'loseucaliptus',    label: 'Los Eucaliptus' },
+    {val: 'losmonoblock',    label: 'Los Monoblock' },
+    {val: 'lastunas',    label: 'Las Tunas' },
+    {val: 'zabala',    label: 'Zabala' },
+    {val: 'villalaura',    label: 'Villa Laura' },
+    {val: 'guadalupe',    label: 'Guadalupe' },
+    {val: 'santacatalina',    label: 'Santa Catalina' },
+    {val: 'sangustin',    label: 'San Agustín' },
+    {val: 'lomasdesolano',    label: 'Las Lomas de Solano' },
+    {val: 'santaisabel',    label: 'Santa Isabel' },
+
+  ],
+  sanjose: [
+    {val: 'sanjose',    label: 'San José Ctro' },
+    {val: 'tierradejerusalen',    label: 'Tierra de Jerusalén' },
+    {val: '27demarzo',    label: '27 de marzo' },
+    {val: 'sanmarcos',    label: 'San Marcos' },
+    {val: 'lagloria',    label: 'La Gloria' },
+    {val: '8denoviembre',    label: '8 de Noviembre' },
+    {val: 'sanramon',    label: 'San Ramón' },
+    {val: '8dediciembre',    label: '8 de Diciembre' },
+    {val: 'latablada',    label: 'La Tablada' },
+    {val: 'evita',    label: 'Evita' },
+    {val: 'puertoargentino',    label: 'Puerto Argentino' },
+    {val: 'launion',    label: 'La Unión' },
+    {val: 'sanagustin',    label: 'San Agustín' },
+    {val: 'virgendelujan',    label: 'Vírgen de Luján' },
+    {val: 'elombu',    label: 'El Ombú' },
+  ],
+
+};
+
+
+
+
+
+
 
 const sexoOptList: Array<any> = [
     {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
@@ -825,7 +1035,8 @@ const estadoCivil: Array<any> = [
 ];
 
 const nivelEstudios: Array<any> = [
-		{val: 'primario', 	    label: 'Primario',          slug:'Primario' },
+    {val: 'primario',       label: 'Primario',          slug:'Primario' },
+		{val: 'primariox', 	    label: 'Primario (incompleto)',          slug:'Primario (incompleto)' },
 		{val: 'secundariox',    label: 'Secundario (incompleto)',    slug:'Secundario (incompleto)' },
 		{val: 'secundario',     label: 'Secundario',        slug:'Secundario' },
 		{val: 'terciariox',     label: 'Terciario (incompleto)',     slug:'Terciario (incompleto)' },
@@ -836,6 +1047,7 @@ const nivelEstudios: Array<any> = [
 		{val: 'posgrado',       label: 'Posgrado',          slug:'Posgrado' },
 		{val: 'doctoradox',     label: 'Doctorado (incompleto)',     slug:'Doctorado (incompleto)' },
 		{val: 'doctorado',      label: 'Doctorado',         slug:'Doctorado' },
+    {val: 'noposee',        label: 'No Posee',              slug:'No Posee' },
 		{val: 'otra',           label: 'Otra',              slug:'Otra' },
 ];
 
@@ -845,6 +1057,11 @@ const nivelEstudios: Array<any> = [
 function initNewModel(displayName:string, email:string){
   let entity = new Person(displayName, email);
   return entity;
+}
+
+function getOptListIndex(item, list:Array<any>): number {
+    if(!item) return -1;
+    return  list.findIndex(token => token.val === item)
 }
 
 function getLabel(item, list:Array<any>): string {
@@ -857,6 +1074,64 @@ function getLabel(item, list:Array<any>): string {
 		}
 		return ''
 	}
+
+    // {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    // {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
+    // {val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
+    // {val: 'fiscal',         label: 'Fiscal',           slug:'Domicilio fiscal' },
+    // {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
+    // {val: 'comercial',       label: 'Comercial',        slug:'Domicilio comercial' },
+    // {val: 'entrega',         label: 'Lugar entrega',    slug:'Lugar de entrega' },
+    // {val: 'sucursal',       label: 'Sucursal',         slug:'Sucursal' },
+    // {val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
+    // {val: 'admin',          label: 'Administración',   slug:'Sede administración' },
+    // {val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
+    // {val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
+    // {val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
+    // {val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
+    // {val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
+
+
+
+
+  function defaultAddress(list: Address[]): Address {
+    let address = list[0];
+    let ponderacion = 0;
+    // ponderacion: 0: sin ponderar
+    // ponderacion: 1: comercial|entrega|deposito|fabrica|pagos|rrhh|biblioteca|dependencia
+    // ponderacion: 2: dni
+    // ponderacion: 3: fiscal
+    // ponderacion: 4: particular
+    // ponderacion: 5: principal
+    list.forEach(t => {
+      if(t.addType=== 'principal'){
+        address = t;
+        ponderacion = 5;
+
+      }else if(t.addType=== 'particular' && ponderacion <= 4){
+        address = t;
+        ponderacion = 4;
+
+      }else if(t.addType=== 'fiscal' && ponderacion <= 3){
+        address = t;
+        ponderacion = 3;
+
+      }else if(t.addType=== 'dni' && ponderacion <= 2){
+        address = t;
+        ponderacion = 2;
+
+      } else {
+        address = t;
+        ponderacion = 1;
+
+      }
+
+
+    });
+
+
+    return address;
+  }
 
 
 
@@ -971,6 +1246,35 @@ class PersonModel {
     return addressTypes.find(item => item.val === value).slug;
     }
 
+    fetchDefaultAddress(list: Address[]): Address {
+      if(!list || !list.length) return null;
+      if(list.length === 1) return list[0];
+      return defaultAddress(list);
+
+    }
+
+    fetchCP(city){
+      let index = getOptListIndex(city, ciudadesBrown);
+      if(index !== -1){
+        return ciudadesBrown[index].cp;
+      }else {
+        return '';
+      }
+
+    }
+
+    displayAddress(list: Address[]): string {
+      let data = ''
+      let address: Address;
+      if(list && list.length) {
+        address = this.fetchDefaultAddress(list);
+        data = address.street1 + ' ' + this.getCiudadLabel(address.city); 
+
+      }
+
+      return data;
+    }
+
     fetchProvinceLabel(value):string{
     return states.find(item => item.val === value).label;
     }
@@ -1050,6 +1354,16 @@ class PersonModel {
     get ciudades():Array<any>{
       return ciudadesBrown;
     }
+  
+    getCiudadLabel(item):string{
+      return getLabel(item, ciudadesBrown);
+    }
+
+    getBarrioList(type): Array<any> {
+      return barriosOptList[type] || barriosNotDefined;
+    }
+
+
 
 
     personType(code):string {

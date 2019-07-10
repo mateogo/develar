@@ -1,8 +1,14 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+
 import { CustomValidators } from 'ng2-validation';
 
+import { Observable } from 'rxjs';
+import { map  }   from 'rxjs/operators';
+
 import { Person, UpdatePersonEvent, Address, personModel } from '../../../../entities/person/person';
+
+import { DsocialController } from '../../../dsocial.controller';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -39,15 +45,15 @@ export class CoreDataEditComponent implements OnInit {
 
   constructor(
   	private fb: FormBuilder,
+    private dsCtrl: DsocialController,
   	) { 
-  		this.form = this.buildForm();
 	}
 
 
 
   ngOnInit() {
-  	this.initForEdit(this.form, this.person);
-
+    this.form = this.buildForm();
+    this.initForEdit(this.form, this.person);
   }
 
   onSubmit(){
@@ -70,11 +76,52 @@ export class CoreDataEditComponent implements OnInit {
 
   }
 
+  currentAge(){
+       let edad = '';
+       let value = this.form.value.fenactx
+       let validAge = devutils.validAge(value);
+       if(validAge){
+           edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
+       }
+       return edad;
+   }
+
+
+  fechaNacimientoValidator(): ValidatorFn {
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          let validAge = devutils.validAge(control.value);
+          console.log('fechaNacimientoVALIDATOR: [%s]', validAge);
+          return validAge ? null : {'invalidAge': true}
+
+      }) ;
+  }
+    
+  hasError = (controlName: string, errorName: string) =>{
+    return this.form.controls[controlName].hasError(errorName);
+  }
+
+  dniExistenteValidator(service: DsocialController, person: Person): AsyncValidatorFn {
+    return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      let value = control.value;
+
+      return service.testPersonByDNI('DNI', value).pipe(
+          map(t => {
+            let invalid = false;
+            if(t && t.length){
+              invalid = true;
+              if(t[0]._id === person._id) invalid = false;
+            }
+
+            return invalid ? { 'mailerror': 'DNI existente' }: null;
+          })
+       )
+
+    }) ;
+  }
+
   changeSelectionValue(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
-
-
  
   buildForm(): FormGroup{
   	let form: FormGroup;
@@ -90,10 +137,16 @@ export class CoreDataEditComponent implements OnInit {
       tprofesion:   [null],
       especialidad: [null],
       ambito:       [null],
-      ndoc:         [null],
+
+      ndoc: [null, [Validators.required, 
+                    Validators.minLength(7),
+                    Validators.maxLength(10),
+                    Validators.pattern('[0-9]*')], 
+                    [this.dniExistenteValidator(this.dsCtrl, this.person)] ],
+
       nacionalidad: [null],
       nestudios:    [null],
-      fenactx:      [null],
+      fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
       sexo:         [null],
     });
@@ -156,3 +209,8 @@ export class CoreDataEditComponent implements OnInit {
 	}
 
 }
+
+//http://develar-local.co:4200/dsocial/gestion/atencionsocial/5d23c753675a3f0818fa6551
+//http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
+
+

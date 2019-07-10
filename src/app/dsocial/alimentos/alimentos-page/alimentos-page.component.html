@@ -35,7 +35,9 @@
 
 
 		<ng-container *ngFor="let remito of remitosList" >
-			<remitoalmacen-view [token]='remito' ></remitoalmacen-view>
+			<div class="remito-container">
+				<remitoalmacen-view [token]='remito' ></remitoalmacen-view>
+			</div>
 		</ng-container>
 	</mat-card-content>
 </mat-card>

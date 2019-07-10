@@ -13,9 +13,21 @@
 
       <ng-container *ngIf="personFound">
 
+        <h6>{{ displayName }} </h6>
+        <h6>{{ displayDoc }} | {{ displayAddress }} </h6>
+
+        <ng-container *ngIf="hasAsistencias">
+          <solasis-view [token]='lastAsistencia'></solasis-view>
+        </ng-container>
+
+        <hr>
+
+        <ng-container *ngIf="hasRemitos">
+          <remitoalmacen-view [token]='lastRemito' ></remitoalmacen-view>
+        </ng-container>
+
+
         <h5>Seleccione el sector de atención</h5>
-        <h4>{{ displayName }} </h4>
-        <h6>{{ displayDoc }} </h6>
         <turno-select (turno$)="nuevoTurno($event)"></turno-select>
       </ng-container>
 

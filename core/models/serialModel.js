@@ -144,7 +144,7 @@ const serialTypeConfig = {
     compPrefix: 'REM',
     compName: 'R/Entrega',
     showAnio: false,
-    resetDay: true,
+    resetDay: false,
     createOnTheFly: true,
     slug: 'Serial de vales de entrega almacen DSocial',
   }

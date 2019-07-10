@@ -160,13 +160,20 @@ const tableActions = [
       {val: 'autorizar',      label: 'Autorizar solicitud',    slug:'Autorizar solicitud' },
 ]
 
+
 const ciudadesBrown: Array<any> = [
-    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
-    {val: 'adrogue',         label: 'Adrogué ',slug:'Argentina' },
-    {val: 'malvinas',        label: 'Malvinas ',slug:'Argentina' },
-    {val: 'burzaco',         label: 'Burzaco ',slug:'Argentina' },
-    {val: 'orione',          label: 'Orione ',slug:'Argentina' },
-    {val: 'glew',            label: 'Glew ',slug:'Argentina' },
+    {val: 'no_definido',         label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'adrogue',             label: 'Adrogué ',   slug:'Adrogué' },
+    {val: 'burzaco',             label: 'Burzaco ',   slug:'Burzaco' },
+    {val: 'calzada',             label: 'Calzada ',   slug:'Calzada' },
+    {val: 'claypole',            label: 'Claypole',   slug:'Claypole' },
+    {val: 'donorione',           label: 'Don Orione', slug:'Don Orione' },
+    {val: 'glew',                label: 'Glew',       slug:'Glew' },
+    {val: 'longchamps',          label: 'Longchamps', slug:'Longchamps' },
+    {val: 'malvinasargentinas',  label: 'Malvinas Argentinas',slug:'Malvinas Argentinas' },
+    {val: 'marmol',              label: 'J.Mármol',   slug:'J.Mármol' },
+    {val: 'ministrorivadavia',   label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
+    {val: 'sanjose',             label: 'San José',   slug:'San José' },
 ];
 
 

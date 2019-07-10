@@ -26,6 +26,24 @@
       <div class="col">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+          <mat-hint align="end">Nuevo DNI a verificar...</mat-hint>
+          <mat-error *ngIf="hasError('ndoc', 'mailerror')">Ya existe este DNI</mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!---nombre; apellido; sexo;--->
+    <div class="row" >
+      <div id="personafisica" class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
         </mat-form-field>
       </div>
 
@@ -40,24 +58,10 @@
         </mat-form-field>
       </div>
 
+
     </div>
 
-    <!---nombre; apellido--->
-    <div class="row" >
-      <div id="personafisica" class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
-        </mat-form-field>
-      </div>
-    </div>
-
-    <!---personType;  displayName--->
+    <!---displayName--->
     <div class="row" >
       <div class="col">
         <mat-form-field>
@@ -69,11 +73,13 @@
       </div>
     </div>
 
-    <!---nestudios; fenac; sexo --->
+    <!--- fenactx; nacionalidad; ecivil --->
     <div class="row" >
       <div class="col">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
         </mat-form-field>
       </div>
 
@@ -99,16 +105,6 @@
         </mat-form-field>
       </div>
 
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldNestudios placeholder="Nivel educativo"
-              [formControl]="form.controls['nestudios']"
-              (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)" >
-            <mat-option *ngFor="let item of nivelEstudios" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
     </div>
 
     <!---email--->
@@ -146,6 +142,19 @@
       </div>
     </div>
 
+    <!---nestudios --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldNestudios placeholder="Nivel educativo"
+              [formControl]="form.controls['nestudios']"
+              (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)" >
+            <mat-option *ngFor="let item of nivelEstudios" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
     <hr>
     <div class="additional-info">

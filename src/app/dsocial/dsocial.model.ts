@@ -122,7 +122,7 @@ export class DsocialModel {
 		serial.compPrefix = 'SOL';
 		serial.compName = 'S/Asistencia';
 		serial.showAnio = false;
-		serial.resetDay = true;
+		serial.resetDay = false;
 		serial.fe_ult = 0;
 
 		return serial;
@@ -147,11 +147,10 @@ export class DsocialModel {
 		serial.compPrefix = 'REM';
 		serial.compName = 'R/Entrega';
 		serial.showAnio = false;
-		serial.resetDay = true;
+		serial.resetDay = false;
 		serial.fe_ult = 0;
 
 		return serial;
 	}
-
 
 }

@@ -23,6 +23,7 @@ export class AddressDataEditComponent implements OnInit {
   public provinciasList = personModel.provincias;
   public addTypeList =    personModel.addressTypes;
   public ciudadesList =   personModel.ciudades;
+  public barrioList = [];
 
 	public form: FormGroup;
 
@@ -68,6 +69,14 @@ export class AddressDataEditComponent implements OnInit {
   }
 
 
+	changeCity() {
+	    this.barrioList = personModel.getBarrioList(this.form.value.city);
+	    let zip = personModel.fetchCP(this.form.value.city);
+			this.form.controls['zip'].setValue(zip);
+
+	}
+
+
  
   buildForm(): FormGroup{
   	let form: FormGroup;
@@ -80,6 +89,7 @@ export class AddressDataEditComponent implements OnInit {
 			street1:     [null, Validators.compose([Validators.required])],
 			street2:     [null],
 			city:        [null],
+			barrio:      [null],
 			state:       [null],
 			statetext:   [null],
 			zip:         [null],
@@ -98,12 +108,14 @@ export class AddressDataEditComponent implements OnInit {
 			street1:     token.street1,
 			street2:     token.street2,
 			city:        token.city,
+			barrio:      token.barrio,
 			state:       token.state ||'buenosaires',
 			statetext:   token.statetext || 'Brown' ,
 			zip:         token.zip,
 			country:     token.country || 'AR',
 		});
 
+		this.barrioList = personModel.getBarrioList(token.city);
 		return form;
   }
 
@@ -118,6 +130,7 @@ export class AddressDataEditComponent implements OnInit {
 		entity.street1 =      fvalue.street1;
 		entity.street2 =      fvalue.street2;
 		entity.city =         fvalue.city;
+    entity.barrio =       fvalue.barrio;
 		entity.state =        fvalue.state;
 		entity.statetext =    fvalue.statetext;
 		entity.zip =          fvalue.zip;

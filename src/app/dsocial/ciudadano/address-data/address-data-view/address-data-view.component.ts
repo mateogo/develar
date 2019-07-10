@@ -11,7 +11,6 @@ import { devutils }from '../../../../develar-commons/utils'
 export class AddressDataViewComponent implements OnInit {
 	@Input() token: Address;
 
-	public tipo;
 	public type;
 	public data;
 	public slug;
@@ -19,9 +18,8 @@ export class AddressDataViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	this.tipo = this.token.addType;
-  	this.type = this.token.addType;
-  	this.data = this.token.street1;
+  	this.type = personModel.fetchAddrTypeLabel(this.token.addType);
+  	this.data = this.token.street1 + ' ' + this.token.city ;
   	this.slug = this.token.slug;  
   }
 

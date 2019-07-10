@@ -6,7 +6,15 @@ import { Observable } from 'rxjs';
 import { DsocialController } from '../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion } from '../dsocial.model';
 
+import {  Asistencia, 
+          Alimento, 
+          AsistenciaHelper } from '../asistencia/asistencia.model';
+
+import { RemitoAlmacen, RemitoAlmacenModel,  UpdateRemitoEvent } from '../alimentos/alimentos.model';
+
+
 import { Person, personModel } from '../../entities/person/person';
+import { devutils }from '../../develar-commons/utils'
 
 @Component({
   selector: 'recepcion-page',
@@ -24,10 +32,20 @@ export class RecepcionPageComponent implements OnInit {
   public nDoc = "";
   public displayName = "";
   public displayDoc = "";
+  public displayAddress = "";
 
   public currentPerson: Person;
   public personFound = false;
   public altaPersona = false;
+
+  public asistenciasList: Asistencia[] = [];
+  public lastAsistencia: Asistencia;
+  public hasAsistencias = false;
+
+  public remitosList: RemitoAlmacen[] = [];
+  public lastRemito: RemitoAlmacen;
+  public hasRemitos = false;
+
   private token: string;
 
   public isAutenticated = false;
@@ -78,14 +96,68 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   initPersonDataForDisplay(p: Person){
+    if(!p) return;
+
+    let edad = 0;
+    edad = devutils.edadActual(new Date(p.fenac));
+    
+    this.displayDoc = personModel.getPersonDocum(p);
+    this.displayAddress = personModel.displayAddress(p.locaciones);
 
     if(p.nombre || p.apellido){
-      this.displayName = personModel.getPersonDisplayName(p)
-      this.displayDoc = personModel.getPersonDocum(p);
-
+      this.displayName = personModel.getPersonDisplayName(p) + ' (' + edad + ') '
     }
+    this.initAsistenciasList(p);
+    this.loadHistorialRemitos(p);
+
 
   }
+
+  initAsistenciasList(p: Person){
+    this.asistenciasList = [];
+    this.hasAsistencias = false;
+
+    this.dsCtrl.fetchAsistenciaByPerson(p).subscribe(list => {
+      console.log('initAsistencia: [%s]', list && list.length);
+      if(list && list.length) {
+        this.asistenciasList = list;
+        this.lastAsistencia = list[list.length - 1]
+        this.hasAsistencias = true;
+      }
+
+    })
+  }
+
+  loadHistorialRemitos(p: Person){
+    this.dsCtrl.fetchRemitoAlmacenByPerson(p).subscribe(list =>{
+      this.remitosList = list || []
+      this.sortProperly(this.remitosList);
+  
+      if(list && list.length){
+        this.lastRemito = list[0];
+        this.hasRemitos = true;
+      }else{
+        this.lastRemito = null;
+        this.hasRemitos = false;
+      }
+
+    })
+  }
+  sortProperly(records){
+    records.sort((fel, sel)=> {
+      if(!fel.ts_alta) fel.ts_alta = "zzzzzzz";
+      if(!sel.ts_alta) sel.ts_alta = "zzzzzzz";
+
+      if(fel.ts_alta<sel.ts_alta) return 1;
+      else if(fel.ts_alta>sel.ts_alta) return -1;
+      else return 0;
+    })
+
+
+  }
+
+
+
 
   cancelNewPerson(){
       this.altaPersona = false;
