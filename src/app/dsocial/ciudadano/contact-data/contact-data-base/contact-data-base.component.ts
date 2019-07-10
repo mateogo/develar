@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person, PersonContactData, UpdateContactEvent } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const CORE = 'core';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'contact-base',
@@ -35,7 +37,7 @@ export class ContactDataBaseComponent implements OnInit {
   }
 
   emitEvent(event:UpdateContactEvent){
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}
   }

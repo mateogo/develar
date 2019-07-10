@@ -8,6 +8,7 @@ import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'address';
 const CANCEL = 'cancel';
+const DELETE = 'delete';
 const UPDATE = 'update';
 
 @Component({
@@ -53,6 +54,12 @@ export class AddressDataEditComponent implements OnInit {
   onCancel(){
   	this.action = CANCEL;
   	this.emitEvent(this.action);
+  }
+
+  deleteToken(){
+  	this.action = DELETE;
+  	this.emitEvent(this.action);
+
   }
 
   emitEvent(action:string){

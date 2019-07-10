@@ -8,6 +8,7 @@ import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'family';
 const CANCEL = 'cancel';
+const DELETE = 'delete';
 const UPDATE = 'update';
 
 @Component({
@@ -60,6 +61,12 @@ export class FamilyDataEditComponent implements OnInit {
   onCancel(){
   	this.action = CANCEL;
   	this.emitEvent(this.action);
+  }
+
+  deleteToken(){
+    this.action = DELETE;
+    this.emitEvent(this.action);
+
   }
 
   emitEvent(action:string){

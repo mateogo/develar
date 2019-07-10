@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person, FamilyData, UpdateFamilyEvent } from '../../../../entities/person/person';
 
+const CANCEL = 'cancel';
+const DELETE = 'delete';
 const UPDATE = 'update';
+
 
 @Component({
   selector: 'family-base',
@@ -32,7 +35,7 @@ export class FamilyDataBaseComponent implements OnInit {
   }
 
   emitEvent(event:UpdateFamilyEvent){
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}
   }

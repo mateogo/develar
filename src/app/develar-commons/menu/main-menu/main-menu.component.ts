@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MainMenuItem } from './main-menu-item';
 import { MainMenuService } from './main-menu.observable.service';
+import { gldef } from '../../develar.config';
 
 @Component({
   moduleId: module.id,
@@ -27,7 +28,8 @@ export class MainMenuComponent {
   }
 
   ngOnInit(): void {
-    this.mainMenuService.loadDefaultMenuItems()
+    //this.mainMenuService.loadDefaultMenuItems()
+    this.mainMenuService.loadCompanyMenuItems(gldef.mainmenu);
     //this.getMainMenuItems();
   }
 

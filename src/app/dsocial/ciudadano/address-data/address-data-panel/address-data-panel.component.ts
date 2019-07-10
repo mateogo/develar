@@ -6,8 +6,10 @@ import {  Person,
           Address 
         } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const TOKEN_TYPE = 'address';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'address-panel',
@@ -32,7 +34,21 @@ export class AddressDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateAddressEvent){
+    
+    if(event.action === DELETE){
+      this.deleteItem(event.token);
+    }
+
   	this.emitEvent(event);
+  }
+
+  deleteItem(t:Address){
+    let index = this.items.indexOf(t);
+
+    if(index !== -1){
+      this.items.splice(index, 1)
+    }
+    
   }
 
   addItem(){
@@ -50,7 +66,7 @@ export class AddressDataPanelComponent implements OnInit {
 
   emitEvent(event:UpdateAddressEvent){
   
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,

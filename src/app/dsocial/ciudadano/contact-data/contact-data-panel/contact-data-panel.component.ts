@@ -6,9 +6,11 @@ import {  Person,
           PersonContactData 
         } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const CORE = 'core';
 const TOKEN_TYPE = 'contact';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 
 @Component({
@@ -35,7 +37,20 @@ export class ContactDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateContactEvent){
+    if(event.action === DELETE){
+      this.deleteItem(event.token);
+    }
+
   	this.emitEvent(event);
+  }
+
+  deleteItem(t:PersonContactData){
+    let index = this.items.indexOf(t);
+
+    if(index !== -1){
+      this.items.splice(index, 1)
+    }
+    
   }
 
   addItem(){
@@ -54,7 +69,7 @@ export class ContactDataPanelComponent implements OnInit {
 
   emitEvent(event:UpdateContactEvent){
   
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,

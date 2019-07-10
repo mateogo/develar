@@ -8,7 +8,9 @@ import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'oficios';
 const CANCEL = 'cancel';
+const DELETE = 'delete';
 const UPDATE = 'update';
+
 
 @Component({
   selector: 'oficios-edit',
@@ -48,6 +50,12 @@ export class OficiosDataEditComponent implements OnInit {
   	this.initForSave(this.form, this.token);
   	this.action = UPDATE;
   	this.emitEvent(this.action);
+  }
+
+  deleteToken(){
+  	this.action = DELETE;
+  	this.emitEvent(this.action);
+
   }
 
   onCancel(){

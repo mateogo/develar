@@ -159,7 +159,7 @@ export class NavbarComponent implements OnInit {
   navigateAdmin(e){
     e.stopPropagation();
     e.preventDefault();
-    let path = "/develar/fichas/lista" ;
+    let path = gldef.admintarget ||  "/develar/fichas/lista" ;
     this.router.navigate([path]);
   }
 

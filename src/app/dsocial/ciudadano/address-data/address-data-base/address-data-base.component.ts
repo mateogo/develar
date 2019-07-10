@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person, Address, EncuestaAmbiental, UpdateAddressEvent, UpdateEncuestaEvent } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const TOKEN_TYPE = 'address';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'address-base',
@@ -52,7 +54,7 @@ export class AddressDataBaseComponent implements OnInit {
   }
 
   emitEvent(event: UpdateAddressEvent){
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}
   }

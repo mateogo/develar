@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { OficiosData, UpdateOficiosEvent } from '../../../../entities/person/person';
 
+const CANCEL = 'cancel';
+const DELETE = 'delete';
 const UPDATE = 'update';
+
 
 @Component({
   selector: 'oficios-base',
@@ -34,7 +37,7 @@ export class OficiosDataBaseComponent implements OnInit {
   }
 
   emitEvent(event:UpdateOficiosEvent){
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}
   }

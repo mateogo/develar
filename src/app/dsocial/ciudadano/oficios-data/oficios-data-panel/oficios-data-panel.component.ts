@@ -5,8 +5,10 @@ import {  personModel,
           OficiosData 
         } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const TOKEN_TYPE = 'oficios';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'oficios-panel',
@@ -32,7 +34,21 @@ export class OficiosDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateOficiosEvent){
+    
+    if(event.action === DELETE){
+      this.deleteItem(event.token);
+    }
+
   	this.emitEvent(event);
+  }
+
+  deleteItem(t:OficiosData){
+    let index = this.items.indexOf(t);
+
+    if(index !== -1){
+      this.items.splice(index, 1)
+    }
+    
   }
 
   addItem(){
@@ -48,7 +64,7 @@ export class OficiosDataPanelComponent implements OnInit {
   }
 
   emitEvent(event:UpdateOficiosEvent){
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,

@@ -6,8 +6,10 @@ import {  Person,
           FamilyData 
         } from '../../../../entities/person/person';
 
-const UPDATE = 'update';
 const TOKEN_TYPE = 'family';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'family-panel',
@@ -33,7 +35,22 @@ export class FamilyDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateFamilyEvent){
+    
+    if(event.action === DELETE){
+      this.deleteItem(event.token);
+    }
+
   	this.emitEvent(event);
+  }
+
+
+  deleteItem(t:FamilyData){
+    let index = this.items.indexOf(t);
+
+    if(index !== -1){
+      this.items.splice(index, 1)
+    }
+    
   }
 
   addItem(){
@@ -50,7 +67,7 @@ export class FamilyDataPanelComponent implements OnInit {
 
   emitEvent(event:UpdateFamilyEvent){
   
-  	if(event.action === UPDATE){
+  	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,
