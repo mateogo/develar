@@ -16,8 +16,7 @@
         <div class="col-sm-12 col-md-4">
           <mat-form-field>
             <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
-            <mat-hint align="end">Nuevo DNI a verificar...</mat-hint>
-            <mat-error *ngIf="hasError('ndoc', 'mailerror')">Ya existe este DNI</mat-error>
+            <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-4">

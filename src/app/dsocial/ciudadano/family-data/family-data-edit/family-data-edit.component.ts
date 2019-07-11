@@ -1,8 +1,12 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
+import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+
+import { Observable } from 'rxjs';
+import { map  }   from 'rxjs/operators';
 
 import { Person, UpdateFamilyEvent, FamilyData, personModel } from '../../../../entities/person/person';
+
+import { DsocialController } from '../../../dsocial.controller';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -35,12 +39,15 @@ export class FamilyDataEditComponent implements OnInit {
   private addTypes   = personModel.addressTypes;
   private paises     = personModel.paises;
 
+  public docBelongsTo = {error: ''};
+
   private action = "";
 
   private fireEvent: UpdateFamilyEvent;
 
   constructor(
   	private fb: FormBuilder,
+    private dsCtrl: DsocialController,
   	) { 
   		this.form = this.buildForm();
 	}
@@ -78,6 +85,49 @@ export class FamilyDataEditComponent implements OnInit {
 
   }
 
+  fechaNacimientoValidator(): ValidatorFn {
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          let validAge = devutils.validAge(control.value);
+          return validAge ? null : {'invalidAge': true}
+
+      }) ;
+  }
+ 
+  currentAge(){
+       let edad = '';
+       let value = this.form.value.fenactx
+       let validAge = devutils.validAge(value);
+       if(validAge){
+           edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
+       }
+       return edad;
+   }
+
+  hasError = (controlName: string, errorName: string) =>{
+    return this.form.controls[controlName].hasError(errorName);
+  }
+ 
+  dniExistenteValidator(service: DsocialController, message: object): AsyncValidatorFn {
+    return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      let value = control.value;
+
+      return service.testPersonByDNI('DNI', value).pipe(
+          map(t => {
+            let invalid = false;
+            let txt = ''
+
+            if(t && t.length){
+              txt = 'DNI existente: ' + t[0].displayName;
+            }
+
+            message['error'] = txt;
+            return invalid ? { 'mailerror': 'DNI existente' }: null;
+          })
+       )
+
+    }) ;
+  }
+
   changeSelectionValue(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
@@ -89,11 +139,15 @@ export class FamilyDataEditComponent implements OnInit {
       nombre:       [null],
       apellido:     [null],
       tdoc:         [null],
-      ndoc:         [null, [ Validators.minLength(7),
-                             Validators.maxLength(10),
-                             Validators.pattern('[0-9]*')]],
+
+      ndoc: [null, [Validators.required, 
+                    Validators.minLength(7),
+                    Validators.maxLength(10),
+                    Validators.pattern('[0-9]*')], 
+                    [this.dniExistenteValidator(this.dsCtrl, this.docBelongsTo)] ],
+
     	vinculo:      [null],
-      fenactx:      [null],
+      fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
       nestudios:    [null],
       tprofesion:   [null],

@@ -33,6 +33,7 @@
       <div class="col">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+          <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
         </mat-form-field>
       </div>
 
@@ -90,6 +91,8 @@
       <div class="col">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
         </mat-form-field>
       </div>
 

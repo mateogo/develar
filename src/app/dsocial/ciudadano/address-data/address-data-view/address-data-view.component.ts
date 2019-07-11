@@ -19,7 +19,9 @@ export class AddressDataViewComponent implements OnInit {
 
   ngOnInit() {
   	this.type = personModel.fetchAddrTypeLabel(this.token.addType);
-  	this.data = this.token.street1 + ' ' + this.token.city ;
+  	//this.data = this.token.street1 + ' ' + this.token.city ;
+    this.data = personModel.displayAddress( [ this.token ] );
+
   	this.slug = this.token.slug;  
   }
 

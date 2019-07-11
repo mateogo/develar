@@ -74,6 +74,8 @@ export class PersonAltaComponent implements OnInit {
     public estadoCivil        = personModel.estadoCivilOL;
     public sexoOptList        = personModel.sexoList;
 
+    public docBelongsTo = {error: ''};
+
     public countriesList =  personModel.paises;
     public provinciasList = personModel.provincias;
     public addTypeList =    personModel.addressTypes;
@@ -104,7 +106,7 @@ export class PersonAltaComponent implements OnInit {
                           Validators.minLength(7),
                           Validators.maxLength(10),
                           Validators.pattern('[0-9]*')], 
-                          [this.dniExistenteValidator(this.dsCtrl)] ],
+                          [this.dniExistenteValidator(this.dsCtrl, this.docBelongsTo)] ],
 
             sexo:         [null],
             fenactx:      [null, [this.fechaNacimientoValidator()]],
@@ -196,17 +198,25 @@ export class PersonAltaComponent implements OnInit {
         return this.form.controls[controlName].hasError(errorName);
     }
 
-    dniExistenteValidator(service: DsocialController): AsyncValidatorFn {
+    dniExistenteValidator(service: DsocialController, message: object): AsyncValidatorFn {
         return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             let value = control.value;
 
             return service.testPersonByDNI('DNI',value).pipe(
                 map(t => {
-                    return t && t.length>0 ? { 'mailerror': 'DNI existente' }: null;
+                    let invalid = false;
+                    let txt = ''
+
+                    if(t && t.length){ 
+                        invalid = true;
+                        txt = 'DNI existente: ' + t[0].displayName;
+                    }
+
+                    message['error'] = txt;
+                    return invalid ? { 'mailerror': txt }: null;
+
                 })
-
              )
-
         }) ;
      } ;
 
@@ -224,7 +234,6 @@ export class PersonAltaComponent implements OnInit {
     fechaNacimientoValidator(): ValidatorFn {
         return ((control: AbstractControl) : {[key: string]: any} | null  => {
             let validAge = devutils.validAge(control.value);
-            console.log('fechaNacimientoVALIDATOR: [%s]', validAge);
             return validAge ? null : {'invalidAge': true}
 
         }) ;

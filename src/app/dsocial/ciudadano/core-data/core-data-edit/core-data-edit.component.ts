@@ -35,6 +35,7 @@ export class CoreDataEditComponent implements OnInit {
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;
+  public docBelongsTo = {error: ''};
 
 
   public paises     = personModel.paises;
@@ -90,7 +91,6 @@ export class CoreDataEditComponent implements OnInit {
   fechaNacimientoValidator(): ValidatorFn {
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
           let validAge = devutils.validAge(control.value);
-          console.log('fechaNacimientoVALIDATOR: [%s]', validAge);
           return validAge ? null : {'invalidAge': true}
 
       }) ;
@@ -100,19 +100,24 @@ export class CoreDataEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
 
-  dniExistenteValidator(service: DsocialController, person: Person): AsyncValidatorFn {
+  dniExistenteValidator(service: DsocialController, person: Person, message: object): AsyncValidatorFn {
     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       let value = control.value;
 
       return service.testPersonByDNI('DNI', value).pipe(
           map(t => {
             let invalid = false;
-            if(t && t.length){
-              invalid = true;
-              if(t[0]._id === person._id) invalid = false;
-            }
+            let txt = ''
+            if(t && t.length){ 
 
-            return invalid ? { 'mailerror': 'DNI existente' }: null;
+              if(t[0]._id !== person._id){
+                invalid = true;
+                txt = 'DNI existente: ' + t[0].displayName;
+              }
+
+            }
+            message['error'] = txt;
+            return invalid ? { 'mailerror': txt }: null;
           })
        )
 
@@ -142,7 +147,7 @@ export class CoreDataEditComponent implements OnInit {
                     Validators.minLength(7),
                     Validators.maxLength(10),
                     Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this.dsCtrl, this.person)] ],
+                    [this.dniExistenteValidator(this.dsCtrl, this.person, this.docBelongsTo)] ],
 
       nacionalidad: [null],
       nestudios:    [null],
