@@ -70,6 +70,23 @@ export class PersonBuscarComponent implements OnInit {
     });
   }
 
+  showPersonData(p:Person){
+    let dire = '', ndoc = '';
+
+    if(p.ndoc){
+      ndoc = ' | ' + p.ndoc ;
+    }
+    
+    if(p && p.locaciones && p.locaciones.length){
+      dire = personModel.displayAddress(p.locaciones);
+      dire = dire ?  ' | ' + dire : '';
+    }
+
+    let txt = `
+    ${p.displayName} ${ndoc} ${dire}`;
+    return txt;
+  }
+
   buildNewPersonAlertMessage(name){
   	let per = this.currentPerson;
     let nombre = this.printName(per);
