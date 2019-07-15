@@ -26,7 +26,7 @@ import { 	RemitoAlmacen,
 					UpdateRemitoListEvent,
 					RemitoAlmacenTable } from '../../alimentos.model';
 
-import { Turno, TurnoAction, TurnoslModel }  from '../../../turnos/turnos.model';
+import { Turno, TurnoAction, TurnosModel }  from '../../../turnos/turnos.model';
 
 const UPDATE = 'update';
 const TOKEN_TYPE = 'remitoalmacen';

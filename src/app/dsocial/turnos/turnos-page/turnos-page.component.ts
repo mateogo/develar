@@ -7,7 +7,7 @@ import { DsocialController } from '../../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../dsocial.model';
 
 import { Person, personModel } from '../../../entities/person/person';
-import { Turno, TurnoAction, TurnoslModel }  from '../../turnos/turnos.model';
+import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
 
 @Component({
   selector: 'turnos-page',
@@ -62,7 +62,8 @@ export class TurnosPageComponent implements OnInit {
   }
 
   showTurnos(turnos: Turno[]){
-    this.turnos = turnos;
+    this.turnos = TurnosModel.sortProperly(turnos);
+
     this.showStockTurnos = true;
   }
 

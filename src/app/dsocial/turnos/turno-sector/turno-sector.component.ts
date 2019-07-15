@@ -5,7 +5,7 @@ import { DsocialController } from '../../dsocial.controller';
 
 import { DsocialModel, Ciudadano, SectorAtencion } from '../../dsocial.model';
 import { Person, personModel }  from '../../../entities/person/person';
-import { Turno, TurnoslModel }  from '../../turnos/turnos.model';
+import { Turno, TurnosModel }  from '../../turnos/turnos.model';
 
 @Component({
   selector: 'turno-sector',

@@ -28,7 +28,7 @@ import {  Asistencia,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 
-import { Turno, TurnoAction, TurnoslModel }  from '../../turnos/turnos.model';
+import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
 
 import { ConversationContext }  from '../../../notifications/notification.model';
 

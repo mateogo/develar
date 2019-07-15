@@ -19,7 +19,7 @@ import { Person, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
-import { Turno, TurnoAction, TurnoslModel }         from './turnos/turnos.model';
+import { Turno, TurnoAction, TurnosModel }         from './turnos/turnos.model';
 import { Asistencia, AsistenciaTable, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from './asistencia/asistencia.model';
 import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, AlimentosHelper } from './alimentos/alimentos.model';
 
@@ -139,8 +139,8 @@ export class DsocialController {
  /**
   * obtener serial para Turnos
   */
-  fetchSerialTurnos(type, name, sector): Observable<Serial> {
-    let serial: Serial = DsocialModel.turnoSerial(type, name, sector);
+  fetchSerialTurnos(type, name, sector, peso): Observable<Serial> {
+    let serial: Serial = DsocialModel.turnoSerial(type, name, sector, peso);
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
     serial.mes = fecha.getMonth();
@@ -542,19 +542,18 @@ export class DsocialController {
   /**
   * obtener serial para Documento Provisorio
   */
-  turnoCreate(type:string, name,  sector:string, person:Person ): Subject<Turno>{
+  turnoCreate(type:string, name,  sector:string, peso: number, person:Person ): Subject<Turno>{
     let listener = new Subject<Turno>();
 
-    this.initNuevoTurno(listener, type, name, sector, person);
+    this.initNuevoTurno(listener, type, name, sector, peso, person);
     return listener;
   }
 
-  private initNuevoTurno(turno$:Subject<Turno>, type, name, sector, person:Person){
-    let serial: Serial = DsocialModel.documSerial();
+  private initNuevoTurno(turno$:Subject<Turno>, type, name, sector, peso, person:Person){
 
-    this.fetchSerialTurnos(type, name, sector).subscribe(serial =>{
+    this.fetchSerialTurnos(type, name, sector, peso).subscribe(serial =>{
       
-      let turno = TurnoslModel.initNewTurno(type, name, sector,serial, person);
+      let turno = TurnosModel.initNewTurno(type, name, sector, serial, peso, person);
 
       this.fetchNuevoTurno(turno$, turno);
     });
@@ -570,7 +569,7 @@ export class DsocialController {
   * cola de turnos en un sector
   */
   public turnosPorSector$(type, name, sector){
-    let query = TurnoslModel.turnosPorSectorQuery(type, name, sector);
+    let query = TurnosModel.turnosPorSectorQuery(type, name, sector);
     return this.daoService.search<Turno>('turno', query);
   }
 

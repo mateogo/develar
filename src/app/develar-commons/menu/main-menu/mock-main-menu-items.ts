@@ -670,39 +670,6 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
   },
 
   {
-    title: 'Fichas',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Dashboard',
-        routing: '/develar/fichas'
-      },
-      {
-        title: 'Navegar lista',
-        routing: '/develar/fichas/lista'
-      },
-      {
-        title: 'Navegar grid',
-        routing: '/develar/fichas/grid'
-      },
-      {
-        title: 'Alta nueva ficha',
-        routing: '/develar/fichas/alta'
-      },
-      {
-        title: 'Proyectos',
-        routing: '/develar/proyectos'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-
-  {
     title: 'Desarrollo Social',
     icon: 'fa fa-user-circle',
     active: false,
@@ -754,6 +721,40 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
+  
+  {
+    title: 'Fichas',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Dashboard',
+        routing: '/develar/fichas'
+      },
+      {
+        title: 'Navegar lista',
+        routing: '/develar/fichas/lista'
+      },
+      {
+        title: 'Navegar grid',
+        routing: '/develar/fichas/grid'
+      },
+      {
+        title: 'Alta nueva ficha',
+        routing: '/develar/fichas/alta'
+      },
+      {
+        title: 'Proyectos',
+        routing: '/develar/proyectos'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
   {
     title: 'Comunidades',
     icon: 'fa fa-user-circle',

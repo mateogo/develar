@@ -25,7 +25,8 @@ export const sectores: SectorAtencion[] = [
 			{val:'nutricion',   serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
 			{val:'inhumacion',  serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
 			{val:'terceraedad', serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
-			{val:'pensiones',   serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}}
+			{val:'pensiones',   serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
+			{val:'direccion',   serial:'direccion',   label: 'Dirección',         style: {'background-color': "#f2dded"}}
 	];
 
 
@@ -49,6 +50,15 @@ export class Serial {
 		showAnio:boolean;
 		resetDay:boolean;
 		fe_ult:number;
+}
+
+const LETRAS = ['X', 'Q', 'J', 'A', 'D'];
+// X:normal; Q:especiales; J:tercera edad; A:bebes; D:direccion
+
+function letraSerial(peso): string{
+	if(!peso || peso > 4 || peso < 0) peso = 0;
+
+	return LETRAS[peso];
 }
 
 
@@ -78,14 +88,15 @@ export class DsocialModel {
 		return serial;
 	}
 
-	static turnoSerial(type, name, sector){
+	static turnoSerial(type, name, sector, peso){
 		let serial = new Serial();
 		serial.type = type; // turnos
 		serial.name = name; // ayudadirecta
 		serial.tserial = 'turnodiario';
 		serial.sector = sector; // materiales; alimentos; nutricion; etc;
 		serial.tdoc = 'turno';
-		serial.letra = 'X';
+		serial.letra = letraSerial(peso);
+
 		serial.anio = 0;
 		serial.mes = 0;
 		serial.dia = 0;

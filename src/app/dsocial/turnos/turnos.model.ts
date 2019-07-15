@@ -31,6 +31,7 @@ export class Turno {
 		name:        string;
 		sector:      string;
 		letra:       string;
+		peso:        number;
 		estado:      string;
 		resultado:   string;
 		ts_alta:     number;
@@ -52,6 +53,23 @@ export interface TurnoAction {
 	payload?: Payload;
 	observación?: string;
 }
+
+export const prioridadOptLst = [
+			{val: 0,   label: 'Normal'       },
+			{val: 1,   label: 'Prioridad'       }, 
+			{val: 2,   label: 'Prioridad x Incapacidad'  },
+			{val: 3,   label: 'Prioridad x Madre c/Bebé' },
+			{val: 4,   label: 'Dirección'    },
+	];
+
+
+export class PriorityToken {
+	prioridad: number;
+	action: string;
+
+}
+
+
 // TurnoAction:action = [atender|baja|cumplido|derivar]
 
 /**************
@@ -63,8 +81,49 @@ export interface TurnoAction {
  *						|(baja, ausente)]
  *********/
 
-export class TurnoslModel {
-	static initNewTurno(type, name, sector, serial: Serial, person: Person){
+const COSTO = [1, 2, 3, 4, 10];
+
+function costo (turno: Turno, ts:number){
+	if(!turno.peso || turno.peso > 4 || turno.peso < 0) turno.peso = 0;
+
+	return (ts - turno.ts_alta) * COSTO[turno.peso];
+}
+
+
+function _sortProperly(records: Turno[]):Turno[]{
+	let ts_now = Date.now();
+
+	records.sort((fel: Turno, sel: Turno)=> {
+		let cfel = costo(fel, ts_now);
+		let csel = costo(sel, ts_now);
+
+
+		if(cfel < csel ) return 1;
+
+		else if(cfel > csel) return -1;
+
+		else return 0;
+	});
+
+	return records;
+}
+
+const optionsLists = {
+	 default: prioridadOptLst,
+	 prioridad: prioridadOptLst,
+
+}
+
+
+function getLabel(list, val){
+		if(!list || !val) return '';
+    return (list.find(item => item.val === val).label || val);
+}
+
+
+
+export class TurnosModel {
+	static initNewTurno(type, name, sector, serial: Serial, peso: number,  person: Person){
 		let ts = Date.now();
 		let requirente = new Requirente();
 		requirente.id = person._id;
@@ -80,6 +139,7 @@ export class TurnoslModel {
 		turno.name = name;
 		turno.sector = sector;
 		turno.letra = serial.letra;
+		turno.peso = peso || 1;
 		turno.estado = 'pendiente';
 		turno.resultado = 'pendiente';
 		turno.ts_alta = ts;
@@ -103,5 +163,18 @@ export class TurnoslModel {
 		return query;
 	}
 
+	static sortProperly(turnos: Turno[]): Turno[]{
+
+		return _sortProperly(turnos);
+	}
+
+	static getOptionlist(type){
+		return optionsLists[type] || optionsLists['default'];
+	}
+
+	static getOptionLabel(type, val){
+		let list = this.getOptionlist(type);
+		return getLabel(list, val);
+	}
 
 }

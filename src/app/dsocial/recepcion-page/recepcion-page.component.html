@@ -27,9 +27,25 @@
         </ng-container>
 
 
-        <h5>Seleccione el sector de atención</h5>
-        <turno-select (turno$)="nuevoTurno($event)"></turno-select>
+
+        <ng-container *ngIf="selectTurno">
+          <h5>Seleccione el sector de atención</h5>
+          <turno-select (turno$)="turnoSelected($event)"></turno-select>
+        </ng-container>
+
+        <ng-container *ngIf="selectPriority">
+          <hr>
+          <priority-select [person]="currentPerson" 
+                           [sector]="sectorLabel" 
+                           (action$)="processTurno($event)"></priority-select>
+        </ng-container>
+
+
       </ng-container>
+
+
+
+
 
   	</div>
   </mat-card-content>

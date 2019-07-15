@@ -42,6 +42,7 @@ const turnoSch = new Schema({
   name:        { type: String, required: true },
   sector:      { type: String, required: true },
   letra:       { type: String, required: false },
+  peso:        { type: Number, required: false, default: 1 },
   estado:      { type: String, required: false },
   resultado:   { type: String, required: false },
   ts_alta:     { type: Number, required: false },

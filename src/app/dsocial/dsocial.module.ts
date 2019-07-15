@@ -55,6 +55,7 @@ import { SolListTableComponent } from './asistencia/sol-list/sol-list-table/sol-
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
 import { RemitoalmacenTableComponent } from './alimentos/remitoalmacen/remitoalmacen-table/remitoalmacen-table.component';
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
+import { PrioritySelectComponent } from './helpers/priority-select/priority-select.component';
 
 @NgModule({
   imports: [
@@ -112,7 +113,8 @@ import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumient
     SolListTableComponent,
     RemitoalmacenBrowseComponent,
     RemitoalmacenTableComponent,
-    SegumientoPageComponent
+    SegumientoPageComponent,
+    PrioritySelectComponent
   ]
 })
 export class DsocialModule { }
