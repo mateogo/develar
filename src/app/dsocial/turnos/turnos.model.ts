@@ -53,13 +53,13 @@ export interface TurnoAction {
 	payload?: Payload;
 	observación?: string;
 }
-
+//const LETRAS = ['X', 'Q', 'J', 'A', 'D'];
 export const prioridadOptLst = [
-			{val: 0,   label: 'Normal'       },
-			{val: 1,   label: 'Prioridad'       }, 
-			{val: 2,   label: 'Prioridad x Incapacidad'  },
-			{val: 3,   label: 'Prioridad x Madre c/Bebé' },
-			{val: 4,   label: 'Dirección'    },
+			{val: 0,   label: 'Normal (X)'       },
+			{val: 1,   label: 'Prioridad (Q)'       }, 
+			{val: 2,   label: 'Prioridad x Incapacidad (J)'  },
+			{val: 3,   label: 'Prioridad x Madre c/Bebé (A)' },
+			{val: 4,   label: 'Atención Especial (D)'    },
 	];
 
 
