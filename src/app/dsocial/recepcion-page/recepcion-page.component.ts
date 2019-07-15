@@ -129,7 +129,6 @@ export class RecepcionPageComponent implements OnInit {
     this.hasAsistencias = false;
 
     this.dsCtrl.fetchAsistenciaByPerson(p).subscribe(list => {
-      console.log('initAsistencia: [%s]', list && list.length);
       if(list && list.length) {
         this.asistenciasList = list;
         this.lastAsistencia = list[list.length - 1]
@@ -201,6 +200,7 @@ export class RecepcionPageComponent implements OnInit {
       this.navigateTo();
 
     }else if (priority.action === "cancel"){
+      this.resetForm();
 
     }
   }
