@@ -26,7 +26,7 @@ export const sectores: SectorAtencion[] = [
 			{val:'inhumacion',  serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
 			{val:'terceraedad', serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
 			{val:'pensiones',   serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
-			{val:'direccion',   serial:'direccion',   label: 'Dirección',         style: {'background-color': "#f2dded"}}
+			{val:'direccion',   serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}}
 	];
 
 
