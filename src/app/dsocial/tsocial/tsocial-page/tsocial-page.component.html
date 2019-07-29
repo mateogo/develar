@@ -30,7 +30,23 @@
 		 		<oficios-panel [items]='oficiosList'
 		 							(updateItems)='updateOficiosList($event)' ></oficios-panel>
 			</div>
-			
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<salud-panel [items]='saludList'
+		 							(updateItems)='updateSaludList($event)' ></salud-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<cobertura-panel [items]='coberturaList'
+		 							(updateItems)='updateCoberturaList($event)' ></cobertura-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<ambiental-panel 	[items]='ambientalList' 
+		 											[addresses]='addressList'
+		 							(updateItems)='updateAmbientalList($event)' ></ambiental-panel>
+			</div>
+						
 		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<solasis-panel [items]='asistenciasList'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>

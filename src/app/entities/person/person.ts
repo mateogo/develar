@@ -16,7 +16,7 @@ export interface PersonTable {
 export interface UpdateItemListEvent {
       action: string;
       type: string;
-      items: Array<PersonContactData|Address|FamilyData|OficiosData>;
+      items: Array<PersonContactData|Address|FamilyData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental>;
 };
 
 export interface UpdatePersonEvent {
@@ -55,7 +55,27 @@ export interface UpdateOficiosEvent {
       token: OficiosData;
 };
 
+export interface UpdateSaludEvent {
+      action: string;
+      type: string;
+      token: SaludData;
+};
+
+export interface UpdateCoberturaEvent {
+      action: string;
+      type: string;
+      token: CoberturaData;
+};
+
+export interface UpdateAmbientalEvent {
+      action: string;
+      type: string;
+      token: EncuestaAmbiental;
+};
+
+
 export class Address {
+    _id?: string;
     slug: string = '';
     description: string = '';
     isDefault: boolean = false;
@@ -72,22 +92,83 @@ export class Address {
     encuesta: EncuestaAmbiental;
 }
 
+export class SaludData {
+    type: string = '';
+    tproblema: string = '';
+    problema: string = '';
+    lugaratencion: string = '';
+    slug: string = '';
+}
 
+export class CoberturaData {
+    type: string = '';
+    tingreso: string = '';
+    slug: string = '';
+    monto: number = 0;
+    observacion: string = '';
+}
+
+/**
+
+    id_address:   {type: String, required: false, default: ''},
+    id_person:    {type: String, required: false, default: ''},
+
+    street1:     {type: String,  required: false, defalut: ''}, //OjO
+    city:        {type: String,  required: false, defalut: ''},
+    barrio:      {type: String,  required: false, defalut: ''},
+
+    estado:       {type: String, required: false, default: 'activo'},
+    ferel:        {type: String, required: false, default: ''},
+    fereltxt:     {type: String, required: false, default: ''},
+    tsocial:      {type: String, required: false, default: ''},
+
+    domterreno:   {type: String, required: false, default: ''}, // tenencia    
+    aniosresid:   {type: Number, required: false, default: 0 },
+    qvivxlote:    {type: Number, required: false, default: 0 }, //cant_modulos
+    qhabitantes:  {type: Number, required: false, default: 0 }, //habitantes OjO
+
+    tipoviv:      {type: String, required: false, default: ''},
+    matviv:       {type: String, required: false, default: ''},
+    techoviv:     {type: String, required: false, default: ''},
+    pisoviv:      {type: String, required: false, default: ''},  //piso
+    qdormitorios: {type: Number, required: false, default: 1 }, // habitaciones
+    tventilacion: {type: String, required: false, default: ''},
+    tcocina:      {type: String, required: false, default: ''},
+    ecocina:      {type: String, required: false, default: ''},
+    tbanio:       {type: String, required: false, default: ''},
+    ebanio:       {type: String, required: false, default: ''},
+    tmobiliario:  {type: String, required: false, default: ''},
+    emobiliario:  {type: String, required: false, default: ''},
+    agua:         {type: String, required: false, default: ''},
+    electricidad: {type: String, required: false, default: ''},
+    cloaca:       {type: String, required: false, default: ''},
+    gas:          {type: String, required: false, default: ''},
+    iluminacion:  {type: String, required: false, default: ''},
+    observacion:  {type: String, required: false, default: ''},
+
+
+*/
 export class EncuestaAmbiental {
       _id: string;
       id_address: string;
       id_person: string;
+      
+      street1: string;
+      city: string;
+      barrio: string;
+
       estado: string;
       ferel: number;
       fereltxt: string;
       tsocial: string;
 
-      tipoviv: string;
-      matviv: string;
       domterreno: string;
       aniosresid: number;
       qvivxlote: number;
+      qhabitantes: number;
 
+      tipoviv: string;
+      matviv: string;
       techoviv: string;
       pisoviv: string;
       qdormitorios: number;
@@ -103,6 +184,8 @@ export class EncuestaAmbiental {
       electricidad: string;
       cloaca: string;
       gas: string;
+      iluminacion: string;
+      observacion: string;
 }
 
 class PersonTableData implements PersonTable {
@@ -169,32 +252,55 @@ export class Person {
 	id: string;
 	_id: string;
 	displayName: string;
+  idbrown: string = "";// ojo
+  isImported: boolean = false;// ojo
+
 	persontags: Array<any>;
 	personType: string;
+
 	email: string;
-	locacion: string;
-	pfisica: {
-		nombre: string;
-		apellido: string;
-		tdocum: string;
-		ndocum: string;
-		fenac: Date;
-		anac: number;
-		mnac: number;
-		dnac: number;
+  locacion: string;
 
+  nombre: string;
+  apellido: string;
+  tdoc: string;
+  ndoc: string;
+  cuil: string;// ojo
 
-	};
-	pjuridica: {
-		rsocial: string;
-		tipopj: string;
-		tfiscal: string;
-		nfiscal: string;
-	};
+  tprofesion: string;
+  especialidad: string;
+  ambito: string;
+  nestudios: string;
+
+  nacionalidad: string;
+  fenac: number;
+  fenactx: string;
+  ecivil: string;
+  sexo: string;
+  ts_alta: number;
+  ts_umodif: number;
+  user_alta: string;
+  user_umodif: string;
+
+  user: {
+    userid: string;
+    username: string;
+  }
+  communitylist: Array<string>;
+
+  contactdata: Array<PersonContactData>;
+  oficios: Array<OficiosData>;
+  locaciones: Array<Address>;
+  familiares: Array<FamilyData>;
+
+  salud: Array<SaludData>;
+  cobertura: Array<CoberturaData>;
 	messages: Array<NotificationMessage>
-	locaciones: Array<Address>;
-	contactos: Array<any>;
-	fichas: Array<RecordCardRelation>;
+  ambiental: Array<EncuestaAmbiental>;
+  fichas: Array<RecordCardRelation>;
+
+
+
 	audit:{
 		hasUser: Boolean;
 		fcreate: Date;
@@ -204,36 +310,36 @@ export class Person {
 		navance: string;
 	};
 	facetas: Array<any>;
-	user: {
-		userid: string;
-		username: string;
-	}
-	communitylist: Array<string>;
-	contactdata: Array<PersonContactData>;
-    familiares: Array<FamilyData>;
-    oficios: Array<OficiosData>;
-	nombre: string;
-	apellido: string;
-	password: string;
-	tdoc: string;
-	ndoc: string;
-	tprofesion: string;
-	nestudios: string;
-	especialidad: string;
-	nacionalidad: string;
-	fenac: number;
-	fenactx: string;
-	ecivil: string;
-  sexo: string;
-	ambito: string;
-	termscond: boolean;
+
 	estado: string;
 	navance: string;
-	confirmPassword: string;
+  termscond: boolean;
+
+  password: string;
+  confirmPassword: string;
 	grupos: string;
 	roles: string;
-	modulos: string;
+
+  modulos: string;
 	moduleroles: Array<any>;
+  pfisica: {
+    nombre: string;
+    apellido: string;
+    tdocum: string;
+    ndocum: string;
+    fenac: Date;
+    anac: number;
+    mnac: number;
+    dnac: number;
+
+
+  };
+  pjuridica: {
+    rsocial: string;
+    tipopj: string;
+    tfiscal: string;
+    nfiscal: string;
+  };
 
 	constructor(
 		displayName: string, email?:string, msj?:NotificationMessage, tdoc?:string, ndoc?:string){
@@ -302,12 +408,14 @@ const estados_viv: Array<any> = [
 ];
 
 const tipos_viv: Array<any> = [
-        {val: 'interno',      type:'interno', label: 'interno' },
-        {val: 'externo',      type:'interno', label: 'externo' },
+        {val: 'interno',      type:'interno', label: 'Interno' },
+        {val: 'externo',      type:'interno', label: 'Externo' },
+        {val: 'otro',         type:'interno', label: 'Otro' },
 
         {val: 'cocinagas',     type:'cocina',  label: 'A gas'  },
         {val: 'cocinaelec',    type:'cocina',  label: 'Eléctrica' },
         {val: 'anafe',         type:'cocina',  label: 'Anafe'  },
+        {val: 'noposee',       type:'cocina',  label: 'No posee'  },
         
 
         {val: 'insuficiente', type:'suficiente',  label: 'Insuficiente'  },
@@ -326,6 +434,7 @@ const tipos_viv: Array<any> = [
         {val: 'otro',         type:'tvivienda', label: 'Otro' },
 
         {val: 'chapa',        type:'mvivienda', label: 'Chapa' },
+        {val: 'adobe',        type:'mvivienda', label: 'Adobe' },
         {val: 'ladrillo',     type:'mvivienda', label: 'Ladrillo' },
         {val: 'madera',       type:'mvivienda', label: 'Madera' },
         {val: 'otro',         type:'mvivienda', label: 'Otro' },
@@ -504,7 +613,89 @@ const states = [
         {val: "tucuman",         label: 'Tucumán',      country: 'AR'},
 ];
 
+const saludOptList: Array<any> = [
+    {val: 'enfermedad',         label: 'Enfermedad',    },
+    {val: 'discapacidad',       label: 'Discapacidad ', },
+];
 
+const saludSubtiposOptList = {
+  enfermedad: [
+    {val: 'inespecifica',   label: 'Inespecifica' },
+    {val: 'psiquica',       label: 'Psíquica'     },
+    {val: 'motriz',         label: 'Motriz'     },
+    {val: 'respiratoria',   label: 'Respiratoria'     },
+    {val: 'viral',          label: 'Viral'     },
+    {val: 'sexual',         label: 'Sexual'     },
+    {val: 'circulatoria',   label: 'Circulatoria'     },
+    {val: 'digestiva',      label: 'Digestiva'     },
+    {val: 'visual',         label: 'Visual'     },
+    {val: 'auditiva',       label: 'Auditiva'     },
+    {val: 'percepcion',     label: 'Percepción'     },
+    {val: 'piel',           label: 'Piel'     },
+  ],
+
+  discapacidad: [
+    {val: 'inespecifica',   label: 'Inespecifica' },
+    {val: 'psiquica',       label: 'Psíquica'     },
+    {val: 'motriz',         label: 'Motriz'     },
+    {val: 'auditiva',       label: 'Auditiva'     },
+    {val: 'visual',         label: 'visual'     },
+  ],
+
+}
+
+const coberturaOptList: Array<any> = [
+    {val: 'ingreso',        label: 'ingreso',    },
+    {val: 'cobertura',      label: 'cobertura',    },
+    {val: 'pension',        label: 'pension',    },
+    {val: 'auh',            label: 'auh',    },
+    {val: 'asisprovincial', label: 'asisprovincial',    },
+    {val: 'asisnacional',   label: 'asisnacional',    },
+    {val: 'asismunicipal',  label: 'asismunicipal',    },
+    {val: 'otros',          label: 'otros',    },
+];
+
+const coberturaSubtiposOptList = {
+  ingreso: [
+    {val: 'noposee',  label: 'noposee' },
+    {val: 'ingreso',  label: 'ingreso' },
+    {val: 'salario',  label: 'salario' },
+    {val: 'changa',   label: 'changa' },
+    {val: 'oficio',   label: 'oficio' },
+    {val: 'comercio', label: 'comercio' },
+  ],
+  cobertura: [
+    {val: 'noposee',    label: 'noposee' },
+    {val: 'osocial',    label: 'osocial' },
+    {val: 'medprepaga', label: 'medprepaga' },
+    {val: 'pami',       label: 'pami' },
+  ],
+  pension: [
+    {val: 'noposee',   label: 'noposee' },
+    {val: 'pension',   label: 'pension' },
+  ],
+  auh: [
+    {val: 'noposee',  label: 'noposee' },
+    {val: 'auh',      label: 'auh' },
+  ],
+  asisprovincial: [
+    {val: 'noposee',     label: 'noposee' },
+    {val: 'aprovincial', label: 'aprovincial' },
+  ],
+  asisnacional: [
+    {val: 'noposee',   label: 'noposee' },
+    {val: 'anacional', label: 'anacional' },
+  ],
+  asismunicipal: [
+    {val: 'noposee',    label: 'noposee' },
+    {val: 'amunicipal', label: 'amunicipal' },
+  ],
+  otros: [
+    {val: 'noposee',   label: 'noposee' },
+    {val: 'otros',     label: 'otros' },
+  ],
+
+}
 
 const addressTypes: Array<any> = [
 		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
@@ -1037,16 +1228,16 @@ const estadoCivil: Array<any> = [
 const nivelEstudios: Array<any> = [
     {val: 'primario',       label: 'Primario',          slug:'Primario' },
 		{val: 'primariox', 	    label: 'Primario (incompleto)',          slug:'Primario (incompleto)' },
-		{val: 'secundariox',    label: 'Secundario (incompleto)',    slug:'Secundario (incompleto)' },
 		{val: 'secundario',     label: 'Secundario',        slug:'Secundario' },
-		{val: 'terciariox',     label: 'Terciario (incompleto)',     slug:'Terciario (incompleto)' },
+    {val: 'secundariox',    label: 'Secundario (incompleto)',    slug:'Secundario (incompleto)' },
 		{val: 'terciario',      label: 'Terciario',         slug:'Terciario' },
-		{val: 'universitariox', label: 'Universitario (incompleto)', slug:'Universitario (incompleto)' },
+    {val: 'terciariox',     label: 'Terciario (incompleto)',     slug:'Terciario (incompleto)' },
 		{val: 'universitario',  label: 'Universitario',     slug:'Universitario' },
-		{val: 'posgradox',      label: 'Posgrado (incompleto)',      slug:'Posgrado (incompleto)' },
+    {val: 'universitariox', label: 'Universitario (incompleto)', slug:'Universitario (incompleto)' },
 		{val: 'posgrado',       label: 'Posgrado',          slug:'Posgrado' },
-		{val: 'doctoradox',     label: 'Doctorado (incompleto)',     slug:'Doctorado (incompleto)' },
+    {val: 'posgradox',      label: 'Posgrado (incompleto)',      slug:'Posgrado (incompleto)' },
 		{val: 'doctorado',      label: 'Doctorado',         slug:'Doctorado' },
+    {val: 'doctoradox',     label: 'Doctorado (incompleto)',     slug:'Doctorado (incompleto)' },
     {val: 'noposee',        label: 'No Posee',              slug:'No Posee' },
 		{val: 'otra',           label: 'Otra',              slug:'Otra' },
 ];
@@ -1073,7 +1264,13 @@ function getLabel(item, list:Array<any>): string {
 			return p.label;
 		}
 		return ''
-	}
+}
+
+function getSubLabel(type, item, container): string {
+    if(!item || !type) return '';
+    let slist = container[type] || [];
+    return getLabel(item, slist);
+}
 
     // {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
     // {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
@@ -1175,8 +1372,10 @@ class PersonModel {
       let arr = tipos_viv.filter(t => token === t.type );
       return arr;
     }
-    getTiposVivLabel(item, token):string {      
-      return getLabel(item, tipos_viv.filter(t => token === t.type ));
+    getTiposVivLabel(item, token, prefix?):string {
+      let data = getLabel(item, tipos_viv.filter(t => token === t.type ));
+      if(data && prefix) data = prefix + ' ' + data;
+      return data;
     }
 
 
@@ -1196,23 +1395,58 @@ class PersonModel {
         return getLabel(item, sexoOptList);
     }
 
+    // Datos de Salud
+    get saludTypeList():Array<any>{
+    	return saludOptList;
+    }
+
+    getSaludTypeDato(item): string {
+      return getLabel(item, saludOptList);
+    }
+
+    getSaludSubTypeDato(type, item): string {
+      return getSubLabel(type, item, saludSubtiposOptList);
+    }
+
+
+    getSaludSubTypeList(type): Array<any> {
+      return saludSubtiposOptList[type] || saludSubtiposOptList['enfermedad'];
+    }
+
+    // Datos de Cobertura
+    get coberturaTypeList():Array<any>{
+      return coberturaOptList;
+    }
+
+    getCoberturaTypeDato(item): string {
+      return getLabel(item, coberturaOptList);
+    }
+
+    getCoberturaSubTypeDato(type, item): string {
+      return getSubLabel(type, item, coberturaSubtiposOptList);
+    }
+
+    getCoberturaSubTypeList(type): Array<any> {
+      return coberturaSubtiposOptList[type] || coberturaSubtiposOptList['ingreso'];
+    }
+    // END Datos de cobertura
+
     // Datos de Contacto
     get contactTipoList():Array<any>{
-    	return contact_tdato;
+      return contact_tdato;
     }
 
     getContactTipoDato(item): string {
-    	return getLabel(item, contact_tdato);
+      return getLabel(item, contact_tdato);
     }
 
     get contactTypeList():Array<any>{
-    	return contact_type;
+      return contact_type;
     }
 
     getContactType(item): string {
-    	return getLabel(item, contact_type);
+      return getLabel(item, contact_type);
     }
-    // END Datos de Contacto
 
 
     initNew(displayName:string, email:string){
@@ -1363,9 +1597,10 @@ class PersonModel {
       return barriosOptList[type] || barriosNotDefined;
     }
 
-
-
-
+    getBarrioLabel(type, item):string {
+      return getLabel(item, (barriosOptList[type] || barriosNotDefined));
+    }
+    
     personType(code):string {
     	if(!code) return ''
     	return ptypes.find(item => item.val === code).label;

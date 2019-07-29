@@ -10,13 +10,14 @@ import {  Person,
           Address,
           FamilyData,
           OficiosData,
+          SaludData,
+          CoberturaData,
+          EncuestaAmbiental,
           personModel,
+
           UpdatePersonEvent,
-          UpdateContactEvent,
-          UpdateFamilyEvent,
-          UpdateOficiosEvent,
           UpdateItemListEvent,
-          UpdateAddressEvent,
+
           PersonContactData 
         } from '../../../entities/person/person';
 
@@ -50,10 +51,14 @@ export class TsocialPageComponent implements OnInit {
   public nDoc = "";
 
   public currentPerson: Person;
-  public contactList: PersonContactData[];
-  public addressList: Address[];
-  public familyList:  FamilyData[];
-  public oficiosList: OficiosData[];
+  public contactList:   PersonContactData[];
+  public addressList:   Address[];
+  public familyList:    FamilyData[];
+  public oficiosList:   OficiosData[];
+  public saludList:     SaludData[];
+  public coberturaList: CoberturaData[];
+  public ambientalList: EncuestaAmbiental[];
+
   public asistenciasList: Asistencia[];
 
 
@@ -135,6 +140,9 @@ export class TsocialPageComponent implements OnInit {
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
       this.oficiosList = p.oficios || [];
+      this.saludList =   p.salud || [];
+      this.coberturaList = p.cobertura || [];
+      this.ambientalList = p.ambiental || [];
       
       this.initAsistenciasList()
 
@@ -228,6 +236,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
+
   upsertOficiosList(event:UpdateItemListEvent){
     this.currentPerson.oficios = event.items as OficiosData[];
 
@@ -238,6 +247,66 @@ export class TsocialPageComponent implements OnInit {
     };
     this.dsCtrl.updatePerson(update);
   }
+
+  // Salud Data
+  updateSaludList(event:UpdateItemListEvent){
+    if(event.action === UPDATE){
+      this.upsertSaludList(event);
+    }
+  }
+
+  upsertSaludList(event:UpdateItemListEvent){
+    this.currentPerson.salud = event.items as SaludData[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    
+    this.dsCtrl.updatePerson(update);
+  }
+
+  // Salud Data
+  updateCoberturaList(event:UpdateItemListEvent){
+    if(event.action === UPDATE){
+      this.upsertCoberturaList(event);
+    }
+  }
+
+  upsertCoberturaList(event:UpdateItemListEvent){
+    this.currentPerson.cobertura = event.items as CoberturaData[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    
+    this.dsCtrl.updatePerson(update);
+  }
+
+  // Encuesta ambiental Data
+  updateAmbientalList(event:UpdateItemListEvent){
+    if(event.action === UPDATE){
+      this.upsertAmbientalList(event);
+    }
+  }
+
+  upsertAmbientalList(event:UpdateItemListEvent){
+    this.currentPerson.ambiental = event.items as EncuestaAmbiental[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    
+    this.dsCtrl.updatePerson(update);
+  }
+
+
+
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
 

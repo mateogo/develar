@@ -38,6 +38,20 @@ router.post('/upsert', function (req, res) {
 });
 
 /**
+ * import and [update | insert ]
+ */
+router.get('/import', function (req, res) {
+    console.log('import ROUTE');
+    service.import(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+/**
  * search entities
  */
 router.get('/search', function (req, res) {

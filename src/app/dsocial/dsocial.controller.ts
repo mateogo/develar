@@ -31,6 +31,9 @@ const CONTACT = 'contact';
 const ADDRESS = 'address';
 const FAMILY = 'family';
 const OFICIOS = 'oficios';
+const SALUD = 'salud';
+const COBERTURA = 'cobertura';
+const ENCUESTA = 'ambiental';
 
 @Injectable({
 	providedIn: 'root'
@@ -114,6 +117,17 @@ export class DsocialController {
       this.upsertPersonCore(event.person._id, event.person);
     }
 
+    if(event.token === SALUD){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === COBERTURA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ENCUESTA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
 
   }
 

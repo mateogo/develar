@@ -64,7 +64,7 @@ export const prioridadOptLst = [
 
 
 export class PriorityToken {
-	prioridad: number;
+	prioridad: number = 0;
 	action: string;
 
 }

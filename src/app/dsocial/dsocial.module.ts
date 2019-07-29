@@ -56,6 +56,18 @@ import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoal
 import { RemitoalmacenTableComponent } from './alimentos/remitoalmacen/remitoalmacen-table/remitoalmacen-table.component';
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 import { PrioritySelectComponent } from './helpers/priority-select/priority-select.component';
+import { SaludDataBaseComponent } from './ciudadano/salud-data/salud-data-base/salud-data-base.component';
+import { SaludDataEditComponent } from './ciudadano/salud-data/salud-data-edit/salud-data-edit.component';
+import { SaludDataPanelComponent } from './ciudadano/salud-data/salud-data-panel/salud-data-panel.component';
+import { SaludDataViewComponent } from './ciudadano/salud-data/salud-data-view/salud-data-view.component';
+import { CoberturaDataBaseComponent } from './ciudadano/cobertura-data/cobertura-data-base/cobertura-data-base.component';
+import { CoberturaDataEditComponent } from './ciudadano/cobertura-data/cobertura-data-edit/cobertura-data-edit.component';
+import { CoberturaDataPanelComponent } from './ciudadano/cobertura-data/cobertura-data-panel/cobertura-data-panel.component';
+import { CoberturaDataViewComponent } from './ciudadano/cobertura-data/cobertura-data-view/cobertura-data-view.component';
+import { AmbientalDataBaseComponent } from './ciudadano/ambiental-data/ambiental-data-base/ambiental-data-base.component';
+import { AmbientalDataEditComponent } from './ciudadano/ambiental-data/ambiental-data-edit/ambiental-data-edit.component';
+import { AmbientalDataPanelComponent } from './ciudadano/ambiental-data/ambiental-data-panel/ambiental-data-panel.component';
+import { AmbientalDataViewComponent } from './ciudadano/ambiental-data/ambiental-data-view/ambiental-data-view.component';
 
 @NgModule({
   imports: [
@@ -114,7 +126,19 @@ import { PrioritySelectComponent } from './helpers/priority-select/priority-sele
     RemitoalmacenBrowseComponent,
     RemitoalmacenTableComponent,
     SegumientoPageComponent,
-    PrioritySelectComponent
+    PrioritySelectComponent,
+    SaludDataBaseComponent,
+    SaludDataEditComponent,
+    SaludDataPanelComponent,
+    SaludDataViewComponent,
+    CoberturaDataBaseComponent,
+    CoberturaDataEditComponent,
+    CoberturaDataPanelComponent,
+    CoberturaDataViewComponent,
+    AmbientalDataBaseComponent,
+    AmbientalDataEditComponent,
+    AmbientalDataPanelComponent,
+    AmbientalDataViewComponent
   ]
 })
 export class DsocialModule { }

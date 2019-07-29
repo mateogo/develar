@@ -200,6 +200,30 @@ exports.highlightCode = function(code){
     return token;
 }
 
+exports.parsePHPDateStr = function(str){
+    var mx = str.match(/(\d+)/g);
+    if(mx && mx.length === 3){
+        return (this.parseDateStr(mx[2] + '/' + mx[1] + '/' + mx[0]));
+    } else if(mx && mx.length === 2){
+        return (this.parseDateStr('1' + '/' + mx[1] + '/' + mx[0]));
+    } else if(mx && mx.length === 1){
+        return (this.parseDateStr('1' + '/' + '1' + '/' + mx[0]));
+    }else {
+        return new Date();
+    }
+}
+
+exports.parsePHPTimeStamp = function(str){
+    var mx = str.match(/(\d+)/g);
+    if(mx && mx.length >= 3){
+        let ts = this.parseDateStr(mx[2] + '/' + mx[1] + '/' + mx[0]);
+        if(ts) return ts.getTime();
+    }
+    return Date.now();
+}
+
+
+
 exports.parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)
 
