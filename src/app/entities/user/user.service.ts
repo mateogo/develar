@@ -173,7 +173,6 @@ export class UserService {
 		return this.http
 			.post(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
-			.then(res => res.json() as User)
 			.catch(this.loginError);
 	}
 
@@ -214,9 +213,8 @@ export class UserService {
 
 	send(mail: SendMail): Promise<any> {
 		return this.http
-			.post(mail.url, JSON.stringify(mail.content), {headers: mail.headers})
+			.post(mail.url, JSON.stringify(mail.content), {headers: this.headers})
 			.toPromise()
-			.then(res => res.json() )
 			.catch(this.handleError);
 	}
 

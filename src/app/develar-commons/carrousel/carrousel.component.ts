@@ -4,6 +4,13 @@ const DEFAULT_IMAGE_URL_BASE = "assets/content/";
 const DEFAULT_IMAGE_URL_ARRAY = ['card-1.jpg', 'card-2.jpg', 'card-3.jpg'];
 const DEFAULT_MAIN = DEFAULT_IMAGE_URL_BASE + DEFAULT_IMAGE_URL_ARRAY[0];
 
+class Carrousel {
+	slug: string = "Carrousel";
+	mainimage: string = DEFAULT_MAIN;	
+	images:  Array<string> = [];
+	start: number = 0;
+}
+
 
 @Component({
   selector: 'app-carrousel',
@@ -48,13 +55,6 @@ export class CarrouselComponent implements OnInit {
 
   ngOnInit() {
   }
-}
-
-class Carrousel {
-	slug: string = "Carrousel";
-	mainimage: string = DEFAULT_MAIN;	
-	images:  Array<string> = [];
-	start: number = 0;
 }
 
 export class CarrouselHandler {
