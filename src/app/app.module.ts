@@ -1,7 +1,6 @@
 import { BrowserModule }                    from '@angular/platform-browser';
 import { NgModule, Directive }              from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule }                       from '@angular/http';
 import { HttpClientModule}                  from '@angular/common/http';
 import { BrowserAnimationsModule }          from '@angular/platform-browser/animations';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
@@ -35,11 +34,10 @@ import { AppEffects } from './app.effects';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpModule,
     HttpClientModule,
     DevelarCommonsModule,
     AppRoutingModule,
-    NgbModule.forRoot(),
+    NgbModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects]),
