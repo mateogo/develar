@@ -57,8 +57,8 @@ export class ProductsnTableComponent implements OnInit, OnChanges {
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   private table_columns = ["select", 'code','feTxt', "slug" , 'actualOwnerName', 'estado', 'productName'];
   private table_columns_sel = {

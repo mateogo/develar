@@ -16,8 +16,8 @@ import { Product }         from '../product.model';
   styleUrls: ['./product-browse.component.scss']
 })
 export class ProductBrowseComponent implements OnInit {
-	@ViewChild('actionsTmpl') public actionsTemplate: TemplateRef<any>
-  @ViewChild('viewTmpl') public viewTmpl: TemplateRef<any>
+	@ViewChild('actionsTmpl', { static: true }) public actionsTemplate: TemplateRef<any>
+  @ViewChild('viewTmpl', { static: true }) public viewTmpl: TemplateRef<any>
   public models: Product[] = [];
 
   @Input()

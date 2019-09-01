@@ -12,7 +12,7 @@ import { PersonService}  from '../person.service'
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent implements OnInit {
-	@ViewChild('actionsTmpl') public actionsTmpl: TemplateRef<any>
+	@ViewChild('actionsTmpl', { static: true }) public actionsTmpl: TemplateRef<any>
 
 	pageTitle: string = "Módulo Personas";
 	models: Person[] = [];

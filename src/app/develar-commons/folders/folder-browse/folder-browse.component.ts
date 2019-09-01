@@ -15,8 +15,8 @@ import { Observable }        from 'rxjs';
   styleUrls: ['./folder-browse.component.scss']
 })
 export class FolderBrowseComponent implements OnInit {
-	@ViewChild('actionsTmpl') public actionsTemplate: TemplateRef<any>
-  @ViewChild('viewTmpl') public viewTmpl: TemplateRef<any>
+	@ViewChild('actionsTmpl', { static: true }) public actionsTemplate: TemplateRef<any>
+  @ViewChild('viewTmpl', { static: true }) public viewTmpl: TemplateRef<any>
   models: Folder[] = [];
 
   @Input()

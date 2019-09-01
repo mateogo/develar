@@ -71,8 +71,8 @@ export class RemitoalmacenTableComponent implements OnInit {
   @Input()  public  isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   private table_columns = ['select', 'asistenciaId', 'compName', 'compNum', 'action', 'kitEntrega', 'person', 'slug', "sector","avance", "fecomp_txa"];
   private table_columns_sel = {

@@ -15,8 +15,8 @@ import { Observable }        from 'rxjs';
   styleUrls: ['./cardsviewlist.component.scss']
 })
 export class CardsviewlistComponent implements OnInit {
-	@ViewChild('actionsTmpl') public actionsTemplate: TemplateRef<any>
-  @ViewChild('viewcardTmpl') public viewcardTmpl: TemplateRef<any>
+	@ViewChild('actionsTmpl', { static: true }) public actionsTemplate: TemplateRef<any>
+  @ViewChild('viewcardTmpl', { static: true }) public viewcardTmpl: TemplateRef<any>
   public models: RecordCard[] = [];
 
   @Input()

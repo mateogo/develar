@@ -68,8 +68,8 @@ export class CommunityTableComponent implements OnInit, OnChanges {
   @Input()  isColSelectionAllowed = true;
   @Output() actionTriggered: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   //private table_columns = ["select", "predicate", "milestoneLabel", "displayAs",  "slug", "entityId", "qtx", "qt", "ume", "freq", 'fume' , "pu", 'moneda', "total", 'ars', 'usd','eur', 'brl'];
   private table_columns = ["select", 'code','eclass','etype', "slug","name", "displayAs"];

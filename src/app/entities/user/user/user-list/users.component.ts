@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit {
 
 	selectedUser: User;
 
-  @ViewChild('actionsTmpl') public actionsTmpl: TemplateRef<any>;
+  @ViewChild('actionsTmpl', { static: true }) public actionsTmpl: TemplateRef<any>;
 
 	columns = [];
 	rows = [];
