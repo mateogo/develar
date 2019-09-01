@@ -11,7 +11,7 @@
     margin: 0 auto;
     max-width: 400px;
 
-    /deep/ .card-wrap {
+    ::ng-deep .card-wrap {
       border: 0;
     }
     .material-icons {

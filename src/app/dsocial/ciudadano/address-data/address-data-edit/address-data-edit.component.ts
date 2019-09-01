@@ -2,8 +2,9 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
-import { Person, personModel, Address, UpdateAddressEvent } from '../../../../entities/person/person';
+import { Person, personModel, Address, Geocoder, UpdateAddressEvent } from '../../../../entities/person/person';
 
+import { DsocialController } from '../../../dsocial.controller';
 import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'address';
@@ -28,12 +29,22 @@ export class AddressDataEditComponent implements OnInit {
 
 	public form: FormGroup;
 
+	public renderMap = false;
+
+  private zoom: number = 8;
+  private location: Geocoder = {
+    lat:  -34.5922017,
+    lng:  -58.41167669999999,
+    label: ''
+  }
+
 
   private action = "";
   private fireEvent: UpdateAddressEvent;
 
   constructor(
   	private fb: FormBuilder,
+  	private dsCtrl: DsocialController,
   	) { 
   		this.form = this.buildForm();
 	}
@@ -62,13 +73,28 @@ export class AddressDataEditComponent implements OnInit {
 
   }
 
+  updateLatLngAndEmit(updateToken: UpdateAddressEvent){
+		this.dsCtrl.addressLookUp(this.token)
+			.then(data => {
+				this.buildGeoData(this.token, data, false);
+		  	this.updateToken.next(updateToken);
+			});
+  }
+
   emitEvent(action:string){
-  	this.updateToken.next({
+  	let updateEvent: UpdateAddressEvent = {
   		action: action,
   		type: TOKEN_TYPE,
   		token: this.token
-  	});
+  	}
 
+  	if(this.action === UPDATE){
+  		this.updateLatLngAndEmit(updateEvent);
+
+  	} else {
+	  	this.updateToken.next(updateEvent);
+
+  	}
   }
 
   changeSelectionValue(type, val){
@@ -83,6 +109,36 @@ export class AddressDataEditComponent implements OnInit {
 
 	}
 
+	mapLookUp(){
+		let address: Address = this.initForSave(this.form,this.token);
+	  console.log('mapLookUp [%s]', address.street1, address.city);
+	  this.showMap(address, true);
+	}
+
+	buildGeoData(address: Address, data: any, fireMap: boolean){
+		  if(data.status === 'OK'){
+		    this.zoom = 15;
+
+		    this.location = data.location;
+		    this.location.label = address.street1 + '@' +  address.description;
+
+		    address.lat = this.location.lat;
+		    address.lng = this.location.lng;
+		    
+		    this.renderMap = fireMap;
+		  }
+	}
+
+	showMap(address: Address, fireMap: boolean){
+		this.dsCtrl.addressLookUp(address)
+		.then(data => {
+		  console.log('SHOW MAP callback[%s]: lat/lng: [%s][%s]', data.status, data.location.lat, data.location.lng);
+		  this.buildGeoData(address, data, fireMap);
+
+		});
+	}
+
+
 
  
   buildForm(): FormGroup{
@@ -95,6 +151,8 @@ export class AddressDataEditComponent implements OnInit {
 			addType:     [null, Validators.compose([Validators.required])],
 			street1:     [null, Validators.compose([Validators.required])],
 			street2:     [null],
+			streetIn:    [null],
+			streetOut:   [null],
 			city:        [null],
 			barrio:      [null],
 			state:       [null],
@@ -114,6 +172,8 @@ export class AddressDataEditComponent implements OnInit {
 			addType:     token.addType,
 			street1:     token.street1,
 			street2:     token.street2,
+			streetIn:    token.streetIn,
+			streetOut:   token.streetOut,
 			city:        token.city,
 			barrio:      token.barrio,
 			state:       token.state ||'buenosaires',
@@ -136,6 +196,8 @@ export class AddressDataEditComponent implements OnInit {
 		entity.addType =      fvalue.addType;
 		entity.street1 =      fvalue.street1;
 		entity.street2 =      fvalue.street2;
+		entity.streetIn =     fvalue.streetIn;
+		entity.streetOut =    fvalue.streetOut;
 		entity.city =         fvalue.city;
     entity.barrio =       fvalue.barrio;
 		entity.state =        fvalue.state;

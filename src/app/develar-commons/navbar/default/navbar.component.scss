@@ -386,7 +386,7 @@
           }
         }
         &.opened {
-          /deep/ {
+          ::ng-deep {
             .mat-icon-button,
             .mat-button {
               color: main-color(A100);

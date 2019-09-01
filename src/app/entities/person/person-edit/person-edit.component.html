@@ -87,7 +87,12 @@
       </div>
       <div *ngIf="renderMap">
         <agm-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="zoom">
-          <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng">
+            <agm-info-window>
+              <strong>{{ location.label }}</strong>
+            </agm-info-window>
+
+          </agm-marker>
         </agm-map>
       </div>
 

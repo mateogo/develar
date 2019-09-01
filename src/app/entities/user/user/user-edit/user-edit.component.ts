@@ -152,7 +152,7 @@ export class UserEditComponent implements OnInit {
     let formModel = this.form.value;
  
     // return new `User` object containing a combination of original user value(s)
-    // and deep copies of changed form model values
+    // and copies of changed form model values
     this.model.username = formModel.username;
     this.model.email = formModel.email;
     this.model.displayName = formModel.displayName;

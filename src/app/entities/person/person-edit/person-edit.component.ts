@@ -59,7 +59,9 @@ export class PersonEditComponent implements OnInit {
   private zoom: number = 8;
   private location = {
     lat:  -34.5922017,
-    lng:  -58.41167669999999
+    lng:  -58.41167669999999,
+    label: ''
+
   }
 
 
@@ -133,6 +135,9 @@ export class PersonEditComponent implements OnInit {
   }
 
   setAddresses(addresses: Address[]) {
+    addresses.forEach(t => {
+      t.zip = t.zip || '';
+    })
     const addressFGs = addresses.map(address => this.fb.group(address));
     const addressFormArray = this.fb.array(addressFGs);
     this.form.setControl('guaridas', addressFormArray);
@@ -195,7 +200,7 @@ export class PersonEditComponent implements OnInit {
     return devutils.txFromDate(new Date(datenum))
   }
 
-  mapLookUp(address){
+  mapLookUp(address: Address){
     console.log('mapLookUp [%s]', address.street1, address.city);
     this.showMap(address);
   }
@@ -209,13 +214,17 @@ export class PersonEditComponent implements OnInit {
       });
   }
 
-  showMap(address){
+  showMap(address: Address){
     this.personService.addressLookUp(address)
     .then(data => {
-      console.log('showMap callback[%s]: lat/lng: [%s][%s]', data.status, data.location.lat, data.location.lng);
+      // console.dir(data);
+      // console.log('SHOW MAP callback[%s]: lat/lng: [%s][%s]', data.status, data.location.lat, data.location.lng);
       if(data.status === 'OK'){
+
+
         this.zoom = 15;
         this.location = data.location;
+        this.location.label = this.model.displayName + '@' +  address.description;
         this.renderMap = true;
       }
 

@@ -4,7 +4,7 @@
   display: block;
   overflow-x: auto;
 
-  /deep/card {
+  ::ng-deep card {
     margin: 0;
     min-width: 600px;
 
@@ -16,7 +16,7 @@
       }
     }
   }
-  /deep/.cal-month-view {
+  ::ng-deep .cal-month-view {
     display: block;
 
     .cal-day-badge {

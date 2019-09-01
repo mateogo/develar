@@ -126,7 +126,10 @@ export class DaoService {
       },
       parser:{
         backendURL: 'api/parser/highlight'
-      }
+      },
+      geocode: {
+        backendURL: 'api/utils/geocode'
+      },
     };
   }
 
@@ -305,6 +308,14 @@ export class DaoService {
                  );
   }
 
+  geocodeForward<T>(query: any): Promise<T[]>{
+    let url = `${this.dao['geocode'].backendURL}`;
+
+    return this.http
+      .post(url, JSON.stringify(query), {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
 
   //********* MAIL **************************
   //          sendMail send mail

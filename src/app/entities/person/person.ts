@@ -73,22 +73,32 @@ export interface UpdateAmbientalEvent {
       token: EncuestaAmbiental;
 };
 
+export interface Geocoder {
+  lat: number;
+  lng: number;
+  label: string;
+}
+
 
 export class Address {
     _id?: string;
     slug: string = '';
+    estado: string = 'activo';
     description: string = '';
     isDefault: boolean = false;
     addType: string = 'principal';
     street1: string = '';
     street2: string = '';
+    streetIn: string = '';
+    streetOut: string = '';
     city: string = '';
     barrio?: string = '';
     state: string = '';
     statetext:string= '';
     zip: string = '';
+    lat: number = 0;
+    lng: number = 0;
     country: string = 'AR';
-    estado: string = 'activo';
     encuesta: EncuestaAmbiental;
 }
 

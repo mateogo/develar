@@ -15,7 +15,7 @@ import { devutils } from '../develar-commons/utils';
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
 import { UserService }   from '../entities/user/user.service';
-import { Person, UpdatePersonEvent }        from '../entities/person/person';
+import { Person, Address, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
@@ -683,6 +683,9 @@ export class DsocialController {
 
   }  
 
+  addressLookUp(address: Address): Promise<any>{
+    return this.daoService.geocodeForward(address);
+  }
 
 
 

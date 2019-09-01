@@ -22,7 +22,7 @@
     sidebar {
       left: 0;
 
-      /deep/ .sidebar-overlay {
+      ::ng-deep .sidebar-overlay {
         @media #{$max991} {
           opacity: 1;
           transition:

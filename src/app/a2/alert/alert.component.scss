@@ -16,7 +16,7 @@
     &:not(.outline-alert){
       color: #fff;
 
-      /deep/ a {
+      a {
         color: rgba(#fff,.8);
 
         &:hover {
@@ -50,7 +50,7 @@
         vertical-align: top;
       }
     }
-    /deep/ .material-icons {
+    .material-icons {
       color: main-color(A100);
       margin: 0 $module 0 0;
       vertical-align: top;
@@ -63,7 +63,7 @@
       background: $success-color;
       border-color: $success-color;
 
-      /deep/ .material-icons {
+      .material-icons {
         color: $success-color;
       }
     }
@@ -71,7 +71,7 @@
       background: $info-color;
       border-color: $info-color;
 
-      /deep/ .material-icons {
+      .material-icons {
         color: $info-color;
       }
     }
@@ -79,7 +79,7 @@
       background: $warning-color;
       border-color: $warning-color;
 
-      /deep/ .material-icons {
+      .material-icons {
         color: $warning-color;
       }
     }
@@ -87,7 +87,7 @@
       background: $danger-color;
       border-color: $danger-color;
 
-      /deep/ .material-icons {
+      .material-icons {
         color: $danger-color;
       }
     }

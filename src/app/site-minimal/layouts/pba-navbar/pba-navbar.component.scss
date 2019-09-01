@@ -402,7 +402,7 @@ $text-color: #00aec7;
           }
         }
         &.opened {
-          /deep/ {
+          ::ng-deep {
             .mat-icon-button,
             .mat-button {
               color: main-color(A100);

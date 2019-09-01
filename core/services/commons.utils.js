@@ -116,6 +116,13 @@ exports.safeName = function (name){
     return str;
 };
 
+exports.safeAddressTokenized = function (name, token){
+    var str = name.toLowerCase();
+    str = str.split(' ').join(token);
+    str = str.replace(/[áÁéÉíÍóÓúÚñ]/g,function(c) { return es_cutoff[c]; });
+    return str;
+};
+
 exports.safeAddress = function (name){
     var str = name.toLowerCase();
     str = str.split(' ').join('%20');

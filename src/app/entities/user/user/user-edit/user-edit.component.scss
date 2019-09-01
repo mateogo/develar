@@ -12,7 +12,7 @@
     margin: 0 auto;
     display: flex;
 
-    /deep/ .card-wrap {
+    ::ng-deep .card-wrap {
       border: 0;
     }
     form {

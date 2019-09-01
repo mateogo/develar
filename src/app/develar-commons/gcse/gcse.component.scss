@@ -151,7 +151,7 @@
         position: relative;
       }
 
-      /deep/ {
+      ::ng-deep {
         .mat-icon-button,
         .mat-button {
         //color: rgba(#000,.3);
@@ -360,7 +360,7 @@
         }
       }
       &.opened {
-        /deep/ {
+        ::ng-deep {
           .mat-icon-button,
           .mat-button {
             color: main-color(A100);

@@ -3,7 +3,7 @@
     height: 100%;
 
 
-    /deep/.card-wrap {
+    ::ng-deep .card-wrap {
       height: 100%;
 
       .card-content {
@@ -16,7 +16,7 @@
   height: 100%;
   min-height: 200px;
 
-  /deep/.sebm-google-map-container-inner {
+  ::ng-deep .sebm-google-map-container-inner {
     min-height: 200px;
   }
 }
