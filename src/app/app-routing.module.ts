@@ -39,27 +39,27 @@ const defaultAdminRoute: Routes = [
 const a2Routes: Routes = [
   { 
     path: '', 
-    loadChildren: './a2/a2.module#A2Module'
+    loadChildren: () => import('./a2/a2.module').then(m => m.A2Module)
   }
 ];
 
 const personRoutes: Routes = [
   { 
     path: '', 
-    loadChildren: './entities/person/person.module#PersonModule'
+    loadChildren: () => import('./entities/person/person.module').then(m => m.PersonModule)
   },
 ];
 const userRoutes: Routes = [
   { 
     path: '', 
-    loadChildren: './entities/user/user/user.module#UserModule'
+    loadChildren: () => import('./entities/user/user/user.module').then(m => m.UserModule)
   },
 ];
 
 const productRoutes: Routes = [
   { 
     path: '', 
-    loadChildren: './entities/products/product.module#ProductModule'
+    loadChildren: () => import('./entities/products/product.module').then(m => m.ProductModule)
   },
 ];
 
@@ -84,7 +84,7 @@ const communityRoutes: Routes = [
 const bookshelfRoutes: Routes = [
   { 
     path: '', 
-    loadChildren: './bookshelf/bookshelf.module#BookshelfModule'
+    loadChildren: () => import('./bookshelf/bookshelf.module').then(m => m.BookshelfModule)
   },
 ];
 
@@ -101,35 +101,35 @@ const afterLogin: Routes = [
 const loginRoutes: Routes = [
   {
     path: '', 
-    loadChildren: './entities/user/login/login.module#LoginModule'
+    loadChildren: () => import('./entities/user/login/login.module').then(m => m.LoginModule)
   }
 ];
 
 const notificationRoutes: Routes = [
   {
     path: '', 
-    loadChildren: './notifications/notifications.module#NotificationsModule'
+    loadChildren: () => import('./notifications/notifications.module').then(m => m.NotificationsModule)
   }
 ];
 
 const antecedentesRoutes: Routes = [
   {
     path: '', 
-    loadChildren: './antecedentes/antecedentes.module#AntecedentesModule'
+    loadChildren: () => import('./antecedentes/antecedentes.module').then(m => m.AntecedentesModule)
   }
 ];
 
 const issueRoutes: Routes = [
   {
     path: '', 
-    loadChildren: './issues/issues.module#IssuesModule'
+    loadChildren: () => import('./issues/issues.module').then(m => m.IssuesModule)
   }
 ];
 
 const ayudaSocialRoutes: Routes = [
   {
     path: '', 
-    loadChildren: './dsocial/dsocial.module#DsocialModule'
+    loadChildren: () => import('./dsocial/dsocial.module').then(m => m.DsocialModule)
   }
 ];
 
@@ -193,7 +193,7 @@ const mainRoutes:Routes = [
   },
   { 
     path: '', 
-    loadChildren: './site-minimal/minimal.module#MinimalModule'
+    loadChildren: () => import('./site-minimal/minimal.module').then(m => m.MinimalModule)
   },
 
 ];

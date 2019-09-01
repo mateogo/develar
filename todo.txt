@@ -1,6 +1,6 @@
 * En subficha, ajustar la selección de tipos de fichas
 /es6-avanzado
-
+"ng update @angular/core --from 7 --to 8 --migrate-only"
 TP 4.01
 https://jsbin.com/ziradoq/2/edit?html,css,js,output
 
