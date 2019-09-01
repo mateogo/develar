@@ -1,5 +1,6 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
+
 import { BehaviorSubject ,  Subject }       from 'rxjs';
 
 
@@ -9,6 +10,7 @@ import * as io from 'socket.io-client';
 import { User, CurrentCommunity } from './user';
 import { Person } from '../person/person';
 import { Community } from '../../develar-commons/community/community.model';
+
 
 const estados = [
 	{val: 'no_definido', 	label:'Seleccione opción'},
@@ -49,14 +51,15 @@ export class UserService {
 	private _socket: SocketIOClient.Socket;
 	private usersUrl = 'api/users';  // URL to web api
 	private personUrl = 'api/persons';  // URL to web api
-	private headers = new Headers({'Content-Type': 'application/json'});
+	private headers = new HttpHeaders().set('Content-Type', 'application/json');
+
 	private _currentUser: User;
 	private _userEmitter: BehaviorSubject<User>;
 
 	private isLogIn = false;
 	private hasLogout = false;
 
-	constructor(private http: Http) { 
+	constructor(private http: HttpClient) { 
 		this.currentUser = new User('invitado', 'invitado@develar')
 		this._userEmitter = new BehaviorSubject<User>(this.currentUser);
 		this._socket = io();
@@ -69,7 +72,6 @@ export class UserService {
 	getUsers(): Promise<User[]> {
 		return this.http.get(this.usersUrl)
 		           .toPromise()
-		           .then(response => response.json() as User[])
 		           .catch(this.handleError);
 	}
 
@@ -84,7 +86,6 @@ export class UserService {
 		return this.http
 			.post(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
-			.then(res => res.json() as User)
 			.catch(this.handleError);
 	}
 
@@ -93,7 +94,6 @@ export class UserService {
 		return this.http
 			.put(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
-			.then(res => res.json() as User)
 			.catch(this.handleError);
 	}
 
@@ -102,7 +102,6 @@ export class UserService {
 		return this.http
 			.put(url, JSON.stringify(user), {headers: this.headers})
 			.toPromise()
-			.then(res => res.json() as User)
 			.catch(this.handleError);
 	}
 
@@ -112,7 +111,6 @@ export class UserService {
 		const url = `${this.personUrl}/${id}`;
 		return this.http.get(url)
 				.toPromise()
-				.then(response => response.json() as Person)
 				.catch(this.handleError);
 	}
 
@@ -121,7 +119,6 @@ export class UserService {
 		const url = `${this.usersUrl}/${id}`;
 		return this.http.get(url)
 				.toPromise()
-				.then(response => response.json() as User)
 				.catch(this.handleError);
 	}
 
@@ -186,7 +183,6 @@ export class UserService {
 		return this.http
 			.get(url)
 			.toPromise()
-			.then(res => res.json() as User)
 			.catch(this.loginError);
 	}
 
@@ -199,9 +195,6 @@ export class UserService {
 		this._userEmitter.next(this._currentUser);
 		this.http.get(url)
 				.toPromise()
-				.then(response => {
-						let msj = response.json()
-				})
 				.catch(this.handleError);
 
 	}
@@ -283,7 +276,7 @@ export class UserService {
 		let loginUser = new Subject<User>();
 
 		this.loadLoginUser().then(res =>{
-				fetchedUser = res.json() as User;
+				fetchedUser = res as User;
 				//console.log('loading 1: [%s]', fetchedUser && fetchedUser.username);
 				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
 
@@ -291,7 +284,7 @@ export class UserService {
 					setTimeout(() =>{
 
 						this.loadLoginUser().then(res =>{
-										fetchedUser = res.json() as User;
+										fetchedUser = res as User;
 										//console.log('loading 2: [%s]', fetchedUser && fetchedUser.username);
 										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
 
@@ -349,7 +342,7 @@ export class UserService {
 			.get(url)
 			.toPromise()
 			.then(res =>{
-				let fetchedUser = res.json() as User;
+				let fetchedUser = res as User;
 				this.isLogIn = (fetchedUser && fetchedUser._id) ? true: false;
 
 				if(!this.isLogIn ){

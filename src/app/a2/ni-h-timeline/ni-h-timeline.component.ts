@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
-import { HttpModule } from '@angular/http';
 
 @Component({
   selector: 'ni-h-timeline',

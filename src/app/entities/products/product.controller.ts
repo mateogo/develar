@@ -1,5 +1,4 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
 import { Observable ,  Subject ,  BehaviorSubject, of }    from 'rxjs';
 
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
@@ -129,9 +128,8 @@ export class ProductController {
     private daoService: DaoService,
     public snackBar: MatSnackBar,
     public userService: UserService,
-    public sharedSrv:   SharedService,
-
-    private http: Http) { 
+    public sharedSrv:   SharedService
+    ) { 
   }
 
   findById<T>(type:string, modelId: string):Promise<T>{
