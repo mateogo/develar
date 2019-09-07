@@ -1326,7 +1326,7 @@ const buildLocaciones = function(person, token){
         "city": city,
         "state": "buenosaires",
         "statetext": "Brown",
-        "zip": token.codigo_postal,
+        "zip": token.codigo_postal || '',
         "country": "AR",
         "estado": "activo",
         "barrio": normalizeSubData('barrio', city, barrio),
