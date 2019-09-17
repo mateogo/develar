@@ -1,11 +1,10 @@
 @import 'variable';
 
 /deep/ {
-  @import 'structure';
+	@import 'structure';
   @import 'typography';
   @import 'helpers';
   @import 'material-components';
-  @import 'ngx-table';
 }
 :host /deep/ {
   @import 'fonts';

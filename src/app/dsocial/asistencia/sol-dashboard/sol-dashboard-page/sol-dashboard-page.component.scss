@@ -1,0 +1,35 @@
+.mat-toolbar {
+	//background-color: #283593;
+	//background-color: #3c4e62;
+	//background-color: #5c6e82;
+	background-color: #5d6ee0;
+	color: white;
+}
+
+.toolbar {
+	flex: 1 1 auto;
+}
+
+.toolbar-content {
+	//flex: 1;
+}
+
+.panel-header-control {
+		font-weight: 400;
+		font-size: 1.2rem;
+		text-align: right;
+
+		.mat-button-toggle {
+		}
+}
+
+.panel-header{
+		background-color: #f2eded;
+		height: 50px;
+}
+
+.panel-header-text {
+		margin: 0 0 0 15px;
+		font-weight: 700;
+		font-size: 1.2rem;
+}

@@ -34,6 +34,19 @@ const alimentoSch = new Schema({
     observacion: { type: String, required: false },
 })
 
+const encuestaSch = new Schema({
+    id:           { type:String, required: false },
+    fe_visita:    { type:String, required: false },
+    fe_visita_ts: { type:String, required: false },
+    locacionId:   { type:String, required: false },
+    ruta:         { type:String, required: false },
+    trabajador:   { type:String, required: false },
+    trabajadorId: { type:String, required: false },
+    preparacion:  { type:String, required: false },
+    estado:       { type:String, required: false },
+    avance:       { type:String, required: false },
+    evaluacion:   { type:String, required: false },
+})
 
 /**
  * Creación de un Schema
@@ -57,8 +70,8 @@ const asistenciaSch = new Schema({
     ts_prog:     { type: Number, required: false },
     requeridox:  { type: requirenteSch, required: false },
     atendidox:   { type: atendidoSch,   required: false },
-    modalidad:   { type: alimentoSch, required: false },
-
+    modalidad:   { type: alimentoSch,   required: false },
+    encuesta:    { type: encuestaSch,   required: false },
 });
 
 
@@ -101,6 +114,28 @@ function buildQuery(query){
   if(query['estado']){
       q["estado"] = query['estado'];
   }
+
+  let comp_range = [];
+  if(query["compNum_d"]){
+    comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
+  }
+    
+  if(query["compNum_h"]){
+    comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
+  }
+
+  if(query["fecomp_ts_d"]){
+    comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
+  }
+
+  if(query["fecomp_ts_h"]){
+    comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
+  }
+
+  if(comp_range.length){
+    q["$and"] = comp_range;
+  }
+
 
   return q;
 }
@@ -162,14 +197,16 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     console.log('*********************************')
-    console.dir(query);
     let regexQuery = buildQuery(query)
+
+    console.dir(regexQuery);
 
     Record.find(regexQuery, function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
         }else{
+          console.log('findByQuery: [%s]', entities && entities.length)
             cb(entities);
         }
     });

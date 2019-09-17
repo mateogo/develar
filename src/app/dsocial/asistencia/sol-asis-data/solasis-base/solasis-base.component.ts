@@ -1,12 +1,20 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person } from '../../../../entities/person/person';
-import { Asistencia, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent } from '../../asistencia.model';
+import { Asistencia,
+          Alimento,
+          Encuesta,
+          UpdateAsistenciaEvent,
+          UpdateEncuestaEvent,
+          UpdateAlimentoEvent } from '../../asistencia.model';
 
 
 const NAVIGATE = 'navigate';
 const UPDATE = 'update';
 const SELECT = 'select';
 const TOKEN_TYPE = 'asistencia';
+
+const MODALIDAD_ALIMENTO = 'alimentos';
+const MODALIDAD_ENCUESTA = 'encuesta';
 
 const BG_COLOR_DEFAULT = "#ffffff";
 const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
@@ -23,17 +31,22 @@ export class SolasisBaseComponent implements OnInit {
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
 	public showView = true;
-	public showEdit = false;
+	public showEditPanel = false;
+
+  public showEditBase = false;
+  public showEditModalidad = false;
+
+  public showEditControl = true;
+  public showSelectControl = false;
 
   public alimento: Alimento;
+  public encuesta: Encuesta;
+  public modalidad: string;
+  public isAlimentos = false;
+  public isEncuesta = false;
 
-  public showViewAlimento = false;
-  public showEditAlimento = false;
 
 	public openEditor = false;
-
-  public editMode = true;
-  public selectMode = false;
 
   public toggleSelectd = false;
   public selectedStyle = {};
@@ -42,56 +55,123 @@ export class SolasisBaseComponent implements OnInit {
 
   ngOnInit() {
 
-    this.alimento = this.token.modalidad ? this.token.modalidad :  new Alimento();
+
     if(this.viewMode === 'show'){
-      this.editMode = true;
-      this.selectMode = false;
+      this.showEditControl = true;
+      this.showSelectControl = false;
 
     }else if(this.viewMode === 'select'){
-      this.editMode = false;
-      this.selectMode = true;
+      this.showEditControl = false;
+      this.showSelectControl = true;
 
     }
 
     if(!this.token.compNum || this.token.compNum === "00000"){
       this.editToken()
     }
-
   }
 
   editToken(){
-    this.openEditor = !this.openEditor;
-    //this.showView = !this.showView;
-    this.showEdit = !this.showEdit;
+    this.showEditBase = !this.showEditBase;
 
-    this.showViewAlimento = false;
-    this.showEditAlimento = false;
+    if(this.showEditBase){
+      this.showView = false;
+      this.showEditModalidad = false;
+      this.showEditPanel = true;
+
+    }else{
+      this.showView = true;
+      this.showEditModalidad = false;
+      this.showEditPanel = false;
+
+    }
+  }
+
+  setModalidad(){
+    this.isAlimentos = false;
+    this.isEncuesta = false;
+
+    if(this.token.action === MODALIDAD_ALIMENTO) {
+      this.alimento = this.token.modalidad ? this.token.modalidad : new Alimento();
+      this.modalidad = MODALIDAD_ALIMENTO;
+      this.isAlimentos = true;
+
+    } else if(this.token.action === MODALIDAD_ENCUESTA){
+      this.encuesta = this.token.encuesta ? this.token.encuesta : new Encuesta();
+      this.modalidad = MODALIDAD_ENCUESTA
+      this.isEncuesta = true;
+
+    }
 
   }
 
-  editAlimento(){
-    this.openEditor = !this.openEditor;
-    //this.showView = false;
-    this.showEdit = false;
+  editModalidad(){
+    this.setModalidad();
     
-    this.showViewAlimento = !this.openEditor
-    this.showEditAlimento = this.openEditor
+    this.showEditModalidad = !this.showEditModalidad;
+
+    if(this.showEditModalidad){
+      this.showView = false;
+      this.showEditBase = false;
+      this.showEditPanel = true;
+
+    }else{
+      this.showView = true;
+      this.showEditBase = false;
+      this.showEditPanel = false;
+    }
+
   }
 
   navigateSeguimiento(){
-    this.manageToken({
+    this.manageBase({
       action: NAVIGATE,
       type: TOKEN_TYPE,
       token: this.token
     })
   }
 
-  manageToken(event: UpdateAsistenciaEvent){
-  	this.openEditor = false;
-  	this.showEdit = false;
-  	//this.showView = true;
+  manageBase(event: UpdateAsistenciaEvent){
+    this.showView = true;
+    this.showEditBase = false;
+    this.showEditModalidad = false;
+    this.showEditPanel = false;
+
   	this.emitEvent(event);
   }
+
+  manageAlimento(event: UpdateAlimentoEvent ){
+    this.showView = true;
+    this.showEditBase = false;
+    this.showEditModalidad = false;
+    this.showEditPanel = false;
+
+    this.token.modalidad = event.token;
+    
+    this.emitEvent({
+      action: event.action,
+      type: TOKEN_TYPE,
+      token: this.token
+    });
+
+  }
+
+  manageEncuesta(event: UpdateEncuestaEvent ){
+    this.showView = true;
+    this.showEditBase = false;
+    this.showEditModalidad = false;
+    this.showEditPanel = false;
+
+    this.token.encuesta = event.token;
+    
+    this.emitEvent({
+      action: event.action,
+      type: TOKEN_TYPE,
+      token: this.token
+    });
+
+  }
+
 
   emitEvent(event: UpdateAsistenciaEvent){
   	if(event.action === UPDATE){
@@ -105,29 +185,13 @@ export class SolasisBaseComponent implements OnInit {
     }
   }
 
-
-
+  //ToDo: Borrar
   viewAlimento(){
     this.openEditor = !this.openEditor;
     //this.showView = false;
-    this.showEdit = false;
+    this.showEditPanel = false;
 
-    this.showViewAlimento = this.openEditor
-    this.showEditAlimento = !this.openEditor
-  }
-
-  manageAlimento(event: UpdateAlimentoEvent ){
-    this.openEditor = false;
-    this.showEdit = false;
-    //this.showView = true;
-    this.token.modalidad = event.token;
-    
-    this.emitEvent({
-      action: event.action,
-      type: TOKEN_TYPE,
-      token: this.token
-    });
-
+    this.showEditModalidad = !this.openEditor
   }
 
   tokenSelected(){

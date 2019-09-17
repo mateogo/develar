@@ -17,6 +17,7 @@ import { UserService } from '../../user.service';
 export class UsersComponent implements OnInit { 
 	pageTitle: string = 'Usuarios registrados';
 	users: User[] = [];
+	timeout: any;
 
 	selectedUser: User;
 
@@ -55,7 +56,6 @@ export class UsersComponent implements OnInit {
  	ngOnInit(): void {
  		this.getUsers();
 		this.columns = [
-			{ prop: 'id',          name: 'ID', minWidth:'65'},
 			{ prop: 'username',    name: 'UsuariO' , minWidth:'150'},
 			{ prop: 'email',        name: 'Correo electrónico', minWidth:'250' },
 			{ prop: 'displayName', name: 'Mostrar como...', minWidth:'250' },
@@ -68,4 +68,53 @@ export class UsersComponent implements OnInit {
 		this.selectedUser = user;
 	}
 
+	onPage(e){
+		clearTimeout(this.timeout);
+		setTimeout(()=>{
+			console.log('paged!', e);
+		},100)
+
+	}
+
 }
+
+
+/**
+	paginating
+  class="material fullscreen"
+  [rows]="users"
+  style="top: 52px"
+  [limit]="20"
+  [headerHeight]="50"
+  [rowHeight]="50"
+  [footerHeight]="50"
+  [loadingIndicator]="loadingIndicator"
+  (page)="onPage($event)"
+  [columnMode]="'force'">
+
+
+
+	inline-editing
+  <ngx-datatable-column name="Gender">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+      <span
+        title="Double click to edit"
+        (dblclick)="editing[rowIndex + '-gender'] = true"
+        *ngIf="!editing[rowIndex + '-gender']"
+      >
+        {{ value }}
+      </span>
+      <select
+        *ngIf="editing[rowIndex + '-gender']"
+        (blur)="editing[rowIndex + '-gender'] = false"
+        (change)="updateValue($event, 'gender', rowIndex)"
+        [value]="value"
+      >
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </ng-template>
+  </ngx-datatable-column>
+
+
+*/

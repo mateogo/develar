@@ -30,7 +30,13 @@ import { PersonTableComponent }    from './person-table/person-table.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxDatatableModule,
+    NgxDatatableModule.forRoot({
+      messages:{
+        emptyMessage: 'No hay datos para mostrar',
+        totalMessage: 'total',
+        selectedMessage: 'seleccionado'        
+      }
+    }),
     PersonRoutingModule,
     DevelarCommonsModule
   ],

@@ -6,8 +6,8 @@ import { TsocialPageComponent } from './tsocial/tsocial-page/tsocial-page.compon
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 
 import { AlimentosPageComponent } from './alimentos/alimentos-page/alimentos-page.component';
-import { SolListPageComponent } from './asistencia/sol-list/sol-list-page/sol-list-page.component';
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
+import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
 
 const routes: Routes = [
 	{
@@ -48,7 +48,7 @@ const routes: Routes = [
 	},
 	{
 		path:'solicitudes',
-		component: SolListPageComponent
+		component: SolDashboardPageComponent
 	},
 
 

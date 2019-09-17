@@ -6,6 +6,7 @@ import { Observable, of }     from 'rxjs';
 import { catchError }     from 'rxjs/operators';
 
 
+import { DaoService }    from '../../develar-commons/dao.service';
 
 import { Person, Address, NotificationMessage } from './person';
 
@@ -50,7 +51,8 @@ export class PersonService {
 	}
 
   constructor(
-  	private http: HttpClient) { }
+    private daoService: DaoService,
+    private http: HttpClient) { }
 
   buildParams(query){
     return Object.getOwnPropertyNames(query)
@@ -78,6 +80,24 @@ export class PersonService {
         .pipe(
           catchError(this.handleObsError<Person[]>('searchPerson', [] ))
          );
+  }
+
+  searchPerson(term: string): Observable<Person[]> {
+      let query = {};
+      let test = Number(term);
+
+      if(!(term && term.trim())){
+        return of([] as Person[]);
+      }
+      
+      if(isNaN(test)){
+        query['displayName'] = term;
+      }else{
+        query['ndoc'] = term;
+
+      }
+
+      return this.daoService.search<Person>('person', query);
   }
 
   getPerson(id: string): Promise<Person> {

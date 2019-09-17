@@ -17,15 +17,30 @@ export class Atendido {
 };
 
 export class Alimento {
-		id:          string; 
+		id:          string;
 		type:        string;
-		fe_tsd:      number; 
-		fe_tsh:      number; 
-		fe_txd:      string; 
-		fe_txh:      string; 
+		fe_tsd:      number;
+		fe_tsh:      number;
+		fe_txd:      string;
+		fe_txh:      string;
 		freq:        number;
 		qty:         number;
 		observacion: string;
+};
+
+export class Encuesta {
+		id:          string;
+		fe_visita: string;
+		fe_visita_ts: number;
+		locacionId: string;
+		ruta:        string;
+		trabajador:  string;
+		trabajadorId: string;
+
+		preparacion: string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		evaluacion: string;
 
 };
 
@@ -49,6 +64,7 @@ export class Asistencia {
 		requeridox:  Requirente;
 		atendidox:   Atendido;
 		modalidad:   Alimento;
+		encuesta:    Encuesta;
 };
 
 export class AsistenciaTable {
@@ -68,6 +84,23 @@ export class AsistenciaTable {
 		avance:      string;
 		ts_alta:     number;
 };
+
+export class AsistenciaBrowse {
+		searchAction: string;
+		compPrefix:  string = 'SOL';
+		compName:    string = 'S/Asistencia';
+		compNum_d:   string;
+		compNum_h:   string;
+		idPerson:    string;
+		fecomp_d:    string;
+		fecomp_h:    string;
+		fecomp_ts_d:    number;
+		fecomp_ts_h:    number;
+		action:      string;
+		sector:      string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+}
 
 export interface AsistenciaAction {
 	id_turno: string;
@@ -91,6 +124,12 @@ export interface UpdateAlimentoEvent {
 	action: string;
 	type: string;
 	token: Alimento;
+};
+
+export interface UpdateEncuestaEvent {
+	action: string;
+	type: string;
+	token: Encuesta;
 };
 
 export interface UpdateAsistenciaListEvent {
@@ -127,6 +166,7 @@ const asisActionOptList: Array<any> = [
         {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
         {val: 'pension',     type:'Pensión',      label: 'Pensión' },
+        {val: 'no_definido', type:'No definida',  label: 'No definida' },
 
 ];
 
@@ -136,6 +176,7 @@ const alimentosTypeOptList: Array<any> = [
         {val: 'teredad',    type:'Tercera Edad',  label: 'Tercera Edad' },
         {val: 'celiaco',    type:'Celíacos',      label: 'Celíacos' },
         {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
+        {val: 'no_definido', type:'No definida',  label: 'No definida' },
 
 ];
 
@@ -160,6 +201,33 @@ const tableActions = [
       {val: 'autorizar',      label: 'Autorizar solicitud',    slug:'Autorizar solicitud' },
 ]
 
+const estadosOptList = [
+      {val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'activo',      label: 'Activa',      slug:'Activa' },
+      {val: 'cumplido',    label: 'Cumplida',    slug:'Cumplida' },
+      {val: 'suspendida',  label: 'Suspendida',  slug:'Suspendida' },
+      {val: 'baja',        label: 'Baja',        slug:'Baja' },
+]
+
+const avanceOptList = [
+      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
+      {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
+      {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
+      {val: 'programado',   label: 'Programado',    slug:'Programado' },
+      {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
+      {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
+]
+
+const avanceEncuestaOptList = [
+      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'emitido',      label: 'Emitida',          slug:'Emitida' },
+      {val: 'programado',   label: 'Programado',       slug:'Programado' },
+      {val: 'visitado',     label: 'Visita cumplida',  slug:'Visita cumplida' },
+      {val: 'informado',    label: 'Informe cargado',  slug:'Informe cargado' },
+      {val: 'aprobado',     label: 'Informe aprobado', slug:'Informe aprobado' },
+      {val: 'suspendido',   label: 'Suspendido',       slug:'Suspendido' },
+]
 
 const ciudadesBrown: Array<any> = [
     {val: 'no_definido',         label: 'Seleccione opción',slug:'Seleccione opción' },
@@ -186,8 +254,10 @@ const optionsLists = {
    frecuencia: frecuenciaOptList,
    tableactions: tableActions,
    sectores: sectores,
-   ciudades: ciudadesBrown
-
+   ciudades: ciudadesBrown,
+   estado: estadosOptList,
+   avance: avanceOptList,
+   encuesta: avanceEncuestaOptList
 }
 
 
@@ -196,6 +266,13 @@ function getLabel(list, val){
     return (list.find(item => item.val === val).label || val);
 }
 
+function getPrefixedLabel(list, prefix, val){
+		let label = getLabel(list, val);
+		if(label) {
+			label = prefix + '::' + label;
+		}
+		return label;
+}
 
 export class AsistenciaHelper {
 
@@ -206,6 +283,11 @@ export class AsistenciaHelper {
 	static getOptionLabel(type, val){
 		let list = this.getOptionlist(type);
 		return getLabel(list, val);
+	}
+
+	static getPrefixedOptionLabel(type, prefix, val){
+		let list = this.getOptionlist(type);
+		return getPrefixedLabel(list, prefix, val);
 	}
 
 	static buildRequirente(person: Person): Requirente {

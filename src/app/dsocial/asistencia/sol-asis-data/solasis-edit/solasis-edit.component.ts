@@ -25,6 +25,8 @@ export class SolasisEditComponent implements OnInit {
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
 	public form: FormGroup;
 
+  public showViewAlimento = false;
+  public showEditAlimento = false;
 
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
@@ -92,6 +94,11 @@ export class SolasisEditComponent implements OnInit {
 			fecomp:      token.fecomp_txa,
 		});
 
+    if(token.avance !== 'emitido'){
+      console.log('Invalidando campo Action');
+      form.get('action').disable();
+    }
+
 		return form;
   }
 
@@ -105,8 +112,7 @@ export class SolasisEditComponent implements OnInit {
     entity.sector =       fvalue.sector;
 		entity.fecomp_txa =   fvalue.fecomp;
 
-		entity.estado = 'activo';
-
+		entity.estado = entity.estado || 'activo';
 
 		return entity;
 	}

@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Person, personModel, Address } from '../../../../entities/person/person';
 
 import { 	Asistencia, 
-					Alimento, 
+					Alimento,
+          Encuesta, 
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
@@ -17,6 +18,8 @@ import { devutils }from '../../../../develar-commons/utils'
 //description;
 //sector; estado; avance; ts_alta; ts_fin; ts_prog;
 const ALIMENTOS = 'alimentos'
+const ENCUESTA = 'encuesta'
+
 @Component({
   selector: 'solasis-view',
   templateUrl: './solasis-view.component.html',
@@ -24,33 +27,51 @@ const ALIMENTOS = 'alimentos'
 })
 export class SolasisViewComponent implements OnInit {
 	@Input() token: Asistencia;
+  @Input() detailView = true;
 
 	public action;
+  public sector;
 	public cPrefix;
 	public cName;
 	public cNum;
 	public slug;
 	public description;
 	public fecha;
+  public solicitante;
+  public avance;
 
+  // Alimentos
 	public modalidad: Alimento;
 	public isAlimentos = false;
-  public detailView = false;
-
 
   public type;
-	public freq;
-	public qty;
-	public fechad;
-	public fechah;
-	public observacion;
-  public avance;
+  public freq;
+  public qty;
+  public fechad;
+  public fechah;
+  public observacion;
+  public periodoAlimentos;
+
+
+  // Encuesta
+  public encuesta: Encuesta;
+  public isEncuesta = false;
+  
+  public fecha_encuesta;
+  public ruta;
+  public preparacion;
+  public estado_encuesta;
+  public avance_encuesta;
+
+
 
 
   constructor() { }
 
   ngOnInit() {
-  	this.action = AsistenciaHelper.getOptionLabel('actions', this.token.action);
+  	this.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', this.token.action);
+    this.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', this.token.sector);
+    this.solicitante = this.token.requeridox.slug  + ' :: DNI: ' + this.token.requeridox.ndoc;
   	this.cPrefix = this.token.compPrefix;
   	this.cName = this.token.compName;
   	this.cNum = this.token.compNum;  
@@ -58,17 +79,23 @@ export class SolasisViewComponent implements OnInit {
   	this.description = this.token.description;
   	this.fecha = this.token.fecomp_txa;
   	this.modalidad = this.token.modalidad;
-    if(this.token.avance === 'autorizado'){
-      this.avance = 'AUTORIZADO';
-    }else{
+    this.encuesta = this.token.encuesta;
 
-      this.avance = 'Pend Autorización';
-    }
+    this.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', 'Estado', this.token.avance);
+    
+    // if(this.token.avance === 'autorizado'){
+    //   this.avance = 'AUTORIZADO';
+    // }else{
 
+    //   this.avance = 'Pend Autorización';
+    // }
 
   	if(this.token.action === ALIMENTOS && this.modalidad) this.initDatosModalidad(this.modalidad);
+    
+    if(this.token.action === ENCUESTA && this.encuesta) this.initDatosEncuesta(this.encuesta);
 
   }
+
   verdDetalle(e){
     e.stopPropagation()
     e.preventDefault();
@@ -85,6 +112,18 @@ export class SolasisViewComponent implements OnInit {
 
   	this.isAlimentos = true;
   }
+
+  initDatosEncuesta(token: Encuesta){
+    this.fecha_encuesta = token.fe_visita;
+    this.ruta = token.ruta;
+    this.preparacion = token.preparacion;
+    this.estado_encuesta = token.estado;
+    this.avance_encuesta = token.avance;
+
+
+    this.isEncuesta = true;
+  }
+
 
 }
 

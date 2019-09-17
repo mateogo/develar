@@ -1,0 +1,21 @@
+@import '../../../../assets/sass/variable';
+
+.navigate-btn {
+  margin-right: 10px;
+}
+
+::ng-deep .ngx-datatable.material {
+  .datatable-header {
+
+    .resize-handle {
+      border-right-color: rgba(#fff,.2);
+    }
+
+    .datatable-header-cell {
+    	background: main-color(100);
+    }
+  }
+  .datatable-body {
+
+  }
+}

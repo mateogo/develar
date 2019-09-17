@@ -20,7 +20,9 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		url: 'www.develar.co'
+		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
+		version: '1.0 beta',
+		url: 'www.dsocial-local.co'
 	},
 	fundetec: {
 		logoAvatar: 'avatar-fundetec.jpg',
@@ -34,6 +36,8 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[fundetec] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
 		url: 'www.fundetec.digital'
 	},
 
@@ -49,6 +53,8 @@ const globals = {
 		socialmedia: 'LASARGEN_SOCIAL_MEDIA',
 		emailsubject: '[Las Argentinas] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
 		url: 'www.lasargentinas.digital'
 	},
 
@@ -64,6 +70,8 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
 		url: 'www.develar.co'
 	},
 
@@ -79,6 +87,8 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Picris] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 Picris Ltd ',
+		version: '1.0',
 		url: 'www.picris.co'
 	},
 
@@ -94,6 +104,8 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[Simplecomm] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
 		url: 'www.simplecomm.com.ar'
 	},
 
@@ -109,6 +121,8 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[+UNO] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 +UNO ',
+		version: '1.0',
 		url: 'www.masuno.digital'
 	},
 
@@ -124,6 +138,8 @@ const globals = {
 		socialmedia: 'UTOPIA_SOCIAL_MEDIA',
 		emailsubject: '[UTOPIAS] Contacto',
 		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
 		url: 'www.utopias.digital'
 	}
 

@@ -68,6 +68,10 @@ import { AmbientalDataBaseComponent } from './ciudadano/ambiental-data/ambiental
 import { AmbientalDataEditComponent } from './ciudadano/ambiental-data/ambiental-data-edit/ambiental-data-edit.component';
 import { AmbientalDataPanelComponent } from './ciudadano/ambiental-data/ambiental-data-panel/ambiental-data-panel.component';
 import { AmbientalDataViewComponent } from './ciudadano/ambiental-data/ambiental-data-view/ambiental-data-view.component';
+import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
+import { SolasisBrowseComponent } from './asistencia/sol-asis-data/solasis-browse/solasis-browse.component';
+import { SolicitaEncuestaEditComponent } from './asistencia/sol-asis-data/solicita-encuesta-edit/solicita-encuesta-edit.component';
+import { SolicitaEncuestaViewComponent } from './asistencia/sol-asis-data/solicita-encuesta-view/solicita-encuesta-view.component';
 
 @NgModule({
   imports: [
@@ -138,7 +142,11 @@ import { AmbientalDataViewComponent } from './ciudadano/ambiental-data/ambiental
     AmbientalDataBaseComponent,
     AmbientalDataEditComponent,
     AmbientalDataPanelComponent,
-    AmbientalDataViewComponent
+    AmbientalDataViewComponent,
+    SolDashboardPageComponent,
+    SolasisBrowseComponent,
+    SolicitaEncuestaEditComponent,
+    SolicitaEncuestaViewComponent
   ]
 })
 export class DsocialModule { }

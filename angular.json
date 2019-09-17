@@ -26,14 +26,14 @@
               "src/assets/sass/loader.scss",
               "src/assets/sass/custom-material-theme.scss",
               "node_modules/angular-calendar/css/angular-calendar.css",
-              "node_modules/@swimlane/ngx-datatable/release/index.css",
-              "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
-              "node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/squeezebox/styles.css",
               "node_modules/medium-editor/dist/css/medium-editor.min.css",
               "node_modules/medium-editor/dist/css/themes/default.min.css",
               "src/assets/css/prism.css",
+              "node_modules/@swimlane/ngx-datatable/index.css",
+              "node_modules/@swimlane/ngx-datatable/themes/material.scss",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css",
               "src/styles.css"
             ],
             "scripts": []

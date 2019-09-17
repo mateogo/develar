@@ -45,6 +45,8 @@ export class DsocialController {
   private actualUrlSegments: UrlSegment[] = [];
   private navigationUrl = "";
 
+  private _encuestadores: User[];
+
   private currentTurno: Turno;
   private currentPerson: Person;
   public personListener = new BehaviorSubject<Person>(this.currentPerson);
@@ -80,11 +82,17 @@ export class DsocialController {
 		) {
     this.userListener = this.userService.userEmitter;
 
+    this.fetchUserByRole('encuestador:operator').subscribe(tokens => {
+      this._encuestadores = tokens || [];
+    })
+
     this.userListener.subscribe(user =>{
 
       this.userLoading = true;
       this.updateUserStatus(user);
     })
+
+
     
     setTimeout(() => {
     	if(!this.userLoading) this.onReady.next(true)
@@ -409,7 +417,9 @@ export class DsocialController {
       asistencia.fecomp_txa = devutils.txFromDate(new Date());
     }
 
-    asistencia.fecomp_tsa = devutils.dateFromTx(asistencia.fecomp_txa).getTime();
+    let fecomp_date = devutils.dateFromTx(asistencia.fecomp_txa)
+    asistencia.fecomp_tsa = fecomp_date.getTime();
+    asistencia.fecomp_txa = devutils.txFromDate(fecomp_date);
 
     this.fetchSerialAsistencias(type, name, sector).subscribe(serial =>{
       asistencia.compPrefix = serial.compPrefix ;
@@ -673,6 +683,46 @@ export class DsocialController {
     });
   }
 
+  loadPersonAddresses(personId): Observable<Address[]>{
+    const addresses$ = new Subject<Address[]>();
+
+    this.fetchPersonById(personId).then(p =>{
+      if(p && p.locaciones && p.locaciones.length){
+        addresses$.next(p.locaciones);
+      }else {
+        addresses$.next([]);
+      }
+    })
+
+    return addresses$;
+
+  }
+
+
+  loadPersonAddressesOptList(personId): Observable<OptionList[]>{
+    const token$ = new Subject<OptionList[]>();
+    const optList: Array<OptionList> = [];
+
+
+    this.fetchPersonById(personId).then(p =>{
+      if(p && p.locaciones && p.locaciones.length){
+        p.locaciones.forEach(t=> {
+          optList.push({
+            val: t._id,
+            label: t.street1 + ' ' + t.barrio + ' ' + t.city
+          })
+        })
+        token$.next(optList);
+
+      }else {
+        token$.next(optList);
+      }
+    })
+
+    return token$;
+
+  }
+
 
   testPersonByDNI(tdoc:string, ndoc:string ): Observable<Person[]>{
     let query = {
@@ -828,9 +878,38 @@ export class DsocialController {
     }
   }
 
+  fetchUserByRole(role: string){
+    let query = {
+      moduleroles: role
+    }
+    return this.daoService.search<User>('user', query);
+
+  }
+
+  get encuestadores(): User[]{
+    return this._encuestadores;
+  }
+
+  buildEncuestadoresOptList(){
+    let arr = []
+    this._encuestadores.forEach(x => {
+      let t = {
+        val: x._id,
+        label: x.displayName
+      }
+      arr.push(t);
+
+    })
+    return arr;
+  }
+
 
 }//END controller
 
+interface OptionList {
+  val: string;
+  label: string;
+}
 
 class CommunityToken {
   isActive: boolean = false;

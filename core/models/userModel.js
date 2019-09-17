@@ -149,12 +149,17 @@ const User = mongoose.model('Usuario', userSch, 'usuarios');
 function buildQuery(query){
     let q = {};
 
-    if(query.username){
+    if(query['username']){
         q["username"] = {"$regex": query.username, "$options": "i"};
     }
 
-    if(query.email){
+    if(query['email']){
         q["email"] = {"$regex": query.email, "$options": "i"};
+    }
+
+    if(query['moduleroles']){
+        q["moduleroles"] = query['moduleroles'];
+
     }
 
     if(query['users']){

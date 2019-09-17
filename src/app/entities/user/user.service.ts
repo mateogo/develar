@@ -34,6 +34,7 @@ const modulos = [
 	{val: 'core', 		    label: 'General'},
 	{val: 'webmaster', 	  label: 'Webmaster'},
 	{val: 'marketing', 	  label: 'Marketing'},
+	{val: 'encuestador', 	label: 'Encuestador'},
 	{val: 'qa', 		    	label: 'Calidad'},
 ];
 

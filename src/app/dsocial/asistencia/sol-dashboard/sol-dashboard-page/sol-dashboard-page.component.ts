@@ -7,6 +7,7 @@ import {  Person } from '../../../../entities/person/person';
 
 import { 	Asistencia, 
           AsistenciaTable,
+          AsistenciaBrowse,
 					Alimento, 
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
@@ -16,21 +17,26 @@ import { 	Asistencia,
 const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
 const CREATE = 'create';
+const SEARCH = 'search';
 
 @Component({
-  selector: 'sol-list-page',
-  templateUrl: './sol-list-page.component.html',
-  styleUrls: ['./sol-list-page.component.scss']
+  selector: 'sol-dashboard-page',
+  templateUrl: './sol-dashboard-page.component.html',
+  styleUrls: ['./sol-dashboard-page.component.scss']
 })
-export class SolListPageComponent implements OnInit {
+export class SolDashboardPageComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
 
-  public title = 'Solicitudes de ASISTENCIA';
+  public searchTitle = 'Búsqueda de Solicitudes';
+  public title = 'Solicitudes';
   public openEditor = true;
   public unBindList = [];
+  public query: AsistenciaBrowse = new AsistenciaBrowse();
 
+  public showData =  false;
 	public showTable = false;
+  public showGrid =  true;
 
   //Person
   public currentPerson: Person;
@@ -57,7 +63,7 @@ export class SolListPageComponent implements OnInit {
 
   	if(this.items && this.items.length){
   		this.asistenciasList = this.items;
-  		this.showTable = true;
+  		this.showData = true;
   	}
 
     let first = true;    
@@ -94,20 +100,40 @@ export class SolListPageComponent implements OnInit {
     		this.dsCtrl.setCurrentPersonFromId(this.personId);
     }
 
-    this.fetchSolicitudes();
+    this.fetchSolicitudes(this.query);
 
   }
 
   /************************/
   /*    Sol/Asistencia   */
   /**********************/
-  fetchSolicitudes(){
-    this.dsCtrl.fetchAsistenciaByQuery({avance: 'emitido'}).subscribe(list => {
+  fetchSolicitudes(query?: any){
+
+    if(!query){
+      query = new AsistenciaBrowse();
+      query['avance'] = 'emitido';
+
+      this.query = query;
+    }
+
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
+    })
+
+    console.dir(query);
+
+    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
         this.dsCtrl.updateTableData();
 
-        this.showTable = true;
+        this.showData = true;
+
+      }else {
+        this.asistenciasList = [];
+
+        this.showData = false;
 
       }
 
@@ -130,7 +156,7 @@ export class SolListPageComponent implements OnInit {
       if(list && list.length) this.asistenciasList = list;
 
       this.itemsFound = true;
-  		this.showTable = true;
+  		this.showData = true;
     })
   }
 
@@ -172,8 +198,35 @@ export class SolListPageComponent implements OnInit {
 
     })
     setTimeout(()=>{
-      this.fetchSolicitudes();
+      this.fetchSolicitudes(this.query);
     },1000)
+
+  }
+
+  moveOn(e){
+  	e.stopPropagation();
+  	e.preventDefault();
+  	console.log('moveON')
+
+  }
+  openSearchForm(){
+    this.openEditor = !this.openEditor;
+  }
+
+  refreshSelection(query: AsistenciaBrowse){
+    this.query = query;
+    
+
+    console.log('refreshSelection: BUBBLED!!')
+    
+    if(query.searchAction == SEARCH){
+      this.fetchSolicitudes(this.query);
+    }
+
+  }
+
+  updateAsistenciaList(event: UpdateAsistenciaListEvent){
+    console.log('ToDo: updateAsistenciaList')
 
   }
 

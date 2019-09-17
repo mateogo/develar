@@ -4,7 +4,7 @@
 		[(ngModel)]='displayNameFld'
 		[matAutocomplete]="displayName"
 		(keyup)="search(searchBox.value)"  
-		placeholder="buscar entidad por nombre o denominación..." />
+		placeholder="Buscar por denominación o DNI..." />
 		<span matSuffix (click)='addEntity()'>
 			<i [class]="openEditor ? 'far fa-edit' : 'fas fa-pen-square'" aria-hidden="true"></i>
 		</span>

@@ -5,7 +5,7 @@ import { Person } from './../person';
 import { PersonService } from '../person.service';
 
 import { Observable ,  Subject, }        from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, filter }   from 'rxjs/operators';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
@@ -50,9 +50,10 @@ export class BrowsepersonComponent implements OnInit {
 	@Input() entityId;
   @Input() entityName;
 	@Output() updatePerson: EventEmitter<Person> = new EventEmitter<Person>();
-  persons: Observable<Person[]>;
+  @Output() lookUpModels = new EventEmitter<Person[]>();
+
+  public persons: Observable<Person[]>;
   private searchTerms = new Subject<string>();
-  @Output() lookUpModels = new EventEmitter<Observable<Person[]>>()
   public displayNameFld: string;
   public openEditor = true;
 
@@ -69,8 +70,16 @@ export class BrowsepersonComponent implements OnInit {
     this.persons = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        switchMap(term => this.personService.search(term))
+        filter(t => t && t.length >2),
+        switchMap(term => this.personService.searchPerson(term))
       );
+
+    this.persons.subscribe(tokens => {
+      console.log('browse persons')
+      if(tokens&& tokens.length){
+        this.lookUpModels.next(tokens);
+      }
+    })
 
 
       // .debounceTime(300)
