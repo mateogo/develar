@@ -90,6 +90,56 @@
       </div>
     </div>
 
+    <div class="row" >
+      <div class="col">
+        <persona-buscar (person$)=personFetched($event)></persona-buscar>
+      </div>
+    </div>
+
+    <ng-container *ngIf="isEncuesta">
+    <h5>Filtros para Informes Ambientales</h5>
+    <div class="row" >
+      <div class="col">
+
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fe_visita']" 
+                  placeholder="Fecha prevista de visita" >
+        </mat-form-field>
+
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['ruta']" placeholder="Ruta/ circuito" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldUserList placeholder="Encuestador"
+              [formControl]="form.controls['trabajadorId']"
+              (selectionChange)="changeSelectionValue('trabajadorId',fldUserList.value)" >
+            <mat-option *ngFor="let item of usersOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldAvance placeholder="Avance de tarea"
+              [formControl]="form.controls['avance_encuesta']"
+              (selectionChange)="changeSelectionValue('avance_encuesta',fldAvance.value)" >
+            <mat-option *ngFor="let item of encuestaOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    </ng-container>
+
     <hr>
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 

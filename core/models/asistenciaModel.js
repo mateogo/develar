@@ -101,6 +101,22 @@ function buildQuery(query){
 
   if(query['action']){
       q["action"] = query['action'];
+
+      if(query['action'] === "encuesta"){
+        if(query['ruta']) {
+          q['encuesta.ruta'] = query['ruta'];
+        }
+        if(query['trabajadorId']) {
+          q['encuesta.trabajadorId'] = query['trabajadorId'];
+        }
+        if(query['fe_visita']) {
+          q['encuesta.fe_visita'] = query['fe_visita'];
+        }
+        if(query['avance_encuesta']) {
+          q['encuesta.avance'] = query['avance_encuesta'];
+        }
+
+      }
   }
 
   if(query['sector']){
@@ -135,6 +151,11 @@ function buildQuery(query){
   if(comp_range.length){
     q["$and"] = comp_range;
   }
+
+  if(query['requirenteId']){
+      q["requeridox.id"] = query['requirenteId'];
+  }
+
 
 
   return q;

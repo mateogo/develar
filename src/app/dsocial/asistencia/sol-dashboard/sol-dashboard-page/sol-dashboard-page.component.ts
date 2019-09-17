@@ -121,8 +121,6 @@ export class SolDashboardPageComponent implements OnInit {
       if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
     })
 
-    console.dir(query);
-
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
@@ -207,18 +205,15 @@ export class SolDashboardPageComponent implements OnInit {
   	e.stopPropagation();
   	e.preventDefault();
   	console.log('moveON')
-
   }
+
   openSearchForm(){
     this.openEditor = !this.openEditor;
   }
 
   refreshSelection(query: AsistenciaBrowse){
     this.query = query;
-    
 
-    console.log('refreshSelection: BUBBLED!!')
-    
     if(query.searchAction == SEARCH){
       this.fetchSolicitudes(this.query);
     }

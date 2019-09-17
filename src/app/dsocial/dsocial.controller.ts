@@ -892,6 +892,8 @@ export class DsocialController {
 
   buildEncuestadoresOptList(){
     let arr = []
+    if(!this._encuestadores) return arr;
+    
     this._encuestadores.forEach(x => {
       let t = {
         val: x._id,

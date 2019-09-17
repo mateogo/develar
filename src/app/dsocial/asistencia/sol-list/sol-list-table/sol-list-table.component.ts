@@ -26,16 +26,25 @@ import { 	Asistencia,
 
 /**
  * @displayedColumns
- *  _id: string;
- *  predicate: string;
- *  displayAs: string;
- *  slug: string;
- *  entityId: string;
- *  qt: number;
- *  avance: string;
- *  fecomp_txa: number;
- *  moneda: string;
- *  total: number;
+    asistenciaId: string;
+    compName:    string;
+    compNum:     string;
+    personId:    string;
+    personSlug:  string;
+    fecomp_tsa:  number;
+    fecomp_txa:  string;
+    action:      string;
+    slug:        string;
+    description: string;
+    sector:      string;
+    estado:      string;
+    avance:      string;
+    ts_alta:     number;
+    fe_visita:   string;
+    fe_visita_ts: number;
+    ruta:         string;
+    trabajador:   string;
+    trabajadorId: string;
  */
 
 const removeRelation = {
@@ -61,6 +70,7 @@ const removeRelation = {
 
 
 
+
 /**
  * @title Asitencia Table Componet
  */
@@ -71,24 +81,32 @@ const removeRelation = {
   styleUrls: ['./sol-list-table.component.scss']
 })
 export class SolListTableComponent implements OnInit {
-  @Input() public displayedColumns = ['select', 'compName', 'compNum', 'action', 'slug', "sector","avance", "fecomp_txa"];
+  @Input() public displayedColumns =  ['select', "compNum", "action", "personSlug", "fecomp_txa", "avance", "slug"];
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select', 'asistenciaId', 'compName', 'compNum', 'action', 'slug', "sector","avance", "fecomp_txa"];
+  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "personId", "personSlug", "fecomp_tsa", "fecomp_txa", "action", "slug", "description", "sector", "estado", "avance", "ts_alta", "fe_visita", "fe_visita_ts", "ruta", "trabajador", "trabajadorId"];
+
   private table_columns_sel = {
-    'select': false,
-    'asistenciaId': false,
-    'compName': false,
-    'compNum': false,
-    'action': false,
-    'slug': false,
-    "sector": false,
-    "avance": false,
-    "fecomp_txa": false,
+    'select':     false,
+    'compName':   false,
+    'compNum':    false,
+    'personSlug': false,
+    'fecomp_tsa': false,
+    'fecomp_txa': false,
+    'action':     false,
+    'slug':       false,
+    'description':false,
+    'sector':     false,
+    'estado':     false,
+    'avance':     false,
+    'ts_alta':    false,
+    'fe_visita':  false,
+    'ruta':       false,
+    'trabajador': false,
   }
 
 
@@ -243,11 +261,40 @@ export class TableDataSource extends DataSource<any> {
       let propertyB: number|string = '';
 
       switch (this._sort.active) {
-        case 'sector': [propertyA, propertyB] = [a.sector, b.sector]; break;
-        case 'asistenciaId':      [propertyA, propertyB] = [a.asistenciaId, b.asistenciaId]; break;
-        case 'action':      [propertyA, propertyB] = [a.action, b.action]; break;
-        case 'slug':      [propertyA, propertyB] = [a.slug, b.slug]; break;
+        case 'sector':        [propertyA, propertyB] = [a.sector, b.sector]; break;
+        case 'compNum':  [propertyA, propertyB] = [a.asistenciaId, b.asistenciaId]; break;
+        case 'action':        [propertyA, propertyB] = [a.action, b.action]; break;
+        case 'slug':          [propertyA, propertyB] = [a.slug, b.slug]; break;
+        case 'fecomp_txa':    [propertyA, propertyB] = [a.fecomp_tsa, b.fecomp_tsa]; break;
+        case 'avance':        [propertyA, propertyB] = [a.avance, b.avance]; break;
+        case 'ruta':          [propertyA, propertyB] = [a.ruta, b.ruta]; break;
+        case 'trabajador':    [propertyA, propertyB] = [a.trabajadorId, b.trabajadorId]; break;
+        case 'personSlug':    [propertyA, propertyB] = [a.personSlug, b.personSlug]; break;
+        case 'fe_visita':     [propertyA, propertyB] = [a.fe_visita_ts, b.fe_visita_ts]; break;
       }
+
+/*
+
+    'select':     false,
+    'compName':   false,
+    'compNum':    false,
+    'personSlug': false,
+    'fecomp_tsa': false,
+    'fecomp_txa': false,
+    'action':     false,
+    'slug':       false,
+    'description':false,
+    'sector':     false,
+    'estado':     false,
+    'avance':     false,
+    'ts_alta':    false,
+    'fe_visita':  false,
+    'ruta':       false,
+    'trabajador': false,
+
+
+*/
+
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       let valueB = isNaN(+propertyB) ? propertyB : +propertyB;

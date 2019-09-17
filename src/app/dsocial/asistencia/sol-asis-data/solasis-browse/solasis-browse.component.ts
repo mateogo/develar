@@ -5,6 +5,8 @@ import { CustomValidators } from 'ng2-validation';
 import { Person, personModel } from '../../../../entities/person/person';
 import { AsistenciaBrowse,  AsistenciaHelper } from '../../asistencia.model';
 
+import { DsocialController } from '../../../dsocial.controller';
+
 import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'asistencia';
@@ -26,22 +28,29 @@ export class SolasisBrowseComponent implements OnInit {
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
+  public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
+
 	public form: FormGroup;
+  public currentPerson: Person;
 
 
   private formAction = "";
   private fireEvent: AsistenciaBrowse;
+  public usersOptList;
+
+  public isEncuesta = false;
 
   constructor(
+    private dsCtrl: DsocialController,
   	private fb: FormBuilder,
   	) { 
   		this.form = this.buildForm();
 	}
 
 
-
   ngOnInit() {
   	this.initForEdit(this.form, this.query);
+    this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
 
   }
 
@@ -64,9 +73,20 @@ export class SolasisBrowseComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'action' && val !== "encuesta"){
+      this.isEncuesta = false;
+    }
+    
+    if(type==="action" && val==="encuesta"){
+      if(!this.usersOptList || !this.usersOptList.length) this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+      this.isEncuesta = true;
+    }
   }
 
+  personFetched(person:Person){
+    this.currentPerson = person;
+
+  }
 
  
   buildForm(): FormGroup{
@@ -83,6 +103,10 @@ export class SolasisBrowseComponent implements OnInit {
 			fecomp_h:     [null],
       avance:       [null],
       estado:       [null],
+      fe_visita:    [null],
+      ruta:         [null],
+      trabajadorId: [null],
+      avance_encuesta: [null],
     });
 
     return form;
@@ -101,7 +125,13 @@ export class SolasisBrowseComponent implements OnInit {
         action:      query.action,
         sector:      query.sector,
         estado:      query.estado,
-        avance:      query.avance
+        avance:      query.avance,
+
+        fe_visita:       query.fe_visita,
+        ruta:            query.ruta,
+        trabajadorId:    query.trabajadorId,
+        avance_encuesta: query.avance_encuesta,
+
 		});
 
 		return form;
@@ -136,6 +166,15 @@ export class SolasisBrowseComponent implements OnInit {
     entity.estado =       fvalue.estado;
     entity.avance =       fvalue.avance;
 
+    entity.fe_visita =       fvalue.fe_visita;
+    entity.ruta =            fvalue.ruta;
+    entity.trabajadorId =    fvalue.trabajadorId;
+    entity.avance_encuesta = fvalue.avance_encuesta;
+    console.log('Browse By Person: [%s]', this.currentPerson && this.currentPerson.displayName)
+
+    if(this.currentPerson){
+      entity.requirenteId = this.currentPerson._id;
+    }
 
 		return entity;
 	}

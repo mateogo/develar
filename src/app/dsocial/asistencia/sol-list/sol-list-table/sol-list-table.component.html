@@ -27,8 +27,11 @@
   </div>
 
   <mat-table #table matSort [dataSource]="dataSource">
-  	<!-- "select", 'asistenciaId','action', "slug", "sector","avance", 'favance',  "fecomp_txa" -->
-
+  	<!--
+      'select','asistenciaId','compName','compNum','personId','personSlug','fecomp_tsa',
+      'fecomp_txa','action','slug','description','sector','estado','avance','ts_alta',
+      'fe_visita','fe_visita_ts','ruta','trabajador','trabajadorId',
+    -->
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef> 
         <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -55,13 +58,18 @@
       <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="personSlug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Persona </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.personSlug}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="compName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Comprobante </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.compName}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="compNum">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Número </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.compNum}} </mat-cell>
     </ng-container>
 
@@ -70,10 +78,26 @@
       <mat-cell *matCellDef="let element"> {{element.fecomp_txa}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="fe_visita">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha visita </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fe_visita}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="sector">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.sector}} </mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="ruta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Ruta </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ruta}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="trabajador">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> TS </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.trabajador}} </mat-cell>
+    </ng-container>
+
 
     <ng-container matColumnDef="slug">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Observación </mat-header-cell>

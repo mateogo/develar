@@ -65,6 +65,7 @@ export class Asistencia {
 		atendidox:   Atendido;
 		modalidad:   Alimento;
 		encuesta:    Encuesta;
+
 };
 
 export class AsistenciaTable {
@@ -83,6 +84,13 @@ export class AsistenciaTable {
 		estado:      string;
 		avance:      string;
 		ts_alta:     number;
+
+		fe_visita:   string;
+		fe_visita_ts: number;
+		ruta:         string;
+		trabajador:   string;
+		trabajadorId: string;
+
 };
 
 export class AsistenciaBrowse {
@@ -90,6 +98,7 @@ export class AsistenciaBrowse {
 		compPrefix:  string = 'SOL';
 		compName:    string = 'S/Asistencia';
 		compNum_d:   string;
+		requirenteId: string;
 		compNum_h:   string;
 		idPerson:    string;
 		fecomp_d:    string;
@@ -100,6 +109,10 @@ export class AsistenciaBrowse {
 		sector:      string;
 		estado:      string = 'activo';
 		avance:      string = 'emitido';
+		fe_visita:   string;
+		ruta:        string;
+		trabajadorId: string;
+		avance_encuesta: string;
 }
 
 export interface AsistenciaAction {
@@ -365,6 +378,24 @@ export class AsistenciaHelper {
 			td.estado = sol.estado;
 			td.avance = sol.avance;
 			td.ts_alta = sol.ts_alta;
+
+			if(sol.encuesta){
+				td.fe_visita = sol.encuesta.fe_visita;
+				td.fe_visita_ts = sol.encuesta.fe_visita_ts;
+				td.ruta = sol.encuesta.ruta;
+				td.trabajador = sol.encuesta.trabajador;
+				td.trabajadorId = sol.encuesta.trabajadorId;
+			}else{
+				td.fe_visita = sol.fecomp_txa;
+				td.fe_visita_ts = sol.fecomp_tsa;
+				td.ruta = '';
+				td.trabajador = '';
+				td.trabajadorId = '';
+
+			}
+
+
+
 			return td;
 		})
 

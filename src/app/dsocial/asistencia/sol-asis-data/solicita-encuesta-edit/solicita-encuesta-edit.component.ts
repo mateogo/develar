@@ -63,11 +63,7 @@ export class SolicitaEncuestaEditComponent implements OnInit {
   			}
 
   		})
-
   	}
-
-
-
   }
 
   onSubmit(){
@@ -155,7 +151,6 @@ export class SolicitaEncuestaEditComponent implements OnInit {
     entity.fe_visita = devutils.txFromDate(fe);
 
     entity.trabajador = this.usersOptList.find(u=>u.val == entity.trabajadorId).label;
-    console.log('initForSave: [%s]', entity.trabajador);
 
 		return entity;
 	}
