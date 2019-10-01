@@ -33,7 +33,7 @@ export class RecepcionPageComponent implements OnInit {
 
   // template helper
   public title = "Secretaría de Desarrollo Social";
-  public subtitle = "Recepción del Vecino";
+  public subtitle = "Recepción del Vecino/a";
 
   public tDoc = "DNI";
   public nDoc = "";

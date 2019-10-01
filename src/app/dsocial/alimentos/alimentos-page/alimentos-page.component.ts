@@ -44,7 +44,7 @@ export class AlimentosPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Ayuda directa al vecino";
+  public title = "Ayuda directa al vecino/a";
   public subtitle = "Atención alimentaria";
   public titleRemitos = "Historial de entregas";
   public tDoc = "DNI";

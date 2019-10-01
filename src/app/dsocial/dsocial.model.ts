@@ -28,6 +28,7 @@ export const sectores: SectorAtencion[] = [
 			{val:'pensiones',    serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
 			{val:'familia',      serial:'familia',     label: 'Acomp. Integral de Familia',  style: {'background-color': "#f2dded"}},
 			{val:'acumar',       serial:'acumar',      label: 'Acumar',            style: {'background-color': "#f2dded"}},
+			{val:'referentebarrial',   serial:'referente',   label: 'Referente Barrial',   style: {'background-color': "#f2dded"}},
 			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}}
 	];
 

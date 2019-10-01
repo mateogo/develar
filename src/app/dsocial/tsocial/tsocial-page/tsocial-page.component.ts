@@ -44,7 +44,7 @@ export class TsocialPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Asistencia al Vecino";
+  public title = "Asistencia al Vecino/a";
   public subtitle = "Atención del Trabajador Social";
 
   public tDoc = "DNI";
