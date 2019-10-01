@@ -96,7 +96,16 @@ export class TurnosPageComponent implements OnInit {
 
   processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
+      if(taction.action === "baja") this.deleteFromList(taction.turno);
     })
+  }
+
+  deleteFromList(turno: Turno){
+    let index = this.turnos.indexOf(turno);
+    if(index !== -1) {
+      this.turnos.splice(index,1)
+    }
+
   }
 
 

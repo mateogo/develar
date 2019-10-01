@@ -7,17 +7,17 @@
 
 		<!-- fecomp_txa; action; slug; -->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldTipoAlimentos placeholder="Tipo de Alimento"
               [formControl]="form.controls['type']"
               (selectionChange)="changeSelectionValue('type',fldTipoAlimentos.value)" >
-            <mat-option *ngFor="let item of alimentosOptList" 
+            <mat-option *ngFor="let item of kitEntregaOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldFreq placeholder="Frecuencia de entrega"
               [formControl]="form.controls['freq']"
@@ -30,7 +30,7 @@
 
       </div>
 
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <input matInput [formControl]="form.controls['qty']" placeholder="Raciones a entregar (unidades)" >
         </mat-form-field>
@@ -40,18 +40,33 @@
 
 		<!-- description;  -->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-select #fldPeriodo placeholder="Período de entrega"
+              [formControl]="form.controls['periodo']"
+              (selectionChange)="changePeriodo('periodo',fldPeriodo.value)" >
+            <mat-option *ngFor="let item of periodoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>        
+      </div>
+
+      <div class="col-md-3">
         <mat-form-field>
           <input matInput [formControl]="form.controls['fechad']" placeholder="Fecha desde" >
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <input matInput [formControl]="form.controls['fechah']" placeholder="Fecha hasta" >
         </mat-form-field>
       </div>
-      <div class="col">
+    </div>
+
+    <!-- description;  -->
+    <div class="row" >
+      <div class="col-md-10">
         <mat-form-field>
           <input matInput [formControl]="form.controls['observacion']" placeholder="Observaciones" >
         </mat-form-field>

@@ -116,8 +116,8 @@ const optionsLists = {
 
 
 function getLabel(list, val){
-		if(!list || !val) return '';
-    return (list.find(item => item.val === val).label || val);
+		let t = list.find(item => item.val === val)
+		return t ? t.label : val;
 }
 
 
@@ -173,8 +173,9 @@ export class TurnosModel {
 	}
 
 	static getOptionLabel(type, val){
-		let list = this.getOptionlist(type);
-		return getLabel(list, val);
+		if(!val) return 'no-definido';
+		if(!type) return val;
+		return getLabel(this.getOptionlist(type), val);
 	}
 
 }

@@ -77,7 +77,9 @@ import { PrismHighlightService }     from './highlighter.service';
     FileUploadModule,
 
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
+      // ant: apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
+      apiKey: 'AIzaSyAJpFOgoCTiLudPL1lChcn-kIm-zlses0w'
+
     }),
   ],
   declarations: [

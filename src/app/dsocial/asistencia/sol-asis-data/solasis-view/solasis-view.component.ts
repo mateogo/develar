@@ -10,6 +10,7 @@ import { 	Asistencia,
 					AsistenciaHelper } from '../../asistencia.model';
 
 
+import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -28,6 +29,7 @@ const ENCUESTA = 'encuesta'
 export class SolasisViewComponent implements OnInit {
 	@Input() token: Asistencia;
   @Input() detailView = true;
+  @Input() kitOptList:KitOptionList[] = [];
 
 	public action;
   public sector;
@@ -52,7 +54,6 @@ export class SolasisViewComponent implements OnInit {
   public observacion;
   public periodoAlimentos;
 
-
   // Encuesta
   public encuesta: Encuesta;
   public isEncuesta = false;
@@ -62,9 +63,6 @@ export class SolasisViewComponent implements OnInit {
   public preparacion;
   public estado_encuesta;
   public avance_encuesta;
-
-
-
 
   constructor() { }
 
@@ -103,7 +101,7 @@ export class SolasisViewComponent implements OnInit {
   }
 
   initDatosModalidad(token: Alimento){
-    this.type =   AsistenciaHelper.getOptionLabel('alimentos',token.type);
+    this.type = AsistenciaHelper.getOptionLabelFromList(this.kitOptList, token.type);
     this.freq =   AsistenciaHelper.getOptionLabel('frecuencia',token.freq);
     this.qty =    token.qty;
     this.fechad = token.fe_txd;

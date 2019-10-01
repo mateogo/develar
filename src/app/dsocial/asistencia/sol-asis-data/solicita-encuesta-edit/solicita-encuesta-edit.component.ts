@@ -31,13 +31,16 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 
 	public form: FormGroup;
 
-	public locacionesOptList: OptList[] = [];
+	public locacionesOptList: OptionList[] = [];
 
   private action = "";
   private fireEvent: UpdateEncuestaEvent;
   public usersOptList;
 
   public alimentosOptList =  AsistenciaHelper.getOptionlist('alimentos');
+
+  public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
+
   public frecuencaOptList =  AsistenciaHelper.getOptionlist('frecuencia');
 
   public avanceOptList = AsistenciaHelper.getOptionlist('encuesta');
@@ -86,8 +89,20 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 
   }
 
+  selectLocation(id ){
+    return this.locacionesOptList.find(t => t.val === id);
+  }
+
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    console.log('Change [%s] nuevo valor: [%s]', type, val);
+
+    if(type === 'locacionId'){
+      let t = this.selectLocation(val)
+      this.form.controls['city'].setValue(t.city);
+      this.form.controls['barrio'].setValue(t.barrio);
+      console.log('locacionId [%s]', t.city)
+    }
+
   }
 
 
@@ -103,6 +118,9 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 			trabajador:   [null],
 			trabajadorId: [null],
 			preparacion:  [null],
+      city:         [null],
+      barrio:       [null],
+      urgencia:     [null],
 			estado:       [null],
 			avance:       [null],
 			evaluacion:   [null],
@@ -120,6 +138,9 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 			trabajador:   token.trabajador,
 			trabajadorId: token.trabajadorId,
 			estado:       token.estado,
+      city:         token.city,
+      barrio:       token.barrio,
+      urgencia:     token.urgencia,
 			avance:       token.avance,
 			preparacion:  token.preparacion,
 			evaluacion:   token.evaluacion,
@@ -145,6 +166,9 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 		entity.avance =       fvalue.avance;
 		entity.evaluacion =   fvalue.evaluacion;
 		entity.preparacion =  fvalue.preparacion;
+    entity.city =         fvalue.city;
+    entity.barrio =       fvalue.barrio;
+    entity.urgencia =     fvalue.urgencia;
 
     let fe = devutils.dateFromTx(entity.fe_visita)
     entity.fe_visita_ts = fe.getTime();
@@ -157,7 +181,9 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 
 }
 
-interface OptList {
-	val: string;
-	label: string;
+interface OptionList {
+  val: string;
+  label: string;
+  barrio?: string;
+  city?: string;
 }

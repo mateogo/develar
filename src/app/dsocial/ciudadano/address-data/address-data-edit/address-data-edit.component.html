@@ -120,6 +120,29 @@
       </div>
     </div>
 
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstadoViv placeholder="Estado registro"
+              [formControl]="form.controls['estadoviv']"
+              (selectionChange)="changeSelectionValue('estadoviv',fldEstadoViv.value)" >
+            <mat-option *ngFor="let item of estadoVivOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCualifViv placeholder="Cualificación vivienda"
+              [formControl]="form.controls['cualificacionviv']"
+              (selectionChange)="changeSelectionValue('cualificacionviv',fldCualifViv.value)" >
+            <mat-option *ngFor="let item of cualificacionVivOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
     <hr>
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 

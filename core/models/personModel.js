@@ -142,6 +142,8 @@ const addressSch = new mongoose.Schema({
     state:       {type: String,  required: false, defalut: ''},
     statetext:   {type: String,  required: false, defalut: ''},
     zip:         {type: String,  required: false, defalut: ''},
+    estadoviv:   {type: String,  required: false, defalut: 'activa'},
+    cualificacionviv: {type: String,  required: false, defalut: 'buena'},
     encuesta:    {type: encuestaSch, required: false},
     country:     {type: String,  required: false, defalut: 'AR'},
     lat:         {type: Number,  required: false, defalut: -34.59},
@@ -321,6 +323,20 @@ function buildQuery(query){
     if(query.ndoc){
         q["ndoc"] = query.ndoc;
     }
+
+    if(query.list){
+        console.log('///// buildQuery')
+        console.log(query.list);
+        let ids = query.list.split(',');
+        let new_ids = ids.map(t => mongoose.Types.ObjectId(t));
+
+        console.log('build Query [%s]', new_ids && new_ids.length);
+        q["_id"] = { $in: new_ids}
+            //db.collection.find( { _id : { $in : [1,2,3,4] } } );
+    }
+
+
+
     return q;
 }
 
@@ -366,6 +382,7 @@ function updateData(model, data){
  * @param errcb
  */
 exports.findByQuery = function (query, errcb, cb) {
+    console.log('findByQuery [%s]',query)
     let regexQuery = buildQuery(query);
 
     Person.find(regexQuery, function(err, entities) {
@@ -377,8 +394,6 @@ exports.findByQuery = function (query, errcb, cb) {
         }
     });
 };
-
-
 
 /**
  * Upddate a new person

@@ -10,6 +10,57 @@ interface AssetInProduct {
   mimetype:     string ;
 }
 
+export class KitItem {
+  productId: string;
+  productCode: string;
+  productName: string;
+  productUME: string;
+  item_qty: number; 
+}
+
+export class KitProduct {
+  _id:         string;
+  code:        string = "";
+  name:        string = "";
+  type:        string = "alimentos";
+  slug:        string = "";
+  qty:         number = 1;
+  estado:      string = "activo";
+  products:    Array<KitItem>;
+}
+
+export class KitProductTableData {
+  _id: string = "";
+  code: string = "";
+  type: string = "";
+  slug: string = "";
+  qty: number = 1;
+  name: string = "";
+  estado: string = "";
+  editflds = [0,0,0,0,0,0,0,0]
+
+
+  constructor(data: any){
+    this._id = data._id;
+    this.slug = data.slug;
+    this.code = data.code;
+    this.estado = data.estado;
+    this.name = data.name;
+    this.type = data.type;
+    this.qty = data.qty;
+  }  
+}
+
+
+
+
+
+export interface UpdateProductEvent {
+  action: string;
+  type: string;
+  token: KitProduct;
+};
+
 export class Product {
   id:          string;
   _id:         string;
@@ -27,7 +78,7 @@ export class Product {
   pformula:    string = "";
 
   description: string = "";
-  estado:      string = "activa";
+  estado:      string = "activo";
   tokens:      Array<string> = [];
   persons:     Array<string> = [];
   user:        string = "";
@@ -59,7 +110,7 @@ export class ProductEvent {
   locationId:  string = "";
   ownerId:     string = "";
   ownerName:   string = "";
-  estado:      string = "activa";
+  estado:      string = "activo";
 
 }
 
@@ -118,7 +169,7 @@ export class Productit {
   moneda: string;
   pu: number;
 
-  estado:      string = "activa";
+  estado:      string = "activo";
 
   assets: Array<AssetInProduct> = [];
 
@@ -250,19 +301,23 @@ export interface ProductBaseData {
 *********/
 const productClass: Array<any> = [
     {val: 'no_definido',    label: 'Seleccione opción',   slug: 'Seleccione opción'  },
-    {val: 'pobjetivo',      label: 'Objetivo-producto',   slug: 'Producto Objetivo'  },
-    {val: 'presultado',     label: 'Objetivo-resultado',  slug: 'Resultado Objetivo' },
-    {val: 'pentregable',    label: 'Pr Entregable',       slug: 'Pr Entregable' },
-    {val: 'prequerido',     label: 'Pr Requerido',        slug: 'Pr Requerido' },
+    {val: 'alimentos',      label: 'Alimentos',           slug: 'Alimentos'  },
+    {val: 'cuidado',        label: 'Cuidado Personal',    slug: 'Cuidado Personal'  },
+    {val: 'construccion',   label: 'Materiales de Construcción', slug: 'Materiales de Construcción'  },
+    {val: 'hogar',          label: 'Equipam Hogar',       slug: 'Equipam Hogar' },
     {val: 'bdeuso',         label: 'Bien de Uso',         slug: 'Bien de Uso' },
     {val: 'bdeusotic',      label: 'Bien de Uso IT',      slug: 'Bien de Uso IT' },
     {val: 'consum',         label: 'Consumible',          slug: 'Consumible' },
     {val: 'consumtic',      label: 'Consumible IT',       slug: 'Consumible IT' },
-    {val: 'instrumental',   label: 'Instrumental',        slug: 'Instrumental' },
     {val: 'prestahum',      label: 'Prestación humana',   slug: 'Prestación humana' },
-    {val: 'movilidad',      label: 'Movilidad',           slug: 'Movilidad' },
     {val: 'alojamiento',    label: 'Alojamiento',         slug: 'Alojamiento' },
     {val: 'transporte',     label: 'Transporte',          slug: 'Transporte' },
+    {val: 'pobjetivo',      label: 'Objetivo-producto',   slug: 'Producto Objetivo'  },
+    {val: 'presultado',     label: 'Objetivo-resultado',  slug: 'Resultado Objetivo' },
+    {val: 'pentregable',    label: 'Pr Entregable',       slug: 'Pr Entregable' },
+    {val: 'prequerido',     label: 'Pr Requerido',        slug: 'Pr Requerido' },
+    {val: 'instrumental',   label: 'Instrumental',        slug: 'Instrumental' },
+    {val: 'movilidad',      label: 'Movilidad',           slug: 'Movilidad' },
     {val: 'servicios',      label: 'Servicios',           slug: 'Servicios' },
     {val: 'contratistas',   label: 'Contratistas',        slug: 'Contratistas' },
     {val: 'preventa',       label: 'Producto de Venta',   slug: 'Producto de Venta' },
@@ -353,6 +408,12 @@ const formulaType: Array<any> = [
     {val: 'contenedor',   label: 'Contenedor',     slug: 'uidentificada'  },
     {val: 'embalaje',     label: 'Embalaje',       slug: 'uidentificada'  },
 ];
+
+const estadosOptList = [
+      {val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'activo',      label: 'Activo',      slug:'Activo' },
+      {val: 'baja',        label: 'Baja',        slug:'Baja' },
+]
 
 const umeList = [
         {val:'no_definido'  , label:'Unidad de Medida'},
@@ -446,6 +507,11 @@ const fumeList = [
         {val:'pasaje'       , label:'pje'},
         {val:'alojamiento'  , label:'aloj'},
         {val:'tramo'        , label:'tram'},
+];
+
+const kitTypeOptList = [
+    {val: 'no_definido',   label: 'Seleccione opción' },
+    {val: 'alimentos',     label: 'Alimentos'  },
 ];
 
 const productTableActions = [
@@ -583,6 +649,41 @@ class ProductModel {
 }
 
 export const productModel = new ProductModel();
+
+const optionsLists = {
+   default: kitTypeOptList,
+   kittype: kitTypeOptList,
+   estado: estadosOptList,
+}
+
+function getLabel(list, val){
+    let t = list.find(item => item.val === val)
+    return t ? t.label : val;
+}
+
+export class KitProductModel {
+
+  static getOptionlist(type){
+    return optionsLists[type] || optionsLists['default'];
+  }
+
+  static getOptionLabel(type, val){
+    if(!val) return 'no-definido';
+    if(!type) return val;
+    return getLabel(this.getOptionlist(type), val);
+  }
+
+  static buildKitTable(plist: Array<KitProduct>): KitProductTableData[]{
+    let list: Array<KitProductTableData>;
+
+    list = plist.map(item => new KitProductTableData(item) );
+
+    return list;
+  }
+
+
+
+}
 
 
 //Julio Fernandez baraibar

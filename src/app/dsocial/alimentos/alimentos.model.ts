@@ -1,7 +1,7 @@
 import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../dsocial.model';
 import { Person }   from '../../entities/person/person';
-import { Product } from '../../entities/products/product.model';
+import { Product, KitProduct } from '../../entities/products/product.model';
 
 export class Requirente {
 		id:   string; 
@@ -39,11 +39,21 @@ export class Alimento {
 };
 export class ItemAlmacen {
 	productId: string;
-	qty: number;
-	ume: string;
+	isKit: number = 0; // 0: es un item cargado a mano 1: item que deviene de KIT
+	code: string;
+	name: string;
 	slug: string;
+	ume: string;
+	qty: number;
 
 }
+
+export class KitOptionList {
+  val: string;
+  label: string;
+  kit: KitProduct;
+}
+
 
 
 export class RemitoAlmacenTable {
@@ -113,7 +123,7 @@ export interface UpdateRemitoListEvent {
 
 
 export class RemitoAlmacenModel {
-	static initNewRemito(action, slug, sector, serial: Serial, person: Person){
+	static initNewRemito(action, slug, sector, serial: Serial, person: Person, kitEntrega?, qty?){
 		let ts = Date.now();
 		let requirente = new Requirente();
 		requirente.id = person._id;
@@ -129,6 +139,8 @@ export class RemitoAlmacenModel {
 		}
 
 		token.action = action;
+		token.kitEntrega = kitEntrega;
+		token.qty = qty || 1;
 		token.slug = slug;
 		token.sector = sector;
 		token.estado = 'pendiente';
@@ -322,32 +334,29 @@ const tmovOptList: Array<any> = [
 ];
 
 const optionsLists = {
-   actions: asisActionOptList,
-   comprobantes: comprobantesOptList,
-   alimentos: alimentosTypeOptList,
-   frecuencia: frecuenciaOptList,
-   kitentrega: kitEntregaOptList,
-   kititems: productByKit,
-   tmov: tmovOptList,
-   tableactions: tableActionsOptList,
-   ume: umeOptList
+		default: default_option_list,
+		actions: asisActionOptList,
+		comprobantes: comprobantesOptList,
+		alimentos: alimentosTypeOptList,
+		frecuencia: frecuenciaOptList,
+		kitentrega: kitEntregaOptList,
+		kititems: productByKit,
+		tmov: tmovOptList,
+		tableactions: tableActionsOptList,
+		ume: umeOptList
 };
 
 
 function getLabel(list, val){
-    return (list.find(item => item.val === val).label || val);
+		let t = list.find(item => item.val === val)
+		return t ? t.label : val;
 }
 
 
 export class AlimentosHelper {
+
 	static getOptionlist(type){
-		if(optionsLists[type]){
-			return optionsLists[type];
-
-		}else{
-			return default_option_list;
-
-		}
+		return optionsLists[type] || optionsLists['default'];
 	}
 
 	static getKitItems(type, val ){
@@ -355,12 +364,9 @@ export class AlimentosHelper {
 	}
 
 	static getOptionLabel(type, val){
-
-		if(!val || !type) return 'no-definido';
-
-		let list = this.getOptionlist(type);
-
-		return getLabel(list, val);
+		if(!val) return 'no-definido';
+		if(!type) return val;
+		return getLabel(this.getOptionlist(type), val);
 	}
 
 	static buildRequirente(person: Person): Requirente {

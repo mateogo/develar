@@ -6,9 +6,9 @@ import { SharedService } from '../../develar-commons/shared-service';
 
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
+import { Product, KitProduct, KitProductTableData, Productit, Productsn, ProductEvent, ProductitTable, ProductsnTable, ProductBaseData, UpdateProductEvent, KitProductModel, productModel } from './product.model';
 
 
-import { Product, Productit, Productsn, ProductEvent, ProductitTable, ProductsnTable, ProductBaseData, productModel } from './product.model';
 import { devutils } from '../../develar-commons/utils';
 
 
@@ -18,6 +18,12 @@ import { DaoService }  from '../../develar-commons/dao.service';
 import { UserService } from '../../entities/user/user.service';
 import { User }        from '../../entities/user/user';
 import { Person }      from '../../entities/person/person';
+
+const CANCEL = 'cancel';
+const UPDATE = 'update';
+const CREATE = 'create';
+const TOKEN_TYPE = 'kitproducto';
+
 
 
 const whoami = 'entity.controller';
@@ -116,6 +122,19 @@ export class ProductController {
 
   private emitProductsnTable = new BehaviorSubject<ProductsnTable[]>([]);
   private _selectionsnModel: SelectionModel<ProductsnTable>
+
+  /*****************
+    KitProduct
+  *****************/
+  private productkit: KitProduct
+  private productkitId;
+  private productkitList: KitProduct[] = [];
+
+
+  private emitProductkitTable = new BehaviorSubject<KitProductTableData[]>([]);
+  private _selectionkitModel: SelectionModel<KitProductTableData>
+
+
 
   private _tableActions: Array<any> = productModel.tableActionOptions;
 
@@ -333,6 +352,110 @@ export class ProductController {
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
+  }
+
+  /*******************************
+    productKit ProductKit KIT kit
+  *******************************/
+  manageKits(token: UpdateProductEvent){
+    const listener$ = new Subject<KitProduct>();
+    if(token.action === UPDATE){
+      this.updateKit(listener$, token.token);
+    }else {
+      this.createKit(listener$, token.token);
+    }
+
+    return listener$;
+
+  }
+
+  updateKit(listener$: Subject<KitProduct>, model: KitProduct){
+    console.log('UpdateKIT')
+    this.daoService.update<KitProduct>('productkit', model._id, model).then((model) =>{
+      console.log('Update OK, opening snakbar')
+      this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+      listener$.next(model);
+    });
+  }
+
+  createKit(listener$: Subject<KitProduct>, model: KitProduct){
+    console.log('CreateKIT')
+    this.daoService.create<KitProduct>('productkit', model).then((model) =>{
+      console.log('create OK, opening snakbar')
+      this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
+      listener$.next(model);
+    });
+  }
+
+  deleteKit(id: string){
+    this.daoService.delete('productkit', id).then(() =>{
+      this.openSnackBar('Se ha eliminado el KIT id: ' + id, 'cerrar');
+
+    })
+  }
+
+
+  /**
+    Load ProductKit List
+  **/
+
+  fetchKits(type:string, query: any){
+    this.daoService.search<KitProduct>(type, query).subscribe(list => {
+      this.productkitList = list;
+      this.updateKitTableData();
+    })
+  }
+
+  updateKitTableData(){
+    let tableData = KitProductModel.buildKitTable(this.productkitList);
+    this.emitProductkitTable.next(tableData);
+
+  }
+
+
+
+
+  /*****************
+    Table ProductKIT 
+  *****************/
+  get productkitDataSource(): BehaviorSubject<KitProductTableData[]>{
+    return this.emitProductkitTable;
+  }
+
+  get selectionkitModel(): SelectionModel<KitProductTableData>{
+    return this._selectionkitModel;
+  }
+
+  set selectionkitModel(selection: SelectionModel<KitProductTableData>){
+    this._selectionkitModel = selection;
+  }
+
+  updateProductKitListItem(item ):void{
+    let pr: KitProduct = this.productkitList.find((product:any) => product._id === item._id);
+    if(pr){
+      pr.slug = item.slug;
+    }
+  }
+
+  addKitProductToList(){
+  }
+
+  fetchSelectedProductKitList():KitProduct[]{
+    let list = this.filterSelectedProductKitList();
+    return list;
+  }
+
+  filterSelectedProductKitList():KitProduct[]{
+    let list: KitProduct[];
+    let selected = this.selectionkitModel.selected as any;
+
+    list = this.productkitList.filter((product: any) =>{
+      let valid = selected.find(model => {
+        return (model._id === product._id)
+      });
+      return valid;
+    });
+    return list;
   }
 
 

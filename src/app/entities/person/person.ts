@@ -100,6 +100,8 @@ export class Address {
     lng: number = 0;
     country: string = 'AR';
     encuesta: EncuestaAmbiental;
+    estadoviv: string = 'activa';
+    cualificacionviv: string = 'buena';
 }
 
 export class SaludData {
@@ -555,6 +557,20 @@ const contact_tdato: Array<any> = [
 		{val: 'WEB',   label: 'WEB',    slug:'WEB' },
 ];
 
+const contact_type: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'PER',    label: 'PER',      slug:'PER' },
+    {val: 'LAB',    label: 'LAB',      slug:'LAB' },
+    {val: 'PADRE',  label: 'PADRE',    slug:'PADRE' },
+    {val: 'MADRE',  label: 'MADRE',    slug:'MADRE' },
+    {val: 'REFS',   label: 'REF Social',     slug:'REFS' },
+    {val: 'REFPI',  label: 'REF Intendente', slug:'REFPI' },
+    {val: 'REFPC',  label: 'REF Consejal',   slug:'REFPC' },
+    {val: 'REFPD',  label: 'REF Diputado',   slug:'REFPD' },
+    {val: 'REFPO',  label: 'REF Otro',       slug:'REFPD' },
+    {val: 'MEDICO', label: 'MEDICO',   slug:'MEDICO' },
+    {val: 'AMIGO',  label: 'AMIGO',    slug:'AMIGO' },
+];
 
 const vinculo_familiar: Array<any> = [
         {val: 'no_definido',       label: 'Seleccione opción',slug:'Seleccione opción' },
@@ -581,17 +597,6 @@ const estado_vinculo: Array<any> = [
         {val: 'otro',         label: 'Otro',           slug:'Otro' },
 ];
 
-
-const contact_type: Array<any> = [
-		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
-		{val: 'PER',    label: 'PER',    slug:'PER' },
-		{val: 'LAB',    label: 'LAB',   slug:'LAB' },
-		{val: 'PADRE',  label: 'PADRE',    slug:'PADRE' },
-		{val: 'MADRE',  label: 'MADRE',    slug:'MADRE' },
-		{val: 'REFS',   label: 'REFS',   slug:'REFS' },
-		{val: 'MEDICO', label: 'MEDICO',    slug:'MEDICO' },
-		{val: 'AMIGO',  label: 'AMIGO',    slug:'AMIGO' },
-];
 
 
 
@@ -1235,6 +1240,21 @@ const estadoCivil: Array<any> = [
 		{val: 'otra',          label: 'Otra',             slug:'Otra' },
 ];
 
+const estadoVivienda: Array<any> = [
+    {val: 'activa',         label: 'Activa',         slug:'Activa' },
+    {val: 'archivo',        label: 'Archivada',      slug:'Archivada' },
+    {val: 'ribera',         label: 'Ribera Acumar',  slug:'Ribera Acumar' },
+    {val: 'destino',        label: 'Destino Acumar', slug:'Destino Acumar' },
+];
+
+const cualificacionVivienda: Array<any> = [
+    {val: 'buena',        label: 'Buena',                 slug:'Buena' },
+    {val: 'precaria',     label: 'Precaria',              slug:'Precaria' },
+    {val: 'acumar',       label: 'Migra s/Plan Acumar',   slug:'Migra s/Plan Acumar' },
+    {val: 'inhabitable',  label: 'Riesgo habitacional',   slug:'Riesgo habitacional' },
+];
+
+
 const nivelEstudios: Array<any> = [
     {val: 'primario',       label: 'Primario',          slug:'Primario' },
 		{val: 'primariox', 	    label: 'Primario (incompleto)',          slug:'Primario (incompleto)' },
@@ -1273,7 +1293,7 @@ function getLabel(item, list:Array<any>): string {
 		if(p){
 			return p.label;
 		}
-		return ''
+		return item;
 }
 
 function getSubLabel(type, item, container): string {
@@ -1364,6 +1384,14 @@ class PersonModel {
     }
     get oficiosTOcupacionList():Array<any>{
         return oficios_tocupacion;
+    }
+
+    get estadoVivOptList():Array<any>{
+        return estadoVivienda;
+    }
+
+    get cualificacionVivOptList():Array<any>{
+        return cualificacionVivienda;
     }
 
     get sexoList():Array<any>{

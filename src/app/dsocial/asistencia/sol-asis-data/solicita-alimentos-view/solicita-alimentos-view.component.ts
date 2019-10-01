@@ -8,6 +8,8 @@ import { 	Asistencia,
 					UpdateAsistenciaListEvent,
 					AsistenciaHelper } from '../../asistencia.model';
 
+import { KitOptionList } from '../../../alimentos/alimentos.model';
+
 import { devutils }from '../../../../develar-commons/utils'
 
 @Component({
@@ -17,6 +19,7 @@ import { devutils }from '../../../../develar-commons/utils'
 })
 export class SolicitaAlimentosViewComponent implements OnInit {
 	@Input() token: Alimento;
+  @Input() kitOptList:KitOptionList[] = [];
 
 	public type;
 	public freq;
@@ -29,7 +32,7 @@ export class SolicitaAlimentosViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-	this.type = AsistenciaHelper.getOptionLabel('alimentos',this.token.type);
+	this.type = AsistenciaHelper.getOptionLabelFromList(this.kitOptList, this.token.type);
 	this.freq = AsistenciaHelper.getOptionLabel('frecuencia',this.token.freq);
 	this.qty = this.token.qty;
 	this.fechad = this.token.fe_txd;

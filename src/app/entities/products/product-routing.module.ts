@@ -5,6 +5,7 @@ import { ProductComponent }       from './product/product.component';
 import { ProductitComponent }     from './productit/productit.component';
 import { ProductsnComponent }     from './productsn/productsn.component';
 import { ProductBrowseComponent } from './product-browse/product-browse.component';
+import { ProductKitPageComponent } from './product-kit/product-kit-page/product-kit-page.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'alta',
     component: ProductComponent,
+  },
+  {
+    path: 'kits',
+    component: ProductKitPageComponent,
   },
   {
     path: 'items',

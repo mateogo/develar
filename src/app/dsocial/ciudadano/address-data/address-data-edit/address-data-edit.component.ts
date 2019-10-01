@@ -26,6 +26,8 @@ export class AddressDataEditComponent implements OnInit {
   public addTypeList =    personModel.addressTypes;
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
+  public estadoVivOptList = personModel.estadoVivOptList;
+  public cualificacionVivOptList = personModel.cualificacionVivOptList;
 
 	public form: FormGroup;
 
@@ -158,6 +160,8 @@ export class AddressDataEditComponent implements OnInit {
 			state:       [null],
 			statetext:   [null],
 			zip:         [null],
+			estadoviv:   [null],
+			cualificacionviv:  [null],
 			country:     [null],
     });
 
@@ -179,6 +183,8 @@ export class AddressDataEditComponent implements OnInit {
 			state:       token.state ||'buenosaires',
 			statetext:   token.statetext || 'Brown' ,
 			zip:         token.zip,
+			estadoviv:   token.estadoviv,
+			cualificacionviv: token.cualificacionviv,
 			country:     token.country || 'AR',
 		});
 
@@ -204,6 +210,8 @@ export class AddressDataEditComponent implements OnInit {
 		entity.statetext =    fvalue.statetext;
 		entity.zip =          fvalue.zip;
 		entity.country =      fvalue.country;
+		entity.estadoviv =        fvalue.estadoviv,
+		entity.cualificacionviv = fvalue.cualificacionviv,
 
 		entity.estado = 'activo';
 

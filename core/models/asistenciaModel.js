@@ -25,8 +25,9 @@ const atendidoSch = new Schema({
 
 const alimentoSch = new Schema({
     type:        { type: String, required: false },
-    fe_tsd:      { type: String, required: false },
-    fe_tsh:      { type: String, required: false },
+    periodo:     { type: String, required: false },
+    fe_tsd:      { type: Number, required: false },
+    fe_tsh:      { type: Number, required: false },
     fe_txd:      { type: String, required: false },
     fe_txh:      { type: String, required: false },
     freq:        { type: String, required: false },
@@ -38,8 +39,11 @@ const encuestaSch = new Schema({
     id:           { type:String, required: false },
     fe_visita:    { type:String, required: false },
     fe_visita_ts: { type:String, required: false },
+    urgencia:     { type:Number, required: false },
     locacionId:   { type:String, required: false },
     ruta:         { type:String, required: false },
+    barrio:       { type:String, required: false },
+    city:         { type:String, required: false },
     trabajador:   { type:String, required: false },
     trabajadorId: { type:String, required: false },
     preparacion:  { type:String, required: false },
@@ -114,6 +118,15 @@ function buildQuery(query){
         }
         if(query['avance_encuesta']) {
           q['encuesta.avance'] = query['avance_encuesta'];
+        }
+        if(query['barrio']) {
+          q['encuesta.barrio'] = query['barrio'];
+        }
+        if(query['city']) {
+          q['encuesta.city'] = query['city'];
+        }
+        if(query['urgencia']) {
+          q['encuesta.urgencia'] = parseInt(query['urgencia'], 10);
         }
 
       }

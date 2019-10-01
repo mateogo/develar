@@ -7,6 +7,7 @@ import { Asistencia,
           UpdateEncuestaEvent,
           UpdateAlimentoEvent } from '../../asistencia.model';
 
+import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 const NAVIGATE = 'navigate';
 const UPDATE = 'update';
@@ -26,8 +27,11 @@ const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
   styleUrls: ['./solasis-base.component.scss']
 })
 export class SolasisBaseComponent implements OnInit {
-	@Input() token: Asistencia;
+	@Input() asistencia: Asistencia;
   @Input() viewMode = 'show'; // show||select
+  @Input() kitOptList:KitOptionList[];
+    //                         [kitOptList]='kitEntregaOptList'
+
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
 	public showView = true;
@@ -66,7 +70,7 @@ export class SolasisBaseComponent implements OnInit {
 
     }
 
-    if(!this.token.compNum || this.token.compNum === "00000"){
+    if(!this.asistencia.compNum || this.asistencia.compNum === "00000"){
       this.editToken()
     }
   }
@@ -91,13 +95,13 @@ export class SolasisBaseComponent implements OnInit {
     this.isAlimentos = false;
     this.isEncuesta = false;
 
-    if(this.token.action === MODALIDAD_ALIMENTO) {
-      this.alimento = this.token.modalidad ? this.token.modalidad : new Alimento();
+    if(this.asistencia.action === MODALIDAD_ALIMENTO) {
+      this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad : new Alimento();
       this.modalidad = MODALIDAD_ALIMENTO;
       this.isAlimentos = true;
 
-    } else if(this.token.action === MODALIDAD_ENCUESTA){
-      this.encuesta = this.token.encuesta ? this.token.encuesta : new Encuesta();
+    } else if(this.asistencia.action === MODALIDAD_ENCUESTA){
+      this.encuesta = this.asistencia.encuesta ? this.asistencia.encuesta : new Encuesta();
       this.modalidad = MODALIDAD_ENCUESTA
       this.isEncuesta = true;
 
@@ -127,7 +131,7 @@ export class SolasisBaseComponent implements OnInit {
     this.manageBase({
       action: NAVIGATE,
       type: TOKEN_TYPE,
-      token: this.token
+      token: this.asistencia
     })
   }
 
@@ -146,12 +150,12 @@ export class SolasisBaseComponent implements OnInit {
     this.showEditModalidad = false;
     this.showEditPanel = false;
 
-    this.token.modalidad = event.token;
+    this.asistencia.modalidad = event.token;
     
     this.emitEvent({
       action: event.action,
       type: TOKEN_TYPE,
-      token: this.token
+      token: this.asistencia
     });
 
   }
@@ -162,12 +166,12 @@ export class SolasisBaseComponent implements OnInit {
     this.showEditModalidad = false;
     this.showEditPanel = false;
 
-    this.token.encuesta = event.token;
+    this.asistencia.encuesta = event.token;
     
     this.emitEvent({
       action: event.action,
       type: TOKEN_TYPE,
-      token: this.token
+      token: this.asistencia
     });
 
   }
@@ -201,7 +205,7 @@ export class SolasisBaseComponent implements OnInit {
       action: SELECT,
       type: TOKEN_TYPE,
       selected: this.toggleSelectd,
-      token: this.token
+      token: this.asistencia
 
     });
     this.toggleSelectedMode();

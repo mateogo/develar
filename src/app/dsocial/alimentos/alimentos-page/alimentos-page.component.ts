@@ -151,13 +151,15 @@ export class AlimentosPageComponent implements OnInit {
   }
 
 
-  initNewRemito(){
+  initNewRemito(asistencia: Asistencia){
     let action = 'alimentos';
     let slug = '';
     let sector = 'alimentos';
     let serial: Serial;
     let person = this.currentPerson;
-    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person)
+    let kitEntrega = asistencia.modalidad.type;
+    let qty = asistencia.modalidad.qty;
+    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person, kitEntrega, qty)
     this.emitRemito = true;
 
 
@@ -222,7 +224,7 @@ export class AlimentosPageComponent implements OnInit {
 
     if(event.action === CREATE){
       this.currentAsistencia = event.token;
-      this.initNewRemito();
+      this.initNewRemito(this.currentAsistencia);
     }
   }
 

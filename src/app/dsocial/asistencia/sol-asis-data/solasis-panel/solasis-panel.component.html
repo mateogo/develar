@@ -16,7 +16,8 @@
   		<ng-container *ngIf="showList">
 		 	<div  *ngFor="let item of items" class="row">
 		 		<div class="col-sm-12 col-md-12">
-		 			<solasis-base [token]='item'
+		 			<solasis-base [asistencia]='item'
+		 										[kitOptList]='kitEntregaOptList'
 												(updateToken)='updateItem($event)'></solasis-base>
 		 		</div>
 

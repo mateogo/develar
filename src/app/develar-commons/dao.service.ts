@@ -90,6 +90,10 @@ export class DaoService {
         backendURL: 'api/products',
         searchURL:  'api/products/search'
       },
+      productkit:{
+        backendURL: 'api/productkits',
+        searchURL:  'api/productkits/search'
+      },
       issue:{
         backendURL: 'api/issues',
         searchURL:  'api/issues/search'
@@ -235,7 +239,7 @@ export class DaoService {
   delete<T>(type:string, id: string): Promise<void>{
     let url = `${this.dao[type].backendURL}/${id}`;
   	return this.http
-  		.delete(url, {headers: this.headers})
+  		.delete<T>(url, {headers: this.headers})
   		.toPromise()
   		.then(() => null )
   		.catch(this.handleError);

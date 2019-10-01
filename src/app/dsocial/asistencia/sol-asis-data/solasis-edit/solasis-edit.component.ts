@@ -4,6 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
 import { Asistencia, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../asistencia.model';
+import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -19,6 +20,7 @@ const UPDATE = 'update';
 export class SolasisEditComponent implements OnInit {
 	@Input() token: Asistencia;
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
+  @Input() kitOptList:KitOptionList[];
 
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');

@@ -25,7 +25,9 @@
 				</div>
 		</div>
 		<ng-container *ngIf="openEditor">
-			<solasis-browse [query]="query" (updateQuery)="refreshSelection($event) "></solasis-browse>
+			<solasis-browse [query]="query" 
+											(updateQuery)="refreshSelection($event)"
+											(mapRequest)="mapRequest($event)" ></solasis-browse>
 		</ng-container>
 	</mat-card-content>
 </mat-card>
@@ -53,6 +55,18 @@
 			</div>
 		</div>
 		<ng-container *ngIf='showData'>
+      <div *ngIf="renderMap">
+        <agm-map [latitude]="baseLatLng.lat" [longitude]="baseLatLng.lng" [zoom]="zoom">
+        	<ng-container *ngFor="let location of mapData">
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng">
+            <agm-info-window>
+              <strong>{{ location.asistencia.requeridox.slug }}</strong>
+            </agm-info-window>
+          </agm-marker>
+        	</ng-container>
+        </agm-map>
+      </div>
+
 			<ng-container *ngIf='!view.value || view.value=="list"'>
 				<sol-table (actionTriggered)="tableAction($event)"  ></sol-table>
 			</ng-container>

@@ -3,7 +3,7 @@
   	<ng-container *ngIf="showView">
 		 	<div [ngStyle]=selectedStyle class="row">
 		 		<div class="col-md-12">
-		 			<solasis-view [token]='token'></solasis-view>
+		 			<solasis-view [token]='asistencia' [kitOptList]='kitOptList'></solasis-view>
 		 		</div>
 			</div>
 		</ng-container>
@@ -38,7 +38,8 @@
 			<ng-container *ngIf="showEditBase">
 			 	<div class="row">
 			 		<div class="col-sm-12 col-md-12">
-			 			<solasis-edit [token]='token'
+			 			<solasis-edit [token]='asistencia'
+			 								[kitOptList]='kitOptList'
 			 								(updateToken)='manageBase($event)' ></solasis-edit>
 			 		</div>
 				</div>
@@ -48,11 +49,12 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-12">
 						<ng-container *ngIf="isAlimentos">
-							<alimentos-edit [token]='alimento'
+							<alimentos-edit [token]='alimento' [parent]='asistencia'
+			 								[kitOptList]='kitOptList'							
 											(updateToken)='manageAlimento($event)' ></alimentos-edit>
 						</ng-container>
 						<ng-container *ngIf="isEncuesta">
-							<solicita-encuesta-edit   [token]='encuesta' [asistencia]='token'
+							<solicita-encuesta-edit   [token]='encuesta' [asistencia]='asistencia'
 											(updateToken)='manageEncuesta($event)' ></solicita-encuesta-edit>
 						</ng-container>
 

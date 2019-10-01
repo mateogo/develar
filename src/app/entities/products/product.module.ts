@@ -27,6 +27,10 @@ import { ProductitTableComponent }  from './productit-table/productit-table.comp
 import { ProductsnTableComponent }  from './productsn-table/productsn-table.component';
 import { ProductsnCreateComponent } from './productsn-create/productsn-create.component';
 import { MyproductsPageComponent } from './myproducts-page/myproducts-page.component';
+import { ProductKitPageComponent } from './product-kit/product-kit-page/product-kit-page.component';
+import { ProductKitListComponent } from './product-kit/product-kit-list/product-kit-list.component';
+import { ProductKitEditComponent } from './product-kit/product-kit-edit/product-kit-edit.component';
+import { ProductSearchComponent } from './product-search/product-search.component';
 
 //InMemoryWebApiModule.forRoot(InMemoryDataService),
 
@@ -50,7 +54,11 @@ import { MyproductsPageComponent } from './myproducts-page/myproducts-page.compo
       ProductitTableComponent,
       ProductsnTableComponent,
       ProductsnCreateComponent,
-      MyproductsPageComponent
+      MyproductsPageComponent,
+      ProductKitPageComponent,
+      ProductKitListComponent,
+      ProductKitEditComponent,
+      ProductSearchComponent
   ],
   exports: [ProductBaseComponent, MyproductsPageComponent],
   providers: [ProductController]

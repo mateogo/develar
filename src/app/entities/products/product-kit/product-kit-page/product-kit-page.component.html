@@ -1,0 +1,14 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>Kits de productos</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<product-kit-edit 
+			(updateToken)="updateKit($event)"
+			[kit$]="model$"></product-kit-edit>
+		
+
+		<product-kit-list  (actionTriggered)='actionTriggered($event)'></product-kit-list>
+
+	</mat-card-content>
+</mat-card>

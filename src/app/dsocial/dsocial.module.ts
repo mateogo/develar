@@ -72,6 +72,7 @@ import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashbo
 import { SolasisBrowseComponent } from './asistencia/sol-asis-data/solasis-browse/solasis-browse.component';
 import { SolicitaEncuestaEditComponent } from './asistencia/sol-asis-data/solicita-encuesta-edit/solicita-encuesta-edit.component';
 import { SolicitaEncuestaViewComponent } from './asistencia/sol-asis-data/solicita-encuesta-view/solicita-encuesta-view.component';
+import { AlmacenSearchComponent } from './helpers/product-search/product-search.component';
 
 @NgModule({
   imports: [
@@ -146,7 +147,8 @@ import { SolicitaEncuestaViewComponent } from './asistencia/sol-asis-data/solici
     SolDashboardPageComponent,
     SolasisBrowseComponent,
     SolicitaEncuestaEditComponent,
-    SolicitaEncuestaViewComponent
+    SolicitaEncuestaViewComponent,
+    AlmacenSearchComponent
   ]
 })
 export class DsocialModule { }

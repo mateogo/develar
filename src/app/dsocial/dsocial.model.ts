@@ -17,16 +17,18 @@ export interface SectorAtencion {
 }
 
 export const sectores: SectorAtencion[] = [
-			{val:'regionvi',    serial:'regionvi',    label: 'Región VI',         style: {'background-color': "#f2aded"}},
-			{val:'discapacidad',serial:'discapacidad',label: 'Discapacidad',      style: {'background-color': "#f2bded"}}, 
-			{val:'masvida',     serial:'masvida',     label: 'MasVida',           style: {'background-color': "#f2cded"}},
-			{val:'alimentos',   serial:'alimentos',   label: 'Alimentos',         style: {'background-color': "#f2cded"}},
-			{val:'tsocial',     serial:'tsocial',     label: 'Trabajador Social', style: {'background-color': "#f2cded"}},
-			{val:'nutricion',   serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
-			{val:'inhumacion',  serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
-			{val:'terceraedad', serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
-			{val:'pensiones',   serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
-			{val:'direccion',   serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}}
+			{val:'alimentos',    serial:'alimentos',   label: 'Alimentos',         style: {'background-color': "#f2cded"}},
+			{val:'regionvi',     serial:'regionvi',    label: 'Región VI',         style: {'background-color': "#f2aded"}},
+			{val:'discapacidad', serial:'discapacidad',label: 'Discapacidad',      style: {'background-color': "#f2bded"}}, 
+			{val:'masvida',      serial:'masvida',     label: 'MasVida',           style: {'background-color': "#f2cded"}},
+			{val:'tsocial',      serial:'tsocial',     label: 'Trabajador Social', style: {'background-color': "#f2cded"}},
+			{val:'nutricion',    serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
+			{val:'inhumacion',   serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
+			{val:'terceraedad',  serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
+			{val:'pensiones',    serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
+			{val:'familia',      serial:'familia',     label: 'Acomp. Integral de Familia',  style: {'background-color': "#f2dded"}},
+			{val:'acumar',       serial:'acumar',      label: 'Acumar',            style: {'background-color': "#f2dded"}},
+			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}}
 	];
 
 

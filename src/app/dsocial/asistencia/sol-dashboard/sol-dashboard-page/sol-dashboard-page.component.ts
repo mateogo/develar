@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { DsocialController } from '../../../dsocial.controller';
 
@@ -8,7 +9,8 @@ import {  Person } from '../../../../entities/person/person';
 import { 	Asistencia, 
           AsistenciaTable,
           AsistenciaBrowse,
-					Alimento, 
+					Alimento,
+          AsistenciaSig, 
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
@@ -18,6 +20,8 @@ const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
 const CREATE = 'create';
 const SEARCH = 'search';
+const NAVIGATE = 'navigate';
+
 
 @Component({
   selector: 'sol-dashboard-page',
@@ -37,6 +41,12 @@ export class SolDashboardPageComponent implements OnInit {
   public showData =  false;
 	public showTable = false;
   public showGrid =  true;
+
+  public renderMap = false;
+  public zoom = 15;
+  public baseLatLng = {};
+  public mapData: AsistenciaSig[] = [];
+
 
   //Person
   public currentPerson: Person;
@@ -66,7 +76,7 @@ export class SolDashboardPageComponent implements OnInit {
   		this.showData = true;
   	}
 
-    let first = true;    
+    let first = true;
     this.personId = this.route.snapshot.paramMap.get('id')
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
@@ -100,8 +110,9 @@ export class SolDashboardPageComponent implements OnInit {
     		this.dsCtrl.setCurrentPersonFromId(this.personId);
     }
 
+    // current selector saved in Controller
+    this.query = this.dsCtrl.asistenciasSelector;
     this.fetchSolicitudes(this.query);
-
   }
 
   /************************/
@@ -221,8 +232,48 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
-    console.log('ToDo: updateAsistenciaList')
+    console.log('ToDo: updateAsistenciaList [%s]', this.personId)
+    if(event.action === NAVIGATE){
+      console.log(this.dsCtrl.atencionRoute('seguimiento'))
+        this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento')], {relativeTo: this.route});
+     }
+  }
 
+  mapRequest(act:string){
+    if(act ==="map:show"){
+      this.initMapToRender();
+
+    }else if(act === "map:hide"){
+      this.renderMap = false;
+
+
+    }
+
+  }
+
+  initMapToRender(){
+    console.log('initMapToRender [%s]', this.asistenciasList.length)
+    let listener$: Subject<AsistenciaSig[]> = this.dsCtrl.fetchMapDataFromAsis(this.asistenciasList);
+    listener$.subscribe(tokens => {
+      console.log('initMapToRender')
+      console.dir(tokens);
+      if(tokens && tokens.length){
+        this.baseLatLng = {
+          lat: tokens[0].lat,
+          lng: tokens[0].lng
+        }
+        
+        tokens[0].asistencia.requeridox.slug
+
+
+        this.mapData = tokens;
+        this.renderMap = true;
+
+
+      }
+    })
+
+    
   }
 
 

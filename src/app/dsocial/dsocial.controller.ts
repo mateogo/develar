@@ -15,13 +15,19 @@ import { devutils } from '../develar-commons/utils';
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
 import { UserService }   from '../entities/user/user.service';
+import { Product, KitProduct } from '../entities/products/product.model';
+
 import { Person, Address, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, TurnosModel }         from './turnos/turnos.model';
-import { Asistencia, AsistenciaTable, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from './asistencia/asistencia.model';
-import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, AlimentosHelper } from './alimentos/alimentos.model';
+
+import { Asistencia, Alimento, AsistenciaBrowse,
+          AsistenciaTable, AsistenciaHelper, AsistenciaSig,
+          UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
+
+import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, KitOptionList, AlimentosHelper } from './alimentos/alimentos.model';
 
 const ATTENTION_ROUTE = "atencionsocial";
 const ALIMENTOS_ROUTE = "alimentos";
@@ -44,6 +50,8 @@ export class DsocialController {
   private actualUrl = "";
   private actualUrlSegments: UrlSegment[] = [];
   private navigationUrl = "";
+
+  private _asistenciasSelector: AsistenciaBrowse;
 
   private _encuestadores: User[];
 
@@ -72,6 +80,8 @@ export class DsocialController {
   private _remitosSelectionModel: SelectionModel<RemitoAlmacenTable>
   private remitosList: Array<RemitoAlmacen> = [];
 
+  private _kitAlimentosOptList: KitOptionList[];
+
 
 	constructor(
 		private daoService: DaoService,
@@ -92,8 +102,9 @@ export class DsocialController {
       this.updateUserStatus(user);
     })
 
+    this.loadKitAlimentosOptList()
 
-    
+
     setTimeout(() => {
     	if(!this.userLoading) this.onReady.next(true)
     }, 1000);
@@ -174,6 +185,7 @@ export class DsocialController {
   * obtener serial para Asistencias
   */
   fetchSerialAsistencias(type, name, sector): Observable<Serial> {
+    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = DsocialModel.asistenciaSerial(type, name, sector);
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -334,6 +346,7 @@ export class DsocialController {
 
 
   updateRemitosTableData(){
+
     let tableData = AlimentosHelper.buildDataTable(this.remitosList);
     this.emitRemitosDataSource.next(tableData);
   }
@@ -364,6 +377,45 @@ export class DsocialController {
   /*****************************/
   /******* Asistencias ********/
   /***************************/
+
+  createExpressAsistencia(action: string, person: Person, slug: string){
+    if(action === "alimentos") {
+      this.createExpressAlimento(action, person, slug);
+    }
+
+  }
+
+  createExpressAlimento(action:string, person: Person, slug: string){
+    let sector = "alimentos"
+    let serial_name = 'solicitud';
+    let serial_type = 'asistencia';
+    let kit = this._kitAlimentosOptList.find(t => t.val.indexOf('ESTANDAR')!== -1);
+    if(!kit) kit = this._kitAlimentosOptList[0];
+
+
+    const asistencia = AsistenciaHelper.initNewAsistencia(action, sector, person, null, slug);
+
+    let alimento = AsistenciaHelper.initNewAlimento(asistencia.fecomp_txa, asistencia.fecomp_tsa);
+    alimento.type = kit.val;
+
+    asistencia.modalidad = alimento;
+
+    this.fetchSerialAsistencias(serial_type, serial_name, sector).subscribe(serial =>{
+      asistencia.compPrefix = serial.compPrefix ;
+      asistencia.compName = serial.compName;
+      asistencia.compNum = (serial.pnumero + serial.offset) + "";
+      this.daoService.create<Asistencia>('asistencia', asistencia).then(token =>{
+        // console.log('Update Asistencia OK [%s]', token._id);
+      });
+     
+    });
+  }
+
+
+
+
+
+
   manageAsistenciaRecord(type:string, asistencia:Asistencia ): Subject<Asistencia>{
     let listener = new Subject<Asistencia>();
     if(this.isNewToken(asistencia)){
@@ -422,6 +474,7 @@ export class DsocialController {
     asistencia.fecomp_txa = devutils.txFromDate(fecomp_date);
 
     this.fetchSerialAsistencias(type, name, sector).subscribe(serial =>{
+
       asistencia.compPrefix = serial.compPrefix ;
       asistencia.compName = serial.compName;
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
@@ -709,7 +762,9 @@ export class DsocialController {
         p.locaciones.forEach(t=> {
           optList.push({
             val: t._id,
-            label: t.street1 + ' ' + t.barrio + ' ' + t.city
+            label: t.street1 + ' ' + t.barrio + ' ' + t.city,
+            barrio: t.barrio,
+            city: t.city
           })
         })
         token$.next(optList);
@@ -737,7 +792,71 @@ export class DsocialController {
     return this.daoService.geocodeForward(address);
   }
 
+/**
+  id_turno: string;
+  turno: Asistencia;
+  action: string;
+  estado: string;
+  resultado?: string;
+  atendidox?: Atendido;
+  modalidad?: Alimento;
+  observación?: string;
 
+    asistencia: Asistencia;
+  locacion: any;
+  lat: number;
+  lng: number;
+
+
+*/
+
+  fetchMapDataFromAsis(list: Asistencia[]){
+    let sigList$ = new Subject<AsistenciaSig[]>();
+    let personList: Array<string> = [];
+    let asistenciaList: Array<Asistencia> = [];
+
+    //let collectList$
+    let sigList: AsistenciaSig[] = []
+
+    list.forEach(asis => {
+      if(asis.requeridox && asis.requeridox.id){ 
+        personList.push(asis.requeridox.id);
+        asistenciaList.push(asis);
+      }
+    })
+
+    if(personList.length){
+      console.log('ready to daoService: [%s]', personList.length);
+      this.daoService.search<Person>('person', {list: personList}).subscribe(list => {
+        if(list && list.length) {
+          list.forEach((person, index) => {
+            let locaciones = person.locaciones;
+            if(locaciones && locaciones.length){
+              locaciones.forEach(l => {
+                if(l.lat && l.lng){
+                  sigList.push({
+                    asistencia: asistenciaList[index],
+                    locacion: l,
+                    lat: l.lat,
+                    lng: l.lng
+                  })
+                }
+              })
+            }
+          })
+        }
+        sigList$.next(sigList);
+      })
+
+    }else{      
+        sigList$.next(sigList);
+    }
+
+
+    //ToDo
+    return sigList$
+
+  }
 
   /***************************/
   /******* Navigation *******/
@@ -905,13 +1024,86 @@ export class DsocialController {
     return arr;
   }
 
+  // Browse Solicitud de Asistencia Form Data 
+  get asistenciasSelector():AsistenciaBrowse{
+    if(!this._asistenciasSelector) this._asistenciasSelector = new AsistenciaBrowse();
+    return this._asistenciasSelector;
+  }
+  
+  set asistenciasSelector(e: AsistenciaBrowse){
+    this._asistenciasSelector = e;
+  }
+ 
+
+  /***************************/
+  /******* KitProduct *******/
+  /***************************/
+  fetchKitAlimentosOptList(){
+    let listener$ = new Subject<KitOptionList[]>();
+    let type = 'productkit';
+    let query = {
+      estado: 'activo',
+      type: 'alimentos'
+    }
+    this.daoService.search<KitProduct>(type, query).subscribe(list =>{
+      if(list && list.length){
+        let optList = list.map(t => {
+                        return {
+                          val : t.code,
+                          label: t.name,
+                          kit: t
+                        } as KitOptionList
+                      })
+        listener$.next(optList);
+      }
+
+    })
+
+    return listener$;
+  
+  }
+
+  get kitAlimentosOptList():KitOptionList[]{
+    console.log('getKitAlimentosOptList [%s]', this._kitAlimentosOptList && this._kitAlimentosOptList.length )
+    if(!this._kitAlimentosOptList){
+      this.loadKitAlimentosOptList();
+      return [];
+    }
+
+    return this._kitAlimentosOptList;
+  }
+
+
+  loadKitAlimentosOptList(){
+    this.fetchKitAlimentosOptList().subscribe(list => {
+      if(list && list.length) this._kitAlimentosOptList = list;
+    })
+
+  }
+
+  fetchKits(type:string, query: any): Observable<KitProduct[]>{
+    return this.daoService.search<KitProduct>('productkit', query);
+  }
+
+  searchBySlug(slug): Observable<Product[]>{
+    if(!(slug && slug.trim())){
+      return of([] as Product[]);
+    }
+    return this.daoService.search<Product>('product', {slug: slug})
+  }
+
+
+
 
 }//END controller
 
 interface OptionList {
   val: string;
   label: string;
+  barrio?: string;
+  city?: string;
 }
+
 
 class CommunityToken {
   isActive: boolean = false;

@@ -33,10 +33,13 @@ const atendidoSch = new Schema({
 });
 
 const itemAlmacenSch = new Schema({
-    productId:   { type: String, required: true },
-    qty:         { type: Number, required: true },
-    ume:         { type: String, required: true },
-    slug:        { type: String, required: false },
+    productId: { type: String, required: true },
+    isKit:     { type: Number, required: true, default:0 },
+    code:      { type: String, required: true },
+    name:      { type: String, required: true },
+    slug:      { type: String, required: false },
+    ume:       { type: String, required: true },
+    qty:       { type: Number, required: true },
 });
 
 

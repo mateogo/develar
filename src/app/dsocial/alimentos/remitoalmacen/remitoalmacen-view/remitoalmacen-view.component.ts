@@ -64,6 +64,7 @@ export class RemitoalmacenViewComponent implements OnInit {
 
   	this.items = this.token.entregas;
   	this.kitEntrega = AlimentosHelper.getOptionLabel('kitentrega', this.token.kitEntrega);
+  	
 
 
   }

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material';
+
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
@@ -22,6 +24,7 @@ const SEARCH = 'search';
 export class SolasisBrowseComponent implements OnInit {
 	@Input() query: AsistenciaBrowse = new AsistenciaBrowse();
 	@Output() updateQuery = new EventEmitter<AsistenciaBrowse>();
+  @Output() mapRequest = new EventEmitter<string>();
 
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
@@ -29,6 +32,10 @@ export class SolasisBrowseComponent implements OnInit {
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
+  public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
+
+  public ciudadesList =   personModel.ciudades;
+  public barrioList = [];
 
 	public form: FormGroup;
   public currentPerson: Person;
@@ -49,6 +56,7 @@ export class SolasisBrowseComponent implements OnInit {
 
 
   ngOnInit() {
+    this.query = this.dsCtrl.asistenciasSelector;
   	this.initForEdit(this.form, this.query);
     this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
 
@@ -65,11 +73,15 @@ export class SolasisBrowseComponent implements OnInit {
   	this.emitEvent(this.formAction);
   }
 
+  showMap(action){
+    this.mapRequest.emit(action);
+
+  }
+
+
   emitEvent(action:string){
-  	
   	this.query.searchAction = action;
   	this.updateQuery.next(this.query);
-
   }
 
   changeSelectionValue(type, val){
@@ -85,6 +97,11 @@ export class SolasisBrowseComponent implements OnInit {
 
   personFetched(person:Person){
     this.currentPerson = person;
+  }
+
+  deSelectPerson(e:MatCheckboxChange){
+    console.log('Deselect now');
+    delete this.currentPerson;
 
   }
 
@@ -105,6 +122,9 @@ export class SolasisBrowseComponent implements OnInit {
       estado:       [null],
       fe_visita:    [null],
       ruta:         [null],
+      barrio:       [null],
+      city:         [null],
+      urgencia:     [null],
       trabajadorId: [null],
       avance_encuesta: [null],
     });
@@ -129,12 +149,25 @@ export class SolasisBrowseComponent implements OnInit {
 
         fe_visita:       query.fe_visita,
         ruta:            query.ruta,
+        urgencia:        query.urgencia,
+        city:            query.city,
+        barrio:          query.barrio,
         trabajadorId:    query.trabajadorId,
         avance_encuesta: query.avance_encuesta,
-
 		});
 
+    if(query.requirenteId && !this.currentPerson) {
+      this.dsCtrl.fetchPersonById(query.requirenteId).then(p => {
+        this.currentPerson = p;
+      })
+    }
+
+    this.barrioList = personModel.getBarrioList(query.city);
 		return form;
+  }
+
+  changeCity() {
+      this.barrioList = personModel.getBarrioList(this.form.value.city);
   }
 
 	initForSave(form: FormGroup, query: AsistenciaBrowse): AsistenciaBrowse {
@@ -168,14 +201,24 @@ export class SolasisBrowseComponent implements OnInit {
 
     entity.fe_visita =       fvalue.fe_visita;
     entity.ruta =            fvalue.ruta;
+    entity.barrio =          fvalue.barrio;
+    entity.city =            fvalue.city;
+    entity.urgencia =        fvalue.urgencia;
     entity.trabajadorId =    fvalue.trabajadorId;
     entity.avance_encuesta = fvalue.avance_encuesta;
     console.log('Browse By Person: [%s]', this.currentPerson && this.currentPerson.displayName)
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;
+
+      this.dsCtrl.fetchPersonById(entity.requirenteId).then(p => {
+        this.dsCtrl.updateCurrentPerson(p);
+      })
+
     }
 
+    //Save Actual Data in Controller
+    this.dsCtrl.asistenciasSelector = entity;
 		return entity;
 	}
 

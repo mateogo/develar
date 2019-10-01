@@ -1,8 +1,14 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+
+import { DsocialController } from '../../../dsocial.controller';
+
+
 import { CustomValidators } from 'ng2-validation';
 
 import { Person } from '../../../../entities/person/person';
+
+import { AlimentosHelper } from '../../../alimentos/alimentos.model';
 
 import { 	Asistencia, 
 					Alimento, 
@@ -10,6 +16,8 @@ import { 	Asistencia,
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
 					AsistenciaHelper } from '../../asistencia.model';
+
+import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 
 import { devutils }from '../../../../develar-commons/utils'
@@ -25,6 +33,9 @@ const UPDATE = 'update';
 })
 export class SolicitaAlimentosEditComponent implements OnInit {
 	@Input() token: Alimento;
+  @Input() parent: Asistencia;
+  @Input() kitOptList:KitOptionList[] = [];
+
 	@Output() updateToken = new EventEmitter<UpdateAlimentoEvent>();
 
 
@@ -37,6 +48,10 @@ export class SolicitaAlimentosEditComponent implements OnInit {
 
   public alimentosOptList =  AsistenciaHelper.getOptionlist('alimentos');
   public frecuencaOptList =  AsistenciaHelper.getOptionlist('frecuencia');
+  public periodoOptList =    AsistenciaHelper.getOptionlist('periodo');
+
+  public kitEntregaOptList: KitOptionList[];
+
 
   constructor(
   	private fb: FormBuilder,
@@ -44,11 +59,9 @@ export class SolicitaAlimentosEditComponent implements OnInit {
   		this.form = this.buildForm();
 	}
 
-
-
   ngOnInit() {
   	this.initForEdit(this.form, this.token);
-
+    this.kitEntregaOptList = this.kitOptList;
   }
 
   onSubmit(){
@@ -75,6 +88,33 @@ export class SolicitaAlimentosEditComponent implements OnInit {
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
+  changePeriodo(type, val){
+    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+      //this.form.controls['city'].setValue(t.city);
+    if(!this.parent) return;
+    let date_from = devutils.dateFromTx(this.parent.fecomp_txa);
+    let date_to = devutils.dateFromTx(this.parent.fecomp_txa);
+    let datex;
+
+    if(type==="periodo" && val==="3M"){
+      datex =  devutils.projectedDate(date_to, 0, 3);
+
+    }else if(type==="periodo" && val==="6M"){
+      datex =  devutils.projectedDate(date_to, 0, 6);
+
+    }else if(type==="periodo" && val==="9M"){
+      datex =  devutils.projectedDate(date_to, 0, 9);
+
+    }else if(type==="periodo" && val==="12M"){
+      datex =  devutils.projectedDate(date_to, 0, 12);
+
+    }
+
+    console.log( ' [%s] date converted: [%s]',date_from.toString(), date_to.toString());
+    this.form.controls['fechad'].setValue(devutils.txFromDate(date_from));
+    this.form.controls['fechah'].setValue(devutils.txFromDate(date_to));
+  }
+
 
  
   buildForm(): FormGroup{
@@ -85,6 +125,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
       freq:        [null, Validators.compose([Validators.required])],
       qty:         [null, Validators.compose([Validators.required])],
       fechad:      [null],
+      periodo:     [null],
       fechah:      [null],
       observacion: [null],
     });
@@ -97,6 +138,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
       type:         token.type,
       freq:         token.freq,
       qty:          token.qty,
+      periodo:      token.periodo,
       fechad:       token.fe_txd,
       fechah:       token.fe_txh,
       observacion:  token.observacion,
@@ -112,6 +154,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
     entity.type =         fvalue.type;
     entity.freq =         fvalue.freq;
     entity.qty =          fvalue.qty;
+    entity.periodo =      fvalue.periodo;
     entity.fe_txd =       fvalue.fechad;
     entity.fe_txh =       fvalue.fechah;
     entity.observacion =  fvalue.observacion;

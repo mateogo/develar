@@ -13,7 +13,7 @@
 		 	<div 	*ngIf="hasCurrentPerson" >
 	  		<ng-container *ngIf="showList">
 			 		<div  *ngFor="let asistencia of asistenciasList" >
-			 			<solasis-base [token]='asistencia'
+			 			<solasis-base [asistencia]='asistencia'
 			 										[viewMode]="'select'"
 													(updateToken)='selectAsistencia($event)'></solasis-base>
 					</div>

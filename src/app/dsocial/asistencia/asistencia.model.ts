@@ -18,29 +18,32 @@ export class Atendido {
 
 export class Alimento {
 		id:          string;
-		type:        string;
+		type:        string = 'standard';
+		periodo:     string = 'UNICO';
 		fe_tsd:      number;
 		fe_tsh:      number;
 		fe_txd:      string;
 		fe_txh:      string;
-		freq:        number;
-		qty:         number;
+		freq:        string = 'mensual';
+		qty:         number = 1;
 		observacion: string;
 };
 
 export class Encuesta {
-		id:          string;
-		fe_visita: string;
+		id:           string;
+		fe_visita:    string;
 		fe_visita_ts: number;
-		locacionId: string;
-		ruta:        string;
-		trabajador:  string;
+		locacionId:   string;
+		ruta:         string;
+		trabajador:   string;
 		trabajadorId: string;
-
-		preparacion: string;
-		estado:      string = 'activo';
-		avance:      string = 'emitido';
-		evaluacion: string;
+    urgencia:     number = 1;
+    city:         string = '';
+    barrio:       string = '';
+		preparacion:  string;
+		estado:       string = 'activo';
+		avance:       string = 'emitido';
+		evaluacion:   string;
 
 };
 
@@ -111,11 +114,21 @@ export class AsistenciaBrowse {
 		avance:      string = 'emitido';
 		fe_visita:   string;
 		ruta:        string;
+		barrio:      string;
+		city:        string;
+		urgencia:    number;
 		trabajadorId: string;
 		avance_encuesta: string;
 }
 
-export interface AsistenciaAction {
+export interface AsistenciaSig {
+	asistencia: Asistencia;
+	locacion: any;
+	lat: number;
+	lng: number;
+}
+
+export interface AsistenciaAction  {
 	id_turno: string;
 	turno: Asistencia;
 	action: string;
@@ -179,6 +192,7 @@ const asisActionOptList: Array<any> = [
         {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
         {val: 'pension',     type:'Pensión',      label: 'Pensión' },
+        {val: 'migracion',   type:'Migración Acumar', label: 'Migración Acumar' },
         {val: 'no_definido', type:'No definida',  label: 'No definida' },
 
 ];
@@ -212,6 +226,20 @@ const frecuenciaOptList: Array<any> = [
 const tableActions = [
       {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
       {val: 'autorizar',      label: 'Autorizar solicitud',    slug:'Autorizar solicitud' },
+]
+
+const urgenciaOptList = [
+      {val: 1,  label: 'Baja',  slug:'Urgencia baja' },
+      {val: 2,  label: 'Media', slug:'Urgencia media' },
+      {val: 3,  label: 'Alta',  slug:'Urgencia alta' },
+]
+
+const periodoOptList = [
+      {val: "UNICO", label: 'Única vez', slug:'Entrega única' },
+      {val: "3M",    label: ' 3 meses',  slug:'Período de validez: 3 meses' },
+      {val: "6M",    label: ' 6 meses',  slug:'Período de validez: 6 meses' },
+      {val: "9M",    label: ' 9 meses',  slug:'Período de validez: 9 meses' },
+      {val: "12M",   label: '12 meses',  slug:'Período de validez: 12 meses' },
 ]
 
 const estadosOptList = [
@@ -270,13 +298,15 @@ const optionsLists = {
    ciudades: ciudadesBrown,
    estado: estadosOptList,
    avance: avanceOptList,
-   encuesta: avanceEncuestaOptList
+   encuesta: avanceEncuestaOptList,
+   urgencia: urgenciaOptList,
+   periodo: periodoOptList
 }
 
 
 function getLabel(list, val){
-		if(!list || !val) return '';
-    return (list.find(item => item.val === val).label || val);
+		let t = list.find(item => item.val === val)
+		return t ? t.label : val;
 }
 
 function getPrefixedLabel(list, prefix, val){
@@ -293,14 +323,21 @@ export class AsistenciaHelper {
 		return optionsLists[type] || optionsLists['default'];
 	}
 
-	static getOptionLabel(type, val){
-		let list = this.getOptionlist(type);
+	static getOptionLabelFromList(list, val){
+		if(!val) return 'no-definido';
 		return getLabel(list, val);
 	}
 
+	static getOptionLabel(type, val){
+		if(!val) return 'no-definido';
+		if(!type) return val;
+		return getLabel(this.getOptionlist(type), val);
+	}
+
 	static getPrefixedOptionLabel(type, prefix, val){
-		let list = this.getOptionlist(type);
-		return getPrefixedLabel(list, prefix, val);
+		if(!val) return 'no-definido';
+		if(!type) return prefix + '::' + val;
+		return getPrefixedLabel(this.getOptionlist(type), prefix, val);
 	}
 
 	static buildRequirente(person: Person): Requirente {
@@ -327,41 +364,123 @@ export class AsistenciaHelper {
 		return token;
 	}
 
+/*
+		searchAction: string;
+		compPrefix:  string = 'SOL';
+		compName:    string = 'S/Asistencia';
+		compNum_d:   string;
+		requirenteId: string;
+		compNum_h:   string;
+		idPerson:    string;
+		fecomp_d:    string;
+		fecomp_h:    string;
+		fecomp_ts_d:    number;
+		fecomp_ts_h:    number;
+		action:      string;
+		sector:      string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		fe_visita:   string;
+		ruta:        string;
+		barrio:      string;
+		city:        string;
+		urgencia:    number;
+		trabajadorId: string;
+		avance_encuesta: string;
+
+		_id: string;
+		compPrefix:  string = 'SOL';
+		compName:    string = 'S/Asistencia';
+		compNum:     string = '00000';
+		idPerson:    string;
+		fecomp_tsa:  number;
+		fecomp_txa:  string;
+		action:      string = 'alimentos';
+		slug:        string;
+		description: string;
+		sector:      string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		ts_alta:     number;
+		ts_fin:      number;
+		ts_prog:     number;
+		requeridox:  Requirente;
+		atendidox:   Atendido;
+		modalidad:   Alimento;
+		encuesta:    Encuesta;
+
+
+
+*/
 	static initNewAsistencia(action, sector, person?: Person, serial?: Serial, slug?){
 		let ts = Date.now();
-		let requirente = new Requirente();
+		let requirente: Requirente;
+		let token = new Asistencia();
 
 		if(person){
-			requirente.id = person._id;
-			requirente.slug = person.displayName;
-			requirente.tdoc = person.tdoc;
-			requirente.ndoc = person.ndoc;
+			requirente = AsistenciaHelper.buildRequirente(person);
+			token.idPerson = person._id;
+		}else{
+			requirente = new Requirente();
+			token.idPerson = '';
 		}
 
+		token.fecomp_txa = devutils.txFromDateTime(ts);
+		token.fecomp_tsa = ts;
 
-		let token = new Asistencia();
 		token.action = action;
 		token.slug = slug || '';
 		token.sector = sector;
 		token.requeridox = requirente;
+		token.description = '';
 
 		if(serial){
 			token.compPrefix = serial.compPrefix ;
 			token.compName = serial.compName;
 			token.compNum = serial.pnumero + "";
+		}else{
+			token.compPrefix = 'SOL' ;
+			token.compName = 'S/Asistencia';
+			token.compNum = '';
 		}
 
 		token.ts_alta = ts;
 		token.ts_fin = 0
 		token.ts_prog = ts;
+		token.estado = 'activo';
+		token.avance = 'emitido'
 
 		return token;
+	}
+
+/*
+		id:          string;
+		type:        string = 'standard';
+		periodo:     string = 'UNICO';
+		fe_tsd:      number;
+		fe_tsh:      number;
+		fe_txd:      string;
+		fe_txh:      string;
+		freq:        string = 'mensual';
+		qty:         number = 1;
+		observacion: string;
+
+*/
+
+	static initNewAlimento(fe: string, fe_ts: number):Alimento{
+		let alimento = new Alimento();
+		alimento.fe_txd = fe;
+		alimento.fe_txh = fe;
+		alimento.fe_tsd = fe_ts;
+		alimento.fe_tsh = fe_ts;
+		return alimento;
 	}
 
 
 
 
 	static buildDataTable(list: Asistencia[]){
+
 		return list.map(sol => {
 			let td = new AsistenciaTable();
 			td.asistenciaId = sol._id;
@@ -391,10 +510,7 @@ export class AsistenciaHelper {
 				td.ruta = '';
 				td.trabajador = '';
 				td.trabajadorId = '';
-
 			}
-
-
 
 			return td;
 		})

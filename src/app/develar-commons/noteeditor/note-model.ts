@@ -14,6 +14,9 @@ editorComp
 viewerComp
 */
 
+const default_list: Array<any> = [
+		{val: 'no_definido', 	label: 'no_definido',  slug:'no_definido' },
+];
 
 const noteTypeList: Array<any> = [
 		{val: 'no_definido', 	label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -42,18 +45,17 @@ const viewStateList: Array<any> = [
 		{val: 'view',      label: 'Vista',      slug:'Vista' },
 ];
 
-function getLabel(list, val){
-	let sourceList = {
+const sourceList = {
+		default: default_list,
 		type: noteTypeList,
 		lang: languageList,
 		view: viewStateList
-	};
-	let label = val;
-	let token = sourceList[list].find(item => item === val);
-	if(token){
-		label = token.label;
-	}
-	return label;
+};
+
+function getLabel(type, val){
+	let list = sourceList[type] || sourceList['default'];
+	let token = sourceList[type].find(item => item === val);
+	return token ? token.label : val;
 }
 
 

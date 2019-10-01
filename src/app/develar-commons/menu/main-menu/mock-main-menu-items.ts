@@ -311,6 +311,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     groupTitle: false,
     sub: [
       {
+        title: 'Kits Productos',
+        routing: '/develar/entidades/productos/kits'
+      },
+      {
         title: 'Navegar Productos',
         routing: '/develar/entidades/productos'
       },
@@ -865,6 +869,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     active: false,
     groupTitle: false,
     sub: [
+      {
+        title: 'Kits Productos',
+        routing: '/develar/entidades/productos/kits'
+      },
       {
         title: 'Navegar Productos',
         routing: '/develar/entidades/productos'

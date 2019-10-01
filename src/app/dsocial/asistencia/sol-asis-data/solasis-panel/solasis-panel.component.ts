@@ -12,6 +12,7 @@ import { 	Asistencia,
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
 					AsistenciaHelper } from '../../asistencia.model';
+import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
@@ -29,12 +30,15 @@ export class SolasisPanelComponent implements OnInit {
   public title = 'Solicitudes de Asistencia';
 	public showList = false;
   public openEditor = true;
+  public kitEntregaOptList: KitOptionList[];
 
   constructor(
       private dsCtrl: DsocialController,
     ) { }
 
   ngOnInit() {
+    this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList
+
   	if(this.items && this.items.length){
   		this.showList = true;
   	}

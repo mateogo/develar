@@ -215,10 +215,21 @@ export class RecepcionPageComponent implements OnInit {
         this.resetForm();
       })
 
+      this.checkIfNewAlimento()
+
     }else{
       this.showWarning();
     }
 
+  }
+
+  checkIfNewAlimento(){
+    console.log('Check IfNew Alimento hasAsistencias[%s] [%s]', this.hasAsistencias,this.currentSector.val);
+    if(!this.hasAsistencias && this.currentSector.val === "alimentos"){
+      let slug = 'Alimentos otorgados de oficio, presentación espontánea 1ra vez'
+
+      this.dsCtrl.createExpressAsistencia(this.currentSector.val, this.currentPerson, slug);
+    }
   }
 
   readyToCreateNewTurno(){

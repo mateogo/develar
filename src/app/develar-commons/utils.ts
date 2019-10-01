@@ -82,15 +82,29 @@ const parseDateStr = function(str) {
 }
 
 
-
 function umeTx(ume, fume, fumetx, qt, freq){
-	let text = ""
-	if(freq === 1 && fume === 'unidad'){
-		text = qt + ' ' + ume
-	}else {
-		text = qt + ' ' + ume + ' x ' + freq + ' ' + fumetx ;
-	}
-	return text;
+    let text = ""
+    if(freq === 1 && fume === 'unidad'){
+        text = qt + ' ' + ume
+    }else {
+        text = qt + ' ' + ume + ' x ' + freq + ' ' + fumetx ;
+    }
+    return text;
+}
+
+// si plus_day === 0, entonces devuelve la fecha de fin de mes, acorde al mes computado.
+// si plus_day !== 0, entonces la suma, a modo de corrimiento, respecto del día actual.
+function getProjectedDate(date: Date, plus_day:number, plus_month:number){
+    plus_day = plus_day || 0;
+    plus_month = plus_month || 0;
+
+    if(plus_day) {
+        date.setMonth(date.getMonth() + plus_month, date.getDate() + plus_day);
+
+    }else {
+        date.setMonth(date.getMonth() + plus_month, 0);
+
+    }
 }
 
 
@@ -298,6 +312,14 @@ class Devutils {
 	txFromDate(date){
 		return dateToStr(date);
 	}
+
+    txFromDateTime(time: number){
+        return dateToStr(new Date(time));
+    }
+
+    projectedDate(date: Date, d:number, m:number){
+        return getProjectedDate(date, d, m);
+    }
 
     validAge(value:string): boolean{
         let validAge = false;
