@@ -1,7 +1,6 @@
 <mat-form-field>
   <input  #searchBox  matInput  id="search-box" 
     name="slug"
-    [(ngModel)]='slugFld'
     [matAutocomplete]="slug"
     (keyup)="search(searchBox.value)"  
     placeholder="buscar producto por denominación..." />

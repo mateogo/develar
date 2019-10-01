@@ -163,6 +163,11 @@ export class ProductKitEditComponent implements OnInit {
     }
 
   }
+  
+  changeProductClass(type, value){
+    //
+
+  }
 
 
   emitEvent(action:string, token: KitProduct){

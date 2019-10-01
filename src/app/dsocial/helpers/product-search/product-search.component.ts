@@ -20,6 +20,8 @@ export class AlmacenSearchComponent implements OnInit {
 
  private searchTerms = new Subject<string>();
 
+ public openEditor = false;
+
   constructor(
      private dsCtrl: DsocialController,
   	) { }
@@ -43,6 +45,10 @@ export class AlmacenSearchComponent implements OnInit {
     	console.log('has product')
     	this.emmitProduct.next(product);
     }
+  }
+
+  editToken(){
+
   }
 
 

@@ -20,6 +20,9 @@ export class ProductSearchComponent implements OnInit {
 
  private searchTerms = new Subject<string>();
 
+ public openEditor = false;
+
+
   constructor(
     private productCtrl: ProductController
   	) { }
@@ -43,6 +46,10 @@ export class ProductSearchComponent implements OnInit {
     	console.log('has product')
     	this.emmitProduct.next(product);
     }
+  }
+
+  editToken(){
+
   }
 
 
