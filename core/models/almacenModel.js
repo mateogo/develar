@@ -53,7 +53,7 @@ const almacenSch = new Schema({
     compNum:     { type: String, required: true  },
     personId:    { type: String, required: true  },
     parentId:    { type: String, required: false },
-    kitEntrega:  { type: String, required: true  },
+    kitEntrega:  { type: String, required: false },
     qty:         { type: Number, required: false },
     deposito:    { type: String, required: true  },
     tmov:        { type: String, required: false },

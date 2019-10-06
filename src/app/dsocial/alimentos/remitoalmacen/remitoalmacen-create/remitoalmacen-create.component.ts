@@ -79,8 +79,14 @@ export class RemitoalmacenCreateComponent implements OnInit {
   }
 
   currentKitList(remito: RemitoAlmacen){
-    this.currentKit = this.findCurrentKit(remito.kitEntrega);
-    this.currentItemList = this.buildItemList(this.currentKit, remito);
+    if(remito.kitEntrega){
+      this.currentKit = this.findCurrentKit(remito.kitEntrega);
+      this.currentItemList = this.buildItemList(this.currentKit, remito);
+    }else{
+      this.currentKit = null;
+      this.currentItemList = [];
+    }
+
   }
 
   buildItemList(kit: KitProduct, remito: RemitoAlmacen): ItemAlmacen[]{
@@ -110,7 +116,7 @@ export class RemitoalmacenCreateComponent implements OnInit {
     form = this.fb.group({
       slug:        [null],
       qty:         [null],
-      kitEntrega:  [null, Validators.compose([Validators.required])],
+      kitEntrega:  [null],
     });
 
     return form;
@@ -179,13 +185,10 @@ export class RemitoalmacenCreateComponent implements OnInit {
   slug: string;
   ume: string;
   qty: number;
-
   */
 
 
-
   updateItems(type, val){
-
     let formArray = this.form.get('kits') as FormArray;
     
     formArray.clear()
@@ -198,8 +201,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
       let kitItemFG = this.fb.group(t);
       formArray.push(kitItemFG);
     })
-
-
 
 /*    
     console.log('update Items: BEGIN [%s] [%s] ', type, val);

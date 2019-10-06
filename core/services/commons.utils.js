@@ -210,10 +210,16 @@ exports.highlightCode = function(code){
 exports.parsePHPDateStr = function(str){
     var mx = str.match(/(\d+)/g);
     if(mx && mx.length === 3){
+        if(mx[0]>2030 || mx[0]<1900) mx[0] = 1900;
+        if(mx[1]>12 || mx[1]<1 ) mx[1]=1;
+        if(mx[2]>31 || mx[1]<1 ) mx[2]=1;
         return (this.parseDateStr(mx[2] + '/' + mx[1] + '/' + mx[0]));
     } else if(mx && mx.length === 2){
+        if(mx[0]>2030 || mx[0]<1900) mx[0] = 1900;
+        if(mx[1]>12 || mx[1]<1 ) mx[1]=1;
         return (this.parseDateStr('1' + '/' + mx[1] + '/' + mx[0]));
     } else if(mx && mx.length === 1){
+        if(mx[0]>2030 || mx[0]<1900) mx[0] = 1900;
         return (this.parseDateStr('1' + '/' + '1' + '/' + mx[0]));
     }else {
         return new Date();

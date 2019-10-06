@@ -11,18 +11,15 @@
 									(updatePerson)='updateCore($event)' ></core-base>
 			</div>
 
-			<ng-container 	*ngIf="hasCurrentPerson" >
-				<solicitudes-panel [items]='asistenciasList'
-						(updateItem)='asistenciaSelected($event)' ></solicitudes-panel>
-			</ng-container>
-
-
-
 			<ng-container 	*ngIf="emitRemito" >
 				<remitoalmacen-page [asistencia]='currentAsistencia' [remito]='remitoalmacen'
 						(updateRemito)='createRemito($event)' ></remitoalmacen-page>
 			</ng-container>
 
+			<ng-container 	*ngIf="hasCurrentPerson" >
+				<solicitudes-panel [items]='asistenciasList'
+						(updateItem)='asistenciaSelected($event)' ></solicitudes-panel>
+			</ng-container>
   	</div>
   </mat-card-content>
 </mat-card>

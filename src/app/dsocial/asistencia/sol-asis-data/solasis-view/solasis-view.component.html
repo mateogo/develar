@@ -1,22 +1,22 @@
-<p class='text-destacado'>{{ cName }}:{{ cNum }} - {{ fecha }} <strong>{{ action }}</strong></p>
-<p class='text-resaltado'>{{ solicitante }} - {{ avance }} </p>
-<p class='text-normal'>{{sector}} - Solicita: {{slug}} </p>
+<p class='text-destacado'>{{ cName }}: {{ cNum }} - {{ fecha }} -  <strong>{{ action }}</strong></p>
+<p class='text-resaltado'>{{ solicitante }} :: {{ avance }} </p>
+<p class='text-normal'>{{sector}} :: Solicita: {{slug}} </p>
 <p class='text-normal'>{{description}} </p>
 	<!--a role="button" class="detail-toggle" (click)="verdDetalle($event)" title="ver detalle">
 		Ver detalle <i class="fa fa-angle-right" aria-hidden="true"></i>
 	</a -->
 <ng-container *ngIf="detailView">
 	<ng-container *ngIf='isAlimentos'>
-		<p class='text-normal'><strong>Tipo de Alimento </strong>
-				- {{ type }}: Frecuencia: {{ freq }} - Cantidad unidades:  {{ qty }} </p>
-		<p class='text-normal'><strong>Período convenido: </strong> 
+		<p class='text-normal'><strong>Tipo de Alimento: </strong>
+				{{ type }} :: Frecuencia: {{ freq }} :: Cantidad unidades:  {{ qty }} </p>
+		<p class='text-normal'><strong>Período convenido:: </strong> 
 		   Desde: {{ fechad }} Hasta: {{ fechah }}</p>
 		<p class='text-normal'>{{observacion}} </p>
 	</ng-container>
 
 	<ng-container *ngIf='isEncuesta'>
-		<p class='text-normal'><strong>Informe ambiental programado </strong>
-				- {{ fecha_encuesta }} :: {{ avance_encuesta }} </p>
+		<p class='text-normal'><strong>Informe ambiental programado para: </strong>
+			{{ fecha_encuesta }} :: {{ avance_encuesta }} </p>
 		<p class='text-normal'><strong>Recorrido: </strong> {{ruta}}</p>
 		<p class='text-normal'>{{ preparacion }} </p>
 	</ng-container>

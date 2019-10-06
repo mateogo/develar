@@ -37,6 +37,8 @@ export class Alimento {
 		observacion: string;
 
 };
+
+
 export class ItemAlmacen {
 	productId: string;
 	isKit: number = 0; // 0: es un item cargado a mano 1: item que deviene de KIT
@@ -253,7 +255,7 @@ const default_option_list: Array<any> = [
 const asisActionOptList: Array<any> = [
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
         {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
-        {val: 'materiales',  type:'Materiales',   label: 'Materiales' },
+        {val: 'materiales',  type:'Habitacional',   label: 'Habitacional' },
 
 ];
 

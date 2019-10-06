@@ -4,9 +4,9 @@
   		<ng-container *ngIf="showView">
 		 	<div class="row">
 		 		<div class="col-md-3">
-		 			<ng-container *ngIf="isAlimento">
+		 			<ng-container *ngIf="isRemitible">
 					<a class="edit-control" role="button"
-						(click)='generarVoucher($event)' title="generar voucher de alimentos">Voucher alimentos 
+						(click)='generarVoucher($event)' title="generar voucher de almacen">{{ voucher_label }}
 						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></a>
 

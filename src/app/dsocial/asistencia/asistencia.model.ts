@@ -187,7 +187,7 @@ const default_option_list: Array<any> = [
 const asisActionOptList: Array<any> = [
         {val: 'encuesta',    type:'EncuestaSocAmb', label: 'Encuesta' },
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
-        {val: 'materiales',  type:'Materiales',   label: 'Materiales' },
+        {val: 'materiales',  type:'Habitacional',  label: 'Habitacional' },
         {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
         {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
@@ -312,7 +312,7 @@ function getLabel(list, val){
 function getPrefixedLabel(list, prefix, val){
 		let label = getLabel(list, val);
 		if(label) {
-			label = prefix + '::' + label;
+			label = prefix ? prefix + ': ' + label : ' ' + label
 		}
 		return label;
 }

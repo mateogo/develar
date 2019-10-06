@@ -4,7 +4,7 @@
   <!-- kitEntrega;  deposito;  qty; -->
 
 
-    <div class="row" >
+    <div *ngIf="currentKit" class="row" >
       <div class="col">
         <mat-form-field>
           <mat-select #fldKitEntrega placeholder="Kit Entrega"
@@ -21,13 +21,18 @@
         </mat-form-field>
       </div>
 
+    </div>
+
+    <div class="row" >
       <div class="col">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['slug']" placeholder="Observaciones" >
+          <input matInput [formControl]="form.controls['slug']" 
+              placeholder="Observaciones" >
         </mat-form-field>
       </div>
-
     </div>
+
+
     <div class="row" >
       <div class="col">
         <almacen-search (emmitProduct)="handleProduct($event)"></almacen-search>
@@ -42,7 +47,7 @@
         <div class="col-md-5">
           <span><strong>{{ item.value.name }}</strong></span>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span><strong>{{ item.value.ume }}</strong></span>
         </div>
         <div class="col-md-1">

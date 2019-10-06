@@ -64,7 +64,7 @@ export class SolasisPanelComponent implements OnInit {
   addItem(){
     let item = AsistenciaHelper.initNewAsistencia('alimentos', 'alimentos')
     if(this.items){
-      this.items.push(item);
+      this.items.unshift(item);
 
     }else{
       this.items = [ item ]

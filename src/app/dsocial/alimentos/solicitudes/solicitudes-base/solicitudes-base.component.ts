@@ -5,6 +5,9 @@ import { Asistencia, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent } from
 const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
 const ALIMENTOS = 'alimentos';
+const ALIMENTOS_LABEL = "Voucher alimentos";
+const MATERIALES = 'materiales';
+const MATERIALES_LABEL = "Voucher materiales";
 const ACTION = 'create';
 
 @Component({
@@ -20,12 +23,13 @@ export class SolicitudesBaseComponent implements OnInit {
 	public showEdit = false;
 
   public alimento: Alimento;
-  public isAlimento = false;
+  public isRemitible = false;
 
   public showViewAlimento = false;
   public showEditAlimento = false;
 
 	public openEditor = false;
+  public voucher_label = "Voucher alimentos";
 
   constructor() { }
 
@@ -37,10 +41,14 @@ export class SolicitudesBaseComponent implements OnInit {
   }
 
   initAlimentos(alimento:Alimento){
-    if(this.token.action === ALIMENTOS){
-      this.isAlimento = true
-    }
+    if(this.token.action === ALIMENTOS ){
+      this.voucher_label = ALIMENTOS_LABEL;
+      this.isRemitible = true
+    } else if(this.token.action === MATERIALES){
+      this.voucher_label = MATERIALES_LABEL;
+      this.isRemitible = true
 
+    }
 
   }
 
@@ -52,7 +60,6 @@ export class SolicitudesBaseComponent implements OnInit {
   }
 
 
-    
   generarVoucher(e){
     e.preventDefault();
     e.stopPropagation();

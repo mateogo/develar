@@ -122,7 +122,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/seguimiento'
       },
       {
-        title: 'Alimentos',
+        title: 'Voucher almacén',
         routing: '/dsocial/gestion/alimentos'
       },
       {
@@ -696,7 +696,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/seguimiento'
       },
       {
-        title: 'Alimentos',
+        title: 'Voucher almacén',
         routing: '/dsocial/gestion/alimentos'
       },
       {

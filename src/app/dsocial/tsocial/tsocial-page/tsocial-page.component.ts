@@ -148,23 +148,27 @@ export class TsocialPageComponent implements OnInit {
 
 
     }
-
     // todo: Search For S/Asistencias
-
-
   }
 
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      if(list && list.length) this.asistenciasList = list;
+      this.asistenciasList = list || [];
+      this.sortProperly(this.asistenciasList);
 
       this.hasCurrentPerson = true;
-
     })
-
-
   }
+
+  sortProperly(records){
+    records.sort((fel, sel)=> {
+      if(fel.fecomp_tsa < sel.fecomp_tsa) return 1;
+      else if(fel.fecomp_tsa > sel.fecomp_tsa) return -1;
+      else return 0;
+    })
+  }
+
 
   /**********************/
   /*      Events        */

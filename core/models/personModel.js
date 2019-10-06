@@ -325,12 +325,12 @@ function buildQuery(query){
     }
 
     if(query.list){
-        console.log('///// buildQuery')
-        console.log(query.list);
+        //console.log('///// buildQuery')
+        //console.log(query.list);
         let ids = query.list.split(',');
         let new_ids = ids.map(t => mongoose.Types.ObjectId(t));
 
-        console.log('build Query [%s]', new_ids && new_ids.length);
+        //console.log('build Query [%s]', new_ids && new_ids.length);
         q["_id"] = { $in: new_ids}
             //db.collection.find( { _id : { $in : [1,2,3,4] } } );
     }
@@ -382,7 +382,6 @@ function updateData(model, data){
  * @param errcb
  */
 exports.findByQuery = function (query, errcb, cb) {
-    console.log('findByQuery [%s]',query)
     let regexQuery = buildQuery(query);
 
     Person.find(regexQuery, function(err, entities) {
@@ -1011,8 +1010,8 @@ const buildEncuesta = function(person, token){
     if(!hasEncuesta(token)){
         return;
     }
-    console.log( '*********Has encuesta***************');
-    console.log('[%s] [%s] [%s] [%s] ', person.displayName, person.ndoc, token.id45, token.calle);
+    // console.log( '*********Has encuesta***************');
+    // console.log('[%s] [%s] [%s] [%s] ', person.displayName, person.ndoc, token.id45, token.calle);
     let address = getAddress(person);
 
     encuesta.id_address = '';
@@ -1102,8 +1101,8 @@ const buildEncuesta = function(person, token){
 ****/
 
 const buildDatosIngresos = function(person, token){
-    console.log( '************************************')
-    console.log('== [%s] [%s] [%s] [%s]', person.displayName, token.ingresos, token.obra_social, token.beneficios);
+    // console.log( '************************************')
+    // console.log('== [%s] [%s] [%s] [%s]', person.displayName, token.ingresos, token.obra_social, token.beneficios);
 
     let ingresosList = [];
     let ingreso1, ingreso2, ingreso3, ingreso4, ingreso5, ingreso6;
@@ -1119,7 +1118,6 @@ const buildDatosIngresos = function(person, token){
     let no_beneficios = ['no', 'aduce no recibir', 'infiere no', 'infiere no percibir', 'infiere no percibir', 'aduce no poseer', 'no posee', 'NULL']
 
     if(token.ingresos){
-        console.log('has ingresos')
         ingreso1 = {
             type: 'ingreso',
             tingreso: 'ingreso',
@@ -1131,7 +1129,6 @@ const buildDatosIngresos = function(person, token){
     }
 
     if(token.obra_social === 'Si'){
-        console.log('has osocial')
         ingreso2 = {
             type: 'cobertura',
             tingreso: 'osocial',
@@ -1147,7 +1144,6 @@ const buildDatosIngresos = function(person, token){
         let claves = ['pensi', 'auh', 'plan'];
 
         if(beneficiosTxt.indexOf('pensi') !== -1 ){
-            console.log('has pensiones')
             ingreso3 = {
                 type: 'pension',
                 tingreso: 'pension',
@@ -1159,7 +1155,6 @@ const buildDatosIngresos = function(person, token){
         } 
 
         if(beneficiosTxt.indexOf('auh') !== -1 ){
-            console.log('has auh')
             ingreso4 = {
                 type: 'auh',
                 tingreso: 'auh',
@@ -1171,7 +1166,6 @@ const buildDatosIngresos = function(person, token){
         }
 
         if(beneficiosTxt.indexOf('plan') !== -1 ){
-            console.log('has plan')
             ingreso5 = {
                 type: 'asisprovincial',
                 tingreso: 'plan',
@@ -1183,7 +1177,6 @@ const buildDatosIngresos = function(person, token){
         }
 
         if(!claves.find(t => beneficiosTxt.indexOf(t) !== -1 )){
-            console.log('otros')
             ingreso6 = {
                 type: 'otros',
                 tingreso: 'otros',
@@ -1197,15 +1190,14 @@ const buildDatosIngresos = function(person, token){
     }
 
     if(ingresosList.length){
-        console.log('================================')
-        console.log('ingresos: [%s]', ingresosList.length);
-        console.dir(ingresosList);
+        // console.log('================================')
+        // console.log('ingresos: [%s]', ingresosList.length);
+        // console.dir(ingresosList);
         person.cobertura = ingresosList;
     }else{
         person.cobertura = [];
     }
 
-    console.log('end function <<<<<<<<<<<')
 }
 
 
@@ -1444,10 +1436,23 @@ const buildCoreData = function(person, token){
 
 
 ****/
+async function saveRecord(person, master){
+    if(master[person.idbrown]){
+        person._id = master[person.idbrown];
+        await Person.findByIdAndUpdate(person._id, person, { new: true }).exec();
 
+    }else{
+        if(person.idbrown){
+            master[person.idbrown] = person._id;
+        }
+        await person.save();
+    }
 
-const insertImportedPerson = function(token){
+}
+
+const insertImportedPerson = function(token, master){
     let person = new Person();
+
     buildCoreData(person, token);
     buildLocaciones(person, token);
     buildDatosContacto(person, token);
@@ -1455,9 +1460,7 @@ const insertImportedPerson = function(token){
     buildDatosIngresos(person, token);
     buildEncuesta(person, token);
 
-    person.save().then(err => {
-        //console.log('person [%s] SAVED', person.displayName);
-    });
+    saveRecord(person, master);
 }
 
 /*****
@@ -1525,7 +1528,7 @@ const insertImportedPerson = function(token){
 
 ****/
 
-const processOnePerson = function(token){
+const processOnePerson = function(token, master){
     let data = token.column,
         person = {};
 
@@ -1538,19 +1541,20 @@ const processOnePerson = function(token){
         }
 
     });
-    console.dir(person);
-    console.log('---------------------------');
+    //console.dir(person);
+    //console.log('---------------------------');
 
-    insertImportedPerson(person);
+    insertImportedPerson(person, master);
 
 
 }
 
 const processImportedPersons = function(data, errcb, cb){
     let table = data.database.table;
+    const personMaster = {};
 
     table.forEach((token, index) => {
-        processOnePerson(token);
+        processOnePerson(token, personMaster);
 
     });
 
@@ -1562,7 +1566,9 @@ const processImportedPersons = function(data, errcb, cb){
 
 const processArchive = function(req, errcb, cb){
     console.log('******  processARCHIVE to BEGIN ********')
-    const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
+    const arch = path.join(config.rootPath, 'public/migracion/persona/persona.xml');
+    console.log('******  processARCHIVE OK ********')
 
                 // tagNameProcessors: [toUpperCase],
                 // attrNameProcessors: [toUpperCase],
@@ -1596,8 +1602,8 @@ const processArchive = function(req, errcb, cb){
 
                 }else{
                     console.log('Parser OK');
-                    console.dir(jdata);
-                    cb(jdata)
+                    //console.dir(jdata);
+                    cb({result: "ok"})
                     processImportedPersons(jdata, errcb, cb);
                 }
             });
@@ -1615,7 +1621,7 @@ const processArchive = function(req, errcb, cb){
  * @param errcb
  */
 exports.import = function (req, errcb, cb) {
-    console.log('Import @496')
+    //console.log('Import @496')
 
     processArchive(req, errcb, cb);
 

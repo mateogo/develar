@@ -660,54 +660,54 @@ const saludSubtiposOptList = {
 }
 
 const coberturaOptList: Array<any> = [
-    {val: 'ingreso',        label: 'ingreso',    },
-    {val: 'cobertura',      label: 'cobertura',    },
-    {val: 'pension',        label: 'pension',    },
-    {val: 'auh',            label: 'auh',    },
-    {val: 'asisprovincial', label: 'asisprovincial',    },
-    {val: 'asisnacional',   label: 'asisnacional',    },
-    {val: 'asismunicipal',  label: 'asismunicipal',    },
-    {val: 'otros',          label: 'otros',    },
+    {val: 'ingreso',        label: 'Ingreso',    },
+    {val: 'cobertura',      label: 'Cobertura',    },
+    {val: 'pension',        label: 'Pensión',    },
+    {val: 'auh',            label: 'AUH',    },
+    {val: 'asisprovincial', label: 'Asis provincial',    },
+    {val: 'asisnacional',   label: 'Asis nacional',    },
+    {val: 'asismunicipal',  label: 'Asis municipal',    },
+    {val: 'otros',          label: 'Otras coberturas/asistencias',    },
 ];
 
 const coberturaSubtiposOptList = {
   ingreso: [
-    {val: 'noposee',  label: 'noposee' },
-    {val: 'ingreso',  label: 'ingreso' },
-    {val: 'salario',  label: 'salario' },
-    {val: 'changa',   label: 'changa' },
-    {val: 'oficio',   label: 'oficio' },
-    {val: 'comercio', label: 'comercio' },
+    {val: 'noposee',  label: 'No posee' },
+    {val: 'ingreso',  label: 'Ingreso' },
+    {val: 'salario',  label: 'Salario' },
+    {val: 'changa',   label: 'Changa' },
+    {val: 'oficio',   label: 'Oficio' },
+    {val: 'comercio', label: 'Comercio' },
   ],
   cobertura: [
-    {val: 'noposee',    label: 'noposee' },
-    {val: 'osocial',    label: 'osocial' },
-    {val: 'medprepaga', label: 'medprepaga' },
-    {val: 'pami',       label: 'pami' },
+    {val: 'noposee',    label: 'No posee' },
+    {val: 'osocial',    label: 'Obra Social' },
+    {val: 'medprepaga', label: 'Med Prepaga' },
+    {val: 'pami',       label: 'PAMI' },
   ],
   pension: [
-    {val: 'noposee',   label: 'noposee' },
-    {val: 'pension',   label: 'pension' },
+    {val: 'noposee',   label: 'No posee' },
+    {val: 'pension',   label: 'Pensión' },
   ],
   auh: [
-    {val: 'noposee',  label: 'noposee' },
-    {val: 'auh',      label: 'auh' },
+    {val: 'noposee',  label: 'No posee' },
+    {val: 'auh',      label: 'AUY' },
   ],
   asisprovincial: [
-    {val: 'noposee',     label: 'noposee' },
-    {val: 'aprovincial', label: 'aprovincial' },
+    {val: 'noposee',     label: 'No posee' },
+    {val: 'aprovincial', label: 'Asis Provincial' },
   ],
   asisnacional: [
-    {val: 'noposee',   label: 'noposee' },
-    {val: 'anacional', label: 'anacional' },
+    {val: 'noposee',   label: 'No posee' },
+    {val: 'anacional', label: 'Asis Nacional' },
   ],
   asismunicipal: [
-    {val: 'noposee',    label: 'noposee' },
-    {val: 'amunicipal', label: 'amunicipal' },
+    {val: 'noposee',    label: 'No posee' },
+    {val: 'amunicipal', label: 'Asis Municipal' },
   ],
   otros: [
-    {val: 'noposee',   label: 'noposee' },
-    {val: 'otros',     label: 'otros' },
+    {val: 'noposee',   label: 'No posee' },
+    {val: 'otros',     label: 'Otras coberturas/asistencias' },
   ],
 
 }

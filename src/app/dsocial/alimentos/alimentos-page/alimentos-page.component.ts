@@ -152,17 +152,24 @@ export class AlimentosPageComponent implements OnInit {
 
 
   initNewRemito(asistencia: Asistencia){
-    let action = 'alimentos';
+    console.log('initNewRemito');
+    //console.dir(asistencia);
+
+    let action = asistencia.action;
     let slug = '';
-    let sector = 'alimentos';
+    let sector = asistencia.sector;
     let serial: Serial;
     let person = this.currentPerson;
-    let kitEntrega = asistencia.modalidad.type;
-    let qty = asistencia.modalidad.qty;
+    let kitEntrega = '';
+    let qty = 1;
+
+    if(asistencia.modalidad){
+      kitEntrega = asistencia.modalidad.type;
+      qty = asistencia.modalidad.qty;
+    }
+
     this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person, kitEntrega, qty)
     this.emitRemito = true;
-
-
   }
 
   loadHistorialRemitos(){
@@ -228,15 +235,24 @@ export class AlimentosPageComponent implements OnInit {
     }
   }
 
+
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      if(list && list.length) this.asistenciasList = list;
+      this.asistenciasList = list || [];
+      this.sortAsistenciasProperly(this.asistenciasList);
 
       this.hasCurrentPerson = true;
     })
   }
 
+  sortAsistenciasProperly(records){
+    records.sort((fel, sel)=> {
+      if(fel.fecomp_tsa < sel.fecomp_tsa) return 1;
+      else if(fel.fecomp_tsa > sel.fecomp_tsa) return -1;
+      else return 0;
+    })
+  }
 
 
   /**********************/

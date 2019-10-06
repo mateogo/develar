@@ -148,7 +148,7 @@ import { AlmacenSearchComponent } from './helpers/product-search/product-search.
     SolasisBrowseComponent,
     SolicitaEncuestaEditComponent,
     SolicitaEncuestaViewComponent,
-    AlmacenSearchComponent
+    AlmacenSearchComponent,
   ]
 })
 export class DsocialModule { }
