@@ -1566,8 +1566,8 @@ const processImportedPersons = function(data, errcb, cb){
 
 const processArchive = function(req, errcb, cb){
     console.log('******  processARCHIVE to BEGIN ********')
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
-    const arch = path.join(config.rootPath, 'public/migracion/persona/persona.xml');
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
+    //const arch = path.join(config.rootPath, 'public/migracion/persona/persona.xml');
     console.log('******  processARCHIVE OK ********')
 
                 // tagNameProcessors: [toUpperCase],
