@@ -23,6 +23,20 @@ router.get('/', function (req, res) {
     });
 });
 
+/**
+ * import and [update | insert ]
+ */
+router.get('/importalimentos', function (req, res) {
+    console.log('process Alimentos IMPORT');
+    service.importalimentos(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 /**
  * Retrieve all entity

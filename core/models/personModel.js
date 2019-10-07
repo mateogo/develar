@@ -1626,3 +1626,34 @@ exports.import = function (req, errcb, cb) {
     processArchive(req, errcb, cb);
 
 };
+
+
+exports.buildInvertedTree = function(){
+    let promise = new Promise((resolve, reject)=> {
+        Person.find(null, '_id displayName idbrown tdoc ndoc').then(persons => {
+            let master = {};
+            persons.forEach(p => {
+                if(p.idbrown){
+                    master[p.idbrown] = {
+                        _id: p._id,
+                        tdoc: p.tdoc,
+                        ndoc: p.ndoc,
+                        displayName: p.displayName
+                    }
+                }
+
+            })
+            resolve(master);
+
+        })
+
+
+    });
+
+
+
+    return promise;
+}
+
+
+

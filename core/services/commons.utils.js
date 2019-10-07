@@ -235,6 +235,20 @@ exports.parsePHPTimeStamp = function(str){
     return Date.now();
 }
 
+exports.projectedDate = function(date, plus_day, plus_month){
+    plus_day = plus_day || 0;
+    plus_month = plus_month || 0;
+
+    if(plus_day) {
+        date.setMonth(date.getMonth() + plus_month, date.getDate() + plus_day);
+
+    }else {
+        date.setMonth(date.getMonth() + plus_month, 0);
+
+    }
+    return date;
+}
+
 
 
 exports.parseDateStr = function(str) {
