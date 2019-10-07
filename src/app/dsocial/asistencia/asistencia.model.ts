@@ -246,7 +246,7 @@ const estadosOptList = [
       {val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
       {val: 'activo',      label: 'Activa',      slug:'Activa' },
       {val: 'cumplido',    label: 'Cumplida',    slug:'Cumplida' },
-      {val: 'suspendida',  label: 'Suspendida',  slug:'Suspendida' },
+      {val: 'suspendido',  label: 'Suspendida',  slug:'Suspendida' },
       {val: 'baja',        label: 'Baja',        slug:'Baja' },
 ]
 
@@ -257,6 +257,7 @@ const avanceOptList = [
       {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
       {val: 'programado',   label: 'Programado',    slug:'Programado' },
       {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
+      {val: 'entregado',    label: 'Entregado',      slug:'Entregado' },
       {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
 ]
 

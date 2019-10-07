@@ -41,6 +41,7 @@ export class SolasisViewComponent implements OnInit {
 	public fecha;
   public solicitante;
   public avance;
+  public estado;
 
   // Alimentos
 	public modalidad: Alimento;
@@ -78,8 +79,9 @@ export class SolasisViewComponent implements OnInit {
   	this.fecha = this.token.fecomp_txa;
   	this.modalidad = this.token.modalidad;
     this.encuesta = this.token.encuesta;
+    this.estado =  AsistenciaHelper.getPrefixedOptionLabel('estado', 'Estado', this.token.estado);
 
-    this.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', 'Estado', this.token.avance);
+    this.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', this.estado, this.token.avance);
     
     // if(this.token.avance === 'autorizado'){
     //   this.avance = 'AUTORIZADO';
