@@ -31,6 +31,7 @@ import {  Asistencia,
 import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
 
 import { ConversationContext }  from '../../../notifications/notification.model';
+import { KitOptionList } from '../../alimentos/alimentos.model';
 
 const UPDATE = 'update';
 const SELECT = 'select';
@@ -78,6 +79,7 @@ export class SegumientoPageComponent implements OnInit {
 
 	public showList = false;
 
+  public kitEntregaOptList: KitOptionList[];
 
   constructor(
   		private dsCtrl: DsocialController,
@@ -89,6 +91,9 @@ export class SegumientoPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
+
+    this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList;
+
     if(!this.personId){
       this.hasPersonIdOnURL = false;
     }

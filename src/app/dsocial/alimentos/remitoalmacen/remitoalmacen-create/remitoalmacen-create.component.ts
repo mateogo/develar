@@ -66,7 +66,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
 
     this.currentKitList(token);
 
-    console.log('Remito heredado for Edit: [%s]', token.kitEntrega)
     form.reset({
       slug:        token.slug,
       qty:         token.qty,
@@ -161,7 +160,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
   }
 
   handleProduct(product: Product){
-    console.log('Bublled Product: [%s]', product.code);
     let item = this.buildNewItem(product);
     this.addKitItem(item);
   }
@@ -197,7 +195,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
     this.currentItemList = this.buildItemList(this.currentKit, this.token);
 
     this.currentItemList.forEach(t => {
-      console.log('Insert  [%s]', t.code)
       let kitItemFG = this.fb.group(t);
       formArray.push(kitItemFG);
     })
@@ -230,8 +227,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
   }
 
   removeKitItem(item){
-    console.log('remove Item: [%s]',item);
-    console.dir(item);
     let formArray = this.form.get('kits') as FormArray;
     formArray.removeAt(item);
   }

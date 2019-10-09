@@ -110,7 +110,6 @@ export class SolicitaAlimentosEditComponent implements OnInit {
 
     }
 
-    console.log( ' [%s] date converted: [%s]',date_from.toString(), date_to.toString());
     this.form.controls['fechad'].setValue(devutils.txFromDate(date_from));
     this.form.controls['fechah'].setValue(devutils.txFromDate(date_to));
   }

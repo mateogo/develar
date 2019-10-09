@@ -1,22 +1,7 @@
-<mat-toolbar color="accent">
-	<mat-toolbar-row>
-
-		<h1 >Navegación</h1>
-		<div class="toolbar" >
-			<a mat-button (click)="moveOn($event)">Opción-1</a>
-			<a mat-button (click)="moveOn($event)">Opción-2</a>
-			<a mat-button (click)="moveOn($event)">Opción-3</a>
-			<a mat-button (click)="moveOn($event)">Opción-4</a>
-			<a mat-button (click)="moveOn($event)">Opción-5</a>
-		</div> 
-
-	</mat-toolbar-row>
-
-</mat-toolbar>
 <mat-card>
 	<mat-card-content>
 		<div class="selector">
-	  	<div class="d-flex justify-content-between panel-header">
+	  	<div class="d-flex align-items-center justify-content-between panel-header">
 				<div class="panel-header-text">{{ searchTitle }}</div>
 				<div class="panel-header-control" ><span 
 					(click)='openSearchForm()' title="Abrir panel de búsqueda avanzada">
@@ -78,3 +63,18 @@
 		</ng-container>
   </mat-card-content>
 </mat-card>
+
+<!--mat-toolbar style="height:50px;">
+	<mat-toolbar-row>
+
+		<h1 >Navegación</h1>
+		<div class="toolbar" >
+			<a mat-button (click)="moveOn($event)">Opción-1</a>
+			<a mat-button (click)="moveOn($event)">Opción-2</a>
+			<a mat-button (click)="moveOn($event)">Opción-3</a>
+			<a mat-button (click)="moveOn($event)">Opción-4</a>
+			<a mat-button (click)="moveOn($event)">Opción-5</a>
+		</div> 
+
+	</mat-toolbar-row>
+</mat-toolbar -->

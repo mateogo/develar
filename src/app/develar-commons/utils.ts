@@ -309,6 +309,18 @@ class Devutils {
         return calcularEdad(date);
     }
 
+    isWithinPeriod(fd, fh): boolean{
+        if(!fd || !fh) return false;
+        let ok = true;
+
+        let lower = this.dateFromTx(fd);
+        let upper = this.dateFromTx(fh);
+        let check = this.dateFromTx(this.txFromDate(new Date()));
+        if(check < lower || check >upper) ok = false
+
+        return ok;
+    }
+
 	txFromDate(date){
 		return dateToStr(date);
 	}

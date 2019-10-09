@@ -1628,6 +1628,29 @@ exports.import = function (req, errcb, cb) {
 };
 
 
+exports.buildIdTree = function(){
+    let promise = new Promise((resolve, reject)=> {
+        Person.find(null, '_id displayName fenac sexo tdoc ndoc locaciones').lean().then(persons => {
+            let master = {};
+            persons.forEach(p => {
+                master[p._id] = {
+                    _id: p._id,
+                    tdoc: p.tdoc,
+                    ndoc: p.ndoc,
+                    fenac: p.fenac,
+                    sexo: p.sexo,
+                    displayName: p.displayName,
+                    locaciones: p.locaciones
+                }
+
+            })
+            resolve(master);
+
+        })
+    });
+    return promise;
+}
+
 exports.buildInvertedTree = function(){
     let promise = new Promise((resolve, reject)=> {
         Person.find(null, '_id displayName idbrown tdoc ndoc').then(persons => {

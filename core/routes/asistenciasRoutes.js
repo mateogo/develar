@@ -37,6 +37,19 @@ router.get('/importalimentos', function (req, res) {
     });
 });
 
+/**
+ * import and [update | insert ]
+ */
+router.get('/tablero', function (req, res) {
+    console.log('generacion de tablero de control');
+    service.tablero(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
 
 /**
  * Retrieve all entity

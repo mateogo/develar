@@ -37,7 +37,7 @@ export class SolasisPanelComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList
+    this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList;
 
   	if(this.items && this.items.length){
   		this.showList = true;

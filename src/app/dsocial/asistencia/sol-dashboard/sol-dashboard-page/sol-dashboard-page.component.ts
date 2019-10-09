@@ -32,7 +32,7 @@ export class SolDashboardPageComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
 
-  public searchTitle = 'Búsqueda de Solicitudes';
+  public searchTitle = 'Navegar Solicitudes';
   public title = 'Solicitudes';
   public openEditor = true;
   public unBindList = [];
@@ -215,7 +215,6 @@ export class SolDashboardPageComponent implements OnInit {
   moveOn(e){
   	e.stopPropagation();
   	e.preventDefault();
-  	console.log('moveON')
   }
 
   openSearchForm(){
@@ -232,9 +231,7 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
-    console.log('ToDo: updateAsistenciaList [%s]', this.personId)
     if(event.action === NAVIGATE){
-      console.log(this.dsCtrl.atencionRoute('seguimiento'))
         this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento')], {relativeTo: this.route});
      }
   }
@@ -252,11 +249,8 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   initMapToRender(){
-    console.log('initMapToRender [%s]', this.asistenciasList.length)
     let listener$: Subject<AsistenciaSig[]> = this.dsCtrl.fetchMapDataFromAsis(this.asistenciasList);
     listener$.subscribe(tokens => {
-      console.log('initMapToRender')
-      console.dir(tokens);
       if(tokens && tokens.length){
         this.baseLatLng = {
           lat: tokens[0].lat,

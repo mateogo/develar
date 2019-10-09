@@ -352,6 +352,42 @@ export class AsistenciaHelper {
 		return req;
 	}
 
+	static filterActiveAsistencias(list: Asistencia[]): Asistencia[]{
+		if(!list || !list.length) return [];
+
+		let filteredList = list.filter(t => {
+			let valid = true;
+			if(t.estado !== "activo"){
+				valid = false;
+				return valid;
+			}
+
+			// Alimentos
+			let alimento = t.modalidad;
+			if(alimento && alimento.fe_txd && alimento.fe_txh){
+
+				if(!devutils.isWithinPeriod(alimento.fe_txd, alimento.fe_txh)) valid = false;
+
+			}
+			return valid;
+		})
+
+		return filteredList;
+	}
+
+  static asistenciasSortProperly(records: Asistencia[]): Asistencia[]{
+    records.sort((fel, sel)=> {
+      if(!fel.fecomp_tsa) fel.fecomp_tsa = 0;
+      if(!sel.fecomp_tsa) sel.fecomp_tsa = 0;
+
+      if(fel.fecomp_tsa < sel.fecomp_tsa) return 1;
+      else if(fel.fecomp_tsa > sel.fecomp_tsa) return -1;
+      else return 0;
+    });
+    return records;
+  }
+
+
 	static initNewAsistenciaDeprecated(type ): Asistencia{
 		let token = new Asistencia();
 		if(type === 'alimentos'){

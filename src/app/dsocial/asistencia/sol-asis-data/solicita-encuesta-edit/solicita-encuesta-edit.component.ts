@@ -94,13 +94,11 @@ export class SolicitaEncuestaEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
 
     if(type === 'locacionId'){
       let t = this.selectLocation(val)
       this.form.controls['city'].setValue(t.city);
       this.form.controls['barrio'].setValue(t.barrio);
-      console.log('locacionId [%s]', t.city)
     }
 
   }

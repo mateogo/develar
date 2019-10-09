@@ -15,6 +15,7 @@
 			 		<div  *ngFor="let asistencia of asistenciasList" >
 			 			<solasis-base [asistencia]='asistencia'
 			 										[viewMode]="'select'"
+		 											[kitOptList]='kitEntregaOptList'
 													(updateToken)='selectAsistencia($event)'></solasis-base>
 					</div>
 			 	</ng-container>

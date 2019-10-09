@@ -100,7 +100,6 @@ export class SolasisBrowseComponent implements OnInit {
   }
 
   deSelectPerson(e:MatCheckboxChange){
-    console.log('Deselect now');
     delete this.currentPerson;
 
   }
@@ -206,7 +205,6 @@ export class SolasisBrowseComponent implements OnInit {
     entity.urgencia =        fvalue.urgencia;
     entity.trabajadorId =    fvalue.trabajadorId;
     entity.avance_encuesta = fvalue.avance_encuesta;
-    console.log('Browse By Person: [%s]', this.currentPerson && this.currentPerson.displayName)
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;

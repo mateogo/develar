@@ -152,8 +152,6 @@ export class AlimentosPageComponent implements OnInit {
 
 
   initNewRemito(asistencia: Asistencia){
-    console.log('initNewRemito');
-    //console.dir(asistencia);
 
     let action = asistencia.action;
     let slug = '';
@@ -239,7 +237,9 @@ export class AlimentosPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      this.asistenciasList = list || [];
+
+      this.asistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
+
       this.sortAsistenciasProperly(this.asistenciasList);
 
       this.hasCurrentPerson = true;
@@ -253,6 +253,8 @@ export class AlimentosPageComponent implements OnInit {
       else return 0;
     })
   }
+
+
 
 
   /**********************/

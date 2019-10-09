@@ -114,7 +114,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/ayudadirecta'
       },
       {
-        title: 'Atención Social',
+        title: 'Atención TS',
         routing: '/dsocial/gestion/atencionsocial'
       },
       {
@@ -130,7 +130,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/almacen'
       },
       {
-        title: 'Solicitud de Asistencia',
+        title: 'Navegar solicitudes',
         routing: '/dsocial/gestion/solicitudes'
       },
     ],
@@ -688,7 +688,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/ayudadirecta'
       },
       {
-        title: 'Atención Social',
+        title: 'Atención TS',
         routing: '/dsocial/gestion/atencionsocial'
       },
       {
@@ -704,7 +704,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/almacen'
       },
       {
-        title: 'Solicitud de Asistencia',
+        title: 'Navegar solicitudes',
         routing: '/dsocial/gestion/solicitudes'
       },
     ],

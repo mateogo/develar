@@ -249,6 +249,13 @@ exports.projectedDate = function(date, plus_day, plus_month){
     return date;
 }
 
+exports.calcularEdad = function(dob_number) {
+    if(!dob_number) return 0;
+    var diff_ms = Date.now() - dob_number;
+    var age_dt = new Date(diff_ms); 
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
+}
+
 
 
 exports.parseDateStr = function(str) {

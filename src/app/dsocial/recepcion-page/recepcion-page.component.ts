@@ -52,8 +52,11 @@ export class RecepcionPageComponent implements OnInit {
   public selectTurno = false;
 
   public asistenciasList: Asistencia[] = [];
+  public activeAsistenciasList: Asistencia[] = [];
   public lastAsistencia: Asistencia;
   public hasAsistencias = false;
+  public hasActiveAsistencias = false;
+  public canIssueVoucher = false;
 
   public remitosList: RemitoAlmacen[] = [];
   public lastRemito: RemitoAlmacen;
@@ -123,16 +126,34 @@ export class RecepcionPageComponent implements OnInit {
 
 
   }
+  initValidAsistencias(list:Asistencia[]){
+    this.activeAsistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
+    this.hasActiveAsistencias = false;
+
+    if(this.activeAsistenciasList && this.activeAsistenciasList.length) {
+      this.hasActiveAsistencias = true;
+      this.canIssueVoucher = true;
+      this.lastAsistencia = this.activeAsistenciasList[this.activeAsistenciasList.length - 1]
+    }
+  }
 
   initAsistenciasList(p: Person){
     this.asistenciasList = [];
     this.hasAsistencias = false;
+    this.canIssueVoucher = true;
+
+    this.activeAsistenciasList = [];
+    this.hasActiveAsistencias = false;
 
     this.dsCtrl.fetchAsistenciaByPerson(p).subscribe(list => {
       if(list && list.length) {
-        this.asistenciasList = list;
+        this.asistenciasList = AsistenciaHelper.asistenciasSortProperly(list);
+
         this.lastAsistencia = list[list.length - 1]
         this.hasAsistencias = true;
+        this.canIssueVoucher = false;
+
+        this.initValidAsistencias(this.asistenciasList);
       }
 
     })
@@ -224,7 +245,6 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   checkIfNewAlimento(){
-    console.log('Check IfNew Alimento hasAsistencias[%s] [%s]', this.hasAsistencias,this.currentSector.val);
     if(!this.hasAsistencias && this.currentSector.val === "alimentos"){
       let slug = 'Alimentos otorgados de oficio, presentación espontánea 1ra vez'
 
@@ -241,7 +261,6 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   turnoSelected(sector: SectorAtencion){
-    console.log('NuevoTurno: [%s]', sector.label);
     this.currentSector = sector;
     this.sectorLabel = sector.label;
 

@@ -69,8 +69,8 @@ const asistenciaSch = new Schema({
     compName:    { type: String, required: true },
     compNum:     { type: String, required: true },
     idPerson:    { type: String, required: true },
-    fecomp_tsa:  { type: String, required: false },
-    fecomp_txa:  { type: String, required: false },
+    fecomp_tsa:  { type: Number, required: true },
+    fecomp_txa:  { type: String, required: true },
     action:      { type: String, required: true },
     slug:        { type: String, required: false },
     description: { type: String, required: false },
@@ -162,10 +162,14 @@ function buildQuery(query){
   }
 
   if(query["fecomp_ts_d"]){
+    console.log('fecomp_ts_d [%s]',query["fecomp_ts_d"]);
+
     comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
   }
 
   if(query["fecomp_ts_h"]){
+    console.log('fecomp_ts_h [%s]',query["fecomp_ts_h"]);
+
     comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
   }
 
@@ -380,6 +384,7 @@ const buildAlimentos = function (token, num, isLast) {
   //console.log('buildAlimentos: [%s]', fechaPHP);
   let fechaDate = utils.parsePHPDateStr(fechaPHP);
   let projectedDate = utils.parsePHPDateStr(fechaPHP);
+  let isCurrentYear = isThisYear(fechaDate);
 
   let requeridox = {
     id: token.person._id,
@@ -395,13 +400,17 @@ const buildAlimentos = function (token, num, isLast) {
     qty: 1,
     fe_txd: utils.dateToStr(fechaDate),
     fe_txh: utils.dateToStr(fechaDate),
+    fe_tsd: fechaDate.getTime(),
+    fe_tsh: fechaDate.getTime(),
     observacion: observacion
   }
 
   if(isLast){
-    if(isThisYear(fechaDate)){
+    if(isCurrentYear){
       modalidad.periodo = "12M";
-      modalidad.fe_txh = utils.dateToStr(utils.projectedDate(projectedDate, 0, 12));
+      let prjDate = utils.projectedDate(projectedDate, 0, 12);
+      modalidad.fe_txh = utils.dateToStr(prjDate);
+      modalidad.fe_tsh = prjDate.getTime();
     }
   }
 
@@ -417,7 +426,7 @@ const buildAlimentos = function (token, num, isLast) {
     slug:        "dato migrado",
     description: observacion,
     sector:      "alimentos",
-    estado:      isLast ? "activo" : "cumplido",
+    estado:      (isLast && isCurrentYear) ? "activo" : "cumplido",
     avance:      "entregado",
     ts_alta:     utils.parsePHPTimeStamp(token.entrega.ts),
     ts_fin:      utils.parsePHPTimeStamp(token.entrega.ts),
@@ -609,14 +618,9 @@ function buildInverteTree(req, errcb, cb){
       //console.dir(personTree);
     }
     processArchive(personTree, req, errcb, cb)
-
-
-  })
-
-
-
-
+  });
 }
+
 
 //http://localhost:8080/api/asistencias/importalimentos
 /**
@@ -627,7 +631,124 @@ function buildInverteTree(req, errcb, cb){
  */
 exports.importalimentos = function (req, errcb, cb) {
     //console.log('Import @496')
+    //ToDo: ojo SQL que traiga también las pendientes
 
     buildInverteTree(req, errcb, cb);
 
 };
+
+const buildDiaMes = function(token, fe){
+  let fechaId = fe.getFullYear() + '0000';
+  let diaId = '00' + token.dia;
+  let mesId = '00' + token.mes;
+  
+  if(token.mes === fe.getMonth()){
+    if(token.dia === fe.getDate()){
+      fechaId = fe.getFullYear() + mesId.substr(-2) + diaId.substr(-2);
+    } else {
+      fechaId = fe.getFullYear() + mesId.substr(-2) + '00';
+    }
+  }
+  return fechaId;
+}
+
+
+
+const buildId = function(token, fe){
+  let fechaId = buildDiaMes(token, fe);
+  let edadId = token.edadId;
+  let sexoId = token.sexo;
+  let estadoId = "[" + ("            " + token.estado).substr(-12) + "]" 
+  let avanceId = "[" + ("            " + token.avance).substr(-12) + "]" 
+  let actionId = "[" + ("            " + token.action).substr(-12) + "]" 
+  let sectorId = "[" + ("            " + token.sector).substr(-12) + "]" 
+  return fechaId + ':' + edadId + ':' + sexoId + ':' + estadoId + avanceId + actionId + sectorId;
+}
+
+const processToken = function(token, master){
+  if(master[token.id]){
+    master[token.id].cardinal = master[token.id].cardinal + 1;
+
+  }else{
+    master[token.id] = token;
+  }
+}
+
+
+const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
+  console.log('processTableroAsistencia BEGIN [%s]', entities && entities.length);
+  let master = {};
+
+  entities.forEach(asistencia => {
+    //console.dir(asistencia);
+    let fecomp = utils.parseDateStr(asistencia.fecomp_txa)
+    console.log('asistencia: [%s]  [%s]',asistencia.fecomp_txa, (asistencia.fecomp_tsa == fecomp.getTime()));
+    let person = ptree[asistencia.idPerson];
+    let fenac = 0;
+    let sexo = 'X';
+    let ciudad = 'ciudad';
+
+    if(person){
+      fenac = person.fenac || 0;
+      sexo = person.sexo || 'X';
+      if(person.locaciones && person.locaciones.length){
+        ciudad = person.locaciones[0].city || 'ciudad';
+      }
+    }else{
+      console.log('aiuddaaaaaa')
+    }
+
+    let token = {
+      dia: fecomp.getDate(),
+      mes: fecomp.getMonth(),
+      fenac: fenac,
+      ciudad: ciudad,
+      sexo: sexo,
+      edadId: ("00" + Math.floor(utils.calcularEdad(fenac)/10)).substr(-2),
+      estado: asistencia.estado,
+      avance: asistencia.avance,
+      action: asistencia.action,
+      sector: asistencia.sector,
+      cardinal: 1
+    };
+
+    token.id = buildId(token, fe);
+    processToken(token, master);
+
+  })
+  // fin del proceso
+  cb(master);
+
+
+}
+
+exports.tablero = function(req, errcb, cb) {
+  let fe_hasta = new Date();
+  let fe_desde = new Date(fe_hasta.getFullYear(), 0, 1);
+  let query = {
+      fecomp_ts_d: fe_desde.getTime(),
+      fecomp_ts_h: fe_hasta.getTime()
+    }
+  
+  let regexQuery = buildQuery(query)
+
+  console.log('BuildPeronTree BEGIN')
+    
+  person.buildIdTree().then(pTree =>{
+    console.log('BuildPeronTree fullFilled [%s]', regexQuery);
+    console.dir(regexQuery);
+
+    Record.find(regexQuery).lean().exec(function(err, entities) {
+
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+        }else{
+          console.log('entities [%s]', entities.length)
+          procesTableroAsistencia(pTree, entities, fe_hasta, errcb, cb);
+        }
+    });
+  })
+
+}
+

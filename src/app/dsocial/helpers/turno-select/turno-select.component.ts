@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { sectores, SectorAtencion } from '../../dsocial.model';
 
 @Component({
@@ -7,6 +7,7 @@ import { sectores, SectorAtencion } from '../../dsocial.model';
   styleUrls: ['./turno-select.component.scss']
 })
 export class TurnoSelectComponent implements OnInit {
+  @Input() isAlimentos =  true;
 	@Output() turno$ = new EventEmitter<SectorAtencion>();
 
 
@@ -20,6 +21,7 @@ export class TurnoSelectComponent implements OnInit {
   turnoFor(e, token){
   	e.stopPropagation();
   	e.preventDefault();
+    if(token.val === "alimentos" && !this.isAlimentos) return;
   	this.fetchTurnos(token);
   }
 

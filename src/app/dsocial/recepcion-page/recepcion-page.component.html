@@ -30,7 +30,8 @@
 
         <ng-container *ngIf="selectTurno">
           <h5>Seleccione el sector de atención</h5>
-          <turno-select (turno$)="turnoSelected($event)"></turno-select>
+          <h5 class="alert" *ngIf="!canIssueVoucher">ATENCIÓN: Debe consultar TS para entrega de Alimentos</h5>
+          <turno-select [isAlimentos]="canIssueVoucher" (turno$)="turnoSelected($event)"></turno-select>
         </ng-container>
 
         <ng-container *ngIf="selectPriority">
