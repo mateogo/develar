@@ -630,7 +630,7 @@ function buildInverteTree(req, errcb, cb){
  * @param errcb
  */
 exports.importalimentos = function (req, errcb, cb) {
-    //console.log('Import @496')
+    console.log('Import @496')
     //ToDo: ojo SQL que traiga también las pendientes
 
     buildInverteTree(req, errcb, cb);

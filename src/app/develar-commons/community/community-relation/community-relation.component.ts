@@ -7,7 +7,7 @@ import { User }      from '../../../entities/user/user';
 
 
 import { Subject ,  Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 
 function fetchData(form: FormGroup, model: CommunityUserRelation, community: Community, user: User, hasPreviousRelation: boolean): CommunityUserRelation {
@@ -98,6 +98,7 @@ export class CommunityRelationComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => this.communityCtrl.searchBySlug(term))
       )
   }

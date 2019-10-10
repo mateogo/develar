@@ -38,10 +38,12 @@ module.exports = function(settings){
 
   mongoose.Promise = BBPromise;
   mongoose.set('useFindAndModify', false);
+  mongoose.set('useUnifiedTopology', true);
+
   console.log('Mongo Connect: [%s]', settings.dbase);
 
   mongoose.connect(settings.dbase, {
-
+        useNewUrlParser: true
   });
 
   

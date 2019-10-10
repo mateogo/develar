@@ -5,7 +5,7 @@ import { Community, CommunityBase, communityModel }    from '../community.model'
 import { CommunityController }    from '../community.controller';
 
 import { Observable ,  Subject, of }        from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 function fetchData(form: FormGroup, model: CommunityBase, tags: Array<string>): CommunityBase {
 	const fvalue = form.value;
@@ -129,6 +129,7 @@ export class CommunityBaseComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => this.communityCtrl.searchBySlug(term))
       );
 

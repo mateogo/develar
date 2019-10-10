@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { Observable ,  Subject, of }        from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 import { GoogleSearchResponse, searchMachines } from '../develar-entities';
 import { GcseService } from '../gcse.service';
@@ -64,6 +64,7 @@ export class GcseComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => {
           if(term){
             return this.googleSearchService.search(term);

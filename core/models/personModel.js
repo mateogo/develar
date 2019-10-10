@@ -272,7 +272,7 @@ const Person = mongoose.model('Persona', personSch, 'personas');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    Person.find(function(err, persons) {
+    Person.find().lean().exec(function(err, persons) {
         if (err) {
             errcb(err);
         }else{
@@ -384,7 +384,7 @@ function updateData(model, data){
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 
-    Person.find(regexQuery, function(err, entities) {
+    Person.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
@@ -1653,7 +1653,7 @@ exports.buildIdTree = function(){
 
 exports.buildInvertedTree = function(){
     let promise = new Promise((resolve, reject)=> {
-        Person.find(null, '_id displayName idbrown tdoc ndoc').then(persons => {
+        Person.find(null, '_id displayName idbrown tdoc ndoc').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
                 if(p.idbrown){

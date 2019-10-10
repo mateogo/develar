@@ -84,7 +84,7 @@ const Record = mongoose.model('Folder', folderSch, 'folders');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    Record.find(function(err, entities) {
+    Record.find().lean().exec(function(err, entities) {
         if (err) {
             errcb(err);
         }else{
@@ -101,7 +101,7 @@ exports.findAll = function (errcb, cb) {
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = {"slug": {"$regex": query.slug, "$options": "i"} };
 
-    Record.find(regexQuery, function(err, entities) {
+    Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);

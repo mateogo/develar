@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router, ActivatedRoute }            from '@angular/router';
 
 import { Subject ,  Observable ,  BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 
 import { DaoService } from '../../develar-commons/dao.service';
@@ -94,6 +94,7 @@ export class NotificationCreateComponent implements OnInit {
     this.fetchedEntities = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => this.notifCtrl.searchByContent(term))
       )
 

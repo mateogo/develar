@@ -179,7 +179,7 @@ function buildQuery(query){
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 
-    User.find(regexQuery, function(err, entities) {
+    User.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
@@ -422,7 +422,7 @@ function updateExistingGoogleUser(user, google_profile, accessToken, cb ){
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    User.find(function(err, users) {
+    User.find().lean().exec(function(err, users) {
         if (err) {
             errcb(err);
         }else{

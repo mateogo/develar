@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Observable ,  Subject, }        from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged,filter, switchMap }   from 'rxjs/operators';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
@@ -46,6 +46,7 @@ export class PersonBuscarComponent implements OnInit {
     this.persons = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => this.dsCtrl.searchPerson(term))
       );
   }

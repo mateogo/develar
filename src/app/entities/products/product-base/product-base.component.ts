@@ -6,7 +6,7 @@ import { ProductController }    from '../product.controller';
 
 
 import { Observable ,  Subject}        from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 
 function fetchData(form: FormGroup, model: ProductBaseData): ProductBaseData {
@@ -121,6 +121,7 @@ export class ProductBaseComponent implements OnInit {
     this.products = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => this.productCtrl.searchBySlug(term))
       );
   }

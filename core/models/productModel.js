@@ -110,7 +110,7 @@ const Record = mongoose.model('Product', productSch, 'products');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    Record.find(function(err, entities) {
+    Record.find().lean().exec(function(err, entities) {
         if (err) {
             errcb(err);
         }else{
@@ -128,7 +128,7 @@ exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 
 
-    Record.find(regexQuery, function(err, entities) {
+    Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);

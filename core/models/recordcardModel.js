@@ -196,7 +196,7 @@ const Record = mongoose.model('Ficha', recordSch, 'fichas');
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    Record.find(function(err, entities) {
+    Record.find().lean().exec(function(err, entities) {
         if (err) {
             errcb(err);
         }else{
@@ -359,7 +359,7 @@ exports.findByQuery = function (req, errcb, cb) {
 
     let regexQuery = buildQuery(query, user);
 
-    Record.find(regexQuery, function(err, entities) {
+    Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', err)
             errcb(err);

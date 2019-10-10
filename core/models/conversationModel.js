@@ -226,7 +226,7 @@ const UserConversation = mongoose.model('UserConversation', userConversationSch,
  * @param errcb
  */
 exports.conversations = function (errcb, cb) {
-    Conversation.find(function(err, entities) {
+    Conversation.find().lean().exec(function(err, entities) {
         if (err) {
             errcb(err);
         }else{
@@ -287,7 +287,7 @@ exports.findUserConversationById = function (id, errcb, cb) {
  * @param errcb
  */
 exports.findAll = function (errcb, cb) {
-    UserConversation.find(function(err, entities) {
+    UserConversation.find().lean().exec(function(err, entities) {
         if (err) {
             errcb(err);
         }else{
@@ -304,7 +304,7 @@ exports.findAll = function (errcb, cb) {
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 
-    UserConversation.find(regexQuery, function(err, entities) {
+    UserConversation.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);

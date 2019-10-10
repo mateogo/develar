@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatChipInputEvent, MatChipEvent, MatChipSelectionChange, MatChipListChange} from '@angular/material';
 
 import { Observable ,  Subject, of }        from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, filter, switchMap }   from 'rxjs/operators';
 
 import { DaoService } from '../../dao.service';
 
@@ -72,6 +72,7 @@ export class TagComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
         switchMap(term => term
            ? this.daoService.search<Tag>('tag', term)
            : of<Tag[]>([])
