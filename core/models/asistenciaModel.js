@@ -682,7 +682,7 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
   entities.forEach(asistencia => {
     //console.dir(asistencia);
     let fecomp = utils.parseDateStr(asistencia.fecomp_txa)
-    console.log('asistencia: [%s]  [%s]',asistencia.fecomp_txa, (asistencia.fecomp_tsa == fecomp.getTime()));
+    //console.log('asistencia: [%s]  [%s]',asistencia.fecomp_txa, (asistencia.fecomp_tsa == fecomp.getTime()));
     let person = ptree[asistencia.idPerson];
     let fenac = 0;
     let sexo = 'X';
@@ -717,6 +717,7 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
 
   })
   // fin del proceso
+  console.log('ready to cb')
   cb(master);
 
 

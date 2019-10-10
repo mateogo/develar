@@ -61,9 +61,10 @@ export class DaoService {
         nextItemURL: 'api/turnos/nextitem'
       },
       asistencia:{
-        backendURL: 'api/asistencias',
-        searchURL:  'api/asistencias/search',
-        nextItemURL: 'api/asistencias/nextitem'
+        backendURL:   'api/asistencias',
+        searchURL:    'api/asistencias/search',
+        dashboardURL: 'api/asistencias/tablero',
+        nextItemURL:  'api/asistencias/nextitem'
       },
       remitoalmacen:{
         backendURL: 'api/remitosalmacen',
@@ -295,20 +296,29 @@ export class DaoService {
   }
 
   defaultSearch<T>(type:string): Observable<T[]> {
-    let query = `${this.dao[type].searchURL}`;
+    let url = `${this.dao[type].searchURL}`;
     return this.http
-               .get<T[]>(query)
+               .get<T[]>(url)
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
                  );
   }
 
   closeSession<T>(type: string): Observable<T[]> {
-    let query = `${this.dao[type].closesessionURL}`;
+    let url = `${this.dao[type].closesessionURL}`;
     return this.http
-               .get<T[]>(query)
+               .get<T[]>(url)
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
+  fetchAsistenciaDashboard<T>(type: string): Observable<T> {
+    let url = `${this.dao[type].dashboardURL}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
                  );
   }
 

@@ -133,6 +133,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         title: 'Navegar solicitudes',
         routing: '/dsocial/gestion/solicitudes'
       },
+      {
+        title: 'Tablero solicitudes',
+        routing: '/dsocial/gestion/tablero'
+      },
     ],
     routing: '',
     externalLink: '',
@@ -706,6 +710,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       {
         title: 'Navegar solicitudes',
         routing: '/dsocial/gestion/solicitudes'
+      },
+      {
+        title: 'Tablero solicitudes',
+        routing: '/dsocial/gestion/tablero'
       },
     ],
     routing: '',

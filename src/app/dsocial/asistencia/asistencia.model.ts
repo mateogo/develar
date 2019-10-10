@@ -16,6 +16,21 @@ export class Atendido {
 		sector:  string;
 };
 
+export interface Tile {
+		dia:      number;
+		mes:      number;
+		fenac:    number;
+		ciudad:   string;
+		sexo:     string;
+		edadId:   string;
+		estado:   string;
+		avance:   string;
+		action:   string;
+		sector:   string;
+		cardinal: number;
+		id:       string;
+}
+
 export class Alimento {
 		id:          string;
 		type:        string = 'standard';
@@ -95,6 +110,14 @@ export class AsistenciaTable {
 		trabajadorId: string;
 
 };
+
+
+export class DashboardBrowse {
+		action:      string;
+		sector:      string;
+		estado:      string;
+		avance:      string;
+}
 
 export class AsistenciaBrowse {
 		searchAction: string;
@@ -193,7 +216,7 @@ const asisActionOptList: Array<any> = [
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
         {val: 'pension',     type:'Pensión',      label: 'Pensión' },
         {val: 'migracion',   type:'Migración Acumar', label: 'Migración Acumar' },
-        {val: 'no_definido', type:'No definida',  label: 'No definida' },
+        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
 
 ];
 
@@ -203,7 +226,7 @@ const alimentosTypeOptList: Array<any> = [
         {val: 'teredad',    type:'Tercera Edad',  label: 'Tercera Edad' },
         {val: 'celiaco',    type:'Celíacos',      label: 'Celíacos' },
         {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
-        {val: 'no_definido', type:'No definida',  label: 'No definida' },
+        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
 
 ];
 
@@ -243,7 +266,7 @@ const periodoOptList = [
 ]
 
 const estadosOptList = [
-      {val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
       {val: 'activo',      label: 'Activa',      slug:'Activa' },
       {val: 'cumplido',    label: 'Cumplida',    slug:'Cumplida' },
       {val: 'suspendido',  label: 'Suspendida',  slug:'Suspendida' },
@@ -251,18 +274,18 @@ const estadosOptList = [
 ]
 
 const avanceOptList = [
-      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
+      {val: 'entregado',    label: 'Entregado',      slug:'Entregado' },
       {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
       {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
       {val: 'programado',   label: 'Programado',    slug:'Programado' },
       {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
-      {val: 'entregado',    label: 'Entregado',      slug:'Entregado' },
       {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
 ]
 
 const avanceEncuestaOptList = [
-      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',          slug:'Emitida' },
       {val: 'programado',   label: 'Programado',       slug:'Programado' },
       {val: 'visitado',     label: 'Visita cumplida',  slug:'Visita cumplida' },
@@ -511,6 +534,15 @@ export class AsistenciaHelper {
 		alimento.fe_tsd = fe_ts;
 		alimento.fe_tsh = fe_ts;
 		return alimento;
+	}
+
+	static defaultQueryForTablero(): DashboardBrowse{
+		let q = new DashboardBrowse();
+		q.estado = "no_definido";
+		q.avance = "no_definido";
+		q.action = "alimentos";
+		q.sector = "alimentos";
+		return q;
 	}
 
 

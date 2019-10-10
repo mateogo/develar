@@ -39,7 +39,8 @@ module.exports = function(settings){
   mongoose.Promise = BBPromise;
   mongoose.set('useFindAndModify', false);
   mongoose.set('useUnifiedTopology', true);
-
+  mongoose.set('useCreateIndex', true);
+  
   console.log('Mongo Connect: [%s]', settings.dbase);
 
   mongoose.connect(settings.dbase, {

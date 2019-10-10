@@ -6,6 +6,7 @@ import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { NotificationsModule }    from '../notifications/notifications.module';
 
+import { ChartsModule }                     from 'ng2-charts';
 
 import { DsocialRoutingModule } from './dsocial-routing.module';
 import { RecepcionPageComponent } from './recepcion-page/recepcion-page.component';
@@ -73,6 +74,7 @@ import { SolasisBrowseComponent } from './asistencia/sol-asis-data/solasis-brows
 import { SolicitaEncuestaEditComponent } from './asistencia/sol-asis-data/solicita-encuesta-edit/solicita-encuesta-edit.component';
 import { SolicitaEncuestaViewComponent } from './asistencia/sol-asis-data/solicita-encuesta-view/solicita-encuesta-view.component';
 import { AlmacenSearchComponent } from './helpers/product-search/product-search.component';
+import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 
 @NgModule({
   imports: [
@@ -81,6 +83,7 @@ import { AlmacenSearchComponent } from './helpers/product-search/product-search.
     DsocialRoutingModule,
     ReactiveFormsModule,
     DevelarCommonsModule,
+    ChartsModule,
     NotificationsModule,
   ],
   declarations: [
@@ -149,6 +152,7 @@ import { AlmacenSearchComponent } from './helpers/product-search/product-search.
     SolicitaEncuestaEditComponent,
     SolicitaEncuestaViewComponent,
     AlmacenSearchComponent,
+    AsistableroPageComponent,
   ]
 })
 export class DsocialModule { }

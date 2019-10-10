@@ -519,6 +519,15 @@ export class DsocialController {
     })
   }
 
+
+  public fetchAsistenciasDashboard(): Observable<any>{
+
+    return this.daoService.fetchAsistenciaDashboard<any>('asistencia');
+
+  }
+
+
+
   /*****  SAsistencia TABLE table Table    ****/
   get asistenciasDataSource(): BehaviorSubject<AsistenciaTable[]>{
     return this.emitAsistenciaDataSource;

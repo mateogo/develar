@@ -8,6 +8,7 @@ import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumient
 import { AlimentosPageComponent } from './alimentos/alimentos-page/alimentos-page.component';
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
+import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 
 const routes: Routes = [
 	{
@@ -17,6 +18,10 @@ const routes: Routes = [
 	{
 		path:'ayudadirecta',
 		component: TurnosPageComponent
+	},
+	{
+		path:'tablero',
+		component: AsistableroPageComponent
 	},
 	{
 		path:'alimentos/:id',
