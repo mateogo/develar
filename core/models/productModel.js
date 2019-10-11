@@ -359,9 +359,9 @@ const processImportedProducts = function(data, errcb, cb){
 
 const procesProductMigration = function(req, errcb, cb){
     console.log('******  processARCHIVE to BEGIN ********')
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/producta/producta.xml');
-    const arch = path.join(config.rootPath, 'public/migracion/productos/producto.xml');
+    //const arch = path.join(config.rootPath, 'public/migracion/productos/producto.xml');
 
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/productos/producto.xml');
 
     function toLowerCase(name){
         return name.toLowerCase();
