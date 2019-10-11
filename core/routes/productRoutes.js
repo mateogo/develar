@@ -23,6 +23,23 @@ router.get('/', function (req, res) {
     });
 });
 
+
+/**
+ * import and [update | insert ]
+ */
+router.get('/migracionproductos', function (req, res) {
+    console.log('process Productos IMPORT');
+    service.migracionproductos(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
 /**
  * search entities
  */
