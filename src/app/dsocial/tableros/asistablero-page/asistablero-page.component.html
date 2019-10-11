@@ -91,6 +91,7 @@
 
 <div class="cards" >
 <div class="row">
+
   <div *ngIf="showChart" class="col-xl-4">
     <card [bgColor]="''" class="chart-card">
       <div class="chart">
@@ -113,6 +114,52 @@
       </div>
     </card>
   </div>
-</div>
-</div>
 
+  <div *ngIf="showChart" class="col-xl-4">
+    <card [bgColor]="''" class="chart-card">
+      <div class="chart">
+        <canvas
+          baseChart
+          [data]="personBySex.data"
+          [colors]="personBySex.styles"
+          [labels]="personBySex.labels"
+          [legend]="false"
+          [options]="personBySex.opts"
+          [chartType]="personBySex.type"
+          width="100%"
+          height="100%"
+        ></canvas>
+      </div>
+      <div class="info">
+        <div class="title"><strong>{{ personBySex.title}}</strong> <small>{{ personBySex.stitle }}</small></div>
+        <div class="small">{{personBySex.slug}}</div>
+        <div class="small">{{personBySex.error}}</div>
+      </div>
+    </card>
+  </div> 
+
+  <div *ngIf="showChart" class="col-xl-4">
+    <card [bgColor]="''" class="chart-card">
+      <div class="chart">
+        <canvas
+          baseChart
+          [data]="personByCity.data"
+          [colors]="personByCity.styles"
+          [labels]="personByCity.labels"
+          [legend]="false"
+          [options]="personByCity.opts"
+          [chartType]="personByCity.type"
+          width="100%"
+          height="100%"
+        ></canvas>
+      </div>
+      <div class="info">
+        <div class="title"><strong>{{ personByCity.title}}</strong> <small>{{ personByCity.stitle }}</small></div>
+        <div class="small">{{personByCity.slug}}</div>
+        <div class="small">{{personByCity.error}}</div>
+      </div>
+    </card>
+  </div>
+  
+</div>
+</div>

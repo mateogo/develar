@@ -57,7 +57,7 @@ const almacenSch = new Schema({
     qty:         { type: Number, required: false },
     deposito:    { type: String, required: true  },
     tmov:        { type: String, required: false },
-    fecomp_tsa:  { type: String, required: false },
+    fecomp_tsa:  { type: Number, required: false },
     fecomp_txa:  { type: String, required: false },
     action:      { type: String, required: true  },
     slug:        { type: String, required: false },

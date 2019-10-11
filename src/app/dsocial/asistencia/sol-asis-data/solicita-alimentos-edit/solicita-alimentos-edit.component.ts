@@ -151,11 +151,17 @@ export class SolicitaAlimentosEditComponent implements OnInit {
 		const entity = token;
 
     entity.type =         fvalue.type;
+    entity.periodo =      fvalue.periodo;
+    
+    entity.fe_txd =       fvalue.fechad;
+    entity.fe_tsd =       devutils.dateFromTx(fvalue.fechad).getTime();
+
+    entity.fe_txh =       fvalue.fechah;
+    entity.fe_tsh =       devutils.dateFromTx(fvalue.fechah).getTime();
+
+
     entity.freq =         fvalue.freq;
     entity.qty =          fvalue.qty;
-    entity.periodo =      fvalue.periodo;
-    entity.fe_txd =       fvalue.fechad;
-    entity.fe_txh =       fvalue.fechah;
     entity.observacion =  fvalue.observacion;
 
 		return entity;

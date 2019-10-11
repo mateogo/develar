@@ -2,6 +2,7 @@ import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../dsocial.model';
 import { Person }   from '../../entities/person/person';
 import { sectores } from '../dsocial.model';
+import { RemitoAlmacen } from '../alimentos/alimentos.model';
 
 export class Requirente {
 		id:   string; 
@@ -238,12 +239,12 @@ const comprobantesOptList: Array<any> = [
 ];
 
 const frecuenciaOptList: Array<any> = [
-        {val: 'diaria',    type:'Diaria',           label: 'Diaria' },
-        {val: 'semanal',   type:'Semanal',          label: 'Semanal' },
-        {val: 'quincenal', type:'Quincenal',        label: 'Quincenal' },
-        {val: 'mensual',   type:'Mensual',          label: 'Mensual' },
-        {val: 'unica',     type:'Vez única',        label: 'Vez única' },
-        {val: 'arequerim', type:'A requerimiento',  label: 'A requerimiento' },
+        {val: 'diaria',    q: 31, type:'Diaria',           label: 'Diaria' },
+        {val: 'semanal',   q: 4, type:'Semanal',          label: 'Semanal' },
+        {val: 'quincenal', q: 2, type:'Quincenal',        label: 'Quincenal' },
+        {val: 'mensual',   q: 1, type:'Mensual',          label: 'Mensual' },
+        {val: 'unica',     q: 1, type:'Vez única',        label: 'Vez única' },
+        {val: 'arequerim', q: 1, type:'A requerimiento',  label: 'A requerimiento' },
 ];
 
 const tableActions = [
@@ -258,11 +259,11 @@ const urgenciaOptList = [
 ]
 
 const periodoOptList = [
-      {val: "UNICO", label: 'Única vez', slug:'Entrega única' },
-      {val: "3M",    label: ' 3 meses',  slug:'Período de validez: 3 meses' },
-      {val: "6M",    label: ' 6 meses',  slug:'Período de validez: 6 meses' },
-      {val: "9M",    label: ' 9 meses',  slug:'Período de validez: 9 meses' },
-      {val: "12M",   label: '12 meses',  slug:'Período de validez: 12 meses' },
+      {val: "UNICO", q:0,  label: 'Única vez', slug:'Entrega única' },
+      {val: "3M",    q:3,  label: ' 3 meses',  slug:'Período de validez: 3 meses' },
+      {val: "6M",    q:6,  label: ' 6 meses',  slug:'Período de validez: 6 meses' },
+      {val: "9M",    q:9,  label: ' 9 meses',  slug:'Período de validez: 9 meses' },
+      {val: "12M",   q:12, label: '12 meses',  slug:'Período de validez: 12 meses' },
 ]
 
 const estadosOptList = [
@@ -341,6 +342,65 @@ function getPrefixedLabel(list, prefix, val){
 		return label;
 }
 
+function expectedQty(type, val){
+		if(!val) return 'no-definido';
+		if(!type) return 0;
+		let list = optionsLists[type]
+		let t = list.find(item => item.val === val)
+		return t ? t.q : 0;
+}
+
+
+function validateFlujoEntregas(asistencia: Asistencia, entregas: RemitoAlmacen[]):any{
+	let entregasMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+
+	let error = {
+		valid: true,
+		message: 'OK'
+	};
+
+	let countEntregas = 0;
+	let expectedRaciones = asistencia.modalidad.qty;
+	let expectedEntregas = expectedQty('periodo', asistencia.modalidad.periodo);
+	let expectedFrecuencia = expectedQty('frecuencia', asistencia.modalidad.freq);
+
+	let today = new Date();
+	let mesActual = today.getMonth();
+console.log(1)
+	if(today.getTime() < asistencia.modalidad.fe_tsd  || today.getTime() > asistencia.modalidad.fe_tsh ){
+		error['valid'] = false;
+		error['message'] ='Fecha fuera de rango';
+		return error;
+	}
+
+console.log(2)
+	entregas.forEach(t => {
+		countEntregas += t.qty;
+		let mes = new Date(t.fecomp_tsa).getMonth();
+		entregasMes[mes] += t.qty;
+	})
+
+console.log(3)
+console.dir(entregasMes);
+console.log('mes Actual[%s]: [%s] expectedFreq[%s]',mesActual, entregasMes[mesActual], expectedFrecuencia )
+	if(entregasMes[mesActual] >= expectedFrecuencia * expectedRaciones){
+		error['valid'] = false;
+		error['message'] ='Excede entregas del período';
+		return error;
+	}
+
+console.log(4)
+console.log('countEntregas [%s] expectedTotal[%s]',countEntregas, expectedFrecuencia * expectedEntregas )
+	if(countEntregas >= expectedFrecuencia * expectedEntregas * expectedRaciones){
+		error['valid'] = false;
+		error['message'] ='Excede cantidad de entregas';
+		return error;
+	}
+
+
+	return error;
+}
+
 export class AsistenciaHelper {
 
 	static getOptionlist(type){
@@ -408,6 +468,28 @@ export class AsistenciaHelper {
       else return 0;
     });
     return records;
+  }
+
+  static checkVoucherConditions(asistencia: Asistencia, entregas: RemitoAlmacen[] ): any{
+  	//ToDo
+  	console.log('CheckVoucher BEGIN');
+  	let anteriores: RemitoAlmacen[] = [];
+  	let valid = {message: 'OK', valid: true};
+
+  	entregas.forEach(t =>{
+  		if(t.parentId === asistencia._id){
+  			anteriores.push(t);
+  		}
+  	});
+
+  	if(anteriores && anteriores.length){
+
+  		console.log('hasPrevious vouchers');
+  		valid = validateFlujoEntregas(asistencia, anteriores)
+  	}
+
+
+  	return valid;
   }
 
 

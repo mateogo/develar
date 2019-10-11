@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { Observable, Subject } from 'rxjs';
+import { Person, Address, personModel } from '../../../entities/person/person';
 
 import { DsocialController } from '../../dsocial.controller';
 
@@ -38,6 +39,8 @@ export class AsistableroPageComponent implements OnInit {
   public estadoOptList =   AsistenciaHelper.getOptionlist('estado');
   public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
   public urgenciaOptList = AsistenciaHelper.getOptionlist('urgencia');
+  public ciudadesList =    personModel.ciudades;
+
 	public form: FormGroup;
 	public showChart = false;
 	//AcumByDate
@@ -61,6 +64,12 @@ export class AsistableroPageComponent implements OnInit {
 
 	private personHelperByAge = {};
 	public personByAge: ChartData = new ChartData();
+
+	private personHelperBySex = {};
+	public personBySex: ChartData = new ChartData();
+
+	private personHelperByCity = {};
+	public personByCity: ChartData = new ChartData();
 
 
   //Person
@@ -111,70 +120,10 @@ export class AsistableroPageComponent implements OnInit {
     this.initForm(this.form, this.query);
 
     this.initPersonByAgeChart();
+    this.initPersonBySexChart();
+    this.initPersonByCityChart();
   }
 
-
-	initPersonByAgeChart(){
-		this.personByAge.type = 'pie';
-
-		this.personByAge.labels = [
-		    'Angular',
-		    'PHP',
-		    'HTML'
-		  ];
-
-	  this.personByAge.data = [
-		    300,
-		    500,
-		    100
-		  ];
-
-		this.personByAge.styles = [
-		    {
-		      backgroundColor: [
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#5dade0",
-			        "#5aa9da",
-			        "#56a9de",
-			        "#4ea1d9",
-			        "#47a7d7",
-			        "#42a2d2",
-			        "#3e9ece",
-			        "#3797c7",
-			        "#3292c2",
-			        "#2d8dbd",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			      ],
-		    }
-  		];
-		this.personByAge.opts = {
-		    elements: {
-		      arc : {
-		        	borderWidth: 0
-		      	}
-		    },
-		    tooltips: false
-		  };
-
-	}
 
 
   // Pie
@@ -230,10 +179,21 @@ export class AsistableroPageComponent implements OnInit {
   	this.dia.cardinal = 0;
   	this.mes.cardinal = 0;
   	this.anio.cardinal = 0;
+
   	this.personHelperByAge = {};
   	this.personByAge.error = "";
+
+  	this.personHelperBySex = {};
+  	this.personBySex.error = "";
+
+  	this.personHelperByCity = {};
+  	this.personByCity.error = "";
+
   }
 
+  /******************
+   acum By Date
+  *********************/
   acumByDate(t:Tile){
   	if(t.id.substr(6,2)!=="00"){
   		this.dia.cardinal += t.cardinal;
@@ -245,6 +205,268 @@ export class AsistableroPageComponent implements OnInit {
 
   	this.anio.cardinal += t.cardinal;
   }
+  /******************
+   DataByCity
+  *********************/
+	initPersonByCityChart(){
+		this.personByCity.type = 'pie';
+
+		this.personByCity.labels = [];
+
+	  this.personByCity.data = [];
+
+		this.personByCity.styles = [
+		    {
+		      backgroundColor: [
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#5dade0",
+			        "#5aa9da",
+			        "#56a9de",
+			        "#4ea1d9",
+			        "#47a7d7",
+			        "#42a2d2",
+			        "#3e9ece",
+			        "#3797c7",
+			        "#3292c2",
+			        "#2d8dbd",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			      ],
+		    }
+  		];
+		this.personByCity.opts = {
+		    elements: {
+		      arc : {
+		        	borderWidth: 0
+		      	}
+		    },
+		    tooltips: false
+		  };
+
+	}
+
+  acumByPersonCity(t:Tile){
+  	if(this.personHelperByCity[t.ciudad]){
+  		this.personHelperByCity[t.ciudad].cardinal += t.cardinal;
+
+  	}else {
+ 			this.personHelperByCity[t.ciudad] = {
+ 				cardinal: t.cardinal,
+ 				label: personModel.getCiudadLabel(t.ciudad)
+ 			}
+  	}
+  }
+
+  resetPersonByCityChart(){
+  	//console.dir(this.personByCity)
+
+  	let personArray = []
+  	Object.keys(this.personHelperByCity).forEach(k => {
+
+  			personArray.push(this.personHelperByCity[k]);
+
+  	})
+
+
+    personArray.sort((fel, sel)=> {
+      if(fel.cardinal < sel.cardinal) return 1;
+      else if(fel.cardinal > sel.cardinal) return -1;
+      else return 0;
+    })
+
+    this.personByCity.data = personArray.map(t => t.cardinal);
+    this.personByCity.labels = personArray.map(t => t.label);
+    this.personByCity.title  = " " + this.personByCity.data.reduce((p, t)=> p+t);
+    this.personByCity.stitle = "Asistencias por ciudad";
+    this.personByCity.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
+
+  	console.dir(this.personByCity)
+  }
+
+
+
+
+  /******************
+   PersonBySex
+  *********************/
+	initPersonBySexChart(){
+		this.personBySex.type = 'pie';
+
+		this.personBySex.labels = [];
+
+	  this.personBySex.data = [];
+
+		this.personBySex.styles = [
+		    {
+		      backgroundColor: [
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#5dade0",
+			        "#5aa9da",
+			        "#56a9de",
+			        "#4ea1d9",
+			        "#47a7d7",
+			        "#42a2d2",
+			        "#3e9ece",
+			        "#3797c7",
+			        "#3292c2",
+			        "#2d8dbd",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			      ],
+		    }
+  		];
+		this.personBySex.opts = {
+		    elements: {
+		      arc : {
+		        	borderWidth: 0
+		      	}
+		    },
+		    tooltips: false
+		  };
+
+	}
+
+
+
+  labelForPersonSex(id){
+  	if(id === "F") return "Mujer"
+  	if(id === "M") return "Varón"
+  	return "S/Dato"
+  }
+
+  acumByPersonSex(t:Tile){
+  	if(this.personHelperBySex[t.sexo]){
+  		this.personHelperBySex[t.sexo].cardinal += t.cardinal;
+
+  	}else {
+ 			this.personHelperBySex[t.sexo] = {
+ 				cardinal: t.cardinal,
+ 				label: this.labelForPersonSex(t.sexo)
+ 			}
+  	}
+  }
+
+  resetPersonBySexChart(){
+  	//console.dir(this.personBySex)
+
+  	let personArray = []
+  	Object.keys(this.personHelperBySex).forEach(k => {
+  		if(!(k === "F" || k === "M")){
+  			this.personBySex.error += k + ": " + this.personHelperBySex[k].cardinal + "/ "
+  		}else {
+  			personArray.push(this.personHelperBySex[k]);
+  		}
+  	})
+
+
+    personArray.sort((fel, sel)=> {
+      if(fel.cardinal < sel.cardinal) return 1;
+      else if(fel.cardinal > sel.cardinal) return -1;
+      else return 0;
+    })
+
+    this.personBySex.data = personArray.map(t => t.cardinal);
+    this.personBySex.labels = personArray.map(t => t.label);
+    this.personBySex.title  = " " + this.personBySex.data.reduce((p, t)=> p+t);
+    this.personBySex.stitle = "Personas por sexo";
+    this.personBySex.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
+
+  	//console.dir(this.personBySex)
+  }
+
+
+
+  /******************
+   PersonByAge
+  *********************/
+	initPersonByAgeChart(){
+		this.personByAge.type = 'pie';
+
+		this.personByAge.labels = [];
+
+	  this.personByAge.data = [];
+
+		this.personByAge.styles = [
+		    {
+		      backgroundColor: [
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#5dade0",
+			        "#5aa9da",
+			        "#56a9de",
+			        "#4ea1d9",
+			        "#47a7d7",
+			        "#42a2d2",
+			        "#3e9ece",
+			        "#3797c7",
+			        "#3292c2",
+			        "#2d8dbd",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			        "#778391",
+			        "#5dade0",
+			        "#3c4e62",
+			      ],
+		    }
+  		];
+		this.personByAge.opts = {
+		    elements: {
+		      arc : {
+		        	borderWidth: 0
+		      	}
+		    },
+		    tooltips: false
+		  };
+
+	}
+
 
   labelForPersonAge(id){
   	if(id === "01") return "Adolescente"
@@ -272,7 +494,7 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   resetPersonByAgeChart(){
-  	console.dir(this.personByAge)
+  	//console.dir(this.personByAge)
 
   	let personArray = []
   	Object.keys(this.personHelperByAge).forEach(k => {
@@ -296,15 +518,19 @@ export class AsistableroPageComponent implements OnInit {
     this.personByAge.stitle = "Personas por segmento etario";
     this.personByAge.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
-  	console.dir(this.personByAge)
+  	//console.dir(this.personByAge)
   }
 
-  reduceTileData(t: Tile){
+  /******************
+   Worker
+  *********************/
+ reduceTileData(t: Tile){
   	this.acumByDate(t);
   	this.acumByPersonAge(t);
+  	this.acumByPersonSex(t);
+  	this.acumByPersonCity(t);
 
   }
-
 
   refreshView(query: DashboardBrowse){
   	this.showChart = false;
@@ -318,6 +544,8 @@ export class AsistableroPageComponent implements OnInit {
 		  		}
 		  	});
 		  	this.resetPersonByAgeChart();
+		  	this.resetPersonBySexChart();
+		  	this.resetPersonByCityChart();
   			this.showChart = true;
 
   	},200)

@@ -145,7 +145,7 @@ export class AlimentosPageComponent implements OnInit {
   /**********************/
   /*     Remito        */
   /********************/
-  createRemito(event: UpdateAsistenciaEvent){
+  updateRemitoState(event: UpdateAsistenciaEvent){
     this.refreshState();
 
   }
@@ -229,9 +229,19 @@ export class AlimentosPageComponent implements OnInit {
 
     if(event.action === CREATE){
       this.currentAsistencia = event.token;
-      this.initNewRemito(this.currentAsistencia);
+      let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
+
+      if(error.valid) {
+        this.initNewRemito(this.currentAsistencia);
+      }else {
+        //todo negativa
+        this.dsCtrl.openSnackBar(error.message, 'Aceptar');
+      }
+
+
     }
   }
+
 
 
   initAsistenciasList(){

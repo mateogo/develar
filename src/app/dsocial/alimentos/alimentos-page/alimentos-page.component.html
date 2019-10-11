@@ -13,7 +13,7 @@
 
 			<ng-container 	*ngIf="emitRemito" >
 				<remitoalmacen-page [asistencia]='currentAsistencia' [remito]='remitoalmacen'
-						(updateRemito)='createRemito($event)' ></remitoalmacen-page>
+						(updateRemito)='updateRemitoState($event)' ></remitoalmacen-page>
 			</ng-container>
 
 			<ng-container 	*ngIf="hasCurrentPerson" >
