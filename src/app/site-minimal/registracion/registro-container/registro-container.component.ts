@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import {
   trigger,
@@ -8,8 +9,19 @@ import {
   transition
 } from '@angular/animations';
 
+import { SiteMinimalController } from '../../minimal.controller';
+
+import { Person, UpdatePersonEvent, personModel } from '../../../entities/person/person';
+import { User } from '../../../entities/user/user';
 
 import { RecordCard, SubCard  } from '../../recordcard.model';
+
+const CANCEL = "cancel";
+const NEXT = "next";
+const BACK = "back";
+const NUEVO = "nuevo";
+const REGISTRAR = "nuevo:cuit"
+const UPDATE = "update";
 
 
 @Component({
@@ -59,15 +71,26 @@ export class RegistroContainerComponent implements OnInit {
   public trState = {state: 'inactive'};
   public flyState = {state: 'void'};
   public blockState = {state: 'void'};
-  public showLogin = true;
+
+  public firstStep = true;
+  public showLogin = false;
+
+  public secondStep = false;
   public showRegistration = false;
-  public showComponent = true;
+  public showPassword = false;
+
+  public isUpdate = NUEVO;
+
+  public person: Person;
 
 
   public detailImage: RelatedImage;
 
 
-  constructor() { }
+  constructor(
+        private minimalCtrl: SiteMinimalController,
+        private router: Router,
+    ) { }
 
   ngOnInit() {
 
@@ -81,6 +104,7 @@ export class RegistroContainerComponent implements OnInit {
       let link:string , navigate:string , noLink = true;
       
       let flipImage: RelatedImage = this.flipImage(s);
+      console.log('relatedCards [%s]', flipImage && flipImage.predicate);
 
       if(s.linkTo){
         noLink = false;
@@ -103,6 +127,110 @@ export class RegistroContainerComponent implements OnInit {
         state: 'inactive'
   		} as Servicios)
   	})
+
+    //Development-ONLY
+    // this.firstStep = false;
+    // this.showLogin = false;
+  
+    // this.secondStep = true;
+    // this.showPassword = false;
+    // this.showRegistration = true;
+
+  }
+
+  ndocStep(e: UpdatePersonEvent){
+    console.log('Event BUBBLED!')
+    if(e.action === CANCEL){
+      this.firstStep = true;
+      this.showLogin = false;
+
+      this.secondStep = false;
+      this.showRegistration = false;
+      this.showPassword = false;
+    }
+
+    if(e.action === NEXT){
+      this.firstStep = false;
+      this.showLogin = false;
+
+      this.person = e.person;
+
+      console.log('goTo Password STEP [%s] [%s]', this.person.ndoc, this.person.ndoc);
+      this.testIfComercioExists(this.person);
+
+    }
+  }
+
+  claveStep(e: UpdatePersonEvent){
+    if(e.action === CANCEL){
+      this.firstStep = true;
+      this.showLogin = true;
+
+      this.secondStep = false;
+      this.showPassword = false;
+      this.showRegistration = false;
+
+    }
+
+    // ingresó clave de acceso
+    if(e.action === NEXT){
+      this.firstStep = true;
+      this.showLogin = false;
+
+
+      console.log('Clave->NEXT [%s] [%s] id:[%s] ', e.token, e.person.displayName, e.person === this.person);
+
+      this.loadUserFromPerson(this.person, e.token);
+
+      this.secondStep = true;
+      this.showPassword = false;
+      this.showRegistration = false;
+    }
+
+    // ABRIR PANEL DE REGISTRACIÓN
+    if(e.action === REGISTRAR){
+      console.log('Registración Nuevo Local')
+      this.firstStep = false;
+      this.showLogin = false;
+ 
+      this.secondStep = true;
+      this.showPassword = false;
+      this.showRegistration = true;
+    }
+  }
+
+  loadUserFromPerson(person: Person, password: string){
+    let userId = person.user.userid;
+    this.minimalCtrl.getUserById(userId).then(u => {
+      console.log('UserFromPerson FOUND')
+      if(u){
+        u.password = password;
+        this.loginUser(person, u)
+      }
+
+    })
+
+  }
+
+  loginUser(person: Person, user: User){
+    this.minimalCtrl.loginUser(user).then(user => {
+      console.log('User login CALLBACK ***** !: [%s] [%s]', user._id, user.email)
+
+      this.minimalCtrl.setCurrentUser(user);
+      this.minimalCtrl.updateCurrentPerson(person);
+
+      this.minimalCtrl.initLoginUser().subscribe(u => {
+        setTimeout(() => {
+          console.log('ready to navigate**[%s]', person._id);
+          //this.router.navigate(['/ingresando']);
+          this.router.navigate(['/comercios/registrar', person._id]);
+        }, 400)
+      })
+    })
+    .catch((err) =>{
+      console.log('ERROR: [%s] [%s]', err, err.message);
+    });
+
   }
 
   serviceDetail(e, token: Servicios){
@@ -121,6 +249,50 @@ export class RegistroContainerComponent implements OnInit {
     }
 
   }
+
+  testIfComercioExists(person:Person){
+    this.minimalCtrl.testPersonByDNI(person.tdoc, person.ndoc).subscribe(p=>{
+      if(p && p.length){
+        this.isUpdate = "update";
+        Object.assign(person, p[0]);
+
+      } else {
+        this.isUpdate = "create";
+      }
+
+      this.secondStep = true;
+      this.showPassword = true;
+      this.showRegistration = false;
+    });
+  }
+
+  // EVENTO DESDE ALTA NUEVO COMERCIO
+  altaComercio(e:UpdatePersonEvent){
+    console.log('AltaNuevoComercio BUBBLED!')
+    if(e.action === CANCEL){
+      this.firstStep = true;
+      this.showLogin = false;
+
+      this.secondStep = false;
+      this.showPassword = false;
+      this.showRegistration = false;
+
+    }
+
+    if(e.action === NUEVO){
+      this.firstStep = false;
+      this.showLogin = false;
+
+      this.person = e.person;
+      this.isUpdate = "update";
+
+      this.secondStep = true;
+      this.showPassword = true;
+      this.showRegistration = false;
+
+    }
+  }
+
   servicePlain(e){
     e.stopPropagation();
     e.preventDefault();
@@ -165,8 +337,6 @@ export class RegistroContainerComponent implements OnInit {
     }
 
   }
-
-
 
 }
 

@@ -302,6 +302,8 @@ export interface ProductBaseData {
 const productClass: Array<any> = [
     {val: 'no_definido',    label: 'Seleccione opción',   slug: 'Seleccione opción'  },
     {val: 'alimentos',      label: 'Alimentos',           slug: 'Alimentos'  },
+    {val: 'habitacional',   label: 'Habitacional',        slug: 'Habitacional'  },
+    {val: 'sanitaria',      label: 'Sanitaria',           slug: 'Sanitaria'  },
     {val: 'cuidado',        label: 'Cuidado Personal',    slug: 'Cuidado Personal'  },
     {val: 'construccion',   label: 'Materiales de Construcción', slug: 'Materiales de Construcción'  },
     {val: 'hogar',          label: 'Equipam Hogar',       slug: 'Equipam Hogar' },

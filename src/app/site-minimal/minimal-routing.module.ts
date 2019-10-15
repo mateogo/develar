@@ -13,6 +13,7 @@ import { DetailCardComponent }    from './detail/detail-card/detail-card.compone
 import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
 import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
 import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
+import { RegistroEmpresaPageComponent } from './comercio/registro-empresa-page/registro-empresa-page.component';
 
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
@@ -67,6 +68,16 @@ const routes: Routes = [
     ]  
   },
   {
+    path: 'registrar',
+    component: MinimalistLayoutComponent,
+    children: [
+      {
+        path: ':id',
+        component: RegistroEmpresaPageComponent,
+      },
+    ]  
+  },
+  {
     path: '',
     component: MinimalistLayoutComponent,
     children: [
@@ -91,7 +102,6 @@ const routes: Routes = [
         component: PortfolioPageComponent,
         pathMatch: 'full'
       },
-
 		  {
 		    path: '',
   			component: HomeComponent,

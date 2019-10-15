@@ -254,6 +254,10 @@ const routes: Routes = [
     children: mainRoutes
   },
   {
+    path: 'comercios',
+    children: mainRoutes
+  },
+  {
     path: '',
     children: mainRoutes,
     pathMatch: 'full'

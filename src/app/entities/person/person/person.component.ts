@@ -51,7 +51,7 @@ export class PersonComponent implements OnInit {
 
   ngOnInit() {
   	//this.getModels();
-  	this._sharedService.emitChange('Personas')
+  	//this._sharedService.emitChange('Personas')
 
   	this.columns = [
 			{ prop: 'id',          name: 'ID', minWidth:'65'},

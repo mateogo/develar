@@ -4,19 +4,35 @@
  *
  *
 *************/
-const user = 'modernizacion';
+const user = 'dsocial';
 
 const globals = {
 
-	modernizacion: {
+	dsocial: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',
 		logoCompany: 'logo-publico.png',
 		logoCompany2: 'logo-publico.png',
-		company: 'develar',
+		company: 'MAB',
 		mainmenu: 'dsocial',
-		admintarget: '/dsocial/gestion/recepcion',
 		mainmenutpl: 'default-navbar',
+		admintarget: '/dsocial/gestion/recepcion',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[develar] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
+		version: '1.0 beta',
+		url: 'www.dsocial-local.co'
+	},
+	comercios: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'MAB',
+		mainmenu: 'comercios',
+		mainmenutpl: 'default-navbar',
+		admintarget: '/dsocial/gestion/recepcion',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -67,6 +83,7 @@ const globals = {
 		admintarget: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
+		database: 'develar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[develar] Contacto',
 		emailbody: 'Formulario de contacto completado',
@@ -102,6 +119,7 @@ const globals = {
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		database: 'develar',
 		emailsubject: '[Simplecomm] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 dvlr ',

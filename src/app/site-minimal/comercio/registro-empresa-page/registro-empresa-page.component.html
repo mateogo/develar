@@ -1,0 +1,30 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<comercio-core-base [person]='currentPerson'
+		 					(updatePerson)='updateCore($event)' ></comercio-core-base>
+			</div>
+	
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<comercio-contactdata-panel [items]='contactList'
+		 					(updateItems)='updateContactList($event)' ></comercio-contactdata-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<comercio-address-panel [items]='addressList'
+		 					(updateItems)='updateAddressList($event)' ></comercio-address-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<comercio-members-panel [items]='businessList'
+		 					(updateItems)='updateBusinessList($event)' ></comercio-members-panel>
+			</div>
+
+		</div>
+ 	</mat-card-content>
+</mat-card>

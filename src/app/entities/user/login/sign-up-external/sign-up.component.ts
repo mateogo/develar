@@ -16,7 +16,7 @@ import { gldef } from '../../../../develar-commons/develar.config';
 
 const password = new FormControl('', Validators.required);
 const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
-const NAVANCE = 'registro-web';
+const NAVANCE = 'webform';
 const ESTADO = 'pendiente';
 
 function buildMailContent(data):string {
@@ -205,6 +205,7 @@ export class RegistrarUsuario implements OnInit {
   }
 
   sendMailTo(model: User){
+    //OjO:::: anultado!
     if(true) return;
     console.log('sendMailTo: [%s] [%s]', model.email, model.username)
     const content = this.userService.sendMailFactory();

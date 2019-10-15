@@ -24,6 +24,7 @@ const estados = [
 const avances = [
 	{val: 'no_definido', 	label: 'Seleccione opción'},
 	{val: 'webform', 		  label: 'Alta por Webform'},
+	{val: 'lnocturno', 	  label: 'Alta por Webform Locales Nocturnos'},
 	{val: 'mailok', 			label: 'Correo verificado'},
 	{val: 'approved',		  label: 'Aprobado'},
 	{val: 'desafectado', 	label: 'Desafectado'},

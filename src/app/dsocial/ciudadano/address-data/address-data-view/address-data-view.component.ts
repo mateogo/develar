@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Person, personModel, Address } from '../../../../entities/person/person';
 
-import { devutils }from '../../../../develar-commons/utils'
+import { devutils } from '../../../../develar-commons/utils'
 
 @Component({
   selector: 'address-view',

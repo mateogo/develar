@@ -12,7 +12,7 @@ import { DaoService } from '../develar-commons/dao.service';
 import { UserService } from '../entities/user/user.service';
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
-import { Person } from '../entities/person/person';
+import { Person, Address, UpdatePersonEvent} from '../entities/person/person';
 import { User } from '../entities/user/user';
 import { Community } from '../develar-commons/community/community.model';
 
@@ -21,6 +21,18 @@ import { MessageToken } from '../notifications/notification.model';
 import { RecordCard } from './recordcard.model';
 
 import { SelectData, GraphUtils } from './recordcard-helper';
+
+const ATTENTION_ROUTE = "atencionsocial";
+const ALIMENTOS_ROUTE = "alimentos";
+const SEGUIMIENTO_ROUTE = "seguimiento";
+const CORE = 'core';
+const CONTACT = 'contact';
+const ADDRESS = 'address';
+const FAMILY = 'family';
+const OFICIOS = 'oficios';
+const SALUD = 'salud';
+const COBERTURA = 'cobertura';
+const ENCUESTA = 'ambiental';
 
 
 @Injectable()
@@ -55,6 +67,7 @@ export class SiteMinimalController {
   private milestone: string;
   private _milestoneList: Array<SelectData>;
 
+  private currentPerson: Person;
 
   private userListener: BehaviorSubject<User>;
   
@@ -353,6 +366,143 @@ export class SiteMinimalController {
   }
 
 
+
+  /***************************/
+  /******* User *******/
+  /***************************/
+  /**
+  * Crea una nueva persona
+  */
+  createUserAndPerson(user: User, person: Person): Subject<Person>{
+    let person$ = new Subject<Person>();
+    console.log('createUserAndPerson toBEGIN: [%s]', person.tdoc)
+
+    this.userService.create(user).then(u => {
+      console.log('USER Callback: [%s]', u.personId);
+      this.daoService.findById<Person>('person', u.personId).then(p => {
+        p = this.buildPersonData(p, person);
+        console.log('PERSON callback  [%s] [%s] [%s] [%s] [%s]', p._id, p.tprofesion, p.displayName, p.tdoc, p.ndoc );
+        this.daoService.update<Person>('person', p._id, p).then(model => {
+          console.log('Persun Updated Callback');
+          person$.next(model);
+        })
+      })
+    });
+
+    return person$
+  }
+
+  getUserById(id: string): Promise<User>{
+    return this.userService.getUser(id);
+  }
+
+  loginUser(user:User): Promise<User>{
+    return this.userService.login(user);
+  }
+
+  setCurrentUser(user: User){
+    this.userService.currentUser = user;
+  }
+
+  initLoginUser():Subject<User>{
+    return this.userService.initLoginUser();
+  }
+
+  buildPersonData(s:Person, t:Person){
+    Object.assign(s, t);
+
+    return s;
+  }
+  
+  /***************************/
+  /******* Person *******/
+  /***************************/
+  /**
+  * Crea una nueva persona
+  */
+  createPerson(person: Person) : Promise<Person> {
+    return this.daoService.create<Person>('person', person)
+  }
+
+  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+
+  get activePerson(): Person{
+    return this.currentPerson;
+  }
+
+  addressLookUp(address: Address): Promise<any>{
+    return this.daoService.geocodeForward(address);
+  }
+
+
+
+  /***************************/
+  /****** Person EVENTS ******/
+  /***************************/
+
+  updatePerson(event: UpdatePersonEvent){
+
+    if(event.token === CORE){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+    
+    if(event.token === CONTACT){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ADDRESS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+    
+    if(event.token === FAMILY){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === OFICIOS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === SALUD){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === COBERTURA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ENCUESTA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+  }
+
+  upsertPersonCore(id:string, p:any){
+    this.daoService.partialUpdate<Person>('person', id, p).then(person =>{
+      this.updateCurrentPerson(person);
+    })
+
+  }
+
+  updateCurrentPerson(person: Person){
+    this.currentPerson = person;
+    this.personListener.next(this.currentPerson);
+  }
+
+  setCurrentPersonFromId(id: string){
+    if(!id) return;
+
+    this.fetchPersonById(id).then(p => {
+      this.updateCurrentPerson(p);
+    });
+
+  }
+
+  fetchPersonById(id: string): Promise<Person>{
+    return this.daoService.findById<Person>('person', id);
+  }
+
+
+
   ////************* create new notification ************////
   private emitNewNotification(data: NotificationToken){
     this.daoService.emitnotification<NotificationToken>('notification', data).then(p => {
@@ -360,6 +510,22 @@ export class SiteMinimalController {
     });
 
   }
+
+  public testPersonByDNI(tdoc:string, ndoc:string ): Observable<Person[]>{
+    let query = {
+      tdoc: tdoc,
+      ndoc: ndoc
+    }
+    return this.daoService.search<Person>('person', query)
+
+  }  
+  public testUserByEmail(email ): Observable<User[]>{
+    let query = {
+      email: email,
+    }
+    return this.daoService.search<User>('user', query)
+
+  }  
 
 
   ////************* Person upsert with contact data  ************////

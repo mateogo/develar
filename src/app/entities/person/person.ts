@@ -120,46 +120,6 @@ export class CoberturaData {
     observacion: string = '';
 }
 
-/**
-
-    id_address:   {type: String, required: false, default: ''},
-    id_person:    {type: String, required: false, default: ''},
-
-    street1:     {type: String,  required: false, defalut: ''}, //OjO
-    city:        {type: String,  required: false, defalut: ''},
-    barrio:      {type: String,  required: false, defalut: ''},
-
-    estado:       {type: String, required: false, default: 'activo'},
-    ferel:        {type: String, required: false, default: ''},
-    fereltxt:     {type: String, required: false, default: ''},
-    tsocial:      {type: String, required: false, default: ''},
-
-    domterreno:   {type: String, required: false, default: ''}, // tenencia    
-    aniosresid:   {type: Number, required: false, default: 0 },
-    qvivxlote:    {type: Number, required: false, default: 0 }, //cant_modulos
-    qhabitantes:  {type: Number, required: false, default: 0 }, //habitantes OjO
-
-    tipoviv:      {type: String, required: false, default: ''},
-    matviv:       {type: String, required: false, default: ''},
-    techoviv:     {type: String, required: false, default: ''},
-    pisoviv:      {type: String, required: false, default: ''},  //piso
-    qdormitorios: {type: Number, required: false, default: 1 }, // habitaciones
-    tventilacion: {type: String, required: false, default: ''},
-    tcocina:      {type: String, required: false, default: ''},
-    ecocina:      {type: String, required: false, default: ''},
-    tbanio:       {type: String, required: false, default: ''},
-    ebanio:       {type: String, required: false, default: ''},
-    tmobiliario:  {type: String, required: false, default: ''},
-    emobiliario:  {type: String, required: false, default: ''},
-    agua:         {type: String, required: false, default: ''},
-    electricidad: {type: String, required: false, default: ''},
-    cloaca:       {type: String, required: false, default: ''},
-    gas:          {type: String, required: false, default: ''},
-    iluminacion:  {type: String, required: false, default: ''},
-    observacion:  {type: String, required: false, default: ''},
-
-
-*/
 export class EncuestaAmbiental {
       _id: string;
       id_address: string;
@@ -259,6 +219,26 @@ export class FamilyData {
     comentario: string;
 }
 
+export class BusinessMembersData {
+    nombre: string;
+    apellido: string;
+    tdoc: string = 'DNI';
+    ndoc: string;
+    vinculo: string;
+    fenac: number = 0;
+    fenactx: string;
+    ecivil: string;
+    nestudios: string;
+    tprofesion: string;
+    ocupacion: string;
+    tocupacion: string;
+    ingreso: string;
+    estado: string;
+    desde: string;
+    hasta: string;
+    comentario: string;
+}
+
 
 export class Person {
 	id: string;
@@ -304,6 +284,7 @@ export class Person {
   oficios: Array<OficiosData>;
   locaciones: Array<Address>;
   familiares: Array<FamilyData>;
+  integrantes: Array<BusinessMembersData>;
 
   salud: Array<SaludData>;
   cobertura: Array<CoberturaData>;
@@ -517,8 +498,9 @@ const oficios_tocupacion: Array<any> = [
        {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
         {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
         {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
-        {val: 'profesional',     label: 'Profesional',    slug:'agronomx' },
-        {val: 'estudiante',      label: 'Estudiante',     slug:'agronomx' },
+        {val: 'seguridad',       label: 'Seguridad',      slug:'Seguridad' },
+        {val: 'profesional',     label: 'Profesional',    slug:'Profesional' },
+        {val: 'estudiante',      label: 'Estudiante',     slug:'Estudiante' },
         {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
         {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
         {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
@@ -541,6 +523,7 @@ const profesiones: Array<any> = [
         {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
         {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
         {val: 'docente',         label: 'Docente',        slug:'Docente' },
+        {val: 'comerciante',     label: 'Comerciante',     slug:'Comerciante' },
         {val: 'desocupax',       label: 'Desocupado/a',    slug:'Desocupado/a' },
         {val: 'otro',            label: 'Otra ocupación',  slug:'Otra ocupación' },
 ];
@@ -551,7 +534,6 @@ const contact_tdato: Array<any> = [
 		{val: 'CEL',   label: 'CEL',    slug:'CEL' },
 		{val: 'MAIL',  label: 'MAIL',   slug:'MAIL' },
 		{val: 'FAM', 	 label: 'FAM',    slug:'FAM' },
-		{val: 'CON', 	 label: 'CON',    slug:'CON' },
 		{val: 'RSOC',  label: 'RSOC',   slug:'RSOC' },
 		{val: 'TEL',   label: 'TEL',    slug:'TEL' },
 		{val: 'WEB',   label: 'WEB',    slug:'WEB' },
@@ -563,6 +545,7 @@ const contact_type: Array<any> = [
     {val: 'LAB',    label: 'LAB',      slug:'LAB' },
     {val: 'PADRE',  label: 'PADRE',    slug:'PADRE' },
     {val: 'MADRE',  label: 'MADRE',    slug:'MADRE' },
+    {val: 'PAREJA', label: 'PAREJA',   slug:'PAREJA' },
     {val: 'REFS',   label: 'REF Social',     slug:'REFS' },
     {val: 'REFPI',  label: 'REF Intendente', slug:'REFPI' },
     {val: 'REFPC',  label: 'REF Consejal',   slug:'REFPC' },
@@ -586,6 +569,17 @@ const vinculo_familiar: Array<any> = [
         {val: 'sobrinx',  label: 'Sobrino/a', slug:'Sobrino/a' },
         {val: 'pariente', label: 'Pariente',  slug:'Pariente' },
         {val: 'otro',     label: 'Otro',      slug:'Otro' },
+];
+
+const vinculo_laboral: Array<any> = [
+        {val: 'no_definido',    label: 'Seleccione opción',slug:'Seleccione opción' },
+        {val: 'titular',        label: 'Titular',            slug:'Titular' },
+        {val: 'socio',          label: 'Socio/a',            slug:'Socio/a' },
+        {val: 'apoderado',      label: 'Apoderado/a',        slug:'Apoderado/a' },
+        {val: 'seguridad',      label: 'Personal de seguridad', slug:'Personal de seguridad' },
+        {val: 'comercial',      label: 'Comercial',          slug:'Comercial' },
+        {val: 'administrativo', label: 'Administrativo/a',   slug:'Administrativo/a' },
+        {val: 'otro',           label: 'Otro',               slug:'Otro' },
 ];
 
 const estado_vinculo: Array<any> = [
@@ -1554,7 +1548,6 @@ class PersonModel {
     get estadoCivilOL():Array<any>{
     	return estadoCivil;
     }
-
     getEstadoCivilLabel(item): string {
     	return getLabel(item, estadoCivil);
     }
@@ -1565,11 +1558,17 @@ class PersonModel {
     }
 
     getPersonDisplayName(p:Person|FamilyData):string{
-      let token = 'Sin nombre';
-      if((p as Person).displayName){
-        token = (p as Person).displayName;
+      let token = (p as Person).displayName;
+
+      if((p as Person).personType === 'fisica'){
+        return this.getPersonFamilyName(p);
       }
 
+      return token || this.getPersonFamilyName(p) || 'Sin nombre';
+    }
+
+    getPersonFamilyName(p:Person|FamilyData):string{
+      let token = (p as Person).displayName;
       if(p.nombre && p.apellido){
         token = p.apellido + ", " + p.nombre;
       }
@@ -1595,12 +1594,19 @@ class PersonModel {
         return getLabel(item, estado_vinculo);       
     }
 
+    get vinculosLaborales(): Array<any>{
+        return vinculo_laboral;
+    }
+    getVinculoLaboral(item): string {
+        return getLabel(item, vinculo_laboral);
+    }
+
     get vinculosFamiliares(): Array<any>{
         return vinculo_familiar;
     }
 
     getVinculo(item): string {
-        return getLabel(item, vinculo_familiar);       
+        return getLabel(item, vinculo_familiar);
     }
 
     get profesiones():Array<any>{

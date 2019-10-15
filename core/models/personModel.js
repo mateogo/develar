@@ -68,6 +68,25 @@ const oficiosSch = new mongoose.Schema({
     comentario:    {type: String, required: false,  default: ""},
 });
 
+const businessSch = new mongoose.Schema({
+    vinculo:     {type: String, required: true,  default: "pariente"},
+    nombre:      {type: String, required: true,  default: ""},
+    apellido:    {type: String, required: false, default: ""},
+    tdoc:        {type: String, required: false, default: ""},
+    ndoc:        {type: String, required: false, default: ""},
+    fenac:       {type: Number, required: false, default: 0 },
+    fenactx:     {type: String, required: false, default: ""},
+    ecivil:      {type: String, required: false, default: ""},
+    nestudios:   {type: String, required: false, default: ""},
+    tprofesion:  {type: String, required: false, default: ""},
+    ocupacion:   {type: String, required: false, default: ""},
+    tocupacion:  {type: String, required: false, default: ""},
+    ingreso:     {type: String, required: false, default: ""},
+    estado:      {type: String, required: false, default: ""},
+    desde:       {type: String, required: false, default: ""},
+    hasta:       {type: String, required: false, default: ""},
+    comentario:  {type: String, required: false, default: ""},
+});
 
 const familySch = new mongoose.Schema({
     vinculo:     {type: String, required: true,  default: "pariente"},
@@ -202,7 +221,6 @@ const personSch = new mongoose.Schema({
     idbrown:        { type: String, required: false },
     grupo_familiar: { type: Number, required: false },
     isImported:     { type: Boolean, required: false, default: false },
-    persontags:     { type: String, required: false },
     personType:     { type: String, required: false, default: 'fisica' },
 
     email:          { type: String, required: false },
@@ -231,12 +249,14 @@ const personSch = new mongoose.Schema({
     user_alta:        { type: String, required: false },
     user_umodif:      { type: String, required: false },
 
+    persontags:     { type: Array, required: false },
     user:           { type: userSch, required: false },
     communitylist:  { type: Array,   required: false },
     contactdata:    [ contactDataSch ],
     oficios:        [ oficiosSch ],
     locaciones:     [ addressSch ],
     familiares:     [ familySch ],
+    integrantes:    [ businessSch ],
     salud:          [ saludSch ],
     cobertura:      [ coberturaSch ],
     messages:       [ notif_messageSch ],

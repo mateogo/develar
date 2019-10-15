@@ -173,6 +173,7 @@ export class NavbarComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     this.userService.logout();
+    this.router.navigate(['/'])
   }
 
   changePasswd(e){

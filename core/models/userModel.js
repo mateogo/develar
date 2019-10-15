@@ -121,8 +121,8 @@ userSch.pre('save', function (next) {
     console.log('UserModel SAVE ********* passwd[%s]', user.isModified('password'));
     if (!user.isModified('password')) {
         return next();
-    }else{
 
+    }else{
         console.log('UserModel SAVE ********* encrypt passwd');
         user.password = encrypt(user.password);
         next();

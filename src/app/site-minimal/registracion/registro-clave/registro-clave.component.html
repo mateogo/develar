@@ -1,0 +1,40 @@
+<mat-card class="mat-elevation-z8 custom-table">
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div class="container content-box">
+      	<h3>Ingrese su clave de acceso</h3>
+
+	      <!---tdoc; ndoc; provisorio; --->
+	      <div class="row">
+	        <div class="col d-flex justify-content-center">
+				    <mat-form-field>
+				      <input 	[formControl]="form.controls['clave']" matInput placeholder="Clave" 
+				      				name="password" type="password" >
+				    </mat-form-field>
+	        </div>
+	      </div>
+
+	      <div *ngIf="!isNueva" class="additional-info">
+	        <button mat-raised-button color="primary"
+	        		[disabled]="!form.valid"
+	            (click)="onSubmit()" >Ingresar</button>
+
+	        <button mat-button type="button" color="accent" 
+	                (click)="cancel()">Cancelar</button>
+	      </div>
+
+	      <div *ngIf="isNueva" class="additional-info">
+	      	<p>No hay un comercio registrado con CUIT {{ cuit }} </p>
+	      	<p>¿Desea dar de alta un<strong> nuevo </strong>comercio?</p>
+
+	        <button mat-raised-button color="primary"
+	            (click)="registrarNuevo()">Alta nuevo comercio</button>
+
+	        <button mat-button type="button" color="accent" 
+	                (click)="cancel()">Cancelar</button>
+	      </div>
+
+    </div>
+  </form>
+  </mat-card-content>
+</mat-card>
