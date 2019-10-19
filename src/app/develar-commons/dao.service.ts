@@ -66,6 +66,11 @@ export class DaoService {
         dashboardURL: 'api/asistencias/tablero',
         nextItemURL:  'api/asistencias/nextitem'
       },
+      rolnocturnidad:{
+        backendURL:   'api/rolnocturnidad',
+        searchURL:    'api/rolnocturnidad/search',
+        dashboardURL: 'api/rolnocturnidad/tablero'
+      },
       remitoalmacen:{
         backendURL: 'api/remitosalmacen',
         searchURL:  'api/remitosalmacen/search',
@@ -82,10 +87,6 @@ export class DaoService {
       recordcard:{
         backendURL: 'api/recordcards',
         searchURL:  'api/recordcards/search'
-      },
-      antecedente:{
-        backendURL: 'api/antecedentes',
-        searchURL:  'api/antecedentes/search'
       },
       product:{
         backendURL: 'api/products',

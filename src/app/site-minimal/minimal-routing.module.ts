@@ -3,17 +3,18 @@ import { RouterModule, Routes }         from '@angular/router';
 
 // site routed components
 import { HomeComponent }             from './home/home.component';
-import { HomePbaComponent }             from './home-pba/home-pba.component';
 
 import { MinimalistLayoutComponent } from './layouts/minimalist/minimalist.component';
-import { PbaLayoutComponent }        from './layouts/pba-layout/pba-layout.component';
 
-import { PapersComponent }        from './papers/papers.component';
-import { DetailCardComponent }    from './detail/detail-card/detail-card.component';
-import { PortfolioPageComponent } from './portfolio/portfolio-page/portfolio-page.component';
+import { PapersComponent }          from './papers/papers.component';
+import { DetailCardComponent }      from './detail/detail-card/detail-card.component';
+import { PortfolioPageComponent }   from './portfolio/portfolio-page/portfolio-page.component';
 import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
 import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
+
 import { RegistroEmpresaPageComponent } from './comercio/registro-empresa-page/registro-empresa-page.component';
+import { ComerciosLayoutComponent }       from './layouts/comercios-layout/comercios-layout.component';
+import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
 
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
@@ -21,19 +22,6 @@ const routes: Routes = [
   {
     path: 'ingresar',
     redirectTo: '/ingresar/login',
-  },
-  {
-    path: 'antecedentes',
-    component: PbaLayoutComponent,
-    children: [
-
-      {
-        path: '',
-        component: HomePbaComponent,
-        pathMatch: 'full'
-      },
-
-    ]  
   },
   {
     path: 'red',
@@ -68,12 +56,21 @@ const routes: Routes = [
     ]  
   },
   {
-    path: 'registrar',
-    component: MinimalistLayoutComponent,
+    path: 'comercios',
+    component: ComerciosLayoutComponent,
     children: [
       {
-        path: ':id',
+        path: 'registro/:id',
+        component: DashboardComercioPageComponent,
+      },
+      {
+        path: 'empresa/:id',
         component: RegistroEmpresaPageComponent,
+      },
+      {
+        path: '',
+        component: HomeComponent,
+        pathMatch: 'full'
       },
     ]  
   },

@@ -115,8 +115,12 @@ export class PublishComponent implements OnInit {
 		this._model.toPublish = fvalue.toPublish;
     this._model.destaque = fvalue.destaque;
     this._model.publishOrder = fvalue.publishOrder;
-		this._model.dateFrom = devutils.dateFromTx(fvalue.dateFrom).getTime();
-		this._model.dateTo = devutils.dateFromTx(fvalue.dateTo).getTime();
+
+    let dateFrom = devutils.dateFromTx(fvalue.dateFrom);
+    let dateTo = devutils.dateFromTx(fvalue.dateTo);
+
+		this._model.dateFrom = dateFrom ? dateFrom.getTime() : 0
+		this._model.dateTo = dateTo ? dateTo.getTime() : 0
  
 		this._model.topics = this.topicList;
 		this._model.template = fvalue.template;
@@ -164,10 +168,12 @@ export class PublishComponent implements OnInit {
   }
 
   dateRangeChange(){
-    //console.log('dateRangeChange:  [%s] to: [%s]', this.form.controls['dateFrom'].value, this.form.controls['dateTo'].value),
-    this.toTxt = devutils.dateFromTx(this.form.controls['dateTo'].value).toString();
-    this.fromTxt = devutils.dateFromTx(this.form.controls['dateFrom'].value).toString();
+    //console.log('dateRangeChange:  [%s] to: [%s]', this.form.controls['dateFrom'].value, this.form.controls['dateTo'].value);
+    let dateFrom = devutils.dateFromTx(this.form.controls['dateFrom'].value);
+    let dateTo = devutils.dateFromTx(this.form.controls['dateTo'].value);
 
+    this.fromTxt = dateFrom ? dateFrom.toString() : 'Desde Inválida ';
+    this.toTxt =   dateTo ?   dateTo.toString() :   'Hasta: Inválida ';
   }
 
 }

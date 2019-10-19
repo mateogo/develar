@@ -321,6 +321,8 @@ export class RegistroEmpresaPageComponent implements OnInit {
 
 
 /***
+http://develar-local.co:4200/mab/comercios/registro/5da4df4b1cd64809a3f18861
+
 http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
 http://develar-local.co:4200/dsocial/gestion/atencionsocial/5a00cb6c3ba0cd0c576a1870
 

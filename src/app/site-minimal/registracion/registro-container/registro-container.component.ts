@@ -202,7 +202,7 @@ export class RegistroContainerComponent implements OnInit {
   loadUserFromPerson(person: Person, password: string){
     let userId = person.user.userid;
     this.minimalCtrl.getUserById(userId).then(u => {
-      console.log('UserFromPerson FOUND')
+      console.log('UserFromPerson FOUND[%s]', u.username);
       if(u){
         u.password = password;
         this.loginUser(person, u)
@@ -213,18 +213,19 @@ export class RegistroContainerComponent implements OnInit {
   }
 
   loginUser(person: Person, user: User){
+
+    this.minimalCtrl.updateCurrentPerson(person);
+    
     this.minimalCtrl.loginUser(user).then(user => {
-      console.log('User login CALLBACK ***** !: [%s] [%s]', user._id, user.email)
 
       this.minimalCtrl.setCurrentUser(user);
-      this.minimalCtrl.updateCurrentPerson(person);
+
+      console.log('U login CB!: [%s] [%s] P:[%s]', user._id, user.email, person.displayName)
 
       this.minimalCtrl.initLoginUser().subscribe(u => {
-        setTimeout(() => {
-          console.log('ready to navigate**[%s]', person._id);
-          //this.router.navigate(['/ingresando']);
-          this.router.navigate(['/comercios/registrar', person._id]);
-        }, 400)
+        console.log('ready to navigate**[%s]', person._id);
+        //this.router.navigate(['/ingresando']);
+        this.router.navigate(['/mab/comercios/registro', person._id]);
       })
     })
     .catch((err) =>{

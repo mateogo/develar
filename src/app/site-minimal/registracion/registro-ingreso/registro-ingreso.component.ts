@@ -57,15 +57,13 @@ export class RegistroIngresoComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private minimalCtrl: SiteMinimalController,
-
     ) { }
 
     ngOnInit() {
         this.model = new Person('');
         this.model.tdoc = this.defaultData['tdoc'] || 'CUIT';
         this.model.ndoc = this.defaultData['ndoc'];
-        this.model.personType = 'fisica';
-
+        this.model.personType = 'juridica';
 
         this.form = this.fb.group({
             tdoc: [null],
@@ -74,8 +72,6 @@ export class RegistroIngresoComponent implements OnInit {
                           Validators.maxLength(11),
                           Validators.pattern('[0-9]*')], 
                           [this.dniExistenteValidator(this.minimalCtrl, this.docBelongsTo)] ],
-
-
         });
 
         this.resetForm(this.model);
@@ -84,7 +80,6 @@ export class RegistroIngresoComponent implements OnInit {
     onSubmit() {
         this.model = initForSave(this.form, this.model);
         this.emitEvent(NEXT);
-
     }
 
     cancel(){
@@ -109,8 +104,6 @@ export class RegistroIngresoComponent implements OnInit {
     	}
 
     }
-
-
 
     resetForm(model: Person) {
         this.form.reset({
@@ -148,8 +141,6 @@ export class RegistroIngresoComponent implements OnInit {
              )
         }) ;
      } ;
-
-
 
 }
 

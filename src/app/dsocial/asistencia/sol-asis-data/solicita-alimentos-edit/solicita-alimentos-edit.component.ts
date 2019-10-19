@@ -149,16 +149,17 @@ export class SolicitaAlimentosEditComponent implements OnInit {
 	initForSave(form: FormGroup, token: Alimento): Alimento {
 		const fvalue = form.value;
 		const entity = token;
+    let dateD = devutils.dateFromTx(fvalue.fechad);
+    let dateH = devutils.dateFromTx(fvalue.fechah);
 
     entity.type =         fvalue.type;
     entity.periodo =      fvalue.periodo;
     
     entity.fe_txd =       fvalue.fechad;
-    entity.fe_tsd =       devutils.dateFromTx(fvalue.fechad).getTime();
+    entity.fe_tsd =       dateD ? dateD.getTime() : 0;
 
     entity.fe_txh =       fvalue.fechah;
-    entity.fe_tsh =       devutils.dateFromTx(fvalue.fechah).getTime();
-
+    entity.fe_tsh =       dateH ? dateH.getTime() : 0;
 
     entity.freq =         fvalue.freq;
     entity.qty =          fvalue.qty;

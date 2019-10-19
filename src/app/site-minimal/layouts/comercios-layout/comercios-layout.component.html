@@ -1,0 +1,24 @@
+<div class="site-container">
+
+	<public-navbar [title]="pageTitle" ></public-navbar>
+
+	<div class="top-image" *ngIf='mainimage'>
+  	<a role="button" title="{{topBrandingCard.linkTo}}" href="#" 
+     		(click)="togglePanel($event)">
+     <img class='header-image' src='{{ mainimage }}'></a>
+   </div>
+
+  <main class="main-content">
+ 		<div class="main-content-wrap">
+    
+    	<router-outlet></router-outlet>
+  	
+  	</div>
+
+
+		<div class="footer" *ngIf='footerCard'>
+			<footer-page ></footer-page>
+		</div>
+
+  </main>
+</div>

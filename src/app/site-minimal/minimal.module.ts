@@ -23,7 +23,6 @@ import { TopBrandingComponent } from './top-branding/top-branding.component';
 import { TopAboutComponent } from './top-about/top-about.component';
 import { TopAboutlrComponent } from './top-about-lr/top-aboutlr.component';
 
-import { SiteMinimalController } from './minimal.controller';
 import { HighlightService } from './minimal-highlighter.service';
 import { DestacadoComponent } from './destacado/destacado.component';
 
@@ -41,13 +40,6 @@ import { ShowAssetsComponent } from './detail/show-assets/show-assets.component'
 import { ShowResourcesComponent } from './detail/show-resources/show-resources.component';
 import { TopCarrouselComponent } from './top-carrousel/top-carrousel.component';
 import { TopFooterComponent } from './top-footer/top-footer.component';
-import { PbaLayoutComponent } from './layouts/pba-layout/pba-layout.component';
-import { PbaNavbarComponent } from './layouts/pba-navbar/pba-navbar.component';
-import { HomePbaComponent } from './home-pba/home-pba.component';
-import { AntecedentesPageComponent } from './antecedentes/antecedentes-page/antecedentes-page.component';
-import { SearchPersonComponent } from './antecedentes/search-person/search-person.component';
-import { SearchAntecedentesComponent } from './antecedentes/search-antecedentes/search-antecedentes.component';
-import { SearchScoringComponent } from './antecedentes/search-scoring/search-scoring.component';
 import { TopFooterPageComponent } from './top-footer-page/top-footer-page.component';
 import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
 import { PostDetailComponent } from './foros/post-detail/post-detail.component';
@@ -77,6 +69,8 @@ import { ComercioContactdataPanelComponent } from './comercio/comercio-contactda
 import { ComercioContactdataBaseComponent } from './comercio/comercio-contactdata/comercio-contactdata-base/comercio-contactdata-base.component';
 import { ComercioContactdataEditComponent } from './comercio/comercio-contactdata/comercio-contactdata-edit/comercio-contactdata-edit.component';
 import { ComercioContactdataViewComponent } from './comercio/comercio-contactdata/comercio-contactdata-view/comercio-contactdata-view.component';
+import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
+import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-layout.component';
 
 
 
@@ -99,7 +93,6 @@ import { ComercioContactdataViewComponent } from './comercio/comercio-contactdat
   	NavbarComponent,
     LasargenNavbarComponent,
     UtopiasNavbarComponent,
-    PbaNavbarComponent,
   	TopBrandingComponent,
   	TopAboutComponent,
     TopAboutlrComponent,
@@ -116,12 +109,6 @@ import { ComercioContactdataViewComponent } from './comercio/comercio-contactdat
   	ShowAssetsComponent,
   	ShowResourcesComponent,
   	TopCarrouselComponent,
-  	PbaLayoutComponent,
-  	HomePbaComponent,
-  	AntecedentesPageComponent,
-  	SearchPersonComponent,
-  	SearchAntecedentesComponent,
-  	SearchScoringComponent,
   	TopFooterPageComponent,
   	PostDetailContainerComponent,
   	PostDetailComponent,
@@ -150,10 +137,12 @@ import { ComercioContactdataViewComponent } from './comercio/comercio-contactdat
   	ComercioContactdataPanelComponent,
   	ComercioContactdataBaseComponent,
   	ComercioContactdataEditComponent,
-  	ComercioContactdataViewComponent
+  	ComercioContactdataViewComponent,
+  	DashboardComercioPageComponent,
+  	ComerciosLayoutComponent
   ],
   providers:[
-    SiteMinimalController, HighlightService
+    HighlightService
   ]
 })
 export class MinimalModule { }

@@ -112,20 +112,6 @@ const notificationRoutes: Routes = [
   }
 ];
 
-const antecedentesRoutes: Routes = [
-  {
-    path: '', 
-    loadChildren: () => import('./antecedentes/antecedentes.module').then(m => m.AntecedentesModule)
-  }
-];
-
-const issueRoutes: Routes = [
-  {
-    path: '', 
-    loadChildren: () => import('./issues/issues.module').then(m => m.IssuesModule)
-  }
-];
-
 const ayudaSocialRoutes: Routes = [
   {
     path: '', 
@@ -164,19 +150,9 @@ const adminRoutes: Routes = [
     children: bookshelfRoutes
   },
   {
-    path: 'reclamos',
-    component: DefaultLayoutComponent,
-    children: issueRoutes
-  },
-  {
     path: 'notificaciones',
     component: DefaultLayoutComponent,
     children: notificationRoutes
-  },
-  {
-    path: 'antecedentes',
-    component: DefaultLayoutComponent,
-    children: antecedentesRoutes
   },
   {
     path: '',
@@ -190,6 +166,10 @@ const mainRoutes:Routes = [
   {
     path: 'gestion',
     children: adminRoutes
+  },
+  { 
+    path: 'nocturnidad', 
+    loadChildren: () => import('./timebased/timebased.module').then(m => m.TimebasedModule)
   },
   { 
     path: '', 
@@ -254,7 +234,11 @@ const routes: Routes = [
     children: mainRoutes
   },
   {
-    path: 'comercios',
+    path: 'mab',
+    children: mainRoutes
+  },
+  {
+    path: 'rol',
     children: mainRoutes
   },
   {

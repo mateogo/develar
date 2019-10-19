@@ -260,6 +260,7 @@ export class DsocialController {
   private createRemitoAlmacen(listener:Subject<RemitoAlmacen>, type, remitoalmacen: RemitoAlmacen){
     let sector = remitoalmacen.sector || 'alimentos';
     let name = 'ayudadirecta';
+
     remitoalmacen.personId = this.currentPerson._id;
     remitoalmacen.requeridox = AlimentosHelper.buildRequirente(this.currentPerson);
 
@@ -270,7 +271,8 @@ export class DsocialController {
       remitoalmacen.fecomp_txa = devutils.txNormalize(remitoalmacen.fecomp_txa);
     }
 
-    remitoalmacen.fecomp_tsa = devutils.dateFromTx(remitoalmacen.fecomp_txa).getTime();
+    let dateD = devutils.dateFromTx(remitoalmacen.fecomp_txa);
+    remitoalmacen.fecomp_tsa = dateD ? dateD.getTime() : 0;
 
     this.fetchSerialRemitoalmacen(type, name, sector).subscribe(serial =>{
       remitoalmacen.compPrefix = serial.compPrefix ;

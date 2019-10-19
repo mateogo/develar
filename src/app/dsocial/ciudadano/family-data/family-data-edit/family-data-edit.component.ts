@@ -188,7 +188,6 @@ export class FamilyDataEditComponent implements OnInit {
 
 	initForSave(form: FormGroup, token: FamilyData): FamilyData {
 		const fvalue = form.value;
-
 		const entity = token; 
 
 		entity.nombre =       fvalue.nombre;
@@ -197,6 +196,11 @@ export class FamilyDataEditComponent implements OnInit {
 		entity.ndoc =         fvalue.ndoc;
 		entity.vinculo =      fvalue.vinculo;
 		entity.fenactx =      fvalue.fenactx;
+
+    entity.fenactx = fvalue.fenactx;
+    let dateD = devutils.dateFromTx(entity.fenactx);
+    entity.fenac = dateD ? dateD.getTime() : 0;
+
 		entity.ecivil =       fvalue.ecivil;
 		entity.nestudios =    fvalue.nestudios;
 		entity.tprofesion =   fvalue.tprofesion;
@@ -208,12 +212,6 @@ export class FamilyDataEditComponent implements OnInit {
 		entity.hasta =        fvalue.hasta;
 		entity.comentario =   fvalue.comentario;
 
-
-    if(fvalue.fenactx){
-      entity.fenac = devutils.dateFromTx(fvalue.fenactx).getTime();
-    }else{
-      entity.fenac = 0;
-    }
 		return entity;
 	}
 

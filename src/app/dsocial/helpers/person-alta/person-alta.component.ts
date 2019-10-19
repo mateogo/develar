@@ -20,7 +20,11 @@ function initForSave(form: FormGroup, model: Person, user: User): Person {
     model.ndoc = fvalue.ndoc;
     model.displayName = model.apellido + ', '+ model.nombre;
     model.sexo = fvalue.sexo;
+
     model.fenactx = fvalue.fenactx;
+    let dateD = devutils.dateFromTx(model.fenactx);
+    model.fenac = dateD ? dateD.getTime() : 0;
+
     model.nacionalidad = fvalue.nacionalidad;
 
     address.addType = 'dni' ;
@@ -38,16 +42,6 @@ function initForSave(form: FormGroup, model: Person, user: User): Person {
     address.country =      fvalue.country;
 
     model.locaciones = [ address ];
-
-
-
-    if(fvalue.fenactx){
-      model.fenac = devutils.dateFromTx(fvalue.fenactx).getTime();
-
-    }else{
-      model.fenac = 0;
-    }
-
 
     return model;
 };

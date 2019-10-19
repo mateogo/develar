@@ -145,35 +145,6 @@ export const MAINMENUITEMS: MainMenuItem[] = [
   },
 
   {
-    title: 'Antecedentes',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Dashboard',
-        routing: '/develar/antecedentes'
-      },
-      {
-        title: 'Alta',
-        routing: '/develar/antecedentes/alta'
-      },
-      {
-        title: 'Navegar',
-        routing: '/develar/antecedentes/lista'
-      },
-      {
-        title: 'Vista pública',
-        routing: '/seguridadvial/antecedentes'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-
-  {
     title: 'Comunidades',
     icon: '',
     active: false,

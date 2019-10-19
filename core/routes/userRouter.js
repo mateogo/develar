@@ -123,6 +123,7 @@ router.post('/login', function(req, res, next) {
         // req.session.save(function(){
         //     res.redirect('/someURL');
         // });
+      console.log('Login: OK')
       return res.status(200).json(user);
     });
   }) (req, res, next);

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person, UpdatePersonEvent } from '../../../../entities/person/person';
 
 const UPDATE = 'update';
+const NAVIGATE = 'navigate';
 const CORE = 'core';
 
 
@@ -36,16 +37,20 @@ export class ComercioCoreBaseComponent implements OnInit {
   }
 
   emitEvent(event:UpdatePersonEvent){
-  	if(event.action === UPDATE){
   		this.updatePerson.next(event);
-  	}
   }
 
 
 	editToken(){
-		this.openEditor = !this.openEditor;
-		this.showView = !this.showView;
-		this.showEdit = !this.showEdit;
+		// this.openEditor = !this.openEditor;
+		// this.showView = !this.showView;
+		// this.showEdit = !this.showEdit;
+    this.emitEvent({
+      action: NAVIGATE,
+      token: 'core',
+      person: this.person
+      
+    })
 	}
 
 	removeToken(){

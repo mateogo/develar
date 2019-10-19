@@ -34,8 +34,9 @@ const SALUD = 'salud';
 const COBERTURA = 'cobertura';
 const ENCUESTA = 'ambiental';
 
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SiteMinimalController {
 
   private readonly recordtype = 'notification'
@@ -70,7 +71,9 @@ export class SiteMinimalController {
   private currentPerson: Person;
 
   private userListener: BehaviorSubject<User>;
+  public timestamp;
   
+  public personListener = new BehaviorSubject<Person>(this.currentPerson);
 
 
   //table browse
@@ -83,6 +86,8 @@ export class SiteMinimalController {
     private snackBar:    MatSnackBar,
 		private userService: UserService,
 		) {
+    this.timestamp = Date.now();
+
     this.userListener = this.userService.userEmitter;
 
     this.userListener.subscribe(user =>{
@@ -238,6 +243,10 @@ export class SiteMinimalController {
     });
 
     return listener;
+  }
+
+  fetchRecordsByQuery(query): Observable<RecordCard[]> {
+    return this.daoService.search<RecordCard>('recordcard', query);
   }
 
   fetchContextRecords(topic): Subject<RecordCard[]>{
@@ -424,7 +433,6 @@ export class SiteMinimalController {
     return this.daoService.create<Person>('person', person)
   }
 
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
 
   get activePerson(): Person{
     return this.currentPerson;
@@ -484,11 +492,16 @@ export class SiteMinimalController {
   }
 
   updateCurrentPerson(person: Person){
+    console.log('UpdateCurrentPerson [%s] [%s]', person.displayName, this.timestamp);
     this.currentPerson = person;
     this.personListener.next(this.currentPerson);
+    this.personListener.subscribe(p => {
+      console.log('PL ON controller [%s] [%s]', p.displayName, this.timestamp);
+    })
   }
 
   setCurrentPersonFromId(id: string){
+    console.log('setCurrentPersonFromId [%s]', id);
     if(!id) return;
 
     this.fetchPersonById(id).then(p => {

@@ -26,17 +26,18 @@ const fumeList = [
 ];
 
 const dateToStr = function(date) {
-    var prefix = '00';
+    let prefix = '00';
+    date = date ? date : new Date();
 
-    var da = (prefix+date.getDate()).substr(-prefix.length);
-    var mo = (prefix+(date.getMonth()+1)).substr(-prefix.length);
-    var ye = date.getFullYear();
+    let da = (prefix+date.getDate()).substr(-prefix.length);
+    let mo = (prefix+(date.getMonth()+1)).substr(-prefix.length);
+    let ye = date.getFullYear();
     return da+"/"+mo+"/"+ye;
 };
 
 const calcularEdad = function(dob: Date) { 
-    var diff_ms = Date.now() - dob.getTime();
-    var age_dt = new Date(diff_ms); 
+    let diff_ms = Date.now() - dob.getTime();
+    let age_dt = new Date(diff_ms); 
   
     return Math.abs(age_dt.getUTCFullYear() - 1970);
 }
@@ -45,9 +46,9 @@ const calcularEdad = function(dob: Date) {
 
 const parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)
-
-    var mx = str.match(/(\d+)/g);
-    var ty = new Date();
+    if(!str) return null;
+    let mx = str.match(/(\d+)/g);
+    let ty = new Date();
     if(mx.length === 0) return ty;
     if(mx.length === 1){
         if(mx[0]<0 || mx[0]>31) return null;
@@ -61,7 +62,7 @@ const parseDateStr = function(str) {
     if(mx.length === 3){
         if(mx[0]<0 || mx[0]>31) return null;
         if(mx[1]<0 || mx[1]>12) return null;
-        if(mx[2]<1000 || mx[2]>2020) return null;
+        if(mx[2]<1000 || mx[2]>2100) return null;
         else return new Date(mx[2],mx[1]-1,mx[0]);
     }
     if(mx.length === 4){
@@ -74,7 +75,7 @@ const parseDateStr = function(str) {
     if(mx.length === 5){
         if(mx[0]<0 || mx[0]>31) return null;
         if(mx[1]<0 || mx[1]>12) return null;
-        if(mx[2]<1000 || mx[2]>2020) return null;
+        if(mx[2]<1000 || mx[2]>2100) return null;
         if(mx[3]<0 || mx[3]>24) return null;
         if(mx[4]<0 || mx[4]>60) return null;
         else return new Date(mx[2],mx[1]-1,mx[0],mx[3],mx[4]);

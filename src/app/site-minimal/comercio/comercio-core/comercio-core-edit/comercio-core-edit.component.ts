@@ -80,6 +80,7 @@ export class ComercioCoreEditComponent implements OnInit {
   }
 
   currentAge(){
+    // not used
        let edad = '';
        let value = this.form.value.fenactx
        let validAge = devutils.validAge(value);
@@ -194,12 +195,9 @@ export class ComercioCoreEditComponent implements OnInit {
 		entity.ambito = fvalue.ambito;
     entity.sexo =         fvalue.sexo;
 
-    if(fvalue.fenactx){
-      entity.fenac = devutils.dateFromTx(fvalue.fenactx).getTime();
+    let dateD = devutils.dateFromTx(entity.fenactx);
+    entity.fenac = dateD ? dateD.getTime() : 0;
 
-    }else{
-      entity.fenac = 0;
-    }
 		return entity;
 	}
 

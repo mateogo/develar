@@ -1,0 +1,39 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+  	<ng-container *ngIf="showView">
+		 	<div [ngStyle]=selectedStyle class="row">
+		 		<div class="col-md-12">
+		 			<rol-noche-view [token]='rolnocturnidad' ></rol-noche-view>
+		 		</div>
+			</div>
+		</ng-container>
+
+	 	<div [ngStyle]=selectedStyle class="row">
+	 		<div class="col-md-12 d-flex justify-content-between align-items-center">
+	 			<div *ngIf="showEditControl">
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos del elemento">
+						<i [class]="showEditBase ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+
+	 				<div *ngIf="showSelectControl" >
+	      		<button mat-raised-button color="accent" 
+	        		  (click)="tokenSelected()" >Seleccionar</button>
+	 				</div>
+	 			</div>
+			</div>
+		</div>
+	
+		<ng-container *ngIf="showEditPanel">
+			<ng-container *ngIf="showEditBase">
+			 	<div class="row">
+			 		<div class="col-sm-12 col-md-12">
+			 			<rol-noche-edit [token]='rolnocturnidad'
+			 								(updateToken)='manageBase($event)' ></rol-noche-edit>
+			 		</div>
+				</div>
+			</ng-container>
+		</ng-container>
+
+  </mat-card-content>
+</mat-card>

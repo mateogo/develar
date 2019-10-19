@@ -91,6 +91,7 @@ const cardTypes: Array<any> = [
 		{val: 'recurso', 	      label: 'Recurso',            slug:'Enlace a recurso' },
 		{val: 'curso', 	        label: 'Curso seminario',    slug:'Curso, seminario, taller' },
 		{val: 'presentacion', 	label: 'Presentación',       slug:'Presentación' },
+		{val: 'comercios',      label: 'Recurso Comercios',  slug:'Recurso Gestión Comercios MAB' },
 		{val: 'webresource',    label: 'Recurso Portal',     slug:'Recurso Portal' },
 
 ];
@@ -182,6 +183,11 @@ const cardCategory = {
 		{val: 'academica', 	    label: 'Académica',          slug:'Académica' },
 	],
 
+	comercios: [
+		{val: 'no_definido', 	  label: 'Seleccione opción',   slug:'Seleccione opción' },
+		{val: 'dashboard',      label: 'Dashboard comercios', slug:'Ficha auxiliar para el dashboard de comercios' },
+	],
+
 	webresource: [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'topbranding',    label: 'Top branding',       slug:'Top branding' },
@@ -202,15 +208,15 @@ export const predicateType = {
 	person: {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
-			{val: 'fichacv',          label: 'Ficha Curriculum',              slug:'Ficha Curriculum' },
-			{val: 'client',          label: 'Cliente',              slug:'Cliente' },
-			{val: 'referral',          label: 'Referencia',              slug:'Referencia' },
-			{val: 'sponsor',          label: 'Sponsor',              slug:'Sponsor' },
-			{val: 'cro',          label: 'Productor',              slug:'Productor' },
-			{val: 'contacto',          label: 'Contacto',              slug:'contacto' },
-			{val: 'director',          label: 'Director',              slug:'director' },
-			{val: 'prjleader',          label: 'Project leader',              slug:'prjleader' },
-			{val: 'qa',          label: 'Analista calidad',              slug:'Analista calidad' },
+			{val: 'fichacv',        label: 'Ficha Curriculum',   slug:'Ficha Curriculum' },
+			{val: 'client',         label: 'Cliente',            slug:'Cliente' },
+			{val: 'referral',       label: 'Referencia',         slug:'Referencia' },
+			{val: 'sponsor',        label: 'Sponsor',            slug:'Sponsor' },
+			{val: 'cro',            label: 'Productor',          slug:'Productor' },
+			{val: 'contacto',       label: 'Contacto',           slug:'contacto' },
+			{val: 'director',       label: 'Director',           slug:'director' },
+			{val: 'prjleader',      label: 'Project leader',     slug:'prjleader' },
+			{val: 'qa',             label: 'Analista calidad',   slug:'Analista calidad' },
 			{val: 'autor',          label: 'Autor',              slug:'Autor' },
 			{val: 'coautor',        label: 'Co-Autor',           slug:'Co-Autor' },
 			{val: 'revisor',        label: 'Revisor',            slug:'Revisor' },
@@ -245,8 +251,8 @@ export const predicateType = {
 			{val: 'no_definido', 	  label: 'Seleccione opción', slug:'Seleccione opción' },
 			{val: 'objetivo',       label: 'Objetivo',          slug:'Objetivo específico' },
 			{val: 'resultado',      label: 'Resultado',         slug:'resultado' },
-			{val: 'requerido',      label: 'Prod requerido',         slug:'requerido' },
-			{val: 'entregable',     label: 'Prod entregable',        slug:'Prod entregable' },
+			{val: 'requerido',      label: 'Prod requerido',    slug:'requerido' },
+			{val: 'entregable',     label: 'Prod entregable',   slug:'Prod entregable' },
 			{val: 'cotizacion',     label: 'Cotización',        slug:'Item cotización' },
 			{val: 'presupuesto',    label: 'Presupuesto',       slug:'Item presupuesto' },
 			{val: 'expensas',       label: 'Expensas',          slug:'Item expensas' },
@@ -254,12 +260,12 @@ export const predicateType = {
 	},
 	asset: {
 		predicates: [
-			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
-			{val: 'mainimage',      label: 'mainimage',             slug:'mainimage' },
-			{val: 'images',         label: 'images',             slug:'images' },
-			{val: 'documento',      label: 'documento',             slug:'documento' },
-			{val: 'presentacion',   label: 'presentacion',             slug:'presentacion' },
-			{val: 'background',     label: 'background',             slug:'background' },
+			{val: 'no_definido', 	  label: 'Seleccione opción', slug:'Seleccione opción' },
+			{val: 'mainimage',      label: 'mainimage',         slug:'mainimage' },
+			{val: 'images',         label: 'images',            slug:'images' },
+			{val: 'documento',      label: 'documento',         slug:'documento' },
+			{val: 'presentacion',   label: 'presentacion',      slug:'presentacion' },
+			{val: 'background',     label: 'background',        slug:'background' },
 			{val: 'video',          label: 'video',             slug:'video' },
 			{val: 'audio',          label: 'audio',             slug:'audio' },
 		]

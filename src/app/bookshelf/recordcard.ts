@@ -238,6 +238,7 @@ const cardTypes: Array<any> = [
 		{val: 'recurso', 	      label: 'Recurso',            slug:'Enlace a recurso' },
 		{val: 'curso', 	        label: 'Curso seminario',    slug:'Curso, seminario, taller' },
 		{val: 'presentacion', 	label: 'Presentación',       slug:'Presentación' },
+		{val: 'comercios',      label: 'Recurso Comercios',  slug:'Recurso Gestión Comercios MAB' },
 		{val: 'webresource',    label: 'Recurso Portal',     slug:'Recurso Portal' },
 
 
@@ -332,6 +333,11 @@ const cardCategory = {
 		{val: 'academica', 	    label: 'Académica',          slug:'Académica' },
 	],
 
+	comercios: [
+		{val: 'no_definido', 	  label: 'Seleccione opción',   slug:'Seleccione opción' },
+		{val: 'dashboard',      label: 'Dashboard comercios', slug:'Ficha auxiliar para el dashboard de comercios' },
+	],
+
 	webresource: [
 		{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 		{val: 'topbranding',    label: 'Top branding',       slug:'Top branding' },
@@ -348,7 +354,6 @@ const cardCategory = {
 		{val: 'formcontacto',   label: 'Form de contacto',   slug:'Formulario de contacto' },
 	]
 };
-
 
 const DEFAULT_IMAGE_URL_BASE = "assets/content/";
 const DEFAULT_IMAGE_URL_ARRAY = ['card-1.jpg', 'card-2.jpg', 'card-3.jpg'];

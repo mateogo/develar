@@ -172,6 +172,9 @@ export class SolasisBrowseComponent implements OnInit {
 	initForSave(form: FormGroup, query: AsistenciaBrowse): AsistenciaBrowse {
 		const fvalue = form.value;
 		const entity = query;
+    let dateD = devutils.dateFromTx(fvalue.fecomp_d);
+    let dateH = devutils.dateFromTx(fvalue.fecomp_h);
+
     entity.compPrefix =  fvalue.compPrefix;
     entity.compName =    fvalue.compName;
 
@@ -181,17 +184,9 @@ export class SolasisBrowseComponent implements OnInit {
     entity.fecomp_d =   fvalue.fecomp_d;
     entity.fecomp_h =   fvalue.fecomp_h;
 
-    if(entity.fecomp_d){
-      entity.fecomp_ts_d = devutils.dateFromTx(fvalue.fecomp_d).getTime();
-    } else {
-      entity.fecomp_ts_d = null;
-    }
+    entity.fecomp_ts_d = dateD ? dateD.getTime() : 0;
+    entity.fecomp_ts_h = dateH ? dateH.getTime() : 0;
 
-    if(entity.fecomp_h){
-      entity.fecomp_ts_h = devutils.dateFromTx(fvalue.fecomp_h).getTime();
-    } else {
-      entity.fecomp_ts_h = null;
-    }
 
 		entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;

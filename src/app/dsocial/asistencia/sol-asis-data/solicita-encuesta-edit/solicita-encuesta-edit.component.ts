@@ -169,7 +169,7 @@ export class SolicitaEncuestaEditComponent implements OnInit {
     entity.urgencia =     fvalue.urgencia;
 
     let fe = devutils.dateFromTx(entity.fe_visita)
-    entity.fe_visita_ts = fe.getTime();
+    entity.fe_visita_ts = fe ? fe.getTime() : 0;
     entity.fe_visita = devutils.txFromDate(fe);
 
     entity.trabajador = this.usersOptList.find(u=>u.val == entity.trabajadorId).label;

@@ -77,6 +77,10 @@ const tserialConfig = [
       tserial: 'remitoalmacen',
       usecase: 'Remito de entrega de insumo de almacén',
     },
+    {
+      tserial: 'rol',
+      usecase: 'Emisión de Rol de Nocturnidad',
+    },
 
 ]
 // uso serialTypeConfit[type]
@@ -130,6 +134,23 @@ const serialTypeConfig = {
     resetDay: false,
     createOnTheFly: true,
     slug: 'serial para numerar las solicitudes de asistencia de Desarrollo social',
+  },
+
+  rol: {
+    name: ['rolnocturnidad'],
+    tserial: ['rol'],
+    sector: ['dginspeccion'],
+    tdoc: ['despacho'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'ROL',
+    compName: 'R/Nocturnidad',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'Emisiónd e Rol de Nocturnidad',
   },
 
   remitoalmacen: {
@@ -294,31 +315,30 @@ function createNewSerial(query, regexQuery, errcb, cb){
 
 
 function initNewSerial(query, regexQuery){
-  let baseData = serialTypeConfig[query.type]|| {};
+  let baseData = serialTypeConfig[query.type] || {};
   if(!baseData.letra) baseData.letra = ['X'];
   let serial = {};
   let currentDate = new Date();
 
-
-  serial.type = query.type;
-  serial.name = query.name;
-  serial.tserial = query.tserial;
-  serial.sector = query.sector;
-  serial.tdoc = query.tdoc;
-  serial.letra = query.letra || baseData.letra[0];
+  serial.type =       query.type;
+  serial.name =       query.name;
+  serial.tserial =    query.tserial;
+  serial.sector =     query.sector;
+  serial.tdoc =       query.tdoc;
+  serial.letra =      query.letra || baseData.letra[0];
   serial.punto = parseInt(query.punto || '0', 10) || baseData.punto || 0;
-  serial.pnumero = baseData.pnumero;
-  serial.offset = baseData.offset || 0;
+  serial.pnumero =    baseData.pnumero;
+  serial.offset =     baseData.offset || 0;
   serial.compPrefix = query.compPrefix ||  baseData.compPrefix || 'COMP';
-  serial.compName = query.compName ||  baseData.compName || 'Comprobante';
-  serial.showAnio =  baseData.showAnio || false;
-  serial.resetDay = baseData.resetDay || false;
+  serial.compName =   query.compName ||  baseData.compName || 'Comprobante';
+  serial.showAnio =   baseData.showAnio || false;
+  serial.resetDay =   baseData.resetDay || false;
   serial.createOnTheFly =  baseData.createOnTheFly || false;
   serial.anio = currentDate.getFullYear();
-  serial.mes = currentDate.getMonth();
-  serial.dia = currentDate.getDate();
+  serial.mes =  currentDate.getMonth();
+  serial.dia =  currentDate.getDate();
   serial.estado = 'activo';
-  serial.slug = query.slug ||baseData.slug || '';
+  serial.slug =   query.slug ||baseData.slug || '';
   serial.fe_ult = currentDate.getTime();
   return serial;
 }

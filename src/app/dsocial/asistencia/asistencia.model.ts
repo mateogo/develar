@@ -630,6 +630,7 @@ export class AsistenciaHelper {
 
 
 
+
 	static buildDataTable(list: Asistencia[]){
 
 		return list.map(sol => {

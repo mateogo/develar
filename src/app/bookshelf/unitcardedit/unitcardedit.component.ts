@@ -30,7 +30,9 @@ function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], pers
 
 	entity.slug = fvalue.slug;
   entity.publishDateTx = fvalue.publishDateTx;
-  entity.publishDate = fvalue.publishDateTx ? devutils.dateFromTx(fvalue.publishDateTx).getTime() : 0;
+  let dateD = devutils.dateFromTx(entity.publishDateTx);
+
+  entity.publishDate = dateD ? dateD.getTime() : 0;
 
   entity.subtitle = fvalue.subtitle;
   entity.excerpt = fvalue.excerpt;

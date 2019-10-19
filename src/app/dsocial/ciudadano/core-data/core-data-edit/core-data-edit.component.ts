@@ -201,15 +201,14 @@ export class CoreDataEditComponent implements OnInit {
     entity.nacionalidad = fvalue.nacionalidad;
     entity.nestudios =    fvalue.nestudios;
     entity.fenactx =      fvalue.fenactx;
+
+    entity.fenactx = fvalue.fenactx;
+    let dateD = devutils.dateFromTx(entity.fenactx);
+    entity.fenac = dateD ? dateD.getTime() : 0;
+
     entity.ecivil =       fvalue.ecivil;
     entity.sexo =         fvalue.sexo;
 
-    if(fvalue.fenactx){
-      entity.fenac = devutils.dateFromTx(fvalue.fenactx).getTime();
-
-    }else{
-      entity.fenac = 0;
-    }
 		return entity;
 	}
 
