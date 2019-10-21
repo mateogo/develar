@@ -1,29 +1,32 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Observable ,  Subject, }        from 'rxjs';
+import { Observable ,  Subject, of}        from 'rxjs';
 import { debounceTime, distinctUntilChanged,filter, switchMap }   from 'rxjs/operators';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
+
+import { DaoService } from '../../dao.service';
+
+import { GenericDialogComponent } from '../../generic-dialog/generic-dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 import { Person, personModel } from '../../../entities/person/person';
 
-import { DsocialController } from '../../dsocial.controller';
-
-
 @Component({
-  selector: 'persona-buscar',
-  templateUrl: './person-buscar.component.html',
-  styleUrls: ['./person-buscar.component.scss'],
-  providers: [GenericDialogComponent]
+  selector: 'utils-browse-person',
+  templateUrl: './utils-browse-person.component.html',
+  styleUrls: ['./utils-browse-person.component.scss']
 })
-export class PersonBuscarComponent implements OnInit {
+export class UtilsBrowsePersonComponent implements OnInit {
 	@Input() entityId;
   @Input() entityName;
+  @Input() browseTitle = 'buscar persona/organización por nombre ó DNI...';
+  @Input() query = {};
 
 	@Output() person$ = new EventEmitter<Person>();
   @Output() searchTerms = new Subject<string>();
+  @Output() lookUpModels = new EventEmitter<Person[]>();
+
 
   public persons: Observable<Person[]>;
   public currentPerson: Person;
@@ -33,7 +36,7 @@ export class PersonBuscarComponent implements OnInit {
   //private searchTerms = new Subject<string>();
 
   constructor(
-       	private dsCtrl: DsocialController,
+       	private daoService: DaoService,
         public dialogService: MatDialog,
         public snackBar: MatSnackBar,
   	) { 
@@ -46,9 +49,20 @@ export class PersonBuscarComponent implements OnInit {
         debounceTime(300),
         distinctUntilChanged(),
         filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
-        switchMap(term => this.dsCtrl.searchPerson(term))
+        switchMap(term => this.searchPerson(term, this.query))
       );
+
+    this.persons.subscribe(persons => {
+      if(persons && persons.length){
+        this.lookUpModels.next(persons);
+      }
+    })
+
   }
+
+  /********************/
+  //template handlers /
+  /******************/
 
   search(term: string): void {
     this.searchTerms.next(term);
@@ -56,8 +70,31 @@ export class PersonBuscarComponent implements OnInit {
 
   selectEntity(person:Person){
   	this.currentPerson = person;
+    console.log('displayName: [%s]', this.displayNameFld);
+    this.displayNameFld = "";
     this.person$.emit(person);
   }
+
+  /********************/
+  //dao utils         /
+  /******************/
+
+  searchPerson(term: string, query: any): Observable<Person[]> {
+      query = query || {};
+
+      if(!(term && term.trim())){
+        return of([] as Person[]);
+      }
+      if(isNaN( Number(term))){
+        query['displayName'] = term;
+      }else{
+        query['ndoc'] = term;
+
+      }
+
+      return this.daoService.search<Person>('person', query);
+  }
+
 
   showEntity(){
     if(!this.currentPerson) return;
@@ -143,7 +180,8 @@ const newPersonConfirm = {
       label: 'Cancelar'
     }
   }
-};
+
+}
 
 //dialogRef.updateSize('430px', '220px');
 //ver: md-Option: ngAfterContentInit

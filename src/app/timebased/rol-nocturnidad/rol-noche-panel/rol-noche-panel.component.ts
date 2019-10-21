@@ -12,6 +12,8 @@ import { TimebasedHelper }    from '../../timebased-helper';
 const UPDATE = 'update';
 const TOKEN_TYPE = 'rolnocturnidad';
 const NAVIGATE = 'navigate';
+const CLONE = 'clone';
+const DELETE = 'delete';
 
 
 @Component({
@@ -33,6 +35,10 @@ export class RolNochePanelComponent implements OnInit {
 
   ngOnInit() {
     console.log('Panel [%s]', this.items && this.items.length)
+    this.tbCtrl.personListener.subscribe(p => {
+      console.log('Current person: [%s]', p && p.displayName);
+    })
+    this.tbCtrl.fetchPersonByUser();
   }
 
   updateItem(event: UpdateRolEvent){
@@ -47,15 +53,28 @@ export class RolNochePanelComponent implements OnInit {
 
         this.emitEvent(event);
 
-      });      
+      });
     } else if(event.action === NAVIGATE){
       this.emitEvent(event);
 
+    } else if(event.action === CLONE){
+      this.cloneItem(event.token);
+
+    } else if(event.action === DELETE){
+      this.deleteItem(event.token);
+      
     }
   }
 
-  addItem(){
-    let item = TimebasedHelper.initNewRolNocturnidad('rolnocturnidad', 'rolnocturnidad')
+  private deleteItem(t:RolNocturnidad){
+    let index = this.items.indexOf(t);
+
+    if(index !== -1){
+      this.items.splice(index, 1)
+    }
+  }
+
+  private addItemToList(item: RolNocturnidad){
     if(this.items){
       this.items.unshift(item);
 
@@ -67,7 +86,17 @@ export class RolNochePanelComponent implements OnInit {
 
   }
 
-  emitEvent(event:UpdateRolEvent){
+  addItem(){
+    let item = TimebasedHelper.initNewRolNocturnidad('rolnocturnidad', 'rolnocturnidad', this.tbCtrl.currentPerson)
+    this.addItemToList(item);
+  }
+
+  private cloneItem(item_base: RolNocturnidad){
+    let item = TimebasedHelper.cloneRolNocturnidad(item_base);
+    this.addItemToList(item);
+  }
+
+  private emitEvent(event:UpdateRolEvent){
   
   	if(event.action === UPDATE){
   		this.updateItems.next({

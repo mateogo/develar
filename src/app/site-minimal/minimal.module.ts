@@ -10,7 +10,7 @@ import { BookshelfModule } from '../bookshelf/bookshelf.module';
 import { MinimalRoutingModule } from './minimal-routing.module';
 import { LoginModule }  from '../entities/user/login/login.module';
 import { ProductModule }  from '../entities/products/product.module';
-
+import { TimebasedModule }  from '../timebased/timebased.module';
 
 //site component
 import { HomeComponent } from './home/home.component';
@@ -71,6 +71,7 @@ import { ComercioContactdataEditComponent } from './comercio/comercio-contactdat
 import { ComercioContactdataViewComponent } from './comercio/comercio-contactdata/comercio-contactdata-view/comercio-contactdata-view.component';
 import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
 import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-layout.component';
+import { ComercioCoreStatusComponent } from './comercio/comercio-core/comercio-core-status/comercio-core-status.component';
 
 
 
@@ -85,7 +86,8 @@ import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-l
     DevelarCommonsModule,
     BookshelfModule,
     LoginModule,
-    ProductModule
+    ProductModule,
+    TimebasedModule
   ],
   declarations: [
   	MinimalistLayoutComponent,
@@ -139,7 +141,8 @@ import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-l
   	ComercioContactdataEditComponent,
   	ComercioContactdataViewComponent,
   	DashboardComercioPageComponent,
-  	ComerciosLayoutComponent
+  	ComerciosLayoutComponent,
+  	ComercioCoreStatusComponent
   ],
   providers:[
     HighlightService

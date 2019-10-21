@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Person, personModel, FamilyData } from '../../../../entities/person/person';
+import { Person, personModel, BusinessMembersData } from '../../../../entities/person/person';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -10,7 +10,7 @@ import { devutils }from '../../../../develar-commons/utils'
 })
 export class ComercioMembersViewComponent implements OnInit {
 
-	@Input() token: FamilyData;
+	@Input() token: BusinessMembersData;
 	public pname;
 	public pdoc;
   public edad = 0;

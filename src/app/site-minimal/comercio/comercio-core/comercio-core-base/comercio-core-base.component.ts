@@ -42,16 +42,22 @@ export class ComercioCoreBaseComponent implements OnInit {
 
 
 	editToken(){
-		// this.openEditor = !this.openEditor;
-		// this.showView = !this.showView;
-		// this.showEdit = !this.showEdit;
+		this.openEditor = !this.openEditor;
+		this.showView = !this.showView;
+		this.showEdit = !this.showEdit;
+	}
+
+  navigateTo(){
+    // this.openEditor = !this.openEditor;
+    // this.showView = !this.showView;
+    // this.showEdit = !this.showEdit;
     this.emitEvent({
       action: NAVIGATE,
       token: 'core',
       person: this.person
       
     })
-	}
+  }
 
 	removeToken(){
 	}

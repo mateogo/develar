@@ -200,14 +200,14 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
   {
-    title: 'Reclamos',
+    title: 'Nocturnidad',
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
     sub: [
       {
-        title: 'nuevo reclamo',
-        routing: '/develar/reclamos/alta'
+        title: 'Rol Nocturnidad',
+        routing: '/rol/nocturnidad/panel'
       },
     ],
     routing: '',
@@ -876,11 +876,225 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
   }
 
 ];
+export const COMERCIO_ITEMS: MainMenuItem[] = [
+
+  {
+    title: 'Comercios',
+    icon: '',
+    active: false,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Nocturnidad',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Rol Nocturnidad',
+        routing: '/rol/nocturnidad/panel'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Comunidades',
+    icon: '',
+    active: false,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  
+  {
+    title: 'Fichas',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Dashboard',
+        routing: '/develar/fichas'
+      },
+      {
+        title: 'Navegar lista',
+        routing: '/develar/fichas/lista'
+      },
+      {
+        title: 'Navegar grid',
+        routing: '/develar/fichas/grid'
+      },
+      {
+        title: 'Alta nueva ficha',
+        routing: '/develar/fichas/alta'
+      },
+      {
+        title: 'Proyectos',
+        routing: '/develar/proyectos'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'Comunidades',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'gestionar comunidades',
+        routing: '/develar/comunidades'
+      },
+      {
+        title: 'vista pública',
+        routing: '/patria'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Notificaciones',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'nueva notificación',
+        routing: '/develar/notificaciones/alta'
+      },
+      {
+        title: 'navegar',
+        routing: '/develar/notificaciones/navegar'
+      },
+      {
+        title: 'chat',
+        routing: '/develar/notificaciones/socket'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Entidades',
+    icon: '',
+    active: false,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'Usuarios',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Registrar usuario',
+        routing: '/ingresar/registrarse'
+      },
+      {
+        title: 'Olvidaste la clave?',
+        routing: '/ingresar/nuevaclave'
+      },
+      {
+        title: 'Confirmar correo',
+        routing: '/ingresar/confirmar'
+      },
+      {
+        title: 'Navegar',
+        routing: '/develar/entidades/usuarios'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Personas',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar Personas',
+        routing: '/develar/entidades/personas'
+      },
+      {
+        title: 'Persona - Usuario',
+        routing: '/develar/entidades/personas/gestion'
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Productos',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Kits Productos',
+        routing: '/develar/entidades/productos/kits'
+      },
+      {
+        title: 'Navegar Productos',
+        routing: '/develar/entidades/productos'
+      },
+      {
+        title: 'Alta producto',
+        routing: '/develar/entidades/productos/alta'
+      },
+      {
+        title: 'Items producto',
+        routing: '/develar/entidades/productos/items'
+      },
+      {
+        title: 'Seriales de producto',
+        routing: '/develar/entidades/productos/seriales'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  }
+
+];
+
 
 
 export const COMPANY_MENU = {
   'DEFAULT': MAINMENUITEMS,
-  dsocial: DSOCIAL_ITEMS
+  dsocial: DSOCIAL_ITEMS,
+  comercios: COMERCIO_ITEMS
 
 };
 

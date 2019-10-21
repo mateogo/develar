@@ -54,7 +54,7 @@ import { CommunityRelationComponent} from './community/community-relation/commun
 import { EnterSiteComponent }        from './enter-site/enter-site.component';
 import { NoteeditorComponent }       from './noteeditor/noteeditor/noteeditor.component';
 import { NotepieceComponent }        from './noteeditor/notepiece/notepiece.component';
-
+import { UtilsBrowsePersonComponent} from './browse/utils-browse-person/utils-browse-person.component';
 
 import { CommunityController }  from './community/community.controller'
 import { ModelController }      from './folders/model.controller';
@@ -120,6 +120,7 @@ import { PrismHighlightService }     from './highlighter.service';
     NoteBaseComponent,
     NoteeditorComponent,
     NotepieceComponent,
+    UtilsBrowsePersonComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,
@@ -168,6 +169,7 @@ import { PrismHighlightService }     from './highlighter.service';
     NoteBaseComponent,
     NoteeditorComponent,
     NotepieceComponent,
+    UtilsBrowsePersonComponent,
     CommunityCreateComponent,
     CommunityBaseComponent,
     CommunityRelationComponent,

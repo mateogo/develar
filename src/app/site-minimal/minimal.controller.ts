@@ -500,6 +500,21 @@ export class SiteMinimalController {
     })
   }
 
+  setCurrentPersonFromUser(){
+    console.log('setCurrentPersonFromUser');
+    let user = this.userService.currentUser;
+    if(!user) return;
+    this.fetchPersonByUser(user).subscribe(persons => {
+      if(persons && persons.length){
+        this.updateCurrentPerson(persons[0]);
+      }
+
+    })
+
+  }
+
+
+
   setCurrentPersonFromId(id: string){
     console.log('setCurrentPersonFromId [%s]', id);
     if(!id) return;
@@ -512,6 +527,13 @@ export class SiteMinimalController {
 
   fetchPersonById(id: string): Promise<Person>{
     return this.daoService.findById<Person>('person', id);
+  }
+
+  fetchPersonByUser(user: User): Observable<Person[]>{
+    let query = {
+      userId: user._id
+    }
+    return this.daoService.search<Person>('person', query);
   }
 
 

@@ -16,7 +16,7 @@ export interface PersonTable {
 export interface UpdateItemListEvent {
       action: string;
       type: string;
-      items: Array<PersonContactData|Address|FamilyData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental>;
+      items: Array<PersonContactData|Address|FamilyData|BusinessMembersData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental>;
 };
 
 export interface UpdatePersonEvent {
@@ -49,6 +49,11 @@ export interface UpdateFamilyEvent {
       token: FamilyData;
 };
 
+export interface UpdateBusinessMemberEvent {
+      action: string;
+      type: string;
+      token: FamilyData;
+};
 export interface UpdateOficiosEvent {
       action: string;
       type: string;
@@ -213,6 +218,8 @@ export class FamilyData {
     ocupacion: string;
     tocupacion: string;
     ingreso: string;
+    hasOwnPerson: boolean;
+    personId: string;
     estado: string;
     desde: string;
     hasta: string;
@@ -228,11 +235,15 @@ export class BusinessMembersData {
     fenac: number = 0;
     fenactx: string;
     ecivil: string;
+    email: string;
+    phone: string;
     nestudios: string;
     tprofesion: string;
     ocupacion: string;
     tocupacion: string;
     ingreso: string;
+    hasOwnPerson: boolean;
+    personId: string;
     estado: string;
     desde: string;
     hasta: string;
@@ -263,6 +274,7 @@ export class Person {
   especialidad: string;
   ambito: string;
   nestudios: string;
+  facetas: Array<string>;
 
   nacionalidad: string;
   fenac: number;
@@ -302,7 +314,6 @@ export class Person {
 		estado: string;
 		navance: string;
 	};
-	facetas: Array<any>;
 
 	estado: string;
 	navance: string;
@@ -1669,6 +1680,16 @@ class PersonModel {
         });
 
         return list;
+    }
+
+    hasMinimumDataToBePerson(p: BusinessMembersData | FamilyData): boolean{
+      let acceptable = true;
+
+      if(!(p.nombre && p.apellido && p.tdoc && p.ndoc)){
+        acceptable = false;
+      }
+
+      return acceptable;
     }
 
 }

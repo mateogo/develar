@@ -1,0 +1,20 @@
+<mat-form-field>
+  <input 	#searchBox  matInput  id="search-box" 
+		name="displayName"
+		[(ngModel)]='displayNameFld'
+		[matAutocomplete]="displayName"
+		(keyup)="search(searchBox.value)"  
+		placeholder="{{ browseTitle }}" />
+		<span matSuffix (click)='showEntity()'>
+			<i [class]="openEditor ? 'far fa-edit' : 'fas fa-pen-square'" aria-hidden="true"></i>
+		</span>
+</mat-form-field>
+
+<mat-autocomplete #displayName="matAutocomplete" >
+   <mat-option
+   				*ngFor="let person of persons | async" 
+					(onSelectionChange)="selectEntity(person)"
+   				[value]=''>
+      {{ showPersonData(person) }}
+    </mat-option>
+</mat-autocomplete>

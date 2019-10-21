@@ -1,0 +1,37 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+
+  	<ng-container *ngIf="showView">
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+		 			<comercio-core-view [person]='person'></comercio-core-view>
+		 		</div>
+			</div>
+
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+      		<button mat-button type="button" color="accent"
+      				(click)="navigateTo()" >Editar perfil del comercio</button>
+
+      		<button mat-button type="button" color="accent"
+      				(click)="editToken()" >Actualizar datos básicos</button>
+		 		</div>
+			</div>
+			
+			<mat-chip-list aria-label="Fish selection">
+			  <mat-chip  *ngFor='let chip of chips' [color]="chip.color"  selected>{{ chip.text }}</mat-chip>
+			</mat-chip-list>
+
+		 </ng-container>
+	
+  		<ng-container *ngIf="showEdit">
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+		 			<comercio-core-edit [person]='person'
+		 								(updatePerson)='updateCore($event)' ></comercio-core-edit>
+		 		</div>
+			</div>
+		 </ng-container>
+	
+  </mat-card-content>
+</mat-card>

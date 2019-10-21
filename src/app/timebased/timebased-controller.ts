@@ -30,7 +30,8 @@ export class TimebasedController {
   private _selectionkitModel: SelectionModel<RolNocturnidadTableData>
   private _tableActions: Array<any> = TimebasedHelper.getOptionlist('tableactions');
 
-  private currentPerson: Person;
+  private _currentPerson: Person;
+  public personListener = new BehaviorSubject<Person>(this._currentPerson);
 
   private rolnocturnidadList: RolNocturnidad[] = [];
 
@@ -72,7 +73,7 @@ export class TimebasedController {
   }
 
 
-  /******* UPDATE ASISTENCIA ********/
+  /******* UPDATE ROL NOCTURNIDAD ********/
   private updateRolNocturnidad(rolnocturnidad$:Subject<RolNocturnidad>, type, rolnocturnidad:RolNocturnidad){
  
     this.initRolNocturnidadForUpdate(rolnocturnidad);
@@ -91,7 +92,7 @@ export class TimebasedController {
     })
   }
 
-  /******* CREATE ASISTENCIA ********/
+  /******* CREATE ROL NOCTURNIDAD ********/
   private initNewRolNocturnidad(rolnocturnidad$:Subject<RolNocturnidad>, type, rolnocturnidad:RolNocturnidad){
     let sector = rolnocturnidad.sector || 'dginspeccion';
     let name = 'rolnocturnidad';
@@ -112,8 +113,9 @@ export class TimebasedController {
     rolnocturnidad.fecomp_txa = devutils.txFromDate(fecomp_date);
 
     ///OjO ToDo
-    rolnocturnidad.ferol_tsa = fecomp_date.getTime();
-    rolnocturnidad.ferol_txa = devutils.txFromDate(fecomp_date);
+    let ferol_date = devutils.dateFromTx(rolnocturnidad.ferol_txa) ||  new Date();
+    rolnocturnidad.ferol_tsa = ferol_date.getTime();
+    rolnocturnidad.ferol_txa = devutils.txFromDate(ferol_date);
     rolnocturnidad.ts_alta = Date.now();
 
     this.fetchSerialRolNocturnidads().subscribe(serial =>{
@@ -159,6 +161,32 @@ export class TimebasedController {
   }
 
 
+  /*****************
+    PERSON - USER
+  *****************/
+  get currentPerson(){
+    return this._currentPerson;
+  }
+
+  fetchPersonByUser(): Observable<Person[]>{
+    let user = this.userService.currentUser;
+    if(!user) return;
+    let query = { userId: user._id };
+
+    console.log('fetchPersonByUser')
+
+    this.daoService.search<Person>('person', query).subscribe(persons => {
+      console.log('persons fetched [%s]', persons && persons.length);
+      if(persons && persons.length){
+        this.updateCurrentPerson(persons[0]);
+      }
+    });
+  }
+
+  updateCurrentPerson(person: Person){
+    this._currentPerson = person;
+    this.personListener.next(this._currentPerson);
+  }
 
   /*****************
     Seriales

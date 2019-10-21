@@ -26,6 +26,10 @@ const routes: Routes = [
     component: PageConfirmComponent,
   },
   {
+    path: 'confirmar',
+    component: PageConfirmComponent,
+  },
+  {
     path: 'clave/:id',
     component: CredentialsComponent,
   },

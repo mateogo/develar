@@ -10,6 +10,7 @@ import { gldef } from '../../../develar-commons/develar.config';
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
+const DASHBOARD = gldef.dashboard;
 
 @Component({
   moduleId: module.id,
@@ -166,20 +167,28 @@ export class NavbarComponent implements OnInit {
   changeCommunity(e){
     e.stopPropagation();
     e.preventDefault();
-    this.router.navigate(['/develar/comunidades'])
+    this.router.navigate(['/develar/comunidades']);
   }
 
   logout(e){
     e.stopPropagation();
     e.preventDefault();
     this.userService.logout();
-    this.router.navigate(['/'])
+    this.router.navigate(['/']);
+  }
+
+  gotoDashboard(e){
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('gotoDashboard: [%s]', DASHBOARD, gldef.dashboard)
+    console.dir(gldef)
+    this.router.navigate([gldef.dashboard]);
   }
 
   changePasswd(e){
     e.stopPropagation();
     e.preventDefault();
-    this.router.navigate(['/ingresar/clave', this.currentUser._id])
+    this.router.navigate(['/ingresar/clave', this.currentUser._id]);
   }
 
   setupHomeView(isHome){
@@ -190,6 +199,6 @@ export class NavbarComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     if(this.hideLogin) return;
-    this.router.navigate(['/ingresar/login'])
+    this.router.navigate(['/ingresar/login']);
   }
 }

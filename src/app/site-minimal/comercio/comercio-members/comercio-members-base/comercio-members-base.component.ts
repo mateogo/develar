@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Person, FamilyData, UpdateFamilyEvent } from '../../../../entities/person/person';
+import { Person, BusinessMembersData, UpdateBusinessMemberEvent } from '../../../../entities/person/person';
 
 const CANCEL = 'cancel';
 const DELETE = 'delete';
@@ -11,8 +11,8 @@ const UPDATE = 'update';
   styleUrls: ['./comercio-members-base.component.scss']
 })
 export class ComercioMembersBaseComponent implements OnInit {
-	@Input() token: FamilyData;
-	@Output() updateToken = new EventEmitter<UpdateFamilyEvent>();
+	@Input() token: BusinessMembersData;
+	@Output() updateToken = new EventEmitter<UpdateBusinessMemberEvent>();
 
 	public showView = true;
 	public showEdit = false;
@@ -26,14 +26,14 @@ export class ComercioMembersBaseComponent implements OnInit {
     }
   }
 
-  manageToken(event: UpdateFamilyEvent){
+  manageToken(event: UpdateBusinessMemberEvent){
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;
   	this.emitEvent(event);
   }
 
-  emitEvent(event:UpdateFamilyEvent){
+  emitEvent(event:UpdateBusinessMemberEvent){
   	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}

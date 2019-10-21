@@ -239,6 +239,7 @@ const routes: Routes = [
   },
   {
     path: 'rol',
+    component: DefaultLayoutComponent,
     children: mainRoutes
   },
   {

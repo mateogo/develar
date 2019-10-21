@@ -87,10 +87,11 @@ export class RolNocturnidad {
 
 		ferol_tsa:  number;
 		ferol_txa:  string;
-		vigencia:   string = 'noche'; //[noche| semana]
+		vigencia:   string = '24'; //[noche| semana]
 		
-		slug:        string;
+		slug:        string = 'Actividad regular';
 		description: string;
+		agentes: RolNocturnidadItem[];
 
 		estado:      string = 'activo';
 		avance:      string = 'emitido';

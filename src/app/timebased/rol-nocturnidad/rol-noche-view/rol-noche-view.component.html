@@ -1,4 +1,8 @@
-<p class='text-destacado'>{{ cName }}: {{ cNum }} - {{ fecha }} -  <strong>{{ action }}</strong></p>
+<p class='text-destacado'>{{ cName }}: {{ cNum }} -  <strong>{{ fecha }}</strong></p>
 <p class='text-resaltado'>{{ solicitante }} :: {{ avance }} </p>
-<p class='text-normal'>{{sector}} :: Solicita: {{slug}} </p>
+<p class='text-normal'>{{sector}} ::  {{slug}} </p>
 <p class='text-normal'>{{description}} </p>
+<p class='text-resaltado'>Nómina de personal de seguridad</p>
+<ng-container *ngFor="let agente of agentes">
+	<p class='text-normal'>{{ agente }} </p>
+</ng-container>

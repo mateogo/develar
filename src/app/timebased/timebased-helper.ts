@@ -1,4 +1,4 @@
-import { RolNocturnidad, Requirente, RolNocturnidadTableData, Serial }      from './timebased.model';
+import { RolNocturnidad, RolNocturnidadItem, Requirente, RolNocturnidadTableData, Serial }      from './timebased.model';
 import { Person }      from '../entities/person/person';
 import { AsistenciaHelper } from '../dsocial/asistencia/asistencia.model';
 
@@ -46,6 +46,12 @@ const sectorOptList = [
 ]
 
 
+const vigenciaOptList = [
+      {val: '24',  label: 'Una noche',   slug:'Una noche' },
+      {val: '48',  label: 'Dos noches',  slug:'Una noche' },
+      {val: '72',  label: 'Tres noches', slug:'Una noche' },
+]
+
 
 const optionsLists = {
 	 default: default_option_list,
@@ -55,6 +61,7 @@ const optionsLists = {
    estado: estadosOptList,
    avance: avanceOptList,
    sectores: sectorOptList,
+   vigencia: vigenciaOptList,
    ciudades: AsistenciaHelper.getOptionlist('ciudades')
 }
 
@@ -134,20 +141,46 @@ export class TimebasedHelper {
 		}
 	}
 
-	static initNewRolNocturnidad(action, sector, person?: Person, serial?: Serial, slug?): RolNocturnidad{
-		let x = new RolNocturnidad();
-		return x;
-	}
-
 	static buildRolesDataSource(source_list: Array<RolNocturnidad>): RolNocturnidadTableData[]{
     let list: Array<RolNocturnidadTableData>;
 
     list = source_list.map(item => new RolNocturnidadTableData(item) );
-
     return list;
   }
 
+	static initNewRolNocturnidad(action, sector, person?: Person, serial?: Serial, slug?): RolNocturnidad{
+		let x = new RolNocturnidad();
+		if(person && person.integrantes && person.integrantes.length){
+			x.agentes = person.integrantes.map(integrante =>({
+													_id: null,
+													idPerson: integrante.personId,
+													personDni: integrante.ndoc,
+													personName: integrante.nombre,
+													personApellido: integrante.apellido }) as RolNocturnidadItem) 
+		}
+		return x;
+	}
 
+	static cloneRolNocturnidad(base: RolNocturnidad): RolNocturnidad{
+		let x = new RolNocturnidad();
+		Object.assign(x, base);
+		x.agentes = base.agentes;
+		delete x.compNum;
+		delete x._id;
+		delete x.ferol_txa;
+
+		return x;
+	}
+
+
+  static buildRolNocturnidadItemFromPerson(p: Person): RolNocturnidadItem{
+    let ag = new RolNocturnidadItem();
+    ag.personName = p.nombre;
+    ag.personApellido = p.apellido;
+    ag.personDni = p.ndoc;
+    ag.idPerson = p._id;
+    return ag;
+  }
 
 
 

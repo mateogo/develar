@@ -5,16 +5,19 @@
 
   <mat-card-content>
   	<div class="container-fluid search-panel">
+		 	
 		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<comercio-core-base [person]='currentPerson'
-		 					(updatePerson)='updateCore($event)' ></comercio-core-base>
+		 		<comercio-core-status [person]='currentPerson'
+		 					(updatePerson)='navigateToProfile($event)' ></comercio-core-status>
 
 
-		 					<button  mat-raised-button color="warn" 
-		 									(click)="gotoRolNocturnidada()">Ir a Rol Nocturnidad</button>
+		 		<h5>Gestione la emisión del Rol de Nocturnidad</h5>
+				<rol-noche-panel  [items]='rolnocturnidadList' 
+											(updateItems)='updateRolnocturnidadList($event)' ></rol-noche-panel>		
 			</div>
-	
+
 
 		</div>
+
  	</mat-card-content>
 </mat-card>

@@ -16,6 +16,11 @@
 						<i [class]="showEditBase ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></span>
 
+					<span class="edit-control"
+						(click)='cloneToken()' title="Clonar este registro">
+						<i [class]="'fas fa-pen-square'" 
+						aria-hidden="true"></i></span>
+
 	 				<div *ngIf="showSelectControl" >
 	      		<button mat-raised-button color="accent" 
 	        		  (click)="tokenSelected()" >Seleccionar</button>
@@ -28,7 +33,7 @@
 			<ng-container *ngIf="showEditBase">
 			 	<div class="row">
 			 		<div class="col-sm-12 col-md-12">
-			 			<rol-noche-edit [token]='rolnocturnidad'
+			 			<rol-noche-edit [rolnocturnidad]='rolnocturnidad'
 			 								(updateToken)='manageBase($event)' ></rol-noche-edit>
 			 		</div>
 				</div>

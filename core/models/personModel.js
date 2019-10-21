@@ -82,6 +82,8 @@ const businessSch = new mongoose.Schema({
     ocupacion:   {type: String, required: false, default: ""},
     tocupacion:  {type: String, required: false, default: ""},
     ingreso:     {type: String, required: false, default: ""},
+    hasOwnPerson:{type: Boolean, required: false, default: false},
+    personId:    {type: String, required: false, default: ""},
     estado:      {type: String, required: false, default: ""},
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
@@ -102,6 +104,8 @@ const familySch = new mongoose.Schema({
     ocupacion:   {type: String, required: false, default: ""},
     tocupacion:  {type: String, required: false, default: ""},
     ingreso:     {type: String, required: false, default: ""},
+    hasOwnPerson:{type: Boolean, required: false, default: false},
+    personId:    {type: String, required: false, default: ""},
     estado:      {type: String, required: false, default: ""},
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
@@ -232,6 +236,7 @@ const personSch = new mongoose.Schema({
     ndoc:           { type: String, required: false },
     cuil:           { type: String, required: false },
 
+    facetas:        { type: Array,  required: false },
     tprofesion:     { type: String, required: false },
     especialidad:   { type: String, required: false },
     ambito:         { type: String, required: false },
@@ -344,6 +349,15 @@ function buildQuery(query){
         q["ndoc"] = query.ndoc;
     }
 
+    if(query.facetas){
+        q["facetas"] = query.facetas;
+    }
+
+    if(query.userId){
+        q["user.userid"] = query.userId;
+    }
+
+
     if(query.list){
         //console.log('///// buildQuery')
         //console.log(query.list);
@@ -429,6 +443,7 @@ exports.update = function (id, person, errcb, cb) {
             errcb(err);
         
         }else{
+            checkForPersonToPersonRelation(entity);
             cb(entity);
         }
     });
@@ -478,6 +493,7 @@ const createNewPerson = function(person, errcb,cb){
                 createNewRecordcarRelation(entity, errcb, cb)
 
             }else{
+                checkForPersonToPersonRelation(entity);
 
                 cb(entity);
             }
@@ -493,6 +509,73 @@ const createNewPerson = function(person, errcb,cb){
 //         cb(person);
 //     });
 // }
+
+function checkForPersonToPersonRelation(sourcePerson){
+    let businessMembers = sourcePerson.integrantes || [];
+    businessMembers.forEach(p => {
+        if(p.hasOwnPerson){
+            updateRelatedBusinessMember(sourcePerson, p);
+        }
+    })
+
+
+}
+function addFaceta(facetas, token){
+    facetas = facetas || [];
+    let index = facetas.indexOf(token);
+    if(index === -1) facetas.push(token);
+    return facetas;
+}
+
+function updateRelatedBusinessMember(person, member){
+    let query = buildQuery({
+        tdoc: member.tdoc,
+        ndoc: member.ndoc
+    });
+    Person.findOne(query).then(tperson => {
+        if(!tperson) tperson = initNewPerson(member);
+
+        updatePersonFromVinculo(tperson, member);
+        tperson.save().then(err=> {});
+    })
+
+}
+
+
+function initNewPerson(member){
+    let person = new Person();
+    let today = Date.now();
+    person.isImported = false;
+    person.cuil = '';
+    person.facetas = [];
+    person.ts_alta = today;
+    person.ts_umodif = today;
+
+    return person;
+}
+
+function updatePersonFromVinculo(tperson, member){
+    tperson.nombre = member.nombre;
+    tperson.apellido = member.apellido;
+    tperson.displayName = member.apellido + ', ' + member.nombre;
+    tperson.tdoc = member.tdoc;
+    tperson.ndoc = member.ndoc;
+    tperson.email = member.email;
+    tperson.fenac = member.fenac;
+    tperson.fenactx = member.fenactx;
+    tperson.ecivil = member.ecivil;
+
+    tperson.tprofesion = member.tprofesion;
+    tperson.nestudios = member.nestudios;
+    tperson.especialidad = member.ocupacion;
+    tperson.ambito = member.tocupacion;
+
+    if(member.vinculo === "seguridad"){
+        tperson.facetas = addFaceta(tperson.facetas, member.vinculo);
+    }
+    return tperson;
+}
+
 
 const initPersonFromUser = function(user ){
     let person = new Person();

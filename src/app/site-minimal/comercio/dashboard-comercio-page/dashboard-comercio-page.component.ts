@@ -29,6 +29,8 @@ import {   Asistencia,
           UpdateAsistenciaListEvent,
           AsistenciaHelper } from '../../../dsocial/asistencia/asistencia.model';
 
+import { RolNocturnidad, RolNocturnidadItem, UpdateRolEvent }    from '../../../timebased/timebased.model';
+import { TimebasedController } from '../../../timebased/timebased-controller';
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
@@ -45,8 +47,8 @@ export class DashboardComercioPageComponent implements OnInit {
   public title = "Bienvenido a su espacio de trabajo";
   public subtitle = "Datos generales";
 
-  public tDoc = "CUIT";
-  public nDoc = "";
+  public rolnocturnidadList: RolNocturnidad[] = [];
+
 
   public currentPerson: Person;
   public contactList:   PersonContactData[];
@@ -57,8 +59,6 @@ export class DashboardComercioPageComponent implements OnInit {
   public saludList:     SaludData[];
   public coberturaList: CoberturaData[];
   public ambientalList: EncuestaAmbiental[];
-
-  public asistenciasList: Asistencia[];
 
 
   //public contactData = new PersonContactData();
@@ -72,11 +72,12 @@ export class DashboardComercioPageComponent implements OnInit {
   private count = 0;
   
 
+
   constructor(
     	private router: Router,
       private minimalCtrl: SiteMinimalController,
     	private route: ActivatedRoute,
-
+      private tbCtrl: TimebasedController
   	) { }
 
   ngOnInit() {
@@ -109,7 +110,7 @@ export class DashboardComercioPageComponent implements OnInit {
 
 
   initCurrentPage(){
-    console.log('initCurrentPage')
+    console.log('initCurrentPage [%s]', this.personId)
     this.count += 1;
     
     let sscrp3 = this.minimalCtrl.personListener.subscribe(p => {
@@ -127,8 +128,20 @@ export class DashboardComercioPageComponent implements OnInit {
     this.loadPerson(this.personId);
   }
 
+  updateTableList(){
+    let query = {};
+    let sscrp4 = this.tbCtrl.fetchRolnocturnidadDataSource(query).subscribe(list => {
+      console.log('udate Table list [%s]', list && list.length);
+      this.rolnocturnidadList = list || [];
+    })
+    this.unBindList.push(sscrp4);
+  }
+
+
+
   initCurrentPerson(p: Person){
     if(p){
+      this.personId = p._id;
       this.currentPerson = p;
       //this.contactData = p.contactdata[0];
       this.contactList =   p.contactdata || [];
@@ -139,6 +152,8 @@ export class DashboardComercioPageComponent implements OnInit {
       this.saludList =     p.salud || [];
       this.coberturaList = p.cobertura || [];
       this.ambientalList = p.ambiental || [];
+
+      this.updateTableList();
 
       this.hasCurrentPerson = true;
       
@@ -152,20 +167,39 @@ export class DashboardComercioPageComponent implements OnInit {
   /**********************/
   updateCore(e){
     console.log('Dashboard - updateCore')
-    this.router.navigate(['/mab/comercios/empresa', e.person._id]);    
+    //this.router.navigate(['/mab/comercios/empresa', e.person._id]);    
   }
 
-  gotoRolNocturnidada(){
+  navigateToProfile(e: UpdatePersonEvent){
+    if(e.action === NAVIGATE){
+      this.router.navigate(['/mab/comercios/empresa', e.person._id]);    
+    }
+
+  }
+
+  gotoRolNocturnidadaDeprecated(){
     console.log('goto Rol Nocturnidada')
     this.router.navigate(['/rol/nocturnidad/panel']);    
   }
-  
+
+  updateRolnocturnidadList(event: UpdateRolEvent){
+    // console.log('RolNoche Page BUBLED updateRolNocturnidad [%s]', event.items && event.items.length);
+    // console.log('updatePAGE: [%s]', event.token === this.rolnocturnidadList[0])
+
+  }
+
+
   /**********************/
   /*      Person        */
   /**********************/
-  loadPerson(id){
+  loadPerson(id?){
+    if(id){
+      this.minimalCtrl.setCurrentPersonFromId(id);
 
-    this.minimalCtrl.setCurrentPersonFromId(id);
+    }else{
+      this.minimalCtrl.setCurrentPersonFromUser();
+      
+    }
   }
 
 }

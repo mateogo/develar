@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'comercios';
 
 const globals = {
 
@@ -17,8 +17,9 @@ const globals = {
 		mainmenu: 'dsocial',
 		mainmenutpl: 'default-navbar',
 		admintarget: '/dsocial/gestion/recepcion',
+		dashboard: '/dsocial/gestion/recepcion',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
-		emailsubject: '[develar] Contacto',
+		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
@@ -32,9 +33,10 @@ const globals = {
 		company: 'MAB',
 		mainmenu: 'comercios',
 		mainmenutpl: 'default-navbar',
-		admintarget: '/dsocial/gestion/recepcion',
+		admintarget: '/rol/nocturnidad/panel',
+		dashboard: '/mab/comercios/registro',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
-		emailsubject: '[develar] Contacto',
+		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
@@ -47,6 +49,7 @@ const globals = {
 		logoCompany2: 'logo-publico.png',
 		company: 'fundetec',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
@@ -64,6 +67,7 @@ const globals = {
 		logoCompany2: 'logo-lasargentinas-7.png',
 		company: 'lasargentinas',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'LASARGEN',
 		mainmenutpl: 'lasargentinas',
 		socialmedia: 'LASARGEN_SOCIAL_MEDIA',
@@ -81,6 +85,7 @@ const globals = {
 		logoCompany2: 'logo-publico.png',
 		company: 'develar',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		database: 'develar',
@@ -99,6 +104,7 @@ const globals = {
 		logoCompany2: 'logo-publico.png',
 		company: 'picris',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
@@ -116,6 +122,7 @@ const globals = {
 		logoCompany2: 'logo-publico.png',
 		company: 'simplecomm',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
@@ -134,6 +141,7 @@ const globals = {
 		logoCompany2: 'logo-publico.png',
 		company: 'masuno',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'default-navbar',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
@@ -151,6 +159,7 @@ const globals = {
 		logoCompany2: 'logo-utopias.png',
 		company: 'utopias',
 		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
 		mainmenu: 'DEFAULT',
 		mainmenutpl: 'utopias',
 		socialmedia: 'UTOPIA_SOCIAL_MEDIA',

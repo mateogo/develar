@@ -11,8 +11,10 @@ import { TimebasedHelper }    from '../../timebased-helper';
 
 const NAVIGATE = 'navigate';
 const UPDATE = 'update';
+const CLONE = 'clone';
 const SELECT = 'select';
 const TOKEN_TYPE = 'rolnocturnidad';
+const DELETE = 'delete';
 
 const BG_COLOR_DEFAULT = "#ffffff";
 const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
@@ -28,6 +30,7 @@ export class RolNocheBaseComponent implements OnInit {
   @Input() viewMode = 'show'; // show||select
 
 	@Output() updateToken = new EventEmitter<UpdateRolEvent>();
+  @Output() person$ = new EventEmitter<Person[]>();
 
 	public showView = true;
 	public showEditPanel = false;
@@ -44,6 +47,12 @@ export class RolNocheBaseComponent implements OnInit {
 
   public toggleSelectd = false;
   public selectedStyle = {};
+
+  public currentPerson: Person;
+  public personFound = false;
+  public altaPersona = false;
+  public searchToken;
+
 
   constructor() { }
 
@@ -78,6 +87,18 @@ export class RolNocheBaseComponent implements OnInit {
     }
   }
 
+  cloneToken(e){
+    console.log('CloneToken CLICK')
+    this.updateToken.next({
+      action: CLONE,
+      type: TOKEN_TYPE,
+      selected: true,
+      token: this.rolnocturnidad
+    });
+
+
+  }
+
   navigateSeguimiento(){
     this.manageBase({
       action: NAVIGATE,
@@ -91,7 +112,7 @@ export class RolNocheBaseComponent implements OnInit {
     this.showEditPanel = false;
 
   	this.emitEvent(event);
-    setTimeout(() => this.showView = true, 400)
+    setTimeout(() => this.showView = true, 200)
   }
 
   tokenSelected(e){
@@ -108,10 +129,25 @@ export class RolNocheBaseComponent implements OnInit {
     if(event.action === SELECT){
       this.updateToken.next(event);
     }
+    if(event.action === DELETE){
+      this.updateToken.next(event);
+    }
   }
 
+	
+  personFetched(person:Person){
+    this.currentPerson = person;
+    this.person$.emit([this.currentPerson]);
+    this.altaPersona = false;
 
-	removeToken(){
+  }
+  
+  cancelNewPerson(){
+      this.altaPersona = false;
+      this.personFound = false;
+  }
+
+  removeToken(){
 	}
 
 }

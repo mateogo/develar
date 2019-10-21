@@ -64,6 +64,10 @@ const routes: Routes = [
         component: DashboardComercioPageComponent,
       },
       {
+        path: 'registro',
+        component: DashboardComercioPageComponent,
+      },
+      {
         path: 'empresa/:id',
         component: RegistroEmpresaPageComponent,
       },

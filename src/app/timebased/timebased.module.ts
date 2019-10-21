@@ -13,23 +13,27 @@ import { RolNochePanelComponent } from './rol-nocturnidad/rol-noche-panel/rol-no
 import { RolNochePageComponent } from './time-pages/rol-noche-page/rol-noche-page.component';
 import { RolNocheListComponent } from './rol-nocturnidad/rol-noche-list/rol-noche-list.component';
 
-
-
 @NgModule({
-  declarations: [	
-                  RolNocheEditComponent,
-  								RolNocheViewComponent,
-  								RolNocheBaseComponent,
-  								RolNochePanelComponent,
-  								RolNochePageComponent,
-  								RolNocheListComponent
-  							],
   imports: [
-    CommonModule,
-    TimebasedRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DevelarCommonsModule
-  ]
+      CommonModule,
+      TimebasedRoutingModule,
+      FormsModule,
+      ReactiveFormsModule,
+      DevelarCommonsModule
+  ],
+  declarations: [	
+      RolNocheEditComponent,
+  		RolNocheViewComponent,
+  		RolNocheBaseComponent,
+  		RolNochePanelComponent,
+  		RolNochePageComponent,
+  		RolNocheListComponent
+  	],
+  exports: [  
+      RolNocheEditComponent,
+      RolNocheViewComponent,
+      RolNocheBaseComponent,
+      RolNochePanelComponent,
+    ],
 })
 export class TimebasedModule { }

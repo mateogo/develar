@@ -18,6 +18,13 @@ const requirenteSch = new Schema({
   tdoc:    { type: String, required: false },
   ndoc:    { type: String, required: false },
 });
+
+const rolnocturnidadItemSch = new Schema({
+  idPerson:       { type: String, required: false },
+  personDni:      { type: String, required: false },
+  personName:     { type: String, required: false },
+  personApellido: { type: String, required: false },
+});
  
 
 /**
@@ -44,6 +51,7 @@ const rolnocturnidadSch = new Schema({
 
     slug:        { type: String, required: false },
     description: { type: String, required: false },
+    agentes:     [ rolnocturnidadItemSch ],
 
     estado:      { type: String, required: false },
     avance:      { type: String, required: false },

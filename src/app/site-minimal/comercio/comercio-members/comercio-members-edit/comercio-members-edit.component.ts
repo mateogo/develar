@@ -4,13 +4,13 @@ import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, Valid
 import { Observable } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
-import { Person, UpdateFamilyEvent, FamilyData, personModel } from '../../../../entities/person/person';
+import { Person, BusinessMembersData, UpdateBusinessMemberEvent, personModel } from '../../../../entities/person/person';
 
 import { SiteMinimalController } from '../../../minimal.controller';
 
 import { devutils }from '../../../../develar-commons/utils'
 
-const TOKEN_TYPE = 'family';
+const TOKEN_TYPE = 'member';
 const CANCEL = 'cancel';
 const DELETE = 'delete';
 const UPDATE = 'update';
@@ -23,8 +23,8 @@ const UPDATE = 'update';
 })
 export class ComercioMembersEditComponent implements OnInit {
 
-	@Input() token: FamilyData;
-	@Output() updateToken = new EventEmitter<UpdateFamilyEvent>();
+	@Input() token: BusinessMembersData;
+	@Output() updateToken = new EventEmitter<UpdateBusinessMemberEvent>();
 
 	public form: FormGroup;
   public persontypes        = personModel.persontypes;
@@ -44,7 +44,7 @@ export class ComercioMembersEditComponent implements OnInit {
 
   private action = "";
 
-  private fireEvent: UpdateFamilyEvent;
+  private fireEvent: UpdateBusinessMemberEvent;
 
   constructor(
   	private fb: FormBuilder,
@@ -163,7 +163,7 @@ export class ComercioMembersEditComponent implements OnInit {
     return form;
   }
 
-  initForEdit(form: FormGroup, token: FamilyData): FormGroup {
+  initForEdit(form: FormGroup, token: BusinessMembersData): FormGroup {
 		form.reset({
       nombre:       token.nombre,
       apellido:     token.apellido,
@@ -187,7 +187,7 @@ export class ComercioMembersEditComponent implements OnInit {
 		return form;
   }
 
-	initForSave(form: FormGroup, token: FamilyData): FamilyData {
+	initForSave(form: FormGroup, token: BusinessMembersData): BusinessMembersData {
 		const fvalue = form.value;
 		const entity = token; 
 
@@ -211,6 +211,7 @@ export class ComercioMembersEditComponent implements OnInit {
 		entity.desde =        fvalue.desde;
 		entity.hasta =        fvalue.hasta;
 		entity.comentario =   fvalue.comentario;
+    entity.hasOwnPerson = personModel.hasMinimumDataToBePerson(entity);
 
 		return entity;
 	}
