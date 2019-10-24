@@ -24,6 +24,7 @@ const rolnocturnidadItemSch = new Schema({
   personDni:      { type: String, required: false },
   personName:     { type: String, required: false },
   personApellido: { type: String, required: false },
+  imageId:        { type: String, required: false },
 });
  
 

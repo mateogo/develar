@@ -1,6 +1,7 @@
 import { RolNocturnidad, RolNocturnidadItem, Requirente, RolNocturnidadTableData, Serial }      from './timebased.model';
 import { Person }      from '../entities/person/person';
 import { AsistenciaHelper } from '../dsocial/asistencia/asistencia.model';
+import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../develar-commons/asset-helper';
 
 
 const default_option_list: Array<any> = [
@@ -151,11 +152,14 @@ export class TimebasedHelper {
 	static initNewRolNocturnidad(action, sector, person?: Person, serial?: Serial, slug?): RolNocturnidad{
 		let x = new RolNocturnidad();
 		if(person && person.integrantes && person.integrantes.length){
+			console.log('initRolNocturnidad integrantes[%s]', person.integrantes.length);
+			console.dir(person.integrantes);
 			x.agentes = person.integrantes.map(integrante =>({
 													_id: null,
 													idPerson: integrante.personId,
 													personDni: integrante.ndoc,
 													personName: integrante.nombre,
+													imageId: this.findImageIdFromAssets(integrante.assets),
 													personApellido: integrante.apellido }) as RolNocturnidadItem) 
 		}
 		return x;
@@ -172,6 +176,16 @@ export class TimebasedHelper {
 		return x;
 	}
 
+	static findImageIdFromAssets(assets: CardGraph[]):string{
+		let imageUrl = '';
+    if(assets && assets.length){
+    	let token = assets.find(t => t.entity === 'image' && t.predicate === 'avatar');
+    	imageUrl = token ? token.entityId  : '';
+    }
+
+		return imageUrl;
+	}
+
 
   static buildRolNocturnidadItemFromPerson(p: Person): RolNocturnidadItem{
     let ag = new RolNocturnidadItem();
@@ -179,6 +193,7 @@ export class TimebasedHelper {
     ag.personApellido = p.apellido;
     ag.personDni = p.ndoc;
     ag.idPerson = p._id;
+    ag.imageId = this.findImageIdFromAssets(p.assets);
     return ag;
   }
 

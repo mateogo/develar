@@ -160,6 +160,23 @@ export class TimebasedController {
     })
   }
 
+  fetchSelectedRolNocturnidadList():RolNocturnidad[]{
+    let list = this.filterSelectedRolNocturnidadList();
+    return list;
+  }
+
+  filterSelectedRolNocturnidadList():RolNocturnidad[]{
+    let list: RolNocturnidad[];
+    let selected = this.selectionkitModel.selected as any;
+
+    list = this.rolnocturnidadList.filter((token: any) =>{
+      let valid = selected.find(model => {
+        return (model._id === token._id)
+      });
+      return valid;
+    });
+    return list;
+  }
 
   /*****************
     PERSON - USER
@@ -252,22 +269,5 @@ export class TimebasedController {
   addRolNocturnidadToList(){
   }
 
-  fetchSelectedRolNocturnidadList():RolNocturnidad[]{
-    let list = this.filterSelectedRolNocturnidadList();
-    return list;
-  }
-
-  filterSelectedRolNocturnidadList():RolNocturnidad[]{
-    let list: RolNocturnidad[];
-    let selected = this.selectionkitModel.selected as any;
-
-    list = this.rolnocturnidadList.filter((token: any) =>{
-      let valid = selected.find(model => {
-        return (model._id === token._id)
-      });
-      return valid;
-    });
-    return list;
-  }
 
 }

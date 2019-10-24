@@ -21,6 +21,10 @@ export class ComercioMembersViewComponent implements OnInit {
   public neducativo;
   public vinculoTxt;
 
+  public hasImage = false;
+  public imageUrl = '';
+  public imageTitle = '';
+
   constructor() { }
 
   ngOnInit() {
@@ -39,6 +43,16 @@ export class ComercioMembersViewComponent implements OnInit {
     this.estado = personModel.getEstadoVinculo(this.token.estado);
 
     this.neducativo = personModel.getNivelEducativo(this.token.nestudios);
+  
+    if(this.token.assets && this.token.assets.length){
+      this.token.assets.forEach(asset => {
+        if(asset.entity === 'image' && asset.predicate === 'avatar'){
+          this.hasImage = true;
+          this.imageUrl = asset.entityId;
+          this.imageTitle = asset.slug;
+        }
+      })
+    }
 
   }
 

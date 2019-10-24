@@ -33,6 +33,9 @@ import { GenericDialogComponent }  from './generic-dialog/generic-dialog.compone
 import { UploadComponent }         from './upload/upload.component';
 import { AssetcreateComponent }    from './assets/assetcreate/assetcreate.component';
 import { AsseteditComponent }      from './assets/assetedit/assetedit.component';
+import { AssetPredicateComponent } from './assets/asset-predicate/asset-predicate.component';
+import { AssetPageComponent }      from './assets/asset-page/asset-page.component';
+
 import { UpdatefileComponent }     from './assets/updatefile/updatefile.component';
 import { AssetSearchComponent }    from './assets/asset-search/asset-search.component';
 
@@ -115,6 +118,8 @@ import { PrismHighlightService }     from './highlighter.service';
     ChipsDemo,
     FoldereditComponent,
     AsseteditComponent,
+    AssetPredicateComponent,
+    AssetPageComponent,
     UpdatefileComponent,
     AssetSearchComponent,
     NoteBaseComponent,
@@ -164,6 +169,8 @@ import { PrismHighlightService }     from './highlighter.service';
     FolderBrowseComponent,
     FoldereditComponent,
     AsseteditComponent,
+    AssetPredicateComponent,
+    AssetPageComponent,
     UpdatefileComponent,
     AssetSearchComponent,
     NoteBaseComponent,

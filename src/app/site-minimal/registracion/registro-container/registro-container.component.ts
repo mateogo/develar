@@ -23,6 +23,18 @@ const NUEVO = "nuevo";
 const REGISTRAR = "nuevo:cuit"
 const UPDATE = "update";
 
+const TARGET_COMERCIO = "comercio";
+const TARGET_SEGURIDAD = "personalseguridad";
+
+const dataLabel = {
+  comercio: {
+
+  },
+  personalseguridad: {
+
+  }
+}
+
 
 @Component({
   selector: 'registro-container',
@@ -62,6 +74,7 @@ const UPDATE = "update";
 })
 export class RegistroContainerComponent implements OnInit {
 	@Input() record: RecordCard;
+  @Input() target: string = "comercio" ;// [comercio | personalseguridad]
 
 	public mainimage: string = "";
 	public title: string = "";
@@ -82,6 +95,7 @@ export class RegistroContainerComponent implements OnInit {
   public isUpdate = NUEVO;
 
   public person: Person;
+  public isComercio = true;
 
 
   public detailImage: RelatedImage;
@@ -97,7 +111,12 @@ export class RegistroContainerComponent implements OnInit {
   	this.title = this.record.slug;
   	this.description = this.record.description;
   	this.mainimage = this.record.mainimage;
-    console.log('REGISTRO!! [%s]', this.description);
+    console.log('REGISTRO!! [%s] target:[%s]', this.description, this.target);
+
+    if(this.target === TARGET_COMERCIO) this.isComercio = true;
+    else if(this.target === TARGET_SEGURIDAD) this.isComercio = false;
+    else console.log('SOCORROOOO');
+
 
   	this.record.relatedcards.forEach(s => {
       console.log('relatedCards')

@@ -21,7 +21,8 @@ const SIDEMENU =  'sidemenu';
 const FICHA =     'ficha';
 const FOOTER =    'footer';
 const PORTFOLIO = 'portfolio';
-const REGISTRO =  'registro';
+const REGISTRO =  'regcomercio';
+const SEGURIDAD = 'regpersonas';
 
 const HOME = 'home';
 
@@ -57,6 +58,9 @@ export class HomeComponent implements OnInit {
 
   public isRegistro = false;
   public registro: RecordCard;
+
+  public isPersonalSeguridad = false;
+  public personalSeguridad: RecordCard;
 
   public isContacto = false;
   public contacto: RecordCard;
@@ -181,6 +185,10 @@ export class HomeComponent implements OnInit {
         }else if(publish.template === REGISTRO){
           this.registro = record;
           this.isRegistro = true;
+
+        }else if(publish.template === SEGURIDAD){
+          this.personalSeguridad = record;
+          this.isPersonalSeguridad = true;
 
         }else if(publish.template === SERVICIOS){
           this.servicios = record;

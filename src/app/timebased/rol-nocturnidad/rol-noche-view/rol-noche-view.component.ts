@@ -31,7 +31,7 @@ export class RolNocheViewComponent implements OnInit {
   public solicitante;
   public avance;
   public estado;
-  public agentes: string[] = [];
+  public agentes: Agente[] = [];
 
   constructor() { }
 
@@ -58,7 +58,11 @@ export class RolNocheViewComponent implements OnInit {
       this.avance = 'Emitido por el interesado';
     }
     let enrolados = this.token.agentes || [];
-    this.agentes = enrolados.map(t => 'DNI: ' + t.personDni + " :: " + t.personApellido + ', ' + t.personName);
+    this.agentes = enrolados.map(t => {
+      return { displayAs: 'DNI: ' + t.personDni + " :: " + t.personApellido + ', ' + t.personName,
+               imageId: t.imageId
+             }
+    });
   }
 
   verdDetalle(e){
@@ -67,6 +71,9 @@ export class RolNocheViewComponent implements OnInit {
     this.detailView = !this.detailView;
   }
 
-
 }
 
+interface Agente {
+  displayAs: string;
+  imageId: string;
+}

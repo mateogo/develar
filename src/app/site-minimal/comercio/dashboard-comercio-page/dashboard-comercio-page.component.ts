@@ -130,6 +130,11 @@ export class DashboardComercioPageComponent implements OnInit {
 
   updateTableList(){
     let query = {};
+
+    if(this.currentPerson){
+      query['requirenteId'] = this.currentPerson._id
+    }
+
     let sscrp4 = this.tbCtrl.fetchRolnocturnidadDataSource(query).subscribe(list => {
       console.log('udate Table list [%s]', list && list.length);
       this.rolnocturnidadList = list || [];

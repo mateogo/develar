@@ -178,7 +178,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
     }
   }
 
-  upsertFamilyList(event:UpdateItemListEvent){
+  private upsertFamilyList(event:UpdateItemListEvent){
     this.currentPerson.familiares = event.items as FamilyData[];
 
     let update: UpdatePersonEvent = {
@@ -196,7 +196,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
     }
   }
 
-  upsertBusinessList(event:UpdateItemListEvent){
+  private upsertBusinessList(event:UpdateItemListEvent){
     this.currentPerson.integrantes = event.items as BusinessMembersData[];
 
     let update: UpdatePersonEvent = {
@@ -216,7 +216,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
   }
 
 
-  upsertOficiosList(event:UpdateItemListEvent){
+  private upsertOficiosList(event:UpdateItemListEvent){
     this.currentPerson.oficios = event.items as OficiosData[];
 
     let update: UpdatePersonEvent = {
@@ -234,7 +234,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
     }
   }
 
-  upsertSaludList(event:UpdateItemListEvent){
+  private upsertSaludList(event:UpdateItemListEvent){
     this.currentPerson.salud = event.items as SaludData[];
 
     let update: UpdatePersonEvent = {
@@ -253,7 +253,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
     }
   }
 
-  upsertCoberturaList(event:UpdateItemListEvent){
+  private upsertCoberturaList(event:UpdateItemListEvent){
     this.currentPerson.cobertura = event.items as CoberturaData[];
 
     let update: UpdatePersonEvent = {
@@ -272,7 +272,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
     }
   }
 
-  upsertAmbientalList(event:UpdateItemListEvent){
+  private upsertAmbientalList(event:UpdateItemListEvent){
     this.currentPerson.ambiental = event.items as EncuestaAmbiental[];
 
     let update: UpdatePersonEvent = {

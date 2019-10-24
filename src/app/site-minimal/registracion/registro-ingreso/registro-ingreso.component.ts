@@ -21,7 +21,34 @@ function initForSave(form: FormGroup, model: Person): Person {
 const CANCEL = "cancel";
 const NEXT = "next";
 const BACK = "back";
+const TARGET_COMERCIO = "comercio";
+const TARGET_SEGURIDAD = "personalseguridad";
 
+const dataLabel = {
+  comercio: {
+    text: {
+      h1: 'Gestione el registro de su comercio',
+      p1: 'Los locales nocturnos deben tener un registro actualizado y aprobado por la Municipalidad',
+      p2: 'Si Usted es titular/aporderado de un local nocturno, ingrese con el número de CUIT de su establecimiento'
+    },
+    value: {
+      tdoc: 'CUIT',
+      personType: 'fisica'
+    }
+  },
+
+  personalseguridad: {
+    text: {
+      h1: 'Registro de personal de prevención',
+      p1: 'Mantenga su registro actualizado y aprobado por la Municipalidad',
+      p2: 'Si Usted se desempaña como personal de prevención en locales nocturnos, ingrese con su número de DNI',
+    },
+    value: {
+      tdoc: 'DNI',
+      personType: 'juridica'
+    }
+  }
+}
 
 @Component({
   selector: 'registro-ingreso',
@@ -29,11 +56,14 @@ const BACK = "back";
   styleUrls: ['./registro-ingreso.component.scss']
 })
 export class RegistroIngresoComponent implements OnInit {
-		@Output() event = new EventEmitter<UpdatePersonEvent>();
+	@Output() event = new EventEmitter<UpdatePersonEvent>();
+    @Input() target: string  = 'comercio';  // [comercio | personalseguridad]
 
     pageTitle: string = 'Indique el CUIT de su comercio';
     public form: FormGroup;
     private model: Person;
+
+    public text;
 
     public communityId = '';
 
@@ -61,14 +91,20 @@ export class RegistroIngresoComponent implements OnInit {
 
     ngOnInit() {
         this.model = new Person('');
-        this.model.tdoc = this.defaultData['tdoc'] || 'CUIT';
-        this.model.ndoc = this.defaultData['ndoc'];
-        this.model.personType = 'juridica';
+
+        this.defaultData = dataLabel[this.target].value
+        this.text = dataLabel[this.target].text
+
+        this.model.tdoc = this.defaultData['tdoc'];
+        this.model.personType = this.defaultData['personType'];
+        this.model.ndoc = ''
+
+
 
         this.form = this.fb.group({
             tdoc: [null],
             ndoc: [null, [Validators.required, 
-                          Validators.minLength(11),
+                          Validators.minLength(7),
                           Validators.maxLength(11),
                           Validators.pattern('[0-9]*')], 
                           [this.dniExistenteValidator(this.minimalCtrl, this.docBelongsTo)] ],

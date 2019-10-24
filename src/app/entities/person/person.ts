@@ -6,6 +6,7 @@
  	Address
  	PersonModel
 ****************************/
+import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../../develar-commons/asset-helper';
 
 export interface PersonTable {
 	personType: string;
@@ -52,7 +53,7 @@ export interface UpdateFamilyEvent {
 export interface UpdateBusinessMemberEvent {
       action: string;
       type: string;
-      token: FamilyData;
+      token: BusinessMembersData;
 };
 export interface UpdateOficiosEvent {
       action: string;
@@ -248,6 +249,7 @@ export class BusinessMembersData {
     desde: string;
     hasta: string;
     comentario: string;
+    assets: Array<CardGraph>;
 }
 
 
@@ -303,6 +305,7 @@ export class Person {
 	messages: Array<NotificationMessage>
   ambiental: Array<EncuestaAmbiental>;
   fichas: Array<RecordCardRelation>;
+  assets: Array<CardGraph>;
 
 
 
@@ -535,6 +538,7 @@ const profesiones: Array<any> = [
         {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
         {val: 'docente',         label: 'Docente',        slug:'Docente' },
         {val: 'comerciante',     label: 'Comerciante',     slug:'Comerciante' },
+        {val: 'prevencion',      label: 'Personal de prevención', slug:'Personal de prevención' },
         {val: 'desocupax',       label: 'Desocupado/a',    slug:'Desocupado/a' },
         {val: 'otro',            label: 'Otra ocupación',  slug:'Otra ocupación' },
 ];

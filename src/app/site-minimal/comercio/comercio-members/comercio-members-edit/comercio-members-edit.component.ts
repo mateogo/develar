@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map  }   from 'rxjs/operators';
+
+import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../../../../develar-commons/asset-helper';
 
 import { Person, BusinessMembersData, UpdateBusinessMemberEvent, personModel } from '../../../../entities/person/person';
 
@@ -46,6 +48,10 @@ export class ComercioMembersEditComponent implements OnInit {
 
   private fireEvent: UpdateBusinessMemberEvent;
 
+  public imageList: CardGraph[] = [];
+  public addImageToList = new Subject<CardGraph>();
+
+
   constructor(
   	private fb: FormBuilder,
     private dsCtrl: SiteMinimalController,
@@ -57,12 +63,16 @@ export class ComercioMembersEditComponent implements OnInit {
 
   ngOnInit() {
   	this.initForEdit(this.form, this.token);
+    this.loadRelatedImages(this.token.assets);
 
   }
 
   onSubmit(){
+    //ToDo
   	this.initForSave(this.form, this.token);
+    console.log('InitForSave: [%s]', this.imageList && this.imageList.length)
   	this.action = UPDATE;
+    this.token.assets = this.imageList;
   	this.emitEvent(this.action);
   }
 
@@ -215,5 +225,24 @@ export class ComercioMembersEditComponent implements OnInit {
 
 		return entity;
 	}
+
+
+  createCardGraphFromImage(image){
+    console.log('createCardGraph')
+    let card = graphUtilities.cardGraphFromAsset('image', image, 'mainimage');
+    this.addImageToList.next(card);
+  }
+
+
+  loadRelatedImages(assets: CardGraph[]) {
+    if(!assets.length){
+      this.imageList = [];
+
+    }else{      
+      this.imageList = graphUtilities.buildGraphList('image', assets);
+    }
+  }
+
+
 
 }

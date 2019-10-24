@@ -21,6 +21,37 @@ const NUEVO = "nuevo";
 const REGISTRAR = "nuevo:cuit"
 const UPDATE = "update";
 
+const TARGET_COMERCIO = "comercio";
+const TARGET_SEGURIDAD = "personalseguridad";
+
+const dataLabel = {
+  comercio: {
+    text: {
+      h1: 'Ingrese con su clave de acceso',
+      p1: 'No hay un comercio registrado con CUIT:  ',
+      p2: '¿Desea dar de alta un nuevo comercio?',
+      p3: 'Alta nuevo comercio'
+    },
+    value: {
+      tdoc: 'CUIT',
+      personType: 'fisica'
+    }
+  },
+
+  personalseguridad: {
+    text: {
+      h1: 'Ingrese con su clave de acceso',
+      p1: 'No existe registro con DNI: ',
+      p2: '¿Desea dar de alta un nuevo registro?',
+      p3: 'Alta nuevo personal de prevención'
+    },
+    value: {
+      tdoc: 'DNI',
+      personType: 'juridica'
+    }
+  }
+}
+
 @Component({
   selector: 'registro-clave',
   templateUrl: './registro-clave.component.html',
@@ -29,6 +60,8 @@ const UPDATE = "update";
 export class RegistroClaveComponent implements OnInit {
 		@Input() model: Person
 		@Input() mode: string; //'create' o 'update'
+    @Input() target: string ;// [comercio | personalseguridad]
+
 		@Output() event = new EventEmitter<UpdatePersonEvent>();
 
     pageTitle: string = 'Indique el CUIT de su comercio';
@@ -37,6 +70,7 @@ export class RegistroClaveComponent implements OnInit {
     public form: FormGroup;
 
     private defaultData = {tdoc: 'CUIT', ndoc: ''}
+    public text;
     public password;
     public isNueva = true;
 
@@ -51,6 +85,8 @@ export class RegistroClaveComponent implements OnInit {
     public ciudadesList =   personModel.ciudades;
     public paises     = personModel.paises;
     public barrioList = [];
+
+    public ndoc;
 
     public docBelongsTo = {error: ''};
 
@@ -71,6 +107,11 @@ export class RegistroClaveComponent implements OnInit {
 
     ngOnInit() {
     	console.log('Registro clave INIT')
+        this.defaultData = dataLabel[this.target].value
+        this.text = dataLabel[this.target].text
+        this.ndoc = this.model.ndoc
+
+
     	this.password = '';
 			if(this.mode === UPDATE){
 				this.isNueva = false

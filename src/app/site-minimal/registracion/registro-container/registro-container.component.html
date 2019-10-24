@@ -12,7 +12,7 @@
 
 					<ng-container *ngIf="showLogin">
 						<div class="d-flex justify-content-center align-items-center">
-							<registro-ingreso (event)="ndocStep($event)"></registro-ingreso>
+							<registro-ingreso [target]='target' (event)="ndocStep($event)"></registro-ingreso>
 						</div>
 					</ng-container>
 
@@ -27,13 +27,21 @@
 					<ng-container *ngIf="showPassword">
 						<div class="d-flex justify-content-center align-items-center">
 							<registro-clave [model]="person" [mode]="isUpdate" 
+															 [target]='target' 
 															(event)=claveStep($event)></registro-clave>
 						</div>
 					</ng-container>
 
 					<ng-container *ngIf="showRegistration">
-						<div class="d-flex justify-content-center align-items-center">
-							<registro-alta (event)=altaComercio($event)></registro-alta>
+						<div 	*ngIf="isComercio" 
+									class="d-flex justify-content-center align-items-center">
+							<registro-alta (event)=altaComercio($event)
+														 [target]='target'  ></registro-alta>
+						</div>
+						<div  *ngIf="!isComercio" 
+									class="d-flex justify-content-center align-items-center">
+							<registro-altapf (event)=altaComercio($event)
+														 [target]='target'  ></registro-altapf>
 						</div>
 					</ng-container>
 

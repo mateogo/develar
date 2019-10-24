@@ -25,7 +25,8 @@ const templateList: Array<any> = [
 		{val: 'topaboutlr',     label: 'topabout L-R',       slug:'topabout L-R'},
 		{val: 'topmission',     label: 'topmission',         slug:'topmission' },
 		{val: 'sidemenu',       label: 'sidemenu',           slug:'sidemenu' },
-		{val: 'registro',       label: 'Registro',           slug:'Registro' } ,
+		{val: 'regcomercio',    label: 'registro comercios', slug:'Registro' } ,
+		{val: 'regpersonas',    label: 'registro personas',  slug:'Registro' } ,
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
@@ -186,6 +187,7 @@ const cardCategory = {
 	comercios: [
 		{val: 'no_definido', 	  label: 'Seleccione opción',   slug:'Seleccione opción' },
 		{val: 'dashboard',      label: 'Dashboard comercios', slug:'Ficha auxiliar para el dashboard de comercios' },
+		{val: 'seguridad',      label: 'Dashboard personal de seguridad', slug:'Ficha auxiliar para el dashboard del personal de seguridad' },
 	],
 
 	webresource: [

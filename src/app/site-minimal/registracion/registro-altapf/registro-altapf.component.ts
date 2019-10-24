@@ -26,24 +26,13 @@ const ESTADO = 'activo';
 const TARGET_COMERCIO = "comercio";
 const TARGET_SEGURIDAD = "personalseguridad";
 
-const dataLabel = {
-  comercio: {
-
-  },
-  personalseguridad: {
-
-  }
-}
-
-
 
 @Component({
-  selector: 'registro-alta',
-  templateUrl: './registro-alta.component.html',
-  styleUrls: ['./registro-alta.component.scss']
+  selector: 'registro-altapf',
+  templateUrl: './registro-altapf.component.html',
+  styleUrls: ['./registro-altapf.component.scss']
 })
-
-export class RegistroAltaComponent implements OnInit {
+export class RegistroAltapfComponent implements OnInit {
 	@Input() user: User;
 	@Input() data = {};
   @Input() target: string ;// [comercio | personalseguridad]
@@ -53,7 +42,7 @@ export class RegistroAltaComponent implements OnInit {
 
 	@Output() event = new EventEmitter<UpdatePersonEvent>();
 
-  pageTitle: string = 'Alta nuevo comercio';
+  pageTitle: string = 'Alta NUEVA PERSONA';
 
   public personForm: FormGroup;
   private model: Person;
@@ -88,7 +77,7 @@ export class RegistroAltaComponent implements OnInit {
 
   ngOnInit() {
       this.model = new Person('');
-      this.model.tdoc = this.data['tdoc'] || 'CUIT';
+      this.model.tdoc = this.data['tdoc'] || 'DNI';
       this.model.ndoc = this.data['ndoc'];
       this.model.personType = 'juridica';
 
@@ -97,10 +86,9 @@ export class RegistroAltaComponent implements OnInit {
 
 
       this.personForm = this.fb.group({
-          displayName: [null, Validators.compose( [Validators.required])],
-          tdoc: this.fb.control({value: this.model.tdoc, disabled: true}),
+          tdoc: this.fb.control({value: this.model.tdoc}),
           ndoc: [null, [Validators.required, 
-                        Validators.minLength(11),
+                        Validators.minLength(7),
                         Validators.maxLength(11),
                         Validators.pattern('[0-9]*')], 
                         [this.dniExistenteValidator(this.minimalCtrl, this.model.tdoc, this.docBelongsTo)] ],
@@ -117,17 +105,15 @@ export class RegistroAltaComponent implements OnInit {
 		        confirmPassword: this.confirmPasswordFormCtrl,
           })
       });
-
       this.resetForm(this.model);
   }
 
   get username() { return this.personForm.get('userdata').get('username'); }
-  get nombre() { return this.personForm.get('userdata').get('nombre'); }
+  get nombre()   { return this.personForm.get('userdata').get('nombre'); }
   get apellido() { return this.personForm.get('userdata').get('apellido'); }
-  get email() { return this.personForm.get('userdata').get('email'); }
+  get email()    { return this.personForm.get('userdata').get('email'); }
   get password() { return this.personForm.get('userdata').get('password'); }
   get confirmPassword() { return this.personForm.get('userdata').get('confirmPassword'); }
-
 
   onSubmit() {
       this.model = this.initForSave(this.personForm, this.model, this.currentUser);
@@ -156,7 +142,6 @@ export class RegistroAltaComponent implements OnInit {
   	console.log('resetForm: [%s]', model.tdoc);
 
       this.personForm.reset({
-          displayName: model.displayName,
           tdoc: model.tdoc,
           ndoc: model.ndoc,
       });
@@ -189,13 +174,11 @@ export class RegistroAltaComponent implements OnInit {
     const tvalue = fvalue.userdata
     let today = new Date();
 
-    model.displayName = fvalue.displayName;
     model.idbrown = "";
     model.isImported = false;
     console.log('initForSave: [%s] [%s] [%s]', model.tdoc, fvalue.tdoc, fvalue.ndoc)
  
-    //model.tdoc = fvalue.tdoc; OjO al estar disbled, no trae el value
-
+    model.tdoc = fvalue.tdoc; 
     model.ndoc = fvalue.ndoc;
 
 		model.persontags = [];
@@ -204,9 +187,10 @@ export class RegistroAltaComponent implements OnInit {
 		model.locacion = '';
 		model.nombre = tvalue.nombre;
 		model.apellido = tvalue.apellido;
+    model.displayName = tvalue.apellido + ', ' + tvalue.nombre;
 		model.cuil = '';
 
-		model.tprofesion = 'comerciante';
+		model.tprofesion = 'prevencion';
 		model.especialidad = 'local nocturno';
 		model.ambito = '';
 		model.nestudios = '';

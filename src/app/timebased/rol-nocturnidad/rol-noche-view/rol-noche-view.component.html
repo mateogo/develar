@@ -4,5 +4,16 @@
 <p class='text-normal'>{{description}} </p>
 <p class='text-resaltado'>Nómina de personal de seguridad</p>
 <ng-container *ngFor="let agente of agentes">
-	<p class='text-normal'>{{ agente }} </p>
+	<div class="d-flex justify-content-start align-items-center">
+		<div  *ngIf="agente.imageId" > 
+					<img  class="imagepreview" src="download/{{ agente.imageId }}"  
+								alt="Pesonal de seguridad" 
+								title="personal de seguridad">
+		</div>		
+		<div  *ngIf="!agente.imageId" > 
+			<div class='placeholder'></div>
+		</div>		
+		<p class='text-normal'>{{ agente.displayAs }} </p>
+	</div>
 </ng-container>
+

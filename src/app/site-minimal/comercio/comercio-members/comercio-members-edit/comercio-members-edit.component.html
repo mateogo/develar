@@ -125,6 +125,12 @@
     </div>
 
 
+    <asset-page  [relatedList]='imageList' 
+                            [addCardToList]='addImageToList'
+                            [entityType]="'image'"  ></asset-page>
+
+    <asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
+
     <hr>
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 

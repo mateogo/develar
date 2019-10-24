@@ -1,0 +1,116 @@
+<mat-card class="mat-elevation-z8 custom-table">
+  <mat-card-header>
+    <mat-card-title>Alta rápida de Personal de Prevención</mat-card-title>
+    <mat-card-subtitle>Registro municipal</mat-card-subtitle>
+    <mat-card-subtitle>Siempre podrá revisar o agregar datos más adelante</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+  <form [formGroup]="personForm">
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Datos la persona</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!---tdoc; ndoc; --->
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <mat-form-field>
+            <mat-select #fldTdoc
+              [formControl]="personForm.controls['tdoc']"
+              (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+              <mat-option *ngFor="let item of tcompPersonaFisica" [value]="item.val">{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-9">
+          <mat-form-field>
+            <input matInput [formControl]="personForm.controls['ndoc']" 
+                  placeholder="Número identificación tributaria">
+            <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Perfil de usuario</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div formGroupName="userdata">
+        <mat-form-field>
+          <input  matInput formControlName='username'
+                  placeholder="Elija un nombre de usuario" >
+          <div  *ngIf="username.invalid && (username.dirty || username.touched)"
+                class="form-message text-danger">
+            <small *ngIf="username.errors.required">Dato requerido</small>
+            <small *ngIf="username.errors.minlength">Nombre muy corto</small>
+            <small *ngIf="username.errors.maxlength">Nombre muy largo</small>
+          </div>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input  matInput formControlName='nombre'
+                  placeholder="Su nombre" >
+          <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+                class="form-message text-danger">
+            <small *ngIf="nombre.errors.required">Dato requerido</small>
+          </div>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input  matInput formControlName='apellido'
+                  placeholder="Su apellido" >
+          <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
+                class="form-message text-danger">
+            <small *ngIf="apellido.errors.required">Dato requerido</small>
+          </div>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="email"  placeholder="Correo Electrónico" >
+          <div  *ngIf="email.invalid && (email.dirty || email.touched)"
+                class="form-message text-danger">
+            <small *ngIf="email.errors.required">Dato requerido</small>
+            <small *ngIf="email.errors?.email">Dirección de correo no válida</small>
+            <small *ngIf="email.errors?.emailalreadyused">Esta dirección de correo ya existe en nuestra base de datos</small>
+          </div>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput formControlName="password"  placeholder="Clave de acceso" type="password">
+          <div  *ngIf="password.invalid && (password.dirty || password.touched)"
+                class="form-message text-danger">
+            <small *ngIf="password.errors.required">Dato requerido</small>
+          </div>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input  matInput formControlName="confirmPassword"
+          placeholder="Reingrese la clave"  type="password">
+          <div  *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+                class="form-message text-danger">
+            <small *ngIf="confirmPassword.errors.equalTo">Las claves no coinciden
+            </small>
+          </div>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="additional-info">
+    <button mat-raised-button color="primary"
+        (click)="onSubmit()"
+        [disabled]="!personForm.valid">Aceptar</button>
+    <button mat-button type="button" color="accent" 
+            (click)="cancel()">Cancelar</button>
+  </div>
+
+  </form>
+  </mat-card-content>
+</mat-card>

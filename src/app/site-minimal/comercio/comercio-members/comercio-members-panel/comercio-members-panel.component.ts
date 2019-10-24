@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {  Person,
           personModel,
-          UpdateFamilyEvent,
-          UpdateItemListEvent,
-          FamilyData 
+          BusinessMembersData,
+          UpdateBusinessMemberEvent,
+          UpdateItemListEvent
         } from '../../../../entities/person/person';
 
 const TOKEN_TYPE = 'family';
@@ -18,7 +18,7 @@ const UPDATE = 'update';
 })
 export class ComercioMembersPanelComponent implements OnInit {
 
-	@Input() items: Array<FamilyData>;
+	@Input() items: Array<BusinessMembersData>;
 	@Output() updateItems = new EventEmitter<UpdateItemListEvent>();
 
   public title = 'Personal de seguridad - Vínculos/ Roles laborales';
@@ -34,7 +34,7 @@ export class ComercioMembersPanelComponent implements OnInit {
 
   }
 
-  updateItem(event: UpdateFamilyEvent){
+  updateItem(event: UpdateBusinessMemberEvent){
     
     if(event.action === DELETE){
       this.deleteItem(event.token);
@@ -44,7 +44,7 @@ export class ComercioMembersPanelComponent implements OnInit {
   }
 
 
-  deleteItem(t:FamilyData){
+  deleteItem(t:BusinessMembersData){
     let index = this.items.indexOf(t);
 
     if(index !== -1){
@@ -54,7 +54,7 @@ export class ComercioMembersPanelComponent implements OnInit {
   }
 
   addItem(){
-    let item = new FamilyData();
+    let item = new BusinessMembersData();
 
     if(this.items){
       this.items.push(item);
@@ -65,12 +65,12 @@ export class ComercioMembersPanelComponent implements OnInit {
     this.showList = true;
   }
 
-  emitEvent(event:UpdateFamilyEvent){
+  emitEvent(event:UpdateBusinessMemberEvent){
   	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,
-  		items: this.items as FamilyData[]
+  		items: this.items as BusinessMembersData[]
   	});
   	}
   }

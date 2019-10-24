@@ -1,0 +1,23 @@
+<mat-card >
+	<mat-card-header *ngIf='canAddTokens'>
+		<mat-card-subtitle>
+			<strong>{{formLabels.formTitle}}</strong>
+
+			<button mat-icon-button
+					type="button" title="{{formLabels.formAddLabel}}" color="accent" 
+					(click)='addToken()'>
+					<mat-icon>add</mat-icon>
+			</button>
+		</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+	  	<asset-predicate *ngFor="let entity of entities" 
+	  				[entityType]='entityType'
+	  				(deleteToken)='deleteToken($event)'
+	  				[graphToken]='entity'>
+	  		
+	  	</asset-predicate>
+	</mat-card-content>
+
+</mat-card>

@@ -25,7 +25,7 @@ export class RolNochePanelComponent implements OnInit {
 	@Input() items: Array<RolNocturnidad> = [];
 	@Output() updateItems = new EventEmitter<UpdateRolEvent>();
 
-  public title = 'Rol de Nocturnidad';
+  public title = 'Roles emitidos';
 	public showList = true;
   public openEditor = true;
 

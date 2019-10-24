@@ -105,6 +105,7 @@ export class RolNocturnidadItem {
 		personDni:      string;
 		personName:      string;
 		personApellido:      string;
+		imageId: string;
 }
 
 export interface UpdateRolEvent {

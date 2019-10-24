@@ -27,7 +27,11 @@
 </ng-container>
 
 <ng-container *ngIf="isRegistro">
-	<registro-container [record]='registro' ></registro-container>
+	<registro-container [record]='registro' [target]="'comercio'" ></registro-container>
+</ng-container>
+
+<ng-container *ngIf="isPersonalSeguridad">
+	<registro-container [record]='personalSeguridad' [target]="'personalseguridad'" ></registro-container>
 </ng-container>
 
 <ng-container *ngIf="isTopaboutlr">

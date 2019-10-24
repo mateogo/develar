@@ -2,7 +2,7 @@
   <mat-card-content>
     <form [formGroup]="form">
       <div class="container content-box">
-      	<h3>Ingrese su clave de acceso</h3>
+      	<h3>{{ text.h1 }}</h3>
 
 	      <!---tdoc; ndoc; provisorio; --->
 	      <div class="row">
@@ -24,11 +24,11 @@
 	      </div>
 
 	      <div *ngIf="isNueva" class="additional-info">
-	      	<p>No hay un comercio registrado con CUIT {{ cuit }} </p>
-	      	<p>¿Desea dar de alta un<strong> nuevo </strong>comercio?</p>
+	      	<p>{{ text.p1 + ndoc }}</p>
+	      	<p>{{text.p2 }}</p>
 
 	        <button mat-raised-button color="primary"
-	            (click)="registrarNuevo()">Alta nuevo comercio</button>
+	            (click)="registrarNuevo()">{{ text.p3 }}</button>
 
 	        <button mat-button type="button" color="accent" 
 	                (click)="cancel()">Cancelar</button>

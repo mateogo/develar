@@ -1,0 +1,91 @@
+<mat-card>
+	<!---  encabezado: nombre del recurso relacionado  -->
+	<mat-card-header>
+		<div mat-card-avatar>	<img mat-list-avatar src="{{ token.avatar }}" width="40" height="40" alt=""></div>
+
+		<mat-card-title>
+		<ng-container [ngSwitch]='entityType'>
+
+			<ng-container *ngSwitchCase="'image'">
+				<a rel="noopener noreferrer" target="_blank"
+					 href="download/{{token.entityId}}" >{{token.displayAs || 'identificación del objeto'}}</a>	
+			</ng-container>
+
+			<ng-container *ngSwitchDefault >{{ token.displayAs || 'nombre / identificación' }}</ng-container>
+
+		</ng-container>
+		</mat-card-title>
+
+		<mat-card-subtitle>	
+			<!---  encabezado con boton de editar relación  -->
+			<span>{{ getPredicateLabel(token.predicate) }}</span>
+			<span class="slug"> -- {{ token.slug || 'nuevo elelmento relacionado'}}</span>
+
+			<span style="margin: 10px" 
+				(click)='editToken()' title="abrir/ cerrar editor de relación">
+				<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" aria-hidden="true"></i></span>
+
+			<span style="margin: 10px" 
+				(click)='removeToken(token)' title="Remover relación de esta ficha"  >
+				<i class='fas fa-times' aria-hidden="true"></i></span>
+			<p *ngIf="token.description" >
+				<span  class="description">{{ token.description }}</span>
+			</p>
+		</mat-card-subtitle>	
+	</mat-card-header>
+	<mat-card-content>
+	<!---  encabezado con boton de editar relación  -->
+	<div *ngIf='openEditor'>
+
+		<div [ngSwitch]='entityType'>
+
+			<div *ngSwitchCase="'image'">
+				<asset-search  (lookUpModels)='updateImageEntity($event) '></asset-search>
+				<p><strong>Recurso seleccionado: </strong>{{token.displayAs}} <small>id: {{token.entityId}}</small></p>
+			</div>
+
+		</div>
+
+		<div class="d-flex justify-content-start align-items-center">
+			<div style="max-width: 400px" class="pr-3">	
+				<mat-form-field>
+				  <span matPrefix><strong>Predicado: </strong></span>
+				  <input matInput type="text" name="predicate"
+				   			[(ngModel)]='token.predicate' [matAutocomplete]="predicate">
+				  <span matSuffix><strong>{{getPredicateLabel(token.predicate)}}</strong></span>
+				</mat-form-field>
+			</div>
+			<mat-autocomplete #predicate="matAutocomplete">
+		  	<mat-option *ngFor="let option of predicateOptions" [value]="option.val">
+		      {{ option.label }}
+		   	</mat-option>
+			</mat-autocomplete>
+			<mat-form-field>
+		  	<input matInput name="slug" [(ngModel)]='token.slug' placeholder="asunto" >
+			</mat-form-field>	
+		</div>
+		
+		<mat-form-field>
+		  <input matInput name="description" [(ngModel)]='token.description' placeholder="descripcion" >
+		</mat-form-field>	
+
+	</div>
+
+		<ng-container [ngSwitch]='entityType'>
+
+			<ng-container *ngSwitchCase="'asset'">
+ 				<!-- img src="download/{{token.entityId}}"  alt="{{token.slug}} " -->
+ 			</ng-container>
+
+			<ng-container *ngSwitchCase="'image'">
+					<a rel="noopener noreferrer" target="_blank"
+									href="/download/{{token.entityId}}" >
+						<img  class="imagepreview" src="download/{{token.entityId}}"  alt="{token.slug}}" 
+									title="{{token.slug}}"></a>
+	 		</ng-container>
+
+ 		</ng-container>
+
+	</mat-card-content>
+
+</mat-card>

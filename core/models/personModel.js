@@ -68,6 +68,18 @@ const oficiosSch = new mongoose.Schema({
     comentario:    {type: String, required: false,  default: ""},
 });
 
+const assetSch = new mongoose.Schema({
+    entity:      {type: String, required: false,  default: ""},
+    displayAs:   {type: String, required: false,  default: ""},
+    predicate:   {type: String, required: false,  default: ""},
+    slug:        {type: String, required: false,  default: ""},
+    description: {type: String, required: false,  default: ""},
+    avatar:      {type: Number, required: false,  default: ""},
+    entityId:    {type: String, required: false,  default: ""},
+
+});
+
+
 const businessSch = new mongoose.Schema({
     vinculo:     {type: String, required: true,  default: "pariente"},
     nombre:      {type: String, required: true,  default: ""},
@@ -88,6 +100,7 @@ const businessSch = new mongoose.Schema({
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
     comentario:  {type: String, required: false, default: ""},
+    assets:      [ assetSch ]
 });
 
 const familySch = new mongoose.Schema({
@@ -266,7 +279,8 @@ const personSch = new mongoose.Schema({
     cobertura:      [ coberturaSch ],
     messages:       [ notif_messageSch ],
     ambiental:      [ encuestaSch ],
-    fichas:         [ recordCardSch ]
+    fichas:         [ recordCardSch ],
+    assets:         [ assetSch ]
 });
 
 personSch.pre('save', function (next) {
@@ -329,7 +343,6 @@ exports.findById = function (id, errcb, cb) {
 };
 
 
-
 function buildQuery(query){
     let q = {};
 
@@ -369,8 +382,6 @@ function buildQuery(query){
             //db.collection.find( { _id : { $in : [1,2,3,4] } } );
     }
 
-
-
     return q;
 }
 
@@ -392,9 +403,6 @@ exports.upsert = function (req, errcb, cb) {
             cb(token);
         });
     });
-
-
-
 
 };
 
@@ -512,9 +520,9 @@ const createNewPerson = function(person, errcb,cb){
 
 function checkForPersonToPersonRelation(sourcePerson){
     let businessMembers = sourcePerson.integrantes || [];
-    businessMembers.forEach(p => {
+    businessMembers.forEach((p, index) => {
         if(p.hasOwnPerson){
-            updateRelatedBusinessMember(sourcePerson, p);
+            updateRelatedBusinessMember(sourcePerson, p, index);
         }
     })
 
@@ -527,7 +535,7 @@ function addFaceta(facetas, token){
     return facetas;
 }
 
-function updateRelatedBusinessMember(person, member){
+function updateRelatedBusinessMember(sourcePerson, member, index){
     let query = buildQuery({
         tdoc: member.tdoc,
         ndoc: member.ndoc
@@ -536,7 +544,15 @@ function updateRelatedBusinessMember(person, member){
         if(!tperson) tperson = initNewPerson(member);
 
         updatePersonFromVinculo(tperson, member);
-        tperson.save().then(err=> {});
+
+        tperson.save().then(err => {
+            if(!err){
+                sourcePerson.integrantes[0].personId = tperson._id;
+                sourcePerson.save().then(err =>{
+                    //finish
+                })
+            }
+        });
     })
 
 }
@@ -569,11 +585,38 @@ function updatePersonFromVinculo(tperson, member){
     tperson.nestudios = member.nestudios;
     tperson.especialidad = member.ocupacion;
     tperson.ambito = member.tocupacion;
+    tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
 
     if(member.vinculo === "seguridad"){
         tperson.facetas = addFaceta(tperson.facetas, member.vinculo);
     }
     return tperson;
+}
+
+function updateMemberAssetsArray(target, source){
+    if(source && source.length){
+        if(!(target && target.length)) return source;
+        source.forEach(asset => {
+            if(!assetAlreadyInArray(asset, target)) target.push(asset)
+        });
+        crossCheckAssetInArray(target, source);
+        return target;
+
+    } else {
+        if(target && target.length) source.assets = target.assets;
+        return target;
+    }
+}
+
+function crossCheckAssetInArray(target, source){
+    target.forEach(asset => {
+            if(!assetAlreadyInArray(asset, source)) source.push(asset)
+    });
+}
+
+
+function assetAlreadyInArray(asset, target){
+    return target.find(t => t.entityId === asset.entityId)
 }
 
 

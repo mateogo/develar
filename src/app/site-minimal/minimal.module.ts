@@ -72,6 +72,7 @@ import { ComercioContactdataViewComponent } from './comercio/comercio-contactdat
 import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
 import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-layout.component';
 import { ComercioCoreStatusComponent } from './comercio/comercio-core/comercio-core-status/comercio-core-status.component';
+import { RegistroAltapfComponent } from './registracion/registro-altapf/registro-altapf.component';
 
 
 
@@ -142,7 +143,8 @@ import { ComercioCoreStatusComponent } from './comercio/comercio-core/comercio-c
   	ComercioContactdataViewComponent,
   	DashboardComercioPageComponent,
   	ComerciosLayoutComponent,
-  	ComercioCoreStatusComponent
+  	ComercioCoreStatusComponent,
+  	RegistroAltapfComponent
   ],
   providers:[
     HighlightService
