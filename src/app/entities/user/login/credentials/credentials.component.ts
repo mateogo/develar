@@ -109,7 +109,6 @@ export class CredentialsComponent implements OnInit {
     // this.userlistener = this.userService.userEmitter;
     // this.userlistener.subscribe(user =>{
     //   this.model = user;
-    //   console.log('SignUp: [%s]  [%s]', (this.model && this.model._id), (this.model && this.model.username) )
     //   this.initForEdit()
     // })
 
@@ -129,12 +128,10 @@ export class CredentialsComponent implements OnInit {
   initUserToEdit(id: string){
 
     this.userService.getUser(this.modelId).then(user => {
-      //console.log('User fetch!: [%s] [%s] [%s] [%s]', user.id, user.username, user.estado, user.termscond);
 
       this.model = user;
       this.model.id = this.model._id;
       this.username = this.model.username;
-      //console.log('User fetch!: [%s] [%s] [%s] [%s]', user.id, user.username, this.termsofuse, user.termscond);
 	    this.form.reset({
 	      password:  this.model.password,
 	      confirmPassword:  this.model.confirmPassword,

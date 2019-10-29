@@ -23,14 +23,9 @@ export class EnterSiteComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-  	console.log('****************** ingresando BEGINS ****************')
     this.userListener = this.userService.initLoginUser();
 
     this.userListener.subscribe(user =>{
-      // console.log('**** minimalCtroller Constructor userListener :[%s]', user.username)
-      // console.log('++++ user: [%s] [%s]', user.communityId, user.communityUrlpath);
-      // console.log('**** navi: [%s] [%s]', this.naviCmty.id, this.naviCmty.url);
-      // console.log('xxxx usrx: [%s] [%s]', this.userCmty.id, this.userCmty.url);
 
       this.updateUserStatus(user);
       if(user.username === 'invitado' ){
@@ -47,8 +42,6 @@ export class EnterSiteComponent implements OnInit {
   }
 
   updateUserStatus(user:User){
-      console.log('**** minimalCtroller Constructor userListener :[%s]', user.username)
-      console.log('++++ user: [%s] [%s]', user.communityId, user.communityUrlpath);
   }
 
 }

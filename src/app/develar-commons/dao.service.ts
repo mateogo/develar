@@ -154,7 +154,6 @@ export class DaoService {
   }
 
   findEntityById<T>(type: string, entity:string, id: string): Promise<T> {
-    console.log('findEntityByID')
     let url = `${this.dao[type][entity]}/${id}`;
 
     return this.http.get(url)
@@ -172,7 +171,6 @@ export class DaoService {
 
   create<T>(type: string, entity:T): Promise<T>{
     let url = `${this.dao[type].backendURL}`;
-    console.log('create [%s]', url)
 
   	return this.http
   		.post(url, JSON.stringify(entity), {headers: this.headers})
@@ -182,7 +180,6 @@ export class DaoService {
 
   emitnotification<T>(type: string, entity:T): Promise<T>{
     let url = `${this.dao[type].emitnotificationURL}`;
-    console.log('emitnotification [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(entity), {headers: this.headers})
@@ -192,7 +189,6 @@ export class DaoService {
 
   userCommunity<T>(type: string, entity:T): Promise<T>{
     let url = `${this.dao[type].relationURL}`;
-    console.log('user-community Relation [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(entity), {headers: this.headers})
@@ -202,7 +198,6 @@ export class DaoService {
 
   usersFromPersons(type: string, query:any): Promise<any>{
     let url = `${this.dao[type].createusersURL}`;
-    console.log('create Users from Persons: [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(query), {headers: this.headers})
@@ -212,7 +207,6 @@ export class DaoService {
 
   highlight(type: string, query:any): Promise<any>{
     let url = `${this.dao[type].backendURL}`;
-    console.log('parse text: [%s]', url)
 
     return this.http
       .post(url, JSON.stringify(query), {headers: this.headers})
@@ -340,7 +334,6 @@ export class DaoService {
   }
 
   send(mail: MailModel): Promise<any> {
-    console.log('user SEND MAIL BEGINs ');
     return this.http
       .post(mail.url, JSON.stringify(mail.content), {headers: this.headers})
       .toPromise()

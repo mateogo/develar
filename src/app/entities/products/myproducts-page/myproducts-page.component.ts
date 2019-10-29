@@ -46,27 +46,15 @@ export class MyproductsPageComponent implements OnInit {
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this.modelScrptn.unsubscribe()
-
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
+
   }
 
   ngOnInit() {
-
-    // this.modelScrptn = this.productCtrl.productSerialListener.subscribe(model =>{
-    //   this.initProductSerialData(model);
-    //   this.token = model;
-    // })
-
-    // this.productCtrl.initProductSerialEdit(this.token, this.tokenId);
-
-    console.log('PRODUCT-PAGE init')
     this.modelScrptn = this.productCtrl.serialsByOwner.subscribe(list =>{
-      console.log('PRODUCT-PAGE listener subscribe');
       this.actualOwner = this.productCtrl.actualOwner;
 
       if(this.actualOwner){
@@ -86,15 +74,10 @@ export class MyproductsPageComponent implements OnInit {
   }
 
   initProductSerialData(model){
-    //console.log('initProductSerialData [%s]', model)
     this.updateTableList();
   }
 
   initToSave(){
-    console.log('InitToSave');
-    //this.token.actualOwnerId = this.actualOwnerId;
-    //this.token.actualOwnerName = this.actualOwnerName;
-    //this.token.productId = this.productId;
     this.token.productName = this.productName || this.productFromDb.slug;
   }
 
@@ -117,9 +100,7 @@ export class MyproductsPageComponent implements OnInit {
     delete base['_id'];
 
     this.productEditList.forEach(prod =>{
-      console.log('forEach: [%s] [%s]', prod.slug, prod._id);
       prod = this.productCtrl.updateProductSerialCommonData(prod, base);
-      //this.token = prod;
       this.saveToken(prod)
     });
     this.resetEditMany(this.token);
@@ -245,14 +226,8 @@ export class MyproductsPageComponent implements OnInit {
   }
  
   actionTriggered(action){
-    console.log('productsn-component: actionTriggered:[%s]', action)
     if(action === 'editone')      this.editTableSelectedProductList();
   }
 
 }
 
-
-//59701fab9c481d0391eb39b9
-//59701ef09c481d0391eb39b8
-
-//[5a81c3e50154ba0874d5b62f]

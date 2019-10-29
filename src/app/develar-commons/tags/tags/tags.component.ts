@@ -80,7 +80,6 @@ export class TagComponent implements OnInit {
       );
 
     this.models.subscribe(models => {
-      //console.log('SUBSCRIBE okkkkkkkkkkkkk', models.length);
     })
 
   }
@@ -129,7 +128,6 @@ export class TagComponent implements OnInit {
   }
 
   remove(token: any): void {
-    console.log('REMOVE')
     let index = this.taglist.indexOf(token);
 
     if (index >= 0) {
@@ -138,7 +136,3 @@ export class TagComponent implements OnInit {
     }
   }
 }
-
-//        [matChipInputAddOnBlur]='addOnBlur'
-
-

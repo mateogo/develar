@@ -151,7 +151,6 @@ export class RolNocheEditComponent implements OnInit {
     this.addAgentesToForm(token.agentes, form);
 
     if(token.avance !== 'emitido'){
-      console.log('Invalidando campo Action');
       form.get('action').disable();
     }
     return form;
@@ -181,7 +180,6 @@ export class RolNocheEditComponent implements OnInit {
       this.notValidItemData = true
       return;
     }
-    console.log('addPersonToList');
 
     let fvalue = this.itemForm.value;
     this.notValidItemData = false
@@ -198,17 +196,15 @@ export class RolNocheEditComponent implements OnInit {
   }
 
   handlePerson(p: Person){
-    console.log('handlePerson: [%s] [%s] [%s]', p.nombre, p.apellido, p._id)
     this.insertNewAgenteToList(p);
   }
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+
   }
  
   removeItem(e, index: number, item: FormGroup){
     e.preventDefault();
-    console.log('removeItem... index:[%s]  id:[%s]', index, item.value._id);
     let formArray = this.form.get('enrolados') as FormArray;
     formArray.removeAt(index);
     this.agentesList.splice(index, 1);

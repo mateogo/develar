@@ -28,8 +28,6 @@ function initForSave(form: FormGroup, model: Person): Person {
   entity.tprofesion = fvalue.tprofesion;
   entity.especialidad = fvalue.especialidad;
   entity.ambito = fvalue.ambito;
-  console.log('initForSave [%s]', entity.personType);
-
 
 	return entity;
 };
@@ -154,7 +152,6 @@ export class PersonEditComponent implements OnInit {
 
 
   addLocation_Paso_a_Paso_toBe_Trashed(){
-    console.log('addlocation')
     const locacionesDeepCopy: Address[] = this.form.value.guaridas.map(
       (address: Address) => Object.assign({}, address)
     );
@@ -169,7 +166,6 @@ export class PersonEditComponent implements OnInit {
   removeLocation(item){
 
     const formArray = this.form.get('guaridas') as FormArray;
-    console.log('items: [%s]  item[%s]', formArray.length, item);
  
     formArray.removeAt(item);
   }
@@ -181,14 +177,12 @@ export class PersonEditComponent implements OnInit {
   }
 
   changeAddType(item){
-    console.log('Change Add Type');
     const formArray = this.form.get('guaridas') as FormArray;
     formArray.at(item).patchValue({slug: personModel.fetchAddrTypeLabel(formArray.at(item).value.addType)});
 
   }
 
   changeProvincia(item){
-    console.log('Change provincia');
     const formArray = this.form.get('guaridas') as FormArray;
     formArray.at(item).patchValue({statetext: personModel.fetchProvinceLabel(formArray.at(item).value.state)});
   }
@@ -201,7 +195,6 @@ export class PersonEditComponent implements OnInit {
   }
 
   mapLookUp(address: Address){
-    console.log('mapLookUp [%s]', address.street1, address.city);
     this.showMap(address);
   }
 
@@ -209,7 +202,6 @@ export class PersonEditComponent implements OnInit {
   	this.model = initForSave( this.form, this.model);
     this.personService.update(this.model)
       .then(model => {
-        console.log('Entidad Actualizada!: [%s] [%s]', model.id, model.displayName)
         this.router.navigate(['../'], { relativeTo: this.route });
       });
   }
@@ -217,10 +209,7 @@ export class PersonEditComponent implements OnInit {
   showMap(address: Address){
     this.personService.addressLookUp(address)
     .then(data => {
-      // console.dir(data);
-      // console.log('SHOW MAP callback[%s]: lat/lng: [%s][%s]', data.status, data.location.lat, data.location.lng);
       if(data.status === 'OK'){
-
 
         this.zoom = 15;
         this.location = data.location;
@@ -233,7 +222,6 @@ export class PersonEditComponent implements OnInit {
   }
 
   closeEditor(target){
-    console.log('closeEditor: [%s]', target);
     this.router.navigate([target], { relativeTo: this.route });
   }
 
@@ -242,7 +230,6 @@ export class PersonEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
 }

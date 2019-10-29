@@ -63,8 +63,9 @@ export class FoldereditComponent implements OnInit {
     this.modelId = id;
     this.folderService.getFolder(this.modelId)
       .then(entity => {
-        if(!entity)
-          console.log('aiudddaaaa');
+        if(!entity){
+
+        }
         else {
           this.model = entity
           this.form.reset({
@@ -95,14 +96,12 @@ export class FoldereditComponent implements OnInit {
   }
 
   continueEditing(model){
-    console.log('Continue editing: [%s] [%s] [%s]', model.slug, model._id, model.id);
     this.model = model;
     this.formReset(this.model);
   }
 
   saveAndGo(){
     this.saveRecord().then(model =>{
-        console.log('Save&GO: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id, this.model.id)
         this.closeEditor(LIST);
     })
   }
@@ -117,7 +116,6 @@ export class FoldereditComponent implements OnInit {
 
   onSubmit() {
     this.saveRecord().then(model =>{
-        console.log('onSubmit: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id, this.model.id)
         this.continueEditing(model);
     })
   }
@@ -134,11 +132,11 @@ export class FoldereditComponent implements OnInit {
   }
 
   changeCardType(){
-    console.log('cartType CHANGED');
+
   }
 
   descriptionUpdateContent(content){
-    console.log("BUBBBBBLED: [%s]", content);
+
   }
 
   initNewModel(){
@@ -154,7 +152,7 @@ export class FoldereditComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
+
     })
   }
 

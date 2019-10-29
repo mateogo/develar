@@ -37,9 +37,7 @@ export class GcseComponent implements OnInit {
   }
 
   crawl(target: string): void {
-    console.log('crawl: [%s]', target)
     this.targetUrl = target;
-    //this.searchTerms.next(term);
   }
 
   showResultSet(items:Array<any>){
@@ -47,10 +45,6 @@ export class GcseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    // this.searchTerms.subscribe(term => {
-    //   //console.log('term Subscribed:[%s]', term)
-    // })
     this.lookUpModels.subscribe({
       next: (ovble:Observable<GoogleSearchResponse>)=> {
         ovble.subscribe( data => {
@@ -99,29 +93,24 @@ export class GcseComponent implements OnInit {
   }
 
   saveURL(token){
-    console.log('saveURL: [%s]', token.title)
     this.recordThisRequest.emit(token);
   }
   
   crawlURL(target){
-    console.log('crawlURL: [%s]', target.title)
         this.targetUrl = target.link;
   }
 
   handleCrawlingData(sub:Subject<any>){
     sub.subscribe({
-      next: (x) => {console.log('iajjjjjjjjuuuuuuuuuuuuuuuuu');}
+      next: (x) => {}
     })
   }
 
   selectMachine(e, item){
     e.preventDefault();
     this.machine = item;
-    console.log('Machine selected:[%s]', this.machine)
     e.target.closest('.nav-item').classList.remove('opened');
     if(this.machine !== 'hack') this.googleSearchService.setMachine(this.machine);
-    //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('opened');
-    //e.target.parentElement.parentElement.parentElement.parentElement.parentElement
   }
 
 }

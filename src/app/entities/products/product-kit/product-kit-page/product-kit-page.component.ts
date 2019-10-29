@@ -33,17 +33,13 @@ export class ProductKitPageComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id')
-
-    console.log('productCreate INIT [%s]', id)
     this.updateTableList();
     this.model$.next(this.model);
   }
 
   updateKit(token: UpdateProductEvent){
-  	console.log('Bubbled!!!! [%s] [%s]', token.action, token.type)
   	this.productCtrl.manageKits(token).subscribe(m => {
       this.updateTableList();
-  		console.log('Grabación exitosa [%s]', m._id)
   	})
 
   }
@@ -54,7 +50,6 @@ export class ProductKitPageComponent implements OnInit {
 
 
   actionTriggered(e){
-    console.log('actionTrieggered [%s]', e)
     if(e === "editone"){
       this.editOneKit()
       
@@ -68,7 +63,6 @@ export class ProductKitPageComponent implements OnInit {
 
   editOneKit(){
     let kit:KitProduct[] = this.productCtrl.fetchSelectedProductKitList();
-    console.log('EditONE: kit list [%s]', kit , kit&&kit.length)
     if(kit && kit.length){
       this.model = kit[0];
       this.model$.next(this.model);
@@ -77,7 +71,6 @@ export class ProductKitPageComponent implements OnInit {
 
   deleteOneKit(){
     let kit:KitProduct[] = this.productCtrl.fetchSelectedProductKitList();
-    console.log('DeleteONE: kit list [%s]', kit , kit&&kit.length)
     if(kit && kit.length){
       this.productCtrl.deleteKit(kit[0]._id);
       setTimeout(()=>{

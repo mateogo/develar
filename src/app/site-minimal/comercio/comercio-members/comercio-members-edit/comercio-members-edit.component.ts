@@ -70,7 +70,6 @@ export class ComercioMembersEditComponent implements OnInit {
   onSubmit(){
     //ToDo
   	this.initForSave(this.form, this.token);
-    console.log('InitForSave: [%s]', this.imageList && this.imageList.length)
   	this.action = UPDATE;
     this.token.assets = this.imageList;
   	this.emitEvent(this.action);
@@ -144,7 +143,6 @@ export class ComercioMembersEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{
@@ -232,7 +230,6 @@ export class ComercioMembersEditComponent implements OnInit {
 
 
   createCardGraphFromImage(image){
-    console.log('createCardGraph')
     let card = graphUtilities.cardGraphFromAsset('image', image, 'mainimage');
     this.addImageToList.next(card);
   }

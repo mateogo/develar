@@ -39,7 +39,6 @@ const newEntityConfirm = {
 };
 
 function initCommunityForSave(model: Community, basedata: CommunityBase, user: User): Community {
-  //console.log('initForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
   model = communityModel.updateBaseData(model, basedata);
   model.userId = user._id;
   return model;
@@ -118,7 +117,6 @@ export class CommunityController {
   }
 
   initController(model: Community, modelId: string){
-    //console.log('controller: initCommunity: [%s] [%s]', model.slug, modelId)
     if(model){
       this.initCommunityData(model);
 
@@ -153,9 +151,7 @@ export class CommunityController {
   saveRecord(){
     this.community = initCommunityForSave(this.community, this.basicData, this.userService.currentUser);
     if(this.communityId){
-      console.log('saveRecord-update *** : [%s] [%s]', this.communityId, this.community.taglist.length);
       return this.daoService.update<Community>(this.recordtype, this.communityId, this.community).then((model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.community.slug, model.taglist.length)
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -163,7 +159,6 @@ export class CommunityController {
 
     }else{
       return this.daoService.create<Community>(this.recordtype, this.community).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -173,7 +168,6 @@ export class CommunityController {
 
   saveUserRelation(userRelation: CommunityUserRelation){
       return this.daoService.userCommunity<CommunityUserRelation>(this.recordtype, userRelation).then((model) =>{
-              console.log('userRelation OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -183,7 +177,6 @@ export class CommunityController {
   updateRecord(token: Community){
     this.community = token;
     this.communityId = token._id;
-    console.log('updateRecord: [%s] [%s] ', token._id, token.slug );
     this.saveRecord();
 
   }
@@ -225,7 +218,6 @@ export class CommunityController {
     });
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
     })
   }
 

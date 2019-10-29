@@ -26,14 +26,6 @@ export class AssetService {
    */
   private handleObsError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      //this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
@@ -55,15 +47,12 @@ export class AssetService {
   }
 
   getAssets(): Promise<Asset[]>{
-    console.log('[%s]: Ready to FindAll', this.backendUrl);
-
     return this.http.get(this.backendUrl)
       .toPromise()
       .catch(this.handleError);
   }
 
   create(entity:Asset): Promise<Asset>{
-    console.log('Service: entity: [%s], [%s]', entity.id, entity.slug);
   	return this.http
   		.post(this.backendUrl, JSON.stringify(entity), {headers: this.headers})
   		.toPromise()
@@ -72,7 +61,6 @@ export class AssetService {
 
   update(entity: Asset): Promise<any> {
     const url = `${this.backendUrl}/${entity._id}`;
-    console.log('[%s]: Ready to update:[%s] [%s] ', url, entity._id, entity.slug);
     return this.http
       .put(url, JSON.stringify(entity), {headers: this.headers})
       .toPromise()
@@ -81,7 +69,6 @@ export class AssetService {
 
   promote(entity: Asset): Promise<any> {
     const url = `${this.backendUrl}/promote/${entity._id}`;
-    console.log('[%s]: Ready to promote:[%s] [%s] ', url, entity._id, entity.slug);
     return this.http
       .put(url, JSON.stringify(entity), {headers: this.headers})
       .toPromise()
@@ -99,7 +86,6 @@ export class AssetService {
 
   search(term: string): Observable<Asset[]> {
     let query = `${this.searchUrl}/?slug=${term}`;
-    console.log('search: [%s]',query);
     if(!term.trim()){
       return of([] as Asset[]);
     }
@@ -112,7 +98,6 @@ export class AssetService {
 
   defaultSearch(): Observable<Asset[]> {
     let query = `api/recordcards`;
-    console.log('defaultSearch: [%s]',query);
     return this.http
                .get<Asset[]>(query);
   }

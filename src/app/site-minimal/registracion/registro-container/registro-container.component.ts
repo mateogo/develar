@@ -111,7 +111,6 @@ export class RegistroContainerComponent implements OnInit {
   	this.title = this.record.slug;
   	this.description = this.record.description;
   	this.mainimage = this.record.mainimage;
-    console.log('REGISTRO!! [%s] target:[%s]', this.description, this.target);
 
     if(this.target === TARGET_COMERCIO) this.isComercio = true;
     else if(this.target === TARGET_SEGURIDAD) this.isComercio = false;
@@ -119,11 +118,9 @@ export class RegistroContainerComponent implements OnInit {
 
 
   	this.record.relatedcards.forEach(s => {
-      console.log('relatedCards')
       let link:string , navigate:string , noLink = true;
       
       let flipImage: RelatedImage = this.flipImage(s);
-      console.log('relatedCards [%s]', flipImage && flipImage.predicate);
 
       if(s.linkTo){
         noLink = false;
@@ -158,7 +155,6 @@ export class RegistroContainerComponent implements OnInit {
   }
 
   ndocStep(e: UpdatePersonEvent){
-    console.log('Event BUBBLED!')
     if(e.action === CANCEL){
       this.firstStep = true;
       this.showLogin = false;
@@ -174,7 +170,6 @@ export class RegistroContainerComponent implements OnInit {
 
       this.person = e.person;
 
-      console.log('goTo Password STEP [%s] [%s]', this.person.ndoc, this.person.ndoc);
       this.testIfComercioExists(this.person);
 
     }
@@ -196,9 +191,6 @@ export class RegistroContainerComponent implements OnInit {
       this.firstStep = true;
       this.showLogin = false;
 
-
-      console.log('Clave->NEXT [%s] [%s] id:[%s] ', e.token, e.person.displayName, e.person === this.person);
-
       this.loadUserFromPerson(this.person, e.token);
 
       this.secondStep = true;
@@ -208,7 +200,6 @@ export class RegistroContainerComponent implements OnInit {
 
     // ABRIR PANEL DE REGISTRACIÓN
     if(e.action === REGISTRAR){
-      console.log('Registración Nuevo Local')
       this.firstStep = false;
       this.showLogin = false;
  
@@ -221,7 +212,6 @@ export class RegistroContainerComponent implements OnInit {
   loadUserFromPerson(person: Person, password: string){
     let userId = person.user.userid;
     this.minimalCtrl.getUserById(userId).then(u => {
-      console.log('UserFromPerson FOUND[%s]', u.username);
       if(u){
         u.password = password;
         this.loginUser(person, u)
@@ -239,10 +229,7 @@ export class RegistroContainerComponent implements OnInit {
 
       this.minimalCtrl.setCurrentUser(user);
 
-      console.log('U login CB!: [%s] [%s] P:[%s]', user._id, user.email, person.displayName)
-
       this.minimalCtrl.initLoginUser().subscribe(u => {
-        console.log('ready to navigate**[%s]', person._id);
 
         if(this.target === TARGET_COMERCIO) {
           this.router.navigate(['/mab/comercios/registro', person._id]);
@@ -254,7 +241,7 @@ export class RegistroContainerComponent implements OnInit {
       })
     })
     .catch((err) =>{
-      console.log('ERROR: [%s] [%s]', err, err.message);
+
     });
 
   }
@@ -294,7 +281,6 @@ export class RegistroContainerComponent implements OnInit {
 
   // EVENTO DESDE ALTA NUEVO COMERCIO
   altaComercio(e:UpdatePersonEvent){
-    console.log('AltaNuevoComercio BUBBLED!')
     if(e.action === CANCEL){
       this.firstStep = true;
       this.showLogin = false;
@@ -334,7 +320,6 @@ export class RegistroContainerComponent implements OnInit {
   togglePanel(e, i, node){
     e.stopPropagation();
     e.preventDefault();
-  	console.log('togglePanel: [i]', i);
   	if(i === 0){
   		this.showRegistration = false;
   		this.showLogin = true;

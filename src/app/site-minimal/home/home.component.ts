@@ -6,8 +6,6 @@ import { Observable } from 'rxjs';
 import { SiteMinimalController } from '../minimal.controller';
 import { RecordCard } from '../recordcard.model';
 
-
-
 const HOME_TYPE = 'webresource';
 const BRANDING =  'topbranding';
 const ABOUT =     'topabout';
@@ -25,8 +23,6 @@ const REGISTRO =  'regcomercio';
 const SEGURIDAD = 'regpersonas';
 
 const HOME = 'home';
-
-
 
 @Component({
   selector: 'public-home',
@@ -67,7 +63,6 @@ export class HomeComponent implements OnInit {
 
   public showProductos = false;
 
-  // isFooter === true busca
   public isFooter = true;
   public footer: RecordCard;
 
@@ -84,9 +79,7 @@ export class HomeComponent implements OnInit {
 
   public isPortfolioCarrousel = true;
 
-
   public unBindList = [];
-
 
   constructor(
   		private minimalCtrl: SiteMinimalController,
@@ -140,7 +133,6 @@ export class HomeComponent implements OnInit {
       records.forEach(record => {
 
         let publish = record.publish;
-        //console.log('renderHome: [%s] [%s]',publish.template,  publish.template === CARROUSEL)
         
         if(publish.template === BRANDING){
           this.topbranding = record;
@@ -208,8 +200,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
-
   sortProperly(records){
     records.sort((fel, sel)=> {
       if(!fel.publish.publishOrder) fel.publish.publishOrder = "zzzzzzz";
@@ -223,108 +213,5 @@ export class HomeComponent implements OnInit {
 
   }
 
-
-
 }
-// end component
 
-
-
-
-/*************
-  	this.route.url.subscribe(u =>{
-  		console.log('*********** Url Segment: [%s]',u.toString());
-  		console.dir(u);
-  	});
-
-  	//this.route.snapshot.url;
-  	console.log('router snapshotURL : [%s]',this.router.routerState.snapshot.url);
-  	console.log('route  snapshotURL : [%s]',this.route.snapshot.url);
-
-  	let urlmodule = this.route.snapshot.url.toString();
-  	let urlglobal = this.router.routerState.snapshot.url;
-  	let urlpath: string = "";
-  	console.log('router snapshotURL : [%s]',urlglobal);
-  	console.log('route  snapshotURL : [%s]',urlmodule);
-  	
-  	if(urlmodule){
-  		urlpath = urlglobal.substr(1, (urlglobal.length - urlmodule.length -2));
-  		console.log('url path [%s] [%s]', urlpath ,(urlglobal.length - urlmodule.length -1));
-  	}else{
-  		urlpath = urlglobal.substr(1);
-
-  	}
-
-  	let urltest = this.router.routerState.snapshot.url;
-  	// urltest.forEach(s => {
-  	// 	console.log('urltest for each: [%s]',s.toString())
-  	// })
-
-  	let split = urlpath.split('/');
-  	split.forEach(s => {
-  		console.log('********* split: [%s]', s);
-  	})
-
-    console.log('firstChild: [%s]', this.route.firstChild);
-    console.log('fragmeng: [%s]', this.route.fragment);
-    console.log('outlet: [%s]', this.route.outlet);
-    console.log('parent: [%s]', this.route.parent);
-    console.log('children: [%s]', this.route.children);
-
-
-  	// url.subscribe(tokens =>{
-  	// 	tokens.forEach(token => {
-  	// 		console.log('Token URL: token')
-  	// 	})
-  	// })
-
-
-    // console.log('HOME initHomePage');
-    // console.log('this.router.routerState.snapshot.url',this.router.routerState.snapshot.url.split('?')[0]);
-
-    // this.route.paramMap.subscribe(t =>{
-    //   console.log('paramMap: [%s] [%s]', t.keys, t.get('community'))
-
-    // });
-
-    // console.log('snapshot: parent [%s]', this.route.snapshot.parent);
-    // console.log('snapshot: children [%s]', this.route.snapshot.children);
-    // console.log('snapshot: routeConfig [%s]', this.route.snapshot.routeConfig);
-    // console.log('snapshot: toString [%s]', this.route.snapshot.toString());
-
-    // console.log('pathFromRoot length[%s]', this.route.pathFromRoot.length);
-
-    // this.route.pathFromRoot.forEach(t => {
-    //   console.log('pathFromRoot url[%s]  root[%s]  snapshot[%s]', t.url, t.root, t.snapshot.url)
-
-    // })
-
-    // console.log('this.router.url',this.router.url);
-    // this.route.url.subscribe(url =>{
-    //   console.log('URL subscribe [%s]', url.length)
-    //   url.forEach(t =>{
-    //     console.log('url Tokens: [%s]',t)
-    //   })
-
-
-    // })
-    // console.log('URL TREE')
-    // const urlTree = this.router.parseUrl(this.router.url);
-    // console.dir(urlTree.root.children)
-    // // urlTree.root.children['primary'].segments.map(it => {
-    // //   console.log('URL TREE it [%s]',it.path)
-
-
-    // // })
-
-    // //window.location.href.split('?')[0]
-
-
-    console.log('this.route.snapshot.url',this.route.snapshot.url);
-
-    console.log('this.route.snapshot.url',this.route.snapshot.paramMap.get('community'));
-
-    console.log('route  snapshotURL : [%s]',this.route.snapshot.url.toString());
-
-
-********/

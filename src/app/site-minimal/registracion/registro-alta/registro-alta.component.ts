@@ -134,7 +134,6 @@ export class RegistroAltaComponent implements OnInit {
       this.newuser = this.initUserForSave(this.personForm, this.model, this.currentUser);
 
       this.minimalCtrl.createUserAndPerson(this.newuser, this.model).subscribe(p => {
-      	console.log('Registro ALTA we are back  [%s]', p._id );
         this.event.emit({
           action: NUEVO,
           token: p._id,
@@ -153,8 +152,6 @@ export class RegistroAltaComponent implements OnInit {
   }
 
   resetForm(model: Person) {
-  	console.log('resetForm: [%s]', model.tdoc);
-
       this.personForm.reset({
           displayName: model.displayName,
           tdoc: model.tdoc,
@@ -192,10 +189,7 @@ export class RegistroAltaComponent implements OnInit {
     model.displayName = fvalue.displayName;
     model.idbrown = "";
     model.isImported = false;
-    console.log('initForSave: [%s] [%s] [%s]', model.tdoc, fvalue.tdoc, fvalue.ndoc)
  
-    //model.tdoc = fvalue.tdoc; OjO al estar disbled, no trae el value
-
     model.ndoc = fvalue.ndoc;
 
 		model.persontags = [];
@@ -275,13 +269,11 @@ export class RegistroAltaComponent implements OnInit {
               map(t => {
                   let invalid = false;
                   let txt = ''
-                  console.log('Email VALIDATION CB [%s]', t && t.length);
-
                   if(t && t.length){ 
                       invalid = true;
                       txt = 'Correo electrónico existente: ' + t[0].email;
                   }
-
+                  
                   message['error'] = txt;
                   return invalid ? { 'emailalreadyused': txt }: null;
 

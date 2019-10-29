@@ -17,7 +17,6 @@ export class WorkgroupLayoutComponent implements OnInit {
   constructor( private _sharedService: SharedService ) {
     this.subscription01 = _sharedService.changeEmitted$.subscribe(
       title => {
-        console.log('************sharedService: emitted:[%s]', title);
         this.pageTitle = title;
       }
     );

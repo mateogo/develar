@@ -42,7 +42,6 @@ export class ProductComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id')
-    console.log('productCreate INIT [%s]', id)
     this.modelListener = this.modelCtrl.getModelListener();
 
     this.modelListener.subscribe(model =>{
@@ -58,7 +57,6 @@ export class ProductComponent implements OnInit {
   /*********  SAVE & ?? **********/
   save(target:string){
     this.modelCtrl.saveRecord().then(model =>{
-        console.log('Save: [%s] [%s]', model.slug, model._id)
         if(target === 'navigate'){
           this.closeEditor(LIST);
 
@@ -72,7 +70,6 @@ export class ProductComponent implements OnInit {
 
   /*********  CONTINUE OR LEAVE **********/
   continueEditing(model){
-    console.log('Continue editing: [%s] [%s]', model.slug, model._id);
     this.model = model;
     this.modelCtrl.getBasicData();
     this.modelId = model._id;
@@ -81,7 +78,6 @@ export class ProductComponent implements OnInit {
   }
 
   closeEditor(target){
-    console.log('closeEditor: [%s]', target);
     this.router.navigate([target], { relativeTo: this.route });
   }
 

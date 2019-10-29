@@ -49,7 +49,6 @@ const newEntityConfirm = {
 };
 
 function initForSave(basicData: ProductBaseData, model: Product, user: User): Product {
-  //console.log('initForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
   model.code = basicData.code;
   model.name = basicData.name;
   model.slug    = basicData.slug;
@@ -160,7 +159,6 @@ export class ProductController {
         return response as T
       })
       .catch(err => {
-        console.log(err);
         return err;
       });
   }
@@ -206,7 +204,6 @@ export class ProductController {
     this.pageUser = this.userService.currentUser;
     this.userService.getPerson().then(token => {
       this.pagePerson = token;
-      //console.log('pagePerson: [%s]', this.pagePerson.displayName);
       listener.next(true);
 
     });
@@ -245,7 +242,6 @@ export class ProductController {
 
   fetchSerialsByOwner(){
     if(!this.pagePerson){
-      console.log('Not Person for fetch serials of');
       return;
 
     }
@@ -253,9 +249,7 @@ export class ProductController {
       actualOwnerId: this.pagePerson._id
     }
 
-    console.log('ready to FetchSerials:[%s]', query.actualOwnerId);
     this.daoService.search<Productsn>('productsn', query ).subscribe(list => {
-      console.log('daoService:[%s]',list && list.length);
       this.productsnList = list;
       this.emitSerialsByOwner.next(list);
       this.updateSerialTableData();
@@ -297,10 +291,8 @@ export class ProductController {
   // ****** SAVE ******************
   saveSerialToken(token:string, parentProduct:Product, event:ProductEvent){
     this.productsn = productModel.buildNewProductSerial(token, parentProduct, event);
-    console.dir(this.productsn);
 
     this.daoService.create<Productsn>('productsn', this.productsn).then( (model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.productsn.slug, model.slug)
               return model;
             });
 
@@ -321,7 +313,6 @@ export class ProductController {
 
     if(this.productsnId){
       return this.daoService.update<Productsn>('productsn', this.productsnId, this.productsn).then((model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.productsn.slug, model.slug)
               this.openSnackBar('Actualización exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -329,7 +320,6 @@ export class ProductController {
 
     }else{
       return this.daoService.create<Productsn>('productsn', this.productsn).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -340,7 +330,6 @@ export class ProductController {
   updateProductSerialRecord(token: Productsn){
     this.productsn = token;
     this.productsnId = token._id;
-    console.log('updateProductSerialRecord: [%s] [%s] [%s]', token._id, token.slug, token.productId);
     return this.saveProductSerialRecord();
 
   }
@@ -348,7 +337,6 @@ export class ProductController {
   cloneProductSerialRecord(){
       this.productsn = initProductSerialForSave(this.productsn, this.userService.currentUser);
       return this.daoService.create<Productsn>('productsn', this.productsn).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -370,18 +358,14 @@ export class ProductController {
   }
 
   updateKit(listener$: Subject<KitProduct>, model: KitProduct){
-    console.log('UpdateKIT')
     this.daoService.update<KitProduct>('productkit', model._id, model).then((model) =>{
-      console.log('Update OK, opening snakbar')
       this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
       listener$.next(model);
     });
   }
 
   createKit(listener$: Subject<KitProduct>, model: KitProduct){
-    console.log('CreateKIT')
     this.daoService.create<KitProduct>('productkit', model).then((model) =>{
-      console.log('create OK, opening snakbar')
       this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
       listener$.next(model);
     });
@@ -501,7 +485,6 @@ export class ProductController {
 
     if(this.productitId){
       return this.daoService.update<Productit>('productit', this.productitId, this.productit).then((model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.productit.slug, model.slug)
               this.openSnackBar('Actualización exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -509,7 +492,6 @@ export class ProductController {
 
     }else{
       return this.daoService.create<Productit>('productit', this.productit).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -520,7 +502,6 @@ export class ProductController {
   updateItemRecord(token: Productit){
     this.productit = token;
     this.productitId = token._id;
-    console.log('updateItemRecord: [%s] [%s] [%s] [%s] [%s]', token._id, token.pume, token.slug, token.productId, token.vendorId);
     this.saveItemRecord();
 
   }
@@ -528,7 +509,6 @@ export class ProductController {
   cloneItemRecord(){
       this.productit = initItemForSave(this.productit, this.userService.currentUser);
       return this.daoService.create<Productit>('productit', this.productit).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -546,7 +526,6 @@ export class ProductController {
   }
 
   initProductEdit(model: Product, modelId: string){
-    //console.log('controller: initProduct: [%s] [%s]', model.slug, modelId)
     if(model){
       this.productmaster = model;
       this.initBaseData();
@@ -597,13 +576,8 @@ export class ProductController {
   // ****** SAVE ******************
   saveRecord(){
     this.productmaster = initForSave(this.basicData, this.productmaster, this.userService.currentUser);
-    console.log('saveRecord: [%s]', this.productmasterId);
-    console.log('this.basicData [%s]', this.basicData.code);
-    console.log('productIT: [%s]', this.productit);
-
     if(this.productmasterId){
       return this.daoService.update<Product>('product', this.productmasterId, this.productmaster).then((model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.productmaster.slug, model.slug)
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -611,7 +585,6 @@ export class ProductController {
 
     }else{
       return this.daoService.create<Product>('product', this.productmaster).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -630,7 +603,7 @@ export class ProductController {
     });
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+
     })
   }
 

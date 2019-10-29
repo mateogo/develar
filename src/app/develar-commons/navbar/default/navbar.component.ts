@@ -118,7 +118,6 @@ export class NavbarComponent implements OnInit {
   editUser(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('editUser: [%s]', this.currentUser._id)
     this.router.navigate([ '/develar/entidades/usuarios', this.currentUser._id])
   }
 
@@ -138,8 +137,6 @@ export class NavbarComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     let path = this.currentUser.communityUrlpath;
-    console.log('navigate community: [%s]', path);
-    //path = "/" + (path || 'develar') + '/fichas'
     path = "/" + 'develar' + '/fichas'
     this.router.navigate([path]);
   }
@@ -148,8 +145,6 @@ export class NavbarComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     let path = this.currentUser.communityUrlpath || "";
-    console.log('navigate public: [%s]', path);
-    //path = "/" + (path || 'develar') + '/fichas'
     path = "/" + path;
     this.router.navigate([path]);
   }
@@ -168,21 +163,3 @@ export class NavbarComponent implements OnInit {
   }
 
 }
-
-
-/***
-:host {
-  background: #fff;
-  border-bottom: 1px solid #dfe4ed;
-  display: block;
-  height: 70px;
-  left: $sidebar-width;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9998;
-  @media #{$max991} {
-    left: 0;
-  }
-
-*/

@@ -113,7 +113,6 @@ export class AddressDataEditComponent implements OnInit {
 
 	mapLookUp(){
 		let address: Address = this.initForSave(this.form,this.token);
-	  console.log('mapLookUp [%s]', address.street1, address.city);
 	  this.showMap(address, true);
 	}
 
@@ -134,7 +133,6 @@ export class AddressDataEditComponent implements OnInit {
 	showMap(address: Address, fireMap: boolean){
 		this.dsCtrl.addressLookUp(address)
 		.then(data => {
-		  console.log('SHOW MAP callback[%s]: lat/lng: [%s][%s]', data.status, data.location.lat, data.location.lng);
 		  this.buildGeoData(address, data, fireMap);
 
 		});

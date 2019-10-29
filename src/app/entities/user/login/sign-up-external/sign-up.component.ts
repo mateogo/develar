@@ -168,7 +168,6 @@ export class RegistrarUsuario implements OnInit {
     this.userlistener = this.userService.userEmitter;
     this.userlistener.subscribe(user =>{
       this.model = user;
-      console.log('SignUp: [%s]  [%s]', (this.model && this.model._id), (this.model && this.model.username) )
       this.initForEdit()
     })
 
@@ -184,18 +183,15 @@ export class RegistrarUsuario implements OnInit {
  
   onSubmit() {
     this.model = this.initUserForSave();
-    console.log('onSubmit: [%s]', (this.model && this.model._id))
 
     if(this.model._id){
       this.userService.update(this.model).then(user => {
-        console.log('User updated!: [%s] [%s]', user._id, user.email);
         this.sendMailTo(user);
         this.router.navigate(['/']);
       });
 
     }else{
       this.userService.create(this.model).then(user => {
-        console.log('User created!: [%s] [%s]', user._id, user.email);
         this.sendMailTo(user);
         this.router.navigate(['/']);
       });
@@ -207,7 +203,6 @@ export class RegistrarUsuario implements OnInit {
   sendMailTo(model: User){
     //OjO:::: anultado!
     if(true) return;
-    console.log('sendMailTo: [%s] [%s]', model.email, model.username)
     const content = this.userService.sendMailFactory();
     content.mailTo = model.email;
     content.mailFrom = 'intranet.develar@gmail.com';
@@ -233,7 +228,6 @@ export class RegistrarUsuario implements OnInit {
   }
  
   initUserForSave(): User {
-  	console.log('initUserForSave')
     const formModel = this.form.value;
 
     this.model.username    = formModel.username;

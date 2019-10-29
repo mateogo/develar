@@ -78,57 +78,7 @@ export class PapersComponent implements OnInit {
     	private route: ActivatedRoute,
   	) { }
 
-  // ngxxOnInit() {
-  // 	console.log('Home ngOnInit BEGIN')
-  // 	this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url)
-
-  //   this.buildBreadCrumb();
-   
-  //   this.topic = this.fetchTopicFromUrl(this.route.snapshot.url);
-  //     console.log('***************** Papers Component: [%s] ******************', this.topic);
-  	
-  // 	this.minimalCtrl.fetchRenderResources(this.topic).subscribe(tokens => {
-  // 		console.log('***************** Home Component ******************')
-  //     console.log('HomeComponent cb  =====>[%s]',tokens.length);
-		// 	if(tokens && tokens.length){
-
-  //       tokens.forEach(record => {
-  //         let publish = record.publish;
-  //         if(publish.template === BRANDING){
-  //           this.topbranding = record;
-  //           this.isTopbranding = true
-
-  //         }else if(publish.template === ABOUT){
-  //           this.topabout = record;
-  //           this.isTopabout = true
-
-  //         }else if(publish.template === DESTACADO){
-  //           this.destacado = record;
-  //           this.isDestacado = true
-
-  //         }else if(publish.template === CONTACTO){
-  //           this.contacto = record;
-  //           this.isContacto = true
-
-  //         }else if(publish.template === FICHA){
-  //           this.papers.push(record);
-
-  //         }else if(publish.template === SERVICIOS){
-  //           this.servicios = record;
-  //           this.isServicios = true
-  //         }
-  //       });
-
-  //       if(this.papers && this.papers.length){
-  //         this.isPapers = true;
-  //       }
-
-		// 	}
-
-  // 	});
-  // }
-
-
+ 
   ngOnInit() {
     let first = true;    
 
@@ -156,7 +106,6 @@ export class PapersComponent implements OnInit {
     this.buildBreadCrumb();
 
     // ********** validación de usuario logueado ***********
-    //if(!this.minimalCtrl.navigateToUserPublications()){
     if(!this.minimalCtrl.navigateToUserPublications()){
       this.router.navigate([this.minimalCtrl.communityRoute], {relativeTo: this.route})
       
@@ -223,8 +172,6 @@ export class PapersComponent implements OnInit {
     }    
   }
 
-
-
   fetchTopicFromUrl(urls:UrlSegment[]){
     let tokens = urls.length;
     let topic = "";
@@ -232,7 +179,6 @@ export class PapersComponent implements OnInit {
       topic = urls[tokens-1].toString();
     }
     return topic;
-
   }
 
   buildBreadCrumb(){

@@ -67,10 +67,8 @@ export class PersonCreateComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('PersonCreateComponent')
   	this.model = new Person('');
     this.currentUser = this.userService.currentUser;
-    console.log('currentUser: [%s]  [%s]', this.currentUser.displayName, this.currentUser.communityId)
 
   	this.form = this.fb.group({
         displayName:[null, Validators.compose([Validators.required])],
@@ -102,12 +100,10 @@ export class PersonCreateComponent implements OnInit {
   saveRecord(entity){
     this.personService.create(entity)
       .then(model => {
-        console.log('Entidad Creada!: [%s] [%s]', model._id, model.displayName)
       })
   }
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
   changePersonType(){

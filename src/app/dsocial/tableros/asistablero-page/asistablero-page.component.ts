@@ -106,7 +106,7 @@ export class AsistableroPageComponent implements OnInit {
     	this.masterData = master;
 
     	Object.keys(this.masterData).forEach(t => {
-    		console.log('Edad [%s] [%s] [%s]', this.masterData[t].edadId, this.masterData[t].sexo, this.masterData[t].cardinal)
+    		//console.log('Edad [%s] [%s] [%s]', this.masterData[t].edadId, this.masterData[t].sexo, this.masterData[t].cardinal)
     		this.tiles.push(this.masterData[t]);
     	})
 

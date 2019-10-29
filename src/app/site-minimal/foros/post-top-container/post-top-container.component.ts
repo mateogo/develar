@@ -82,13 +82,11 @@ export class PostTopContainerComponent implements OnInit {
   }
 
   navigateDetailView(model:RecordCard){
-    console.log('navigate To Detail View')
     this.router.navigate(["/notas/navegar", model._id])
 
   }
 
   modelListener(token: RecordCard){
-    console.log('modelListener: [%s]', token.slug);
     this.navigateDetailView(token);
 
   }

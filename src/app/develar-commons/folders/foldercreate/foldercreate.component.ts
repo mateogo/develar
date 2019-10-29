@@ -46,7 +46,6 @@ export class FoldercreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('foderCreate INIT')
     let id = this.route.snapshot.paramMap.get('id')
     this.modelListener = this.modelCtrl.getModelListener();
 
@@ -63,7 +62,6 @@ export class FoldercreateComponent implements OnInit {
   /*********  SAVE & ?? **********/
   save(target:string){
     this.modelCtrl.saveRecord().then(model =>{
-        console.log('Save: [%s] [%s]', model.slug, model._id)
         if(target === 'navigate'){
           this.closeEditor(LIST);
 
@@ -77,7 +75,6 @@ export class FoldercreateComponent implements OnInit {
 
   /*********  CONTINUE OR LEAVE **********/
   continueEditing(model){
-    console.log('Continue editing: [%s] [%s]', model.slug, model._id);
     this.model = model;
     this.modelCtrl.getBasicData();
     this.modelId = model._id;
@@ -85,7 +82,6 @@ export class FoldercreateComponent implements OnInit {
   }
 
   closeEditor(target){
-    console.log('closeEditor: [%s]', target);
     this.router.navigate([target]);
   }
 

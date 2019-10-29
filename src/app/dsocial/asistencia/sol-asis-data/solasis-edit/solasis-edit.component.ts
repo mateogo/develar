@@ -97,7 +97,6 @@ export class SolasisEditComponent implements OnInit {
 		});
 
     if(token.avance !== 'emitido'){
-      console.log('Invalidando campo Action');
       form.get('action').disable();
     }
 

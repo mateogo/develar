@@ -75,7 +75,6 @@ export class PortfolioCarrouselPageComponent implements OnInit {
 
 
   initHomePage(){
-    console.log('portfolio-page INIT *********+')
 
     let sscrp1 = this.minimalCtrl.fetchPublishingRecords(this.templ, this.stempl).subscribe(records => {
       this.sortProperly(records);
@@ -99,20 +98,6 @@ export class PortfolioCarrouselPageComponent implements OnInit {
       this.hasLinkTo = true;
   	}
 
-    // if(records && records.length){
-
-    //   records.forEach((record, index) => {
-
-    //     let publish = record.publish;
-    //     this.portfolios.push(record);
-
-    //   });
-
-    //   if(this.portfolios && this.portfolios.length){
-    //     this.isPortfolios = true;
-    //   }
-
-    // }    
   }
 
 
@@ -137,10 +122,6 @@ export class PortfolioCarrouselPageComponent implements OnInit {
   	records.forEach((token, index) =>{
   		let td = index % this.cLimit;
   		let base = Math.floor(index / this.cLimit);
-
-    	// let print =`${samples} token: ${token.slug}  index: ${td}  base: ${base}`;
-    	// console.log(print);
-
     	this.buildArray(this.carrouseles, token, base);
 
 
@@ -183,17 +164,6 @@ export class PortfolioCarrouselPageComponent implements OnInit {
 	
 		}
 	}
-
-	// private test(list: PortfolioCarrousel[]){
-	// 	list.forEach(token => {
-	// 		console.log('Carrousel: [%s] [%s]', token.serial, token.slug);
-	// 		token.tokens.forEach((el, i) =>{
-	// 			console.log('[%s]  slug:[%s] target:[%s] img:[%s]', i, el.slug, el.target, el.imgUrl)
-	// 		})
-	// 	})
-	// }
-
-
 
 }
 

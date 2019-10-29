@@ -52,13 +52,10 @@ export class TimebasedController {
     RolNocturnidad
   ************************/
   manageRolNocturnidadRecord(type:string, rolnocturnidad:RolNocturnidad ): Subject<RolNocturnidad>{
-    //type: 'rolnocturnidad'
     // 
     let listener = new Subject<RolNocturnidad>();
-    console.log('ManageRolNocturnidad BEGIN [%s]', this.isNewToken(rolnocturnidad))
 
     if(this.isNewToken(rolnocturnidad)){
-      console.log('Alta')
       this.initNewRolNocturnidad(listener, type, rolnocturnidad);
 
     }else{
@@ -119,8 +116,6 @@ export class TimebasedController {
     rolnocturnidad.ts_alta = Date.now();
 
     this.fetchSerialRolNocturnidads().subscribe(serial =>{
-      console.log('FetchSERIAL: [%s]', serial && serial.compName);
-
       rolnocturnidad.compPrefix = serial.compPrefix ;
       rolnocturnidad.compName = serial.compName;
       rolnocturnidad.compNum = (serial.pnumero + serial.offset) + "";
@@ -133,7 +128,6 @@ export class TimebasedController {
       token.ts_umodif = Date.now();
 
       this.daoService.create<RolNocturnidad>(type, token).then(t =>{
-        console.log('insertRolNocturnidad: [%s]', token === t)
         listener.next(t);
       });
   }
@@ -190,10 +184,7 @@ export class TimebasedController {
     if(!user) return;
     let query = { userId: user._id };
 
-    console.log('fetchPersonByUser')
-
     this.daoService.search<Person>('person', query).subscribe(persons => {
-      console.log('persons fetched [%s]', persons && persons.length);
       if(persons && persons.length){
         this.updateCurrentPerson(persons[0]);
       }
@@ -212,7 +203,6 @@ export class TimebasedController {
   * obtener serial para Asistencias
   */
   fetchSerialRolNocturnidads(): Observable<Serial> {
-    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = TimebasedHelper.rolnocturnidadSerial();
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -228,7 +218,6 @@ export class TimebasedController {
   *****************/
   refreshTableData(){
     if(this.rolnocturnidadList && this.rolnocturnidadList.length){
-      console.log('refreshTableData [%s]',this.rolnocturnidadList.length)
       this.updateDataSourceTableData();
     }
   }
@@ -265,9 +254,7 @@ export class TimebasedController {
     this._selectionkitModel = selection;
   }
 
-
   addRolNocturnidadToList(){
   }
-
 
 }

@@ -38,13 +38,11 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this._modelSbscrptn.unsubscribe()
 
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
   }
 
   ngOnInit() {
@@ -62,7 +60,6 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateSelCommunities(list: Community[]){
-    console.log('updateSelCommunities:[%s]', list.length)
   }
 
   updateTableList(){
@@ -96,9 +93,7 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
     delete base['_id'];
 
     this.communityEditList.forEach(token =>{
-      console.log('forEach: [%s] [%s]', token.slug, token._id);
       token = this.communityCtrl.updateCommonData(token, base);
-      //this.community = token;
       this.saveToken(token)
     });
     this.resetEditMany();
@@ -132,13 +127,11 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   editTableSelectedEntityList(){
-    console.log('editSelected**************')
     this.communityEditList = this.communityCtrl.fetchSelectedList();
     this.editMany();
   }
 
   changeCurrentCommunity(){
-    console.log('changeCommunity')
     this.communityCtrl.changeCurrentCommunity();
   }
 
@@ -167,7 +160,6 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   actionTriggered(action){
-    console.log(`${whoami}  actionTriggered: ${action}`);
     if(action === 'editone')      this.editTableSelectedEntityList();
     if(action === 'navigate')     this.changeCurrentCommunity();
   }
@@ -176,12 +168,10 @@ export class CommunityCreateComponent implements OnInit, OnChanges, OnDestroy {
     if(target === "public"){
       this.router.navigate(['/' + this.communityCtrl.currentPublicUrl()]);
 
-
     }
     if(target === 'admin'){
       this.router.navigate(['/']);
     }
-
   }
 
 }

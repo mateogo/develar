@@ -83,7 +83,6 @@ export class DashboardComercioPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
-    console.log('Dashboard: BEGIN [%s]', this.personId);
 
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
@@ -91,10 +90,6 @@ export class DashboardComercioPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-
-
-    		console.log('Dashboard: ReadyToGo [%s] [%s]', this.personId, this.minimalCtrl.timestamp);
-        console.log('Dashboard current_person: [%s]', this.minimalCtrl.activePerson);
         this.initCurrentPage();
 
       }
@@ -103,23 +98,16 @@ export class DashboardComercioPageComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    console.log('destroy [%s]',this.unBindList.length);
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
 
 
   initCurrentPage(){
-    console.log('initCurrentPage [%s]', this.personId)
     this.count += 1;
     
     let sscrp3 = this.minimalCtrl.personListener.subscribe(p => {
-      console.log('minController [%s]', this.minimalCtrl.timestamp);
-
-      console.log('PERSON current   on controller [%s]', this.minimalCtrl.activePerson && this.minimalCtrl.activePerson.displayName);
-      console.log('PERSON Listener  on dashboard [%s] [%s]', p, this.count);
       if(p){
-          console.log('Dashboard: [%s]', p.displayName);
         this.initCurrentPerson(p);
       }
     })
@@ -136,7 +124,6 @@ export class DashboardComercioPageComponent implements OnInit {
     }
 
     let sscrp4 = this.tbCtrl.fetchRolnocturnidadDataSource(query).subscribe(list => {
-      console.log('udate Table list [%s]', list && list.length);
       this.rolnocturnidadList = list || [];
     })
     this.unBindList.push(sscrp4);
@@ -171,7 +158,6 @@ export class DashboardComercioPageComponent implements OnInit {
   /*      Events        */
   /**********************/
   updateCore(e){
-    console.log('Dashboard - updateCore')
     //this.router.navigate(['/mab/comercios/empresa', e.person._id]);    
   }
 
@@ -183,13 +169,10 @@ export class DashboardComercioPageComponent implements OnInit {
   }
 
   gotoRolNocturnidadaDeprecated(){
-    console.log('goto Rol Nocturnidada')
     this.router.navigate(['/rol/nocturnidad/panel']);    
   }
 
   updateRolnocturnidadList(event: UpdateRolEvent){
-    // console.log('RolNoche Page BUBLED updateRolNocturnidad [%s]', event.items && event.items.length);
-    // console.log('updatePAGE: [%s]', event.token === this.rolnocturnidadList[0])
 
   }
 

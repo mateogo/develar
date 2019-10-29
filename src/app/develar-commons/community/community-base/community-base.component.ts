@@ -223,7 +223,6 @@ export class CommunityBaseComponent implements OnInit {
   }
 
   descriptionUpdateContent(content){
-    //console.log("BUBBBBBLED: [%s]", content);
   }
 
 
@@ -237,6 +236,5 @@ export class CommunityBaseComponent implements OnInit {
 
   changeType(val){
   }
-
 
 }

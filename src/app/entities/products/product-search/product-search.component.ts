@@ -44,7 +44,6 @@ export class ProductSearchComponent implements OnInit {
 
   selectEntity(product){
     if(product){
-    	console.log('has product')
     	this.emmitProduct.next(product);
     }
   }

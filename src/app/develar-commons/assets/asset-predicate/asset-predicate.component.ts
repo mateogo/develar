@@ -35,13 +35,11 @@ export class AssetPredicateComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	//console.log('CardgraphCOmponent INIT: [%s]', this.entityType)
   	this.predicateOptions = graphUtilities.getPredicateOptions(this.entityType)
     this.currencyList =  graphUtilities.getCurrencies();
   }
 
   editToken(){
-  	console.log('ready to Edit');
   	this.openEditor = !this.openEditor;
   }
 
@@ -50,7 +48,6 @@ export class AssetPredicateComponent implements OnInit {
   }
 
   updatePersonEntity(entity){
-    console.log('updateEntity BUBLED: [%s] [%s]', entity._id, entity.displayName);
     this.token.displayAs = entity.displayName;
     this.token.entityId = entity._id;
     this.token.slug = graphUtilities.getProfesionesLabel(entity.tprofesion);
@@ -61,20 +58,17 @@ export class AssetPredicateComponent implements OnInit {
   }
   
   updateProductEntity(entity){
-    console.log('updateEntity BUBLED:  [%s][%s] [%s]',entity.entity,  entity._id, entity.displayName);
     this.token.displayAs = entity.name;
     this.token.entityId = entity._id;
   }
 
   updateResourceEntity(){
-    console.log('update Resource Entity [%s]', this.token.displayAs);
     if(!this.token.displayAs){
       this.token.displayAs = this.token.entityId
     }
   }
 
   updateAssetEntity(asset: Asset){
-    console.log('Asset promoted: [%s]', asset.slug)
     this.token.displayAs = asset.assetId;
     this.token.slug     = asset.slug;
     this.token.entityId = asset._id;
@@ -82,7 +76,6 @@ export class AssetPredicateComponent implements OnInit {
   }
 
   updateImageEntity(asset: Asset){
-    console.log('Image promoted: [%s]', asset.slug)
     this.token.displayAs = asset.assetId;
     this.token.slug     = asset.slug;
     this.token.entityId = asset._id;
@@ -91,13 +84,11 @@ export class AssetPredicateComponent implements OnInit {
 
 
   removeToken(token: CardGraph){
-    console.log('delete token: [%s]', token.displayAs);
     this.deleteToken.emit(token);
   }
   
   changeMoneda(mon){
-    console.log('change Moneda: [%s]', mon);
-  }
 
+  }
 
 }

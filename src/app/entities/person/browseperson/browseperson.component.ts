@@ -75,7 +75,6 @@ export class BrowsepersonComponent implements OnInit {
       );
 
     this.persons.subscribe(tokens => {
-      console.log('browse persons')
       if(tokens&& tokens.length){
         this.lookUpModels.next(tokens);
       }
@@ -98,12 +97,10 @@ export class BrowsepersonComponent implements OnInit {
   }
 
   selectEntity(person:Person){
-  	//console.log('PersonSelected: [%s] inputFld:[%s]', person._id, this.displayNameFld);
     this.updatePerson.emit(person);
   }
 
   addEntity(){
-    console.log('add Entity: BEGIN [%s]', this.displayNameFld);
     if(this.displayNameFld && this.displayNameFld.length >5){
       let content = this.buildNewPersonAlertMessage(this.displayNameFld);
       this.openDialog(content).subscribe(result => {
@@ -133,7 +130,6 @@ export class BrowsepersonComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
     })
   }
 

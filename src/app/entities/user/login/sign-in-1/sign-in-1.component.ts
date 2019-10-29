@@ -60,18 +60,14 @@ export class UserSignIn1Component implements OnInit {
   }
 
   loginUser(){
-  	console.log('LoginUser BEGINS')
   	this.userService.login(this.model).then(user => {
-  		console.log('User login CALLBACK ***** !: [%s] [%s]', user._id, user.email)
 
   		this.userService.currentUser = user;
 
-      console.log('ready to navigate**************')
   		this.router.navigate(['/ingresando']);
 
   	})
   	.catch((err) =>{
-  		console.log('ERROR: [%s] [%s]', err, err.message);
       this.openDialog();
   	});
 
@@ -79,7 +75,6 @@ export class UserSignIn1Component implements OnInit {
   }
 
   loginGoogle(){
-    console.log('LoginUser VIA GOOGLE BEGINS')
     window.location.href = '/api/users/login/google';
   }
 

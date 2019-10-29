@@ -180,8 +180,6 @@ export class NavbarComponent implements OnInit {
   gotoDashboard(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('gotoDashboard: [%s]', DASHBOARD, gldef.dashboard)
-    console.dir(gldef)
     this.router.navigate([gldef.dashboard]);
   }
 

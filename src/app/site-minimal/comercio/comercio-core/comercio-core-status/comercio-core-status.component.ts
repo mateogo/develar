@@ -5,8 +5,6 @@ const UPDATE = 'update';
 const NAVIGATE = 'navigate';
 const CORE = 'core';
 
-
-
 @Component({
   selector: 'comercio-core-status',
   templateUrl: './comercio-core-status.component.html',
@@ -74,9 +72,7 @@ export class ComercioCoreStatusComponent implements OnInit {
   	return chip;
   }
 
-
   updateCore(event: UpdatePersonEvent){
-  	console.log('core-status update')
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;

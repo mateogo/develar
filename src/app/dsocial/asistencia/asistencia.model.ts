@@ -367,31 +367,24 @@ function validateFlujoEntregas(asistencia: Asistencia, entregas: RemitoAlmacen[]
 
 	let today = new Date();
 	let mesActual = today.getMonth();
-console.log(1)
 	if(today.getTime() < asistencia.modalidad.fe_tsd  || today.getTime() > asistencia.modalidad.fe_tsh ){
 		error['valid'] = false;
 		error['message'] ='Fecha fuera de rango';
 		return error;
 	}
 
-console.log(2)
 	entregas.forEach(t => {
 		countEntregas += t.qty;
 		let mes = new Date(t.fecomp_tsa).getMonth();
 		entregasMes[mes] += t.qty;
 	})
 
-console.log(3)
-console.dir(entregasMes);
-console.log('mes Actual[%s]: [%s] expectedFreq[%s]',mesActual, entregasMes[mesActual], expectedFrecuencia )
 	if(entregasMes[mesActual] >= expectedFrecuencia * expectedRaciones){
 		error['valid'] = false;
 		error['message'] ='Excede entregas del período';
 		return error;
 	}
 
-console.log(4)
-console.log('countEntregas [%s] expectedTotal[%s]',countEntregas, expectedFrecuencia * expectedEntregas )
 	if(countEntregas >= expectedFrecuencia * expectedEntregas * expectedRaciones){
 		error['valid'] = false;
 		error['message'] ='Excede cantidad de entregas';
@@ -473,7 +466,6 @@ export class AsistenciaHelper {
 
   static checkVoucherConditions(asistencia: Asistencia, entregas: RemitoAlmacen[] ): any{
   	//ToDo
-  	console.log('CheckVoucher BEGIN');
   	let anteriores: RemitoAlmacen[] = [];
   	let valid = {message: 'OK', valid: true};
 
@@ -485,7 +477,6 @@ export class AsistenciaHelper {
 
   	if(anteriores && anteriores.length){
 
-  		console.log('hasPrevious vouchers');
   		valid = validateFlujoEntregas(asistencia, anteriores)
   	}
 

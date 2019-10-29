@@ -104,7 +104,6 @@ export class CommunityRelationComponent implements OnInit {
   }
 
   initComponentData(entity: Community){
-  	console.log('initComponentData');
 		this.community = entity;
 		this.communityId = entity._id;
 		this.communitySlug = this.community.slug;
@@ -120,7 +119,6 @@ export class CommunityRelationComponent implements OnInit {
 
   	this.communityUserList.forEach(rel =>{
   		if(rel.communityId === entity._id){
-  			console.log('User-Community Relation FOUND')
   			this.hasUserRelation = true;
   			this.currentUserRelation = rel;
   		}
@@ -150,10 +148,8 @@ export class CommunityRelationComponent implements OnInit {
   
 
   fetchUserCommunities(user: User){
-  	console.log('fetchUserCommunites [%s]', (user && user._id));
   	if(!user) return;
   	this.communityCtrl.fetchUserRelatedCommunities(user._id).subscribe(list => {
-  		console.log('fetchUserRel: CB: [%s]', list.length);
       this.communityUserList = list;
     })
 

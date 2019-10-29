@@ -81,7 +81,6 @@ export class UserChipComponent implements OnInit {
       );
 
     this.models.subscribe(models => {
-      //console.log('SUBSCRIBE okkkkkkkkkkkkk', models.length);
     })
 
   }
@@ -100,7 +99,6 @@ export class UserChipComponent implements OnInit {
 
   selectionChange(e:MatChipSelectionChange){
     // let s = e.source;
-    // console.log('selectionChange [%s] [%s]', e.selected, s.value);
     // //s.toggleSelected() 
   }
 
@@ -141,7 +139,6 @@ export class UserChipComponent implements OnInit {
   }
 
   remove(token: User): void {
-    console.log('REMOVE [%s]', token.email )
     let index = this.userlist.indexOf(token);
 
     if (index >= 0) {

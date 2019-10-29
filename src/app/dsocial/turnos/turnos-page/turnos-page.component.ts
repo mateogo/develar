@@ -46,13 +46,9 @@ export class TurnosPageComponent implements OnInit {
     	private router: Router,
     	private route: ActivatedRoute,
 
-  	) { 
-    console.log('turnosPageConstructor')
-
-  }
+  	) { }
 
   ngOnInit() {
-    console.log('turnosPage onInit')
     let first = true;    
     this.token = this.route.snapshot.paramMap.get('id');
 
@@ -67,7 +63,6 @@ export class TurnosPageComponent implements OnInit {
         this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
         // let sscrp3 =  this.dsCtrl.turnoEventListener.subscribe(t => {
-        //   console.log('evventListener triggered')
         //   this.initPageData();
         // })
         // this.addToBindingList(sscrp3);
@@ -91,8 +86,6 @@ export class TurnosPageComponent implements OnInit {
   }
 
   private initPageData(){
-    console.log('INIT PAGE DATA')
-
     this.showSectorPanel = false;
     this.resetCounter();
 
@@ -141,11 +134,9 @@ export class TurnosPageComponent implements OnInit {
    *****************/
   initSocket(){
     let that = this;
-    console.log('initsocket')
     if(!this.socket){
       this.socket = this.dsCtrl.socket;
       this.socket.on('turnos:update', function (msj: any) {
-        console.log('Socket Listening [%s]',Date.now())
         that.initPageData();
       });
     }

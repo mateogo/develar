@@ -38,7 +38,6 @@ export class UpdatefileComponent implements OnInit {
 
   	this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
 			let asset = JSON.parse(response) as AssetFile;
-			console.log(asset.filename);// the url will be in the response
 			this.fileSubject.next(asset);
 		};
 

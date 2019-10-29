@@ -67,7 +67,6 @@ export class AssetPageComponent implements OnInit {
 
   addToken(){
     let token = graphUtilities.initNewCardGraph(this.entityType, this.entities);
-    console.log('AddNewToken request [%s] [%s] [%s]', token.entity,this.entityType, this.entities.length );
 
     this.entities.unshift(token);
   }
@@ -75,7 +74,6 @@ export class AssetPageComponent implements OnInit {
   deleteToken(token: CardGraph){
     let index = this.entities.findIndex(x => x === token);
     if(index !== -1){
-      console.log('delete token:  [%s] [%s]', index, token.displayAs);
       this.openDialog(removeRelation).subscribe(result => {
         if(result==='accept') this.entities.splice(index, 1);
       })

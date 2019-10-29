@@ -117,7 +117,7 @@ export class CrawlerComponent implements OnInit {
 
     this.subject.subscribe({
       next: (data)=> {
-          console.log('subject subscribe:[%s]',data.title);
+
         }
       })
 
@@ -129,12 +129,10 @@ export class CrawlerComponent implements OnInit {
 
   fetchUrlData(){
   	this.daoService.crawlUrlxText(this.targetURL).then(data =>{
-  		console.log('[%s] fetchUrlData SUCCESS [%s]', whoami, data.title);
   		this.openDialog(data);
 
   	})
   	.catch((err) =>{
-  		console.log('[%s] fetchUrlData ERROR [%s]', whoami, err.message);
   	})
 
   }
@@ -152,10 +150,8 @@ export class CrawlerComponent implements OnInit {
     let dialogRef = this.dialogService.open(CrawlerDialogComponent, config);
     //dialogRef.updateSize('430px', '220px');
     dialogRef.afterClosed().subscribe(result => {
-      console.log('afterClose subscription [%s]', result);
       content.action = result;
       this.subject.next(content);
-      //this.selectedOption = result;
     });
   }
 }

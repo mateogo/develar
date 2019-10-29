@@ -36,8 +36,6 @@ export class RolNocheViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
-    console.log('VIEW [%s]', this.token.compNum);
   	this.action = TimebasedHelper.getPrefixedOptionLabel('actions', '', this.token.action);
     this.sector = TimebasedHelper.getPrefixedOptionLabel('sectores', 'Sector', this.token.sector);
     this.vigencia = TimebasedHelper.getPrefixedOptionLabel('vigencia', 'Vigencia', this.token.vigencia);

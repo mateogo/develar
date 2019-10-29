@@ -91,11 +91,6 @@ export class SiteMinimalController {
     this.userListener = this.userService.userEmitter;
 
     this.userListener.subscribe(user =>{
-      // console.log('**** minimalCtroller Constructor userListener :[%s]', user.username)
-      // console.log('++++ user: [%s] [%s]', user.communityId, user.communityUrlpath);
-      // console.log('**** navi: [%s] [%s]', this.naviCmty.id, this.naviCmty.url);
-      // console.log('xxxx usrx: [%s] [%s]', this.userCmty.id, this.userCmty.url);
-
 
       this.userLoading = true;
       this.updateUserStatus(user);
@@ -180,14 +175,6 @@ export class SiteMinimalController {
     this.navigationUrl = this.fetchNavigationUrl(this.actualUrl, this.actualUrlSegments.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
 
-    //console.log('minimalController toCall sharedService');
-    //setTimeout(()=>{this.sharedSrv.homeView(true);},500)
-
-
-    // console.log('actualRoute: navigationUrl[%s]', this.navigationUrl );
-    // console.log('actualRoute: actualUrl[%s]', this.actualUrl );
-    // console.log('actualRoute: actualUrlSegments[%s]', this.actualUrlSegments );
-
 
   }
 
@@ -207,7 +194,6 @@ export class SiteMinimalController {
   }
 
   navigateToUserPublications():boolean{
-    //console.log('navigateToUserPublication [%s] [%s]', this.userx.isLogged, this.userx.hasCommunity)
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
 
@@ -384,15 +370,11 @@ export class SiteMinimalController {
   */
   createUserAndPerson(user: User, person: Person): Subject<Person>{
     let person$ = new Subject<Person>();
-    console.log('createUserAndPerson toBEGIN: [%s]', person.tdoc)
 
     this.userService.create(user).then(u => {
-      console.log('USER Callback: [%s]', u.personId);
       this.daoService.findById<Person>('person', u.personId).then(p => {
         p = this.buildPersonData(p, person);
-        console.log('PERSON callback  [%s] [%s] [%s] [%s] [%s]', p._id, p.tprofesion, p.displayName, p.tdoc, p.ndoc );
         this.daoService.update<Person>('person', p._id, p).then(model => {
-          console.log('Persun Updated Callback');
           person$.next(model);
         })
       })
@@ -492,16 +474,14 @@ export class SiteMinimalController {
   }
 
   updateCurrentPerson(person: Person){
-    console.log('UpdateCurrentPerson [%s] [%s]', person.displayName, this.timestamp);
     this.currentPerson = person;
     this.personListener.next(this.currentPerson);
     this.personListener.subscribe(p => {
-      console.log('PL ON controller [%s] [%s]', p.displayName, this.timestamp);
+
     })
   }
 
   setCurrentPersonFromUser(){
-    console.log('setCurrentPersonFromUser');
     let user = this.userService.currentUser;
     if(!user) return;
     this.fetchPersonByUser(user).subscribe(persons => {
@@ -516,7 +496,6 @@ export class SiteMinimalController {
 
 
   setCurrentPersonFromId(id: string){
-    console.log('setCurrentPersonFromId [%s]', id);
     if(!id) return;
 
     this.fetchPersonById(id).then(p => {
@@ -690,7 +669,6 @@ export class SiteMinimalController {
   fetchDefaultCommunityFromDB(commtyListener: Subject<CommunityToken>){
     this.naviCmty.isActive = false;
     this.naviCmty.isLoading = true;
-    console.log('fetchDefaultCommunityFromDB:451')
     this.daoService.search<Community>('community', {eclass: 'home'}).subscribe(records => {
       this.naviCmty.isLoading = false;
 
@@ -831,7 +809,7 @@ export class SiteMinimalController {
 
     if(urlmodule){
       urlpath = snap.substr(1, (snap.length - urlmodule.length -2));
-      //console.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
+
     }else{
       urlpath = snap.substr(1);
     }

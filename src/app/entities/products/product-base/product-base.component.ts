@@ -200,7 +200,6 @@ export class ProductBaseComponent implements OnInit {
   }
 
   descriptionUpdateContent(content){
-    //console.log("BUBBBBBLED: [%s]", content);
   }
 
   changeProductInventory(val){

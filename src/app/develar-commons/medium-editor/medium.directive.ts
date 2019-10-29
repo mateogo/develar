@@ -122,9 +122,7 @@ export class MediumEditorDirective implements OnInit, OnChanges, OnDestroy {
 	    this.element.value = this.editorModel;
 
 	    Object.assign(this.initOptions, DEFAULT_OPTIONS, (this.editorOptions || {}) );
-	    console.log('medium editor INIT: [%s] @input:[%s]', this.initOptions.placeholder.text, this.editorplaceholder)
 	    if (this.editorplaceholder) {
-	    		console.log('new editor placeholder')
 	        this.initOptions.placeholder.text = this.editorplaceholder;
 	    }
 

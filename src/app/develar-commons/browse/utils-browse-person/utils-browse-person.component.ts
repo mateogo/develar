@@ -70,7 +70,6 @@ export class UtilsBrowsePersonComponent implements OnInit {
 
   selectEntity(person:Person){
   	this.currentPerson = person;
-    console.log('displayName: [%s]', this.displayNameFld);
     this.displayNameFld = "";
     this.person$.emit(person);
   }
@@ -153,11 +152,9 @@ export class UtilsBrowsePersonComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+
     })
   }
-
-
 
 }/// End Person Buscar COmponent
 

@@ -45,7 +45,6 @@ const calcularEdad = function(dob: Date) {
 
 
 const parseDateStr = function(str) {
-    //console.log('parseDate BEGIN [%s]',str)
     if(!str) return null;
     let mx = str.match(/(\d+)/g);
     let ty = new Date();

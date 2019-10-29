@@ -61,7 +61,6 @@ export class PersonComponent implements OnInit {
   }
 
   fetchPerson$(persons: Person[]){
-  	console.log('fetchPerson$')
   	this.models = persons;
   }
 //http://develar-local.co:4200/dsocial/gestion/atencionsocial

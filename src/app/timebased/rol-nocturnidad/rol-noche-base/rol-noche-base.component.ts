@@ -88,7 +88,6 @@ export class RolNocheBaseComponent implements OnInit {
   }
 
   cloneToken(e){
-    console.log('CloneToken CLICK')
     this.updateToken.next({
       action: CLONE,
       type: TOKEN_TYPE,
@@ -116,7 +115,6 @@ export class RolNocheBaseComponent implements OnInit {
   }
 
   tokenSelected(e){
-    console.log('Todo')
   }
 
   emitEvent(event: UpdateRolEvent){

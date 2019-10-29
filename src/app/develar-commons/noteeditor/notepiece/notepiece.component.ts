@@ -47,7 +47,6 @@ export class NotepieceComponent implements OnInit {
    }
 
   ngOnInit() {
-  	console.log('NotePiece BEGINS')
   	this.initEditor();
   }
 
@@ -68,12 +67,10 @@ export class NotepieceComponent implements OnInit {
   }
 	
 	changeType(e: MatSelectChange){
-		console.log('changeType')
 		this.selectedType = e.value;
 	}
 
   descriptionUpdateContent(content){
-    console.log("BUBBBBBLED: [%s]", content);
   }
   
   turnOff(){

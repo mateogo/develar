@@ -57,7 +57,6 @@ export class TagService {
 
       })
       .catch(err => {
-        console.log(err);
         return err;
       });
 
@@ -95,7 +94,6 @@ export class TagService {
     });
 
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
     })
   }
 
@@ -104,7 +102,6 @@ export class TagService {
     this.model = initForSave(this.model);
     if(this.modelId){
       return this.daoService.update<Tag>('tag', this.modelId, this.model).then((model) =>{
-              console.log('save OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
@@ -112,7 +109,6 @@ export class TagService {
 
     }else{
       return this.daoService.create<Tag>('tag', this.model).then((model) =>{
-              console.log('save OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });

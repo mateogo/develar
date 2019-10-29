@@ -105,7 +105,6 @@ export class ProductKitEditComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('OnSubmit')
   	this.initForSave(this.form, this.kitProduct);
   	this.action = this.kitProduct._id ? UPDATE : CREATE;
   	this.emitEvent(this.action, this.kitProduct);
@@ -141,9 +140,7 @@ export class ProductKitEditComponent implements OnInit {
   }
 
   handleProduct(p: Product){
-    console.log('handleProduct: [%s] [%s] [%s]', p.code, p.name, p._id)
     this.insertProduct(p);
-
   }
 
   insertProduct(p:Product){
@@ -171,7 +168,6 @@ export class ProductKitEditComponent implements OnInit {
 
 
   emitEvent(action:string, token: KitProduct){
-    console.log('publish new Token')
   	this.updateToken.next({
   		action: action,
   		type: TOKEN_TYPE,

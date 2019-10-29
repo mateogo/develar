@@ -36,18 +36,14 @@ const newEntityConfirm = {
 };
 
 function initForSave(basicData: BasicData, model: Folder, user: User): Folder {
-  console.log('initForSave: [%s] [%s] [%s]', user.displayName, user._id, model.slug)
   model.name = basicData.name;
   model.slug    = basicData.slug;
   model.description = basicData.description;
   model.taglist = basicData.taglist;
   model.user = user.username;
   model.userId = user._id;
-
-
   return model;
 };
-
 
 @Injectable()
 export class ModelController {
@@ -84,7 +80,6 @@ export class ModelController {
 
       })
       .catch(err => {
-        console.log(err);
         return err;
       });
   }
@@ -134,11 +129,9 @@ export class ModelController {
   openSnackBar(message: string, action: string) {
     let snck = this.snackBar.open(message, action, {
       duration: 3000,
-
     });
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
     })
   }
 
@@ -148,35 +141,16 @@ export class ModelController {
 
     if(this.modelId){
       return this.daoService.update<Folder>('folder', this.modelId, this.model).then((model) =>{
-              console.log('update OK, opening snakbar[%s] [%s]', this.model.slug, model.slug)
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
-
 
     }else{
       return this.daoService.create<Folder>('folder', this.model).then((model) =>{
-              console.log('create OK, opening snakbar')
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
             });
-
     }
   }
 
-
-
-
 }
-
-
-      // .then(entity => {
-      //   if(!entity)
-      //     console.log('aiudddaaaa');
-      //   else {
-      //     this.model = entity
-      //   }
-      //   return entity as T;
-      // })
-      // .catch(err => console.log(err));
-

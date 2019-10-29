@@ -52,8 +52,6 @@ export class NoteeditorComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log('NoteList: [%s]', this.entities.length);
-
     if(this.addNoteToList){
       this.addNoteToList.subscribe({
         next: (card) => {
@@ -73,7 +71,6 @@ export class NoteeditorComponent implements OnInit {
   deleteToken(token: NotePiece){
     let index = this.entities.findIndex(x => x === token);
     if(index !== -1){
-      console.log('delete token:  [%s]', index);
       this.openDialog(removeRelation).subscribe(result => {
         if(result==='accept') this.entities.splice(index, 1);
       })

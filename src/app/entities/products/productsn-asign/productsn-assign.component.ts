@@ -35,7 +35,6 @@ export class ProductsnAssignComponent implements OnInit {
     private productCtrl: ProductController) { }
 
   ngOnInit() {
-  	console.log('PRODUCT Create ngINIT: [%s] [%s]', this.productBase._id, this.productBase.slug);
   	if(this.productBase){
   		this.productName = this.productBase.slug;
   		this.productId = this.productBase._id;
@@ -49,10 +48,8 @@ export class ProductsnAssignComponent implements OnInit {
 
   save(target){
   	this.codeArray = this.buildCodeArray(this.codeList);
-  	console.log('coleList: [%s] [%s]', this.codeList, this.codeArray)
 
   	this.productCtrl.saveSerialList(this.codeArray, this.productBase, this.buildProductEvent());
-  	console.log('save FINISHED');
   }
 
   buildProductEvent(): ProductEvent{
@@ -72,7 +69,6 @@ export class ProductsnAssignComponent implements OnInit {
   }
 
   cancel(target){
-  	console.log('cancel!!')
   }
 
   buildCodeArray(data){

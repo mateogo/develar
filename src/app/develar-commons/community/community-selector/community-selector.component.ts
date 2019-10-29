@@ -87,7 +87,7 @@ export class CommunitySelectorComponent implements OnInit {
     let value = event.value;
 
     if ((value || '').trim()) {
-      //this.addNewToken(value.trim());
+
     }
 
     if (input) {
@@ -96,7 +96,6 @@ export class CommunitySelectorComponent implements OnInit {
   }
 
   selectEntity(model:Community, ifld){
-    console.log('Entity Selected from DB:[%s]', model._id, ifld.value);
     this.addNewToken(model);
     ifld.value = "";
   }

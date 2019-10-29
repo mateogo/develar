@@ -592,11 +592,9 @@ function tableGroupByPredicate(plist: Array<CardGraphProduct>, type: string, mil
 		let token:ProductTable = groupedList.find(x => criteria(x, product));
 		if(token){
 			token = tokenAcum(groupedList, token, product);
-		  //console.log('token: ACUM pred::[%s]  qt:[%s]  pu:[%s]  total:[%s] ', token.predicate, token.qt, token.pu, token.total)
 
 		}else{
 			token = tokenInit(groupedList, product, milestones);
-		  //console.log('token: INIT pred::[%s]  qt:[%s]  pu:[%s]  total:[%s] ', token.predicate, token.qt, token.pu, token.total)
 
 		}
 	});
@@ -1049,7 +1047,6 @@ export class ShowCards {
 
 	fetchCard(topic, offset){
 		this.card = this.registry[topic][offset];
-		//console.log('FETCHCARD: [%s] index[%s] offset[%s]', this.card.slug, this.card.mainimage, this.card.images.length);
 		return this.card;
 	}
 

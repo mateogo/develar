@@ -17,15 +17,12 @@ export class AssetSearchComponent implements OnInit {
 	assets: Observable<Asset[]>;
 	searchTerms = new Subject<string>();
 
-
   constructor(
   	private assetService: AssetService,
   	private router: Router
   	) { }
 
   ngOnInit() {
-
-
   	this.assets = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
@@ -33,10 +30,8 @@ export class AssetSearchComponent implements OnInit {
       )
 
     this.assets.subscribe(assets => {
-      console.log(assets.length);
+
     })
-
-
 
   }
 
@@ -45,10 +40,7 @@ export class AssetSearchComponent implements OnInit {
   }
 
   selectEntity(asset:Asset){
-    console.log('AssetSelected:[%s]', asset.slug);
     this.lookUpModels.emit(asset);
   }
-
-
 
 }

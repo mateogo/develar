@@ -71,7 +71,7 @@ export class UsersComponent implements OnInit {
 	onPage(e){
 		clearTimeout(this.timeout);
 		setTimeout(()=>{
-			console.log('paged!', e);
+			//console.log('paged!', e);
 		},100)
 
 	}

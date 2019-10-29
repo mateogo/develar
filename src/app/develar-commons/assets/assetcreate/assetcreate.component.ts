@@ -63,16 +63,9 @@ export class AssetcreateComponent implements OnInit {
     this.formReset(this.model);
     this.assetTypes = assetModel.getAssetTypes();
   }
-  // assetSearch(search: Observable<Asset[]>){
-  //   search.subscribe(assets => {
-  //     console.log('assetsSearched at Parent: [%s]', assets.length);
-  //   })
-
-  // }
 
   assetUpload(loader: Subject<Asset>){
     loader.subscribe(asset =>{
-      console.log('Asset emited: CATCHHEDDDDD [%s]', asset.slug);
       this.assets.unshift(asset);
 
     })
@@ -81,7 +74,6 @@ export class AssetcreateComponent implements OnInit {
   addExternalAsset(loader: Subject<Asset>){
     loader.subscribe(url =>{
       let asset = assetModel.initNewExternalAsset(url);
-      console.log('New external asset: CATCHHEDDDDD [%s]', asset.slug);
       this.assets.unshift(asset);
 
     })
@@ -93,15 +85,12 @@ export class AssetcreateComponent implements OnInit {
   }
 
 	selectedAsset(asset: Asset){
-		console.log('asset selected: [%s]', asset.slug);
 	}
 
 	editAsset(asset: Asset){
-		console.log('asset to be edited: [%s]', asset.slug);
 	}
   
   assetToPromote(asset: Asset){
-    console.log('AssetCreate: AssetToPromote [%s]', asset.slug);
     this.assetEmitted.emit(asset);
   }
 
@@ -115,7 +104,6 @@ export class AssetcreateComponent implements OnInit {
   }
 
   continueEditing(model){
-    console.log('Continue editing: [%s] [%s] [%s]', model.slug, model._id, model.id);
     this.model = model;
     delete this.model._id;
     this.formReset(this.model);
@@ -123,21 +111,18 @@ export class AssetcreateComponent implements OnInit {
 
   onSubmit() {
     this.saveNewRecord().then(model =>{
-        console.log('onSubmit: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id, this.model.id)
         this.continueEditing(model);
     })
   }
 
   saveAndEdit(){
     this.saveNewRecord().then(model =>{
-        console.log('Save&GO: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id, this.model.id)
         this.closeEditor('/libreria/editarficha/' + model._id);
     })
   }
 
   saveAndGo(){
     this.saveNewRecord().then(model =>{
-        console.log('Save&GO: Entidad creada: [%s] [%s] [%s]', this.model.slug, this.model._id, this.model.id)
         this.closeEditor('/libreria/lista');
     })
   }
@@ -158,11 +143,9 @@ export class AssetcreateComponent implements OnInit {
   }
 
   changeCardType(){
-    console.log('cartType CHANGED');
   }
 
   descriptionUpdateContent(content){
-    console.log("BUBBBBBLED: [%s]", content);
   }
 
   initNewModel(){
@@ -184,12 +167,7 @@ export class AssetcreateComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
     })
   }
 
 }
-
-
-
-//import { MatSnackBar, MatSnackBarConfig } from '@angular/material';

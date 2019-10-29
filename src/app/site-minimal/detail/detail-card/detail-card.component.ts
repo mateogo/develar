@@ -133,19 +133,6 @@ export class DetailCardComponent implements OnInit {
   tryPrism(record: RecordCard){
 
 
-    // console.log('tryPrism BEGINS');
-    // let query =  {
-    //   text: record.description
-    // };
-
-    // this.minimalCtrl.highlightCode(query).then(code =>{
-    //   record.description = code.result;
-    //   this.initCardData(record);
-    //   console.dir(code);
-    // })
-    
-    //this.initCardData(record);
-
   }
 
 

@@ -59,15 +59,12 @@ export class FolderService {
   }
 
   getFolders(): Promise<Folder[]>{
-    console.log('[%s]: Ready to FindAll', this.backendUrl);
-
     return this.http.get(this.backendUrl)
       .toPromise()
       .catch(this.handleError);
   }
 
   create(entity:Folder): Promise<Folder>{
-    console.log('Service: entity: [%s], [%s]', entity.id, entity.slug);
   	return this.http
   		.post(this.backendUrl, JSON.stringify(entity), {headers: this.headers})
   		.toPromise()
@@ -76,7 +73,6 @@ export class FolderService {
 
   update(entity: Folder): Promise<any> {
     const url = `${this.backendUrl}/${entity._id}`;
-    console.log('[%s]: Ready to update:[%s] [%s] ', url, entity._id, entity.slug);
     return this.http
       .put(url, JSON.stringify(entity), {headers: this.headers})
       .toPromise()
@@ -85,7 +81,6 @@ export class FolderService {
 
   promote(entity: Folder): Promise<any> {
     const url = `${this.backendUrl}/promote/${entity._id}`;
-    console.log('[%s]: Ready to promote:[%s] [%s] ', url, entity._id, entity.slug);
     return this.http
       .put(url, JSON.stringify(entity), {headers: this.headers})
       .toPromise()
@@ -103,7 +98,6 @@ export class FolderService {
 
   search(term: string): Observable<Folder[]> {
     let query = `${this.searchUrl}/?slug=${term}`;
-    console.log('search: [%s]',query);
     if(!(term && term.trim())){
       return of([] as Folder[]);
     }
@@ -117,7 +111,6 @@ export class FolderService {
 
   defaultSearch(): Observable<Folder[]> {
     let query = `api/recordcards`;
-    console.log('defaultSearch: [%s]',query);
     return this.http
                .get<Folder[]>(query)
                .pipe(

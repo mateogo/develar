@@ -123,7 +123,6 @@ export class RegistroIngresoComponent implements OnInit {
     }
 
     emitEvent(e){
-    	console.log('Emit Event [%s]', e)
     	if(e===CANCEL){
     		this.event.next({
     			action: CANCEL,

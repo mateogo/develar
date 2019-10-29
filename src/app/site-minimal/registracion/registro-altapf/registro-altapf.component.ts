@@ -120,7 +120,6 @@ export class RegistroAltapfComponent implements OnInit {
       this.newuser = this.initUserForSave(this.personForm, this.model, this.currentUser);
 
       this.minimalCtrl.createUserAndPerson(this.newuser, this.model).subscribe(p => {
-      	console.log('Registro ALTA we are back  [%s]', p._id );
         this.event.emit({
           action: NUEVO,
           token: p._id,
@@ -139,8 +138,6 @@ export class RegistroAltapfComponent implements OnInit {
   }
 
   resetForm(model: Person) {
-  	console.log('resetForm: [%s]', model.tdoc);
-
       this.personForm.reset({
           tdoc: model.tdoc,
           ndoc: model.ndoc,
@@ -176,7 +173,6 @@ export class RegistroAltapfComponent implements OnInit {
 
     model.idbrown = "";
     model.isImported = false;
-    console.log('initForSave: [%s] [%s] [%s]', model.tdoc, fvalue.tdoc, fvalue.ndoc)
  
     model.tdoc = fvalue.tdoc; 
     model.ndoc = fvalue.ndoc;
@@ -262,7 +258,6 @@ export class RegistroAltapfComponent implements OnInit {
               map(t => {
                   let invalid = false;
                   let txt = ''
-                  console.log('Email VALIDATION CB [%s]', t && t.length);
 
                   if(t && t.length){ 
                       invalid = true;

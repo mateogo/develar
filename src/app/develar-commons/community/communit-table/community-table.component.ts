@@ -126,7 +126,7 @@ export class CommunityTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    console.log('********** ngOnChanges;')
+
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -145,14 +145,12 @@ export class CommunityTableComponent implements OnInit, OnChanges {
 
 
   openEditor(item, col){
-    console.log('open Editor. Click [%s] [%s]', item._id, item.slug);
     item.editflds[col] = item.editflds[col] > 1 ? 0 : item.editflds[col] + 1
     item.total = item.pu * item.qt;
     this.communityCtrl.updateCommunityList(item);
   }
 
   changeAction(action: MatSelectChange){
-    //console.log('Action selected:[%s] [%s] [%s]', this.selectedAction, action.value, action.source.value ); 
     this.triggerAction(action.value);
     setTimeout(()=>{
         action.source.writeValue('no_definido')  
@@ -180,7 +178,6 @@ export class CommunityTableComponent implements OnInit, OnChanges {
     removeRelation.data.itemplate = templ;
     this.openDialog(removeRelation).subscribe(result => {
       if(result==='accept'){
-        console.log('Accepted selected');
         this.buildColumDef();
       } 
 
@@ -188,7 +185,6 @@ export class CommunityTableComponent implements OnInit, OnChanges {
   }
 
   changeCheckBx(event:MatCheckboxChange , col, cols){
-    //console.log('generic Dialog changeCheckBx: [%s] [%s]',  event.checked.valueOf() , arguments.length)
   }
 
   getLabel(item:string, arr:Array<any>, prefix: string):string{
@@ -207,7 +203,6 @@ export class CommunityDataSource extends DataSource<any> {
               private _paginator: MatPaginator,
               private _sort: MatSort){
     super();
-    console.log('Constructor Community Data Source: [%s]', this._sort)
   }
 
   connect(): Observable<CommunityTable[]> {

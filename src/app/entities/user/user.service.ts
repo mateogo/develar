@@ -277,7 +277,6 @@ export class UserService {
 
 		this.loadLoginUser().then(res =>{
 				fetchedUser = res as User;
-				//console.log('loading 1: [%s]', fetchedUser && fetchedUser.username);
 				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
 
 				if(!loggedIn ){
@@ -285,7 +284,6 @@ export class UserService {
 
 						this.loadLoginUser().then(res =>{
 										fetchedUser = res as User;
-										//console.log('loading 2: [%s]', fetchedUser && fetchedUser.username);
 										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
 
 										if(!loggedIn ){
@@ -335,8 +333,6 @@ export class UserService {
 	//****************** END: login management  *****************
 
 	updateCurrentUser(): Promise<User> {
-		//console.log('userService: updateCurrentStatus')
-
 		const url = `${this.usersUrl}/${'currentuser'}`;
 		return this.http
 			.get(url)

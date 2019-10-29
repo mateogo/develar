@@ -59,8 +59,6 @@ export class AmbientalDataViewComponent implements OnInit {
 		this.cloaca = personModel.getTiposVivLabel(this.token.cloaca,   'colaca', '- Desagüe:');
 		this.gas = personModel.getTiposVivLabel(this.token.gas,   'gas', '- Gas: ');
 
-  	console.log('Ambiental VIEW: [%s]:[%s] [%s]',this.tipoviv, this.token.tipoviv, this.token.street1);
-
   }
 
   buildUbicacion(street, barrio, city){

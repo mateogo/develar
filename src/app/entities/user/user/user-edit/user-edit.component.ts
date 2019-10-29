@@ -104,12 +104,9 @@ export class UserEditComponent implements OnInit {
     });
 
     this.userService.getUser(this.modelId).then(user => {
-      //console.log('User fetch!: [%s] [%s] [%s] [%s]', user.id, user.username, user.estado, user.termscond);
-
       this.model = user;
       this.model.id = this.model._id;
       this.termsofuse = user.termscond ? true : false;
-      //console.log('User fetch!: [%s] [%s] [%s] [%s]', user.id, user.username, this.termsofuse, user.termscond);
 
       this.form.setValue({
         username: this.model.username,
@@ -185,7 +182,6 @@ export class UserEditComponent implements OnInit {
   }
 
   closeEditor(target){
-    console.log('close EDITOR ****** : [%s]', this.route.url)
     this.router.navigate([target, 'usuarios'], { relativeTo: this.route });
   }
 
@@ -200,7 +196,6 @@ export class UserEditComponent implements OnInit {
   updateUserList(users:User[]){
     this.users = users;
     if(this.users && this.users.length){
-        console.log('users:[%s]  email:[%s]', this.users.length, this.users[0].email)
     }
   }
 

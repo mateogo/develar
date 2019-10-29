@@ -7,14 +7,12 @@ import { ProductController }    from '../product.controller';
 import { devutils } from '../../../develar-commons/utils';
 import { Subject ,  Observable } from 'rxjs';
 
-
 @Component({
   selector: 'productit',
   templateUrl: './productit.component.html',
   styleUrls: ['./productit.component.scss']
 })
 export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
-	//private product: Product;
 	public productId: string = "";
 	public productName:string = "";
   private productFromDb: Product;
@@ -27,7 +25,6 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
 	private fumeList: Array<any> = [];
   private typeList: Array<any> = [];
 	private currencyList:Array<any> = [];
-	
 
 	private lprecios: string = "";
 	private marca: string = "";
@@ -44,20 +41,18 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
 
   public editorTitle = "Alta nuevo detalle de producto";
 
-
   constructor(
     private productCtrl: ProductController
 
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this.modelScrptn.unsubscribe()
 
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
+
   }
 
   ngOnInit() {
@@ -82,7 +77,6 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   initProductItemData(model){
-    //console.log('initProductItemData [%s]', model)
     this.updateTableList();
   }
 
@@ -113,9 +107,7 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
     delete base['parents'];
 
     this.productEditList.forEach(prod =>{
-      console.log('forEach: [%s] [%s]', prod.slug, prod._id);
       prod = this.productCtrl.updateCommonData(prod, base);
-      //this.token = prod;
       this.saveToken(prod)
     });
     this.resetEditMany(this.token);
@@ -212,7 +204,6 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
 
     this.token = this.productCtrl.buildCommonData(this.productEditList);
 
-
     this.tokenId = this.token._id;
 
     this.vendorId = this.token.vendorId;
@@ -239,22 +230,7 @@ export class ProductitComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   actionTriggered(action){
-    console.log('productit-component: actionTriggered:[%s]', action)
     if(action === 'editone')      this.editTableSelectedProductList();
   }
 
 }
-
-
-/****
-
-    <mat-form-field style="max-width: 90px;margin-right: 20px;" >
-      <mat-select #fumeFld placeholder="UM Frec"
-          [(ngModel)]='token.fume'
-          (change)="changeFume(fumeFld.value)" >
-        <mat-option *ngFor="let fume of fumeList" 
-          [value]="fume.val" >{{ fume.label }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-*/

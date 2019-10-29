@@ -32,12 +32,10 @@ export class MyproductsPageComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-  	console.log('MyProducts INIT')
   	this.lisnr = this.productCtrl.initMyProductsListener();
 
   	this.lisnr.subscribe(onReady => {
   		this.showBusiness = true;
-  		console.log('Listener Ready: [%s]', onReady);
   	})
 
 

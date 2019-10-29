@@ -46,7 +46,7 @@
 
         <div class="col">
           <mat-form-field>
-            <input (blur)="onBlur(e)" 
+            <input (blur)="onBlur($event)" 
                 matInput [formControl]="form.controls['apellido']" placeholder="Apellido">
           </mat-form-field>
         </div>

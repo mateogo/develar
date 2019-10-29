@@ -114,9 +114,7 @@ export class PostTokenComponent implements OnInit {
   postDetail(e){
     e.stopPropagation();
     e.preventDefault();
-    console.log('Alo!!!!')
     this.detailView.emit(this.model);
-
   }
 
 
@@ -145,8 +143,6 @@ export class PostTokenComponent implements OnInit {
 
     this.model = entity;
 
-
-
   }
 
   fetchMainImage(images){
@@ -156,7 +152,6 @@ export class PostTokenComponent implements OnInit {
 
     }else if(this.imageType === 'featureimage'){
       image = images.find(img => img.predicate === 'featureimage') || images.find(img => img.predicate === 'mainimage');
-
     }
 
     if(image){

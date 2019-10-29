@@ -34,9 +34,7 @@ export class RolNochePanelComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log('Panel [%s]', this.items && this.items.length)
     this.tbCtrl.personListener.subscribe(p => {
-      console.log('Current person: [%s]', p && p.displayName);
     })
     this.tbCtrl.fetchPersonByUser();
   }
@@ -44,8 +42,6 @@ export class RolNochePanelComponent implements OnInit {
   updateItem(event: UpdateRolEvent){
     if(event.action === UPDATE){
       this.tbCtrl.manageRolNocturnidadRecord('rolnocturnidad',event.token).subscribe(t =>{
-        console.log('updateItem@panel: [%s]', event.token === t)
-
 
         if(t){
           event.token = t;

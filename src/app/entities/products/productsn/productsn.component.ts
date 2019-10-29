@@ -23,7 +23,6 @@ export class ProductsnComponent implements OnInit, OnChanges, OnDestroy {
   public actualOwnerId: string = "";
   public actualOwnerName:string = "";
 
-	
 	public _openEditor: boolean = false;
   public _openTokenEditor:boolean = false;
 	
@@ -40,38 +39,31 @@ export class ProductsnComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private productCtrl: ProductController
-
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this.modelScrptn.unsubscribe()
-
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
+
   }
 
   ngOnInit() {
-
     this.modelScrptn = this.productCtrl.productSerialListener.subscribe(model =>{
       this.initProductSerialData(model);
       this.token = model;
     })
 
     this.productCtrl.initProductSerialEdit(this.token, this.tokenId);
-
   }
 
   updateTableList(){
     if(this.productId)
-      console.log('updateTableList [%s]', this.productName);
       this.productCtrl.findSerialsByQuery('productsn', {productId: this.productId});    
   }
 
   initProductSerialData(model){
-    //console.log('initProductSerialData [%s]', model)
     this.updateTableList();
   }
 
@@ -100,9 +92,7 @@ export class ProductsnComponent implements OnInit, OnChanges, OnDestroy {
     delete base['_id'];
 
     this.productEditList.forEach(prod =>{
-      console.log('forEach: [%s] [%s]', prod.slug, prod._id);
       prod = this.productCtrl.updateProductSerialCommonData(prod, base);
-      //this.token = prod;
       this.saveToken(prod)
     });
     this.resetEditMany(this.token);
@@ -193,10 +183,8 @@ export class ProductsnComponent implements OnInit, OnChanges, OnDestroy {
 
     this.token = this.productCtrl.buildCommonSerialData(this.productEditList);
 
-
     this.tokenId = this.token._id;
 
-    
     this.productId =  this.token.productId;
     this.productName = this.token.productName;
     
@@ -216,25 +204,9 @@ export class ProductsnComponent implements OnInit, OnChanges, OnDestroy {
     this.actualOwnerName = null;
     this.openEditor(false);
   }
-
  
   actionTriggered(action){
-    console.log('productsn-component: actionTriggered:[%s]', action)
     if(action === 'editone')      this.editTableSelectedProductList();
   }
 
 }
-
-
-/****
-
-    <mat-form-field style="max-width: 90px;margin-right: 20px;" >
-      <mat-select #fumeFld placeholder="UM Frec"
-          [(ngModel)]='token.fume'
-          (change)="changeFume(fumeFld.value)" >
-        <mat-option *ngFor="let fume of fumeList" 
-          [value]="fume.val" >{{ fume.label }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-*/

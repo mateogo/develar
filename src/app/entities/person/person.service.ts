@@ -74,7 +74,7 @@ export class PersonService {
     }
 
     let query = `${this.personsUrl}/search?displayName=${term}`;
-    //console.log('search: [%s]',query);
+
     return this.http
         .get<Person[]>(query)
         .pipe(
@@ -102,22 +102,18 @@ export class PersonService {
 
   getPerson(id: string): Promise<Person> {
     const url = `${this.personsUrl}/${id}`;
-    console.log('[%s]: Ready to GET:[%s] ', url, id);
-
     return this.http.get(url)
         .toPromise()
         .catch(this.handleError);
   }
 
   getPersons(): Promise<Person[]>{
-    console.log('[%s]: Ready to FindAll ', this.personsUrl);
   	return this.http.get(this.personsUrl)
   			.toPromise()
   			.catch(this.handleError);
   }
 
   create(person:Person): Promise<Person>{
-    console.log('Service: person: [%s], [%s]', person.id, person.displayName);
   	return this.http
   		.post(this.personsUrl, JSON.stringify(person), {headers: this.headers})
   		.toPromise()
@@ -126,7 +122,6 @@ export class PersonService {
 
   update(person: Person): Promise<any> {
     const url = `${this.personsUrl}/${person._id}`;
-    console.log('[%s]: Ready to update:[%s] [%s] [%s] ', url, person._id, person.displayName, person.locaciones.length);
     return this.http
       .put(url, JSON.stringify(person), {headers: this.headers})
       .toPromise()
@@ -169,7 +164,6 @@ export class PersonService {
         if(msj){
           person.messages.push(msj)
           this.update(person).then(p => {
-            //console.log('iajuuu Person updated');
           })
 
         }
@@ -177,7 +171,6 @@ export class PersonService {
       }else{
         person = new Person(name, email);
         this.create(person).then(p => {
-            //console.log('iajuuu Person created');
         })
 
       }

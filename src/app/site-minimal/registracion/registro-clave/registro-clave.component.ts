@@ -106,7 +106,6 @@ export class RegistroClaveComponent implements OnInit {
     }
 
     ngOnInit() {
-    	console.log('Registro clave INIT')
         this.defaultData = dataLabel[this.target].value
         this.text = dataLabel[this.target].text
         this.ndoc = this.model.ndoc
@@ -135,7 +134,6 @@ export class RegistroClaveComponent implements OnInit {
     }
 
     emitEvent(e){
-    	console.log('Emit Event [%s]', e)
     	if(e===CANCEL){
     		this.event.next({
     			action: CANCEL,

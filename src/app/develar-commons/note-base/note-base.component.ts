@@ -112,7 +112,6 @@ export class NoteBaseComponent implements OnInit {
   }
 
   descriptionUpdateContent(content){
-    //console.log("BUBBBBBLED: [%s]", content);
   }
 
 

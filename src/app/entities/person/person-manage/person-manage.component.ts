@@ -35,13 +35,11 @@ export class PersonManageComponent implements OnInit, OnChanges, OnDestroy {
     ) { }
 
   ngOnDestroy(){
-    console.log('noOnDestroy')
     this._modelSbscrptn.unsubscribe()
-
   }
 
   ngOnChanges(){
-    console.log('ngOnChanges;')
+
   }
 
   ngOnInit() {
@@ -59,7 +57,7 @@ export class PersonManageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateSelCommunities(list: Person[]){
-    console.log('updateSelCommunities:[%s]', list.length)
+
   }
 
   updateTableList(){
@@ -93,7 +91,6 @@ export class PersonManageComponent implements OnInit, OnChanges, OnDestroy {
     // delete base['_id'];
 
     // this.personEditList.forEach(token =>{
-    //   console.log('forEach: [%s] [%s]', token.slug, token._id);
     //   token = this.personCtrl.updateCommonData(token, base);
     //   //this.person = token;
     //   this.saveToken(token)
@@ -147,7 +144,6 @@ export class PersonManageComponent implements OnInit, OnChanges, OnDestroy {
   actionTriggered(action){
     if(action === 'navigate'){
       this.initTableSelectedEntityList();
-      console.log(`${whoami}  actionTriggered: ${action} list: ${this.personEditList.length}`);
       this.personCtrl.createUsers(this.personEditList);
 
     }

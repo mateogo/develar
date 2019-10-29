@@ -87,7 +87,6 @@ export class AsseteditComponent implements OnInit {
 
   saveRecord(){
     this.model = initForSave(this.form, this.model);
-    //console.log('saveRecord: model.files[%s] files: [%s]', this.model.files.length, this.files.length)
     return this.assetService.update(this.model).then((model) =>{
               this.openSnackBar('Grabación exitosa id: ' + model._id, 'cerrar');
               return model;
@@ -107,13 +106,6 @@ export class AsseteditComponent implements OnInit {
     }
 
   }
-
-  // continueEditing(model){
-  //   console.log('Continue editing: [%s] [%s] [%s]', model.slug, model._id, model.id);
-  //   this.model = model;
-  //   delete this.model._id;
-  //   this.formReset(this.model);
-  // }
 
 
   assetUpload(loader: Subject<Asset>){

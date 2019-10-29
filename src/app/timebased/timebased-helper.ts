@@ -152,8 +152,6 @@ export class TimebasedHelper {
 	static initNewRolNocturnidad(action, sector, person?: Person, serial?: Serial, slug?): RolNocturnidad{
 		let x = new RolNocturnidad();
 		if(person && person.integrantes && person.integrantes.length){
-			console.log('initRolNocturnidad integrantes[%s]', person.integrantes.length);
-			console.dir(person.integrantes);
 			x.agentes = person.integrantes.map(integrante =>({
 													_id: null,
 													idPerson: integrante.personId,

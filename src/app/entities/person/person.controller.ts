@@ -69,7 +69,6 @@ export class PersonController {
   }
 
   initController(model: Person, modelId: string){
-    //console.log('controller: initPerson: [%s] [%s]', model.slug, modelId)
     if(model){
       this.initPersonData(model);
 
@@ -106,7 +105,6 @@ export class PersonController {
         return response as T
       })
       .catch(err => {
-        console.log(err);
         return err;
       });
   }
@@ -183,7 +181,6 @@ export class PersonController {
   filterSelectedList():Person[]{
     let list: Person[];
     let selected = this.selectionModel.selected as any;
-    console.log(`filterSelectedList: selected ${selected.length} `);
 
     list = this.personList.filter((token: any) =>{
       return (token.email && token.personType === 'fisica' && selected.find(tableItem => (token._id === tableItem._id)));
@@ -203,7 +200,7 @@ export class PersonController {
       user : this.userService.currentUser
     }
     this.daoService.usersFromPersons('user', query).then(resp => {
-      console.log('createUsers CB: [%s]', resp.altas);
+
     })
   }
   
