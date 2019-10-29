@@ -31,56 +31,151 @@ export class TurnosPageComponent implements OnInit {
   private token: string;
 
   public isAutenticated = false;
-  public turnos:Turno[] = [];
+  public currentSector = '';
   public showStockTurnos = false;
+  public stockTurnos:any = {};
+  public showSectorPanel = false;
+  private intervalProcess: any;
 
-  public tokens:SectorAtencion[] = sectores;
+  public sectoresOptList:SectorAtencion[] = sectores;
 
-
+  private socket: SocketIOClient.Socket; 
 
   constructor(
   		private dsCtrl: DsocialController,
     	private router: Router,
     	private route: ActivatedRoute,
 
-  	) { }
+  	) { 
+    console.log('turnosPageConstructor')
+
+  }
 
   ngOnInit() {
+    console.log('turnosPage onInit')
     let first = true;    
-    this.token = this.route.snapshot.paramMap.get('id')
+    this.token = this.route.snapshot.paramMap.get('id');
+
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
       if(readyToGo && first){
         first = false;
 
-        this.initCurrentPage();
+        this.initSocket();
+        this.initPageData();
+        this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
+        // let sscrp3 =  this.dsCtrl.turnoEventListener.subscribe(t => {
+        //   console.log('evventListener triggered')
+        //   this.initPageData();
+        // })
+        // this.addToBindingList(sscrp3);
+
+        //this.intervalProcess = setInterval(this.initPageData, 1000 * 60, this);
       }
     })
-    this.unBindList.push(sscrp2);
+    this.addToBindingList(sscrp2);
   }
 
-  showTurnos(turnos: Turno[]){
-    this.turnos = TurnosModel.sortProperly(turnos);
+  ngOnDestroy(){
+    this.unBindList.forEach(suscrip =>{
+      suscrip.unsubscribe();
+    })
+    //clearInterval(this.intervalProcess);
+
+  }
+
+  private addToBindingList(sscrp){
+    this.unBindList.push(sscrp);   
+  }
+
+  private initPageData(){
+    console.log('INIT PAGE DATA')
+
+    this.showSectorPanel = false;
+    this.resetCounter();
+
+    this.dsCtrl.turnosPendientes$().subscribe(list => {
+      if(list && list.length){
+        list.forEach(t => {
+
+          if(!this.stockTurnos[t.sector]){
+            this.stockTurnos[t.sector] = this.socorroNoExisteSector(t);
+          }
+
+          this.stockTurnos[t.sector].stock += 1;
+          this.stockTurnos[t.sector].turnos.push(t)
+        })
+      }
+
+      this.showSectorPanel = true;
+    })
+  }
+
+  private socorroNoExisteSector(t: Turno){
+      return {
+        sector: {
+          val: t.sector,
+          serial: t.sector,
+          label: t.sector,
+          style: ''
+        },
+        stock: 0,
+        turnos: []
+      }
+  }
+
+  private resetCounter(){
+    this.sectoresOptList.forEach(t => {
+      this.stockTurnos[t.val] = {
+        sector: t,
+        stock: 0,
+        turnos: []
+      }
+    })    
+  }
+
+  /********************
+   * Template Events /
+   *****************/
+  initSocket(){
+    let that = this;
+    console.log('initsocket')
+    if(!this.socket){
+      this.socket = this.dsCtrl.socket;
+      this.socket.on('turnos:update', function (msj: any) {
+        console.log('Socket Listening [%s]',Date.now())
+        that.initPageData();
+      });
+    }
+
+  }
+
+
+  /********************
+   * Template Events /
+   *****************/
+  showTurnos(turnos: Turno[], sector: SectorAtencion){
+    this.showStockTurnos = false;
+    this.currentSector = sector.val
+    this.stockTurnos[sector.val] = {
+      sector: sector,
+      stock: turnos.length,
+      turnos: TurnosModel.sortProperly(turnos)
+    }
 
     this.showStockTurnos = true;
   }
 
-  initCurrentPage(){
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
-  }
-
-  nuevoTurno(sector: SectorAtencion){
-
-  }
 
   actionEvent(taction:TurnoAction){
+    if(taction.action === "baja") this.showSectorPanel = false;
     this.processTurnoEvent(taction);
     this.navigateTo(taction)
   }
 
-  navigateTo(taction: TurnoAction){
+  private navigateTo(taction: TurnoAction){
     if(taction.action === "atender"){
       let personId = "";
       if(taction.turno.requeridox.id){
@@ -94,19 +189,24 @@ export class TurnosPageComponent implements OnInit {
     }
   }
 
-  processTurnoEvent(taction: TurnoAction){
+  private processTurnoEvent(taction: TurnoAction){
     this.dsCtrl.updateTurno(taction).subscribe(t => {
       if(taction.action === "baja") this.deleteFromList(taction.turno);
+      this.showSectorPanel = true;
     })
   }
 
-  deleteFromList(turno: Turno){
-    let index = this.turnos.indexOf(turno);
+  private deleteFromList(turno: Turno){
+    let index = this.stockTurnos[this.currentSector].turnos.indexOf(turno);
     if(index !== -1) {
-      this.turnos.splice(index,1)
+      this.stockTurnos[this.currentSector].turnos.splice(index, 1)
     }
-
   }
 
+}
 
+interface StockTurnos {
+  sector: SectorAtencion,
+  stock: number,
+  turnos: Turno[]
 }

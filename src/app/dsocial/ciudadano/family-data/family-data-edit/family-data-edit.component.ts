@@ -107,26 +107,29 @@ export class FamilyDataEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
  
-  dniExistenteValidator(service: DsocialController, message: object): AsyncValidatorFn {
-    return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-      let value = control.value;
+  dniExistenteValidator(that:any, service: DsocialController, message: object): AsyncValidatorFn {
+      return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+          let value = control.value;
+          let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-      return service.testPersonByDNI('DNI', value).pipe(
-          map(t => {
-            let invalid = false;
-            let txt = ''
+          return service.testPersonByDNI(tdoc,value).pipe(
+              map(t => {
+                  let invalid = false;
+                  let txt = ''
 
-            if(t && t.length){
-              txt = 'DNI existente: ' + t[0].displayName;
-            }
+                  if(t && t.length){ 
+                      invalid = true;
+                      txt = 'Documento existente: ' + t[0].displayName;
+                  }
 
-            message['error'] = txt;
-            return invalid ? { 'mailerror': 'DNI existente' }: null;
-          })
-       )
+                  message['error'] = txt;
+                  return invalid ? { 'mailerror': txt }: null;
 
-    }) ;
-  }
+              })
+           )
+      }) ;
+   }
+
 
   changeSelectionValue(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
@@ -144,7 +147,7 @@ export class FamilyDataEditComponent implements OnInit {
                     Validators.minLength(7),
                     Validators.maxLength(10),
                     Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this.dsCtrl, this.docBelongsTo)] ],
+                    [this.dniExistenteValidator(this, this.dsCtrl, this.docBelongsTo)] ],
 
     	vinculo:      [null],
       fenactx:      [null, [this.fechaNacimientoValidator()] ],

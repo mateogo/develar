@@ -103,29 +103,31 @@ export class ComercioCoreEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
 
-  dniExistenteValidator(service: SiteMinimalController, person: Person, message: object): AsyncValidatorFn {
-    return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-      let value = control.value;
+  dniExistenteValidator(that:any, service: SiteMinimalController, person: Person, message: object): AsyncValidatorFn {
+      return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+          let value = control.value;
+          let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-      return service.testPersonByDNI('DNI', value).pipe(
-          map(t => {
-            let invalid = false;
-            let txt = ''
-            if(t && t.length){ 
+          return service.testPersonByDNI(tdoc, value).pipe(
+              map(t => {
+                  let invalid = false;
+                  let txt = ''
 
-              if(t[0]._id !== person._id){
-                invalid = true;
-                txt = 'DNI existente: ' + t[0].displayName;
-              }
+                  if(t && t.length){ 
+                    if(t[0]._id !== person._id){
+                      invalid = true;
+                      txt = 'Documento existente: ' + t[0].displayName;
+                    }
+                  }
 
-            }
-            message['error'] = txt;
-            return invalid ? { 'mailerror': txt }: null;
-          })
-       )
-
-    }) ;
+                  message['error'] = txt;
+                  return invalid ? { 'mailerror': txt }: null;
+              })
+           )
+      });
   }
+
+
 
   changeSelectionValue(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
@@ -150,7 +152,7 @@ export class ComercioCoreEditComponent implements OnInit {
                     Validators.minLength(7),
                     Validators.maxLength(11),
                     Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this.minimalCtrl, this.person, this.docBelongsTo)] ],
+                    [this.dniExistenteValidator(this, this.minimalCtrl, this.person, this.docBelongsTo)] ],
 
       sexo:         [null],
     });

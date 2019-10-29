@@ -8,6 +8,8 @@ import { DataSource, SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 
+import * as io from 'socket.io-client';
+
 import { SharedService } from '../develar-commons/shared-service';
 import { DaoService }    from '../develar-commons/dao.service';
 import { devutils } from '../develar-commons/utils';
@@ -21,7 +23,7 @@ import { Person, Address, UpdatePersonEvent }        from '../entities/person/pe
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
-import { Turno, TurnoAction, TurnosModel }         from './turnos/turnos.model';
+import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
@@ -45,7 +47,7 @@ const ENCUESTA = 'ambiental';
 	providedIn: 'root'
 })
 export class DsocialController {
-  
+
   private hasActiveUrlPath = false;
   private actualUrl = "";
   private actualUrlSegments: UrlSegment[] = [];
@@ -57,9 +59,8 @@ export class DsocialController {
 
   private currentTurno: Turno;
   private currentPerson: Person;
+  private _turnoEvent: Subject<TurnoAction> = new Subject();
   public personListener = new BehaviorSubject<Person>(this.currentPerson);
-
-
 
   private userListener: BehaviorSubject<User>;
   private userLoading = false;
@@ -581,6 +582,23 @@ export class DsocialController {
     return this.currentTurno;
   }
 
+  get turnoEventListener(): Subject<TurnoAction> {
+    return this._turnoEvent;
+  }
+
+  get socket(): SocketIOClient.Socket{
+    return this.userService.socket;
+  }
+
+  private atendidoPor(sector): Atendido{
+    if(! this.userx) return null;
+    return {
+        id: this.userx.id,
+        slug: this.userx.username,
+        sector: sector
+    }
+  }
+
   /**
   * obtener serial para Documento Provisorio
   */
@@ -590,6 +608,7 @@ export class DsocialController {
     this.currentTurno = turno;
     this.setCurrentPersonFromTurno(turno);
     this.upsertTurno(listener, turno);
+    //this._turnoEvent.next(taction);
 
     return listener;
   }
@@ -613,9 +632,8 @@ export class DsocialController {
         turno.payload = taction.payload;
       }
 
-      if(taction.atendidox){
-        turno.atendidox = taction.atendidox;
-      }
+      turno.atendidox = this.atendidoPor(turno.sector);
+      turno.ts_fin = Date.now();
 
     }else if(taction.action === 'baja'){
       turno.estado = 'baja';
@@ -661,6 +679,19 @@ export class DsocialController {
     return this.daoService.search<Turno>('turno', query);
   }
 
+  public turnosPendientes$():Observable<Turno[]>{
+    let query = TurnosModel.turnosPendientesQuery('turnos', 'ayudadirecta');
+    return this.daoService.search<Turno>('turno', query);
+  }
+
+  /**
+  * cola de turnos en un sector
+  */
+  public turnosPorDiaSector$(sector){
+    let query = TurnosModel.turnosPorDiaSectorQuery('turnos', 'ayudadirecta', sector);
+    return this.daoService.search<Turno>('turno', query);
+  }
+
   /***************************/
   /******* Person *******/
   /***************************/
@@ -673,20 +704,21 @@ export class DsocialController {
 
   /******* Search PERSON Person person by Name *******/
 
-  searchPerson(term: string): Observable<Person[]> {
+  searchPerson(tdoc: string, term: string): Observable<Person[]> {
       let query = {};
       let test = Number(term);
 
       if(!(term && term.trim())){
         return of([] as Person[]);
       }
+
       if(isNaN(test)){
-        query['displayName'] = term;
+        query['displayName'] = term.trim();
       }else{
+        query['tdoc'] = tdoc;
         query['ndoc'] = term;
-
       }
-
+      
       return this.daoService.search<Person>('person', query);
   }
 
@@ -1075,7 +1107,7 @@ export class DsocialController {
   }
 
   get kitAlimentosOptList():KitOptionList[]{
-    console.log('getKitAlimentosOptList [%s]', this._kitAlimentosOptList && this._kitAlimentosOptList.length )
+    //console.log('getKitAlimentosOptList [%s]', this._kitAlimentosOptList && this._kitAlimentosOptList.length )
     if(!this._kitAlimentosOptList){
       this.loadKitAlimentosOptList();
       return [];

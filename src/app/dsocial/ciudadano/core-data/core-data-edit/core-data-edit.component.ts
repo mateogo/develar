@@ -100,11 +100,12 @@ export class CoreDataEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
 
-  dniExistenteValidator(service: DsocialController, person: Person, message: object): AsyncValidatorFn {
+  dniExistenteValidator(that:any, service: DsocialController, person: Person, message: object): AsyncValidatorFn {
     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       let value = control.value;
+      let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-      return service.testPersonByDNI('DNI', value).pipe(
+      return service.testPersonByDNI(tdoc, value).pipe(
           map(t => {
             let invalid = false;
             let txt = ''
@@ -112,7 +113,7 @@ export class CoreDataEditComponent implements OnInit {
 
               if(t[0]._id !== person._id){
                 invalid = true;
-                txt = 'DNI existente: ' + t[0].displayName;
+                txt = 'Documento existente: ' + t[0].displayName;
               }
 
             }
@@ -147,7 +148,7 @@ export class CoreDataEditComponent implements OnInit {
                     Validators.minLength(7),
                     Validators.maxLength(10),
                     Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this.dsCtrl, this.person, this.docBelongsTo)] ],
+                    [this.dniExistenteValidator(this, this.dsCtrl, this.person, this.docBelongsTo)] ],
 
       nacionalidad: [null],
       nestudios:    [null],

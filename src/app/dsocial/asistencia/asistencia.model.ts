@@ -211,12 +211,12 @@ const default_option_list: Array<any> = [
 const asisActionOptList: Array<any> = [
         {val: 'encuesta',    type:'EncuestaSocAmb', label: 'Encuesta' },
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
-        {val: 'materiales',  type:'Habitacional',  label: 'Habitacional' },
+        {val: 'habitacional',  type:'Habitacional',  label: 'Habitacional' },
         {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
         {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
         {val: 'pension',     type:'Pensión',      label: 'Pensión' },
-        {val: 'migracion',   type:'Migración Acumar', label: 'Migración Acumar' },
+        {val: 'migracion',   type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
         {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
 
 ];
@@ -308,6 +308,7 @@ const ciudadesBrown: Array<any> = [
     {val: 'marmol',              label: 'J.Mármol',   slug:'J.Mármol' },
     {val: 'ministrorivadavia',   label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
     {val: 'sanjose',             label: 'San José',   slug:'San José' },
+    {val: 'extradistrito',       label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 
 

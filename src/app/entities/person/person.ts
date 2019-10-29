@@ -700,19 +700,21 @@ const coberturaSubtiposOptList = {
   ],
   auh: [
     {val: 'noposee',  label: 'No posee' },
-    {val: 'auh',      label: 'AUY' },
+    {val: 'auh',      label: 'AUH' },
   ],
   asisprovincial: [
     {val: 'noposee',     label: 'No posee' },
-    {val: 'aprovincial', label: 'Asis Provincial' },
+    {val: 'masvida',     label: 'Plan Más Vida' },
+    {val: 'aprovincial', label: 'Otros planes provinciales' },
   ],
   asisnacional: [
     {val: 'noposee',   label: 'No posee' },
-    {val: 'anacional', label: 'Asis Nacional' },
+    {val: 'pnsa',      label: 'PlanNacSegAlim PNSA' },
+    {val: 'anacional', label: 'Otros planes nacionales' },
   ],
   asismunicipal: [
     {val: 'noposee',    label: 'No posee' },
-    {val: 'amunicipal', label: 'Asis Municipal' },
+    {val: 'amunicipal', label: 'Otros planes municipales' },
   ],
   otros: [
     {val: 'noposee',   label: 'No posee' },
@@ -758,6 +760,7 @@ const ciudadesBrown: Array<any> = [
     {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
     {val: 'solano',              cp:'1846', label: 'San Fco Solano',   slug:'San Fco Solano' },
     {val: 'sanjose',             cp:'1846', label: 'San José',   slug:'San José' },
+    {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 
 
@@ -952,19 +955,18 @@ const barriosOptList = {
     {val: 'virgendelujan',    label: 'Vírgen de Luján' },
     {val: 'elombu',    label: 'El Ombú' },
   ],
+  extradistrito: [
+    {val: 'extradistrito',    label: 'Extra distrito' },
+    ]
 
 };
 
 
-
-
-
-
-
 const sexoOptList: Array<any> = [
     {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
-    {val: 'M',        label: 'Masculino',slug:'Masculino' },
-    {val: 'F',        label: 'Femenino ',slug:'Femenino' },
+    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
+    {val: 'F',        label: 'Femenino',      slug:'Femenino' },
+    {val: 'GAP',      label: 'Auto percibido',slug:'Auto percibido' },
 ];
 
 
@@ -1584,7 +1586,8 @@ class PersonModel {
 
     getPersonFamilyName(p:Person|FamilyData):string{
       let token = (p as Person).displayName;
-      if(p.nombre && p.apellido){
+
+      if(!token && p.nombre && p.apellido){
         token = p.apellido + ", " + p.nombre;
       }
       return token;

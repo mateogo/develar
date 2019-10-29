@@ -15,7 +15,7 @@ const SELECT = 'select';
 const TOKEN_TYPE = 'asistencia';
 
 const MODALIDAD_ALIMENTO = 'alimentos';
-const MODALIDAD_MATERIALES = 'materiales';
+const MODALIDAD_HABITACIONAL = 'habitacional';
 const MODALIDAD_ENCUESTA = 'encuesta';
 
 const BG_COLOR_DEFAULT = "#ffffff";
@@ -101,9 +101,9 @@ export class SolasisBaseComponent implements OnInit {
       this.modalidad = MODALIDAD_ALIMENTO;
       this.isAlimentos = true;
 
-    } else if(this.asistencia.action === MODALIDAD_MATERIALES){
+    } else if(this.asistencia.action === MODALIDAD_HABITACIONAL){
       this.encuesta = this.asistencia.encuesta ? this.asistencia.encuesta : new Encuesta();
-      this.modalidad = MODALIDAD_MATERIALES;
+      this.modalidad = MODALIDAD_HABITACIONAL;
       this.isEncuesta = true;
 
 

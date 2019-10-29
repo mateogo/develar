@@ -14,7 +14,7 @@ import {  Asistencia,
 import { RemitoAlmacen, RemitoAlmacenModel,  UpdateRemitoEvent } from '../alimentos/alimentos.model';
 
 import { GenericDialogComponent } from '../../develar-commons/generic-dialog/generic-dialog.component';
-
+import { Turno }  from '../turnos/turnos.model';
 
 import { PriorityToken } from '../turnos/turnos.model';
 
@@ -50,6 +50,9 @@ export class RecepcionPageComponent implements OnInit {
   public altaPersona = false;
   public selectPriority = false;
   public selectTurno = false;
+  public turnosEmididosFecha = 0;
+  public turnosEmitidosList: Turno[];
+  public hasAlreadyTurno = false;
 
   public asistenciasList: Asistencia[] = [];
   public activeAsistenciasList: Asistencia[] = [];
@@ -57,6 +60,8 @@ export class RecepcionPageComponent implements OnInit {
   public hasAsistencias = false;
   public hasActiveAsistencias = false;
   public canIssueVoucher = false;
+  public canReciveAlimentos = false;
+  public forbiddenText = '';
 
   public remitosList: RemitoAlmacen[] = [];
   public lastRemito: RemitoAlmacen;
@@ -97,6 +102,10 @@ export class RecepcionPageComponent implements OnInit {
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
   }
 
+  /*********************
+   *  Template Events /
+   ******************/
+
   personFetched(persons: Person[]){
     if(persons.length){
       this.currentPerson = persons[0];
@@ -109,7 +118,7 @@ export class RecepcionPageComponent implements OnInit {
     }
   }
 
-  initPersonDataForDisplay(p: Person){
+  private initPersonDataForDisplay(p: Person){
     if(!p) return;
 
     let edad = 0;
@@ -121,23 +130,17 @@ export class RecepcionPageComponent implements OnInit {
     if(p.nombre || p.apellido){
       this.displayName = personModel.getPersonDisplayName(p) + ' (' + edad + ') '
     }
+    this.canReciveAlimentos = DsocialModel.asistenciaPermitida('alimentos', p)
+    
+    this.forbiddenText = this.canReciveAlimentos ? '' : 'Tiene planes sociales. '
+
     this.initAsistenciasList(p);
     this.loadHistorialRemitos(p);
 
 
   }
-  initValidAsistencias(list:Asistencia[]){
-    this.activeAsistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
-    this.hasActiveAsistencias = false;
 
-    if(this.activeAsistenciasList && this.activeAsistenciasList.length) {
-      this.hasActiveAsistencias = true;
-      this.canIssueVoucher = true;
-      this.lastAsistencia = this.activeAsistenciasList[this.activeAsistenciasList.length - 1]
-    }
-  }
-
-  initAsistenciasList(p: Person){
+  private initAsistenciasList(p: Person){
     this.asistenciasList = [];
     this.hasAsistencias = false;
     this.canIssueVoucher = true;
@@ -154,10 +157,24 @@ export class RecepcionPageComponent implements OnInit {
         this.canIssueVoucher = false;
 
         this.initValidAsistencias(this.asistenciasList);
+
+        this.forbiddenText += this.canIssueVoucher ? '' : 'No tiene solicitud de asistencia activa'
       }
 
     })
   }
+
+  private initValidAsistencias(list:Asistencia[]){
+    this.activeAsistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
+    this.hasActiveAsistencias = false;
+
+    if(this.activeAsistenciasList && this.activeAsistenciasList.length) {
+      this.hasActiveAsistencias = true;
+      this.canIssueVoucher = true;
+      this.lastAsistencia = this.activeAsistenciasList[this.activeAsistenciasList.length - 1]
+    }
+  }
+
 
   loadHistorialRemitos(p: Person){
     this.dsCtrl.fetchRemitoAlmacenByPerson(p).subscribe(list =>{
@@ -175,7 +192,7 @@ export class RecepcionPageComponent implements OnInit {
     })
   }
 
-  sortProperly(records){
+  private sortProperly(records){
     records.sort((fel, sel)=> {
       if(!fel.ts_alta) fel.ts_alta = "zzzzzzz";
       if(!sel.ts_alta) sel.ts_alta = "zzzzzzz";
@@ -188,7 +205,7 @@ export class RecepcionPageComponent implements OnInit {
 
   }
 
-  resetForm(){
+  private resetForm(){
       this.altaPersona = false;
       this.personFound = false;
       this.selectTurno = false;
@@ -198,14 +215,14 @@ export class RecepcionPageComponent implements OnInit {
 
   }
 
-  closeTurnosForm(){
+  private closeTurnosForm(){
     this.personFound = true;
     this.selectTurno = false;
     this.altaPersona = false;
-    this.selectPriority = true;    
+    this.selectPriority = !this.hasAlreadyTurno;
   }
 
-  openTurnosForm(){
+  private openTurnosForm(){
     this.personFound = true;
     this.selectTurno = true;
     this.altaPersona = false;
@@ -232,7 +249,7 @@ export class RecepcionPageComponent implements OnInit {
 
   createNuevoTurno(){
     if(this.readyToCreateNewTurno()){
-      this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', this.currentSector.serial, this.peso, this.currentPerson).subscribe(turno =>{
+      this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', this.currentSector.val, this.peso, this.currentPerson).subscribe(turno =>{
         this.resetForm();
       })
 
@@ -262,10 +279,25 @@ export class RecepcionPageComponent implements OnInit {
 
   turnoSelected(sector: SectorAtencion){
     this.currentSector = sector;
-    this.sectorLabel = sector.label;
+    this.dsCtrl.turnosPorDiaSector$(sector.val).subscribe(list => {
+      this.turnosEmididosFecha = (list && list.length && list.reduce((s, t) => t.estado!=="baja" ? s + 1 : s, 0)) || 0;
+      this.turnosEmitidosList = list;
+      this.sectorLabel = sector.label + ' (Turnos dados: #' + this.turnosEmididosFecha+ ')' ;
+      this.hasAlreadyTurno = this.validateIfHasTurno(this.turnosEmitidosList, this.currentPerson);
 
-    this.closeTurnosForm();
+      this.closeTurnosForm();
+    })
+  }
 
+  validateIfHasTurno(list: Turno[], person: Person):boolean{
+    let hasAlreadyTurno = false;
+
+    if(list && list.length){
+      let token = list.find(t => t.requeridox.id === person._id && t.estado === 'pendiente' );
+      hasAlreadyTurno = token ? true : false;
+    }
+
+    return hasAlreadyTurno;
   }
 
   openDialog(config) {

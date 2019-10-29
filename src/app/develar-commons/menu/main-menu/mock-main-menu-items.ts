@@ -110,7 +110,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/recepcion'
       },
       {
-        title: 'Turnos ASD',
+        title: 'Turnos DS',
         routing: '/dsocial/gestion/ayudadirecta'
       },
       {
@@ -122,11 +122,11 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/seguimiento'
       },
       {
-        title: 'Voucher almacén',
+        title: 'Voucher de entrega',
         routing: '/dsocial/gestion/alimentos'
       },
       {
-        title: 'Almacén',
+        title: 'Galpón',
         routing: '/dsocial/gestion/almacen'
       },
       {
@@ -659,7 +659,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/recepcion'
       },
       {
-        title: 'Turnos ASD',
+        title: 'Turnos DS',
         routing: '/dsocial/gestion/ayudadirecta'
       },
       {
@@ -671,11 +671,11 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/seguimiento'
       },
       {
-        title: 'Voucher almacén',
+        title: 'Voucher de entrega',
         routing: '/dsocial/gestion/alimentos'
       },
       {
-        title: 'Almacén',
+        title: 'Galpón',
         routing: '/dsocial/gestion/almacen'
       },
       {

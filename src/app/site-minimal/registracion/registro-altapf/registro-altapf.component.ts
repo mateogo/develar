@@ -91,7 +91,7 @@ export class RegistroAltapfComponent implements OnInit {
                         Validators.minLength(7),
                         Validators.maxLength(11),
                         Validators.pattern('[0-9]*')], 
-                        [this.dniExistenteValidator(this.minimalCtrl, this.model.tdoc, this.docBelongsTo)] ],
+                        [this.dniExistenteValidator(this, this.minimalCtrl, this.docBelongsTo)] ],
 
           // fenactx:      [null, [this.fechaNacimientoValidator()]],
           // street1:     [null, Validators.compose([Validators.required])],
@@ -182,7 +182,7 @@ export class RegistroAltapfComponent implements OnInit {
     model.ndoc = fvalue.ndoc;
 
 		model.persontags = [];
-		model.personType = 'juridica';
+		model.personType = 'fisica';
 		model.email = tvalue.email;
 		model.locacion = '';
 		model.nombre = tvalue.nombre;
@@ -229,28 +229,30 @@ export class RegistroAltapfComponent implements OnInit {
       return this.personForm.controls[controlName].hasError(errorName);
   }
 
-  dniExistenteValidator(service: SiteMinimalController, tdoc: string, message: object): AsyncValidatorFn {
+  dniExistenteValidator(that:any, service: SiteMinimalController, message: object): AsyncValidatorFn {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
           let value = control.value;
+          let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-          return service.testPersonByDNI(tdoc,value).pipe(
+          return service.testPersonByDNI(tdoc, value).pipe(
               map(t => {
                   let invalid = false;
                   let txt = ''
-                  console.log('CUIT Callback OK [%]',t && t.length);
 
                   if(t && t.length){ 
                       invalid = true;
-                      txt = tdoc + ' existente: ' + t[0].displayName;
+                      txt = 'Documento existente: ' + t[0].displayName;
                   }
 
                   message['error'] = txt;
-                  return invalid ? { 'error': txt }: null;
+                  return invalid ? { 'mailerror': txt }: null;
 
               })
            )
       }) ;
-   } ;
+  }
+
+
 
   emailExistenteValidator(service: SiteMinimalController, message: object): AsyncValidatorFn {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {

@@ -6,8 +6,8 @@ const UPDATE = 'update';
 const TOKEN_TYPE = 'asistencia';
 const ALIMENTOS = 'alimentos';
 const ALIMENTOS_LABEL = "Voucher alimentos";
-const MATERIALES = 'materiales';
-const MATERIALES_LABEL = "Voucher materiales";
+const HABITACIONAL = 'habitacional';
+const HABITACIONAL_LABEL = "Voucher materiales";
 const ACTION = 'create';
 
 @Component({
@@ -44,8 +44,8 @@ export class SolicitudesBaseComponent implements OnInit {
     if(this.token.action === ALIMENTOS ){
       this.voucher_label = ALIMENTOS_LABEL;
       this.isRemitible = true
-    } else if(this.token.action === MATERIALES){
-      this.voucher_label = MATERIALES_LABEL;
+    } else if(this.token.action === HABITACIONAL){
+      this.voucher_label = HABITACIONAL_LABEL;
       this.isRemitible = true
 
     }

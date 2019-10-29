@@ -31,7 +31,7 @@ export class AlmacenSearchComponent implements OnInit {
     this.products = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
+        filter(t => t && t.length >2 && !(/[^a-z0-9,ñ\s]+/ig.test(t))),
         switchMap(term => this.dsCtrl.searchBySlug(term))
       );
   }

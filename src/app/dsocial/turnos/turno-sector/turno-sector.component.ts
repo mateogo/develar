@@ -14,11 +14,11 @@ import { Turno, TurnosModel }  from '../../turnos/turnos.model';
 })
 export class TurnoSectorComponent implements OnInit {
 	@Input() sector: SectorAtencion;
+  @Input() stockTurnos:  Turno[] = [];
   @Input() type: string;
   @Input() name: string;
 	@Output() turnos$ = new EventEmitter<Turno[]>();
 
-  public stockTurnos: Turno[] = [];
   public items = 0;
 
   constructor(
@@ -26,12 +26,13 @@ export class TurnoSectorComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-    this.refreshTurnos(false);
+    this.items = (this.stockTurnos && this.stockTurnos.length) || 0;
+    //this.refreshTurnos(false);
 
   }
 
   refreshTurnos(emit:boolean){
-    this.dsCtrl.turnosPorSector$(this.type, this.name, this.sector.serial).subscribe(turnos =>{
+    this.dsCtrl.turnosPorSector$(this.type, this.name, this.sector.val).subscribe(turnos =>{
       this.stockTurnos = turnos
       this.items = turnos.length;
 
@@ -46,20 +47,6 @@ export class TurnoSectorComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     this.refreshTurnos(true);
-
-
-  }
-
-
-
-  turnoFor(e, sector){
-  	e.stopPropagation();
-  	e.preventDefault();
-  	this.fetchTurnos(sector);
-  }
-
-  fetchTurnos(sector){
-    this.turnos$.emit(sector)
 
   }
 

@@ -341,7 +341,7 @@ class Devutils {
             let date = this.dateFromTx(value);
             if(date && date.getTime() < today){
                 let edad = this.edadActual(new Date(date.getTime()));
-                if(edad>=0 && edad<120) validAge = true;
+                if(edad>=0 && edad<110) validAge = true;
             }
         }
 

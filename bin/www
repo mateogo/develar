@@ -30,8 +30,9 @@ const server = http.createServer(app);
 /**
  * Create WebSocket server.
  */
-const io = socketService.serverFactory(server);
-
+ console.log('www INIT')
+socketService.serverFactory(server);
+console.log('www FINISHED')
 /**
  * Listen on provided port, on all network interfaces.
  */

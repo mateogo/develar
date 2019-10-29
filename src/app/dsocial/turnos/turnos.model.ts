@@ -57,8 +57,8 @@ export interface TurnoAction {
 export const prioridadOptLst = [
 			{val: 0,   label: 'Normal (X)'       },
 			{val: 1,   label: 'Prioridad (Q)'       }, 
-			{val: 2,   label: 'Prioridad x Incapacidad (J)'  },
-			{val: 3,   label: 'Prioridad x Madre c/Bebé (A)' },
+			{val: 2,   label: 'Prioridad x Discapacidad (J)'  },
+			{val: 3,   label: 'Prioridad x Embarazada ó con Bebé (A)' },
 			{val: 4,   label: 'Atención Especial (D)'    },
 	];
 
@@ -158,6 +158,31 @@ export class TurnosModel {
 			name: name,
 			sector: sector,
 			estado: 'pendiente',
+		};
+
+		return query;
+	}
+
+	static turnosPendientesQuery(type, name){
+
+		let query = {
+			type: type,
+			name: name,
+			estado: 'pendiente',
+		};
+
+		return query;
+	}
+
+	static turnosPorDiaSectorQuery(type, name, sector){
+		let today = new Date();
+		let time = new Date(today.getFullYear(),today.getMonth(), today.getDate(),0,0,0)
+
+		let query = {
+			type: type,
+			name: name,
+			sector: sector,
+			ts_prog: time.getTime()
 		};
 
 		return query;

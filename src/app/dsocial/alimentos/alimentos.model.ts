@@ -255,7 +255,7 @@ const default_option_list: Array<any> = [
 const asisActionOptList: Array<any> = [
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
         {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
-        {val: 'materiales',  type:'Habitacional',   label: 'Habitacional' },
+        {val: 'habitacional',  type:'Habitacional',   label: 'Habitacional' },
 
 ];
 

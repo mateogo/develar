@@ -45,7 +45,7 @@ export class AlimentosPageComponent implements OnInit {
 
   // template helper
   public title = "Ayuda directa al vecino/a";
-  public subtitle = "Atención alimentaria";
+  public subtitle = "Emisión de vales de entrega";
   public titleRemitos = "Historial de entregas";
   public tDoc = "DNI";
   public nDoc = "";

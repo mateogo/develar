@@ -21,6 +21,7 @@ import { DsocialController } from '../../dsocial.controller';
 export class PersonBuscarComponent implements OnInit {
 	@Input() entityId;
   @Input() entityName;
+  @Input() tdoc = 'DNI';
 
 	@Output() person$ = new EventEmitter<Person>();
   @Output() searchTerms = new Subject<string>();
@@ -45,8 +46,8 @@ export class PersonBuscarComponent implements OnInit {
     this.persons = this.searchTerms.pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        filter(t => t && t.length >2 && !(/[^a-z0-9]+/ig.test(t))),
-        switchMap(term => this.dsCtrl.searchPerson(term))
+        filter(t => t && t.length >2 && !(/[^a-z0-9,ñ\s]+/ig.test(t))),
+        switchMap(term => this.dsCtrl.searchPerson(this.tdoc, term))
       );
   }
 

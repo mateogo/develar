@@ -21,7 +21,8 @@
 	</div>
 -->
 	<div class="col-sm-12 col-md-6">
-		<persona-buscar (person$)=personFetched($event)
+		<persona-buscar [tdoc]='tDoc'
+										(person$)=personFetched($event)
 										(searchTerms)=searchTerm($event)></persona-buscar>
 	</div>
 

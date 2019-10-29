@@ -49,7 +49,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Vales de Alimentos";
+  public title = "Vales de Entregas";
   public subtitle = "Ayuda directa";
 
   public tDoc = "DNI";

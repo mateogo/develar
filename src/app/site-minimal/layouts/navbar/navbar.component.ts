@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import * as io from 'socket.io-client';
+//import * as io from 'socket.io-client';
 
 import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';

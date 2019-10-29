@@ -249,11 +249,10 @@ export class RegistroAltaComponent implements OnInit {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
           let value = control.value;
 
-          return service.testPersonByDNI(tdoc,value).pipe(
+          return service.testPersonByDNI(tdoc, value).pipe(
               map(t => {
                   let invalid = false;
                   let txt = ''
-                  console.log('CUIT Callback OK [%]',t && t.length);
 
                   if(t && t.length){ 
                       invalid = true;

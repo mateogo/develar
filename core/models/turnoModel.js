@@ -5,6 +5,7 @@
 const whoami =  "models/turnoModel: ";
 
 const mongoose = require('mongoose');
+const Rx = require('rxjs');
 
 const Schema = mongoose.Schema;
 
@@ -58,6 +59,7 @@ turnoSch.pre('save', function (next) {
     return next();
 });
 
+const turnosUpdateEmitter = new Rx.Subject();
 
 function buildQuery(query){
 
@@ -94,6 +96,10 @@ function buildQuery(query){
       q["estado"] = query['estado'];
   }
 
+  if(query['ts_prog']){
+      q["ts_prog"] = { $gte: query['ts_prog'] };
+  }
+
   return q;
 }
 
@@ -106,6 +112,13 @@ function buildQuery(query){
  * @param String: nombre a asignar a las colecciones de modelos (en plural)
  */
 const Record = mongoose.model('Turno', turnoSch, 'turnos');
+
+
+
+
+exports.turnosUpdateListener = function() {
+  return turnosUpdateEmitter;
+}
 
 
 
@@ -153,8 +166,6 @@ exports.findAll = function (errcb, cb) {
  * @param errcb
  */
 exports.findByQuery = function (query, errcb, cb) {
-    console.log('*********************************')
-    console.dir(query);
     let regexQuery = buildQuery(query)
 
     Record.find(regexQuery, function(err, entities) {
@@ -207,6 +218,8 @@ exports.update = function (id, record, errcb, cb) {
             errcb(err);
         
         }else{
+          console.log('TurnoModelUPDATE, ready to emit')
+            turnosUpdateEmitter.next({turno: 'update'})
             cb(entity);
         }
     });

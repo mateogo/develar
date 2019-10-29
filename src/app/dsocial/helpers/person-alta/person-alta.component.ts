@@ -18,7 +18,7 @@ function initForSave(form: FormGroup, model: Person, user: User): Person {
     model.apellido = fvalue.apellido;
     model.tdoc = fvalue.tdoc;
     model.ndoc = fvalue.ndoc;
-    model.displayName = model.apellido + ', '+ model.nombre;
+    model.displayName = fvalue.displayName;
     model.sexo = fvalue.sexo;
 
     model.fenactx = fvalue.fenactx;
@@ -95,12 +95,13 @@ export class PersonAltaComponent implements OnInit {
             personType: [null, Validators.compose([Validators.required])],
             nombre: [null, Validators.compose([Validators.required])],
             apellido: [null, Validators.compose( [Validators.required])],
+            displayName: [null],
             tdoc: [null],
             ndoc: [null, [Validators.required, 
                           Validators.minLength(7),
                           Validators.maxLength(10),
                           Validators.pattern('[0-9]*')], 
-                          [this.dniExistenteValidator(this.dsCtrl, this.docBelongsTo)] ],
+                          [this.dniExistenteValidator(this, this.dsCtrl, this.docBelongsTo)] ],
 
             sexo:         [null],
             fenactx:      [null, [this.fechaNacimientoValidator()]],
@@ -108,8 +109,8 @@ export class PersonAltaComponent implements OnInit {
 
             street1:     [null, Validators.compose([Validators.required])],
             street2:     [null],
-            city:        [null],
-            barrio:      [null],
+            city:        [null, Validators.compose([Validators.required])],
+            barrio:      [null, Validators.compose([Validators.required])],
             zip:         [null],
 
             state:       [null],
@@ -144,6 +145,19 @@ export class PersonAltaComponent implements OnInit {
         });
     }
 
+    onBlur(e){
+        this.setDisplayName()
+    }
+
+    setDisplayName(){
+        let displayName = this.form.controls['displayName'];
+        let display = this.form.controls['apellido'].value + ', ' + this.form.controls['nombre'].value;
+
+        if(!displayName.dirty){
+            displayName.setValue(display);
+        }
+    }
+
 
     resetForm(model: Person) {
         let address = new Address();
@@ -172,6 +186,7 @@ export class PersonAltaComponent implements OnInit {
             country:     address.country || 'AR',
         });
         this.barrioList = personModel.getBarrioList(address.city);
+        this.form.controls['tdoc'].value
     }
 
     changeSelectionValue(type, val) {
@@ -192,18 +207,19 @@ export class PersonAltaComponent implements OnInit {
         return this.form.controls[controlName].hasError(errorName);
     }
 
-    dniExistenteValidator(service: DsocialController, message: object): AsyncValidatorFn {
+    dniExistenteValidator(that:any, service: DsocialController, message: object): AsyncValidatorFn {
         return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             let value = control.value;
+            let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-            return service.testPersonByDNI('DNI',value).pipe(
+            return service.testPersonByDNI(tdoc,value).pipe(
                 map(t => {
                     let invalid = false;
                     let txt = ''
 
                     if(t && t.length){ 
                         invalid = true;
-                        txt = 'DNI existente: ' + t[0].displayName;
+                        txt = 'Documento existente: ' + t[0].displayName;
                     }
 
                     message['error'] = txt;
@@ -212,7 +228,7 @@ export class PersonAltaComponent implements OnInit {
                 })
              )
         }) ;
-     } ;
+     }
 
      currentAge(){
          let edad = '';

@@ -6,9 +6,9 @@ Returns and instande of socket.io server
 const Rx = require('rxjs');
 const IoServer = require('socket.io');
 const notif = require('../models/conversationModel')
+const turnos = require('../models/turnoModel')
 
 // Socket I/O server
-var io;
 
 
 /***
@@ -205,26 +205,9 @@ let numUsers = 0;
 
 //UserConversation Listener. Emits UserConversation model when new or update
 const userconvListener = notif.userConversationsListener();
-
-userconvListener.subscribe(userconv => {
-
-	if(userconv.role === 'from') return;
+const turnoListener = turnos.turnosUpdateListener();
 
 
-	let ns = io.sockets; // default namespace object
-	let clients = ns.connected; // hash of connectd objects
-	let msj;
-
-	for(let i in clients){
-		if(clients[i].userId && (clients[i].userId === userconv.userId)) {
-			//console.log('connected: [%s] [%s] role:[%s]', clients[i].userId, userconv.userId, userconv.role);
-			msj = notif.buildMessage(userconv)
-			msj.username = clients[i].username;
-			clients[i].emit('notification:message', msj)
-		}	
-	}
-
-})
 
 function fetchUserConversations(socket){
 	// fetches initial user conversations at login-time
@@ -261,11 +244,45 @@ function helloworld(){
 
 }
 
-exports.serverFactory = function(http_server){
+function subscribeListeners(io){
+	console.log('subscribing Listeners');
 
-	io = new IoServer(http_server, config);
+	//tunos
+	turnoListener.subscribe(token =>{
+		console.log('turno listener... listening')
+		io.emit('turnos:update')
+	});
+
+	// user conversation
+	userconvListener.subscribe(userconv => {
+
+		if(userconv.role === 'from') return;
+
+
+		let ns = io.sockets; // default namespace object
+		let clients = ns.connected; // hash of connectd objects
+		let msj;
+
+		for(let i in clients){
+			if(clients[i].userId && (clients[i].userId === userconv.userId)) {
+				//console.log('connected: [%s] [%s] role:[%s]', clients[i].userId, userconv.userId, userconv.role);
+				msj = notif.buildMessage(userconv)
+				msj.username = clients[i].username;
+				clients[i].emit('notification:message', msj)
+			}	
+		}
+	})
+
+}
+
+exports.serverFactory = function(http_server){
+	console.log('serverFactory BEGINS')
+
+	const io = new IoServer(http_server, config);
 
 	engineSetUp(io);
+
+	subscribeListeners(io)
 
 	return io;
 }
@@ -333,6 +350,13 @@ function engineSetUp(io){
 		socket.on('typing:start', () =>{
 			socket.broadcast.emit('typing:start', {username: socket.username});
 		})
+
+		console.log('SOCKET REGISTRY *******')
+		socket.on('turnos:update', () =>{
+			console.log('socket.on..... ready to emit')
+			socket.broadcast.emit('turnos:update', {event: 'update'});
+		})
+
 
 		socket.on('typing:stop', () =>{
 			socket.broadcast.emit('typing:stop', {username: socket.username});
