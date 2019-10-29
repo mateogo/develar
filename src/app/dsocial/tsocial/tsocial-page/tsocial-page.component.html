@@ -47,6 +47,11 @@
 			</div>
 						
 		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<person-assets-panel 	[assetList]='assetList' 
+		 							(updateAssets)='updateAssetList($event)' ></person-assets-panel>
+			</div>
+						
+		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<solasis-panel [items]='asistenciasList'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
 			</div>

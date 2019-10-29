@@ -154,6 +154,10 @@ export const predicateLabels = {
 		formTitle: 'Enlaces relacionados (URL)',
 		formAddLabel: 'Agregar nuevo enlace a recurso digital'
 	},
+	personasset: {
+		formTitle: 'Recursos digitales',
+		formAddLabel: 'Agregar nuevo objeto digital'
+	},
 	asset: {
 		formTitle: 'Recursos relacionados',
 		formAddLabel: 'Agregar nuevo objeto digital'
@@ -224,7 +228,7 @@ export const predicateType = {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
 			{val: 'mainimage',      label: 'mainimage',             slug:'mainimage' },
-			{val: 'featureimage',      label: 'featureimage',             slug:'featureimage' },
+			{val: 'featureimage',   label: 'featureimage',             slug:'featureimage' },
 			{val: 'images',         label: 'images',             slug:'images' },
 			{val: 'documento',      label: 'documento',             slug:'documento' },
 			{val: 'presentacion',   label: 'presentacion',             slug:'presentacion' },
@@ -232,6 +236,19 @@ export const predicateType = {
 			{val: 'video',          label: 'video',             slug:'video' },
 			{val: 'audio',          label: 'audio',             slug:'audio' },
 
+		]
+	},
+	personasset: {
+		predicates: [
+			{val: 'no_definido', 	  label: 'Seleccione opción',  		slug:'Seleccione opción' },
+			{val: 'dnia',           label: 'DNI Anverso',           slug:'DNI Anverso' },
+			{val: 'dnir',           label: 'DNI Reverso',           slug:'DNI Reverso' },
+			{val: 'partidanacim',   label: 'Partida nacimiento',    slug:'Partida Nacimiento' },
+			{val: 'avatar',         label: 'Avatar',             		slug:'Avatar personal' },
+			{val: 'featureimage',   label: 'Imagen Destacada',   		slug:'Imagen para vista detallada' },
+			{val: 'documento',      label: 'Otros documentos',      slug:'Otros documentos' },
+			{val: 'images',         label: 'Otras imágenes',        slug:'Otras imágenes' },
+			{val: 'subsidio',       label: 'Subsidio digitalizado', slug:'Subsidio' },
 		]
 	},
 	image: {
@@ -338,6 +355,16 @@ function assetAdapter(model, data, entity, predicate){
     return model;
 }
 
+function personassetAdapter(model, data, entity, predicate){
+    model.slug =        data.slug;
+    model.description = data.description;
+    model.displayAs =   data.assetId;
+    model.entityId =    data._id || data.assetId;
+    model.predicate =   predicate || 'documento'
+    model.entity =      entity || 'asset';
+    return model;
+}
+
 function imageAdapter(model, data, entity, predicate){
     model.slug = data.slug;
     model.description = data.description;
@@ -399,6 +426,33 @@ const extendedUtilites = {
 	  }
 	},
 
+	personasset: {
+		initCardGraph: function(list){
+			let graph = new CardGraphAsset();
+			if(list && list.length >0){
+				graph.predicate = list[0].predicate;
+				graph.slug = list[0].slug;
+			}
+			return graph;
+		},
+
+		initCardGrpahFromAsset: function(data, predicate){
+			let graph = assetAdapter(new CardGraphAsset(), data, 'asset', predicate)
+
+			return graph;
+		},
+
+	  buildCardGraphList(rawList): Array<CardGraphAsset>{
+	  	let graphs: Array<CardGraphAsset>;
+	  	let token:CardGraphAsset;
+	  	graphs = rawList.map(model =>{
+	  		token = new CardGraphAsset();
+	  		Object.assign(token, model);
+	  		return token;
+	  	})
+	  	return graphs;
+	  }
+	},
 
 	resource: {
 		initCardGraph: function(list){

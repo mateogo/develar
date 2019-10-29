@@ -17,7 +17,7 @@ export interface PersonTable {
 export interface UpdateItemListEvent {
       action: string;
       type: string;
-      items: Array<PersonContactData|Address|FamilyData|BusinessMembersData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental>;
+      items: Array<PersonContactData|Address|FamilyData|BusinessMembersData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental|CardGraph>;
 };
 
 export interface UpdatePersonEvent {

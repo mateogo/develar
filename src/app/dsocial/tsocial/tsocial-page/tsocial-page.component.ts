@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { DsocialController } from '../../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../dsocial.model';
+import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../../../develar-commons/asset-helper';
 
 import {  Person,
           Address,
@@ -58,7 +59,8 @@ export class TsocialPageComponent implements OnInit {
   public saludList:     SaludData[];
   public coberturaList: CoberturaData[];
   public ambientalList: EncuestaAmbiental[];
-
+  public assetList:     CardGraph[] = []
+  
   public asistenciasList: Asistencia[];
 
 
@@ -143,6 +145,7 @@ export class TsocialPageComponent implements OnInit {
       this.saludList =   p.salud || [];
       this.coberturaList = p.cobertura || [];
       this.ambientalList = p.ambiental || [];
+      this.assetList = p.assets || [];
       
       this.initAsistenciasList()
 
@@ -186,7 +189,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertContactList(event:UpdateItemListEvent){
+  private upsertContactList(event:UpdateItemListEvent){
     this.currentPerson.contactdata = event.items as PersonContactData[];
 
     let update: UpdatePersonEvent = {
@@ -204,7 +207,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertAddressList(event:UpdateItemListEvent){
+  private upsertAddressList(event:UpdateItemListEvent){
     this.currentPerson.locaciones = event.items as Address[];
 
     let update: UpdatePersonEvent = {
@@ -222,7 +225,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertFamilyList(event:UpdateItemListEvent){
+  private upsertFamilyList(event:UpdateItemListEvent){
     this.currentPerson.familiares = event.items as FamilyData[];
 
     let update: UpdatePersonEvent = {
@@ -241,7 +244,7 @@ export class TsocialPageComponent implements OnInit {
   }
 
 
-  upsertOficiosList(event:UpdateItemListEvent){
+  private upsertOficiosList(event:UpdateItemListEvent){
     this.currentPerson.oficios = event.items as OficiosData[];
 
     let update: UpdatePersonEvent = {
@@ -259,7 +262,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertSaludList(event:UpdateItemListEvent){
+  private upsertSaludList(event:UpdateItemListEvent){
     this.currentPerson.salud = event.items as SaludData[];
 
     let update: UpdatePersonEvent = {
@@ -278,7 +281,7 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertCoberturaList(event:UpdateItemListEvent){
+  private upsertCoberturaList(event:UpdateItemListEvent){
     this.currentPerson.cobertura = event.items as CoberturaData[];
 
     let update: UpdatePersonEvent = {
@@ -297,8 +300,27 @@ export class TsocialPageComponent implements OnInit {
     }
   }
 
-  upsertAmbientalList(event:UpdateItemListEvent){
+  private upsertAmbientalList(event:UpdateItemListEvent){
     this.currentPerson.ambiental = event.items as EncuestaAmbiental[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    
+    this.dsCtrl.updatePerson(update);
+  }
+
+  // Assets
+  updateAssetList(event:UpdateItemListEvent){
+    if(event.action === UPDATE){
+      this.upsertAssetlList(event);
+    }
+  }
+
+  upsertAssetlList(event:UpdateItemListEvent){
+    this.currentPerson.assets = event.items as CardGraph[];
 
     let update: UpdatePersonEvent = {
       action: event.action,

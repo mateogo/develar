@@ -42,6 +42,7 @@ const OFICIOS = 'oficios';
 const SALUD = 'salud';
 const COBERTURA = 'cobertura';
 const ENCUESTA = 'ambiental';
+const ASSETS = 'assets';
 
 @Injectable({
 	providedIn: 'root'
@@ -148,6 +149,11 @@ export class DsocialController {
     if(event.token === ENCUESTA){
       this.upsertPersonCore(event.person._id, event.person);
     }
+
+    if(event.token === ASSETS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
 
   }
 

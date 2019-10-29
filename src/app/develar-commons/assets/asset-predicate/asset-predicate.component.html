@@ -11,6 +11,12 @@
 					 href="download/{{token.entityId}}" >{{token.displayAs || 'identificación del objeto'}}</a>	
 			</ng-container>
 
+			<ng-container *ngSwitchCase="'personasset'">
+				<a rel="noopener noreferrer" target="_blank"
+					 href="download/{{token.entityId}}" >{{token.displayAs || 'identificación del objeto'}}</a>	
+			</ng-container>
+
+
 			<ng-container *ngSwitchDefault >{{ token.displayAs || 'nombre / identificación' }}</ng-container>
 
 		</ng-container>
@@ -26,7 +32,7 @@
 				<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" aria-hidden="true"></i></span>
 
 			<span style="margin: 10px" 
-				(click)='removeToken(token)' title="Remover relación de esta ficha"  >
+				(click)='removeToken(token)' title="Remover relación de esta entidad"  >
 				<i class='fas fa-times' aria-hidden="true"></i></span>
 			<p *ngIf="token.description" >
 				<span  class="description">{{ token.description }}</span>
@@ -41,7 +47,13 @@
 
 			<div *ngSwitchCase="'image'">
 				<asset-search  (lookUpModels)='updateImageEntity($event) '></asset-search>
-				<p><strong>Recurso seleccionado: </strong>{{token.displayAs}} <small>id: {{token.entityId}}</small></p>
+				<p><strong>Recurso seleccionado: </strong>{{token.displayAs}} 
+						<small>id: {{token.entityId}}</small></p>
+			</div>
+			<div *ngSwitchCase="'personasset'">
+				<asset-search  (lookUpModels)='updateImageEntity($event) '></asset-search>
+				<p><strong>Recurso seleccionado: </strong>{{token.displayAs}} 
+						<small>id: {{token.entityId}}</small></p>
 			</div>
 
 		</div>
@@ -71,21 +83,26 @@
 
 	</div>
 
-		<ng-container [ngSwitch]='entityType'>
+	<ng-container [ngSwitch]='entityType'>
 
-			<ng-container *ngSwitchCase="'asset'">
- 				<!-- img src="download/{{token.entityId}}"  alt="{{token.slug}} " -->
- 			</ng-container>
+		<ng-container *ngSwitchCase="'asset'">
+				<!-- img src="download/{{token.entityId}}"  alt="{{token.slug}} " -->
+			</ng-container>
 
-			<ng-container *ngSwitchCase="'image'">
-					<a rel="noopener noreferrer" target="_blank"
-									href="/download/{{token.entityId}}" >
-						<img  class="imagepreview" src="download/{{token.entityId}}"  alt="{token.slug}}" 
-									title="{{token.slug}}"></a>
-	 		</ng-container>
-
+		<ng-container *ngSwitchCase="'image'">
+				<a rel="noopener noreferrer" target="_blank"
+								href="/download/{{token.entityId}}" >
+					<img  class="imagepreview" src="download/{{token.entityId}}"  alt="{token.slug}}" 
+								title="{{token.slug}}"></a>
  		</ng-container>
 
-	</mat-card-content>
+		<ng-container *ngSwitchCase="'personasset'">
+				<a rel="noopener noreferrer" target="_blank"
+								href="/download/{{token.entityId}}" >
+					<img  class="imagepreview" src="download/{{token.entityId}}"  alt="{token.slug}}" 
+								title="{{token.slug}}"></a>
+ 		</ng-container>
+	</ng-container>
 
+	</mat-card-content>
 </mat-card>

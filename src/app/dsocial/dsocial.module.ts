@@ -75,6 +75,7 @@ import { SolicitaEncuestaEditComponent } from './asistencia/sol-asis-data/solici
 import { SolicitaEncuestaViewComponent } from './asistencia/sol-asis-data/solicita-encuesta-view/solicita-encuesta-view.component';
 import { AlmacenSearchComponent } from './helpers/product-search/product-search.component';
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
+import { PersonAssetsPanelComponent } from './ciudadano/person-assets/person-assets-panel/person-assets-panel.component';
 
 @NgModule({
   imports: [
@@ -153,6 +154,7 @@ import { AsistableroPageComponent } from './tableros/asistablero-page/asistabler
     SolicitaEncuestaViewComponent,
     AlmacenSearchComponent,
     AsistableroPageComponent,
+    PersonAssetsPanelComponent,
   ]
 })
 export class DsocialModule { }

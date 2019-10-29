@@ -187,8 +187,6 @@ export class DsocialModel {
 				if(isInAsistenciaBlackList(co.type + ':' + co.tingreso, action)) cumple = false;
 			})
 		}
-		console.log('asistencia permitida: [%s] [%s]', cumple, action)
-
 		return cumple;
 	}
 
