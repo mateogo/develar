@@ -41,7 +41,7 @@
         <mat-form-field>
           <mat-select #fldTipoVinculo placeholder="Vínculo / Rol laboral"
               [formControl]="form.controls['vinculo']"
-              (selectionChange)="changeSelectionValue('tdoc',fldTipoVinculo.value)" >
+              (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
             <mat-option *ngFor="let item of vinculos" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
@@ -49,14 +49,14 @@
       </div>
     </div>
 
-    <!---tprofesiion; ocupación; ingreso --->
+    <!---tocupacion; ocupación; ingreso --->
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <mat-select #fldTProfesion placeholder="Profesión/ Actividad"
-              [formControl]="form.controls['tprofesion']"
-              (selectionChange)="changeSelectionValue('tdoc',fldTProfesion.value)" >
-            <mat-option *ngFor="let item of tprofPersonaFisica" 
+          <mat-select #fldTOcupacion placeholder="Ocupación/ Profesión"
+              [formControl]="form.controls['tocupacion']"
+              (selectionChange)="changeSelectionValue('tocupacion',fldTOcupacion.value)" >
+            <mat-option *ngFor="let item of tocupacionPersonaFisica" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>

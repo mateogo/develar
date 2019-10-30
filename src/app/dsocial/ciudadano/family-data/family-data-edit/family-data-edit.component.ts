@@ -22,17 +22,21 @@ const UPDATE = 'update';
 })
 export class FamilyDataEditComponent implements OnInit {
 
-	@Input() token: FamilyData;
+	@Input() familymember: FamilyData;
 	@Output() updateToken = new EventEmitter<UpdateFamilyEvent>();
 
 	public form: FormGroup;
   public persontypes        = personModel.persontypes;
   public tcompPersonaFisica = personModel.tipoDocumPF;
-  public tprofPersonaFisica = personModel.profesiones;
+  public tocupacionPersonaFisica = personModel.oficiosTOcupacionList;
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public vinculos           = personModel.vinculosFamiliares;
   public estados            = personModel.estadosVinculo;
+
+  public tDoc = 'DNI';
+  public personError = false;
+  public personErrorMsg = '';
 
 
   private provincias = personModel.provincias;
@@ -52,15 +56,26 @@ export class FamilyDataEditComponent implements OnInit {
   		this.form = this.buildForm();
 	}
 
+  handlePerson(p: Person){
+    this.acceptPersonaAsFamilyMember(p);
+  }
+
+  private acceptPersonaAsFamilyMember(p: Person){
+    // validate
+    // caso: OK
+    this.familymember = personModel.buildFamilyDataFromPerson(p, this.familymember);
+    this.initForEdit(this.form, this.familymember);
+
+  }
 
 
   ngOnInit() {
-  	this.initForEdit(this.form, this.token);
+  	this.initForEdit(this.form, this.familymember);
 
   }
 
   onSubmit(){
-  	this.initForSave(this.form, this.token);
+  	this.initForSave(this.form, this.familymember);
   	this.action = UPDATE;
   	this.emitEvent(this.action);
   }
@@ -80,7 +95,7 @@ export class FamilyDataEditComponent implements OnInit {
   	this.updateToken.next({
   		action: action,
   		type: TOKEN_TYPE,
-  		token: this.token
+  		token: this.familymember
   	});
 
   }
@@ -118,7 +133,7 @@ export class FamilyDataEditComponent implements OnInit {
                   let txt = ''
 
                   if(t && t.length){ 
-                      invalid = true;
+                      invalid = false;
                       txt = 'Documento existente: ' + t[0].displayName;
                   }
 
@@ -153,9 +168,8 @@ export class FamilyDataEditComponent implements OnInit {
       fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
       nestudios:    [null],
-      tprofesion:   [null],
+      tocupacion:   [null],
     	ocupacion:    [null],
-    	tocupacion:   [null],
     	ingreso:      [null],
     	estado:       [null],
     	desde:        [null],
@@ -175,15 +189,13 @@ export class FamilyDataEditComponent implements OnInit {
       fenactx:      token.fenactx,
       ecivil:       token.ecivil,
       nestudios:    token.nestudios,
-      tprofesion:   token.tprofesion,
+      tocupacion:   token.tocupacion,
     	ocupacion:    token.ocupacion,
-    	tocupacion:   token.tocupacion,
     	ingreso:      token.ingreso,
     	estado:       token.estado,
     	desde:        token.desde,
     	hasta:        token.hasta,
     	comentario:   token.comentario,
-
 		});
 
 		return form;
@@ -206,9 +218,8 @@ export class FamilyDataEditComponent implements OnInit {
 
 		entity.ecivil =       fvalue.ecivil;
 		entity.nestudios =    fvalue.nestudios;
-		entity.tprofesion =   fvalue.tprofesion;
-		entity.ocupacion =    fvalue.ocupacion;
 		entity.tocupacion =   fvalue.tocupacion;
+		entity.ocupacion =    fvalue.ocupacion;
 		entity.ingreso =      fvalue.ingreso;
 		entity.estado =       fvalue.estado;
 		entity.desde =        fvalue.desde;

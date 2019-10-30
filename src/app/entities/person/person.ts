@@ -215,9 +215,8 @@ export class FamilyData {
     fenactx: string;
     ecivil: string;
     nestudios: string;
-    tprofesion: string;
-    ocupacion: string;
     tocupacion: string;
+    ocupacion: string;
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
@@ -239,9 +238,8 @@ export class BusinessMembersData {
     email: string;
     phone: string;
     nestudios: string;
-    tprofesion: string;
-    ocupacion: string;
     tocupacion: string;
+    ocupacion: string;
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
@@ -1698,6 +1696,27 @@ class PersonModel {
 
       return acceptable;
     }
+
+    buildFamilyDataFromPerson(p:Person, fam:FamilyData):FamilyData{
+      if(!fam) fam = new FamilyData();
+
+      fam.nombre = p.nombre;
+      fam.apellido = p.apellido;
+      fam.tdoc = p.tdoc;
+      fam.ndoc = p.ndoc;
+      fam.fenac = p.fenac;
+      fam.fenactx = p.fenactx;
+      fam.ecivil = p.ecivil;
+      fam.nestudios = p.nestudios;
+      fam.tocupacion = p.tprofesion;
+      fam.ocupacion = p.especialidad;
+
+      fam.hasOwnPerson = true;
+      fam.personId = p._id;
+
+      return fam;
+    }
+
 
 }
 

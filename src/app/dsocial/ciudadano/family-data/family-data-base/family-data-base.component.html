@@ -13,7 +13,7 @@
 		 		</div>
 
 		 		<div class="col-md-11">
-		 			<family-view [token]='token'></family-view>
+		 			<family-view [familymember]='token'></family-view>
 		 		</div>
 			</div>
 		 </ng-container>
@@ -21,7 +21,7 @@
   		<ng-container *ngIf="showEdit">
 		 	<div class="row">
 		 		<div class="col-sm-12 col-md-12">
-		 			<family-edit [token]='token'
+		 			<family-edit [familymember]='token'
 		 								(updateToken)='manageToken($event)' ></family-edit>
 		 		</div>
 			</div>

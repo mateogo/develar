@@ -21,7 +21,9 @@ import { DsocialController } from '../../dsocial.controller';
 export class PersonBuscarComponent implements OnInit {
 	@Input() entityId;
   @Input() entityName;
+  @Input() browseTitle = 'buscar persona/organización por nombre ó DNI...';
   @Input() tdoc = 'DNI';
+  @Input() query = {};
 
 	@Output() person$ = new EventEmitter<Person>();
   @Output() searchTerms = new Subject<string>();

@@ -519,15 +519,33 @@ const createNewPerson = function(person, errcb,cb){
 // }
 
 function checkForPersonToPersonRelation(sourcePerson){
+    if(sourcePerson && sourcePerson.integrantes && sourcePerson.integrantes.length){
+        updateBusinessMembers(sourcePerson);
+    }
+    if(sourcePerson && sourcePerson.familiares && sourcePerson.familiares.length){
+        updateFamilyMembers(sourcePerson);
+    }
+}
+
+function updateBusinessMembers(sourcePerson){
     let businessMembers = sourcePerson.integrantes || [];
-    businessMembers.forEach((p, index) => {
-        if(p.hasOwnPerson){
-            updateRelatedBusinessMember(sourcePerson, p, index);
+    businessMembers.forEach((member, index) => {
+        if(member.hasOwnPerson){
+            updateRelatedPersonMember('integrantes', sourcePerson, member, index);
         }
     })
-
-
 }
+
+function updateFamilyMembers(sourcePerson){
+    let familyMembers = sourcePerson.familiares || [];
+    familyMembers.forEach((member, index) => {
+        if(member.hasOwnPerson){
+            updateRelatedPersonMember('familiares', sourcePerson, member, index);
+        }
+    })
+}
+
+
 function addFaceta(facetas, token){
     facetas = facetas || [];
     let index = facetas.indexOf(token);
@@ -535,26 +553,37 @@ function addFaceta(facetas, token){
     return facetas;
 }
 
-function updateRelatedBusinessMember(sourcePerson, member, index){
-    let query = buildQuery({
-        tdoc: member.tdoc,
-        ndoc: member.ndoc
-    });
-    Person.findOne(query).then(tperson => {
+function updateRelatedPersonMember(key, sourcePerson, member, index){
+    let query;
+    let personQuery;
+
+    if(member.personId){
+        personQuery = Person.findById(member.personId);
+
+    }else {
+        query = buildQuery({
+            tdoc: member.tdoc,
+            ndoc: member.ndoc
+        });
+        personQuery = Person.findOne(query);
+    }
+    
+    personQuery.then(tperson => {
         if(!tperson) tperson = initNewPerson(member);
 
-        updatePersonFromVinculo(tperson, member);
+        updatePersonFromVinculo(tperson, member, key);
 
         tperson.save().then(err => {
             if(!err){
-                sourcePerson.integrantes[0].personId = tperson._id;
-                sourcePerson.save().then(err =>{
-                    //finish
-                })
+                if(!member.personId){
+                    sourcePerson[key][index].personId = tperson._id;
+                    sourcePerson.save().then(err =>{
+                        //finish
+                    })
+                }
             }
         });
     })
-
 }
 
 
@@ -570,10 +599,14 @@ function initNewPerson(member){
     return person;
 }
 
-function updatePersonFromVinculo(tperson, member){
+function updatePersonFromVinculo(tperson, member, key){
     tperson.nombre = member.nombre;
     tperson.apellido = member.apellido;
-    tperson.displayName = member.apellido + ', ' + member.nombre;
+    
+    if(!tperson.displayName ){
+        tperson.displayName = member.apellido + ', ' + member.nombre;
+    }
+
     tperson.tdoc = member.tdoc;
     tperson.ndoc = member.ndoc;
     tperson.email = member.email;
@@ -581,15 +614,21 @@ function updatePersonFromVinculo(tperson, member){
     tperson.fenactx = member.fenactx;
     tperson.ecivil = member.ecivil;
 
-    tperson.tprofesion = member.tprofesion;
-    tperson.nestudios = member.nestudios;
-    tperson.especialidad = member.ocupacion;
-    tperson.ambito = member.tocupacion;
-    tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
+    if(key === 'integrantes'){
+        tperson.tprofesion = member.tprofesion;
+        tperson.nestudios = member.nestudios;
+        tperson.especialidad = member.ocupacion;
+        tperson.ambito = member.tocupacion;
+        tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
 
-    if(member.vinculo === "seguridad"){
-        tperson.facetas = addFaceta(tperson.facetas, member.vinculo);
+        if(member.vinculo === "seguridad"){
+            tperson.facetas = addFaceta(tperson.facetas, member.vinculo);
+        }
+
+    } else if(key === 'familiares') {
+        tperson.facetas = addFaceta(tperson.facetas, 'familiar');
     }
+
     return tperson;
 }
 

@@ -31,7 +31,7 @@ export class ComercioMembersEditComponent implements OnInit {
 	public form: FormGroup;
   public persontypes        = personModel.persontypes;
   public tcompPersonaFisica = personModel.tipoDocumPF;
-  public tprofPersonaFisica = personModel.profesiones;
+  public tocupacionPersonaFisica = personModel.oficiosTOcupacionList;
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public vinculos           = personModel.vinculosLaborales;
@@ -163,9 +163,8 @@ export class ComercioMembersEditComponent implements OnInit {
       fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
       nestudios:    [null],
-      tprofesion:   [null],
+      tocupacion:   [null],
     	ocupacion:    [null],
-    	tocupacion:   [null],
     	ingreso:      [null],
     	estado:       [null],
     	desde:        [null],
@@ -185,9 +184,8 @@ export class ComercioMembersEditComponent implements OnInit {
       fenactx:      token.fenactx,
       ecivil:       token.ecivil,
       nestudios:    token.nestudios,
-      tprofesion:   token.tprofesion,
+      tocupacion:   token.tocupacion,
     	ocupacion:    token.ocupacion,
-    	tocupacion:   token.tocupacion,
     	ingreso:      token.ingreso,
     	estado:       token.estado,
     	desde:        token.desde,
@@ -215,9 +213,8 @@ export class ComercioMembersEditComponent implements OnInit {
 
 		entity.ecivil =       fvalue.ecivil;
 		entity.nestudios =    fvalue.nestudios;
-		entity.tprofesion =   fvalue.tprofesion;
+    entity.tocupacion =   fvalue.tocupacion;
 		entity.ocupacion =    fvalue.ocupacion;
-		entity.tocupacion =   fvalue.tocupacion;
 		entity.ingreso =      fvalue.ingreso;
 		entity.estado =       fvalue.estado;
 		entity.desde =        fvalue.desde;

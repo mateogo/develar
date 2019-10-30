@@ -38,7 +38,7 @@ export class ComercioMembersViewComponent implements OnInit {
     this.edadTxt = this.edad ? '(' + this.edad + ')' : '';
 
     this.vinculoTxt = personModel.getVinculoLaboral(this.token.vinculo);
-    this.ocupacion = personModel.getProfesion(this.token.tprofesion)
+    this.ocupacion = personModel.getProfesion(this.token.tocupacion)
     
     this.estado = personModel.getEstadoVinculo(this.token.estado);
 

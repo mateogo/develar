@@ -1,5 +1,20 @@
 <mat-card >
   <mat-card-content>
+  <div class="row" >
+    <div class="col-sm-12 col-md-6">
+      <span>Puedes buscar por nombre o DNI antecedentes de persona:</span>
+      <div *ngIf='personError' class="person-error">
+        <span>{{ personErrorMsg }}</span>
+      </div>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+      <persona-buscar [tdoc]='tDoc'
+                      (person$)=handlePerson($event) ></persona-buscar>
+    </div>
+  </div>
+
   <form [formGroup]="form">
 
     <!---nombre; apellido--->
@@ -41,7 +56,7 @@
         <mat-form-field>
           <mat-select #fldTipoVinculo placeholder="Vínculo familiar"
               [formControl]="form.controls['vinculo']"
-              (selectionChange)="changeSelectionValue('tdoc',fldTipoVinculo.value)" >
+              (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
             <mat-option *ngFor="let item of vinculos" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
@@ -53,10 +68,10 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <mat-select #fldTProfesion placeholder="Profesión/ Actividad"
-              [formControl]="form.controls['tprofesion']"
-              (selectionChange)="changeSelectionValue('tdoc',fldTProfesion.value)" >
-            <mat-option *ngFor="let item of tprofPersonaFisica" 
+          <mat-select #fldTOcupacion placeholder="Tipo de ocupación/ actividad"
+              [formControl]="form.controls['tocupacion']"
+              (selectionChange)="changeSelectionValue('tocupacion',fldTOcupacion.value)" >
+            <mat-option *ngFor="let item of tocupacionPersonaFisica" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
