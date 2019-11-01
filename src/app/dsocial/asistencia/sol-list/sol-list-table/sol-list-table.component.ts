@@ -262,7 +262,7 @@ export class TableDataSource extends DataSource<any> {
 
       switch (this._sort.active) {
         case 'sector':        [propertyA, propertyB] = [a.sector, b.sector]; break;
-        case 'compNum':  [propertyA, propertyB] = [a.asistenciaId, b.asistenciaId]; break;
+        case 'compNum':       [propertyA, propertyB] = [a.asistenciaId, b.asistenciaId]; break;
         case 'action':        [propertyA, propertyB] = [a.action, b.action]; break;
         case 'slug':          [propertyA, propertyB] = [a.slug, b.slug]; break;
         case 'fecomp_txa':    [propertyA, propertyB] = [a.fecomp_tsa, b.fecomp_tsa]; break;

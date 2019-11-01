@@ -33,7 +33,9 @@ const dataLabel = {
     },
     value: {
       tdoc: 'CUIT',
-      personType: 'fisica'
+      personType: 'fisica',
+      minlen: 11,
+      maxlen: 11
     }
   },
 
@@ -45,7 +47,9 @@ const dataLabel = {
     },
     value: {
       tdoc: 'DNI',
-      personType: 'juridica'
+      personType: 'juridica',
+      minlen: 6,
+      maxlen: 9
     }
   }
 }
@@ -67,7 +71,7 @@ export class RegistroIngresoComponent implements OnInit {
 
     public communityId = '';
 
-    private defaultData = {tdoc: 'CUIT', ndoc: ''}
+    private defaultData:any;
 
     public persontypes = personModel.persontypes;
     public tcompPersonaFisica = personModel.tipoDocumPF;
@@ -104,8 +108,8 @@ export class RegistroIngresoComponent implements OnInit {
         this.form = this.fb.group({
             tdoc: [null],
             ndoc: [null, [Validators.required, 
-                          Validators.minLength(7),
-                          Validators.maxLength(11),
+                          Validators.minLength(this.defaultData['minlen']),
+                          Validators.maxLength(this.defaultData['maxlen']),
                           Validators.pattern('[0-9]*')], 
                           [this.dniExistenteValidator(this.minimalCtrl, this.docBelongsTo)] ],
         });
@@ -164,10 +168,10 @@ export class RegistroIngresoComponent implements OnInit {
                     let invalid = false;
                     let txt = ''
 
-                    if(t && t.length){ 
-                        invalid = true;
-                        txt = 'DNI existente: ' + t[0].displayName;
-                    }
+                    // if(t && t.length){ 
+                    //     invalid = true;
+                    //     txt = 'DNI existente: ' + t[0].displayName;
+                    // }
 
                     message['error'] = txt;
                     return invalid ? { 'mailerror': txt }: null;

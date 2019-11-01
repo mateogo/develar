@@ -186,8 +186,12 @@
     <hr>
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 
-          (click)="onSubmit()"
+          (click)="onSubmit('search')"
           [disabled]="!form.valid" >Buscar</button>
+      
+      <button mat-raised-button color="warn" 
+          (click)="onSubmit('search_next')"
+          [disabled]="!form.valid" >Buscar siguientes</button>
       
       <button mat-button type="button" color="accent"
           (click)="onCancel()" >Cancelar</button>

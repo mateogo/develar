@@ -35,12 +35,12 @@ export const sectores: SectorAtencion[] = [
 			{val:'tsocial',      serial:'tsocial',     label: 'Trabajador/a Social', style: {'background-color': "#f2cded"}},
 			{val:'nutricion',    serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
 			{val:'inhumacion',   serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
-			{val:'terceraedad',  serial:'terceraedad', label: 'Tercera Edad',      style: {'background-color': "#f2dded"}},
+			{val:'terceraedad',  serial:'terceraedad', label: 'Adultos mayores',      style: {'background-color': "#f2dded"}},
 			{val:'pensiones',    serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
 			{val:'familia',      serial:'familia',     label: 'Acomp. Integral de Familia',  style: {'background-color': "#f2dded"}},
 			{val:'referentebarrial',   serial:'referentebarrial',   label: 'Referente Barrial',   style: {'background-color': "#f2dded"}},
 			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}},
-			{val:'habitat',       serial:'habitat',      label: 'Habitat',            style: {'background-color': "#f2dded"}},
+			{val:'habitat',      serial:'habitat',     label: 'Habitat',           style: {'background-color': "#f2dded"}},
 	];
 
 

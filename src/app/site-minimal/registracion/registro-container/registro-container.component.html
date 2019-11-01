@@ -35,13 +35,15 @@
 					<ng-container *ngIf="showRegistration">
 						<div 	*ngIf="isComercio" 
 									class="d-flex justify-content-center align-items-center">
-							<registro-alta (event)=altaComercio($event)
-														 [target]='target'  ></registro-alta>
+							<registro-alta 	(event)=altaComercio($event)
+															[person]='person'
+														 	[target]='target'  ></registro-alta>
 						</div>
 						<div  *ngIf="!isComercio" 
 									class="d-flex justify-content-center align-items-center">
-							<registro-altapf (event)=altaComercio($event)
-														 [target]='target'  ></registro-altapf>
+							<registro-altapf 	(event)=altaComercio($event)
+																[person]='person'
+														 		[target]='target'  ></registro-altapf>
 						</div>
 					</ng-container>
 

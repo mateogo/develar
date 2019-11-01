@@ -235,7 +235,7 @@ export class RegistroContainerComponent implements OnInit {
           this.router.navigate(['/mab/comercios/registro', person._id]);
 
         }else {
-          this.router.navigate(['/mab/prevencion/registro', person._id]);
+          this.router.navigate(['/mab/comercios/registro', person._id]);
 
         }
       })
@@ -264,11 +264,18 @@ export class RegistroContainerComponent implements OnInit {
   }
 
   testIfComercioExists(person:Person){
-    this.minimalCtrl.testPersonByDNI(person.tdoc, person.ndoc).subscribe(p=>{
-      if(p && p.length){
-        this.isUpdate = "update";
-        Object.assign(person, p[0]);
+    this.minimalCtrl.testPersonByDNI(person.tdoc, person.ndoc).subscribe(plist=>{
+      if(plist && plist.length){
+        let token = plist[0];
+        console.log('PERSON EXISTS: [%s]', token.displayName);
+        Object.assign(person, token);
+       if(token.user && token.user.userid){
+          this.isUpdate = "update";
 
+        }else {
+          this.isUpdate = "create";
+        }
+ 
       } else {
         this.isUpdate = "create";
       }

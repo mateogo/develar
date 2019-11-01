@@ -35,6 +35,7 @@ const TARGET_SEGURIDAD = "personalseguridad";
 export class RegistroAltapfComponent implements OnInit {
 	@Input() user: User;
 	@Input() data = {};
+  @Input() person: Person;
   @Input() target: string ;// [comercio | personalseguridad]
 
 	@Output() person$ = new EventEmitter<Person>();
@@ -76,10 +77,18 @@ export class RegistroAltapfComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      this.model = new Person('');
-      this.model.tdoc = this.data['tdoc'] || 'DNI';
-      this.model.ndoc = this.data['ndoc'];
-      this.model.personType = 'juridica';
+      if(this.person){
+        console.log('registro: PERSON EXISTS')
+        this.model = this.person
+
+      }else {
+        console.log('registro: PERSON NEW')
+        this.model = new Person('');
+        this.model.tdoc = this.data['tdoc'] || 'DNI';
+        this.model.ndoc = this.data['ndoc'];
+        this.model.personType = 'fisica';
+      }
+
 
 			this.passwordFormCtrl = new FormControl('', Validators.required);
 			this.confirmPasswordFormCtrl = new FormControl('', CustomValidators.equalTo(this.passwordFormCtrl));
@@ -90,8 +99,8 @@ export class RegistroAltapfComponent implements OnInit {
           ndoc: [null, [Validators.required, 
                         Validators.minLength(7),
                         Validators.maxLength(11),
-                        Validators.pattern('[0-9]*')], 
-                        [this.dniExistenteValidator(this, this.minimalCtrl, this.docBelongsTo)] ],
+                        Validators.pattern('[0-9]*')]  ], 
+                        //[this.dniExistenteValidator(this, this.minimalCtrl, this.docBelongsTo)] ],
 
           // fenactx:      [null, [this.fechaNacimientoValidator()]],
           // street1:     [null, Validators.compose([Validators.required])],
@@ -141,6 +150,13 @@ export class RegistroAltapfComponent implements OnInit {
       this.personForm.reset({
           tdoc: model.tdoc,
           ndoc: model.ndoc,
+          userdata: {
+            username: model.displayName,
+            nombre: model.nombre,
+            apellido: model.apellido,
+            email: model.email
+
+          }
       });
   }
 
@@ -235,10 +251,10 @@ export class RegistroAltapfComponent implements OnInit {
                   let invalid = false;
                   let txt = ''
 
-                  if(t && t.length){ 
-                      invalid = true;
-                      txt = 'Documento existente: ' + t[0].displayName;
-                  }
+                  // if(t && t.length){ 
+                  //     invalid = true;
+                  //     txt = 'Documento existente: ' + t[0].displayName;
+                  // }
 
                   message['error'] = txt;
                   return invalid ? { 'mailerror': txt }: null;

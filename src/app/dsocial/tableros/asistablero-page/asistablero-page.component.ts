@@ -275,7 +275,6 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   resetPersonByCityChart(){
-  	//console.dir(this.personByCity)
 
   	let personArray = []
   	Object.keys(this.personHelperByCity).forEach(k => {
@@ -297,7 +296,6 @@ export class AsistableroPageComponent implements OnInit {
     this.personByCity.stitle = "Asistencias por ciudad";
     this.personByCity.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
-  	console.dir(this.personByCity)
   }
 
 
@@ -381,7 +379,6 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   resetPersonBySexChart(){
-  	//console.dir(this.personBySex)
 
   	let personArray = []
   	Object.keys(this.personHelperBySex).forEach(k => {
@@ -405,7 +402,6 @@ export class AsistableroPageComponent implements OnInit {
     this.personBySex.stitle = "Personas por sexo";
     this.personBySex.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
-  	//console.dir(this.personBySex)
   }
 
 
@@ -494,7 +490,6 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   resetPersonByAgeChart(){
-  	//console.dir(this.personByAge)
 
   	let personArray = []
   	Object.keys(this.personHelperByAge).forEach(k => {
@@ -518,7 +513,6 @@ export class AsistableroPageComponent implements OnInit {
     this.personByAge.stitle = "Personas por segmento etario";
     this.personByAge.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
-  	//console.dir(this.personByAge)
   }
 
   /******************

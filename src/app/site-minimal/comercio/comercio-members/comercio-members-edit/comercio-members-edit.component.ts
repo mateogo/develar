@@ -37,6 +37,10 @@ export class ComercioMembersEditComponent implements OnInit {
   public vinculos           = personModel.vinculosLaborales;
   public estados            = personModel.estadosVinculo;
 
+  public tDoc = 'DNI';
+  public personError = false;
+  public personErrorMsg = '';
+
 
   private provincias = personModel.provincias;
   private addTypes   = personModel.addressTypes;
@@ -95,6 +99,20 @@ export class ComercioMembersEditComponent implements OnInit {
 
   }
 
+  handlePerson(p: Person){
+    this.acceptPersonaAsBusinessMember(p);
+  }
+
+  private acceptPersonaAsBusinessMember(p: Person){
+    // validate
+    // caso: OK
+    this.token = personModel.buildBusinessMemberFromPerson(p, this.token);
+    this.initForEdit(this.form, this.token);
+
+  }
+
+
+
   fechaNacimientoValidator(): ValidatorFn {
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
           let validAge = devutils.validAge(control.value);
@@ -127,12 +145,15 @@ export class ComercioMembersEditComponent implements OnInit {
                   let invalid = false;
                   let txt = ''
 
+
                   if(t && t.length){ 
-                      invalid = true;
-                      txt = 'Documento existente: ' + t[0].displayName;
+                      //invalid = true;
+                      //txt = 'Documento existente: ' + t[0].displayName;
+                      that.token.hasOwnPerson = true;
+                      that.token.personId = t[0]._id;
                   }
 
-                  message['error'] = txt;
+                  // message['error'] = txt;
                   return invalid ? { 'mailerror': txt }: null;
 
               })

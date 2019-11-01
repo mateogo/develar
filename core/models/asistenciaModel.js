@@ -153,11 +153,15 @@ function buildQuery(query){
   }
 
   let comp_range = [];
+
+
   if(query["compNum_d"]){
+    console.log('compNum_d [%s]', query["compNum_d"])
     comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
   }
     
   if(query["compNum_h"]){
+    console.log('compNum_h [%s]', query["compNum_h"])
     comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
   }
 
@@ -243,14 +247,19 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    console.dir(regexQuery)
 
-    Record.find(regexQuery, function(err, entities) {
-        if (err) {
-            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
-            errcb(err);
-        }else{
-            cb(entities);
-        }
+    Record.find(regexQuery)
+          .limit(100)
+          .lean()
+          .sort( '-fecomp_tsa' )
+          .exec(function(err, entities) {
+              if (err) {
+                  console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                  errcb(err);
+              }else{
+                  cb(entities);
+              }
     });
 };
 

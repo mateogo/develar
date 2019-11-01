@@ -14,6 +14,7 @@ import { devutils }from '../../../../develar-commons/utils'
 const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
 const SEARCH = 'search';
+const SEARCH_NEXT = 'search_next';
 
 
 @Component({
@@ -56,15 +57,19 @@ export class SolasisBrowseComponent implements OnInit {
 
 
   ngOnInit() {
+    this.sectorOptList.push(
+       {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }
+     );
+
     this.query = this.dsCtrl.asistenciasSelector;
   	this.initForEdit(this.form, this.query);
     this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
 
   }
 
-  onSubmit(){
+  onSubmit(action){
   	this.initForSave(this.form, this.query);
-  	this.formAction = SEARCH;
+  	this.formAction = action;
   	this.emitEvent(this.formAction);
   }
 
@@ -101,7 +106,7 @@ export class SolasisBrowseComponent implements OnInit {
 
   deSelectPerson(e:MatCheckboxChange){
     delete this.currentPerson;
-
+    delete this.query.requirenteId;
   }
 
  
@@ -184,8 +189,8 @@ export class SolasisBrowseComponent implements OnInit {
     entity.fecomp_d =   fvalue.fecomp_d;
     entity.fecomp_h =   fvalue.fecomp_h;
 
-    entity.fecomp_ts_d = dateD ? dateD.getTime() : 0;
-    entity.fecomp_ts_h = dateH ? dateH.getTime() : 0;
+    entity.fecomp_ts_d = dateD ? dateD.getTime() : null;
+    entity.fecomp_ts_h = dateH ? dateH.getTime() : null;
 
 
 		entity.action =       fvalue.action;
@@ -208,6 +213,8 @@ export class SolasisBrowseComponent implements OnInit {
         this.dsCtrl.updateCurrentPerson(p);
       })
 
+    }else {
+      delete entity.requirenteId;
     }
 
     //Save Actual Data in Controller

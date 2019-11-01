@@ -1,6 +1,20 @@
 <mat-card >
   <mat-card-content>
   <form [formGroup]="form">
+    <div class="row" >
+      <div class="col-sm-12 col-md-6">
+        <span>Puede buscar por nombre o DNI antecedentes de persona:</span>
+        <div *ngIf='personError' class="person-error">
+          <span>{{ personErrorMsg }}</span>
+        </div>
+
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <utils-browse-person 
+                      (person$)=handlePerson($event) ></utils-browse-person>
+      </div>
+    </div>
+
 
     <!---nombre; apellido--->
     <div class="row" >

@@ -135,7 +135,7 @@ export class AsistenciaBrowse {
 		action:      string;
 		sector:      string;
 		estado:      string = 'activo';
-		avance:      string = 'emitido';
+		avance:      string;
 		fe_visita:   string;
 		ruta:        string;
 		barrio:      string;
@@ -224,7 +224,7 @@ const asisActionOptList: Array<any> = [
 const alimentosTypeOptList: Array<any> = [
         {val: 'standard',   type:'Estándar',      label: 'Estándar' },
         {val: 'infante',    type:'Infante',       label: 'Infante' },
-        {val: 'teredad',    type:'Tercera Edad',  label: 'Tercera Edad' },
+        {val: 'teredad',    type:'Adultos mayores',  label: 'Adultos mayores' },
         {val: 'celiaco',    type:'Celíacos',      label: 'Celíacos' },
         {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
         {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
@@ -369,7 +369,7 @@ function validateFlujoEntregas(asistencia: Asistencia, entregas: RemitoAlmacen[]
 	let mesActual = today.getMonth();
 	if(today.getTime() < asistencia.modalidad.fe_tsd  || today.getTime() > asistencia.modalidad.fe_tsh ){
 		error['valid'] = false;
-		error['message'] ='Fecha fuera de rango';
+		error['message'] ='Período de entregas vencido';
 		return error;
 	}
 

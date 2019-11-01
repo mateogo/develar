@@ -231,23 +231,23 @@ export class BusinessMembersData {
     apellido: string;
     tdoc: string = 'DNI';
     ndoc: string;
-    vinculo: string;
+    vinculo: string = 'seguridad';
     fenac: number = 0;
     fenactx: string;
     ecivil: string;
     email: string;
     phone: string;
     nestudios: string;
-    tocupacion: string;
-    ocupacion: string;
+    tocupacion: string = 'seguridad';
+    ocupacion: string = 'personal de prevención';
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
-    estado: string;
+    estado: string = 'activo';
     desde: string;
     hasta: string;
     comentario: string;
-    assets: Array<CardGraph>;
+    assets: Array<CardGraph> = [];
 }
 
 
@@ -1717,6 +1717,25 @@ class PersonModel {
       return fam;
     }
 
+    buildBusinessMemberFromPerson(p:Person, member:BusinessMembersData): BusinessMembersData{
+      if(!member) member = new BusinessMembersData();
+
+      member.nombre = p.nombre;
+      member.apellido = p.apellido;
+      member.tdoc = p.tdoc;
+      member.ndoc = p.ndoc;
+      member.fenac = p.fenac;
+      member.fenactx = p.fenactx;
+      member.ecivil = p.ecivil;
+      member.nestudios = p.nestudios;
+      member.tocupacion = p.tprofesion;
+      member.ocupacion = p.especialidad;
+
+      member.hasOwnPerson = true;
+      member.personId = p._id;
+
+      return member;
+    }
 
 }
 

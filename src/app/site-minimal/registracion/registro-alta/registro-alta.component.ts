@@ -46,6 +46,7 @@ const dataLabel = {
 export class RegistroAltaComponent implements OnInit {
 	@Input() user: User;
 	@Input() data = {};
+  @Input() person: Person;
   @Input() target: string ;// [comercio | personalseguridad]
 
 	@Output() person$ = new EventEmitter<Person>();
@@ -87,14 +88,18 @@ export class RegistroAltaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      this.model = new Person('');
-      this.model.tdoc = this.data['tdoc'] || 'CUIT';
-      this.model.ndoc = this.data['ndoc'];
-      this.model.personType = 'juridica';
+      if(this.person){
+        this.model = this.person;
+      
+      }else {
+        this.model = new Person('');
+        this.model.tdoc = this.data['tdoc'] || 'CUIT';
+        this.model.ndoc = this.data['ndoc'];
+        this.model.personType = 'juridica';
+      }
 
 			this.passwordFormCtrl = new FormControl('', Validators.required);
 			this.confirmPasswordFormCtrl = new FormControl('', CustomValidators.equalTo(this.passwordFormCtrl));
-
 
       this.personForm = this.fb.group({
           displayName: [null, Validators.compose( [Validators.required])],

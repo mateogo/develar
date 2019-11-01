@@ -21,6 +21,7 @@ const TOKEN_TYPE = 'asistencia';
 const CREATE = 'create';
 const SEARCH = 'search';
 const NAVIGATE = 'navigate';
+const SEARCH_NEXT = 'search_next';
 
 
 @Component({
@@ -112,19 +113,27 @@ export class SolDashboardPageComponent implements OnInit {
 
     // current selector saved in Controller
     this.query = this.dsCtrl.asistenciasSelector;
-    this.fetchSolicitudes(this.query);
+    this.fetchSolicitudes(this.query, SEARCH);
   }
 
   /************************/
   /*    Sol/Asistencia   */
   /**********************/
-  fetchSolicitudes(query?: any){
+  fetchSolicitudes(query: any, action: string){
 
     if(!query){
       query = new AsistenciaBrowse();
       query['avance'] = 'emitido';
 
       this.query = query;
+    }
+
+    if(action === SEARCH_NEXT){
+      let last = this.getLastListed();
+      if(last){
+        this.query.fecomp_ts_h = last;
+      }
+
     }
 
     Object.keys(query).forEach(key =>{
@@ -148,6 +157,13 @@ export class SolDashboardPageComponent implements OnInit {
 
     })
 
+  }
+  private getLastListed(){
+    let last = 0;
+    if(this.asistenciasList && this.asistenciasList.length){
+      last = this.asistenciasList[this.asistenciasList.length - 1].fecomp_tsa;
+    }
+    return last;
   }
 
 
@@ -207,7 +223,7 @@ export class SolDashboardPageComponent implements OnInit {
 
     })
     setTimeout(()=>{
-      this.fetchSolicitudes(this.query);
+      this.fetchSolicitudes(this.query, SEARCH);
     },1000)
 
   }
@@ -224,8 +240,8 @@ export class SolDashboardPageComponent implements OnInit {
   refreshSelection(query: AsistenciaBrowse){
     this.query = query;
 
-    if(query.searchAction == SEARCH){
-      this.fetchSolicitudes(this.query);
+    if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
+      this.fetchSolicitudes(this.query, query.searchAction);
     }
 
   }

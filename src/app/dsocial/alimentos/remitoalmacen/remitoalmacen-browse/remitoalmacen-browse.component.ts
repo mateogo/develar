@@ -49,8 +49,8 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Vales de Entregas";
-  public subtitle = "Ayuda directa";
+  public title = "Galpón: Confirmación de entregas";
+  public subtitle = "Emisión de remito de entrega";
 
   public tDoc = "DNI";
   public nDoc = "";

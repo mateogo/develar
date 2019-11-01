@@ -262,9 +262,9 @@ const asisActionOptList: Array<any> = [
 const alimentosTypeOptList: Array<any> = [
         {val: 'standard',   type:'Estándar',      label: 'Estándar' },
         {val: 'infante',    type:'Infante',       label: 'Infante' },
-        {val: 'teredad',    type:'Tercera Edad',  label: 'Tercera Edad' },
+        {val: 'teredad',    type:'Adultos mayores',  label: 'Adultos mayores' },
         {val: 'celiaco',    type:'Celíacos',      label: 'Celíacos' },
-        {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
+        {val: 'comedor',    type:'Comedor comunitario', label: 'Comedor comunitario' },
 
 ];
 
@@ -287,7 +287,7 @@ const frecuenciaOptList: Array<any> = [
 const kitEntregaOptList: Array<any> = [
         {val: 'standard',   type:'Estándar',      label: 'Estándar' },
         {val: 'infante',    type:'Infante',       label: 'Infante' },
-        {val: 'teredad',    type:'Tercera Edad',  label: 'Tercera Edad' },
+        {val: 'teredad',    type:'Adultos mayores',  label: 'Adultos mayores' },
         {val: 'celiaco',    type:'Celíacos',      label: 'Celíacos' },
         {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
 ];

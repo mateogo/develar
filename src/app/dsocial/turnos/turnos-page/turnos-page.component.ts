@@ -19,8 +19,8 @@ export class TurnosPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Ayuda Social Directa";
-  public subtitle = "Atención personalizada";
+  public title = "Atención DS";
+  public subtitle = "Turnos pendientes por sector";
 
   public tDoc = "DNI";
   public nDoc = "";
