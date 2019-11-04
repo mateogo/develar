@@ -88,7 +88,7 @@ const serialTypeConfig = {
   turnos: {
     name: ['ayudadirecta'],
     tserial: ['turnodiario'],
-    sector: ['regionvi', 'materiales', 'masvida', 'alimentos', 'tsocial', 'nutricion', 'inhumacion', 'terceraedad', 'pensiones', 'familia', 'acumar', 'direccion' ],
+    sector: ['regionvi', 'habitat', 'masvida', 'alimentos', 'tsocial', 'nutricion', 'inhumacion', 'terceraedad', 'pensiones', 'familia', 'cimientos', 'direccion' ],
     tdoc: ['turno'],
     letra: ['X'],
     punto: 0,

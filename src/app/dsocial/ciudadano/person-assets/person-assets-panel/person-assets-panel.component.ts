@@ -54,12 +54,18 @@ export class PersonAssetsPanelComponent implements OnInit {
 
   createCardGraphFromAsset(asset){
     let card = graphUtilities.cardGraphFromAsset('asset', asset, 'documento');
-    console.log('emitONCE')
+    //this.assetList.push(card);
     this.addAssetToList.next(card);
   }
 
   onSubmit(){
+    this.showList = false;
     this.emitEvent(UPDATE);
+
+    setTimeout(()=> {
+      this.showList = true;
+    }, 1000);
+
   }
 
   onCancel(){

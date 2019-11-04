@@ -168,7 +168,6 @@ export class AmbientalDataEditComponent implements OnInit {
       gas:          token.gas,
       observacion:  token.observacion,
 		});
-    console.log('AMBIENTAL vs ADRESSES: [%s]', this.addresses.length);
 
 		return form;
   }

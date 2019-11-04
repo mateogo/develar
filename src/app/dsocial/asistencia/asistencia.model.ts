@@ -301,6 +301,10 @@ const sector_actionRelation = {
   habitat: [
     {val: 'habitat',     label: 'Habitat' },
   ],
+
+  cimientos: [
+    {val: 'cimientos',     label: 'Envión-Cimientos' },
+  ],
 }
 
 

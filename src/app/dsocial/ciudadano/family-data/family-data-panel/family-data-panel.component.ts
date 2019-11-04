@@ -36,15 +36,12 @@ export class FamilyDataPanelComponent implements OnInit {
 
   }
 
-  updateItem(event: UpdateFamilyEvent){
-    console.log('updateItems');
-    
+  updateItem(event: UpdateFamilyEvent){    
     if(event.action === DELETE){
       this.deleteItem(event.token);
     }
 
     if(event.action === UPDATE){
-      console.log('validate Documents')
       if(this.validateFamilyList()){
         this.emitEvent(event);
       }else{
@@ -57,9 +54,10 @@ export class FamilyDataPanelComponent implements OnInit {
   private validateFamilyList(): boolean {
     let valid = true;
     let test = {};
+
     this.items.forEach(t => {
       let ndoc = t.tdoc + t.ndoc;
-      console.log('itemsForEach [%s]', ndoc)
+
       if(test[ndoc]){
         valid = false
       }else{
@@ -75,7 +73,7 @@ export class FamilyDataPanelComponent implements OnInit {
     let snck = this.snackBar.open(message, action, {duration: 3000});
 
     snck.onAction().subscribe((e)=> {
-      console.log('action???? [%s]', e);
+
     })
   }
 
