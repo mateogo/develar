@@ -35,14 +35,225 @@ const dateToStr = function(date) {
     return da+"/"+mo+"/"+ye;
 };
 
-const calcularEdad = function(dob: Date) { 
-    let diff_ms = Date.now() - dob.getTime();
-    let age_dt = new Date(diff_ms); 
-  
-    return Math.abs(age_dt.getUTCFullYear() - 1970);
+
+const rangoFechasDocumento = {
+    DNI: [
+        {de:  100000, hasta:  9999999, nacido: '1/1/1920' },
+        {de: 10000000, hasta:13999999, nacido: '1/1/1950' },
+        {de: 14000000, hasta:19999999, nacido: '1/1/1960' },
+        {de: 20000000, hasta:24999999, nacido: '1/1/1970' },
+        {de: 25000000, hasta:29999999, nacido: '1/1/1975' },
+        {de: 30000000, hasta:34999999, nacido: '1/1/1980' },
+        {de: 35000000, hasta:39999999, nacido: '1/1/1990' },
+        {de: 40000000, hasta:44999999, nacido: '1/1/2001' },
+        {de: 45000000, hasta:99999999, nacido: '1/1/2010' },
+    ]
+
 }
 
+const searchBestDoB = function(tdoc, ndoc): string{
+    let fenac = '';
+    let list = [];
+    let token;
+    let numdoc = parseInt(ndoc, 10);
+    if(isNaN(numdoc)) numdoc = 0;
 
+    if(tdoc && ndoc){
+        list = rangoFechasDocumento[tdoc];
+        if(list && list.length){
+            token = list.find(t => t.de <= numdoc && numdoc <= t.hasta );
+            fenac = token ? token.nacido : '';
+        }
+
+    }
+    return fenac;
+}
+
+/******
+const 
+1.000.000 a 2.000.000 ;1921
+
+10.000.001 a 10500000 ;1951
+
+10500001 a 11000000 ;1951
+
+11000001 a 11500000 ;1953
+
+11500001 a 12000000 ;1954
+
+12000001 a 12500000 ;1956
+
+12500001 a 13000000 ;1956
+
+13000001 a 13500000 ;1957
+
+13500001 a 14000000 ;1958
+
+14000001 a 14500000 ;1959
+
+14500001 a 15000000 ;1959
+
+15000001 a 15500000 ;1960
+
+15500001 a 16000000 ;1961
+
+16000001 a 16500000 ;1961
+
+16500001 a 17000000 ;1962
+
+17000001 a 17500000 ;1963
+
+17500001 a 18000000 ;1964
+
+18000001 a 18500000 ;1965
+
+18500001 a 19000000 ;1965
+
+19000001 a 19500000 ;1966
+
+19500001 a 20000000 ;1966
+
+20000001 a 20500000 ;1967
+
+2000001 a 2500000 ;1920
+
+20500001 a 21000000 ;1968
+
+21000001 a 21500000 ;1969
+
+21500001 a 22000000 ;1969
+
+22000001 a 22500000 ;1970
+
+22500001 a 23000000 ;1971
+
+23000001 a 23500000 ;1972
+
+23500001 a 24000000 ;1973
+
+24000001 a 24500000 ;1973
+
+24500001 a 25000000 ;1974
+
+25000001 a 25500000 ;1975
+
+2500001 a 3000000 ;1921
+
+25500001 a 26000000 ;1976
+
+26000001 a 26500000 ;1977
+
+26500001 a 27000000 ;1977
+
+27000001 a 27500000 ;1978
+
+27500001 a 28000000 ;1979
+
+28000001 a 28500000 ;1979
+
+28500001 a 29000000 ;1980
+
+29000001 a 29500000 ;1981
+
+29500001 a 30000000 ;1982
+
+30000001 a 30500000 ;1982
+
+3000001 a 3500000 ;1922
+
+30500001 a 31000000 ;1983
+
+31000001 a 31500000 ;1984
+
+31500001 a 32000000 ;1984
+
+32000001 a 32500000 ;1985
+
+32500001 a 33000000 ;1986
+
+33000001 a 33500000 ;1987
+
+33500001 a 34000000 ;1987
+
+34000001 a 34500000 ;1988
+
+34500001 a 35000000 ;1989
+
+3500001 a 4000000 ;1922
+
+35500001 a 36000000 ;1990
+
+36000001 a 36500000 ;1991
+
+36500001 a 37000000 ;1991
+
+37000001 a 37500000 ;1992
+
+37500001 a 38000000 ;1993
+
+38000001 a 38500000 ;1993
+
+38500001 a 39000000 ;1994
+
+39000001 a 39500000 ;1995
+
+39500001 a 40000000 ;1995
+
+40000001 a 40500000 ;1996
+
+4000001 a 4500000 ;1932
+
+40500001 a 41000000 ;1997
+
+41000001 a 41500000 ;1997
+
+41500001 a 42000000 ;1998
+
+42000001 a 42500000 ;1998
+
+42500001 a 43000000 ;1996
+
+43000001 a 43500000 ;1996
+
+43500001 a 44000000 ;1997
+
+44000001 a 44500000 ;1999
+
+44500001 a 45000000 ;2000
+
+45000001 a 45500000 ;2001
+
+4500001 a 5000000 ;1937
+
+45500001 a 46000000 ;2002
+
+46000001 a 46500000 ;2004
+
+46500001 a 47000000 ;2005
+
+5000001 a 5500000 ;1936
+
+5500001 a 6000000 ;1935
+
+6000001 a 6500000 ;1936
+
+6500001 a 7000000 ;1938
+
+7000001 a 7500000 ;1941
+
+7500001 a 8000000 ;1945
+
+8000001 a 8500000 ;1947
+
+8500001 a 9000000 ;1948
+
+9000001 a 9500000 ;1949
+
+9500001 a 10000000 ;1950
+
+ 
+
+****/
 
 const parseDateStr = function(str) {
     if(!str) return null;
@@ -305,10 +516,6 @@ class Devutils {
 		return parseDateStr(datex);
 	}
 
-    edadActual(date: Date){
-        return calcularEdad(date);
-    }
-
     isWithinPeriod(fd, fh): boolean{
         if(!fd || !fh) return false;
         let ok = true;
@@ -332,6 +539,33 @@ class Devutils {
     projectedDate(date: Date, d:number, m:number){
         return getProjectedDate(date, d, m);
     }
+
+    evaluateEdad = function(fenac: string, tdoc?:string, ndoc?:string):string { 
+        let edad = '';
+
+        if(this.validAge(fenac)){
+             edad = this.edadActual(this.dateFromTx(fenac)) + '';
+
+        }else {
+            fenac = searchBestDoB(tdoc, ndoc);
+
+            if(fenac){
+                edad = this.edadActual(this.dateFromTx(fenac)) + ' aprox';
+            }
+
+        }
+        return edad;
+    }
+
+    edadActual(dob: Date){
+        let diff_ms = Date.now() - dob.getTime();
+        let age_dt = new Date(diff_ms); 
+      
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
+
+
+
 
     validAge(value:string): boolean{
         let validAge = false;

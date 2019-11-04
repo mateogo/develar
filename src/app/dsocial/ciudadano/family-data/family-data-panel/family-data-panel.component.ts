@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig }           from '@angular/material';
+
 import {  Person,
           personModel,
           UpdateFamilyEvent,
@@ -25,7 +27,7 @@ export class FamilyDataPanelComponent implements OnInit {
 	public showList = false;
   public openEditor = true;
 
-  constructor() { }
+  constructor(private snackBar: MatSnackBar) { }
 
   ngOnInit() {
   	if(this.items && this.items.length){
@@ -35,13 +37,48 @@ export class FamilyDataPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateFamilyEvent){
+    console.log('updateItems');
     
     if(event.action === DELETE){
       this.deleteItem(event.token);
     }
 
-  	this.emitEvent(event);
+    if(event.action === UPDATE){
+      console.log('validate Documents')
+      if(this.validateFamilyList()){
+        this.emitEvent(event);
+      }else{
+        this.openSnackBar('Hay números de documento repetidos', 'aceptar');
+      }
+    }
+
   }
+
+  private validateFamilyList(): boolean {
+    let valid = true;
+    let test = {};
+    this.items.forEach(t => {
+      let ndoc = t.tdoc + t.ndoc;
+      console.log('itemsForEach [%s]', ndoc)
+      if(test[ndoc]){
+        valid = false
+      }else{
+        test[ndoc] = ndoc;
+      }
+    })
+
+
+    return valid;
+  }
+
+  private openSnackBar(message: string, action: string) {
+    let snck = this.snackBar.open(message, action, {duration: 3000});
+
+    snck.onAction().subscribe((e)=> {
+      console.log('action???? [%s]', e);
+    })
+  }
+
 
 
   deleteItem(t:FamilyData){

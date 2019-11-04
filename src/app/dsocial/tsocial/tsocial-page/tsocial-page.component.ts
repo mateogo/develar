@@ -29,6 +29,7 @@ import {   Asistencia,
           UpdateAsistenciaListEvent,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
+import { RemitoAlmacen } from '../../alimentos/alimentos.model';
 
 import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
 
@@ -47,6 +48,7 @@ export class TsocialPageComponent implements OnInit {
   // template helper
   public title = "Asistencia al Vecino/a";
   public subtitle = "Atención del Trabajador Social";
+  public titleRemitos = "Historial de entregas";
 
   public tDoc = "DNI";
   public nDoc = "";
@@ -62,6 +64,8 @@ export class TsocialPageComponent implements OnInit {
   public assetList:     CardGraph[] = []
   
   public asistenciasList: Asistencia[];
+  public showHistorial = false;
+  public remitosList: RemitoAlmacen[];
 
 
   //public contactData = new PersonContactData();
@@ -148,6 +152,7 @@ export class TsocialPageComponent implements OnInit {
       this.assetList = p.assets || [];
       
       this.initAsistenciasList()
+      this.loadHistorialRemitos()
 
 
     }
@@ -381,6 +386,37 @@ export class TsocialPageComponent implements OnInit {
   loadPerson(id){
     this.dsCtrl.setCurrentPersonFromId(id);
   }
+
+  /*****************************/
+  /*     Historial Remitos    */
+  /***************************/
+  private loadHistorialRemitos(){
+    this.dsCtrl.fetchRemitoAlmacenByPerson(this.currentPerson).subscribe(list =>{
+      this.remitosList = list || []
+      this.sortRemitosProperly(this.remitosList);
+      if(list && list.length){
+        this.showHistorial = true;
+      }else{
+        this.showHistorial = false;
+
+      }
+
+
+    })
+  }
+
+  private sortRemitosProperly(records){
+    records.sort((fel, sel)=> {
+      if(!fel.ts_alta) fel.ts_alta = "zzzzzzz";
+      if(!sel.ts_alta) sel.ts_alta = "zzzzzzz";
+
+      if(fel.ts_alta<sel.ts_alta) return 1;
+      else if(fel.ts_alta>sel.ts_alta) return -1;
+      else return 0;
+    })
+  }
+
+
 
 
   /**********************/

@@ -10,20 +10,20 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <mat-select #fldTipoAccion placeholder="Tipo de Acción"
-              [formControl]="form.controls['action']"
-              (selectionChange)="changeSelectionValue('action',fldTipoAccion.value)" >
-            <mat-option *ngFor="let item of actionOptList" 
+          <mat-select #fldSector placeholder="Sector"
+              [formControl]="form.controls['sector']"
+              (selectionChange)="changeSelectionValue('sector',fldSector.value)" >
+            <mat-option *ngFor="let item of sectorOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="col">
         <mat-form-field>
-          <mat-select #fldSector placeholder="Sector"
-              [formControl]="form.controls['sector']"
-              (selectionChange)="changeSelectionValue('sector',fldSector.value)" >
-            <mat-option *ngFor="let item of sectorOptList" 
+          <mat-select #fldTipoAccion placeholder="Tipo de Acción"
+              [formControl]="form.controls['action']"
+              (selectionChange)="changeSelectionValue('action',fldTipoAccion.value)" >
+            <mat-option *ngFor="let item of actionOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>

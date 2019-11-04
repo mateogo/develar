@@ -103,7 +103,7 @@ export class PersonAltaComponent implements OnInit {
                           Validators.pattern('[0-9]*')], 
                           [this.dniExistenteValidator(this, this.dsCtrl, this.docBelongsTo)] ],
 
-            sexo:         [null],
+            sexo:         [null, Validators.compose( [Validators.required])],
             fenactx:      [null, [this.fechaNacimientoValidator()]],
             nacionalidad: [null],
 
@@ -190,6 +190,9 @@ export class PersonAltaComponent implements OnInit {
     }
 
     changeSelectionValue(type, val) {
+        if(type=== 'tdoc'){
+            this.form.controls['ndoc'].setValue('');
+        }
     }
 
     changeCity() {
@@ -231,12 +234,12 @@ export class PersonAltaComponent implements OnInit {
      }
 
      currentAge(){
-         let edad = '';
-         let value = this.form.value.fenactx
-         let validAge = devutils.validAge(value);
-         if(validAge){
-             edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
-         }
+
+         let fenac = this.form.value.fenactx;
+         let tdoc = this.form.value.tdoc;
+         let ndoc = this.form.value.ndoc;
+         let edad = devutils.evaluateEdad(fenac, tdoc, ndoc);
+
          return edad;
      }
 

@@ -16,7 +16,7 @@
   		<ng-container *ngIf="showList">
 		 	<div  *ngFor="let item of items" class="row">
 		 		<div class="col-sm-12 col-md-12">
-		 			<family-base [token]='item'
+		 			<family-base 	[token]='item'
 												(updateToken)='updateItem($event)'></family-base>
 		 		</div>
 

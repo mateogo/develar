@@ -212,6 +212,7 @@ const asisActionOptList: Array<any> = [
         {val: 'encuesta',    type:'EncuestaSocAmb', label: 'Encuesta' },
         {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
         {val: 'habitacional',  type:'Habitacional',  label: 'Habitacional' },
+        {val: 'sanitaria',  type:'Sanitaria',  label: 'Sanitaria' },
         {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
         {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
         {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
@@ -220,6 +221,89 @@ const asisActionOptList: Array<any> = [
         {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
 
 ];
+
+/**
+
+			{val:'alimentos',    serial:'alimentos',   label: 'Alimentos',         style: {'background-color': "#f2cded"}},
+			{val:'regionvi',     serial:'regionvi',    label: 'Región VI',         style: {'background-color': "#f2aded"}},
+			{val:'discapacidad', serial:'discapacidad',label: 'Discapacidad',      style: {'background-color': "#f2bded"}}, 
+			{val:'masvida',      serial:'masvida',     label: 'Plan MasVida',      style: {'background-color': "#f2cded"}},
+			{val:'tsocial',      serial:'tsocial',     label: 'Trabajador/a Social', style: {'background-color': "#f2cded"}},
+			{val:'nutricion',    serial:'nutricion',   label: 'Nutrición',         style: {'background-color': "#f2dded"}},
+			{val:'inhumacion',   serial:'inhumacion',  label: 'Inhumación',        style: {'background-color': "#f2dded"}},
+			{val:'terceraedad',  serial:'terceraedad', label: 'Adultos mayores',      style: {'background-color': "#f2dded"}},
+			{val:'pensiones',    serial:'pensiones',   label: 'Pensiones',         style: {'background-color': "#f2dded"}},
+			{val:'familia',      serial:'familia',     label: 'Acomp. Integral de Familia',  style: {'background-color': "#f2dded"}},
+			{val:'referentebarrial',   serial:'referentebarrial',   label: 'Referente Barrial',   style: {'background-color': "#f2dded"}},
+			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}},
+			{val:'habitat',      serial:'habitat',     label: 'Habitat',           style: {'background-color': "#f2dded"}},
+
+
+**/
+
+
+const sector_actionRelation = {
+  alimentos: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  regionvi: [
+    {val: 'sanitaria',   label: 'Sanitaria' },
+  ],
+
+  discapacidad: [
+    {val: 'discapacidad',   label: 'Discapacidad' },
+  ],
+
+  masvida: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  tsocial: [
+    {val: 'alimentos',   label: 'Alimentos' },
+    {val: 'encuesta',    label: 'Encuesta' },
+    {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'habitat',     label: 'Habitat' },
+  ],
+
+  nutricion: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  inhumacion: [
+    {val: 'inhumacion',  label: 'Inhumacion' },
+  ],
+
+  terceraedad: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  pensiones: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  familia: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
+  referentebarrial: [
+    {val: 'alimentos',    label: 'Alimentos' },
+    {val: 'habitacional', label: 'Habitacional' },
+  ],
+
+  direccion: [
+    {val: 'alimentos',   label: 'Alimentos' },
+    {val: 'encuesta',    label: 'Encuesta' },
+    {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'habitat',     label: 'Habitat' },
+  ],
+
+  habitat: [
+    {val: 'habitat',     label: 'Habitat' },
+  ],
+}
+
+
 
 const alimentosTypeOptList: Array<any> = [
         {val: 'standard',   type:'Estándar',      label: 'Estándar' },
@@ -400,6 +484,11 @@ export class AsistenciaHelper {
 	static getOptionlist(type){
 		return optionsLists[type] || optionsLists['default'];
 	}
+
+	static getSectorActionRelation(){
+		return sector_actionRelation;
+	}
+
 
 	static getOptionLabelFromList(list, val){
 		if(!val) return 'no-definido';

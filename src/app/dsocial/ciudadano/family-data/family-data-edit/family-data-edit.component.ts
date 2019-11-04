@@ -21,7 +21,6 @@ const UPDATE = 'update';
   styleUrls: ['./family-data-edit.component.scss']
 })
 export class FamilyDataEditComponent implements OnInit {
-
 	@Input() familymember: FamilyData;
 	@Output() updateToken = new EventEmitter<UpdateFamilyEvent>();
 
@@ -70,8 +69,9 @@ export class FamilyDataEditComponent implements OnInit {
 
 
   ngOnInit() {
-  	this.initForEdit(this.form, this.familymember);
-
+    setTimeout(()=> {
+      this.initForEdit(this.form, this.familymember);
+    },200)
   }
 
   onSubmit(){
@@ -133,17 +133,19 @@ export class FamilyDataEditComponent implements OnInit {
                   let txt = ''
 
                   if(t && t.length){ 
-                      invalid = false;
-                      txt = 'Documento existente: ' + t[0].displayName;
+                      //invalid = true;
+                      //txt = 'Documento existente: ' + t[0].displayName;
+                      that.familymember.hasOwnPerson = true;
+                      that.familymember.personId = t[0]._id;
                   }
 
-                  message['error'] = txt;
+                  // message['error'] = txt;
                   return invalid ? { 'mailerror': txt }: null;
 
               })
            )
       }) ;
-   }
+  }
 
 
   changeSelectionValue(type, val){
@@ -225,6 +227,7 @@ export class FamilyDataEditComponent implements OnInit {
 		entity.desde =        fvalue.desde;
 		entity.hasta =        fvalue.hasta;
 		entity.comentario =   fvalue.comentario;
+    entity.hasOwnPerson = personModel.hasMinimumDataToBePerson(entity);
 
 		return entity;
 	}

@@ -81,7 +81,6 @@ const assetSch = new mongoose.Schema({
 
 
 const businessSch = new mongoose.Schema({
-    vinculo:     {type: String, required: true,  default: "pariente"},
     nombre:      {type: String, required: true,  default: ""},
     apellido:    {type: String, required: false, default: ""},
     tdoc:        {type: String, required: false, default: ""},
@@ -89,13 +88,15 @@ const businessSch = new mongoose.Schema({
     fenac:       {type: Number, required: false, default: 0 },
     fenactx:     {type: String, required: false, default: ""},
     ecivil:      {type: String, required: false, default: ""},
+    email:       {type: String, required: false, default: ""},
+    phone:       {type: String, required: false, default: ""},
     nestudios:   {type: String, required: false, default: ""},
-    tprofesion:  {type: String, required: false, default: ""},
-    ocupacion:   {type: String, required: false, default: ""},
     tocupacion:  {type: String, required: false, default: ""},
+    ocupacion:   {type: String, required: false, default: ""},
     ingreso:     {type: String, required: false, default: ""},
     hasOwnPerson:{type: Boolean, required: false, default: false},
     personId:    {type: String, required: false, default: ""},
+    vinculo:     {type: String, required: true,  default: ""},
     estado:      {type: String, required: false, default: ""},
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
@@ -104,7 +105,6 @@ const businessSch = new mongoose.Schema({
 });
 
 const familySch = new mongoose.Schema({
-    vinculo:     {type: String, required: true,  default: "pariente"},
     nombre:      {type: String, required: true,  default: ""},
     apellido:    {type: String, required: false, default: ""},
     tdoc:        {type: String, required: false, default: ""},
@@ -113,12 +113,12 @@ const familySch = new mongoose.Schema({
     fenactx:     {type: String, required: false, default: ""},
     ecivil:      {type: String, required: false, default: ""},
     nestudios:   {type: String, required: false, default: ""},
-    tprofesion:  {type: String, required: false, default: ""},
     ocupacion:   {type: String, required: false, default: ""},
     tocupacion:  {type: String, required: false, default: ""},
     ingreso:     {type: String, required: false, default: ""},
     hasOwnPerson:{type: Boolean, required: false, default: false},
     personId:    {type: String, required: false, default: ""},
+    vinculo:     {type: String, required: true,  default: ""},
     estado:      {type: String, required: false, default: ""},
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
@@ -525,6 +525,16 @@ function checkForPersonToPersonRelation(sourcePerson){
     if(sourcePerson && sourcePerson.familiares && sourcePerson.familiares.length){
         updateFamilyMembers(sourcePerson);
     }
+    updateSourcePerson(sourcePerson);
+
+}
+
+function updateSourcePerson(sourcePerson){
+    setTimeout(()=> {
+        sourcePerson.save().then(token =>{
+            return null;
+        })
+    }, 500);
 }
 
 function updateBusinessMembers(sourcePerson){
@@ -566,6 +576,7 @@ function updateRelatedPersonMember(key, sourcePerson, member, index){
             ndoc: member.ndoc
         });
         personQuery = Person.findOne(query);
+
     }
     
     personQuery.then(tperson => {
@@ -573,17 +584,13 @@ function updateRelatedPersonMember(key, sourcePerson, member, index){
 
         updatePersonFromVinculo(tperson, member, key);
 
-        tperson.save().then(err => {
-            if(!err){
-                if(!member.personId){
-                    sourcePerson[key][index].personId = tperson._id;
-                    sourcePerson.save().then(err =>{
-                        //finish
-                    })
-                }
-            }
-        });
-    })
+        tperson.save().then(token => {
+            sourcePerson[key][index].personId = tperson._id;
+            return null;
+        }).catch(err => {console.log(err);});
+
+        return null;
+    }).catch(err => {console.log(err);})
 }
 
 
@@ -609,16 +616,17 @@ function updatePersonFromVinculo(tperson, member, key){
 
     tperson.tdoc = member.tdoc;
     tperson.ndoc = member.ndoc;
-    tperson.email = member.email;
-    tperson.fenac = member.fenac;
-    tperson.fenactx = member.fenactx;
-    tperson.ecivil = member.ecivil;
+    tperson.fenactx = member.fenactx || tperson.fenactx;
+    tperson.fenac = member.fenac ||tperson.fenac;
+    tperson.ecivil = member.ecivil || tperson.ecivil;
+    
+    tperson.nestudios = member.nestudios || tperson.nestudios;
+    tperson.tprofesion = member.tocupacion || tperson.tprofesion;
+    tperson.especialidad = member.ocupacion|| tperson.especialidad;
 
     if(key === 'integrantes'){
-        tperson.tprofesion = member.tprofesion;
-        tperson.nestudios = member.nestudios;
-        tperson.especialidad = member.ocupacion;
-        tperson.ambito = member.tocupacion;
+        tperson.email = member.email || tperson.email;
+        tperson.phone = member.phone || tperson.phone;
         tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
 
         if(member.vinculo === "seguridad"){
@@ -689,9 +697,9 @@ exports.createPersonFromUser = function(user, cb){
     Person.findOne(personByEmail).then(token =>{
         if(!token) token = initPersonFromUser(user);
         token = updatePersonFromUser(token, user);
-        token.save().then(err => {
+        token.save().then(t => {
             cb(token);
-        });
+        }).catch(err => {console.log(err);});
     });    
 }
 
@@ -723,8 +731,9 @@ const estadoCivil = [
 ];
 
 const sexoOptList = [
-    {val: 'F',        brown: 'Femenino', slug:'Femenino' },
-    {val: 'M',        brown: 'Masculino', slug:'Masculino' },
+    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
+    {val: 'F',        label: 'Femenino',      slug:'Femenino' },
+    {val: 'GAP',      label: 'Auto percibido',slug:'Auto percibido' },
 ];
 
 const nacionalidadOptList = [

@@ -22,8 +22,9 @@ export class SolasisEditComponent implements OnInit {
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
   @Input() kitOptList:KitOptionList[];
 
-  public actionOptList =  AsistenciaHelper.getOptionlist('actions');
+  public actionOptList = []; // AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
+  public sectorActionRelation = AsistenciaHelper.getSectorActionRelation();
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
 	public form: FormGroup;
 
@@ -68,7 +69,14 @@ export class SolasisEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type==='sector'){
+      this.actionOptList = this.sectorActionRelation[val] || [];
+
+      if(this.actionOptList.length === 1){
+        this.form.get('action').setValue(this.actionOptList[0].val);
+
+      }
+    }
   }
 
 
@@ -99,6 +107,7 @@ export class SolasisEditComponent implements OnInit {
     if(token.avance !== 'emitido'){
       form.get('action').disable();
     }
+    this.actionOptList = this.sectorActionRelation[token.sector] || [];
 
 		return form;
   }

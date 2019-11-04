@@ -154,7 +154,7 @@ export class CoreDataEditComponent implements OnInit {
       nestudios:    [null],
       fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
-      sexo:         [null],
+      sexo:         [null,Validators.compose([Validators.required]) ],
     });
     return form;
   }

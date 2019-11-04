@@ -1,10 +1,9 @@
-<mat-card class="detail-card">
-	<mat-card-header>
-		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
-	</mat-card-header>
-
+<mat-card>
   <mat-card-content>
-  	<div class="container-fluid search-panel">
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+  </mat-card-content>
+</mat-card>
+
 		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<core-base [person]='currentPerson'
 		 							(updatePerson)='updateCore($event)' ></core-base>
@@ -56,6 +55,18 @@
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
 			</div>
 	
-  	</div>
-  </mat-card-content>
+<mat-card>
+  <mat-card-content *ngIf="showHistorial" >
+		<div class="d-flex justify-content-between panel-header">
+			<div class="panel-header-text">{{ titleRemitos }}</div>
+		</div>
+
+
+		<ng-container *ngFor="let remito of remitosList" >
+			<div class="remito-container">
+				<remitoalmacen-view [token]='remito' ></remitoalmacen-view>
+			</div>
+		</ng-container>
+	</mat-card-content>
 </mat-card>
+

@@ -210,7 +210,6 @@ export class FamilyData {
     apellido: string;
     tdoc: string = 'DNI';
     ndoc: string;
-    vinculo: string;
     fenac: number = 0;
     fenactx: string;
     ecivil: string;
@@ -220,6 +219,7 @@ export class FamilyData {
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
+    vinculo: string;
     estado: string;
     desde: string;
     hasta: string;
@@ -231,7 +231,6 @@ export class BusinessMembersData {
     apellido: string;
     tdoc: string = 'DNI';
     ndoc: string;
-    vinculo: string = 'seguridad';
     fenac: number = 0;
     fenactx: string;
     ecivil: string;
@@ -243,6 +242,7 @@ export class BusinessMembersData {
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
+    vinculo: string = 'seguridad';
     estado: string = 'activo';
     desde: string;
     hasta: string;
@@ -961,9 +961,8 @@ const barriosOptList = {
 
 
 const sexoOptList: Array<any> = [
-    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
-    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
     {val: 'F',        label: 'Femenino',      slug:'Femenino' },
+    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
     {val: 'GAP',      label: 'Auto percibido',slug:'Auto percibido' },
 ];
 
