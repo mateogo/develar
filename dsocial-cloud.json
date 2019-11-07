@@ -7,7 +7,7 @@
 		          "NODE_ENV": "production",
 		          "PORT": "8080",
 		          "DBASE": "dsocial",
-		          "SERVER": "http://dsocial-local.co",
+		          "SERVER": "https://dsocial.brown.gob.ar",
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/dsocial"
 		  }

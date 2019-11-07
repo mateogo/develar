@@ -23,7 +23,7 @@ const globals = {
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
-		url: 'www.dsocial-local.co'
+		url: 'dsocial.brown.gob.ar'
 	},
 	comercios: {
 		logoAvatar: 'avatar-develar.jpg',
@@ -40,7 +40,7 @@ const globals = {
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
-		url: 'www.dsocial-local.co'
+		url: 'dsocial.brown.gob.ar'
 	},
 	fundetec: {
 		logoAvatar: 'avatar-fundetec.jpg',
