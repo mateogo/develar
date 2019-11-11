@@ -69,6 +69,7 @@ const asistenciaSch = new Schema({
     compName:    { type: String, required: true },
     compNum:     { type: String, required: true },
     idPerson:    { type: String, required: true },
+    idbrown:     { type: String, required: true },
     fecomp_tsa:  { type: Number, required: true },
     fecomp_txa:  { type: String, required: true },
     action:      { type: String, required: true },
@@ -431,6 +432,7 @@ const buildAlimentos = function (token, num, isLast) {
     idPerson:    token.person._id,
     fecomp_tsa:  fechaDate.getTime(),
     fecomp_txa:  utils.dateToStr(fechaDate),
+    idbrown:     token.idbrown,
     action:      "alimentos",
     slug:        "dato migrado",
     description: observacion,
@@ -449,18 +451,18 @@ const buildAlimentos = function (token, num, isLast) {
 
 }
 
-const insertMasterData = function (master){
-  let serialNum = 100000;
-  for(let token in master){
-    serialNum += 1;
-    compNum = serialNum + "";
+// const insertMasterData = function (master){
+//   let serialNum = 100000;
+//   for(let token in master){
+//     serialNum += 1;
+//     compNum = serialNum + "";
 
-    let asistencia = buildAlimentos(master[token], compNum);
-    insertAlimentosToDB(asistencia);
+//     let asistencia = buildAlimentos(master[token], compNum);
+//     insertAlimentosToDB(asistencia);
 
-  }
+//   }
 
-}
+// }
 
 const insertDataFromPerson = function(tree){
   let serialNum = 100000;

@@ -69,6 +69,7 @@ export class Asistencia {
 		compName:    string = 'S/Asistencia';
 		compNum:     string = '00000';
 		idPerson:    string;
+		idbrown:     string;
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
 		action:      string = 'alimentos';
