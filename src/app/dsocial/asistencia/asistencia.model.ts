@@ -336,8 +336,9 @@ const frecuenciaOptList: Array<any> = [
 ];
 
 const tableActions = [
-      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
-      {val: 'autorizar',      label: 'Autorizar solicitud',    slug:'Autorizar solicitud' },
+      {val: 'no_definido',  label: 'Seleccione opción',   slug:'Seleccione opción' },
+      {val: 'editarencuestas',       label: 'Edición entrevistas SA',        slug:'Edición entrevistas SA' },
+      {val: 'autorizar',    label: 'Autorizar solicitud', slug:'Autorizar solicitud' },
 ]
 
 const urgenciaOptList = [

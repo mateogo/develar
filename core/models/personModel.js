@@ -1217,7 +1217,7 @@ const buildEncuesta = function(person, token){
     encuesta.estado = "activo";
 
     encuesta.ferel = Date.now();
-    encuesta.fereltxt = '31/07/2019';
+    encuesta.fereltxt = '31/10/2019';
     encuesta.tsocial = 'dato migrado';
 
     encuesta.tipoviv = "casa";
@@ -1245,7 +1245,7 @@ const buildEncuesta = function(person, token){
     encuesta.cloaca = translateEncuesta('desague', token.desague); 
     encuesta.gas = translateEncuesta('gas', token.gas); 
     encuesta.iluminacion = translateEncuesta('estado', token.iluminacion);
-    encuesta.observacion = token.observaciones;
+    encuesta.observacion = token['observaciones72'];
 
     ambiental.push(encuesta);
     person.ambiental = ambiental;
@@ -1596,7 +1596,7 @@ const buildCoreData = function(person, token){
     person.persontags = '';
     person.tprofesion = token.profesion;
     person.especialidad = token.ocupacion;
-    person.ambito = '';
+    person.ambito = token.observaciones;
     person.nacionalidad = translate('nacionalidad',token.nacionalidad);
 
     // person.locaciones = token. ;
@@ -1728,9 +1728,9 @@ const processOnePerson = function(token, master){
 
     data.forEach((el,index)=>{
         if(!person[el.$.name]){
-            person[el.$.name] = el._;
+            person[el.$.name] = (el._ === 'NULL') ? '' : el._;
         }else{
-            person[el.$.name + index] = el._;
+            person[el.$.name + index] = (el._ === 'NULL') ? '' : el._;
 
         }
 

@@ -218,10 +218,18 @@ export class SolDashboardPageComponent implements OnInit {
   tableAction(action){
     let selection = this.dsCtrl.selectionModel;
     let selected = selection.selected as AsistenciaTable[];
-    selected.forEach(t =>{
-      this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
+    console.log('Table Action BUBBLED: [%s]', action);
 
-    })
+    if(action === 'autorizar'){
+      selected.forEach(t =>{
+        this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
+      })
+    }
+
+    if(action === 'editarencuestas'){
+      console.log('editarencuestas ToDo')
+    }
+
     setTimeout(()=>{
       this.fetchSolicitudes(this.query, SEARCH);
     },1000)
