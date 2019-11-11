@@ -731,9 +731,9 @@ const estadoCivil = [
 ];
 
 const sexoOptList = [
-    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
-    {val: 'F',        label: 'Femenino',      slug:'Femenino' },
-    {val: 'GAP',      label: 'Auto percibido',slug:'Auto percibido' },
+    {val: 'M',        brown: 'Masculino', label: 'Masculino',     slug:'Masculino' },
+    {val: 'F',        brown: 'Femenino', label: 'Femenino',      slug:'Femenino' },
+    {val: 'GAP',      brown: 'Auto percibido', label: 'Auto percibido',slug:'Auto percibido' },
 ];
 
 const nacionalidadOptList = [
@@ -1225,14 +1225,14 @@ const buildEncuesta = function(person, token){
     encuesta.domterreno = translateEncuesta('tenencia', token.tenencia);
     encuesta.aniosresid = 0;
 
-    encuesta.qvivxlote = token.cant_modulos === "NULL" ? 0 : parseInt(token.cant_modulos, 10);
-    encuesta.qhabitantes = token.habitantes === "NULL" ? 0 : parseInt(token.habitantes, 10);
+    encuesta.qvivxlote = (token.cant_modulos === "NULL" || !token.cant_modulos) ? 0 : parseInt(token.cant_modulos, 10);
+    encuesta.qhabitantes = (token.habitantes === "NULL" || !token.habitantes) ? 0 : parseInt(token.habitantes, 10);
 
     encuesta.matviv = translateEncuesta('paredes_ext', token.paredes_ext);
     encuesta.techoviv = translateEncuesta('techo', token.techo);
     encuesta.pisoviv = translateEncuesta('piso', token.piso);
 
-    encuesta.qdormitorios = token.habitaciones === "NULL"? 0 : parseInt(token.habitaciones, 10);
+    encuesta.qdormitorios = (token.habitaciones === "NULL" || !token.habitaciones) ? 0 : parseInt(token.habitaciones, 10);
     encuesta.tventilacion = ventilacionType(token.ventilacion);
     encuesta.tcocina = '';
     encuesta.ecocina = cocinaType(token.cocina, token.heladera);
@@ -1633,12 +1633,14 @@ const buildCoreData = function(person, token){
 async function saveRecord(person, master){
     if(master[person.idbrown]){
         person._id = master[person.idbrown];
+        console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
         await Person.findByIdAndUpdate(person._id, person, { new: true }).exec();
 
     }else{
         if(person.idbrown){
             master[person.idbrown] = person._id;
         }
+        console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
         await person.save();
     }
 
