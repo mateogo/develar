@@ -45,6 +45,45 @@ export class Alimento {
 		observacion: string;
 };
 
+export class Modalidad {
+		periodo:     string = 'UNICO';
+		fe_tsd:      number;
+		fe_tsh:      number;
+		fe_txd:      string;
+		fe_txh:      string;
+		freq:        string = 'mensual';
+}
+
+export class ItemPedido {
+	slug: string;
+
+	kitItem: number = 0; // 0: es un item cargado a mano 1: item que deviene de KIT
+	productId: string;
+	code: string;
+	name: string;
+	ume: string;
+	qty: number;
+
+}
+
+
+export class Pedido {
+		id:             string;
+		modalidad: Modalidad;
+
+		deposito:       string;
+    urgencia:       number = 1;
+    kitId:          string;
+    kitQty:         number = 1;
+    observacion:    string;
+
+		estado:         string = 'activo';
+		avance:         string = 'emitido';
+    items: Array<ItemPedido>  = [];
+};
+
+
+
 export class Encuesta {
 		id:           string;
 		fe_visita:    string;
@@ -85,6 +124,7 @@ export class Asistencia {
 		atendidox:   Atendido;
 		modalidad:   Alimento;
 		encuesta:    Encuesta;
+		pedido:      Pedido;
 
 };
 
@@ -367,12 +407,15 @@ const estadosOptList = [
 const avanceOptList = [
       {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
-      {val: 'entregado',    label: 'Entregado',      slug:'Entregado' },
+      {val: 'entregado',    label: 'Entregado',     slug:'Entregado' },
       {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
       {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
+      {val: 'pendiente',    label: 'Pendiente',     slug:'Pendiente' } ,
       {val: 'programado',   label: 'Programado',    slug:'Programado' },
       {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
+      {val: 'incumplido',   label: 'No cumplido',   slug:'No cumplido' },
       {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
+      {val: 'anulado',      label: 'Anulado',       slug:'Anulado' },
 ]
 
 const avanceEncuestaOptList = [

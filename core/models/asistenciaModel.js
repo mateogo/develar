@@ -13,6 +13,7 @@ const xml2js = require('xml2js');
 const path = require('path');
 const utils = require('../services/commons.utils');
 const person = require('./personModel');
+const product = require('./productModel');
 
 const Schema = mongoose.Schema;
 
@@ -42,6 +43,41 @@ const alimentoSch = new Schema({
     qty:         { type: String, required: false },
     observacion: { type: String, required: false },
 })
+
+const modalidadSch = new Schema({
+    periodo:     { type: String, required: false },
+    fe_tsd:      { type: Number, required: false },
+    fe_tsh:      { type: Number, required: false },
+    fe_txd:      { type: String, required: false },
+    fe_txh:      { type: String, required: false },
+    freq:        { type: String, required: false },
+})
+
+const itempedidoSch = new Schema({
+  slug:      { type: String, required: false },
+  kitItem:   { type: Number, required: false },
+  productId: { type: String, required: false },
+  code:      { type: String, required: false },
+  name:      { type: String, required: false },
+  ume:       { type: String, required: false },
+  qty:       { type: Number, required: false },
+
+})
+
+
+const pedidoSch = new Schema({
+    id:        { type: String, required: false },
+    modalidad: { type: modalidadSch, required: false },
+    deposito:  { type: String, required: false },
+    urgencia:  { type: Number, required: false },
+    kitId:     { type: String, required: false },
+    kitQty:    { type: Number, required: false },
+    estado:    { type: String, required: false },
+    avance:    { type: String, required: false },
+    observacion: { type: String, required: false },
+    items:     [ itempedidoSch ]
+});
+
 
 const encuestaSch = new Schema({
     id:           { type:String, required: false },
@@ -85,6 +121,7 @@ const asistenciaSch = new Schema({
     atendidox:   { type: atendidoSch,   required: false },
     modalidad:   { type: alimentoSch,   required: false },
     encuesta:    { type: encuestaSch,   required: false },
+    pedido:      { type: pedidoSch,   required: false },
 });
 
 
@@ -369,6 +406,14 @@ const isThisYear = function(fechaPHP){
   return currentYear;
 }
 
+const isDeprecated = function(fechaPHP){
+  let isDeprecated = false;
+
+  if(fechaPHP.getFullYear() <= 2018) isDeprecated = true;
+
+  return isDeprecated;
+}
+
 const buildObservacion = function(token){
   let obsList = token.observaciones;
   let obsText = "[Id: " + token.entrega.id + '] ';
@@ -378,7 +423,7 @@ const buildObservacion = function(token){
     let tx = ''
 
     if(t.text !== "NULL"){
-      tx = t.ts + ':: ' + t.text + '  '
+      tx = t.ts + ':: ' + t.text + ' / '
     }
 
     obsText = obsText + tx;
@@ -763,4 +808,341 @@ exports.tablero = function(req, errcb, cb) {
   })
 
 }
+
+const populateMasterHabitacional = function(person_tree, product_tree, master, record){
+
+  /****
+            <column name="id">33109</column>
+            <column name="solicitante">87890</column>
+            <column name="causa">Otra</column>
+            <column name="causa_otra"></column>
+            <column name="estado">Entregada</column>
+            <column name="fecha_entrega">2019-11-01</column>
+            <column name="timestamp">2019-11-01 10:03:20</column>
+            <column name="id_07">87890</column>
+            <column name="documento_nro">20027011</column>
+            <column name="nombre">ENRIQUE </column>
+            <column name="apellido">BARAJA</column>
+            <column name="id_11">155474</column>
+            <column name="file">NULL</column>
+            <column name="text">RETIRA PARA EL SR. ARANGEL CRISTIAN JAVIER CON DNI 36.829.100</column>
+            <column name="user">0</column>
+            <column name="timestamp">2019-11-01 13:59:06</column>
+            <column name="solicitud">33109</column>
+            <column name="producto">32</column>
+            <column name="cantidad">5</column>
+
+  ****/
+
+  let obs_token = {id: record.id11, text: record.text, ts: record.timestamp15};
+  let qty = 1;
+  if(record.cantidad && record.cantidad !== 'NULL'){
+    qty = parseInt(record.cantidad, 10);
+  }
+  let name = "";
+  let ume = "UN";
+  let productId = null;
+
+  //console.dir(record);
+
+  if(!record.producto || record.producto === 'NULL' ){
+    return;
+  }
+
+  if(!product_tree[record.producto]){
+    console.log('Product TREE NOT FOUND: [%s]', record.producto)
+  
+  }else{
+    name =        product_tree[record.producto].name || 'producto genérico';
+    ume =         product_tree[record.producto].pume || 'UN';
+    productId =  product_tree[record.producto]._id || null;
+  }
+
+  let product_token = {
+    code: record.producto,
+    slug: 'dato migrado', 
+    kitItem: 0,
+    qty: qty,
+    name:       name,
+    ume:        ume,
+    productId:  productId,
+
+  };
+
+  if(master[record.id]){
+      let obs = master[record.id].observaciones;
+      if(obs && obs.length){
+        obs.push(obs_token);
+
+      }else{
+        master[record.id].observaciones = [ obs_token ];
+      }
+
+     let items = master[record.id].items;
+      if(items && items.length){
+        items.push(product_token);
+
+      }else{
+        master[record.id].items = [ product_token ];
+      }
+
+  }else {
+    let token = {};
+    if(person_tree[record.solicitante]){
+      token.person = person_tree[record.solicitante];
+      token.idbrown = record.id;
+      token.brownPersonId = record.solicitante
+      token.entrega = {
+        id: record.id,
+        solicitante: record.solicitante,
+        causa: record.causa,
+        causa_otra: record.causa_otra,
+        estado: record.estado,
+        ts:  record.timestamp,
+        f_entrega: record.fecha_entrega,
+      }
+
+      token.observaciones = [obs_token ]
+      token.items = [ product_token ]
+      master[record.id] = token;
+
+    }else{
+      //console.log('AUXILIO: NO encuentro persona!!! [%s]', record.id)
+    }
+
+  }
+}
+
+const processEachHabitacional = function(person_tree, product_tree, master, token){
+    let data = token.column,
+        record = {};
+
+    data.forEach((el,index)=>{
+        if(!record[el.$.name]){
+            record[el.$.name] = el._;
+        }else{
+            record[el.$.name + index] = el._;
+
+        }
+    });
+    // console.dir(record);
+    // console.log('---------------------------');
+    populateMasterHabitacional(person_tree, product_tree, master, record);
+}
+
+
+const buildHabitacional = function (token, num) {
+
+console.dir(token);
+
+  let observacion = buildObservacion(token);
+  let avance = 'entregado'; //ToDo verificar lista de 
+  let estado = 'cumplido';
+  let fecha = '01/01/1900';
+  let fechaPHP = '01/01/1900';
+
+  if(token.entrega.f_entrega !== 'NULL'){
+    fecha = token.entrega.f_entrega;
+    fechaPHP = token.entrega.f_entrega;
+
+  }else if(token.entrega.ts && token.entrega.ts !== 'NULL'){
+    fecha = token.entrega.ts.substring(0 , 10);
+    fechaPHP = fecha;
+  }
+
+  let fechaDate = utils.parsePHPDateStr(fechaPHP);
+  let projectedDate = utils.parsePHPDateStr(fechaPHP);
+  let isCurrentYear = isThisYear(fechaDate);
+  let isDeprecated = isDeprecated(fechaDate);
+
+  let modalidad = {
+    periodo: 'UNICO',
+    fe_txd: fecha,
+    fe_txh: fecha,
+    fe_tsd: fechaDate.getTime(),
+    fe_tsh: fechaDate.getTime(),
+    freq:   'unicavez'
+  }
+
+  if(token.entrega.estado === 'Pendiente'){
+    if(isDeprecated){
+      avance = 'incumplido';
+      estado = 'baja';
+
+    }else{
+      avance = 'pendiente';
+      estado = 'activo';
+
+    }
+
+
+  }else if(token.entrega.estado === 'Entregada' || token.entrega.estado === 'NULL'){
+    avance = 'entregado';
+    estado = 'cumplido'
+
+  }else if(token.entrega.estado === 'Anulada'){
+    avance = 'anulado';
+    estado = 'baja'
+
+  }
+
+  let requeridox = {
+    id: token.person._id,
+    slug: token.person.displayName,
+    tdoc: token.person.tdoc,
+    ndoc: token.person.ndoc
+  }
+
+  let pedido = {
+    modalidad: modalidad,
+    deposito: 'galpon',
+    urgencia: 1,
+    kitId: null,
+    kitQty: 1,
+    estado: estado,
+    avance: avance,
+    observacion: observacion,
+    items: token.items
+  }
+
+
+  let asistencia = new Record({
+    compPrefix:  "SOL",
+    compName:    "S/Asistencia",
+    compNum:     num,
+    idPerson:    token.person._id,
+    fecomp_tsa:  fechaDate.getTime(),
+    fecomp_txa:  utils.dateToStr(fechaDate),
+    idbrown:     token.idbrown,
+    action:      "habitacional",
+    slug:        "dato migrado",
+    description: observacion,
+    sector:      "tsocial",
+    estado:      estado,
+    avance:      avance,
+    ts_alta:     utils.parsePHPTimeStamp(token.entrega.ts),
+    ts_fin:      utils.parsePHPTimeStamp(token.entrega.ts),
+    ts_prog:     utils.parsePHPTimeStamp(token.entrega.ts),
+    requeridox:  requeridox,
+    atendidox:   null,
+    modalidad: null,
+    pedido:   pedido,
+    encuesta:    null
+  })
+  return asistencia;
+
+}
+
+const insertHabitacionalData = function(person_tree, product_tree, habitacionalMaster){
+  console.log('**********************')
+  console.log('Insert DATA')
+  console.log('**********************')
+
+  let serialNum = 200000;
+  let isLast = false;
+
+  for(let pid in habitacionalMaster){
+
+    let token = habitacionalMaster[pid];
+
+    serialNum += 1;
+    compNum = serialNum + "";
+
+
+    let asistencia = buildHabitacional(token, compNum);
+
+    if(asistencia){
+      insertAlimentosToDB(asistencia);
+    }
+
+  }
+
+
+}
+
+
+const processHabitacionalRecords = function(person_tree, product_tree, data, errcb, cb){
+    let table = data.database.table;
+
+    const habitacionalMaster = {};
+
+    table.forEach((token, index) => {
+        processEachHabitacional(person_tree, product_tree, habitacionalMaster, token);
+
+    });
+
+
+    cb({process: "ok"});
+
+    insertHabitacionalData(person_tree, product_tree, habitacionalMaster);
+
+}
+
+const processHabitacionalArchive = function(person_tree, product_tree, req, errcb, cb){
+    console.log('******  processARCHIVE to BEGIN ********')
+    const arch = path.join(config.rootPath, 'public/migracion/habitacional/habitacional.xml');
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/habitacional/habitacional.xml');
+    console.log('******  processARCHIVE OK ********')
+
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+
+    let parser = new xml2js.Parser();
+
+    console.log('Ready to begin PROCESS: [%s]', arch);
+    fs.readFile(arch, function( err, data){
+        if(err){
+            console.dir(err);
+
+        }else{
+            parser.parseString(data, 
+
+            function(err, jdata){
+                if(err){
+                    console.log('error*************')
+                    console.dir(err);
+
+                }else{
+                    console.log('Parser OK');
+                    processHabitacionalRecords(person_tree, product_tree, jdata, errcb, cb);
+                }
+            });
+        }
+    });
+
+
+}
+
+
+function buildPersonTree(req, errcb, cb){
+  person.buildInvertedTree().then(personTree => {
+    if(personTree){
+      console.log('PersonTree CREATED')
+      //console.dir(personTree);
+    }
+    product.buildInvertedTree().then(productTree => {
+      if(productTree){
+        console.log('ProductTree CREATED')
+      }
+      processHabitacionalArchive(personTree, productTree, req, errcb, cb)
+
+    })
+  });
+}
+
+
+exports.importhabitacional = function (req, errcb, cb) {
+    console.log('Import @0811')
+    //ToDo: ojo SQL que traiga también las pendientes
+
+    buildPersonTree(req, errcb, cb);
+
+};
 

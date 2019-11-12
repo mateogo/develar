@@ -402,7 +402,32 @@ const procesProductMigration = function(req, errcb, cb){
 //http://localhost:8080/api/products/migracionproductos
 
 
+exports.buildInvertedTree = function(){
+    let promise = new Promise((resolve, reject)=> {
+        Record.find(null, '_id name code pume ').lean().then(productos => {
+            let master = {};
+            productos.forEach(p => {
+                if(p.code){
+                    master[p.code] = {
+                        _id: p._id,
+                        code: p.code,
+                        name: p.name,
+                        pume: p.pume
+                    }
+                }
 
+            })
+            resolve(master);
+
+        })
+
+
+    });
+
+
+
+    return promise;
+}
 
 
 
