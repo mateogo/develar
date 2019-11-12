@@ -6,6 +6,11 @@
 		 			<solasis-view [token]='asistencia' [kitOptList]='kitOptList'></solasis-view>
 		 		</div>
 			</div>
+		 	<div  *ngIf="isPedido" [ngStyle]=selectedStyle class="row">
+		 		<div class="col-md-12">
+		 			<solicita-pedidos-view [pedido]='pedido' ></solicita-pedidos-view>
+		 		</div>
+			</div>
 		</ng-container>
 
 	 	<div [ngStyle]=selectedStyle class="row">

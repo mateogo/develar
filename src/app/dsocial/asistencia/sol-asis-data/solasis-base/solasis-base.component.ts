@@ -3,6 +3,7 @@ import { Person } from '../../../../entities/person/person';
 import { Asistencia,
           Alimento,
           Encuesta,
+          Pedido,
           UpdateAsistenciaEvent,
           UpdateEncuestaEvent,
           UpdateAlimentoEvent } from '../../asistencia.model';
@@ -16,6 +17,7 @@ const TOKEN_TYPE = 'asistencia';
 
 const MODALIDAD_ALIMENTO = 'alimentos';
 const MODALIDAD_HABITACIONAL = 'habitacional';
+const MODALIDAD_SANITARIA = 'sanitaria';
 const MODALIDAD_ENCUESTA = 'encuesta';
 
 const BG_COLOR_DEFAULT = "#ffffff";
@@ -32,7 +34,6 @@ export class SolasisBaseComponent implements OnInit {
   @Input() viewMode = 'show'; // show||select
   @Input() kitOptList:KitOptionList[];
     //                         [kitOptList]='kitEntregaOptList'
-
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
 	public showView = true;
@@ -50,6 +51,9 @@ export class SolasisBaseComponent implements OnInit {
   public isAlimentos = false;
   public isEncuesta = false;
 
+  public isPedido = false;
+  public pedido:Pedido;
+
 
 	public openEditor = false;
 
@@ -59,11 +63,10 @@ export class SolasisBaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
-
     if(this.viewMode === 'show'){
       this.showEditControl = true;
       this.showSelectControl = false;
+      this.setModalidad()
 
     }else if(this.viewMode === 'select'){
       this.showEditControl = false;
@@ -95,6 +98,7 @@ export class SolasisBaseComponent implements OnInit {
   setModalidad(){
     this.isAlimentos = false;
     this.isEncuesta = false;
+    this.isPedido = false;
 
     if(this.asistencia.action === MODALIDAD_ALIMENTO) {
       this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad : new Alimento();
@@ -102,9 +106,14 @@ export class SolasisBaseComponent implements OnInit {
       this.isAlimentos = true;
 
     } else if(this.asistencia.action === MODALIDAD_HABITACIONAL){
-      this.encuesta = this.asistencia.encuesta ? this.asistencia.encuesta : new Encuesta();
+      this.pedido = this.asistencia.pedido ? this.asistencia.pedido : new Pedido();
       this.modalidad = MODALIDAD_HABITACIONAL;
-      this.isEncuesta = true;
+      this.isPedido = true;
+
+    } else if(this.asistencia.action === MODALIDAD_SANITARIA){
+      this.pedido = this.asistencia.pedido ? this.asistencia.pedido : new Pedido();
+      this.modalidad = MODALIDAD_SANITARIA;
+      this.isPedido = true;
 
 
     } else if(this.asistencia.action === MODALIDAD_ENCUESTA){

@@ -375,6 +375,7 @@ const frecuenciaOptList: Array<any> = [
         {val: 'quincenal', q: 2, type:'Quincenal',        label: 'Quincenal' },
         {val: 'mensual',   q: 1, type:'Mensual',          label: 'Mensual' },
         {val: 'unica',     q: 1, type:'Vez única',        label: 'Vez única' },
+        {val: 'unicavez',  q: 1, type:'Vez única',        label: 'Por única vez' },
         {val: 'arequerim', q: 1, type:'A requerimiento',  label: 'A requerimiento' },
 ];
 
@@ -410,6 +411,7 @@ const avanceOptList = [
       {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
       {val: 'entregado',    label: 'Entregado',     slug:'Entregado' },
+      {val: 'derivadoVI',    label: 'Derivado ZVI',     slug:'Derivado ZVI' },
       {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
       {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
       {val: 'pendiente',    label: 'Pendiente',     slug:'Pendiente' } ,

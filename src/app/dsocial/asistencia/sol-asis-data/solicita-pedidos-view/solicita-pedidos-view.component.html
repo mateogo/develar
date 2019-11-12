@@ -1,0 +1,8 @@
+<p class='text-destacado'>{{ causa }}</p>
+<p class='text-normal'> {{ entrega}} </p>
+<p class='text-normal'>{{observacion}} </p>
+<p class='text-normal'>Estado: {{ estado }}::{{ avance }}:: </p>
+<p class='text-destacado'>Items </p>
+<div *ngFor="let item of items" >
+	#{{ item.code }} :: {{ item.name }} Cantidad: {{ item.qty }} ({{ item.ume }})
+</div>

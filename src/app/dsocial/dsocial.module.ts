@@ -77,6 +77,8 @@ import { AlmacenSearchComponent } from './helpers/product-search/product-search.
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 import { PersonAssetsPanelComponent } from './ciudadano/person-assets/person-assets-panel/person-assets-panel.component';
 import { SolicitaEncuestaEditmanyComponent } from './asistencia/sol-asis-data/solicita-encuesta-editmany/solicita-encuesta-editmany.component';
+import { SolicitaPedidosViewComponent } from './asistencia/sol-asis-data/solicita-pedidos-view/solicita-pedidos-view.component';
+import { SolicitaPedidosEditComponent } from './asistencia/sol-asis-data/solicita-pedidos-edit/solicita-pedidos-edit.component';
 
 @NgModule({
   imports: [
@@ -157,6 +159,8 @@ import { SolicitaEncuestaEditmanyComponent } from './asistencia/sol-asis-data/so
     AsistableroPageComponent,
     PersonAssetsPanelComponent,
     SolicitaEncuestaEditmanyComponent,
+    SolicitaPedidosViewComponent,
+    SolicitaPedidosEditComponent,
   ]
 })
 export class DsocialModule { }

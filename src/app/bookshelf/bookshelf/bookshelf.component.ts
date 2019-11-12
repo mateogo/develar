@@ -8,7 +8,6 @@ import { SharedService }      from '../../develar-commons/shared-service';
 
 // Observable class extensions
 
-
 @Component({
   selector: 'app-bookshelf',
   templateUrl: './bookshelf.component.html',
@@ -26,8 +25,8 @@ export class BookshelfComponent implements OnInit {
       this.models = cards;
     })
 
-
 	}
+
 
   constructor(
   		private recordcardService: CardSearchService,
@@ -64,3 +63,6 @@ export class BookshelfComponent implements OnInit {
   }
 
 }
+
+// "typescript_tsdk": "/Users/mateogomezortega/Repositorios/develar/develar-6/node_modules/typescript/lib" 
+
