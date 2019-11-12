@@ -142,8 +142,8 @@ export class DsocialModel {
 		serial.dia = 0;
 		serial.estado = 'activo';
 		serial.punto = 0;
-		serial.pnumero = 10000;
-		serial.offset = 0;
+		serial.pnumero = 1;
+		serial.offset = 400000;
 		serial.slug = 'Solicitudes de asistencia en Desarrollo Social';
 		serial.compPrefix = 'SOL';
 		serial.compName = 'S/Asistencia';
