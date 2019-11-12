@@ -107,7 +107,7 @@ const asistenciaSch = new Schema({
     compName:    { type: String, required: true },
     compNum:     { type: String, required: true },
     idPerson:    { type: String, required: true },
-    idbrown:     { type: String, required: true },
+    idbrown:     { type: String, required: false },
     fecomp_tsa:  { type: Number, required: true },
     fecomp_txa:  { type: String, required: true },
     action:      { type: String, required: true },
