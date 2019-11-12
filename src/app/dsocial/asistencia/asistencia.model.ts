@@ -62,7 +62,8 @@ export class ItemPedido {
 	code: string;
 	name: string;
 	ume: string;
-	qty: number;
+	qty: number = 1;
+	punitario: number = 0;
 
 }
 
@@ -76,6 +77,7 @@ export class Pedido {
     kitId:          string;
     kitQty:         number = 1;
     observacion:    string;
+    causa:          string;
 
 		estado:         string = 'activo';
 		avance:         string = 'emitido';

@@ -61,6 +61,7 @@ const itempedidoSch = new Schema({
   name:      { type: String, required: false },
   ume:       { type: String, required: false },
   qty:       { type: Number, required: false },
+  punitario: { type: Number, required: false },
 
 })
 
@@ -74,6 +75,7 @@ const pedidoSch = new Schema({
     kitQty:    { type: Number, required: false },
     estado:    { type: String, required: false },
     avance:    { type: String, required: false },
+    causa:     { type: String, required: false },
     observacion: { type: String, required: false },
     items:     [ itempedidoSch ]
 });
@@ -836,6 +838,7 @@ const populateMasterHabitacional = function(person_tree, product_tree, master, r
 
   let obs_token = {id: record.id11, text: record.text, ts: record.timestamp15};
   let qty = 1;
+  let punitario = 0;
   if(record.cantidad && record.cantidad !== 'NULL'){
     qty = parseInt(record.cantidad, 10);
   }
@@ -866,6 +869,7 @@ const populateMasterHabitacional = function(person_tree, product_tree, master, r
     name:       name,
     ume:        ume,
     productId:  productId,
+    punitario: punitario,
 
   };
 
@@ -953,7 +957,7 @@ console.dir(token);
   let fechaDate = utils.parsePHPDateStr(fechaPHP);
   let projectedDate = utils.parsePHPDateStr(fechaPHP);
   let isCurrentYear = isThisYear(fechaDate);
-  let isDeprecated = isDeprecated(fechaDate);
+  let isVencido = isDeprecated(fechaDate);
 
   let modalidad = {
     periodo: 'UNICO',
@@ -965,7 +969,7 @@ console.dir(token);
   }
 
   if(token.entrega.estado === 'Pendiente'){
-    if(isDeprecated){
+    if(isVencido){
       avance = 'incumplido';
       estado = 'baja';
 
@@ -1001,7 +1005,8 @@ console.dir(token);
     kitQty: 1,
     estado: estado,
     avance: avance,
-    observacion: observacion,
+    causa: token.entrega.causa,
+    observacion: token.entrega.causa_otra,
     items: token.items
   }
 
@@ -1080,8 +1085,8 @@ const processHabitacionalRecords = function(person_tree, product_tree, data, err
 
 const processHabitacionalArchive = function(person_tree, product_tree, req, errcb, cb){
     console.log('******  processARCHIVE to BEGIN ********')
-    const arch = path.join(config.rootPath, 'public/migracion/habitacional/habitacional.xml');
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/habitacional/habitacional.xml');
+    //const arch = path.join(config.rootPath,     'public/migracion/habitacional/habitacional.xml');
+    const arch = path.join(config.rootPath,  'www/dsocial/migracion/habitacional/habitacional.xml');
     console.log('******  processARCHIVE OK ********')
 
 
@@ -1121,7 +1126,7 @@ const processHabitacionalArchive = function(person_tree, product_tree, req, errc
 }
 
 
-function buildPersonTree(req, errcb, cb){
+function buildHabitacionalTree(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
     if(personTree){
       console.log('PersonTree CREATED')
@@ -1142,7 +1147,383 @@ exports.importhabitacional = function (req, errcb, cb) {
     console.log('Import @0811')
     //ToDo: ojo SQL que traiga también las pendientes
 
-    buildPersonTree(req, errcb, cb);
+    buildHabitacionalTree(req, errcb, cb);
 
 };
+
+/*************************/
+/*        SANITARIA     */
+/***********************/
+
+const buildSanitarian = function (token, num) {
+
+console.dir(token);
+
+  let observacion = buildObservacion(token);
+  let avance = 'entregado'; //ToDo verificar lista de 
+  let estado = 'cumplido';
+  let fecha = '01/01/1900';
+  let fechaPHP = '01/01/1900';
+
+  if(token.entrega.f_entrega !== 'NULL'){
+    fecha = token.entrega.f_entrega;
+    fechaPHP = token.entrega.f_entrega;
+
+  }else if(token.entrega.ts && token.entrega.ts !== 'NULL'){
+    fecha = token.entrega.ts.substring(0 , 10);
+    fechaPHP = fecha;
+  }
+
+  let fechaDate = utils.parsePHPDateStr(fechaPHP);
+  let projectedDate = utils.parsePHPDateStr(fechaPHP);
+
+  let isCurrentYear = isThisYear(fechaDate);
+
+  let isVencido = isDeprecated(fechaDate);
+
+  let modalidad = {
+    periodo: 'UNICO',
+    fe_txd: fecha,
+    fe_txh: fecha,
+    fe_tsd: fechaDate.getTime(),
+    fe_tsh: fechaDate.getTime(),
+    freq:   'unicavez'
+  }
+
+  if(token.entrega.estado === 'Pendiente'){
+    if(isVencido){
+      avance = 'incumplido';
+      estado = 'baja';
+
+    }else{
+      avance = 'pendiente';
+      estado = 'activo';
+
+    }
+
+
+  }else if(token.entrega.estado === 'Entregada' || token.entrega.estado === 'NULL'){
+    avance = 'entregado';
+    estado = 'cumplido'
+
+  }else if(token.entrega.estado === 'Rechazada'){
+    avance = 'rechazado';
+    estado = 'baja'
+
+  }else if(token.entrega.estado === 'En Zona VI'){
+
+    if(isVencido){
+      avance = 'derivadoVI';
+      estado = 'baja';
+
+    }else{
+      avance = 'derivadoVI';
+      estado = 'activo'
+    }
+
+  }else if(token.entrega.estado === 'Incompleta'){
+    avance = 'incumplido';
+    estado = 'baja'
+
+  }else if(token.entrega.estado === 'Anulada'){
+    avance = 'anulado';
+    estado = 'baja'
+
+  }else{
+    avance = 'anulado';
+    estado = 'baja'
+
+  }
+
+  let requeridox = {
+    id: token.person._id,
+    slug: token.person.displayName,
+    tdoc: token.person.tdoc,
+    ndoc: token.person.ndoc
+  }
+
+  let pedido = {
+    modalidad: modalidad,
+    deposito: 'galpon',
+    urgencia: 1,
+    kitId: null,
+    kitQty: 1,
+    estado: estado,
+    avance: avance,
+    causa: token.entrega.causa,
+    observacion: token.entrega.causa_otra,
+    items: token.items
+  }
+
+
+  let asistencia = new Record({
+    compPrefix:  "SOL",
+    compName:    "S/Asistencia",
+    compNum:     num,
+    idPerson:    token.person._id,
+    fecomp_tsa:  fechaDate.getTime(),
+    fecomp_txa:  utils.dateToStr(fechaDate),
+    idbrown:     token.idbrown,
+    action:      "sanitaria",
+    slug:        "dato migrado",
+    description: observacion,
+    sector:      "tsocial",
+    estado:      estado,
+    avance:      avance,
+    ts_alta:     utils.parsePHPTimeStamp(token.entrega.ts),
+    ts_fin:      utils.parsePHPTimeStamp(token.entrega.ts),
+    ts_prog:     utils.parsePHPTimeStamp(token.entrega.ts),
+    requeridox:  requeridox,
+    atendidox:   null,
+    modalidad: null,
+    pedido:   pedido,
+    encuesta:    null
+  })
+  return asistencia;
+
+}
+
+
+
+const insertSanitarianData = function(person_tree, product_tree, sanitarianMaster){
+  console.log('**********************')
+  console.log('Insert DATA')
+  console.log('**********************')
+
+  let serialNum = 300000;
+  let isLast = false;
+
+  for(let pid in sanitarianMaster){
+
+    let token = sanitarianMaster[pid];
+
+    serialNum += 1;
+    compNum = serialNum + "";
+
+
+    let asistencia = buildSanitarian(token, compNum);
+
+    if(asistencia){
+      insertAlimentosToDB(asistencia);
+    }
+
+  }
+
+
+}
+
+
+
+const populateMasterSanitaria = function(person_tree, product_tree, master, record){
+
+  /****
+        <column name="id">10081</column>
+        <column name="solicitante">37262</column>
+        <column name="producto">58</column>
+        <column name="especificacion"></column>
+        <column name="monto">NULL</column>
+        <column name="cantidad">1</column>
+        <column name="estado">Entregada</column>
+        <column name="fecha_entrega">2012-07-02</column>
+        <column name="timestamp">2012-07-02 11:34:57</column>
+        <column name="id">37262</column>
+        <column name="documento_nro">52583919</column>
+        <column name="nombre">MILENA YANINA ANABELA</column>
+        <column name="apellido">SANABRIA MONTES</column>
+        <column name="id">35725</column>
+        <column name="file">NULL</column>
+        <column name="text">EMERGENCIA- SE ENTREGAN REQUISITOS PARA EL TRAMITE-</column>
+        <column name="user">0</column>
+        <column name="timestamp">2012-07-02 11:35:57</column>
+
+  ****/
+
+  let obs_token = {id: record.id13, text: record.text, ts: record.timestamp17};
+  let qty = 1;
+  let punitario = 0;
+
+  if(record.cantidad && record.cantidad !== 'NULL'){
+    qty = parseInt(record.cantidad, 10);
+  }
+  if(record.monto && record.monto !== 'NULL'){
+    punitario = parseInt(record.monto, 10);
+  }
+
+  let name = "";
+  let ume = "UN";
+  let productId = null;
+  let especificacion = record.especificacion || '';
+
+  //console.dir(record);
+
+  if(!record.producto || record.producto === 'NULL' ){
+    return;
+  }
+
+  if(!product_tree[record.producto]){
+    console.log('Product TREE NOT FOUND: [%s]', record.producto)
+  
+  }else{
+    name =        product_tree[record.producto].name || 'producto genérico';
+    ume =         product_tree[record.producto].pume || 'UN';
+    productId =  product_tree[record.producto]._id || null;
+  }
+
+  let product_token = {
+    code: record.producto,
+    slug: 'especificación:  ' + especificacion, 
+    kitItem: 0,
+    qty: qty,
+    name:       name,
+    ume:        ume,
+    punitario:  punitario,
+    productId:  productId,
+
+  };
+
+  if(master[record.id]){
+      let obs = master[record.id].observaciones;
+      if(obs && obs.length){
+        obs.push(obs_token);
+
+      }else{
+        master[record.id].observaciones = [ obs_token ];
+      }
+
+     let items = master[record.id].items;
+      if(items && items.length){
+        items.push(product_token);
+
+      }else{
+        master[record.id].items = [ product_token ];
+      }
+
+  }else {
+    let token = {};
+    if(person_tree[record.solicitante]){
+      token.person = person_tree[record.solicitante];
+      token.idbrown = record.id;
+      token.brownPersonId = record.solicitante
+      token.entrega = {
+        id: record.id,
+        solicitante: record.solicitante,
+        causa: '',
+        causa_otra: '',
+        estado: record.estado,
+        ts:  record.timestamp,
+        f_entrega: record.fecha_entrega,
+      }
+
+      token.observaciones = [obs_token ]
+      token.items = [ product_token ]
+      master[record.id] = token;
+
+    }else{
+      //console.log('AUXILIO: NO encuentro persona!!! [%s]', record.id)
+    }
+
+  }
+}
+
+
+const processEachSanitarian = function(person_tree, product_tree, master, token){
+    let data = token.column,
+        record = {};
+
+    data.forEach((el,index)=>{
+        if(!record[el.$.name]){
+            record[el.$.name] = el._;
+        }else{
+            record[el.$.name + index] = el._;
+
+        }
+    });
+    // console.dir(record);
+    // console.log('---------------------------');
+    populateMasterSanitaria(person_tree, product_tree, master, record);
+}
+
+const processSanitarianRecords = function(person_tree, product_tree, data, errcb, cb){
+    let table = data.database.table;
+
+    const sanitarianMaster = {};
+
+    table.forEach((token, index) => {
+        processEachSanitarian(person_tree, product_tree, sanitarianMaster, token);
+
+    });
+
+
+    cb({process: "ok"});
+
+    insertSanitarianData(person_tree, product_tree, sanitarianMaster);
+
+}
+
+const processSanitarianArchive = function(person_tree, product_tree, req, errcb, cb){
+    console.log('******  processARCHIVE to BEGIN ********')
+    const arch = path.join(config.rootPath,        'public/migracion/sanitaria/sanitaria.xml');
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/sanitaria/sanitaria.xml');
+    console.log('******  processARCHIVE OK ********')
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    let parser = new xml2js.Parser();
+
+    console.log('Ready to begin PROCESS: [%s]', arch);
+    fs.readFile(arch, function( err, data){
+        if(err){
+            console.dir(err);
+
+        }else{
+            parser.parseString(data, 
+
+            function(err, jdata){
+                if(err){
+                    console.log('error*************')
+                    console.dir(err);
+
+                }else{
+                    console.log('Parser OK');
+                    processSanitarianRecords(person_tree, product_tree, jdata, errcb, cb);
+                }
+            });
+        }
+    });
+}
+
+
+function buildTreeForSanitarian(req, errcb, cb){
+  person.buildInvertedTree().then(personTree => {
+    if(personTree){
+      console.log('PersonTree CREATED')
+      //console.dir(personTree);
+    }
+    product.buildInvertedTree().then(productTree => {
+      if(productTree){
+        console.log('ProductTree CREATED')
+      }
+      processSanitarianArchive(personTree, productTree, req, errcb, cb)
+
+    })
+  });
+}
+
+
+exports.importsanitaria = function (req, errcb, cb) {
+    console.log('Import  SANITARIA @0911')
+    //ToDo: ojo SQL que traiga también las pendientes
+
+    buildTreeForSanitarian(req, errcb, cb);
+
+};
+
+
+
 

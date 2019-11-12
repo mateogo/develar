@@ -51,6 +51,19 @@ router.get('/importhabitacional', function (req, res) {
     });
 });
 
+router.get('/importsanitaria', function (req, res) {
+    console.log('process SANITARIA IMPORT');
+    service.importsanitaria(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
 /**
  * import and [update | insert ]
  */
