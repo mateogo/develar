@@ -1462,8 +1462,8 @@ const processSanitarianRecords = function(person_tree, product_tree, data, errcb
 
 const processSanitarianArchive = function(person_tree, product_tree, req, errcb, cb){
     console.log('******  processARCHIVE to BEGIN ********')
-    const arch = path.join(config.rootPath,        'public/migracion/sanitaria/sanitaria.xml');
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/sanitaria/sanitaria.xml');
+    //const arch = path.join(config.rootPath,        'public/migracion/sanitaria/sanitaria.xml');
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/sanitaria/sanitaria.xml');
     console.log('******  processARCHIVE OK ********')
 
     function toLowerCase(name){
