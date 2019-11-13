@@ -556,20 +556,43 @@ function expectedQty(type, val){
 
 function validateFlujoEntregas(asistencia: Asistencia, entregas: RemitoAlmacen[]):any{
 	let entregasMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+	let expectedEntregas;
+	let expectedFrecuencia;
+	let fe_tsd = 0;
+	let fe_tsh = 0;
+	let expectedRaciones = 0;
+
 
 	let error = {
 		valid: true,
 		message: 'OK'
 	};
 
-	let countEntregas = 0;
-	let expectedRaciones = asistencia.modalidad.qty;
-	let expectedEntregas = expectedQty('periodo', asistencia.modalidad.periodo);
-	let expectedFrecuencia = expectedQty('frecuencia', asistencia.modalidad.freq);
-
 	let today = new Date();
 	let mesActual = today.getMonth();
-	if(today.getTime() < asistencia.modalidad.fe_tsd  || today.getTime() > asistencia.modalidad.fe_tsh ){
+
+	let countEntregas = 0;
+
+	if(asistencia.action === 'habitat') asistencia.action = 'habitacional';
+	let voucherType = AsistenciaHelper.getVoucherType(asistencia)
+
+	if(voucherType.key === 'modalidad'){
+		expectedEntregas = expectedQty('periodo', asistencia.modalidad.periodo);
+		expectedFrecuencia = expectedQty('frecuencia', asistencia.modalidad.freq);
+		fe_tsd = asistencia.modalidad.fe_tsd
+		fe_tsh = asistencia.modalidad.fe_tsh
+		expectedRaciones = asistencia.modalidad.qty;
+
+	}else{
+		expectedEntregas = expectedQty('periodo', asistencia.pedido.modalidad.periodo);
+		expectedFrecuencia = expectedQty('frecuencia', asistencia.pedido.modalidad.freq);
+		fe_tsd = asistencia.pedido.modalidad.fe_tsd
+		fe_tsh = asistencia.pedido.modalidad.fe_tsh
+		expectedRaciones = asistencia.pedido.kitQty;
+
+	}
+
+	if(today.getTime() < fe_tsd  || today.getTime() > fe_tsh ){
 		error['valid'] = false;
 		error['message'] ='Período de entregas vencido';
 		return error;

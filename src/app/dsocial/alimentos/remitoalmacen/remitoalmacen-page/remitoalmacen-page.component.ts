@@ -175,13 +175,15 @@ export class RemitoalmacenPageComponent implements OnInit {
     this.remito.avance =     this.remito.avance || 'emitido';
     if(this.asistencia){
       this.remito.parentId = this.asistencia._id;
+      console.log('PINCHA 2')
       this.remito.parent = {
         id: this.asistencia._id,
         type: 'asistencia',
-        kit: this.asistencia.modalidad && this.asistencia.modalidad.type,
+        kit: '' , //this.asistencia.modalidad && this.asistencia.modalidad.type,
         action: this.asistencia.action,
         compNum: this.asistencia.compNum
       }
+      console.log('>>PINCHA 2')
 
     }
   }

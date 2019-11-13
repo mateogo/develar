@@ -121,7 +121,37 @@
         </mat-form-field>
       </div>
     </div>
-
+<h1>hola</h1>
+    <div class="row" >
+      <div class="col">
+        <almacen-search (emmitProduct)="handleProduct($event)"></almacen-search>
+      </div>
+    </div>
+    <div formArrayName='items'>
+    <ng-container *ngFor="let item of items.controls; let i=index" [formGroupName]="i">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-2">
+          <span><strong>{{ item.value.code }}</strong></span>
+        </div>
+        <div class="col-md-5">
+          <span><strong>{{ item.value.name }}</strong></span>
+        </div>
+        <div class="col-md-2">
+          <span><strong>{{ item.value.ume }}</strong></span>
+        </div>
+        <div class="col-md-1">
+          <mat-form-field>
+            <input matInput formControlName="qty" placeholder="Cantidad " >
+          </mat-form-field>
+        </div>
+        <div class="col-md-1">
+          <a role="button" href="#" 
+            class="mb-auto p-2" (click)='removeItem($event, item)' 
+            title='Eliminar contenido'><i class="fas fa-trash-alt"  aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </ng-container>
+    </div>
 
     <hr>
     <div class="additional-info">

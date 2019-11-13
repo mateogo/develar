@@ -166,12 +166,15 @@ export class AlimentosPageComponent implements OnInit {
     let kitEntrega = '';
     let qty = 1;
 
+    console.log('PINCHA?')
+
     if(this.voucherType.key ===  'modalidad'){
-      kitEntrega = asistencia.modalidad.type;
+      kitEntrega = '' ;//asistencia.modalidad.type;
       qty = asistencia.modalidad.qty;
     }else {
 
     }
+    console.log('NO PINCHA')
 
     this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person,this.voucherType, kitEntrega, qty)
     this.emitRemito = true;
