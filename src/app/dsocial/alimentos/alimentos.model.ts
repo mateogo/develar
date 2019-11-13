@@ -2,6 +2,7 @@ import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../dsocial.model';
 import { Person }   from '../../entities/person/person';
 import { Product, KitProduct } from '../../entities/products/product.model';
+import { VoucherType } from '../asistencia/asistencia.model';
 
 export class Requirente {
 		id:   string; 
@@ -124,8 +125,9 @@ export interface UpdateRemitoListEvent {
 };
 
 
+
 export class RemitoAlmacenModel {
-	static initNewRemito(action, slug, sector, serial: Serial, person: Person, kitEntrega?, qty?){
+	static initNewRemito(action, slug, sector, serial: Serial, person: Person, voucherType: VoucherType, kitEntrega?, qty?){
 		let ts = Date.now();
 		let requirente = new Requirente();
 		requirente.id = person._id;

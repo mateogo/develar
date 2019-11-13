@@ -5,6 +5,7 @@ import { Asistencia,
           Encuesta,
           Pedido,
           UpdateAsistenciaEvent,
+          UpdatePedidoEvent,
           UpdateEncuestaEvent,
           UpdateAlimentoEvent } from '../../asistencia.model';
 
@@ -16,7 +17,7 @@ const SELECT = 'select';
 const TOKEN_TYPE = 'asistencia';
 
 const MODALIDAD_ALIMENTO = 'alimentos';
-const MODALIDAD_HABITACIONAL = 'habitacional';
+const MODALIDAD_HABITACIONAL = 'habitat';
 const MODALIDAD_SANITARIA = 'sanitaria';
 const MODALIDAD_ENCUESTA = 'encuesta';
 
@@ -183,6 +184,23 @@ export class SolasisBaseComponent implements OnInit {
     this.showEditPanel = false;
 
     this.asistencia.encuesta = event.token;
+    
+    this.emitEvent({
+      action: event.action,
+      type: TOKEN_TYPE,
+      token: this.asistencia
+    });
+
+  }
+
+
+  managePedido(event: UpdatePedidoEvent ){
+    this.showView = true;
+    this.showEditBase = false;
+    this.showEditModalidad = false;
+    this.showEditPanel = false;
+
+    this.asistencia.pedido = event.token;
     
     this.emitEvent({
       action: event.action,

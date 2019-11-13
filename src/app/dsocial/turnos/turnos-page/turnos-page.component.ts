@@ -137,7 +137,7 @@ export class TurnosPageComponent implements OnInit {
     if(!this.socket){
       this.socket = this.dsCtrl.socket;
       this.socket.on('turnos:update', function (msj: any) {
-        that.initPageData();
+        //that.initPageData();
       });
     }
 

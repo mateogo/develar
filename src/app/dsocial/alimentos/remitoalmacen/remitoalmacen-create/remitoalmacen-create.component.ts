@@ -200,26 +200,21 @@ export class RemitoalmacenCreateComponent implements OnInit {
     })
 
 /*    
-    console.log('update Items: BEGIN [%s] [%s] ', type, val);
 
     let formArray = this.form.get('kits') as FormArray;
 
-    console.log('paso1: FormArray[%s]', formArray.length);
     let controls = formArray.controls 
     controls.forEach()
 
 
     this.currentItemList.forEach((t, i) => {
-      console.log('remove At [%s]', i)
       formArray.removeAt(i);
     })
 
     this.currentKit = this.findCurrentKit(val);
     this.currentItemList = this.buildItemList(this.currentKit, this.token);
-    console.log('new CurrentItemList: [%s]', this.currentItemList.length);
 
     this.currentItemList.forEach(t => {
-      console.log('Insert  [%s]', t.code)
       let kitItemFG = this.fb.group(t);
       formArray.push(kitItemFG);
     })

@@ -23,7 +23,8 @@ import {  Person,
         } from '../../../entities/person/person';
 
 import {  Asistencia, 
-          Alimento, 
+          Alimento,
+          VoucherType,
           UpdateAsistenciaEvent, 
           UpdateAlimentoEvent, 
           UpdateAsistenciaListEvent,
@@ -71,6 +72,7 @@ export class AlimentosPageComponent implements OnInit {
   public emitRemito = false;
   public remitoalmacen: RemitoAlmacen;
   public showHistorial = false;
+  public voucherType: VoucherType;
 
 
   // Turno
@@ -152,6 +154,9 @@ export class AlimentosPageComponent implements OnInit {
 
 
   initNewRemito(asistencia: Asistencia){
+    if(asistencia.action === 'habitat') asistencia.action = 'habitacional';
+
+    this.voucherType = AsistenciaHelper.getVoucherType(asistencia);
 
     let action = asistencia.action;
     let slug = '';
@@ -161,12 +166,14 @@ export class AlimentosPageComponent implements OnInit {
     let kitEntrega = '';
     let qty = 1;
 
-    if(asistencia.modalidad){
+    if(this.voucherType.key ===  'modalidad'){
       kitEntrega = asistencia.modalidad.type;
       qty = asistencia.modalidad.qty;
+    }else {
+
     }
 
-    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person, kitEntrega, qty)
+    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person,this.voucherType, kitEntrega, qty)
     this.emitRemito = true;
   }
 

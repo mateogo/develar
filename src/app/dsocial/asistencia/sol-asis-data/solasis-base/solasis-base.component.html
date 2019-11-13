@@ -62,6 +62,10 @@
 							<solicita-encuesta-edit   [token]='encuesta' [asistencia]='asistencia'
 											(updateToken)='manageEncuesta($event)' ></solicita-encuesta-edit>
 						</ng-container>
+						<ng-container *ngIf="isPedido">
+							<solicita-pedidos-edit   [pedido]='pedido' [asistencia]='asistencia'
+											(updateToken)='managePedido($event)' ></solicita-pedidos-edit>
+						</ng-container>
 
 					</div>
 				</div>

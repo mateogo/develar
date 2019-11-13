@@ -18,7 +18,6 @@ export interface SectorAtencion {
 }
 
 const asistenciaBlackList = [
-	{val: 'auh:auh',            type:'auh',          tingreso:'auh',  action: 'alimentos',  slug:'No entrega alimentos' },
 	{val: 'asisnacional:pnsa',  type:'asisnacional', tingreso:'pnsa', action: 'alimentos',  slug:'No entrega alimentos' },
 ]
 
@@ -42,6 +41,7 @@ export const sectores: SectorAtencion[] = [
 			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}},
 			{val:'habitat',      serial:'habitat',     label: 'Habitat',           style: {'background-color': "#f2dded"}},
 			{val:'cimientos',    serial:'cimientos',   label: 'Envión-Cimientos',  style: {'background-color': "#f2dded"}},
+			{val:'subsidios',    serial:'subsidios',   label: 'Subsidios',  style: {'background-color': "#f2dded"}},
 	];
 
 

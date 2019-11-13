@@ -218,7 +218,6 @@ export class SolDashboardPageComponent implements OnInit {
   tableAction(action){
     let selection = this.dsCtrl.selectionModel;
     let selected = selection.selected as AsistenciaTable[];
-    console.log('Table Action BUBBLED: [%s]', action);
 
     if(action === 'autorizar'){
       selected.forEach(t =>{
@@ -227,7 +226,8 @@ export class SolDashboardPageComponent implements OnInit {
     }
 
     if(action === 'editarencuestas'){
-      console.log('editarencuestas ToDo')
+      //
+
     }
 
     setTimeout(()=>{

@@ -70,6 +70,7 @@ const pedidoSch = new Schema({
     id:        { type: String, required: false },
     modalidad: { type: modalidadSch, required: false },
     deposito:  { type: String, required: false },
+    type:  { type: String, required: false },
     urgencia:  { type: Number, required: false },
     kitId:     { type: String, required: false },
     kitQty:    { type: Number, required: false },

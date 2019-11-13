@@ -47,8 +47,8 @@ export class Alimento {
 
 export class Modalidad {
 		periodo:     string = 'UNICO';
-		fe_tsd:      number;
-		fe_tsh:      number;
+		fe_tsd:      number = 0;
+		fe_tsh:      number = 0;
 		fe_txd:      string;
 		fe_txh:      string;
 		freq:        string = 'mensual';
@@ -67,10 +67,20 @@ export class ItemPedido {
 
 }
 
+export interface VoucherType {
+  type: string;
+  label: string;
+  key: string;
+  isRemitible: boolean;
+  payload: Alimento|Pedido;
+
+}
+
 
 export class Pedido {
 		id:             string;
 		modalidad: Modalidad;
+		type: string;
 
 		deposito:       string;
     urgencia:       number = 1;
@@ -225,6 +235,12 @@ export interface UpdateEncuestaEvent {
 	token: Encuesta;
 };
 
+export interface UpdatePedidoEvent {
+	action: string;
+	type: string;
+	token: Pedido;
+};
+
 export interface UpdateAsistenciaListEvent {
       action: string;
       type: string;
@@ -252,18 +268,44 @@ const default_option_list: Array<any> = [
 ];
 
 const asisActionOptList: Array<any> = [
-        {val: 'encuesta',    type:'EncuestaSocAmb', label: 'Encuesta' },
-        {val: 'alimentos',   type:'Alimentos',    label: 'Alimentos' },
-        {val: 'habitacional',  type:'Habitacional',  label: 'Habitacional' },
-        {val: 'sanitaria',  type:'Sanitaria',  label: 'Sanitaria' },
-        {val: 'subsidio',    type:'Subsidio',     label: 'Subsidio' },
-        {val: 'salud',       type:'Salud (RVI)',  label: 'Salud (RVI)' },
-        {val: 'nutricion',   type:'Nutrición',    label: 'Nutrición' },
-        {val: 'pension',     type:'Pensión',      label: 'Pensión' },
-        {val: 'migracion',   type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
-        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' },
+        {val: 'encuesta',     isRemitible: false, key:'',          type:'EncuestaSocAmb', label: 'Encuesta' },
+        {val: 'alimentos',    isRemitible: true,  key:'modalidad', type:'Alimentos',    label: 'Alimentos' },
+        {val: 'relocalizacion', isRemitible: false,  key:'',   type:'Relocalización',  label: 'Relocalización' },
+        {val: 'habitacional', isRemitible: true,  key:'pedido',   type:'Habitacional',  label: 'Habitacional' },
+        {val: 'sanitaria',    isRemitible: true,  key:'pedido',   type:'Sanitaria',  label: 'Sanitaria' },
+        {val: 'subsidio',     isRemitible: false, key:'',          type:'Subsidio',     label: 'Subsidio' },
+        {val: 'salud',        isRemitible: true,  key:'pedido',   type:'Salud (RVI)',  label: 'Salud (RVI)' },
+        {val: 'nutricion',    isRemitible: true,  key:'pedido',   type:'Nutrición',    label: 'Nutrición' },
+        {val: 'pension',      isRemitible: false, key:'',          type:'Pensión',      label: 'Pensión' },
+        {val: 'migracion',    isRemitible: false, key:'',          type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
+        {val: 'no_definido',  isRemitible: false, key:'',          type:'Sin selección',  label: 'Sin selección' },
 
 ];
+
+const pedidosTypeOptList: Array<any> = [
+        {val: 'alimentos',    type:'Alimentos',     label: 'Alimentos' },
+        {val: 'habitacional', type:'Habitacional',  label: 'Habitacional' },
+        {val: 'sanitaria',    type:'Sanitaria',     label: 'Sanitaria' },
+        {val: 'nutricion',    type:'Nutrición',     label: 'Nutrición' },
+        {val: 'no_definido',  type:'Sin selección', label: 'Sin selección' },
+];
+
+const entregaDesdeOptList: Array<any> = [
+        {val: 'galpon',       type:'Galpón',     label: 'Galpón' },
+        {val: 'proveedor',    type:'Proveedor',  label: 'Proveedor' },
+        {val: 'envio',        type:'Envío domicilio',     label: 'Envío domicilio' },
+        {val: 'otro',         type:'Otro',     label: 'Otro' },
+        {val: 'no_definido',  type:'Sin selección', label: 'Sin selección' },
+];
+
+const causasOptList: Array<any> = [
+        {val: 'incendio',       type:'Incendio',     label: 'Incendio' },
+        {val: 'emergencia',     type:'Emergencia',  label: 'Emergencia' },
+        {val: 'discapacidad',   type:'Discapacidad',     label: 'Discapacidad' },
+        {val: 'otro',           type:'Otro',     label: 'Otro' },
+        {val: 'no_definido',    type:'Sin selección', label: 'Sin selección' },
+];
+
 
 /**
 
@@ -292,10 +334,12 @@ const sector_actionRelation = {
 
   regionvi: [
     {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'alimentos',   label: 'Alimentos' },
   ],
 
   discapacidad: [
     {val: 'discapacidad',   label: 'Discapacidad' },
+    {val: 'alimentos',   label: 'Alimentos' },
   ],
 
   masvida: [
@@ -306,7 +350,7 @@ const sector_actionRelation = {
     {val: 'alimentos',   label: 'Alimentos' },
     {val: 'encuesta',    label: 'Encuesta' },
     {val: 'sanitaria',   label: 'Sanitaria' },
-    {val: 'habitat',     label: 'Habitat' },
+    {val: 'habitacional',     label: 'Habitacional' },
   ],
 
   nutricion: [
@@ -314,7 +358,10 @@ const sector_actionRelation = {
   ],
 
   inhumacion: [
+    {val: 'alimentos',   label: 'Alimentos' },
     {val: 'inhumacion',  label: 'Inhumacion' },
+    {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'habitacional',     label: 'Habitacional' },
   ],
 
   terceraedad: [
@@ -338,15 +385,25 @@ const sector_actionRelation = {
     {val: 'alimentos',   label: 'Alimentos' },
     {val: 'encuesta',    label: 'Encuesta' },
     {val: 'sanitaria',   label: 'Sanitaria' },
-    {val: 'habitat',     label: 'Habitat' },
+    {val: 'habitacional', label: 'Habitacional' },
   ],
 
   habitat: [
-    {val: 'habitat',     label: 'Habitat' },
+    {val: 'relocalizacion', label: 'Relocalización' },
+    {val: 'habitacional', label: 'Habitacional' },
+    {val: 'alimentos',   label: 'Alimentos' },
+    {val: 'encuesta',    label: 'Encuesta' },
+    {val: 'sanitaria',   label: 'Sanitaria' },
   ],
 
   cimientos: [
     {val: 'cimientos',     label: 'Envión-Cimientos' },
+    {val: 'alimentos',    label: 'Alimentos' },
+  ],
+
+ subsidios: [
+    {val: 'cimientos',     label: 'Envión-Cimientos' },
+    {val: 'alimentos',    label: 'Alimentos' },
   ],
 }
 
@@ -463,13 +520,21 @@ const optionsLists = {
    avance: avanceOptList,
    encuesta: avanceEncuestaOptList,
    urgencia: urgenciaOptList,
-   periodo: periodoOptList
+   pedidos: pedidosTypeOptList,
+   periodo: periodoOptList,
+   deposito: entregaDesdeOptList,
+   causa: causasOptList
 }
 
 
 function getLabel(list, val){
 		let t = list.find(item => item.val === val)
 		return t ? t.label : val;
+}
+
+function getOptListToken(list, val){
+		let t = list.find(item => item.val === val)
+		return t ? t : null;
 }
 
 function getPrefixedLabel(list, prefix, val){
@@ -728,6 +793,40 @@ export class AsistenciaHelper {
 
 		return token;
 	}
+
+	static isAsistenciaRemitible(asistencia: Asistencia): boolean {
+		let isRemitible = true;
+
+
+
+		return isRemitible;
+	}
+
+	static getVoucherType(asistencia: Asistencia): VoucherType{
+		let token = getOptListToken(this.getOptionlist('actions'), asistencia.action);
+		if(!token) return null;
+
+		let remitible = token.isRemitible;
+		let payload = asistencia[token.key];
+
+		if(!payload) remitible = false;
+
+		let label = token.key === 'alimentos' ? 'Voucher alimentos' : 'Voucher productos';
+
+		let voucherType = {
+			type: asistencia.action,
+			isRemitible: remitible,
+			key: token.key,
+			label: label,
+			payload: payload,
+
+
+		} as VoucherType;
+
+		return voucherType;
+	}
+
+
 
 /*
 		id:          string;
