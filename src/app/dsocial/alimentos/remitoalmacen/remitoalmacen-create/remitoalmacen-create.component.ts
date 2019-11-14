@@ -77,7 +77,9 @@ export class RemitoalmacenCreateComponent implements OnInit {
     return form;
   }
 
+//http://develar-local.co:4200/dsocial/gestion/atencionsocial/5dc999b11f7ad913b69d81ba
   currentKitList(remito: RemitoAlmacen){
+    console.log('REMIT kit[%s]', remito.kitEntrega);
     if(remito.kitEntrega){
       this.currentKit = this.findCurrentKit(remito.kitEntrega);
       this.currentItemList = this.buildItemList(this.currentKit, remito);
