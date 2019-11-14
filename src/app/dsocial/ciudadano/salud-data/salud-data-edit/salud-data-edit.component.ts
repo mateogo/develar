@@ -85,8 +85,8 @@ export class SaludDataEditComponent implements OnInit {
     let form: FormGroup;
 
     form = this.fb.group({
-      type:        [null],
-      tproblema:   [null],
+      type:        [null, Validators.compose( [Validators.required])],
+      tproblema:   [null, Validators.compose( [Validators.required])],
       problema:    [null],
       lugaratencion: [null],
       slug:         [null],

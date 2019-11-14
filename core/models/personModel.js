@@ -164,7 +164,7 @@ const encuestaSch = new mongoose.Schema({
 });
 
 const addressSch = new mongoose.Schema({
-    slug:        {type: String,  required: true,  defalut: ''},
+    slug:        {type: String,  required: false,  defalut: ''},
     estado:      {type: String,  required: false, defalut: 'activo'},
     description: {type: String,  required: false, defalut: ''},
     isDefault:   {type: Boolean, required: false, defalut: false},

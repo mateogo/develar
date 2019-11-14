@@ -85,8 +85,8 @@ export class CoberturaDataEditComponent implements OnInit {
     let form: FormGroup;
 
     form = this.fb.group({
-      type:        [null],
-      tingreso:    [null],
+      type:        [null, Validators.compose( [Validators.required])],
+      tingreso:    [null, Validators.compose( [Validators.required])],
       slug:        [null],
       monto:       [null],
       observacion: [null],

@@ -156,9 +156,9 @@ export class FamilyDataEditComponent implements OnInit {
   	let form: FormGroup;
 
     form = this.fb.group({
-      nombre:       [null],
-      apellido:     [null],
-      tdoc:         [null],
+      nombre:       [null, Validators.compose( [Validators.required])],
+      apellido:     [null, Validators.compose( [Validators.required])],
+      tdoc:         [null, Validators.compose( [Validators.required])],
 
       ndoc: [null, [Validators.required, 
                     Validators.minLength(7),
