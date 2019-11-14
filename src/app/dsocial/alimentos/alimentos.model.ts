@@ -3,6 +3,7 @@ import { Serial }   from '../dsocial.model';
 import { Person }   from '../../entities/person/person';
 import { Product, KitProduct } from '../../entities/products/product.model';
 import { VoucherType } from '../asistencia/asistencia.model';
+import { Asistencia, Pedido, ItemPedido  } from '../asistencia/asistencia.model';
 
 export class Requirente {
 		id:   string; 
@@ -155,6 +156,44 @@ export class RemitoAlmacenModel {
 		token.requeridox = requirente;
 
 		return token;
+	}
+
+
+/****
+	slug: string;
+
+	kitItem: number = 0; // 0: es un item cargado a mano 1: item que deviene de KIT
+	productId: string;
+	code: string;
+	name: string;
+	ume: string;
+	qty: number = 1;
+	punitario: number = 0;
+
+
+***/
+	static bindItemListFromAsistencia(asistencia: Asistencia): ItemAlmacen[]{
+		let itemList: ItemAlmacen[] = [];
+
+		if(!(asistencia && asistencia.pedido && asistencia.pedido.items && asistencia.pedido.items.length)){
+			return itemList;
+		}
+
+		let items = asistencia.pedido.items;
+
+		itemList = items.map(t =>{
+			return 	{
+								productId: t.productId,
+								isKit: 0,
+								code: t.code,
+								name: t.name,
+								slug: t.slug,
+								ume: t.ume,
+								qty: t.qty,
+							}
+		});
+
+		return itemList;
 	}
 
 	static asistenciasPorPersonQuery(action, name){

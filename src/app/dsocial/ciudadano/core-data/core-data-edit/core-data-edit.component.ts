@@ -35,6 +35,7 @@ export class CoreDataEditComponent implements OnInit {
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;
+  public seguimientoOptList = personModel.followUpOptList;
   public docBelongsTo = {error: ''};
 
 
@@ -49,7 +50,6 @@ export class CoreDataEditComponent implements OnInit {
     private dsCtrl: DsocialController,
   	) { 
 	}
-
 
 
   ngOnInit() {
@@ -141,6 +141,7 @@ export class CoreDataEditComponent implements OnInit {
       apellido:     [null],
       tdoc:         [null],
       tprofesion:   [null],
+      followUp:     [null],
       especialidad: [null],
       ambito:       [null],
 
@@ -169,6 +170,7 @@ export class CoreDataEditComponent implements OnInit {
 		  apellido:     person.apellido,
 		  tdoc:         person.tdoc,
 		  tprofesion:   person.tprofesion,
+      followUp:     person.followUp,
 		  especialidad: person.especialidad,
 		  ambito:       person.ambito,
 		  ndoc:         person.ndoc,
@@ -197,6 +199,7 @@ export class CoreDataEditComponent implements OnInit {
 		entity.tdoc = fvalue.tdoc;
 		entity.ndoc = fvalue.ndoc;
 		entity.tprofesion = fvalue.tprofesion;
+    entity.followUp = fvalue.followUp;
 		entity.especialidad = fvalue.especialidad;
 		entity.ambito = fvalue.ambito;
     entity.nacionalidad = fvalue.nacionalidad;

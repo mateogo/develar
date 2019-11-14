@@ -91,27 +91,33 @@ export class SolicitaAlimentosEditComponent implements OnInit {
   changePeriodo(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
       //this.form.controls['city'].setValue(t.city);
-    if(!this.parent) return;
+    this.projectedDate(val);
+  }
+
+  private projectedDate(val){
+    if(!this.parent || !val) return;
+    
     let date_from = devutils.dateFromTx(this.parent.fecomp_txa);
     let date_to = devutils.dateFromTx(this.parent.fecomp_txa);
     let datex;
 
-    if(type==="periodo" && val==="3M"){
+    if(val === "3M"){
       datex =  devutils.projectedDate(date_to, 0, 3);
 
-    }else if(type==="periodo" && val==="6M"){
+    }else if(val === "6M"){
       datex =  devutils.projectedDate(date_to, 0, 6);
 
-    }else if(type==="periodo" && val==="9M"){
+    }else if(val === "9M"){
       datex =  devutils.projectedDate(date_to, 0, 9);
 
-    }else if(type==="periodo" && val==="12M"){
+    }else if(val === "12M"){
       datex =  devutils.projectedDate(date_to, 0, 12);
 
     }
 
     this.form.controls['fechad'].setValue(devutils.txFromDate(date_from));
     this.form.controls['fechah'].setValue(devutils.txFromDate(date_to));
+
   }
 
 
@@ -132,7 +138,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
     return form;
   }
 
-  initForEdit(form: FormGroup, token: Alimento): FormGroup {
+  private initForEdit(form: FormGroup, token: Alimento): FormGroup {
 		form.reset({
       type:         token.type,
       freq:         token.freq,
@@ -143,6 +149,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
       observacion:  token.observacion,
 		});
 
+    this.projectedDate(token.periodo);
 		return form;
   }
 

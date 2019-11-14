@@ -4,6 +4,7 @@ import { Asistencia,
           Alimento,
           Encuesta,
           Pedido,
+          AsistenciaHelper,
           UpdateAsistenciaEvent,
           UpdatePedidoEvent,
           UpdateEncuestaEvent,
@@ -17,7 +18,7 @@ const SELECT = 'select';
 const TOKEN_TYPE = 'asistencia';
 
 const MODALIDAD_ALIMENTO = 'alimentos';
-const MODALIDAD_HABITACIONAL = 'habitat';
+const MODALIDAD_HABITACIONAL = 'habitacional';
 const MODALIDAD_SANITARIA = 'sanitaria';
 const MODALIDAD_ENCUESTA = 'encuesta';
 
@@ -55,6 +56,9 @@ export class SolasisBaseComponent implements OnInit {
   public isPedido = false;
   public pedido:Pedido;
 
+  public chips: ChipSchema[] = [];
+
+
 
 	public openEditor = false;
 
@@ -75,10 +79,14 @@ export class SolasisBaseComponent implements OnInit {
 
     }
 
+    this.loadChips();
+
+
     if(!this.asistencia.compNum || this.asistencia.compNum === "00000"){
       this.editToken()
     }
   }
+
 
   editToken(){
     this.showEditBase = !this.showEditBase;
@@ -94,6 +102,28 @@ export class SolasisBaseComponent implements OnInit {
       this.showEditPanel = false;
 
     }
+  }
+
+
+
+  private loadChips(){
+    this.chips = [] as ChipSchema[];
+    let chip = this.asistenciaDataStatus(this.chips);
+  }
+
+  private asistenciaDataStatus(chips: ChipSchema[]): ChipSchema[] {
+    let isImperfecta = AsistenciaHelper.isAsistenciaImperfecta(this.asistencia);
+
+    if(isImperfecta){
+      let chip = {
+        color: (isImperfecta) ? 'warn' : 'accent',
+        text: (isImperfecta) ? 'Falta perfeccionar' : 'ok',
+      } as ChipSchema
+
+      chips.push(chip);
+    }
+
+    return chips;
   }
 
   setModalidad(){
@@ -263,4 +293,9 @@ export class SolasisBaseComponent implements OnInit {
 	removeToken(){
 	}
 
+}
+
+interface ChipSchema{
+  color:string;
+  text: string;
 }

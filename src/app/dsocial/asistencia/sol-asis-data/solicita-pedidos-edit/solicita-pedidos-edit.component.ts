@@ -226,11 +226,11 @@ export class SolicitaPedidosEditComponent implements OnInit {
       fechad:      [null],
       fechah:      [null],
 
-      deposito:    [null],
+      deposito:    [null,  Validators.compose([Validators.required])],
       urgencia:    [null],
-      causa:       [null],
-      estado:      [null],
-      avance:      [null],
+      causa:       [null,  Validators.compose([Validators.required])],
+      estado:      [null,  Validators.compose([Validators.required])],
+      avance:      [null,  Validators.compose([Validators.required])],
       observacion: [null],
     });
 

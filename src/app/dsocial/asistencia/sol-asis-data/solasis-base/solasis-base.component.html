@@ -26,11 +26,17 @@
 						<i [class]="showEditModalidad ? 'fas fa-pencil-alt' : 'fas fa-pencil-alt'" 
 						aria-hidden="true"></i></span>
 
+
 					<span class="edit-control"
 						(click)='navigateSeguimiento()' title="Realizar seguimiento">
 						<i [class]="openEditor ? 'far fa-bell' : 'far fa-bell'" 
 						aria-hidden="true"></i></span>
 				</div>
+
+				<mat-chip-list *ngIf="!showEditPanel" aria-label="Falta perfeccionar la S/Asistencia">
+				  <mat-chip  *ngFor='let chip of chips' [color]="chip.color"  selected>{{ chip.text }}</mat-chip>
+				</mat-chip-list>
+
 
 	 			<div *ngIf="showSelectControl" >
 	      		<button mat-raised-button color="accent" 

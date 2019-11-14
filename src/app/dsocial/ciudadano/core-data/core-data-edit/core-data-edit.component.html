@@ -155,7 +155,23 @@
       </div>
     </div>
 
+    <!---nestudios --->
+    <h5>Sector responsable del seguimiento del vecino/a</h5>
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldfollowup placeholder="Sector responsable del seguimiento"
+              [formControl]="form.controls['followUp']"
+              (selectionChange)="changeSelectionValue('followUp',fldfollowup.value)" >
+            <mat-option *ngFor="let item of seguimientoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
     <hr>
+
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 
       		(click)="onSubmit()"

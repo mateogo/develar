@@ -34,7 +34,7 @@ export interface Tile {
 
 export class Alimento {
 		id:          string;
-		type:        string = 'standard';
+		type:        string ;
 		periodo:     string = 'UNICO';
 		fe_tsd:      number;
 		fe_tsh:      number;
@@ -293,6 +293,8 @@ const pedidosTypeOptList: Array<any> = [
 const entregaDesdeOptList: Array<any> = [
         {val: 'galpon',       type:'Galpón',     label: 'Galpón' },
         {val: 'proveedor',    type:'Proveedor',  label: 'Proveedor' },
+        {val: 'secretaria',    type:'Secretaría',  label: 'Secretaría' },
+        {val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' },
         {val: 'envio',        type:'Envío domicilio',     label: 'Envío domicilio' },
         {val: 'otro',         type:'Otro',     label: 'Otro' },
         {val: 'no_definido',  type:'Sin selección', label: 'Sin selección' },
@@ -301,7 +303,11 @@ const entregaDesdeOptList: Array<any> = [
 const causasOptList: Array<any> = [
         {val: 'incendio',       type:'Incendio',     label: 'Incendio' },
         {val: 'emergencia',     type:'Emergencia',  label: 'Emergencia' },
+        {val: 'estudios',       type:'Requiere estudios',     label: 'Requiere estudios' },
+        {val: 'vision',         type:'Problema de visión',     label: 'Problema de visión' },
         {val: 'discapacidad',   type:'Discapacidad',     label: 'Discapacidad' },
+        {val: 'bajopeso',       type:'Bajo peso',     label: 'Bajo peso' },
+        {val: 'enfermedad',     type:'Enfermedad',     label: 'Enfermedad' },
         {val: 'otro',           type:'Otro',     label: 'Otro' },
         {val: 'no_definido',    type:'Sin selección', label: 'Sin selección' },
 ];
@@ -355,6 +361,7 @@ const sector_actionRelation = {
 
   nutricion: [
     {val: 'alimentos',   label: 'Alimentos' },
+    {val: 'sanitaria',   label: 'Sanitaria' },
   ],
 
   inhumacion: [
@@ -407,6 +414,12 @@ const sector_actionRelation = {
   ],
 }
 
+
+const followUpOptList: Array<any> = [  
+        {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
+        {val: 'tsocial',       label: 'TS',           slug:'TS' },
+        {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
+ ];
 
 
 const alimentosTypeOptList: Array<any> = [
@@ -468,13 +481,16 @@ const avanceOptList = [
       {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
       {val: 'entregado',    label: 'Entregado',     slug:'Entregado' },
-      {val: 'derivadoVI',    label: 'Derivado ZVI',     slug:'Derivado ZVI' },
+      {val: 'aprobado',     label: 'Aprobado',      slug:'Aprobado' },
+      {val: 'derivadoVI',   label: 'Derivado ZVI',     slug:'Derivado ZVI' },
       {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
       {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
       {val: 'pendiente',    label: 'Pendiente',     slug:'Pendiente' } ,
       {val: 'programado',   label: 'Programado',    slug:'Programado' },
       {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
       {val: 'incumplido',   label: 'No cumplido',   slug:'No cumplido' },
+      {val: 'devuelto',     label: 'Devolución',   slug:'Devolución' },
+      {val: 'incompleto',   label: 'Incompleto',   slug:'Incompleto' },
       {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
       {val: 'anulado',      label: 'Anulado',       slug:'Anulado' },
 ]
@@ -505,6 +521,10 @@ const ciudadesBrown: Array<any> = [
     {val: 'extradistrito',       label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 
+const MODALIDAD_ALIMENTO =     'alimentos';
+const MODALIDAD_HABITACIONAL = 'habitacional';
+const MODALIDAD_SANITARIA =    'sanitaria';
+const MODALIDAD_ENCUESTA =     'encuesta';
 
 
 const optionsLists = {
@@ -512,6 +532,7 @@ const optionsLists = {
    actions: asisActionOptList,
    comprobantes: comprobantesOptList,
    alimentos: alimentosTypeOptList,
+   followup: followUpOptList,
    frecuencia: frecuenciaOptList,
    tableactions: tableActions,
    sectores: sectores,
@@ -712,6 +733,28 @@ export class AsistenciaHelper {
 
 
   	return valid;
+  }
+
+  static isAsistenciaImperfecta(asistencia:Asistencia): boolean{
+  	let isImperfecta = false;
+
+    if(asistencia.action === MODALIDAD_ALIMENTO) {
+    	if(!asistencia.modalidad) isImperfecta = true;
+
+    } else if(asistencia.action === MODALIDAD_HABITACIONAL){
+    	if(!asistencia.pedido) isImperfecta = true;
+
+
+    } else if(asistencia.action === MODALIDAD_SANITARIA){
+    	if(!asistencia.pedido) isImperfecta = true;
+
+
+    } else if(asistencia.action === MODALIDAD_ENCUESTA){
+    	if(!asistencia.encuesta) isImperfecta = true;
+
+    }
+    
+    return isImperfecta;
   }
 
 

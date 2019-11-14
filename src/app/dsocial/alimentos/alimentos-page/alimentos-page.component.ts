@@ -153,7 +153,7 @@ export class AlimentosPageComponent implements OnInit {
   }
 
 
-  initNewRemito(asistencia: Asistencia){
+  private initRemitoForEdit(asistencia: Asistencia){
     if(asistencia.action === 'habitat') asistencia.action = 'habitacional';
 
     this.voucherType = AsistenciaHelper.getVoucherType(asistencia);
@@ -173,7 +173,10 @@ export class AlimentosPageComponent implements OnInit {
 
     }
 
-    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person,this.voucherType, kitEntrega, qty)
+    this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person,this.voucherType, kitEntrega, qty);
+    this.remitoalmacen.entregas = RemitoAlmacenModel.bindItemListFromAsistencia(asistencia)
+
+
     this.emitRemito = true;
   }
 
@@ -239,7 +242,7 @@ export class AlimentosPageComponent implements OnInit {
       let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
 
       if(error.valid) {
-        this.initNewRemito(this.currentAsistencia);
+        this.initRemitoForEdit(this.currentAsistencia);
       }else {
         //todo negativa
         this.dsCtrl.openSnackBar(error.message, 'Aceptar');

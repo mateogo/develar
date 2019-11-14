@@ -148,7 +148,7 @@ export class RemitoalmacenPageComponent implements OnInit {
   createRemito(event: UpdateRemitoEvent){
 
     if(event.action === UPDATE){
-      this.initNewRemito(event);
+      this.initRemitoForUpdate(event);
 
       this.dsCtrl.manageRemitosAlmacenRecord('remitoalmacen',this.remito).subscribe(remito =>{
         this.remito = remito;
@@ -164,22 +164,23 @@ export class RemitoalmacenPageComponent implements OnInit {
 
   }
 
-  initNewRemito(event: UpdateRemitoEvent){
+  private initRemitoForUpdate(event: UpdateRemitoEvent){
     this.remito = event.token;
-    this.remito.deposito =   this.remito.deposito || 'almacen';
-    this.remito.tmov =       this.remito.tmov || 'entrega';
-    this.remito.action =     this.remito.action || 'alimentos';
-    this.remito.description= this.remito.description || '';
-    this.remito.sector =     this.remito.sector || 'alimentos';
-    this.remito.estado =     this.remito.estado || 'activo';
-    this.remito.avance =     this.remito.avance || 'emitido';
+    this.remito.deposito =    this.remito.deposito || 'almacen';
+    this.remito.tmov =        this.remito.tmov     || 'entrega';
+    this.remito.action =      this.remito.action   || 'alimentos';
+    this.remito.description = this.remito.description || '';
+    this.remito.sector =      this.remito.sector   || 'alimentos';
+    this.remito.estado =      this.remito.estado   || 'activo';
+    this.remito.avance =      this.remito.avance   || 'emitido';
+
     if(this.asistencia){
       this.remito.parentId = this.asistencia._id;
       this.remito.parent = {
-        id: this.asistencia._id,
-        type: 'asistencia',
-        kit:    this.asistencia.modalidad && this.asistencia.modalidad.type,
-        action: this.asistencia.action,
+        id:      this.asistencia._id,
+        type:    'asistencia',
+        kit:     this.asistencia.modalidad && this.asistencia.modalidad.type,
+        action:  this.asistencia.action,
         compNum: this.asistencia.compNum
       }
 

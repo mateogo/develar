@@ -62,35 +62,50 @@ export class RemitoalmacenCreateComponent implements OnInit {
     this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList;
   }
 
-  initForEdit(form: FormGroup, token: RemitoAlmacen): FormGroup {
+  private initForEdit(form: FormGroup, token: RemitoAlmacen): FormGroup {
 
-    this.currentKitList(token);
+    this.initKitList(token);
 
     form.reset({
       slug:        token.slug,
       qty:         token.qty,
       kitEntrega:  token.kitEntrega,
     });
-    this.buildKitItems(this.currentItemList, token.entregas)
+    this.buildKitItemsForEdit(this.currentItemList, token.entregas)
     this.showEdit = true;
 
     return form;
   }
 
 //http://develar-local.co:4200/dsocial/gestion/atencionsocial/5dc999b11f7ad913b69d81ba
-  currentKitList(remito: RemitoAlmacen){
-    console.log('REMIT kit[%s]', remito.kitEntrega);
+  private initKitList(remito: RemitoAlmacen){
+
     if(remito.kitEntrega){
       this.currentKit = this.findCurrentKit(remito.kitEntrega);
-      this.currentItemList = this.buildItemList(this.currentKit, remito);
+      this.currentItemList = this.buildItemListFromKit(this.currentKit, remito);
+
     }else{
       this.currentKit = null;
-      this.currentItemList = [];
+      this.currentItemList = remito.entregas || [];
     }
 
   }
 
-  buildItemList(kit: KitProduct, remito: RemitoAlmacen): ItemAlmacen[]{
+  //Kits
+  private buildKitItemsForEdit(k: ItemAlmacen[], n: ItemAlmacen[]){
+    k = k || [];
+    let kitItemsFG = k.map(kit => this.fb.group(kit))
+    let kitFormArray = this.fb.array(kitItemsFG);
+    this.form.setControl('kits', kitFormArray);
+  }
+
+  get kits(): FormArray{
+    return this.form.get('kits') as FormArray;
+  }
+
+
+
+  private buildItemListFromKit(kit: KitProduct, remito: RemitoAlmacen): ItemAlmacen[]{
     let kits = kit.products;
     let items = kits.map(t =>{
       return {
@@ -121,18 +136,6 @@ export class RemitoalmacenCreateComponent implements OnInit {
     });
 
     return form;
-  }
-
-  //Kits
-  buildKitItems(k: ItemAlmacen[], n: ItemAlmacen[]){
-    k = k || [];
-    let kitItemsFG = k.map(kit => this.fb.group(kit))
-    let kitFormArray = this.fb.array(kitItemsFG);
-    this.form.setControl('kits', kitFormArray);
-  }
-
-  get kits(): FormArray{
-    return this.form.get('kits') as FormArray;
   }
 
 
@@ -194,33 +197,12 @@ export class RemitoalmacenCreateComponent implements OnInit {
     formArray.clear()
 
     this.currentKit = this.findCurrentKit(val);
-    this.currentItemList = this.buildItemList(this.currentKit, this.token);
+    this.currentItemList = this.buildItemListFromKit(this.currentKit, this.token);
 
     this.currentItemList.forEach(t => {
       let kitItemFG = this.fb.group(t);
       formArray.push(kitItemFG);
     })
-
-/*    
-
-    let formArray = this.form.get('kits') as FormArray;
-
-    let controls = formArray.controls 
-    controls.forEach()
-
-
-    this.currentItemList.forEach((t, i) => {
-      formArray.removeAt(i);
-    })
-
-    this.currentKit = this.findCurrentKit(val);
-    this.currentItemList = this.buildItemList(this.currentKit, this.token);
-
-    this.currentItemList.forEach(t => {
-      let kitItemFG = this.fb.group(t);
-      formArray.push(kitItemFG);
-    })
-*/
   }
 
   removeKitItem(item){

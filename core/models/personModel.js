@@ -254,6 +254,7 @@ const personSch = new mongoose.Schema({
     especialidad:   { type: String, required: false },
     ambito:         { type: String, required: false },
     nestudios:      { type: String, required: false },
+    followUp:       { type: String, required: false },
 
     nacionalidad:   { type: String, required: false },
     fenac:          { type: Number, required: false },

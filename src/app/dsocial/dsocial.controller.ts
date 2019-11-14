@@ -875,7 +875,6 @@ export class DsocialController {
     })
 
     if(personList.length){
-      console.log('ready to daoService: [%s]', personList.length);
       this.daoService.search<Person>('person', {list: personList}).subscribe(list => {
         if(list && list.length) {
           list.forEach((person, index) => {

@@ -8,6 +8,7 @@ import { sectores, SectorAtencion } from '../../dsocial.model';
 })
 export class TurnoSelectComponent implements OnInit {
   @Input() isAlimentos =  true;
+  @Input() sectorpreferencial
 	@Output() turno$ = new EventEmitter<SectorAtencion>();
 
 
@@ -16,6 +17,14 @@ export class TurnoSelectComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(this.sectorpreferencial){
+      let preferido = this.tokens.find(t => t.val === this.sectorpreferencial);
+      if(preferido){
+        preferido.style =  {'background-color': "#21cddd"};
+      }
+
+    }
+
   }
 
   turnoFor(e, token){

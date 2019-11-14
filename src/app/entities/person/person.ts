@@ -276,6 +276,8 @@ export class Person {
   nestudios: string;
   facetas: Array<string>;
 
+  followUp: string = 'tsocial';
+
   nacionalidad: string;
   fenac: number;
   fenactx: string;
@@ -484,6 +486,13 @@ const oficios_estado: Array<any> = [
         {val: 'cierre',       label: 'Cierre',       slug:'Cierre' },
         {val: 'otro',         label: 'Otro',         slug:'Otro' },
 ];
+
+const followUpOptList: Array<any> = [  
+        {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
+        {val: 'tsocial',       label: 'TS',           slug:'TS' },
+        {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
+ ];
+
 
 const oficios_tdato: Array<any> = [
     {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -1381,6 +1390,7 @@ class PersonModel {
 // const oficios_tocupacion: Array<any> = [
 // const oficios_umeremun: Array<any> = [
     // Datos de Contacto
+
     get oficiosEstadoList():Array<any>{
         return oficios_estado;
     }
@@ -1396,6 +1406,9 @@ class PersonModel {
 
     get estadoVivOptList():Array<any>{
         return estadoVivienda;
+    }
+    get followUpOptList():Array<any>{
+        return followUpOptList;
     }
 
     get cualificacionVivOptList():Array<any>{
@@ -1425,6 +1438,9 @@ class PersonModel {
     }
 
 
+    getFollowUpLabel(item){
+        return getLabel(item, followUpOptList);
+    }
     getOficiosEstadoLabel(item){
         return getLabel(item, oficios_estado);
     }

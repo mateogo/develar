@@ -48,6 +48,7 @@ export class RecepcionPageComponent implements OnInit {
 
   public personFound = false;
   public altaPersona = false;
+  public sectorAtencion = '';
   public selectPriority = false;
   public selectTurno = false;
   public turnosEmididosFecha = 0;
@@ -122,6 +123,8 @@ export class RecepcionPageComponent implements OnInit {
     if(!p) return;
 
     let edad = 0;
+    this.sectorAtencion = p.followUp // = AsistenciaHelper.getOptionLabel('followup',p.followUp)
+
     edad = devutils.edadActual(new Date(p.fenac));
     
     this.displayDoc = personModel.getPersonDocum(p);
