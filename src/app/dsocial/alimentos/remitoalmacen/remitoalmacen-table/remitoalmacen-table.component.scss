@@ -9,8 +9,28 @@
   overflow: initial;
 }
 
-.mat-header-cell {
+.mat-column-cell {
   font-weight: 600;
+}
+
+.mat-column-person {
+  flex: 0 0 300px;
+}
+
+.mat-column-slug {
+  flex: 0 0 300px;
+}
+
+.mat-column-compNum {
+  flex: 0 0 70px;
+}
+
+.mat-column-dni {
+  flex: 0 0 120px;
+}
+
+.mat-column-fecomp_txa {
+  flex: 0 0 120px;
 }
 
 .example-header {
@@ -23,7 +43,7 @@
 
 .mat-table {
   overflow: auto;
-  max-height: 500px;
+  max-height: 800px;
 }
 
 .mat-column-fume {

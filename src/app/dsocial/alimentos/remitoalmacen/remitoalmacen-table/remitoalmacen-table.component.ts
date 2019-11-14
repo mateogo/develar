@@ -67,14 +67,14 @@ const removeRelation = {
   styleUrls: ['./remitoalmacen-table.component.scss']
 })
 export class RemitoalmacenTableComponent implements OnInit {
-  @Input()  public  displayedColumns = ['select', 'compName', 'compNum', 'action', 'kitEntrega', 'person', 'slug', "sector", "avance", "fecomp_txa"];
+  @Input()  public  displayedColumns = ['select', 'compNum','dni', 'person', 'slug', "fecomp_txa"];
   @Input()  public  isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select', 'asistenciaId', 'compName', 'compNum', 'action', 'kitEntrega', 'person', 'slug', "sector","avance", "fecomp_txa"];
+  private table_columns = ['select', 'asistenciaId', 'compName', 'compNum', 'action', 'kitEntrega','dni', 'person', 'slug', "sector","avance", "fecomp_txa"];
   private table_columns_sel = {
     'select': false,
     'asistenciaId': false,
@@ -86,6 +86,7 @@ export class RemitoalmacenTableComponent implements OnInit {
     "avance": false,
     "fecomp_txa": false,
     "person": false,
+    "dni": false,
     "kitEntrega": false
   }
 
@@ -246,9 +247,11 @@ export class TableDataSource extends DataSource<any> {
       let propertyB: number|string = '';
 
       switch (this._sort.active) {
-        case 'sector': [propertyA, propertyB] = [a.sector, b.sector]; break;
-        case 'action':      [propertyA, propertyB] = [a.action, b.action]; break;
-        case 'slug':      [propertyA, propertyB] = [a.slug, b.slug]; break;
+        case 'sector':     [propertyA, propertyB] = [a.sector, b.sector];     break;
+        case 'action':     [propertyA, propertyB] = [a.action, b.action];     break;
+        case 'slug':       [propertyA, propertyB] = [a.slug, b.slug];         break;
+        case 'dni':        [propertyA, propertyB] = [a.dni, b.dni];           break;
+        case 'person':     [propertyA, propertyB] = [a.person, b.person];     break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

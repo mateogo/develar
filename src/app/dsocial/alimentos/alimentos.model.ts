@@ -78,6 +78,7 @@ export class RemitoAlmacenTable {
 		avance:      string = 'emitido';
 		kit:         string = 'Estándard';
 		person:      string;
+		dni:         string = 'dni';
 		parent: Parent;
 		requeridox:  Requirente;
 		atendidox:   Atendido;
@@ -406,6 +407,7 @@ export class AlimentosHelper {
 			td.kitEntrega = (this.getOptionLabel('kitentrega',(token.kitEntrega || 'standard'))) || 'ESTÁNDAR';
 			td.kit        = (token.parent && this.getOptionLabel('kitentrega',(token.parent.kit || 'standard'))) || 'ESTÁNDAR';
 			td.person     = (token.requeridox && token.requeridox.slug) || 'beneficiario';
+			td.dni        = (token.requeridox && token.requeridox.ndoc) || 'dni';
 			td.requeridox = token.requeridox;
 			td.atendidox  = token.atendidox;
 			td.entregas   = token.entregas;
