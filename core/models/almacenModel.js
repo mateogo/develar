@@ -5,6 +5,9 @@
 const whoami =  "models/almacenModel: ";
 
 const mongoose = require('mongoose');
+const utils =    require('../services/commons.utils');
+const person =   require('./personModel');
+const product =   require('./productModel');
 
 const Schema = mongoose.Schema;
 
@@ -116,6 +119,20 @@ function buildQuery(query){
       q["estado"] = query['estado'];
   }
 
+
+  let comp_range = [];
+  if(query["fecomp_ts_d"]){
+    comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
+  }
+
+  if(query["fecomp_ts_h"]){
+    comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
+  }
+
+  if(comp_range.length){
+    q["$and"] = comp_range;
+  }
+
   return q;
 }
 
@@ -175,8 +192,6 @@ exports.findAll = function (errcb, cb) {
  * @param errcb
  */
 exports.findByQuery = function (query, errcb, cb) {
-    console.log('*********************************')
-    console.dir(query);
     let regexQuery = buildQuery(query)
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
@@ -256,3 +271,184 @@ exports.create = function (record, errcb, cb) {
     });
 
 };
+
+/**********************************/
+/*          TABLERO              */
+/********************************/
+
+exports.tablero = function(fecha, errcb, cb) {
+  console.log('****** Build TABLERO ALMACEN BEGIN [%s] *******', fecha);
+
+  let time_frame = utils.buildDateFrameForCurrentWeek(fecha);
+  console.dir(time_frame)
+
+  let query = {
+      fecomp_ts_d: time_frame.begin.getTime(),
+      fecomp_ts_h: time_frame.semh.getTime()
+    }
+  
+  let regexQuery = buildQuery(query)
+
+    
+  person.buildIdTree().then(pTree =>{
+    console.log('BuildPeronTree fullFilled');
+
+    product.buildIdTree().then(productTree=>{
+      console.log('BuildProductTree fullFilled');
+
+        Record.find(regexQuery).lean().exec(function(err, entities) {
+
+            if (err) {
+                console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                errcb(err);
+            }else{
+              console.log('READY TO PROCESS entities [%s]', entities.length)
+              procesTableroRemitoalmacen(pTree, productTree, entities, time_frame, errcb, cb);
+            }
+        });
+
+    })
+  })
+
+}
+
+/**********************************/
+/*      TABLERO-REMITOALMACEN    */
+/********************************/
+function procesTableroRemitoalmacen(ptree, productTree, entities, timeframe, errcb, cb){
+  let master = {};
+
+  entities.forEach(remito => {
+    //console.dir(remito);
+    let fecomp = utils.parseDateStr(remito.fecomp_txa)
+    //console.log('remito: [%s]  [%s]',remito.fecomp_txa, (remito.fecomp_tsa == fecomp.getTime()));
+    let person = ptree[remito.personId];
+    // let fenac = 0;
+    // let sexo = 'X';
+    let ciudad = 'ciudad';
+
+    if(person){
+      //console.log('PERSON: [%s]  [%s] [%s] [%s]' , person.displayName, person.fenac, person.fenactx, ("00" + Math.floor(utils.calcularEdad(person.fenac)/10)).substr(-2))
+      // fenac = person.fenac || 0;
+      // sexo = person.sexo || 'X';
+      if(person.locaciones && person.locaciones.length){
+        ciudad = person.locaciones[0].city || 'ciudad';
+      }
+    }else{
+
+      console.log('AIUDAAAAAAAAAAA!!! [%s] [%s]',remito.personId, remito.requeridox.ndoc);
+    }
+
+    let base_token = {
+      dia: fecomp.getDate(),
+      mes: fecomp.getMonth(),
+      sem: "00",
+      ciudad: ciudad,
+      estado: remito.estado,
+      avance: remito.avance,
+      action: remito.action,
+      sector: remito.sector,
+      tmov: remito.tmov,
+      deposito: remito.deposito,
+      cardinal: 1
+    };
+
+    let items = remito.entregas;
+    if(items && items.length){
+      items.forEach(item => {
+        let token = Object.assign({}, base_token);
+        token.productId = item.productId;
+        token.code = item.code;
+        token.name = item.name;
+        token.ume = item.ume;
+        token.qty = item.qty;
+        token.pclass = ((productTree && productTree[item.productId]) ? productTree[item.productId].pclass : 'nodefinida');
+
+        token.id = buildTablerTokenId(token, fecomp, timeframe);
+
+        console.log('MasterTree: [%s] SEM:[%s]', token.id, token.name)
+        processToken(token, master);
+
+      })
+    }
+  })
+  // fin del proceso
+  console.log('TABLER ENDed')
+  cb(master);
+
+}
+
+
+const processToken = function(token, master){
+  if(master[token.id]){
+    master[token.id].cardinal = master[token.id].cardinal + 1;
+    master[token.id].qty = master[token.id].cardinal + token.qty;
+
+  }else{
+    master[token.id] = token;
+  }
+}
+/**********************************/
+/*   END TABLERO                 */
+/********************************/
+
+
+/**********************************/
+/*    TABLERO - HELPERS          */
+/********************************/
+
+function buildDateId(token, fecomp, timeframe){
+  let fecharef = timeframe.fecharef;
+  let fechasem = timeframe.semd;
+
+  let fechaId = fecharef.getFullYear() + '0000';
+  let diaId = '00' + token.dia;
+  let mesId = '00' + token.mes;
+  
+  if(token.mes === fechasem.getMonth()){
+    if(token.dia === fecharef.getDate()){
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + diaId.substr(-2);
+    } else {
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + '00';
+    }
+  }
+  if(timeframe.semd <= fecomp && fecomp <= timeframe.semh){
+    fechaId = fechaId + 'SE'
+    token.sem = "SE"
+
+  } else {
+    fechaId = fechaId + '00'
+    token.sem = "00"
+
+  }
+
+  return fechaId;
+}
+
+function buildTablerTokenId(token, fecomp, timeframe){
+  let fechaId = buildDateId(token, fecomp, timeframe);
+
+  let estadoId =   "[" + ("            " + token.estado).substr(-12) + "]"
+  let avanceId =   "[" + ("            " + token.avance).substr(-12) + "]"
+  let actionId =   "[" + ("            " + token.action).substr(-12) + "]"
+  let sectorId =   "[" + ("            " + token.sector).substr(-12) + "]"
+  let tmovId =     "[" + ("            " + token.tmov).substr(-12) + "]"
+  let depositoId = "[" + ("            " + token.deposito).substr(-12) + "]"
+  let item =       "[" + token.productId + "]" 
+  return  fechaId + ':' +
+          estadoId + 
+          avanceId + 
+          actionId + 
+          sectorId + 
+          tmovId + 
+          depositoId +
+          item ;
+}
+
+/**********************************/
+/*   END TABLERO - HELPERS       */
+/********************************/
+
+
+
+

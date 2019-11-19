@@ -31,6 +31,8 @@ export class RemitoalmacenViewComponent implements OnInit {
 	public modalidad: RemitoAlmacen;
 	public isAlimentos = false;
 
+	public audit = '';
+
 
   constructor() { }
 
@@ -71,9 +73,27 @@ export class RemitoalmacenViewComponent implements OnInit {
   		this.kitEntrega = '';
   	}
   	
+  	this.audit = this.buildAudit(this.token);
 
 
   }
+
+  buildAudit(token: RemitoAlmacen):string{
+    let audit = ''
+    let ts, sector, fecha, fecha_txt;
+    let atendido = token.atendidox;
+
+    if(atendido){
+      ts =  atendido.slug;
+      sector = atendido.sector;
+      fecha = new Date(token.ts_prog);
+      fecha_txt = fecha ? fecha.toString(): '';
+      audit = `${ts} Sector: ${sector} ${fecha_txt}`
+    }
+
+    return audit;
+  }
+
 
   umeLabel(item:ItemAlmacen ) {
   	return AlimentosHelper.getOptionLabel('ume', item.ume) || 'Un';

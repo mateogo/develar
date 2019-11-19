@@ -254,7 +254,9 @@ export class DsocialController {
   }
  
   private initRemitoAlmacenForUpdate(entity: RemitoAlmacen){
-    // todo
+    entity.atendidox = this.atendidoPor(entity.sector);
+    entity.ts_prog = Date.now();
+
   }
 
   upsertRemitoAlmacen(listener: Subject<RemitoAlmacen>, type,  remitoalmacen: RemitoAlmacen){
@@ -280,6 +282,9 @@ export class DsocialController {
 
     let dateD = devutils.dateFromTx(remitoalmacen.fecomp_txa);
     remitoalmacen.fecomp_tsa = dateD ? dateD.getTime() : 0;
+
+    remitoalmacen.atendidox = this.atendidoPor(sector);
+    remitoalmacen.ts_prog = Date.now();
 
     this.fetchSerialRemitoalmacen(type, name, sector).subscribe(serial =>{
       remitoalmacen.compPrefix = serial.compPrefix ;
@@ -326,6 +331,14 @@ export class DsocialController {
       listener.next(this.remitosList);
 
     })
+  }
+
+
+  public fetchRemitoalmacenDashboard(fecharef: Date): Observable<any>{
+    console.log('Controller: [%s]   [%s]', fecharef.toString(), fecharef.getTime())
+
+    return this.daoService.fetchAsistenciaDashboard<any>('remitoalmacen', fecharef.getTime());
+
   }
 
 
@@ -408,6 +421,9 @@ export class DsocialController {
     alimento.type = kit.val;
 
     asistencia.modalidad = alimento;
+    
+    asistencia.atendidox = this.atendidoPor(sector);
+    asistencia.ts_prog = Date.now();
 
     this.fetchSerialAsistencias(serial_type, serial_name, sector).subscribe(serial =>{
       asistencia.compPrefix = serial.compPrefix ;
@@ -420,9 +436,11 @@ export class DsocialController {
     });
   }
 
+  manageAsistenciaDeleteRecord(type:string, asistencia:Asistencia ): Subject<Asistencia>{
+    let listener = new Subject<Asistencia>();
 
-
-
+    return listener;
+  }
 
 
   manageAsistenciaRecord(type:string, asistencia:Asistencia ): Subject<Asistencia>{
@@ -434,7 +452,6 @@ export class DsocialController {
       this.updateAsistencia(listener, type, asistencia);
 
     }
-
     return listener;
   }
 
@@ -458,7 +475,10 @@ export class DsocialController {
   }
  
   private initAsistenciaForUpdate(entity: Asistencia){
-    // todo
+
+    entity.atendidox = this.atendidoPor(entity.sector);
+    entity.ts_prog = Date.now();
+
   }
 
   upsertAsistencia(listener: Subject<Asistencia>, type,  asistencia: Asistencia){
@@ -481,6 +501,9 @@ export class DsocialController {
     let fecomp_date = devutils.dateFromTx(asistencia.fecomp_txa)
     asistencia.fecomp_tsa = fecomp_date.getTime();
     asistencia.fecomp_txa = devutils.txFromDate(fecomp_date);
+
+    asistencia.atendidox = this.atendidoPor(sector);
+    asistencia.ts_prog = Date.now();
 
     this.fetchSerialAsistencias(type, name, sector).subscribe(serial =>{
 
@@ -529,9 +552,10 @@ export class DsocialController {
   }
 
 
-  public fetchAsistenciasDashboard(): Observable<any>{
+  public fetchAsistenciasDashboard(fecharef: Date): Observable<any>{
+    console.log('Controller: [%s]   [%s]', fecharef.toString(), fecharef.getTime())
 
-    return this.daoService.fetchAsistenciaDashboard<any>('asistencia');
+    return this.daoService.fetchAsistenciaDashboard<any>('asistencia', fecharef.getTime());
 
   }
 

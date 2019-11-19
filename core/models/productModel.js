@@ -429,7 +429,26 @@ exports.buildInvertedTree = function(){
     return promise;
 }
 
+exports.buildIdTree = function(){
+    let promise = new Promise((resolve, reject)=> {
+        Record.find(null, '_id code name pclass pume').lean().then(productos => {
+            let master = {};
+            productos.forEach(p => {
+                master[p._id] = {
+                    _id: p._id,
+                    code: p.code,
+                    name: p.name,
+                    pclass: p.pclass,
+                    pume: p.pume,
+                }
 
+            })
+            resolve(master);
+
+        })
+    });
+    return promise;
+}
 
 
 exports.migracionproductos = function(req, errcb, cb) {

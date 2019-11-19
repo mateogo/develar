@@ -8,12 +8,14 @@
 		<!-- fecomp_txa; action; slug; -->
     <div class="row" >
       <div class="col">
-
         <mat-form-field>
-          <input matInput [formControl]="form.controls['fe_visita']" 
-                  placeholder="Fecha prevista de visita" >
+          <mat-select #fldAddress placeholder="Dirección a visitar"
+              [formControl]="form.controls['locacionId']"
+              (selectionChange)="changeSelectionValue('locacionId',fldAddress.value)" >
+            <mat-option *ngFor="let item of locacionesOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
         </mat-form-field>
-
       </div>
 
       <div class="col-md-2">
@@ -29,15 +31,10 @@
 
       <div class="col">
         <mat-form-field>
-          <mat-select #fldAddress placeholder="Dirección a visitar"
-              [formControl]="form.controls['locacionId']"
-              (selectionChange)="changeSelectionValue('locacionId',fldAddress.value)" >
-            <mat-option *ngFor="let item of locacionesOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
+          <input matInput [formControl]="form.controls['fe_visita']" 
+                  placeholder="Fecha prevista de visita" >
         </mat-form-field>
       </div>
-
     </div>
 
     <div class="row" >

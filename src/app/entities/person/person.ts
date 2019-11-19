@@ -463,7 +463,7 @@ const tipos_viv: Array<any> = [
         {val: 'otro',         type:'agua', label: 'otro' },
 
         {val: 'red',          type:'electricidad', label: 'red' },
-        {val: 'colgado',      type:'electricidad', label: 'colgado' },
+        {val: 'colgado',      type:'electricidad', label: 'enganche' },
         {val: 'otro',         type:'electricidad', label: 'otro' },
 
         {val: 'cloaca',       type:'cloaca', label: 'cloaca' },
@@ -500,7 +500,8 @@ const oficios_tdato: Array<any> = [
     {val: 'informal',     label: 'Informal' },
     {val: 'desocupado',   label: 'Desocupado' },
     {val: 'changa',       label: 'Changa' },
-    {val: 'oficio',       label: 'Oficio' },
+    {val: 'oficio',       label: 'Oficio autónomo' },
+    {val: 'cuentapropia', label: 'Cuentapropista' },
     {val: 'otro',         label: 'Otro' },
 
 ];
@@ -520,6 +521,8 @@ const oficios_tocupacion: Array<any> = [
         {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
         {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
         {val: 'seguridad',       label: 'Seguridad',      slug:'Seguridad' },
+        {val: 'reciclador',      label: 'Reciclador urbano',  slug:'Reciclador urbano' },
+        {val: 'microemprendim',  label: 'Microemprendimiento',  slug:'Microemprendimiento' },
         {val: 'profesional',     label: 'Profesional',    slug:'Profesional' },
         {val: 'estudiante',      label: 'Estudiante',     slug:'Estudiante' },
         {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
@@ -571,10 +574,11 @@ const contact_type: Array<any> = [
     {val: 'REFS',   label: 'REF Social',     slug:'REFS' },
     {val: 'REFPI',  label: 'REF Intendente', slug:'REFPI' },
     {val: 'REFPC',  label: 'REF Consejal',   slug:'REFPC' },
-    {val: 'REFPD',  label: 'REF Diputado',   slug:'REFPD' },
-    {val: 'REFPO',  label: 'REF Otro',       slug:'REFPD' },
-    {val: 'MEDICO', label: 'MEDICO',   slug:'MEDICO' },
-    {val: 'AMIGO',  label: 'AMIGO',    slug:'AMIGO' },
+    {val: 'REFPD',  label: 'REF Diputado/a',   slug:'REFPD' },
+    {val: 'REFPO',  label: 'REF Otro/a',       slug:'REFPD' },
+    {val: 'MEDICO', label: 'MEDICO/A',   slug:'MEDICO' },
+    {val: 'AMIGO',  label: 'AMIGO/A',    slug:'AMIGO' },
+    {val: 'VECINO', label: 'VECINO/A',   slug:'VECINO' },
 ];
 
 const vinculo_familiar: Array<any> = [
@@ -590,6 +594,7 @@ const vinculo_familiar: Array<any> = [
         {val: 'nietx',    label: 'Nieto/a',   slug:'Nieto/a' },
         {val: 'sobrinx',  label: 'Sobrino/a', slug:'Sobrino/a' },
         {val: 'pariente', label: 'Pariente',  slug:'Pariente' },
+        {val: 'vecinx',   label: 'Vecino/a',  slug:'Vecino/a' },
         {val: 'otro',     label: 'Otro',      slug:'Otro' },
 ];
 

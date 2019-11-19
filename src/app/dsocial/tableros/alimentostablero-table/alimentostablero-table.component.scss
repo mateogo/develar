@@ -1,0 +1,110 @@
+.data-table {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  margin: 15px 0 0 0;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 800px;
+}
+
+.mat-column-select {
+  flex: 0 0 60px;
+  //overflow: initial;
+}
+
+.mat-column-sector {
+  flex: 1 1 150px;
+}
+
+.mat-column-action {
+  flex: 1 1 150px;
+}
+
+.mat-column-pclass {
+  flex: 0 1 200px;
+}
+
+.mat-column-name {
+  flex: 0 1 200px;
+}
+
+.mat-column-qty {
+  flex: 0 0 80px;
+  justify-content: flex-end;
+}
+
+.mat-column-ume {
+  flex: 0 0 100px;
+  justify-content: flex-start;
+  padding-left: 5px;
+}
+
+.mat-column-cell {
+  font-weight: 600;
+}
+
+.mat-column-person {
+  flex: 0 0 300px;
+}
+
+.mat-column-slug {
+  flex: 0 0 300px;
+}
+
+.mat-column-compNum {
+  flex: 0 0 70px;
+}
+
+.mat-column-dni {
+  flex: 0 0 120px;
+}
+
+.mat-column-fecomp_txa {
+  flex: 0 0 120px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.mat-column-fume {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-freq {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-qt {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-pu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-total {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-ars {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-usd {
+  display: flex;
+  justify-content: flex-end;
+}

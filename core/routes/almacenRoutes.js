@@ -50,6 +50,25 @@ router.get('/search', function (req, res) {
     });
 });
 
+
+/**
+ * import and [update | insert ]
+ */
+router.get('/tablero/:fecha', function (req, res) {
+    console.log('generacion de tablero de control');
+    let fechanum = parseInt(req.params.fecha, 10);
+    service.tablero(fechanum, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
+
 /**
  * Retrieve Entity by ID
  */

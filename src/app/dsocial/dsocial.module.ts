@@ -79,6 +79,8 @@ import { PersonAssetsPanelComponent } from './ciudadano/person-assets/person-ass
 import { SolicitaEncuestaEditmanyComponent } from './asistencia/sol-asis-data/solicita-encuesta-editmany/solicita-encuesta-editmany.component';
 import { SolicitaPedidosViewComponent } from './asistencia/sol-asis-data/solicita-pedidos-view/solicita-pedidos-view.component';
 import { SolicitaPedidosEditComponent } from './asistencia/sol-asis-data/solicita-pedidos-edit/solicita-pedidos-edit.component';
+import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
+import { AlimentostableroTableComponent } from './tableros/alimentostablero-table/alimentostablero-table.component';
 
 @NgModule({
   imports: [
@@ -161,6 +163,8 @@ import { SolicitaPedidosEditComponent } from './asistencia/sol-asis-data/solicit
     SolicitaEncuestaEditmanyComponent,
     SolicitaPedidosViewComponent,
     SolicitaPedidosEditComponent,
+    AlimentostableroPageComponent,
+    AlimentostableroTableComponent,
   ]
 })
 export class DsocialModule { }

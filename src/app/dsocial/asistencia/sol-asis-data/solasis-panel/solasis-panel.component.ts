@@ -15,6 +15,7 @@ import { 	Asistencia,
 import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 const UPDATE = 'update';
+const DELETE = 'delete';
 const TOKEN_TYPE = 'asistencia';
 const NAVIGATE = 'navigate';
 
@@ -58,6 +59,32 @@ export class SolasisPanelComponent implements OnInit {
     } else if(event.action === NAVIGATE){
       this.emitEvent(event);
 
+
+    } else if(event.action === DELETE){
+      this.deleteItem(event.token)
+
+
+      // this.dsCtrl.manageAsistenciaDeleteRecord('asistencia',event.token).subscribe(t =>{
+
+      //   this.emitEvent(event);
+
+      // });      
+
+    }
+  }
+
+  private deleteItem(token:Asistencia){
+    let isNew = token._id ? false: true;
+    if(isNew){
+      this.deleteFromListItems(token);
+    }
+
+  }
+
+  deleteFromListItems(token: Asistencia){
+    let index = this.items.indexOf(token);
+    if(index !== -1){
+      this.items.splice(index, 1)
     }
   }
 

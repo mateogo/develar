@@ -19,9 +19,10 @@ const UPDATE = 'update';
 })
 export class AddressDataEditComponent implements OnInit {
 	@Input() token: Address;
-	@Output() updateToken = new EventEmitter<UpdateAddressEvent>();
+	@Output() updateToken  = new EventEmitter<UpdateAddressEvent>();
 
   public countriesList =  personModel.paises;
+  
   public provinciasList = personModel.provincias;
   public addTypeList =    personModel.addressTypes;
   public ciudadesList =   personModel.ciudades;

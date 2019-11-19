@@ -64,6 +64,7 @@ export class SolasisViewComponent implements OnInit {
   public preparacion;
   public estado_encuesta;
   public avance_encuesta;
+  public audit;
 
   constructor() { }
 
@@ -93,7 +94,24 @@ export class SolasisViewComponent implements OnInit {
   	if(this.token.action === ALIMENTOS && this.modalidad) this.initDatosModalidad(this.modalidad);
     
     if(this.token.action === ENCUESTA && this.encuesta) this.initDatosEncuesta(this.encuesta);
+    this.audit = this.buildAudit(this.token);
 
+  }
+
+  buildAudit(token: Asistencia):string{
+    let audit = ''
+    let ts, sector, fecha, fecha_txt;
+    let atendido = token.atendidox;
+
+    if(atendido){
+      ts =  atendido.slug;
+      sector = atendido.sector;
+      fecha = new Date(token.ts_prog);
+      fecha_txt = fecha ? fecha.toString(): '';
+      audit = `${ts} Sector: ${sector} ${fecha_txt}`
+    }
+
+    return audit;
   }
 
   verdDetalle(e){

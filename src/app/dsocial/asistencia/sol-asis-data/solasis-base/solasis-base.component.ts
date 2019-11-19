@@ -13,6 +13,7 @@ import { Asistencia,
 import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 const NAVIGATE = 'navigate';
+const DELETE = 'delete';
 const UPDATE = 'update';
 const SELECT = 'select';
 const TOKEN_TYPE = 'asistencia';
@@ -246,6 +247,9 @@ export class SolasisBaseComponent implements OnInit {
   		this.updateToken.next(event);
   	}
     if(event.action === NAVIGATE){
+      this.updateToken.next(event);
+    }
+    if(event.action === DELETE){
       this.updateToken.next(event);
     }
     if(event.action === SELECT){

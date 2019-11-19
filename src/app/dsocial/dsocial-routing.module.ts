@@ -9,6 +9,7 @@ import { AlimentosPageComponent } from './alimentos/alimentos-page/alimentos-pag
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
+import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
 
 const routes: Routes = [
 	{
@@ -20,8 +21,12 @@ const routes: Routes = [
 		component: TurnosPageComponent
 	},
 	{
-		path:'tablero',
+		path:'tableroasistencias',
 		component: AsistableroPageComponent
+	},
+	{
+		path:'tableroremitos',
+		component: AlimentostableroPageComponent
 	},
 	{
 		path:'alimentos/:id',

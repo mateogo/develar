@@ -3,50 +3,57 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Person, Address, personModel } from '../../../entities/person/person';
 
 import { DsocialController } from '../../dsocial.controller';
 import { devutils }from '../../../develar-commons/utils'
 
 import { 	Asistencia,
- 					Tile,
-          AsistenciaTable,
-          AsistenciaBrowse,
-          DashboardBrowse,
-					Alimento,
-          AsistenciaSig, 
-					UpdateAsistenciaEvent, 
-					UpdateAlimentoEvent, 
-					UpdateAsistenciaListEvent,
 					AsistenciaHelper } from '../../asistencia/asistencia.model';
+
+import {  RemitoAlmacen,
+          Tile,
+          DashboardBrowse,
+          ProductosAlmacenTable,
+          AlimentosHelper } from '../../alimentos/alimentos.model';
+
 
 
 @Component({
-  selector: 'asistablero-page',
-  templateUrl: './asistablero-page.component.html',
-  styleUrls: ['./asistablero-page.component.scss']
+  selector: 'alimentostablero-page',
+  templateUrl: './alimentostablero-page.component.html',
+  styleUrls: ['./alimentostablero-page.component.scss']
 })
-export class AsistableroPageComponent implements OnInit {
+export class AlimentostableroPageComponent implements OnInit {
 
-  public title = 'Tablero Solicitudes';
+  public title = 'Tablero Remitos Almacén';
   public unBindList = [];
-  public query: DashboardBrowse = AsistenciaHelper.defaultQueryForTablero();
+  public query: DashboardBrowse = AlimentosHelper.defaultQueryForTablero();
 
   public actionOptList =   AsistenciaHelper.getOptionlist('actions');
   public _sectorOptList =   AsistenciaHelper.getOptionlist('sectores');
-  public sectorOptList =   [];
+  public sectorOptList =    [];
+  public depositoOptList =  AsistenciaHelper.getOptionlist('deposito');
 
-  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public avanceOptList =   AsistenciaHelper.getOptionlist('avance');
   public estadoOptList =   AsistenciaHelper.getOptionlist('estado');
-  public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
-  public urgenciaOptList = AsistenciaHelper.getOptionlist('urgencia');
+
+  public tmovOptList =     AlimentosHelper.getOptionlist('tmov');
+  public umeOptList =      AlimentosHelper.getOptionlist('ume');
+
+  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public ciudadesList =    personModel.ciudades;
+
+
+  public tableDataSource = new BehaviorSubject<ProductosAlmacenTable[]>([]);
+  private tableData: ProductosAlmacenTable[] = [];
+
 
 	public form: FormGroup;
 	public showChart = false;
-	//AcumByDate
+  public showProductTable = false;
+
 	public dia: DashboardData = {
 		label: "Hoy",
 		cardinal: 0,
@@ -81,31 +88,29 @@ export class AsistableroPageComponent implements OnInit {
   public isAnio = false;
 
 
-	private personHelperByAge = {};
-	public personByAge: ChartData = new ChartData();
-
-	private personHelperBySex = {};
-	public personBySex: ChartData = new ChartData();
-
 	private personHelperByCity = {};
 	public personByCity: ChartData = new ChartData();
 
-  private asistenciasHelperByAction = {};
-  public asistenciasByAction: ChartData = new ChartData();
+  private remitoalmacenHelperByAction = {};
+  public remitoalmacenByAction: ChartData = new ChartData();
 
-  private asistenciasHelperBySector = {};
-  public asistenciasBySector: ChartData = new ChartData();
+  private remitoalmacenHelperBySector = {};
+  public remitoalmacenBySector: ChartData = new ChartData();
 
-  //Person<
+  private remitoalmacenHelperByTmov = {};
+  public remitoalmacenByTmov: ChartData = new ChartData();
+
+  private remitoalmacenHelperByDeposito = {};
+  public remitoalmacenByDeposito: ChartData = new ChartData();
 
 
   // Sol de Asistencia
-  public asistenciasList: Asistencia[];
+  public remitoalmacenList: Asistencia[];
   public itemsFound = false;
   public currentAsistencia:Asistencia;
 
+  // TABLERO
   private masterData;
-
   public tiles: Tile[] = [];
 
 
@@ -140,14 +145,14 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   loadDashboardData(fecharef: Date){
-    this.initPersonByAgeChart();
-    this.initPersonBySexChart();
     this.initPersonByCityChart();
     this.initAsistenciasByActionChart();
     this.initAsistenciasBySectorChart();
     this.tiles = [];
 
-    let sscrp2 = this.dsCtrl.fetchAsistenciasDashboard(fecharef).subscribe(master => {
+    console.log('ready to load TABLERO: [%s]', fecharef.toString())
+
+    let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(fecharef).subscribe(master => {
       this.masterData = master;
 
       Object.keys(this.masterData).forEach(t => {
@@ -191,7 +196,16 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   /************************/
-  /*    Dashboard control   */
+  /*    Product Table    */
+  /**********************/
+
+  tableAction(e){
+    console.log('TableAction ToDo');
+  }
+
+
+  /************************/
+  /*  Dashboard control  */
   /**********************/
 	changeSelectionValue(type, val){
 		//console.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
@@ -250,6 +264,12 @@ export class AsistableroPageComponent implements OnInit {
     this.fecharef = devutils.txFromDate(this.fecharef_date);
     this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
 
+    // let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(this.fecharef_date).subscribe(master => {
+    //   console.dir(master);
+
+    // })
+
+    console.log('refresh data [%s]', fe)
     this.loadDashboardData(this.fecharef_date);
   }
 
@@ -298,21 +318,18 @@ export class AsistableroPageComponent implements OnInit {
     this.sem.cardinal = 0;
   	this.mes.cardinal = 0;
   	this.anio.cardinal = 0;
+    this.tableData = [];
 
-  	this.personHelperByAge = {};
-  	this.personByAge.error = "";
 
-  	this.personHelperBySex = {};
-  	this.personBySex.error = "";
 
   	this.personHelperByCity = {};
   	this.personByCity.error = "";
 
-    this.asistenciasHelperByAction = {};
-    this.asistenciasByAction.error = "";
+    this.remitoalmacenHelperByAction = {};
+    this.remitoalmacenByAction.error = "";
 
-    this.asistenciasHelperBySector = {};
-    this.asistenciasBySector.error = "";
+    this.remitoalmacenHelperBySector = {};
+    this.remitoalmacenBySector.error = "";
 
 
   }
@@ -321,7 +338,7 @@ export class AsistableroPageComponent implements OnInit {
    acum By Date
   *********************/
   acumByDate(t:Tile){
-    console.log('t.id:[%s]  SEM:[%s]', t.id.substr(0,10), t.sem)
+    //console.log('t.id:[%s]  SEM:[%s]', t.id.substr(0,10), t.sem)
   	if(t.id.substr(6,2)!=="00"){
   		this.dia.cardinal += t.cardinal;
   		this.mes.cardinal += t.cardinal;
@@ -424,7 +441,6 @@ export class AsistableroPageComponent implements OnInit {
 
     this.personByCity.data = personArray.map(t => t.cardinal);
     this.personByCity.labels = personArray.map(t => t.label);
-    console.log('** 295')
     this.personByCity.title  = "Ciudad" //+ this.personByCity.data.reduce((p, t)=> p+t);
     this.personByCity.stitle =  "" //"Asistencias por ciudad";
     this.personByCity.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
@@ -435,13 +451,13 @@ export class AsistableroPageComponent implements OnInit {
    AsistenciasBySECTOR
   *********************/
   initAsistenciasBySectorChart(){
-    this.asistenciasBySector.type = 'pie';
+    this.remitoalmacenBySector.type = 'pie';
 
-    this.asistenciasBySector.labels = [];
+    this.remitoalmacenBySector.labels = [];
 
-    this.asistenciasBySector.data = [];
+    this.remitoalmacenBySector.data = [];
 
-    this.asistenciasBySector.styles = [
+    this.remitoalmacenBySector.styles = [
         {
           backgroundColor: [
               "#778391",
@@ -477,7 +493,7 @@ export class AsistableroPageComponent implements OnInit {
             ],
         }
       ];
-    this.asistenciasBySector.opts = {
+    this.remitoalmacenBySector.opts = {
         elements: {
           arc : {
               borderWidth: 0
@@ -489,11 +505,11 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   acumByAsistenciasSector(t:Tile){
-    if(this.asistenciasHelperBySector[t.sector]){
-      this.asistenciasHelperBySector[t.sector].cardinal += t.cardinal;
+    if(this.remitoalmacenHelperBySector[t.sector]){
+      this.remitoalmacenHelperBySector[t.sector].cardinal += t.cardinal;
 
     }else {
-       this.asistenciasHelperBySector[t.sector] = {
+       this.remitoalmacenHelperBySector[t.sector] = {
          cardinal: t.cardinal,
          label: AsistenciaHelper.getOptionLabel('sectores', t.sector)
        }
@@ -501,17 +517,11 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   resetAsistenciasBySectorChart(){
-
     let sectorArray = []
-    Object.keys(this.asistenciasHelperBySector).forEach(k => {
 
-        sectorArray.push(this.asistenciasHelperBySector[k]);
-
+    Object.keys(this.remitoalmacenHelperBySector).forEach(k => {
+        sectorArray.push(this.remitoalmacenHelperBySector[k]);
     })
-
-
-    console.log('** 400');
-    console.dir(sectorArray)
 
     sectorArray.sort((fel, sel)=> {
       if(fel.cardinal < sel.cardinal) return 1;
@@ -519,12 +529,11 @@ export class AsistableroPageComponent implements OnInit {
       else return 0;
     })
 
-    this.asistenciasBySector.data = sectorArray.map(t => t.cardinal);
-    this.asistenciasBySector.labels = sectorArray.map(t => t.label);
-    this.asistenciasBySector.title  = "Sector " //+ this.asistenciasBySector.data.reduce((p, t)=> p+t);
-    this.asistenciasBySector.stitle = "" ;//Asistencias por Sector";
-    this.asistenciasBySector.slug = sectorArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
-
+    this.remitoalmacenBySector.data = sectorArray.map(t => t.cardinal);
+    this.remitoalmacenBySector.labels = sectorArray.map(t => t.label);
+    this.remitoalmacenBySector.title  = "Sector " //+ this.remitoalmacenBySector.data.reduce((p, t)=> p+t);
+    this.remitoalmacenBySector.stitle = "" ;//Asistencias por Sector";
+    this.remitoalmacenBySector.slug = sectorArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
   }
 
 
@@ -532,13 +541,13 @@ export class AsistableroPageComponent implements OnInit {
    AsistenciasByACTION
   *********************/
   initAsistenciasByActionChart(){
-    this.asistenciasByAction.type = 'pie';
+    this.remitoalmacenByAction.type = 'pie';
 
-    this.asistenciasByAction.labels = [];
+    this.remitoalmacenByAction.labels = [];
 
-    this.asistenciasByAction.data = [];
+    this.remitoalmacenByAction.data = [];
 
-    this.asistenciasByAction.styles = [
+    this.remitoalmacenByAction.styles = [
         {
           backgroundColor: [
               "#778391",
@@ -574,7 +583,7 @@ export class AsistableroPageComponent implements OnInit {
             ],
         }
       ];
-    this.asistenciasByAction.opts = {
+    this.remitoalmacenByAction.opts = {
         elements: {
           arc : {
               borderWidth: 0
@@ -586,11 +595,11 @@ export class AsistableroPageComponent implements OnInit {
   }
 
   acumByAsistenciasAction(t:Tile){
-    if(this.asistenciasHelperByAction[t.action]){
-      this.asistenciasHelperByAction[t.action].cardinal += t.cardinal;
+    if(this.remitoalmacenHelperByAction[t.action]){
+      this.remitoalmacenHelperByAction[t.action].cardinal += t.cardinal;
 
     }else {
-       this.asistenciasHelperByAction[t.action] = {
+       this.remitoalmacenHelperByAction[t.action] = {
          cardinal: t.cardinal,
          label: AsistenciaHelper.getOptionLabel('actions', t.action)
        }
@@ -600,15 +609,11 @@ export class AsistableroPageComponent implements OnInit {
   resetAsistenciasByActionChart(){
 
     let actionArray = []
-    Object.keys(this.asistenciasHelperByAction).forEach(k => {
+    Object.keys(this.remitoalmacenHelperByAction).forEach(k => {
 
-        actionArray.push(this.asistenciasHelperByAction[k]);
+        actionArray.push(this.remitoalmacenHelperByAction[k]);
 
     })
-
-
-    console.log('** 388');
-    console.dir(actionArray)
 
     actionArray.sort((fel, sel)=> {
       if(fel.cardinal < sel.cardinal) return 1;
@@ -616,245 +621,45 @@ export class AsistableroPageComponent implements OnInit {
       else return 0;
     })
 
-    this.asistenciasByAction.data = actionArray.map(t => t.cardinal);
-    this.asistenciasByAction.labels = actionArray.map(t => t.label);
-    this.asistenciasByAction.title  = "Tipo de Acción " //+ this.asistenciasByAction.data.reduce((p, t)=> p+t);
-    this.asistenciasByAction.stitle = "" ;//Asistencias por tipo de Acción";
-    this.asistenciasByAction.slug = actionArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
-
-  }
-
-
-  /******************
-   PersonBySex
-  *********************/
-	initPersonBySexChart(){
-		this.personBySex.type = 'pie';
-
-		this.personBySex.labels = [];
-
-	  this.personBySex.data = [];
-
-		this.personBySex.styles = [
-		    {
-		      backgroundColor: [
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#5dade0",
-			        "#5aa9da",
-			        "#56a9de",
-			        "#4ea1d9",
-			        "#47a7d7",
-			        "#42a2d2",
-			        "#3e9ece",
-			        "#3797c7",
-			        "#3292c2",
-			        "#2d8dbd",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			      ],
-		    }
-  		];
-		this.personBySex.opts = {
-		    elements: {
-		      arc : {
-		        	borderWidth: 0
-		      	}
-		    },
-		    tooltips: false
-		  };
-
-	}
-
-
-
-  labelForPersonSex(id){
-  	if(id === "F") return "Mujer"
-  	if(id === "M") return "Varón"
-  	return "S/Dato"
-  }
-
-  acumByPersonSex(t:Tile){
-  	if(this.personHelperBySex[t.sexo]){
-  		this.personHelperBySex[t.sexo].cardinal += t.cardinal;
-
-  	}else {
- 			this.personHelperBySex[t.sexo] = {
- 				cardinal: t.cardinal,
- 				label: this.labelForPersonSex(t.sexo)
- 			}
-  	}
-  }
-
-  resetPersonBySexChart(){
-
-  	let personArray = []
-  	Object.keys(this.personHelperBySex).forEach(k => {
-  		if(!(k === "F" || k === "M")){
-  			this.personBySex.error += k + ": " + this.personHelperBySex[k].cardinal + "/ "
-  		}else {
-  			personArray.push(this.personHelperBySex[k]);
-  		}
-  	})
-
-
-    personArray.sort((fel, sel)=> {
-      if(fel.cardinal < sel.cardinal) return 1;
-      else if(fel.cardinal > sel.cardinal) return -1;
-      else return 0;
-    })
-
-    this.personBySex.data = personArray.map(t => t.cardinal);
-    this.personBySex.labels = personArray.map(t => t.label);
-
-    console.log('** 403')
-    this.personBySex.title  = "Sexo " //+ this.personBySex.data.reduce((p, t)=> p+t);
-    this.personBySex.stitle = "";
-    this.personBySex.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
+    this.remitoalmacenByAction.data = actionArray.map(t => t.cardinal);
+    this.remitoalmacenByAction.labels = actionArray.map(t => t.label);
+    this.remitoalmacenByAction.title  = "Tipo de Acción " //+ this.remitoalmacenByAction.data.reduce((p, t)=> p+t);
+    this.remitoalmacenByAction.stitle = "" ;//Asistencias por tipo de Acción";
+    this.remitoalmacenByAction.slug = actionArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
   }
 
 
 
-  /******************
-   PersonByAge
-  *********************/
-	initPersonByAgeChart(){
-		this.personByAge.type = 'pie';
 
-		this.personByAge.labels = [];
-
-	  this.personByAge.data = [];
-
-		this.personByAge.styles = [
-		    {
-		      backgroundColor: [
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#5dade0",
-			        "#5aa9da",
-			        "#56a9de",
-			        "#4ea1d9",
-			        "#47a7d7",
-			        "#42a2d2",
-			        "#3e9ece",
-			        "#3797c7",
-			        "#3292c2",
-			        "#2d8dbd",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			        "#778391",
-			        "#5dade0",
-			        "#3c4e62",
-			      ],
-		    }
-  		];
-		this.personByAge.opts = {
-		    elements: {
-		      arc : {
-		        	borderWidth: 0
-		      	}
-		    },
-		    tooltips: false
-		  };
-
-	}
-
-
-  labelForPersonAge(id){
-  	if(id === "01") return "Adolescente"
-  	if(id === "02") return "Veintis"
-  	if(id === "03") return "Treintis"
-  	if(id === "04") return "Cuarentis"
-  	if(id === "05") return "Cincuentis"
-  	if(id === "06") return "Sesentis"
-  	if(id === "07") return "Setenties"
-  	if(id === "08") return "Ochentis"
-  	if(id === "09") return "Noventis"
-  	return "S/Dato"
-  }
-
-  acumByPersonAge(t:Tile){
-  	if(this.personHelperByAge[t.edadId]){
-  		this.personHelperByAge[t.edadId].cardinal += t.cardinal;
-
-  	}else {
- 			this.personHelperByAge[t.edadId] = {
- 				cardinal: t.cardinal,
- 				label: this.labelForPersonAge(t.edadId)
- 			}
-  	}
-  }
-
-  resetPersonByAgeChart(){
-
-  	let personArray = []
-  	Object.keys(this.personHelperByAge).forEach(k => {
-      console.log('k: [%s]', k)
-  		//if(k > "09" || k < "01"){
-      if(k > "11" || k < "00"){
-  			this.personByAge.error += k + ": " + this.personHelperByAge[k].cardinal + "/ "
-  		}else {
-  			personArray.push(this.personHelperByAge[k]);
-  		}
-  	})
-
-
-    personArray.sort((fel, sel)=> {
-      if(fel.cardinal < sel.cardinal) return 1;
-      else if(fel.cardinal > sel.cardinal) return -1;
-      else return 0;
-    })
-
-    this.personByAge.data = personArray.map(t => t.cardinal);
-    this.personByAge.labels = personArray.map(t => t.label);
-    this.personByAge.title  = "Segmento etario "// + this.personByAge.data.reduce((p, t)=> p+t);
-    this.personByAge.stitle = "" // "Personas por segmento etario";
-    console.log('** 519')
-
-    this.personByAge.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
-
-  }
 
   /******************
    Worker
   *********************/
- reduceTileData(t: Tile){
+
+  private addTileToTable(t: Tile){
+    let token = AlimentosHelper.tileToTableData(t);
+    this.lookUpOnTable(token);
+
+  }
+
+  private lookUpOnTable(tile: ProductosAlmacenTable){
+    let token = this.tableData.find(t => t._id === tile._id )
+    if(token){
+      token.qty += tile.qty;
+
+    }else{
+      this.tableData.push(tile);
+    }
+
+  }
+
+  reduceTileData(t: Tile){
   	this.acumByDate(t);
-  	this.acumByPersonAge(t);
-  	this.acumByPersonSex(t);
   	this.acumByPersonCity(t);
     this.acumByAsistenciasAction(t);
     this.acumByAsistenciasSector(t);
+    this.addTileToTable(t);
 
   }
 
@@ -869,55 +674,13 @@ export class AsistableroPageComponent implements OnInit {
 		  			this.reduceTileData(t)
 		  		}
 		  	});
-		  	this.resetPersonByAgeChart();
-		  	this.resetPersonBySexChart();
 		  	this.resetPersonByCityChart();
         this.resetAsistenciasByActionChart();
         this.resetAsistenciasBySectorChart();
+        this.tableDataSource.next(this.tableData);
   			this.showChart = true;
-
+        this.showProductTable = true;
   	},200)
-
-  }
-
-  /************************/
-  /*    Sol/Asistencia   */
-  /**********************/
-  fetchSolicitudes(query?: any){
-    if(!query){
-      query = new AsistenciaBrowse();
-      query['avance'] = 'emitido';
-
-      this.query = query;
-    }
-
-    Object.keys(query).forEach(key =>{
-      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-    })
-
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length > 0){
-        this.asistenciasList = list;
-        this.dsCtrl.updateTableData();
-
-      }else {
-        this.asistenciasList = [];
-      }
-    })
-  }
-
-
-  tableAction(action){
-    let selection = this.dsCtrl.selectionModel;
-    let selected = selection.selected as AsistenciaTable[];
-    selected.forEach(t =>{
-      this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
-
-    })
-    setTimeout(()=>{
-      this.fetchSolicitudes(this.query);
-    },1000)
 
   }
 

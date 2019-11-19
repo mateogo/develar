@@ -1,6 +1,6 @@
 <mat-card >
 	<mat-card-header>
-		<mat-card-subtitle>TABLERO DE SOLICITUDES DE ASISTENCIA</mat-card-subtitle>
+		<mat-card-subtitle>TABLERO DE PRODUCTOS Y SERVICIOS</mat-card-subtitle>
 	</mat-card-header>
   <mat-card-content>
   <form [formGroup]="form">
@@ -119,99 +119,53 @@
 <div class="cards" >
 <div class="row">
 
-  <div *ngIf="showChart && asistenciasBySector.data.length" class="col-xl-12">
+  <div *ngIf="showChart && remitoalmacenBySector.data.length" class="col-xl-12">
     <card [bgColor]="''" class="chart-card">
       <div class="chart">
         <canvas
           baseChart
-          [data]="asistenciasBySector.data"
-          [colors]="asistenciasBySector.styles"
-          [labels]="asistenciasBySector.labels"
+          [data]="remitoalmacenBySector.data"
+          [colors]="remitoalmacenBySector.styles"
+          [labels]="remitoalmacenBySector.labels"
           [legend]="false"
-          [options]="asistenciasBySector.opts"
-          [chartType]="asistenciasBySector.type"
+          [options]="remitoalmacenBySector.opts"
+          [chartType]="remitoalmacenBySector.type"
           width="100%"
           height="100%"
         ></canvas>
       </div>
       <div class="info">
         <div class="title">
-          <strong>{{ asistenciasBySector.title}}</strong> 
-          <small>{{ asistenciasBySector.stitle }}</small></div>
-        <div class="small">{{asistenciasBySector.slug}}</div>
-        <div class="small">{{asistenciasBySector.error}}</div>
+          <strong>{{ remitoalmacenBySector.title}}</strong> 
+          <small>{{ remitoalmacenBySector.stitle }}</small></div>
+        <div class="small">{{remitoalmacenBySector.slug}}</div>
+        <div class="small">{{remitoalmacenBySector.error}}</div>
       </div>
     </card>
   </div>
 
-  <div *ngIf="showChart  && asistenciasByAction.data.length" class="col-xl-12">
+  <div *ngIf="showChart  && remitoalmacenByAction.data.length" class="col-xl-12">
     <card [bgColor]="''" class="chart-card">
       <div class="chart">
         <canvas
           baseChart
-          [data]="asistenciasByAction.data"
-          [colors]="asistenciasByAction.styles"
-          [labels]="asistenciasByAction.labels"
+          [data]="remitoalmacenByAction.data"
+          [colors]="remitoalmacenByAction.styles"
+          [labels]="remitoalmacenByAction.labels"
           [legend]="false"
-          [options]="asistenciasByAction.opts"
-          [chartType]="asistenciasByAction.type"
+          [options]="remitoalmacenByAction.opts"
+          [chartType]="remitoalmacenByAction.type"
           width="100%"
           height="100%"
         ></canvas>
       </div>
       <div class="info">
-        <div class="title"><strong>{{ asistenciasByAction.title}}</strong> <small>{{ asistenciasByAction.stitle }}</small></div>
-        <div class="small">{{asistenciasByAction.slug}}</div>
-        <div class="small">{{asistenciasByAction.error}}</div>
+        <div class="title"><strong>{{ remitoalmacenByAction.title}}</strong> <small>{{ remitoalmacenByAction.stitle }}</small></div>
+        <div class="small">{{remitoalmacenByAction.slug}}</div>
+        <div class="small">{{remitoalmacenByAction.error}}</div>
       </div>
     </card>
   </div>
-
-  <div *ngIf="showChart && personByAge.data.length" class="col-xl-12">
-    <card [bgColor]="''" class="chart-card">
-      <div class="chart">
-        <canvas
-          baseChart
-          [data]="personByAge.data"
-          [colors]="personByAge.styles"
-          [labels]="personByAge.labels"
-          [legend]="false"
-          [options]="personByAge.opts"
-          [chartType]="personByAge.type"
-          width="100%"
-          height="100%"
-        ></canvas>
-      </div>
-      <div class="info">
-        <div class="title"><strong>{{ personByAge.title}}</strong> <small>{{ personByAge.stitle }}</small></div>
-        <div class="small">{{personByAge.slug}}</div>
-        <div class="small">{{personByAge.error}}</div>
-      </div>
-    </card>
-  </div>
-
-  <div *ngIf="showChart && personBySex.data.length" class="col-xl-12">
-    <card [bgColor]="''" class="chart-card">
-      <div class="chart">
-        <canvas
-          baseChart
-          [data]="personBySex.data"
-          [colors]="personBySex.styles"
-          [labels]="personBySex.labels"
-          [legend]="false"
-          [options]="personBySex.opts"
-          [chartType]="personBySex.type"
-          width="100%"
-          height="100%"
-        ></canvas>
-      </div>
-      <div class="info">
-        <div class="title"><strong>{{ personBySex.title}}</strong> <small>{{ personBySex.stitle }}</small></div>
-        <div class="small">{{personBySex.slug}}</div>
-        <div class="small">{{personBySex.error}}</div>
-      </div>
-    </card>
-  </div> 
 
   <div *ngIf="showChart && personByCity.data.length" class="col-xl-12">
     <card [bgColor]="''" class="chart-card">
@@ -238,3 +192,13 @@
   
 </div>
 </div>
+
+<ng-container *ngIf="showProductTable" >
+
+  <alimentostablero-table 
+          [dataRecordsSource]='tableDataSource'
+          (actionTriggered)="tableAction($event)"  ></alimentostablero-table>
+
+
+</ng-container>
+

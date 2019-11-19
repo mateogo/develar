@@ -51,6 +51,7 @@ export class SolicitaPedidosEditComponent implements OnInit {
   public causasOptList =   AsistenciaHelper.getOptionlist('causa');
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
+  public avanceEstadoRelation = AsistenciaHelper.getAvanceEstadoRelation();
 
   public kitEntregaOptList: KitOptionList[];
   public currentKit: KitProduct;
@@ -63,7 +64,7 @@ export class SolicitaPedidosEditComponent implements OnInit {
 	}
 
   ngOnInit() {
-  	this.initForEdit(this.form, this.pedido);
+  	this.initForEdit(this.form, this.pedido, this.asistencia);
     this.kitEntregaOptList = this.kitOptList;
   }
 
@@ -89,14 +90,29 @@ export class SolicitaPedidosEditComponent implements OnInit {
 
   changeSelectionValue(type, val){
     //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type==='avance'){
+      this.estadoOptList = this.avanceEstadoRelation[val] || [];
+      if(this.pedido.avance === val && this.pedido.estado){
+        this.form.get('estado').setValue(this.pedido.estado);
+
+      } else if(this.estadoOptList.length === 1){
+        this.form.get('estado').setValue(this.estadoOptList[0].val);
+
+      }else {
+        this.form.get('estado').setValue(null);
+
+      }
+    }
+
   }
 
   changePeriodo(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
       //this.form.controls['city'].setValue(t.city);
     if(!this.asistencia) return;
     let date_from = devutils.dateFromTx(this.asistencia.fecomp_txa);
     let date_to = devutils.dateFromTx(this.asistencia.fecomp_txa);
+    let freq = this.form.controls['freq'].value;
+
     let datex;
 
     if(type==="periodo" && val==="3M"){
@@ -113,15 +129,26 @@ export class SolicitaPedidosEditComponent implements OnInit {
 
     }
 
+    if(val === 'UNICO'){
+      this.form.get('freq').setValue('unica');
+
+    }else {
+      if(freq && freq === 'unica'){
+        this.form.get('freq').setValue('mensual');
+
+      }
+    }
+
     this.form.controls['fechad'].setValue(devutils.txFromDate(date_from));
     this.form.controls['fechah'].setValue(devutils.txFromDate(date_to));
   }
 
 
-  private initForEdit(form: FormGroup, pedido: Pedido): FormGroup {
+  private initForEdit(form: FormGroup, pedido: Pedido, asistencia: Asistencia): FormGroup {
 
     let modalidad: Modalidad = pedido.modalidad || new Modalidad();
     let fecha = new Date();
+    let action = asistencia.action || '';
     this.currentItemList = pedido.items || [];
 
     form.reset({
@@ -130,7 +157,7 @@ export class SolicitaPedidosEditComponent implements OnInit {
       fechah:       modalidad.fe_txh || devutils.txFromDate(fecha),
       freq:         modalidad.freq,
 
-      type:         pedido.type,
+      type:         pedido.type || action,
       qty:          pedido.kitQty,
       deposito:     pedido.deposito,
       causa:        pedido.causa,

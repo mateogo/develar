@@ -11,6 +11,7 @@ import { devutils }from '../../../../develar-commons/utils'
 const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
+const DELETE = 'delete';
 
 @Component({
   selector: 'solasis-edit',
@@ -25,7 +26,11 @@ export class SolasisEditComponent implements OnInit {
   public actionOptList = []; // AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
   public sectorActionRelation = AsistenciaHelper.getSectorActionRelation();
+  public avanceEstadoRelation = AsistenciaHelper.getAvanceEstadoRelation();
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
+  public avanceOptList = AsistenciaHelper.getOptionlist('avance');
+  public estadoOptList = AsistenciaHelper.getOptionlist('estado');
+
 	public form: FormGroup;
 
   public showViewAlimento = false;
@@ -58,6 +63,12 @@ export class SolasisEditComponent implements OnInit {
   	this.emitEvent(this.formAction);
   }
 
+  deleteToken(){
+    this.formAction = DELETE;
+    this.emitEvent(this.formAction);
+
+  }
+
   emitEvent(action:string){
   	this.updateToken.next({
   		action: action,
@@ -77,6 +88,21 @@ export class SolasisEditComponent implements OnInit {
 
       }
     }
+
+    if(type==='avance'){
+      this.estadoOptList = this.avanceEstadoRelation[val] || [];
+      
+      if(this.token.avance === val && this.token.estado){
+        this.form.get('estado').setValue(this.token.estado);
+
+      } else if(this.estadoOptList.length === 1){
+        this.form.get('estado').setValue(this.estadoOptList[0].val);
+
+      }else {
+        this.form.get('estado').setValue(null);
+
+      }
+    }
   }
 
 
@@ -90,6 +116,9 @@ export class SolasisEditComponent implements OnInit {
       sector:      [null, Validators.compose([Validators.required])],
 			action:      [null, Validators.compose([Validators.required])],
 			fecomp:      [null, Validators.compose([Validators.required])],
+      avance:      [null, Validators.compose([Validators.required])],
+      estado:      [null, Validators.compose([Validators.required])],
+
     });
 
     return form;
@@ -102,6 +131,8 @@ export class SolasisEditComponent implements OnInit {
 			action:      token.action,
       sector:      token.sector,
 			fecomp:      token.fecomp_txa,
+      estado:      token.estado,
+      avance:      token.avance,
 		});
 
     if(token.avance !== 'emitido'){
@@ -121,6 +152,8 @@ export class SolasisEditComponent implements OnInit {
 		entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
 		entity.fecomp_txa =   fvalue.fecomp;
+    entity.estado =       fvalue.estado;
+    entity.avance =       fvalue.avance;
 
 		entity.estado = entity.estado || 'activo';
 

@@ -135,7 +135,11 @@ export const MAINMENUITEMS: MainMenuItem[] = [
       },
       {
         title: 'Tablero solicitudes',
-        routing: '/dsocial/gestion/tablero'
+        routing: '/dsocial/gestion/tableroasistencias'
+      },
+      {
+        title: 'Tablero remitos',
+        routing: '/dsocial/gestion/tableroremitos'
       },
     ],
     routing: '',
@@ -684,7 +688,11 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       },
       {
         title: 'Tablero solicitudes',
-        routing: '/dsocial/gestion/tablero'
+        routing: '/dsocial/gestion/tableroasistencias'
+      },
+      {
+        title: 'Tablero remitos',
+        routing: '/dsocial/gestion/tableroremitos'
       },
     ],
     routing: '',

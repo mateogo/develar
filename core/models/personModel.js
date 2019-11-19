@@ -1827,7 +1827,7 @@ exports.import = function (req, errcb, cb) {
 
 exports.buildIdTree = function(){
     let promise = new Promise((resolve, reject)=> {
-        Person.find(null, '_id displayName fenac sexo tdoc ndoc locaciones').lean().then(persons => {
+        Person.find(null, '_id displayName fenac fenactx sexo tdoc ndoc locaciones').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
                 master[p._id] = {
@@ -1835,6 +1835,7 @@ exports.buildIdTree = function(){
                     tdoc: p.tdoc,
                     ndoc: p.ndoc,
                     fenac: p.fenac,
+                    fenactx: p.fenactx,
                     sexo: p.sexo,
                     displayName: p.displayName,
                     locaciones: p.locaciones

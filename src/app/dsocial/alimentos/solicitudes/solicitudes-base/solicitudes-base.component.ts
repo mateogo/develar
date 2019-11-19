@@ -48,21 +48,6 @@ export class SolicitudesBaseComponent implements OnInit {
     this.voucherType = AsistenciaHelper.getVoucherType(this.token);
     this.initEntrega(this.voucherType);
 
-    /**
-        {val: 'encuesta',     isRemitible: false, key:'',          type:'EncuestaSocAmb', label: 'Encuesta' },
-        {val: 'alimentos',    isRemitible: true,  key:'modalidad', type:'Alimentos',    label: 'Alimentos' },
-        {val: 'habitacional', isRemitible: true,  key:'pedidos',   type:'Habitacional',  label: 'Habitacional' },
-        {val: 'sanitaria',    isRemitible: true,  key:'pedidos',   type:'Sanitaria',  label: 'Sanitaria' },
-        {val: 'subsidio',     isRemitible: false, key:'',          type:'Subsidio',     label: 'Subsidio' },
-        {val: 'salud',        isRemitible: true,  key:'pedidos',   type:'Salud (RVI)',  label: 'Salud (RVI)' },
-        {val: 'nutricion',    isRemitible: true,  key:'pedidos',   type:'Nutrición',    label: 'Nutrición' },
-        {val: 'pension',      isRemitible: false, key:'',          type:'Pensión',      label: 'Pensión' },
-        {val: 'migracion',    isRemitible: false, key:'',          type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
-        {val: 'no_definido',  isRemitible: false, key:'',          type:'Sin selección',  label: 'Sin selección' },
-
-    */
-
-
   }
 
   initEntrega(voucherType: VoucherType){

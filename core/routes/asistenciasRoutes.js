@@ -67,9 +67,10 @@ router.get('/importsanitaria', function (req, res) {
 /**
  * import and [update | insert ]
  */
-router.get('/tablero', function (req, res) {
+router.get('/tablero/:fecha', function (req, res) {
     console.log('generacion de tablero de control');
-    service.tablero(req, function(err) {
+    let fechanum = parseInt(req.params.fecha, 10);
+    service.tablero(fechanum, function(err) {
         res.status(400).json(err);
 
     }, function(entities) {

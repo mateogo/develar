@@ -34,7 +34,9 @@
 				</div>
 
 				<mat-chip-list *ngIf="!showEditPanel" aria-label="Falta perfeccionar la S/Asistencia">
-				  <mat-chip  *ngFor='let chip of chips' [color]="chip.color"  selected>{{ chip.text }}</mat-chip>
+				  <mat-chip  *ngFor='let chip of chips' 
+				  		(click)='editModalidad()'
+				  		[color]="chip.color"  selected>{{ chip.text }}</mat-chip>
 				</mat-chip-list>
 
 

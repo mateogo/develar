@@ -72,9 +72,10 @@ export class DaoService {
         dashboardURL: 'api/rolnocturnidad/tablero'
       },
       remitoalmacen:{
-        backendURL: 'api/remitosalmacen',
-        searchURL:  'api/remitosalmacen/search',
-        nextItemURL: 'api/remitosalmacen/nextitem'
+        backendURL:   'api/remitosalmacen',
+        searchURL:    'api/remitosalmacen/search',
+        dashboardURL: 'api/remitosalmacen/tablero',
+        nextItemURL:  'api/remitosalmacen/nextitem'
       },
       folder:{
         backendURL: 'api/folders',
@@ -308,8 +309,8 @@ export class DaoService {
                  );
   }
 
-  fetchAsistenciaDashboard<T>(type: string): Observable<T> {
-    let url = `${this.dao[type].dashboardURL}`;
+  fetchAsistenciaDashboard<T>(type: string, fecha: number): Observable<T> {
+    let url = `${this.dao[type].dashboardURL}/${fecha}`;
     return this.http
                .get<T>(url)
                .pipe(

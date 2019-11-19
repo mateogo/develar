@@ -20,6 +20,7 @@ export class Atendido {
 export interface Tile {
 		dia:      number;
 		mes:      number;
+		sem:      string;
 		fenac:    number;
 		ciudad:   string;
 		sexo:     string;
@@ -40,7 +41,7 @@ export class Alimento {
 		fe_tsh:      number;
 		fe_txd:      string;
 		fe_txh:      string;
-		freq:        string = 'mensual';
+		freq:        string = 'unica';
 		qty:         number = 1;
 		observacion: string;
 };
@@ -51,7 +52,7 @@ export class Modalidad {
 		fe_tsh:      number = 0;
 		fe_txd:      string;
 		fe_txh:      string;
-		freq:        string = 'mensual';
+		freq:        string = 'unica';
 }
 
 export class ItemPedido {
@@ -109,7 +110,7 @@ export class Encuesta {
     barrio:       string = '';
 		preparacion:  string;
 		estado:       string = 'activo';
-		avance:       string = 'emitido';
+		avance:       string = 'programado';
 		evaluacion:   string;
 
 };
@@ -171,6 +172,7 @@ export class DashboardBrowse {
 		sector:      string;
 		estado:      string;
 		avance:      string;
+		fecharef?:   string;
 }
 
 export class AsistenciaBrowse {
@@ -268,17 +270,18 @@ const default_option_list: Array<any> = [
 ];
 
 const asisActionOptList: Array<any> = [
-        {val: 'encuesta',     isRemitible: false, key:'',          type:'EncuestaSocAmb', label: 'Encuesta' },
-        {val: 'alimentos',    isRemitible: true,  key:'modalidad', type:'Alimentos',    label: 'Alimentos' },
-        {val: 'relocalizacion', isRemitible: false,  key:'',   type:'Relocalización',  label: 'Relocalización' },
-        {val: 'habitacional', isRemitible: true,  key:'pedido',   type:'Habitacional',  label: 'Habitacional' },
-        {val: 'sanitaria',    isRemitible: true,  key:'pedido',   type:'Sanitaria',  label: 'Sanitaria' },
-        {val: 'subsidio',     isRemitible: false, key:'',          type:'Subsidio',     label: 'Subsidio' },
-        {val: 'salud',        isRemitible: true,  key:'pedido',   type:'Salud (RVI)',  label: 'Salud (RVI)' },
-        {val: 'nutricion',    isRemitible: true,  key:'pedido',   type:'Nutrición',    label: 'Nutrición' },
-        {val: 'pension',      isRemitible: false, key:'',          type:'Pensión',      label: 'Pensión' },
-        {val: 'migracion',    isRemitible: false, key:'',          type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
-        {val: 'no_definido',  isRemitible: false, key:'',          type:'Sin selección',  label: 'Sin selección' },
+        {val: 'no_definido',    isRemitible: false, key:'',          type:'Sin selección',     label: 'Sin selección' },
+        {val: 'alimentos',      isRemitible: true,  key:'modalidad', type:'Alimentos',         label: 'Alimentos' },
+        {val: 'sanitaria',      isRemitible: true,  key:'pedido',    type:'Sanitaria',         label: 'Sanitaria' },
+        {val: 'habitacional',   isRemitible: true,  key:'pedido',    type:'Habitacional',      label: 'Habitacional' },
+        {val: 'encuesta',       isRemitible: false, key:'',          type:'InformeSocAmb',     label: 'Informe S/Ambiental (en domiciliio)' },
+        {val: 'informese',      isRemitible: false, key:'',          type:'InformeSocEco',     label: 'Informe S/Económico (en sede)' },
+        {val: 'relocalizacion', isRemitible: false, key:'',          type:'Relocalización',    label: 'Relocalización' },
+        {val: 'subsidio',       isRemitible: false, key:'',          type:'Subsidio',          label: 'Subsidio' },
+        {val: 'salud',          isRemitible: true,  key:'pedido',    type:'Salud (RVI)',       label: 'Salud (RVI)' },
+        {val: 'nutricion',      isRemitible: true,  key:'pedido',    type:'Nutrición',         label: 'Nutrición' },
+        {val: 'pension',        isRemitible: false, key:'',          type:'Pensión',           label: 'Pensión' },
+        {val: 'migracion',      isRemitible: false, key:'',          type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
 
 ];
 
@@ -341,6 +344,7 @@ const sector_actionRelation = {
   regionvi: [
     {val: 'sanitaria',   label: 'Sanitaria' },
     {val: 'alimentos',   label: 'Alimentos' },
+    {val: 'salud',       label: 'Salud' },
   ],
 
   discapacidad: [
@@ -354,21 +358,20 @@ const sector_actionRelation = {
 
   tsocial: [
     {val: 'alimentos',   label: 'Alimentos' },
-    {val: 'encuesta',    label: 'Encuesta' },
     {val: 'sanitaria',   label: 'Sanitaria' },
-    {val: 'habitacional',     label: 'Habitacional' },
+    {val: 'habitacional', label: 'Habitacional' },
+    {val: 'encuesta',    label: 'Informe S/Ambiental en domicilio' },
+    {val: 'informese',   label: 'Relevam S/Econom en sede' },
   ],
 
   nutricion: [
+    {val: 'nutricion',   label: 'Nutrición' },
     {val: 'alimentos',   label: 'Alimentos' },
     {val: 'sanitaria',   label: 'Sanitaria' },
   ],
 
   inhumacion: [
-    {val: 'alimentos',   label: 'Alimentos' },
     {val: 'inhumacion',  label: 'Inhumacion' },
-    {val: 'sanitaria',   label: 'Sanitaria' },
-    {val: 'habitacional',     label: 'Habitacional' },
   ],
 
   terceraedad: [
@@ -376,6 +379,7 @@ const sector_actionRelation = {
   ],
 
   pensiones: [
+    {val: 'pension',     label: 'Tramitación pensión' },
     {val: 'alimentos',   label: 'Alimentos' },
   ],
 
@@ -386,21 +390,24 @@ const sector_actionRelation = {
   referentebarrial: [
     {val: 'alimentos',    label: 'Alimentos' },
     {val: 'habitacional', label: 'Habitacional' },
+    {val: 'sanitaria',    label: 'Sanitaria' },
   ],
 
   direccion: [
-    {val: 'alimentos',   label: 'Alimentos' },
-    {val: 'encuesta',    label: 'Encuesta' },
-    {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'alimentos',    label: 'Alimentos' },
+    {val: 'sanitaria',    label: 'Sanitaria' },
     {val: 'habitacional', label: 'Habitacional' },
+    {val: 'encuesta',     label: 'Informe S/Ambiental en domicilio' },
+    {val: 'informese',    label: 'Relevam S/Econom en sede' },
   ],
 
   habitat: [
     {val: 'relocalizacion', label: 'Relocalización' },
-    {val: 'habitacional', label: 'Habitacional' },
-    {val: 'alimentos',   label: 'Alimentos' },
-    {val: 'encuesta',    label: 'Encuesta' },
-    {val: 'sanitaria',   label: 'Sanitaria' },
+    {val: 'habitacional',   label: 'Habitacional' },
+    {val: 'alimentos',      label: 'Alimentos' },
+    {val: 'sanitaria',      label: 'Sanitaria' },
+    {val: 'encuesta',       label: 'Informe S/Ambiental en domicilio' },
+    {val: 'informese',      label: 'Relevam S/Econom en sede' },
   ],
 
   cimientos: [
@@ -409,7 +416,7 @@ const sector_actionRelation = {
   ],
 
  subsidios: [
-    {val: 'cimientos',     label: 'Envión-Cimientos' },
+    {val: 'subsidio',     label: 'Tramitación subsidio' },
     {val: 'alimentos',    label: 'Alimentos' },
   ],
 }
@@ -445,7 +452,7 @@ const frecuenciaOptList: Array<any> = [
         {val: 'quincenal', q: 2, type:'Quincenal',        label: 'Quincenal' },
         {val: 'mensual',   q: 1, type:'Mensual',          label: 'Mensual' },
         {val: 'unica',     q: 1, type:'Vez única',        label: 'Vez única' },
-        {val: 'unicavez',  q: 1, type:'Vez única',        label: 'Por única vez' },
+        {val: 'unicavez',  q: 1, type:'Vez única',        label: '---------------' },
         {val: 'arequerim', q: 1, type:'A requerimiento',  label: 'A requerimiento' },
 ];
 
@@ -481,19 +488,96 @@ const avanceOptList = [
       {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',      label: 'Emitida',       slug:'Emitida' },
       {val: 'entregado',    label: 'Entregado',     slug:'Entregado' },
-      {val: 'aprobado',     label: 'Aprobado',      slug:'Aprobado' },
-      {val: 'derivadoVI',   label: 'Derivado ZVI',     slug:'Derivado ZVI' },
-      {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
-      {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
-      {val: 'pendiente',    label: 'Pendiente',     slug:'Pendiente' } ,
-      {val: 'programado',   label: 'Programado',    slug:'Programado' },
       {val: 'enejecucion',  label: 'En ejecución',  slug:'En ejecución' },
+      {val: 'aprobado',     label: 'Aprobado',      slug:'Aprobado' },
+      {val: 'autorizado',   label: 'Autorizado',    slug:'Autorizado' },
+      {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
+      {val: 'pendiente',    label: 'Pendiente',     slug:'Pendiente' } ,
+      {val: 'programado',   label: 'Programada',    slug:'Programada' },
+      {val: 'derivadoVI',   label: 'Derivado ZVI',     slug:'Derivado ZVI' },
+      {val: 'rechazado',    label: 'Rechazado',     slug:'Rechazado' },
       {val: 'incumplido',   label: 'No cumplido',   slug:'No cumplido' },
       {val: 'devuelto',     label: 'Devolución',   slug:'Devolución' },
       {val: 'incompleto',   label: 'Incompleto',   slug:'Incompleto' },
-      {val: 'cumplido',     label: 'Cumplido',      slug:'Cumplido' },
       {val: 'anulado',      label: 'Anulado',       slug:'Anulado' },
 ]
+
+
+const avance_estadoRelation = {
+  no_definido: [
+    {val: 'no_definido',   label: 'Sin selección' },
+  ],
+
+  emitido: [
+    {val: 'activo',   label: 'Activa' },
+  ],
+
+  entregado: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
+  enejecucion: [
+    {val: 'activo',   label: 'Activa' },
+  ],
+
+  aprobado: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
+  autorizado: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
+  cumplido: [
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
+  pendiente: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'suspendido',   label: 'Suspendido' },
+  ],
+
+  programado: [
+    {val: 'activo',   label: 'Activa' },
+  ],
+
+  derivadoVI: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
+  rechazado: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'suspendido',   label: 'Suspendido' },
+    {val: 'baja',   label: 'Baja' },
+  ],
+
+  incumplido: [
+    {val: 'suspendido',   label: 'Suspendido' },
+    {val: 'baja',   label: 'Baja' },
+  ],
+
+  devuelto: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'suspendido',   label: 'Suspendido' },
+    {val: 'baja',   label: 'Baja' },
+  ],
+
+  incompleto: [
+    {val: 'activo',   label: 'Activa' },
+    {val: 'suspendido',   label: 'Suspendido' },
+    {val: 'baja',   label: 'Baja' },
+  ],
+
+  anulado: [
+    {val: 'baja',   label: 'Baja' },
+  ]
+
+}
+
 
 const avanceEncuestaOptList = [
       {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
@@ -651,6 +735,9 @@ export class AsistenciaHelper {
 		return sector_actionRelation;
 	}
 
+	static getAvanceEstadoRelation(){
+		return avance_estadoRelation;
+	}
 
 	static getOptionLabelFromList(list, val){
 		if(!val) return 'no-definido';
@@ -921,8 +1008,9 @@ export class AsistenciaHelper {
 		let q = new DashboardBrowse();
 		q.estado = "no_definido";
 		q.avance = "no_definido";
-		q.action = "alimentos";
-		q.sector = "alimentos";
+		q.action = "no_definido";
+		q.sector = "no_definido";
+
 		return q;
 	}
 

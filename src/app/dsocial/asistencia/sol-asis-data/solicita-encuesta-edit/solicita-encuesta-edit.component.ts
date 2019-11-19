@@ -4,7 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import { DsocialController } from '../../../dsocial.controller';
 
-import { Person, Address } from '../../../../entities/person/person';
+import { Person, Address, personModel } from '../../../../entities/person/person';
 
 import { 	Asistencia, 
 					Encuesta, 
@@ -42,6 +42,8 @@ export class SolicitaEncuestaEditComponent implements OnInit {
   public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
 
   public frecuencaOptList =  AsistenciaHelper.getOptionlist('frecuencia');
+  public ciudadesList =   personModel.ciudades;
+  public barrioList = [];
 
   public avanceOptList = AsistenciaHelper.getOptionlist('encuesta');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
@@ -54,8 +56,8 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 	}
 
   ngOnInit() {
-  	this.initForEdit(this.form, this.token);
-  	this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+  	this.initForEdit(this.form, this.token, this.asistencia);
+  	this.usersOptList = this.dsCtrl.buildEncuestadoresOptList() || [];
 
   	let personId = this.asistencia.requeridox.id;
 
@@ -97,8 +99,11 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 
     if(type === 'locacionId'){
       let t = this.selectLocation(val)
-      this.form.controls['city'].setValue(t.city);
-      this.form.controls['barrio'].setValue(t.barrio);
+      let city = personModel.getCiudadLabel(t.city) || t.city
+      let barrio = personModel.getBarrioLabel(t.city, t.barrio) || t.barrio;
+
+      this.form.controls['city'].setValue(city);
+      this.form.controls['barrio'].setValue(barrio);
     }
 
   }
@@ -110,7 +115,6 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 
     form = this.fb.group({
 			fe_visita:    [null, Validators.compose([Validators.required])],
-			fe_visita_ts: [null],
 			locacionId:   [null],
 			ruta:         [null],
 			trabajador:   [null],
@@ -127,10 +131,14 @@ export class SolicitaEncuestaEditComponent implements OnInit {
     return form;
   }
 
-  initForEdit(form: FormGroup, token: Encuesta): FormGroup {
+  initForEdit(form: FormGroup, token: Encuesta, asistencia?: Asistencia): FormGroup {
+
+    if(!token.fe_visita && asistencia){
+      token.fe_visita = this.asistencia.fecomp_txa;
+    }
+
 		form.reset({
 			fe_visita:    token.fe_visita,
-			fe_visita_ts: token.fe_visita_ts,
 			locacionId:   token.locacionId,
 			ruta:         token.ruta,
 			trabajador:   token.trabajador,
@@ -155,7 +163,6 @@ export class SolicitaEncuestaEditComponent implements OnInit {
 		const entity = token;
 
 		entity.fe_visita =    fvalue.fe_visita;
-		entity.fe_visita_ts = fvalue.fe_visita_ts;
 		entity.locacionId =   fvalue.locacionId;
 		entity.ruta =         fvalue.ruta;
 		entity.trabajador =   fvalue.trabajador;
@@ -172,7 +179,11 @@ export class SolicitaEncuestaEditComponent implements OnInit {
     entity.fe_visita_ts = fe ? fe.getTime() : 0;
     entity.fe_visita = devutils.txFromDate(fe);
 
-    entity.trabajador = this.usersOptList.find(u=>u.val == entity.trabajadorId).label;
+    if(entity.trabajadorId){
+      let ts = this.usersOptList.find(u=>u.val == entity.trabajadorId)
+      entity.trabajador = ts ? ts.label : ''
+    }
+
 
 		return entity;
 	}

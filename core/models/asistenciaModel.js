@@ -136,6 +136,18 @@ asistenciaSch.pre('save', function (next) {
 function buildQuery(query){
 
   let q = {};
+  if(query['estado']){
+      q["estado"] = query['estado'];
+  }
+
+  if(query['avance']){
+      q["avance"] = query['avance'];
+  }
+
+  if(!query['avance']){
+      q["avance"] = {$ne: 'anulado'};
+  }
+
   if(query['compPrefix']){
       q["compPrefix"] = query['compPrefix'];
   }
@@ -185,16 +197,7 @@ function buildQuery(query){
       q["sector"] = query['sector'];
   }
 
-  if(query['avance']){
-      q["avance"] = query['avance'];
-  }
-
-  if(query['estado']){
-      q["estado"] = query['estado'];
-  }
-
   let comp_range = [];
-
 
   if(query["compNum_d"]){
     console.log('compNum_d [%s]', query["compNum_d"])
@@ -230,7 +233,7 @@ function buildQuery(query){
 
   return q;
 }
-
+//estado avance
 
 /**
  * El Modelo es el objeto constructor de instancias concretas
@@ -696,25 +699,38 @@ exports.importalimentos = function (req, errcb, cb) {
 
 };
 
-const buildDiaMes = function(token, fe){
-  let fechaId = fe.getFullYear() + '0000';
+const buildDiaMes = function(token, fecomp, timeframe){
+  let fecharef = timeframe.fecharef;
+  let fechasem = timeframe.semd;
+
+  let fechaId = fecharef.getFullYear() + '0000';
   let diaId = '00' + token.dia;
   let mesId = '00' + token.mes;
   
-  if(token.mes === fe.getMonth()){
-    if(token.dia === fe.getDate()){
-      fechaId = fe.getFullYear() + mesId.substr(-2) + diaId.substr(-2);
+  if(token.mes === fechasem.getMonth()){
+    if(token.dia === fecharef.getDate()){
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + diaId.substr(-2);
     } else {
-      fechaId = fe.getFullYear() + mesId.substr(-2) + '00';
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + '00';
     }
   }
+  if(timeframe.semd <= fecomp && fecomp <= timeframe.semh){
+    fechaId = fechaId + 'SE'
+    token.sem = "SE"
+
+  } else {
+    fechaId = fechaId + '00'
+    token.sem = "00"
+
+  }
+
   return fechaId;
 }
 
 
 
-const buildId = function(token, fe){
-  let fechaId = buildDiaMes(token, fe);
+const buildId = function(token, fecomp, timeframe){
+  let fechaId = buildDiaMes(token,fecomp, timeframe);
   let edadId = token.edadId;
   let sexoId = token.sexo;
   let estadoId = "[" + ("            " + token.estado).substr(-12) + "]" 
@@ -733,8 +749,10 @@ const processToken = function(token, master){
   }
 }
 
-
-const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
+/**********************************/
+/*         TABLERO-ASISTENCIA    */
+/********************************/
+const procesTableroAsistencia = function(ptree, entities, timeframe, errcb, cb){
   console.log('processTableroAsistencia BEGIN [%s]', entities && entities.length);
   let master = {};
 
@@ -748,6 +766,7 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
     let ciudad = 'ciudad';
 
     if(person){
+      //console.log('PERSON: [%s]  [%s] [%s] [%s]' , person.displayName, person.fenac, person.fenactx, ("00" + Math.floor(utils.calcularEdad(person.fenac)/10)).substr(-2))
       fenac = person.fenac || 0;
       sexo = person.sexo || 'X';
       if(person.locaciones && person.locaciones.length){
@@ -760,6 +779,7 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
     let token = {
       dia: fecomp.getDate(),
       mes: fecomp.getMonth(),
+      sem: "00",
       fenac: fenac,
       ciudad: ciudad,
       sexo: sexo,
@@ -771,7 +791,8 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
       cardinal: 1
     };
 
-    token.id = buildId(token, fe);
+    token.id = buildId(token,fecomp, timeframe);
+    console.log('MasterTree: [%s] SEM:[%s]', token.id, token.sem)
     processToken(token, master);
 
   })
@@ -781,22 +802,26 @@ const procesTableroAsistencia = function(ptree, entities, fe, errcb, cb){
 
 
 }
+/**********************************/
+/*          TABLERO              */
+/********************************/
 
-exports.tablero = function(req, errcb, cb) {
-  let fe_hasta = new Date();
-  let fe_desde = new Date(fe_hasta.getFullYear(), 0, 1);
+exports.tablero = function(fecha, errcb, cb) {
+  console.log('****** Build TABLERO BEGIN [%s] *******', fecha);
+ 
+  let time_frame = utils.buildDateFrameForCurrentWeek(fecha);
+  console.dir(time_frame)
+
   let query = {
-      fecomp_ts_d: fe_desde.getTime(),
-      fecomp_ts_h: fe_hasta.getTime()
+      fecomp_ts_d: time_frame.begin.getTime(),
+      fecomp_ts_h: time_frame.semh.getTime()
     }
   
   let regexQuery = buildQuery(query)
 
-  console.log('BuildPeronTree BEGIN')
     
   person.buildIdTree().then(pTree =>{
     console.log('BuildPeronTree fullFilled [%s]', regexQuery);
-    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
 
@@ -805,7 +830,7 @@ exports.tablero = function(req, errcb, cb) {
             errcb(err);
         }else{
           console.log('entities [%s]', entities.length)
-          procesTableroAsistencia(pTree, entities, fe_hasta, errcb, cb);
+          procesTableroAsistencia(pTree, entities, time_frame, errcb, cb);
         }
     });
   })
@@ -937,8 +962,6 @@ const processEachHabitacional = function(person_tree, product_tree, master, toke
 
 
 const buildHabitacional = function (token, num) {
-
-console.dir(token);
 
   let observacion = buildObservacion(token);
   let avance = 'entregado'; //ToDo verificar lista de 

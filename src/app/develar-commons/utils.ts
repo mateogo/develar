@@ -318,6 +318,24 @@ function getProjectedDate(date: Date, plus_day:number, plus_month:number){
     }
 }
 
+function buildFecharefLabel(fecharef: Date): string{
+    let dayOfWeek = fecharef.getDay(); // 0-6 <==> DOM-SAB
+    let actualDay = fecharef.getDate(); // Día del mes calendario 1-31|30|28|29
+
+    let semana_inicia =  actualDay - dayOfWeek + ((dayOfWeek === 0) ? -6 : 1);
+    let semana_finaliza = actualDay + (6 - dayOfWeek ) + ((dayOfWeek === 0) ? -6 : 1);
+
+    let desde = new Date(fecharef.getTime())
+    desde.setDate(semana_inicia);    // retorna fecha en formato number
+    let hasta = new Date(fecharef.getTime())
+    hasta.setDate(semana_finaliza);  // en milisegundos
+
+    return `Semana referencia:  Lunes ${devutils.txFromDate(desde)} a Domingo ${devutils.txFromDate(hasta)}   `
+}
+
+
+
+
 
 
 /***
@@ -512,9 +530,21 @@ class Devutils {
 
 	}
 
-	dateFromTx(datex){
-		return parseDateStr(datex);
+    dateFromTx(datex){
+        return parseDateStr(datex);
+    }
+
+	txFromDate(date){
+		return dateToStr(date);
 	}
+
+    txFromDateTime(time: number){
+        return dateToStr(new Date(time));
+    }
+
+    txForCurrentWeek(date: Date):string {
+        return buildFecharefLabel(date);
+    }
 
     isWithinPeriod(fd, fh): boolean{
         if(!fd || !fh) return false;
@@ -526,14 +556,6 @@ class Devutils {
         if(check < lower || check >upper) ok = false
 
         return ok;
-    }
-
-	txFromDate(date){
-		return dateToStr(date);
-	}
-
-    txFromDateTime(time: number){
-        return dateToStr(new Date(time));
     }
 
     projectedDate(date: Date, d:number, m:number){
@@ -564,9 +586,6 @@ class Devutils {
         return Math.abs(age_dt.getUTCFullYear() - 1970);
     }
 
-
-
-
     validAge(value:string): boolean{
         let validAge = false;
         if(value){
@@ -580,8 +599,6 @@ class Devutils {
 
         return validAge;
     }
-
-
 
     txNormalize(datex: string){
         return this.txFromDate(this.dateFromTx(datex))

@@ -47,7 +47,7 @@ export class SolicitaPedidosViewComponent implements OnInit {
 			this.freq = AsistenciaHelper.getOptionLabel('frecuencia',this.modalidad.freq);
 			this.fechad = this.modalidad.fe_txd;
 			this.fechah = this.modalidad.fe_txh;
-			if(this.freq === 'unicavez' ||this.freq === 'unica') {
+			if(this.modalidad.freq === 'unicavez' ||this.modalidad.freq === 'unica') {
 				this.entrega = 'Previsto de entrega: '+ this.fechad 
 
 			}else {
@@ -60,7 +60,7 @@ export class SolicitaPedidosViewComponent implements OnInit {
 
 		this.deposito = this.pedido.deposito;
 		this.urgencia = this.pedido.urgencia;
-		this.observacion = this.pedido.observacion ? 'Observación: ' + this.pedido.observacion: '';
+		this.observacion = this.pedido.observacion ? this.pedido.observacion: '';
 
 
 		this.causa = this.pedido.causa ? 'Motivación/ Causa: ' + this.pedido.causa : '';

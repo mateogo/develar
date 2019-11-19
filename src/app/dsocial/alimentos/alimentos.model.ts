@@ -58,6 +58,49 @@ export class KitOptionList {
   kit: KitProduct;
 }
 
+export interface Tile {
+		dia:      number;
+		mes:      number;
+		sem:      string;
+		ciudad:   string;
+		estado:   string;
+		avance:   string;
+		action:   string;
+		sector:   string;
+		tmov: string;
+		deposito: string;
+		cardinal: number;
+		productId: string;
+		code: string;
+		name: string;
+		ume: string;
+		pclass: string;
+		qty: number;
+		id:       string;
+}
+
+export class DashboardBrowse {
+		action:      string;
+		sector:      string;
+		estado:      string;
+		avance:      string;
+		fecharef?:   string;
+}
+
+export class ProductosAlmacenTable {
+		_id: string;
+		sector:      string;
+		action:      string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		deposito:      string = 'galpon';
+		tmov:      string = 'entrega';
+		code: string;
+		name: string;
+		ume: string;
+		pclass: string;
+		qty: number;
+}
 
 
 export class RemitoAlmacenTable {
@@ -85,6 +128,7 @@ export class RemitoAlmacenTable {
 		atendidox:   Atendido;
 		entregas:    Array<ItemAlmacen>;
 };
+
 
 export class RemitoAlmacen {
 		_id: string;
@@ -368,6 +412,10 @@ const tableActionsOptList = [
       {val: 'entregar',     label: 'Entregar alimentos',    slug:'Entregar alimentos' },
 ]
 
+const tableroActionsOptList = [
+      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
+      {val: 'entregar',     label: 'Entregar alimentos',    slug:'Entregar alimentos' },
+]
 
 const tmovOptList: Array<any> = [
         {val: 'entrega',        type:'S',  label: 'Entrega' },
@@ -387,6 +435,7 @@ const optionsLists = {
 		kititems: productByKit,
 		tmov: tmovOptList,
 		tableactions: tableActionsOptList,
+		tableroactions: tableroActionsOptList,
 		ume: umeOptList
 };
 
@@ -424,6 +473,47 @@ export class AlimentosHelper {
 		return req;
 	}
 
+
+	static tileToTableData(token: Tile): ProductosAlmacenTable{
+		let td = new ProductosAlmacenTable();
+		td.sector = token.sector;
+		td.action = token.action;
+		td.estado = token.estado;
+		td.avance = token.avance;
+		td.deposito = token.deposito;
+		td.tmov = token.tmov;
+		td.code = token.code;
+		td.name = token.name;
+		td.ume = token.ume;
+		td.pclass = token.pclass;
+		td.qty = token.qty;
+		td._id = token.productId;
+		return td;
+	
+	}
+
+	static buildTableroTable(list: Tile[]){
+		return list.map(token => {
+			let td = new ProductosAlmacenTable();
+
+			td.sector = token.sector;
+			td.action = token.action;
+			td.estado = token.estado;
+			td.avance = token.avance;
+			td.deposito = token.deposito;
+			td.tmov = token.tmov;
+			td.code = token.code;
+			td.name = token.name;
+			td.pclass = token.pclass;
+			td.ume = token.ume;
+			td.qty = token.qty;
+			td._id = token.productId;
+			return td;
+
+		})
+	}
+
+
 	static buildDataTable(list: RemitoAlmacen[]){
 		return list.map(token => {
 			let td = new RemitoAlmacenTable();
@@ -454,6 +544,16 @@ export class AlimentosHelper {
 		})
 
 	}
+	static defaultQueryForTablero(): DashboardBrowse{
+		let q = new DashboardBrowse();
+		q.estado = "no_definido";
+		q.avance = "no_definido";
+		q.action = "no_definido";
+		q.sector = "no_definido";
+
+		return q;
+	}
+
 
 
 }
