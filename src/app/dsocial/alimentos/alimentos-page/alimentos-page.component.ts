@@ -143,6 +143,16 @@ export class AlimentosPageComponent implements OnInit {
 
   }
 
+  remitoEvent(event: UpdateRemitoEvent){
+    if(event.action === 'delete'){
+      this.dsCtrl.updateAvanceRemito('remitoalmacen', 'anulado', event.token._id).then(rem => {
+        this.refreshState();
+
+      });
+    }
+    
+  }
+
 
   /**********************/
   /*     Remito        */
@@ -257,8 +267,10 @@ export class AlimentosPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
+      console.log('Alimentos list [%s]',list && list.length )
 
       this.asistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
+      console.log('Alimentos filtered [%s]',this.asistenciasList && this.asistenciasList.length )
 
       this.sortAsistenciasProperly(this.asistenciasList);
 

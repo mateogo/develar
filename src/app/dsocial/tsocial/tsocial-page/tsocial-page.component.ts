@@ -32,6 +32,7 @@ import {   Asistencia,
 import { RemitoAlmacen } from '../../alimentos/alimentos.model';
 
 import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
+import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
@@ -66,6 +67,9 @@ export class TsocialPageComponent implements OnInit {
   public asistenciasList: Asistencia[];
   public showHistorial = false;
   public remitosList: RemitoAlmacen[];
+
+  public audit: Audit;
+  public parentEntity: ParentEntity;
 
 
   //public contactData = new PersonContactData();
@@ -153,6 +157,13 @@ export class TsocialPageComponent implements OnInit {
       
       this.initAsistenciasList()
       this.loadHistorialRemitos()
+
+      this.audit = this.dsCtrl.getAuditData();
+      this.parentEntity = {
+        entityType: 'person',
+        entityId: this.currentPerson._id,
+        entitySlug: this.currentPerson.displayName
+      }
 
 
     }

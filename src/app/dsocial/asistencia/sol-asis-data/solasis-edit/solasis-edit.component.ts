@@ -135,9 +135,9 @@ export class SolasisEditComponent implements OnInit {
       avance:      token.avance,
 		});
 
-    if(token.avance !== 'emitido'){
-      form.get('action').disable();
-    }
+    // if(token.avance !== 'emitido'){
+    //   form.get('action').disable();
+    // }
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
 
 		return form;

@@ -332,6 +332,12 @@ const umeOptList = [
         {val:'otros'        , label:'otros'}
 ];
 
+const avanceOptList = [
+      {val: 'no_definido',  label: 'Sin selección',  slug:'Sin selección' },
+      {val: 'emitido',      label: 'Emitido',       slug:'Emitida' },
+      {val: 'entregado',    label: 'Entregado',     slug:'Entregado' },
+      {val: 'anulado',      label: 'Anulado',       slug:'Anulado' },
+]
 
 
 const default_option_list: Array<any> = [
@@ -436,7 +442,8 @@ const optionsLists = {
 		tmov: tmovOptList,
 		tableactions: tableActionsOptList,
 		tableroactions: tableroActionsOptList,
-		ume: umeOptList
+		ume: umeOptList,
+		avance: avanceOptList
 };
 
 

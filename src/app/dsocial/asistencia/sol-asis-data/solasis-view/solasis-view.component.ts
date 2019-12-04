@@ -69,6 +69,7 @@ export class SolasisViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   	this.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', this.token.action);
     this.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', this.token.sector);
     this.solicitante = this.token.requeridox.slug  + ' :: DNI: ' + this.token.requeridox.ndoc;

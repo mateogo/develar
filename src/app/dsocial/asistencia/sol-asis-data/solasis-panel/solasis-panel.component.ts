@@ -29,9 +29,15 @@ export class SolasisPanelComponent implements OnInit {
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
 
   public title = 'Solicitudes de Asistencia';
+
 	public showList = false;
+  public showActiveList = false;
+  public showFullList = false;
+
   public openEditor = true;
   public kitEntregaOptList: KitOptionList[];
+
+  public activeitems: Array<Asistencia> = [];
 
   constructor(
       private dsCtrl: DsocialController,
@@ -41,8 +47,27 @@ export class SolasisPanelComponent implements OnInit {
     this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList;
 
   	if(this.items && this.items.length){
+      this.filterActiveItems();
   		this.showList = true;
   	}
+
+  }
+
+  private filterActiveItems(){
+    this.activeitems = [];
+    setTimeout(()=>{
+      this.activeitems = AsistenciaHelper.filterActiveAsistencias(this.items);
+
+      if(this.activeitems && this.activeitems.length){
+        this.showActiveView(true);
+
+      }else{
+        this.showActiveView(false);
+
+      }
+
+
+    },500);
 
   }
 
@@ -51,11 +76,14 @@ export class SolasisPanelComponent implements OnInit {
       this.dsCtrl.manageAsistenciaRecord('asistencia',event.token).subscribe(t =>{
         if(t){
           event.token = t;
+
+          this.filterActiveItems();
         }
 
         this.emitEvent(event);
 
-      });      
+      });
+
     } else if(event.action === NAVIGATE){
       this.emitEvent(event);
 
@@ -90,13 +118,12 @@ export class SolasisPanelComponent implements OnInit {
 
   addItem(){
     let item = AsistenciaHelper.initNewAsistencia('alimentos', 'alimentos')
-    if(this.items){
-      this.items.unshift(item);
+    if(!this.items) this.items = [];
+    if(!this.activeitems) this.activeitems = [];
 
-    }else{
-      this.items = [ item ]
+    this.items.unshift(item);
+    this.activeitems.unshift(item);
 
-    }
     this.showList = true;
 
   }
@@ -118,6 +145,25 @@ export class SolasisPanelComponent implements OnInit {
       });
 
     }
+  }
+
+  activeView(){
+    this.showActiveView(true);
+  }
+
+  fullView(){
+    this.showActiveView(false);
+  }
+
+  private showActiveView(active){
+    if(active === true){
+      this.title = 'Solicitudes de Asistencia (solo activas)';
+    } else {
+      this.title = 'Solicitudes de Asistencia (lista completa)';
+
+    }
+    this.showActiveList = active;
+    this.showFullList = !active;
   }
 
 }

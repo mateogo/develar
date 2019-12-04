@@ -54,6 +54,13 @@
 		 		<solasis-panel [items]='asistenciasList'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
 			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<observaciones-panel 
+		 							[audit]='audit'
+		 							[parent]='parentEntity' ></observaciones-panel>
+			</div>
+	
 	
 <mat-card>
   <mat-card-content *ngIf="showHistorial" >

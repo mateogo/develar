@@ -33,7 +33,9 @@
 
 		<ng-container *ngFor="let remito of remitosList" >
 			<div class="remito-container">
-				<remitoalmacen-view [token]='remito' ></remitoalmacen-view>
+				<remitoalmacen-view [isDeleteable]='true' 
+														[token]='remito' 
+														(updateToken)=remitoEvent($event)></remitoalmacen-view>
 			</div>
 		</ng-container>
 	</mat-card-content>

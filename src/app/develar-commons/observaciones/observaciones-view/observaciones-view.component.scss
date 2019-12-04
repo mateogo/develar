@@ -1,0 +1,40 @@
+@import '../../../../assets/sass/variable';
+$color-destacado: #0645f5;
+
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 1rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: 1rem;
+}
+
+.text-audit {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: .8rem;
+}
+
+.detail-toggle {
+		margin: 0 0 0 15px;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 1.2rem;
+		font-style: italic;	
+}

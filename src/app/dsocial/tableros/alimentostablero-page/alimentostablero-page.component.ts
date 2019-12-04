@@ -150,8 +150,6 @@ export class AlimentostableroPageComponent implements OnInit {
     this.initAsistenciasBySectorChart();
     this.tiles = [];
 
-    console.log('ready to load TABLERO: [%s]', fecharef.toString())
-
     let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(fecharef).subscribe(master => {
       this.masterData = master;
 
@@ -200,7 +198,7 @@ export class AlimentostableroPageComponent implements OnInit {
   /**********************/
 
   tableAction(e){
-    console.log('TableAction ToDo');
+    //console.log('TableAction ToDo');
   }
 
 
@@ -269,7 +267,6 @@ export class AlimentostableroPageComponent implements OnInit {
 
     // })
 
-    console.log('refresh data [%s]', fe)
     this.loadDashboardData(this.fecharef_date);
   }
 

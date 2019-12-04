@@ -611,6 +611,95 @@ const MODALIDAD_SANITARIA =    'sanitaria';
 const MODALIDAD_ENCUESTA =     'encuesta';
 
 
+function validateCoreAsistencia(as: Asistencia, valid: boolean): boolean {
+	if(as.estado !== "activo"){
+		valid = false;
+	}
+
+	return valid;
+}
+
+function validateAlimentosAsistencia(as: Asistencia, valid: boolean): boolean {
+	if(!valid) return valid;
+
+	let alimento = as.modalidad;
+	if(alimento && alimento.fe_txd && alimento.fe_txh){
+
+		if(!devutils.isWithinPeriod(alimento.fe_txd, alimento.fe_txh)) valid = false;
+
+	}
+
+	return valid;
+}
+
+function validatePedidosAsistencia(as: Asistencia, valid: boolean): boolean {
+	if(!valid) return valid;
+
+	let pedido = as.pedido;
+	let modalidad = pedido ? pedido.modalidad : null;
+	if(pedido && modalidad && modalidad.fe_txd && modalidad.fe_txh){
+
+		if(!devutils.isWithinPeriod(modalidad.fe_txd, modalidad.fe_txh)) valid = false;
+
+	}
+
+	return valid;
+}
+/****
+export class Modalidad {
+		periodo:     string = 'UNICO';
+		fe_tsd:      number = 0;
+		fe_tsh:      number = 0;
+		fe_txd:      string;
+		fe_txh:      string;
+		freq:        string = 'unica';
+}
+
+export class ItemPedido {
+	slug: string;
+
+	kitItem: number = 0; // 0: es un item cargado a mano 1: item que deviene de KIT
+	productId: string;
+	code: string;
+	name: string;
+	ume: string;
+	qty: number = 1;
+	punitario: number = 0;
+
+}
+
+export interface VoucherType {
+  type: string;
+  label: string;
+  key: string;
+  isRemitible: boolean;
+  payload: Alimento|Pedido;
+
+}
+
+
+export class Pedido {
+		id:             string;
+		modalidad: Modalidad;
+		type: string;
+
+		deposito:       string;
+    urgencia:       number = 1;
+    kitId:          string;
+    kitQty:         number = 1;
+    observacion:    string;
+    causa:          string;
+
+		estado:         string = 'activo';
+		avance:         string = 'emitido';
+    items: Array<ItemPedido>  = [];
+};
+
+**/
+
+
+
+
 const optionsLists = {
 	 default: default_option_list,
    actions: asisActionOptList,
@@ -767,28 +856,31 @@ export class AsistenciaHelper {
 		return req;
 	}
 
+	/***
+     devuelve NUEVA lista de asistencias filtradas
+     fitros:
+     	estado === activo
+     	alimentos:
+     		que esté en el período
+     	pedidos:
+     		que esté en el período
+	*/
+
 	static filterActiveAsistencias(list: Asistencia[]): Asistencia[]{
 		if(!list || !list.length) return [];
 
 		let filteredList = list.filter(t => {
 			let valid = true;
-			if(t.estado !== "activo"){
-				valid = false;
-				return valid;
-			}
+			valid = validateCoreAsistencia(t, valid);
+			valid = validateAlimentosAsistencia(t, valid);
+			valid = validatePedidosAsistencia(t, valid);
 
-			// Alimentos
-			let alimento = t.modalidad;
-			if(alimento && alimento.fe_txd && alimento.fe_txh){
-
-				if(!devutils.isWithinPeriod(alimento.fe_txd, alimento.fe_txh)) valid = false;
-
-			}
 			return valid;
 		})
 
 		return filteredList;
 	}
+
 
   static asistenciasSortProperly(records: Asistencia[]): Asistencia[]{
     records.sort((fel, sel)=> {
@@ -824,6 +916,7 @@ export class AsistenciaHelper {
 
   static isAsistenciaImperfecta(asistencia:Asistencia): boolean{
   	let isImperfecta = false;
+  	if(asistencia.estado !== 'activo') return isImperfecta;
 
     if(asistencia.action === MODALIDAD_ALIMENTO) {
     	if(!asistencia.modalidad) isImperfecta = true;

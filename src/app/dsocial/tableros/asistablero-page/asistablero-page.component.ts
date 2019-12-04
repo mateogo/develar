@@ -321,7 +321,6 @@ export class AsistableroPageComponent implements OnInit {
    acum By Date
   *********************/
   acumByDate(t:Tile){
-    console.log('t.id:[%s]  SEM:[%s]', t.id.substr(0,10), t.sem)
   	if(t.id.substr(6,2)!=="00"){
   		this.dia.cardinal += t.cardinal;
   		this.mes.cardinal += t.cardinal;
@@ -424,7 +423,6 @@ export class AsistableroPageComponent implements OnInit {
 
     this.personByCity.data = personArray.map(t => t.cardinal);
     this.personByCity.labels = personArray.map(t => t.label);
-    console.log('** 295')
     this.personByCity.title  = "Ciudad" //+ this.personByCity.data.reduce((p, t)=> p+t);
     this.personByCity.stitle =  "" //"Asistencias por ciudad";
     this.personByCity.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
@@ -509,9 +507,6 @@ export class AsistableroPageComponent implements OnInit {
 
     })
 
-
-    console.log('** 400');
-    console.dir(sectorArray)
 
     sectorArray.sort((fel, sel)=> {
       if(fel.cardinal < sel.cardinal) return 1;
@@ -605,10 +600,6 @@ export class AsistableroPageComponent implements OnInit {
         actionArray.push(this.asistenciasHelperByAction[k]);
 
     })
-
-
-    console.log('** 388');
-    console.dir(actionArray)
 
     actionArray.sort((fel, sel)=> {
       if(fel.cardinal < sel.cardinal) return 1;
@@ -723,7 +714,6 @@ export class AsistableroPageComponent implements OnInit {
     this.personBySex.data = personArray.map(t => t.cardinal);
     this.personBySex.labels = personArray.map(t => t.label);
 
-    console.log('** 403')
     this.personBySex.title  = "Sexo " //+ this.personBySex.data.reduce((p, t)=> p+t);
     this.personBySex.stitle = "";
     this.personBySex.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
@@ -819,7 +809,6 @@ export class AsistableroPageComponent implements OnInit {
 
   	let personArray = []
   	Object.keys(this.personHelperByAge).forEach(k => {
-      console.log('k: [%s]', k)
   		//if(k > "09" || k < "01"){
       if(k > "11" || k < "00"){
   			this.personByAge.error += k + ": " + this.personHelperByAge[k].cardinal + "/ "
@@ -839,7 +828,6 @@ export class AsistableroPageComponent implements OnInit {
     this.personByAge.labels = personArray.map(t => t.label);
     this.personByAge.title  = "Segmento etario "// + this.personByAge.data.reduce((p, t)=> p+t);
     this.personByAge.stitle = "" // "Personas por segmento etario";
-    console.log('** 519')
 
     this.personByAge.slug = personArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 

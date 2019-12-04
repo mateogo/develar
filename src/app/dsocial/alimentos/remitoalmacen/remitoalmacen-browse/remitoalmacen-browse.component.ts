@@ -157,6 +157,15 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 
   }
 
+  onDelete(){
+    this.dsCtrl.updateAvanceRemito('remitoalmacen', 'anulado', this.selectedVoucher._id);
+    setTimeout(()=>{
+      this.fetchRemitos();
+      setTimeout(()=>{this.showView = false;}, 1000)      
+    },1000)
+
+  }
+
   onCancel(){
     this.showView = false;
   }

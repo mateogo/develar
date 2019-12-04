@@ -81,6 +81,10 @@ export class DaoService {
         backendURL: 'api/folders',
         searchURL:  'api/folders/search'
       },
+      observacion:{
+        backendURL: 'api/observaciones',
+        searchURL:  'api/observaciones/search'
+      },
       tag:{
         backendURL: 'api/tags',
         searchURL:  'api/tags/search'

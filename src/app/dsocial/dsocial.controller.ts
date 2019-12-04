@@ -374,12 +374,18 @@ export class DsocialController {
   }
 
   updateAvanceRemito(type, avance, remitoId: string){
+
     let token = {
+      estado : avance === 'anulado' ? 'baja' : 'activo',
       avance: avance
     }
-    this.daoService.update(type, remitoId, token).then(t =>{
+    let promise = this.daoService.update(type, remitoId, token);
 
+    promise.then(t =>{
+      //todo
     })
+
+    return promise;
   }
 
 
@@ -1104,6 +1110,16 @@ export class DsocialController {
   
   set asistenciasSelector(e: AsistenciaBrowse){
     this._asistenciasSelector = e;
+  }
+
+  getAuditData(){
+    if(! this.userx) return null;
+
+    return {
+        userId: this.userx.id,
+        username: this.userx.username,
+        ts_alta: Date.now()
+    }
   }
  
 

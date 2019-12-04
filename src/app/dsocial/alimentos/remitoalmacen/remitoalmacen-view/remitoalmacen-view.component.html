@@ -1,7 +1,16 @@
 <div class="remito-container">
 	<p class='text-destacado'>{{ token.fecomp_txa }} {{ token.compName }}: {{ token.compNum }} 
 		 <strong> Beneficiario/a: </strong>{{ token.requeridox.slug }}</p>
-	<p class='text-normal'><strong>{{ action }}</strong> :: Mov: {{ entrega }} :: {{ kitEntrega }} </p>
+	<p class='text-normal'>
+		<strong>{{ action }}</strong> :: Mov: {{ entrega }} :: {{ kitEntrega }} :: {{ avance }}
+		<ng-container *ngIf='isDeleteable'>
+			<span (click)='deleteVoucher()' title="Anular voucher">
+							<i [class]="'fas fa-trash-alt'"
+									aria-hidden="true"></i></span>
+		</ng-container>
+
+
+	</p>
 	<p class='text-normal'>{{ token.slug }} </p>
 	<p class='text-normal'>{{ token.description }} </p>
 	<p class='text-audit'>{{ audit }} </p>

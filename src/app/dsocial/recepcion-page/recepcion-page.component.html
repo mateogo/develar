@@ -23,7 +23,7 @@
         <hr>
 
         <ng-container *ngIf="hasRemitos">
-          <remitoalmacen-view [token]='lastRemito' ></remitoalmacen-view>
+          <remitoalmacen-view [isDeleteable]="false" [token]='lastRemito' ></remitoalmacen-view>
         </ng-container>
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Person, personModel, Address } from '../../../../entities/person/person';
 
 import { 	Asistencia,
@@ -21,10 +21,14 @@ const ALIMENTOS = 'alimentos'
 })
 export class RemitoalmacenViewComponent implements OnInit {
 	@Input() token: RemitoAlmacen;
+  @Input() isDeleteable = false;
+  @Output() updateToken = new EventEmitter<UpdateRemitoEvent>();
 
 	public action;
+  public avance;
 	public entrega;
 	public kitEntrega;
+
 
 	public items: Array<ItemAlmacen>;
 
@@ -63,6 +67,10 @@ export class RemitoalmacenViewComponent implements OnInit {
 
   	this.action = AsistenciaHelper.getOptionLabel('actions', this.token.action);
   	this.entrega = AlimentosHelper.getOptionLabel('tmov', this.token.tmov);
+    this.avance = AlimentosHelper.getOptionLabel('avance', this.token.avance);
+
+    if(!(this.token.avance === 'emitido' && this.token.estado === 'activo'))
+      this.isDeleteable = false;
 
   	this.items = this.token.entregas;
 
@@ -97,6 +105,17 @@ export class RemitoalmacenViewComponent implements OnInit {
 
   umeLabel(item:ItemAlmacen ) {
   	return AlimentosHelper.getOptionLabel('ume', item.ume) || 'Un';
+
+  }
+
+  deleteVoucher(){
+    console.log('Delete Voucher')
+
+    this.updateToken.next({
+      action: 'delete',
+      type: 'remitoalmacen',
+      token: this.token
+    });
 
   }
 

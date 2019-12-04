@@ -62,6 +62,10 @@ import { UtilsBrowsePersonComponent} from './browse/utils-browse-person/utils-br
 import { CommunityController }  from './community/community.controller'
 import { ModelController }      from './folders/model.controller';
 
+import { ObservacionesBaseComponent }  from './observaciones/observaciones-base/observaciones-base.component';
+import { ObservacionesPanelComponent } from './observaciones/observaciones-panel/observaciones-panel.component';
+import { ObservacionesViewComponent }  from './observaciones/observaciones-view/observaciones-view.component';
+import { ObservacionesEditComponent }  from './observaciones/observaciones-edit/observaciones-edit.component';
 
 import { AssetService }         from './asset.service';
 import { DaoService }           from './dao.service';   
@@ -132,6 +136,10 @@ import { PrismHighlightService }     from './highlighter.service';
     EnterSiteComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
+    ObservacionesBaseComponent,
+    ObservacionesPanelComponent,
+    ObservacionesEditComponent,
+    ObservacionesViewComponent,
     BreadcrumbComponent
   ],
   exports:[
@@ -181,6 +189,10 @@ import { PrismHighlightService }     from './highlighter.service';
     CommunityBaseComponent,
     CommunityRelationComponent,
     EnterSiteComponent,
+    ObservacionesBaseComponent,
+    ObservacionesPanelComponent,
+    ObservacionesEditComponent,
+    ObservacionesViewComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent
