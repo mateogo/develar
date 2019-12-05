@@ -454,6 +454,10 @@ const tipos_viv: Array<any> = [
 
         {val: 'mosaico',      type:'piso', label: 'mosaico' },
         {val: 'cemento',      type:'piso', label: 'cemento' },
+        {val: 'madera',       type:'piso', label: 'madera' },
+        {val: 'mixtotc',      type:'piso', label: 'mixto tierra cemento' },
+        {val: 'mixtocc',      type:'piso', label: 'mixto cerámica cemento' },
+        {val: 'mixtoot',      type:'piso', label: 'mixto otros' },
         {val: 'ladrillo',     type:'piso', label: 'ladrillo' },
         {val: 'tierra',       type:'piso', label: 'tierra' },
         {val: 'otro',         type:'piso', label: 'otro' },
@@ -529,6 +533,7 @@ const oficios_tocupacion: Array<any> = [
         {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
         {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
         {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
+        {val: 'pensionadx',      label: 'Pensionado/a',   slug:'Pensionado/a' },
         {val: 'docente',         label: 'Docente',        slug:'Docente' },
         {val: 'desocupax',       label: 'Desocupado/a',    slug:'Desocupado/a' },
         {val: 'otro',            label: 'Otra ocupación',  slug:'Otra ocupación' },
@@ -546,6 +551,7 @@ const profesiones: Array<any> = [
         {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
         {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
         {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
+        {val: 'pensionadx',      label: 'Pensionado/a',   slug:'Pensionado/a' },
         {val: 'docente',         label: 'Docente',        slug:'Docente' },
         {val: 'comerciante',     label: 'Comerciante',     slug:'Comerciante' },
         {val: 'prevencion',      label: 'Personal de prevención', slug:'Personal de prevención' },
@@ -785,6 +791,7 @@ const barriosOptList = {
   adrogue: [
     {val: 'adrogue',    label: 'Adrogué Ctro' },
     {val: 'vattuone',   label: 'Vattuone'     },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   burzaco: [
@@ -819,6 +826,7 @@ const barriosOptList = {
     {val: 'elgaucho',    label: 'El Gaucho' },
     {val: 'lomasdeburzaco',    label: 'Lomas de Burzaco' },
     {val: 'luzyfuerza',    label: 'Luz y Fuerza' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   calzada: [
@@ -829,6 +837,7 @@ const barriosOptList = {
     {val: 'asuncion',    label: 'Asunción' },
     {val: 'zabala',    label: 'Zabala' },
     {val: 'sanjavier',    label: 'San Javier' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   claypole: [
@@ -855,10 +864,13 @@ const barriosOptList = {
     {val: 'marianomoreno',    label: 'Mariano Moreno' },
     {val: 'monteverde',    label: 'Monteverde' },
     {val: 'sanluis',    label: 'San Luis' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   donorione: [
     {val: 'donorione',    label: 'Don Orione' },
+    {val: 'no_definido',   label: 'No definido' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   glew: [
@@ -881,6 +893,9 @@ const barriosOptList = {
     {val: 'supa',    label: 'Supa' },
     {val: 'almafuerte',    label: 'Almafuerte' },
     {val: 'kanmar',    label: 'Kanmar' },
+    {val: 'santarosa',    label: 'Santa Rosa' },
+    {val: 'gendarmeria',   label: 'Gendarmería' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   longchamps: [
@@ -908,6 +923,7 @@ const barriosOptList = {
     {val: 'donluis',    label: 'Don Luis' },
     {val: 'villaparis',    label: 'Villa París' },
     {val: 'amancay',    label: 'Amancay' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
 
   malvinasargentinas: [
@@ -917,12 +933,14 @@ const barriosOptList = {
     {val: 'lomaverde',    label: 'Loma Verde' },
     {val: 'elencuentro',    label: 'El Encuentro' },
     {val: 'betharran',    label: 'Betharrán' },
+    {val: 'no_definido',   label: 'No definido' },
    ],
 
   marmol: [
     {val: 'marmol',    label: 'Mármol Ctro' },
     {val: 'martinarin',    label: 'Martín Arín' },
     {val: 'arca',    label: 'Arca' },
+    {val: 'no_definido',   label: 'No definido' },
    ],
 
   ministrorivadavia: [
@@ -933,6 +951,7 @@ const barriosOptList = {
     {val: 'gralbelgrano',    label: 'Gral Belgrano' },
     {val: 'lospinos',    label: 'Los Pinos' },
     {val: 'gendarmeria',    label: 'Gendarmería' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
   solano: [
     {val: 'solano',    label: 'Solano' },
@@ -948,7 +967,7 @@ const barriosOptList = {
     {val: 'sangustin',    label: 'San Agustín' },
     {val: 'lomasdesolano',    label: 'Las Lomas de Solano' },
     {val: 'santaisabel',    label: 'Santa Isabel' },
-
+    {val: 'no_definido',   label: 'No definido' },
   ],
   sanjose: [
     {val: 'sanjose',    label: 'San José Ctro' },
@@ -966,9 +985,11 @@ const barriosOptList = {
     {val: 'sanagustin',    label: 'San Agustín' },
     {val: 'virgendelujan',    label: 'Vírgen de Luján' },
     {val: 'elombu',    label: 'El Ombú' },
+    {val: 'no_definido',   label: 'No definido' },
   ],
   extradistrito: [
     {val: 'extradistrito',    label: 'Extra distrito' },
+    {val: 'no_definido',   label: 'No definido' },
     ]
 
 };
@@ -1257,6 +1278,7 @@ const estadoCivil: Array<any> = [
 		{val: 'solterx', 	     label: 'Soltero/a',        slug:'Soltero/a' },
 		{val: 'casadx',        label: 'Casado/a',         slug:'Casado/a' },
 		{val: 'divorciadx',    label: 'Divorciado/a',     slug:'Divorciado/a' },
+    {val: 'separadox',     label: 'Separado/a',       slug:'Separado/a' },
 		{val: 'conviviendx',   label: 'Conviviendo',      slug:'Conviviendo' },
     {val: 'viudx',         label: 'Viudo/a',          slug:'Viudo/a' },
 		{val: 'otra',          label: 'Otra',             slug:'Otra' },
@@ -1278,19 +1300,24 @@ const cualificacionVivienda: Array<any> = [
 
 
 const nivelEstudios: Array<any> = [
-    {val: 'primario',       label: 'Primario',          slug:'Primario' },
-		{val: 'primariox', 	    label: 'Primario (incompleto)',          slug:'Primario (incompleto)' },
-		{val: 'secundario',     label: 'Secundario',        slug:'Secundario' },
-    {val: 'secundariox',    label: 'Secundario (incompleto)',    slug:'Secundario (incompleto)' },
-		{val: 'terciario',      label: 'Terciario',         slug:'Terciario' },
-    {val: 'terciariox',     label: 'Terciario (incompleto)',     slug:'Terciario (incompleto)' },
-		{val: 'universitario',  label: 'Universitario',     slug:'Universitario' },
-    {val: 'universitariox', label: 'Universitario (incompleto)', slug:'Universitario (incompleto)' },
-		{val: 'posgrado',       label: 'Posgrado',          slug:'Posgrado' },
-    {val: 'posgradox',      label: 'Posgrado (incompleto)',      slug:'Posgrado (incompleto)' },
-		{val: 'doctorado',      label: 'Doctorado',         slug:'Doctorado' },
-    {val: 'doctoradox',     label: 'Doctorado (incompleto)',     slug:'Doctorado (incompleto)' },
-    {val: 'noposee',        label: 'No Posee',              slug:'No Posee' },
+    {val: 'inicial',        label: 'Nivel inicial',           slug:'Nivel inicial' },
+    {val: 'primario',       label: 'Primario',                slug:'Primario' },
+		{val: 'primarioq', 	    label: 'Primario en curso',       slug:'Primario en curso' },
+    {val: 'primariox',      label: 'Primario incompleto',     slug:'Primario incompleto' },
+		{val: 'secundario',     label: 'Secundario',              slug:'Secundario' },
+    {val: 'secundarioq',    label: 'Secundario en curso',     slug:'Secundario en curso' },
+    {val: 'secundariox',    label: 'Secundario incompleto',   slug:'Secundario incompleto' },
+		{val: 'terciario',      label: 'Terciario',               slug:'Terciario' },
+    {val: 'terciarioq',     label: 'Terciario en curso',      slug:'Terciario en curso' },
+    {val: 'terciariox',     label: 'Terciario incompleto',    slug:'Terciario incompleto' },
+		{val: 'universitario',  label: 'Universitario',           slug:'Universitario' },
+    {val: 'universitarioq', label: 'Universitario en curso',  slug:'Universitario en curso' } ,
+    {val: 'universitariox', label: 'Universitario incompleto', slug:'Universitario incompleto' },
+		{val: 'posgrado',       label: 'Posgrado',                slug:'Posgrado' },
+    {val: 'posgradox',      label: 'Posgrado incompleto',     slug:'Posgrado incompleto' },
+		{val: 'doctorado',      label: 'Doctorado',               slug:'Doctorado' },
+    {val: 'doctoradox',     label: 'Doctorado incompleto',    slug:'Doctorado incompleto' },
+    {val: 'noposee',        label: 'No Posee',                slug:'No Posee' },
 		{val: 'otra',           label: 'Otra',              slug:'Otra' },
 ];
 

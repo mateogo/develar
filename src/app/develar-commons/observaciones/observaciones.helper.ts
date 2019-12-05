@@ -8,6 +8,8 @@ const observacionesTypeOptList: Array<any> = [
 		{val: 'general',      type:'General',          label: 'General' },
 		{val: 'tramitacion',  type:'Tramitación',      label: 'Tramitación' },
 		{val: 'violencia',    type:'Violencia',        label: 'Violencia' },
+		{val: 'reclamo',      type:'Reclamo',          label: 'Reclamo' },
+		{val: 'articulacion', type:'Articulación',     label: 'Articulación' },
 		{val: 'emergencia',   type:'Emergencia',       label: 'Emergencia' },
 		{val: 'tsocial',      type:'Intervención TS',  label: 'Intervención TS' },
 

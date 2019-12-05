@@ -584,6 +584,7 @@ const avanceEncuestaOptList = [
       {val: 'emitido',      label: 'Emitida',          slug:'Emitida' },
       {val: 'programado',   label: 'Programado',       slug:'Programado' },
       {val: 'visitado',     label: 'Visita cumplida',  slug:'Visita cumplida' },
+      {val: 'noencontrado', label: 'Referente no encontrado',  slug:'Referente no encontrado' },
       {val: 'informado',    label: 'Informe cargado',  slug:'Informe cargado' },
       {val: 'aprobado',     label: 'Informe aprobado', slug:'Informe aprobado' },
       {val: 'suspendido',   label: 'Suspendido',       slug:'Suspendido' },
