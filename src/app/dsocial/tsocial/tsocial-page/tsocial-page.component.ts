@@ -173,6 +173,7 @@ export class TsocialPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
+      console.log('initAsistencias: 176 [%s]', list && list.length)
       this.asistenciasList = list || [];
       this.sortProperly(this.asistenciasList);
 

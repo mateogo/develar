@@ -32,7 +32,7 @@ export class SolasisPanelComponent implements OnInit {
 
 	public showList = false;
   public showActiveList = false;
-  public showFullList = false;
+  public showFullList = true;
 
   public openEditor = true;
   public kitEntregaOptList: KitOptionList[];
