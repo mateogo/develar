@@ -22,6 +22,7 @@ import { Person, personModel } from '../../entities/person/person';
 import { devutils }from '../../develar-commons/utils';
 
 const TSOCIAL = 'tsocial';
+const AUDITORIA = 'auditoria';
 
 @Component({
   selector: 'recepcion-page',
@@ -240,6 +241,9 @@ export class RecepcionPageComponent implements OnInit {
     }else if (priority.action === "inmediata"){
       this.navigateTo();
 
+    }else if (priority.action === "auditoria"){
+      this.navigateToAudit();
+
     }else if (priority.action === "cancel"){
       this.resetForm();
 
@@ -248,6 +252,10 @@ export class RecepcionPageComponent implements OnInit {
 
   navigateTo(){
     this.router.navigate(['../', this.dsCtrl.atencionRoute(TSOCIAL), this.currentPerson._id], {relativeTo: this.route});
+  }
+
+  navigateToAudit(){
+    this.router.navigate(['../', this.dsCtrl.atencionRoute(AUDITORIA), this.currentPerson._id], {relativeTo: this.route});
   }
 
   createNuevoTurno(){

@@ -5,27 +5,19 @@ import { Observable } from 'rxjs';
 
 import { DsocialController } from '../../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../dsocial.model';
-import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../../../develar-commons/asset-helper';
 
 import {  Person,
           Address,
           FamilyData,
-          OficiosData,
-          SaludData,
-          CoberturaData,
-          EncuestaAmbiental,
           personModel,
 
           UpdatePersonEvent,
-          UpdateItemListEvent,
 
           PersonContactData 
         } from '../../../entities/person/person';
 
 import {   Asistencia, 
           Alimento, 
-          UpdateAsistenciaEvent, 
-          UpdateAlimentoEvent, 
           UpdateAsistenciaListEvent,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
@@ -38,18 +30,19 @@ const UPDATE = 'update';
 const NAVIGATE = 'navigate';
 
 @Component({
-  selector: 'tsocial-page',
-  templateUrl: './tsocial-page.component.html',
-  styleUrls: ['./tsocial-page.component.scss']
+  selector: 'audit-page',
+  templateUrl: './audit-page.component.html',
+  styleUrls: ['./audit-page.component.scss']
 })
-export class TsocialPageComponent implements OnInit {
+export class AuditPageComponent implements OnInit {
 
   public unBindList = [];
 
   // template helper
-  public title = "Asistencia al Vecino/a";
-  public subtitle = "Atención del Trabajador Social";
+  public title = "Auditoría de entregas ";
+  public subtitle = "Asistencia Social Directa";
   public titleRemitos = "Historial de entregas";
+  public titleAuditoria = "Auditoría de entregas";
 
   public tDoc = "DNI";
   public nDoc = "";
@@ -58,14 +51,11 @@ export class TsocialPageComponent implements OnInit {
   public contactList:   PersonContactData[];
   public addressList:   Address[];
   public familyList:    FamilyData[];
-  public oficiosList:   OficiosData[];
-  public saludList:     SaludData[];
-  public coberturaList: CoberturaData[];
-  public ambientalList: EncuestaAmbiental[];
-  public assetList:     CardGraph[] = []
+
   
   public asistenciasList: Asistencia[];
   public showHistorial = false;
+  public showAuditoria = false;
   public remitosList: RemitoAlmacen[];
 
   public audit: Audit;
@@ -76,12 +66,16 @@ export class TsocialPageComponent implements OnInit {
 
   public hasCurrentPerson = false;
   private hasPersonIdOnURL = true;
+
   public personFound = false;
   public altaPersona = false;
   private personId: string;
 
   public isAutenticated = false;
   public currentTurno:Turno;
+
+  public auditData: AuditEntregas;
+  public entregasList: PersonToken[] = [];
   
   public sectors:SectorAtencion[] = sectores;
 
@@ -90,7 +84,6 @@ export class TsocialPageComponent implements OnInit {
   		private dsCtrl: DsocialController,
     	private router: Router,
     	private route: ActivatedRoute,
-
   	) { }
 
   ngOnInit() {
@@ -145,33 +138,32 @@ export class TsocialPageComponent implements OnInit {
 
     if(p){
       this.currentPerson = p;
-      //this.contactData = p.contactdata[0];
       this.contactList = p.contactdata || [];
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
-      this.oficiosList = p.oficios || [];
-      this.saludList =   p.salud || [];
-      this.coberturaList = p.cobertura || [];
-      this.ambientalList = p.ambiental || [];
-      this.assetList = p.assets || [];
       
       this.initAsistenciasList()
+
       this.loadHistorialRemitos()
 
       this.audit = this.dsCtrl.getAuditData();
+
       this.parentEntity = {
         entityType: 'person',
         entityId: this.currentPerson._id,
         entitySlug: this.currentPerson.displayName
       }
+      this.auditPerson()
     }
- 
+
   }
 
+  /**********************/
+  /*   Asistencias     */
+  /********************/
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      console.log('initAsistencias: 176 [%s]', list && list.length)
       this.asistenciasList = list || [];
       this.sortProperly(this.asistenciasList);
 
@@ -189,180 +181,51 @@ export class TsocialPageComponent implements OnInit {
 
 
   /**********************/
-  /*      Events        */
-  /**********************/
+  /*      Events       */
+  /********************/
   updateCore(event: UpdatePersonEvent){
     if(event.action === UPDATE){
       this.dsCtrl.updatePerson(event);
     }
 
   }
-  // Contact Data
-  updateContactList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertContactList(event);
-    }
-  }
 
-  private upsertContactList(event:UpdateItemListEvent){
-    this.currentPerson.contactdata = event.items as PersonContactData[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    this.dsCtrl.updatePerson(update);
-  }
-
-  auditEntregas(){
-    console.log('TopSocial Page: to navigate ');
-
-    if(this.hasPersonIdOnURL){
-      this.router.navigate(['../../', this.dsCtrl.atencionRoute('auditoria'), 
-         this.personId], {relativeTo: this.route});
-
-    }else {
-      this.router.navigate(['../', this.dsCtrl.atencionRoute('auditoria'), 
-         this.personId], {relativeTo: this.route});
-
-    }
+	auditPerson(personId?: string){
+    this.showAuditoria = false;
+    let id = personId ? personId : this.currentPerson._id;
+		this.dsCtrl.auditEntregasByPerson(id).subscribe(audit => {
+			if(audit){
+				this.processAuditData(audit);
+			}
 
 
-  }
+		})
 
-  // Address Data
-  updateAddressList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertAddressList(event);
-    }
-  }
+	}
 
-  private upsertAddressList(event:UpdateItemListEvent){
-    this.currentPerson.locaciones = event.items as Address[];
+	processAuditData(audit){
 
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    this.dsCtrl.updatePerson(update);
-  }
+		this.auditData = audit as AuditEntregas;
+		this.entregasList = [];
+		this.prepareDataForDisplay(this.auditData);
+		this.showAuditoria = true;
+	}
 
-  // Family Data
-  updateFamilyList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertFamilyList(event);
-    }
-  }
+	private prepareDataForDisplay(audit: AuditEntregas){
+		let entregas = audit.entregas;
+		let master = audit.masterPerson;
 
-  private upsertFamilyList(event:UpdateItemListEvent){
-    this.currentPerson.familiares = event.items as FamilyData[];
+		if(entregas && entregas.length){
+			for(let pid in master){
 
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    this.dsCtrl.updatePerson(update);
-  }
+				let person = master[pid];
+				let tokens = entregas.filter(t => t.remitoPersonId === person.personId)
+				person['entregas'] = tokens || [];
+				this.entregasList.push(person);
 
-  // Oficios Data
-  updateOficiosList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertOficiosList(event);
-    }
-  }
-
-
-  private upsertOficiosList(event:UpdateItemListEvent){
-    this.currentPerson.oficios = event.items as OficiosData[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    this.dsCtrl.updatePerson(update);
-  }
-
-  // Salud Data
-  updateSaludList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertSaludList(event);
-    }
-  }
-
-  private upsertSaludList(event:UpdateItemListEvent){
-    this.currentPerson.salud = event.items as SaludData[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    
-    this.dsCtrl.updatePerson(update);
-  }
-
-  // Salud Data
-  updateCoberturaList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertCoberturaList(event);
-    }
-  }
-
-  private upsertCoberturaList(event:UpdateItemListEvent){
-    this.currentPerson.cobertura = event.items as CoberturaData[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    
-    this.dsCtrl.updatePerson(update);
-  }
-
-  // Encuesta ambiental Data
-  updateAmbientalList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertAmbientalList(event);
-    }
-  }
-
-  private upsertAmbientalList(event:UpdateItemListEvent){
-    this.currentPerson.ambiental = event.items as EncuestaAmbiental[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    
-    this.dsCtrl.updatePerson(update);
-  }
-
-  // Assets
-  updateAssetList(event:UpdateItemListEvent){
-    if(event.action === UPDATE){
-      this.upsertAssetlList(event);
-    }
-  }
-
-  upsertAssetlList(event:UpdateItemListEvent){
-    this.currentPerson.assets = event.items as CardGraph[];
-
-    let update: UpdatePersonEvent = {
-      action: event.action,
-      token: event.type,
-      person: this.currentPerson
-    };
-    
-    this.dsCtrl.updatePerson(update);
-  }
-
-
+			}
+		}
+	}
 
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
@@ -385,25 +248,6 @@ export class TsocialPageComponent implements OnInit {
   }
 
 
-
-
-  // updateContactData(event:UpdateContactEvent){
-  //   if(event.action === UPDATE){
-  //     console.log('tsocial: READY to UpdateContactData')
-  //     this.updateContactToken(event);
-  //   }
-  // }
-
-  // updateContactToken(event:UpdateContactEvent){
-  //   this.currentPerson.contactdata = [event.token];
-
-  //   let update: UpdatePersonEvent = {
-  //     action: event.action,
-  //     token: event.type,
-  //     person: this.currentPerson
-  //   };
-  //   this.dsCtrl.updatePerson(update);
-  // }
 
 
   /**********************/
@@ -477,13 +321,47 @@ export class TsocialPageComponent implements OnInit {
 
   }
 
+
 }
+
+interface PersonToken {
+    personId: string; 
+    personDisplayAs: string; 
+    personRole: string; 
+    personTDOC: string; 
+    personNDOC: string; 
+    locaciones: Address[]; 
+    vinculos: FamilyData[];
+    entregas?: Entregas[];
+
+}
+
+interface MasterPerson {
+	[key: string]: PersonToken;
+
+}
+
+interface Entregas {
+	remitoId: string;
+	remitoPersonId: string;
+	remitoFecha: string;
+	remitoTS: number;
+	remitoNro: string;
+	remitoAction: string;
+	remitoItems: number;
+
+}
+
+interface AuditEntregas {
+	initTs: number;
+	initTe: number;
+	masterPerson: MasterPerson;
+	entregas: Entregas[];
+	
+}
+
+
+
 /***
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/5a00cb6c3ba0cd0c576a1870
-
-https://api.brown.gob.ar/empleados?legajo=5765
-
-https://api.brown.gob.ar/
 
 **/

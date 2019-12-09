@@ -1,0 +1,50 @@
+<h5>{{ title }}</h5>
+<div 	*ngIf="hasCurrentPerson" >
+			<core-view [person]='currentPerson'></core-view>
+</div>
+
+<button mat-button  color="accent" 
+				(click)="auditPerson()">Validar este Referente</button>
+
+<mat-card>
+  <mat-card-content *ngIf="showAuditoria" >
+
+		<div class="d-flex justify-content-between panel-header">
+			<div class="panel-header-text">{{ titleAuditoria }}</div>
+		</div>
+
+		<ng-container *ngFor="let person of entregasList" >
+			<p class="text-destacado">{{ person.personDisplayAs }}</p>
+			<p class="text-normal"   >{{ person.personTDOC + ': ' + person.personNDOC }}</p>
+			<p class="text-normal"   >{{ person.personRole }}
+				<button mat-button color="warn" (click)="auditPerson(person.personId)">
+				Validar este Referente</button>
+
+			</p>
+
+			<div class="container-fluid">
+			<div  *ngFor="let relative of person.vinculos" class="row">
+				<div class="col-sm-12 col-md-12">
+					<family-view [familymember]='relative'></family-view>
+				</div>
+			</div>
+
+			<div  *ngFor="let locacion of person.locaciones" class="row">
+				<div class="col-sm-12 col-md-12">
+					<address-view [token]='locacion'></address-view>
+				</div>
+			</div>
+
+
+
+			<div *ngFor="let entrega of person.entregas" >
+
+				<p class="text-resaltado"  >{{ entrega.remitoFecha }}: Entrega Nro: {{ entrega.remitoNro }} </p>
+				<p  class="text-normal"  >{{ entrega.remitoAction }}: Productos: #{{ entrega.remitoItems }}</p>
+			</div>
+			</div>
+
+		</ng-container>
+	</mat-card-content>
+</mat-card>
+

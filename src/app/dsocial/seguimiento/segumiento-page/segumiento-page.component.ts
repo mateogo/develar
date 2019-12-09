@@ -91,6 +91,7 @@ export class SegumientoPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
+    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     this.kitEntregaOptList = this.dsCtrl.kitAlimentosOptList;
 
@@ -111,19 +112,12 @@ export class SegumientoPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    this.dsCtrl.personListener.subscribe(p => {
-
-      this.initCurrentPerson(p);
-    })
-
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
-
     if(!this.personId){
       if(this.dsCtrl.activePerson){
         this.personId = this.dsCtrl.activePerson._id;
+        this.initCurrentPerson(this.dsCtrl.activePerson);
 
       } else {
-        //ooops: no active Perso
         this.navigateToRecepcion()
       }
 
@@ -140,9 +134,12 @@ export class SegumientoPageComponent implements OnInit {
   }
 
   initCurrentPerson(p: Person){
+    if(p && this.currentPerson && p._id === this.currentPerson._id){
+      return;
+    }
+
     if(p){
       this.currentPerson = p;
-      //this.contactData = p.contactdata[0];
       this.contactList = p.contactdata || [];
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
@@ -157,14 +154,7 @@ export class SegumientoPageComponent implements OnInit {
       this.emitContext(this.context);
       
       this.initAsistenciasList()
-
-
-
     }
-
-    // todo: Search For S/Asistencias
-
-
   }
 
   initAsistenciasList(){
@@ -293,40 +283,28 @@ export class SegumientoPageComponent implements OnInit {
   }
 
 
-
-
-  // updateContactData(event:UpdateContactEvent){
-  //   if(event.action === UPDATE){
-  //     console.log('tsocial: READY to UpdateContactData')
-  //     this.updateContactToken(event);
-  //   }
-  // }
-
-  // updateContactToken(event:UpdateContactEvent){
-  //   this.currentPerson.contactdata = [event.token];
-
-  //   let update: UpdatePersonEvent = {
-  //     action: event.action,
-  //     token: event.type,
-  //     person: this.currentPerson
-  //   };
-  //   this.dsCtrl.updatePerson(update);
-  // }
-
-
   /**********************/
   /*      Person        */
   /**********************/
   loadPerson(id){
-    this.dsCtrl.setCurrentPersonFromId(id);
-  }
+    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
+      if(p){
+        this.initCurrentPerson(p);
 
+      }
+    });
+  }
 
   /**********************/
   /*      Turnos        */
   /**********************/
   navigateToRecepcion(){
-    this.router.navigate(['../../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+    if(this.hasPersonIdOnURL){
+      this.router.navigate(['../../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+
+    } else {
+      this.router.navigate(['../', this.dsCtrl.atencionRoute('recepcion')], {relativeTo: this.route});
+    }
 
   }
 

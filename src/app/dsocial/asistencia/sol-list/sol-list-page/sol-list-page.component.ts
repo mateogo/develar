@@ -63,6 +63,8 @@ export class SolListPageComponent implements OnInit {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
 
+    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
+
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
       if(readyToGo && first){
@@ -76,27 +78,33 @@ export class SolListPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    this.dsCtrl.personListener.subscribe(p => {
-      this.currentPerson = p;
 
-    })
-
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
     
-    if(this.dsCtrl.activePerson && this.personId){
-      if(this.dsCtrl.activePerson._id !== this.personId){
-    		this.dsCtrl.setCurrentPersonFromId(this.personId);
-
-      }
+    if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
+        this.loadPerson(this.personId);
     }
 
     if(!this.dsCtrl.activePerson && this.personId){
-    		this.dsCtrl.setCurrentPersonFromId(this.personId);
+        this.loadPerson(this.personId);
+    }
+
+    if(this.dsCtrl.activePerson){
+        this.currentPerson = this.dsCtrl.activePerson;
     }
 
     this.fetchSolicitudes();
 
   }
+
+  loadPerson(id){
+    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
+      if(p){
+        this.currentPerson = p;
+
+      }
+    });
+  }
+
 
   /************************/
   /*    Sol/Asistencia   */

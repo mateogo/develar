@@ -109,7 +109,6 @@ export class RemitoalmacenViewComponent implements OnInit {
   }
 
   deleteVoucher(){
-    console.log('Delete Voucher')
 
     this.updateToken.next({
       action: 'delete',

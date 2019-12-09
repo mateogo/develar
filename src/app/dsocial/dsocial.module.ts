@@ -81,6 +81,7 @@ import { SolicitaPedidosViewComponent } from './asistencia/sol-asis-data/solicit
 import { SolicitaPedidosEditComponent } from './asistencia/sol-asis-data/solicita-pedidos-edit/solicita-pedidos-edit.component';
 import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
 import { AlimentostableroTableComponent } from './tableros/alimentostablero-table/alimentostablero-table.component';
+import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 
 @NgModule({
   imports: [
@@ -165,6 +166,7 @@ import { AlimentostableroTableComponent } from './tableros/alimentostablero-tabl
     SolicitaPedidosEditComponent,
     AlimentostableroPageComponent,
     AlimentostableroTableComponent,
+    AuditPageComponent,
   ]
 })
 export class DsocialModule { }

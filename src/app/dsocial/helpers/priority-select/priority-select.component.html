@@ -19,13 +19,16 @@
         </div>
       </div>
 
-      <div class="d-md-flex ml-3 justify-content-between additional-info">
+      <div class="d-md-flex ml-6 justify-content-between additional-info">
         <button mat-raised-button color="primary"
             (click)="onSubmit()"
             [disabled]="!form.valid">Aceptar</button>
 
         <button mat-button color="accent"
             (click)="atencionInmediata()" >Atención inmediata</button>
+
+        <button mat-button color="accent"
+            (click)="auditEntregas()" >Validación de entregas</button>
 
         <button mat-button type="button" color="accent" 
                 (click)="cancel()">Cancelar</button>

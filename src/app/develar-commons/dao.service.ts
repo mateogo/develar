@@ -66,6 +66,11 @@ export class DaoService {
         dashboardURL: 'api/asistencias/tablero',
         nextItemURL:  'api/asistencias/nextitem'
       },
+      auditentrega:{
+        backendURL:      'api/auditentregas',
+        searchURL:       'api/auditentregas/search',
+        auditpersondURL: 'api/auditentregas/auditperson',
+      },
       rolnocturnidad:{
         backendURL:   'api/rolnocturnidad',
         searchURL:    'api/rolnocturnidad/search',
@@ -315,6 +320,15 @@ export class DaoService {
 
   fetchAsistenciaDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}/${fecha}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+
+  fetchAuditEntregas<T>(type: string, personId: string): Observable<T> {
+    let url = `${this.dao[type].auditpersondURL}/${personId}`;
     return this.http
                .get<T>(url)
                .pipe(

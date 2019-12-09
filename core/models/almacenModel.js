@@ -272,6 +272,16 @@ exports.create = function (record, errcb, cb) {
 
 };
 
+
+exports.fetchRemitosByPerson = function(personId){
+  let query = {
+    personId: personId,
+    estado: "activo"
+  }
+
+  return Record.find(query).lean();
+}
+
 /**********************************/
 /*          TABLERO              */
 /********************************/

@@ -343,6 +343,27 @@ exports.findById = function (id, errcb, cb) {
 
 };
 
+exports.fetchById = function(id){
+    return Person.findById(id);
+}
+
+exports.fetchByRelatives = function(id){
+    let query = {
+        'familiares.personId': id
+    }
+    return Person.find(query);
+}
+
+exports.fetchByAddress = function(id, address){
+    let query = {
+        '_id': {$ne: id},
+        'locaciones.street1':  {"$regex": address.street1, "$options": "i"},
+        'locaciones.city': address.city,
+    }
+    return Person.find(query);
+}
+
+
 
 function buildQuery(query){
     let q = {};

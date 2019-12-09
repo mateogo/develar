@@ -7,6 +7,13 @@
 		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<core-base [person]='currentPerson'
 		 							(updatePerson)='updateCore($event)' ></core-base>
+
+		    <div class="additional-info">
+
+		      <button mat-button type="button" color="accent"
+		          (click)="auditEntregas()" >Validar historial entregas</button>
+		    </div>
+
 			</div>
 	
 		 	<div 	*ngIf="hasCurrentPerson" >

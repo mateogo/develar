@@ -141,6 +141,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         title: 'Tablero remitos',
         routing: '/dsocial/gestion/tableroremitos'
       },
+      {
+        title: 'Validación de Asistencias',
+        routing: '/dsocial/gestion/validacionentregas'
+      },
     ],
     routing: '',
     externalLink: '',
@@ -693,6 +697,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       {
         title: 'Tablero remitos',
         routing: '/dsocial/gestion/tableroremitos'
+      },
+      {
+        title: 'Validación de Asistencias',
+        routing: '/dsocial/gestion/validacionentregas'
       },
     ],
     routing: '',

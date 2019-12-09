@@ -93,6 +93,7 @@ export class AlimentosPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
+    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
@@ -107,22 +108,17 @@ export class AlimentosPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    this.dsCtrl.personListener.subscribe(p => {
-
-      this.initCurrentPerson(p);
-    })
-
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
-    
-    if(this.dsCtrl.activePerson && this.personId){
-      if(this.dsCtrl.activePerson._id !== this.personId){
+    console.log('initCurrent')
+    if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
         this.loadPerson(this.personId);
-
-      }
     }
 
     if(!this.dsCtrl.activePerson && this.personId){
         this.loadPerson(this.personId);
+    }
+
+    if(this.dsCtrl.activePerson){
+        this.initCurrentPerson(this.dsCtrl.activePerson);
     }
 
   }
@@ -223,7 +219,12 @@ export class AlimentosPageComponent implements OnInit {
   /*      Person        */
   /**********************/
   loadPerson(id){
-    this.dsCtrl.setCurrentPersonFromId(id);
+    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
+      if(p){
+        this.initCurrentPerson(p);
+
+      }
+    });
   }
 
   initCurrentPerson(p: Person){
@@ -267,10 +268,8 @@ export class AlimentosPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      console.log('Alimentos list [%s]',list && list.length )
 
       this.asistenciasList = AsistenciaHelper.filterActiveAsistencias(list);
-      console.log('Alimentos filtered [%s]',this.asistenciasList && this.asistenciasList.length )
 
       this.sortAsistenciasProperly(this.asistenciasList);
 

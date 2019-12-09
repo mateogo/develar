@@ -10,6 +10,7 @@ import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoal
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
+import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 
 const routes: Routes = [
 	{
@@ -27,6 +28,14 @@ const routes: Routes = [
 	{
 		path:'tableroremitos',
 		component: AlimentostableroPageComponent
+	},
+	{
+		path:'validacionentregas/:id',
+		component: AuditPageComponent
+	},
+	{
+		path:'validacionentregas',
+		component: AuditPageComponent
 	},
 	{
 		path:'alimentos/:id',

@@ -88,6 +88,7 @@ export class RemitoalmacenPageComponent implements OnInit {
   ngOnInit() {
     let first = true;    
     this.personId = this.route.snapshot.paramMap.get('id')
+    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
@@ -103,20 +104,14 @@ export class RemitoalmacenPageComponent implements OnInit {
 
 
   initCurrentPage(){
-    this.dsCtrl.personListener.subscribe(p => {
 
-      this.initCurrentPerson(p);
-    })
-
-
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
     
     if(this.dsCtrl.activePerson && this.personId){
       if(this.dsCtrl.activePerson._id !== this.personId){
         this.loadPerson(this.personId);
 
       }else{
-        //this.initCurrentPerson(this.dsCtrl.activePerson);
+        this.initCurrentPerson(this.dsCtrl.activePerson);
       }
     }
 
@@ -128,16 +123,12 @@ export class RemitoalmacenPageComponent implements OnInit {
   initCurrentPerson(p: Person){
     if(p){
       this.currentPerson = p;
-      //this.contactData = p.contactdata[0];
       this.contactList = p.contactdata || [];
       this.addressList = p.locaciones || [];
       this.familyList  = p.familiares || [];
       this.oficiosList = p.oficios || [];
       
     }
-
-    // todo: Search For S/Asistencias
-
 
   }
 
@@ -198,7 +189,12 @@ export class RemitoalmacenPageComponent implements OnInit {
   /*      Person        */
   /**********************/
   loadPerson(id){
-    this.dsCtrl.setCurrentPersonFromId(id);
+    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
+      if(p){
+        this.initCurrentPerson(p);
+
+      }
+    });
   }
 
 

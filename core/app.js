@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
+const auditentregasRoutes = require('./routes/auditentregasRoutes.js');
 const asistenciasRoutes = require('./routes/asistenciasRoutes.js');
 const recordcardRoutes = require('./routes/recordcardRoutes.js');
 const serialRoutes = require('./routes/serialRoutes.js');
@@ -88,6 +89,7 @@ app.use('/api/gcse', gcseRoutes);
 app.use('/api/crawl', crawlRoutes);
 app.use('/api/remitosalmacen', remitosAlmacenRoutes);
 app.use('/api/asistencias', asistenciasRoutes);
+app.use('/api/auditentregas', auditentregasRoutes);
 app.use('/api/recordcards', recordcardRoutes);
 app.use('/api/seriales', serialRoutes);
 app.use('/api/turnos', turnosRoutes);

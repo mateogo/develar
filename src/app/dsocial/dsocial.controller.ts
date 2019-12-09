@@ -32,7 +32,9 @@ import { Asistencia, Alimento, AsistenciaBrowse,
 import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, KitOptionList, AlimentosHelper } from './alimentos/alimentos.model';
 
 const ATTENTION_ROUTE = "atencionsocial";
+const RECEPTION_ROUTE = "recepcion";
 const ALIMENTOS_ROUTE = "alimentos";
+const AUDITENTREGAS_ROUTE = "validacionentregas";
 const SEGUIMIENTO_ROUTE = "seguimiento";
 const CORE = 'core';
 const CONTACT = 'contact';
@@ -399,6 +401,12 @@ export class DsocialController {
 
 
 
+  /*****************************/
+  /****** Audit Entregas ******/
+  /***************************/
+  auditEntregasByPerson(personId: string): Observable<any>{
+    return this.daoService.fetchAuditEntregas('auditentrega', personId);
+  }
 
 
 
@@ -764,10 +772,13 @@ export class DsocialController {
 
   setCurrentPersonFromId(id: string){
     if(!id) return;
+    let fetch$ = this.fetchPersonById(id);
 
-    this.fetchPersonById(id).then(p => {
+    fetch$.then(p => {
       this.updateCurrentPerson(p);
     });
+
+    return fetch$
 
   }
 
@@ -953,14 +964,22 @@ export class DsocialController {
         return SEGUIMIENTO_ROUTE;
 
       }else if (sector === 'recepcion'){
-        return ATTENTION_ROUTE;
+        return RECEPTION_ROUTE;
+ 
+      }else if (sector === 'auditoria'){
+        return AUDITENTREGAS_ROUTE;
+
+      }else {
+        return RECEPTION_ROUTE;
+      }
+
+    }else {
+      if (sector === 'recepcion'){
+        return RECEPTION_ROUTE;
 
       }else {
         return ATTENTION_ROUTE;
       }
-
-    }else{
-      return ATTENTION_ROUTE;
 
     }
 
