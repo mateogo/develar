@@ -171,7 +171,6 @@ export class TsocialPageComponent implements OnInit {
   initAsistenciasList(){
     this.asistenciasList = [];
     this.dsCtrl.fetchAsistenciaByPerson(this.currentPerson).subscribe(list => {
-      console.log('initAsistencias: 176 [%s]', list && list.length)
       this.asistenciasList = list || [];
       this.sortProperly(this.asistenciasList);
 
@@ -216,7 +215,6 @@ export class TsocialPageComponent implements OnInit {
   }
 
   auditEntregas(){
-    console.log('TopSocial Page: to navigate ');
 
     if(this.hasPersonIdOnURL){
       this.router.navigate(['../../', this.dsCtrl.atencionRoute('auditoria'), 

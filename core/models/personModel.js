@@ -248,6 +248,7 @@ const personSch = new mongoose.Schema({
     tdoc:           { type: String, required: false },
     ndoc:           { type: String, required: false },
     cuil:           { type: String, required: false },
+    alerta:         { type: String, required: false },
 
     facetas:        { type: Array,  required: false },
     tprofesion:     { type: String, required: false },

@@ -73,6 +73,17 @@ export class RecepcionPageComponent implements OnInit {
 
   public isAutenticated = false;
 
+  // person data
+  public pname;
+  public alerta;
+  public pdoc;
+  public edad;
+  public edadTxt;
+  public ocupacion;
+  public nacionalidad;
+  public estado;
+  public neducativo;
+  public sexo;
 
 
   constructor(
@@ -122,6 +133,7 @@ export class RecepcionPageComponent implements OnInit {
 
   private initPersonDataForDisplay(p: Person){
     if(!p) return;
+    this.initPersonData(p);
 
     let edad = 0;
     this.sectorAtencion = p.followUp // = AsistenciaHelper.getOptionLabel('followup',p.followUp)
@@ -140,6 +152,29 @@ export class RecepcionPageComponent implements OnInit {
 
     this.initAsistenciasList(p);
     this.loadHistorialRemitos(p);
+
+
+  }
+
+  private initPersonData(person: Person){
+    this.pname = personModel.getPersonDisplayName(person);
+    this.alerta = person.alerta;
+    this.pdoc = personModel.getPersonDocum(person);
+    this.edad = devutils.edadActual(new Date(person.fenac));
+    this.ocupacion = personModel.getProfesion(person.tprofesion)
+    this.nacionalidad = personModel.getNacionalidad(person.nacionalidad)
+    this.estado = personModel.getEstadoCivilLabel(person.ecivil);
+    this.neducativo = personModel.getNivelEducativo(person.nestudios);
+    this.sexo = person.sexo;
+
+    if(person.fenac){
+      this.edad = devutils.edadActual(new Date(person.fenac));
+    }else{
+      this.edad = 0
+    }
+    this.edadTxt = this.edad ? '(' + this.edad + ')' : '';
+
+
 
 
   }

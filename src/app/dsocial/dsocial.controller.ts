@@ -337,7 +337,6 @@ export class DsocialController {
 
 
   public fetchRemitoalmacenDashboard(fecharef: Date): Observable<any>{
-    console.log('Controller: [%s]   [%s]', fecharef.toString(), fecharef.getTime())
 
     return this.daoService.fetchAsistenciaDashboard<any>('remitoalmacen', fecharef.getTime());
 
@@ -489,9 +488,20 @@ export class DsocialController {
   }
  
   private initAsistenciaForUpdate(entity: Asistencia){
+    let novedades = entity.novedades;
+    let sector = entity.sector;
 
     entity.atendidox = this.atendidoPor(entity.sector);
     entity.ts_prog = Date.now();
+
+    if(novedades && novedades.length){
+      novedades.forEach(nov =>{
+        if(!nov.atendidox){
+          nov.atendidox = this.atendidoPor(sector);
+        }
+      })
+
+    }
 
   }
 
@@ -505,6 +515,8 @@ export class DsocialController {
   private initNewAsistencia(asistencia$:Subject<Asistencia>, type, asistencia:Asistencia){
     let sector = asistencia.sector || 'dsocial';
     let name = 'solicitud';
+    let novedades = asistencia.novedades;
+
     asistencia.idPerson = this.currentPerson._id;
     asistencia.requeridox = AsistenciaHelper.buildRequirente(this.currentPerson);
 
@@ -518,6 +530,16 @@ export class DsocialController {
 
     asistencia.atendidox = this.atendidoPor(sector);
     asistencia.ts_prog = Date.now();
+
+    if(novedades && novedades.length){
+      novedades.forEach(nov =>{
+        if(!nov.atendidox){
+          nov.atendidox = this.atendidoPor(sector);
+        }
+      })
+    }
+
+
 
     this.fetchSerialAsistencias(type, name, sector).subscribe(serial =>{
 
@@ -567,7 +589,6 @@ export class DsocialController {
 
 
   public fetchAsistenciasDashboard(fecharef: Date): Observable<any>{
-    console.log('Controller: [%s]   [%s]', fecharef.toString(), fecharef.getTime())
 
     return this.daoService.fetchAsistenciaDashboard<any>('asistencia', fecharef.getTime());
 
@@ -958,6 +979,45 @@ export class DsocialController {
         return ALIMENTOS_ROUTE;
 
       }else if (sector === 'tsocial'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'regionvi'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'habitat'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'nutricion'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'terceraedad'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'discapacidad'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'masvida'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'inhumacion'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'pensiones'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'familia'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'referentebarrial'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'cimientos'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'subsidios'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'direccion'){
         return ATTENTION_ROUTE;
 
       }else if (sector === 'seguimiento'){

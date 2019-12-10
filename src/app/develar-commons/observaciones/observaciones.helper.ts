@@ -5,13 +5,24 @@ import { Observacion } from './observaciones.model';
 import { devutils }    from '../utils';
 
 const observacionesTypeOptList: Array<any> = [
-		{val: 'general',      type:'General',          label: 'General' },
-		{val: 'tramitacion',  type:'Tramitación',      label: 'Tramitación' },
-		{val: 'violencia',    type:'Violencia',        label: 'Violencia' },
-		{val: 'reclamo',      type:'Reclamo',          label: 'Reclamo' },
-		{val: 'articulacion', type:'Articulación',     label: 'Articulación' },
-		{val: 'emergencia',   type:'Emergencia',       label: 'Emergencia' },
-		{val: 'tsocial',      type:'Intervención TS',  label: 'Intervención TS' },
+		{val: 'general',      type: 'General',         label: 'General' },
+		{val: 'tramitacion',  type: 'Tramitación',     label: 'Tramitación' },
+    {val: 'resultado',    type: 'Tramitación',     label: 'Resultado Tramitación' },
+		{val: 'violencia',    type: 'Violencia',       label: 'Violencia' },
+		{val: 'reclamo',      type: 'Reclamo',         label: 'Reclamo' },
+		{val: 'articulacion', type: 'Articulación',    label: 'Articulación' },
+		{val: 'emergencia',   type: 'Emergencia',      label: 'Emergencia' },
+		{val: 'tsocial',      type: 'Intervención TS', label: 'Intervención TS' },
+    {val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
+    {val: 'asesoria',     type: 'Asesoria',        label: 'Asesoría general' },
+    {val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
+    {val: 'subsidio',     type: 'subsidio',        label: 'Tramitación subsidio' },
+    {val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
+    {val: 'entrevista',   type: 'entrevista',      label: 'Entrevista TS' },
+    {val: 'informe',      type: 'informe',         label: 'Informe SE TS' },
+    {val: 'relevamiento', type: 'relevamiento',    label: 'Relevam SA TS' },
+    {val: 'otros',        type: 'otros',           label: 'Otros' },
+    {val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
 
 ];
 

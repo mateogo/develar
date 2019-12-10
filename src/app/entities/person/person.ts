@@ -269,6 +269,7 @@ export class Person {
   tdoc: string;
   ndoc: string;
   cuil: string;// ojo
+  alerta: string;
 
   tprofesion: string;
   especialidad: string;

@@ -64,6 +64,13 @@ const itempedidoSch = new Schema({
   punitario: { type: Number, required: false },
 
 })
+const novedadSch = new Schema({
+    tnovedad:   { type: String,      required: false},
+    novedad:    { type: String,      required: false},
+    fecomp_txa: { type: String,      required: false},
+    fecomp_tsa: { type: Number,      required: false},
+    atendidox:  { type: atendidoSch, required: false},
+})
 
 
 const pedidoSch = new Schema({
@@ -121,6 +128,7 @@ const asistenciaSch = new Schema({
     ts_fin:      { type: Number, required: false },
     ts_prog:     { type: Number, required: false },
     requeridox:  { type: requirenteSch, required: false },
+    novedades:   [ novedadSch ],
     atendidox:   { type: atendidoSch,   required: false },
     modalidad:   { type: alimentoSch,   required: false },
     encuesta:    { type: encuestaSch,   required: false },

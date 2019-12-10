@@ -11,6 +11,7 @@ import { devutils }from '../../../../develar-commons/utils'
 export class CoreDataViewComponent implements OnInit {
 	@Input() person: Person;
 	public pname;
+  public alerta;
 	public pdoc;
   public edad;
   public edadTxt;
@@ -24,6 +25,7 @@ export class CoreDataViewComponent implements OnInit {
 
   ngOnInit() {
   	this.pname = personModel.getPersonDisplayName(this.person);
+    this.alerta = this.person.alerta;
   	this.pdoc = personModel.getPersonDocum(this.person);
     this.edad = devutils.edadActual(new Date(this.person.fenac));
     this.ocupacion = personModel.getProfesion(this.person.tprofesion)

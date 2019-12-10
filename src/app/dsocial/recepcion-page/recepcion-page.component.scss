@@ -1,5 +1,6 @@
 @import '../../../assets/sass/variable';
 $color-destacado: #ff8c00;
+$color-resaltado: #0645f5;
 
 .search-panel {
 	font-size: 1.2em;
@@ -22,3 +23,26 @@ $color-destacado: #ff8c00;
 
 }
 
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-resaltado;
+		font-weight: 400;
+		font-size: 2rem;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-resaltado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: 1rem;
+}

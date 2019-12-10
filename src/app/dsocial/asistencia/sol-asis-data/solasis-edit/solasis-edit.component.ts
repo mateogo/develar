@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
-import { Asistencia, Alimento, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../asistencia.model';
+import { Asistencia, Alimento, Novedad, UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../asistencia.model';
 import { KitOptionList } from '../../../alimentos/alimentos.model';
 
 import { devutils }from '../../../../develar-commons/utils'
@@ -30,6 +30,7 @@ export class SolasisEditComponent implements OnInit {
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
+  public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
 
 	public form: FormGroup;
 
@@ -38,6 +39,8 @@ export class SolasisEditComponent implements OnInit {
 
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
+
+  public novedadesTitle = 'Seguimiento de novedades relativas a esta SOLICITUD';
 
   constructor(
   	private fb: FormBuilder,
@@ -111,7 +114,6 @@ export class SolasisEditComponent implements OnInit {
   	let form: FormGroup;
 
     form = this.fb.group({
-			slug:        [null],
 			description: [null],
       sector:      [null, Validators.compose([Validators.required])],
 			action:      [null, Validators.compose([Validators.required])],
@@ -126,7 +128,6 @@ export class SolasisEditComponent implements OnInit {
 
   initForEdit(form: FormGroup, token: Asistencia): FormGroup {
 		form.reset({
-			slug:        token.slug,
 			description: token.description,
 			action:      token.action,
       sector:      token.sector,
@@ -135,19 +136,50 @@ export class SolasisEditComponent implements OnInit {
       avance:      token.avance,
 		});
 
-    // if(token.avance !== 'emitido'){
-    //   form.get('action').disable();
-    // }
+
+
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
+    this.buildNovedades(token.novedades)
 
 		return form;
   }
 
+  private buildNovedades(novedades: Novedad[]){
+    novedades = novedades || [];
+    let novedadesFG = novedades.map(novedad => this.fb.group(novedad))
+    let novedadesFormArray = this.fb.array(novedadesFG);
+    this.form.setControl('novedades', novedadesFormArray);
+  }
+
+  get novedades(): FormArray{
+    return this.form.get('novedades') as FormArray;
+  }
+
+  addNovedad(){
+    let item = new Novedad();
+    let novedadFG = this.fb.group(item);
+    let formArray = this.form.get('novedades') as FormArray;
+    formArray.push(novedadFG);
+
+  }
+
+  removeItem(e, item){
+    e.preventDefault();
+    this.removeNovedadItem(item);
+  }
+
+  private removeNovedadItem(item){
+    
+    let formArray = this.form.get('novedades') as FormArray;
+    formArray.removeAt(item);
+  }
+
+
 	initForSave(form: FormGroup, token: Asistencia): Asistencia {
 		const fvalue = form.value;
 		const entity = token;
+    const novedades: Novedad[] = fvalue.novedades.map(t => Object.assign({}, t))
 
-		entity.slug =         fvalue.slug;
 		entity.description =  fvalue.description;
 		entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
@@ -156,6 +188,7 @@ export class SolasisEditComponent implements OnInit {
     entity.avance =       fvalue.avance;
 
 		entity.estado = entity.estado || 'activo';
+    entity.novedades = novedades || [];
 
 		return entity;
 	}

@@ -108,7 +108,6 @@ export class AlimentosPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    console.log('initCurrent')
     if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
         this.loadPerson(this.personId);
     }

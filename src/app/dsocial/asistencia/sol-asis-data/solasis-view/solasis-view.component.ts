@@ -4,6 +4,7 @@ import { Person, personModel, Address } from '../../../../entities/person/person
 import { 	Asistencia, 
 					Alimento,
           Encuesta, 
+          Novedad,
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
@@ -42,6 +43,7 @@ export class SolasisViewComponent implements OnInit {
   public solicitante;
   public avance;
   public estado;
+  public novedades = [];
 
   // Alimentos
 	public modalidad: Alimento;
@@ -91,6 +93,7 @@ export class SolasisViewComponent implements OnInit {
 
     //   this.avance = 'Pend Autorización';
     // }
+    this.buildNovedades(this.token);
 
   	if(this.token.action === ALIMENTOS && this.modalidad) this.initDatosModalidad(this.modalidad);
     
@@ -99,7 +102,39 @@ export class SolasisViewComponent implements OnInit {
 
   }
 
-  buildAudit(token: Asistencia):string{
+  buildNovedades(token: Asistencia){
+    let items = token.novedades;
+    if(items && items.length){
+      this.novedades = items.map(nov => {
+        let tnovedad = AsistenciaHelper.getPrefixedOptionLabel('novedades', '', nov.tnovedad);
+        let novedad = nov.novedad;
+        let audit = this.buildNovedadesFollowUp(nov);
+        return {tnovedad, novedad, audit}
+
+      })
+    }
+
+  }
+
+  private buildNovedadesFollowUp(novedad: Novedad){
+    let audit = ''
+    let ts, sector, fecha, fecha_txt;
+
+    let atendido = novedad.atendidox;
+
+    if(atendido){
+      ts =  atendido.slug;
+      sector = atendido.sector;
+      fecha = new Date(novedad.fecomp_tsa);
+
+      fecha_txt = fecha ? fecha.toString() : novedad.fecomp_txa ;
+      audit = `${ts} Sector: ${sector} ${fecha_txt}`
+    }
+
+    return audit;
+  }
+
+  private buildAudit(token: Asistencia):string{
     let audit = ''
     let ts, sector, fecha, fecha_txt;
     let atendido = token.atendidox;

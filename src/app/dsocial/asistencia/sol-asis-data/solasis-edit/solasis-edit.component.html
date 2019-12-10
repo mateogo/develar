@@ -6,7 +6,7 @@
 	<!-- description;  -->
 	<!-- sector; estado; avance; ts_alta; ts_fin; ts_prog;  -->
 
-		<!-- fecomp_txa; action; slug; -->
+		<!-- fecomp_txa; action; slug;  : 'far fa-plus'-->
     <div class="row" >
       <div class="col">
         <mat-form-field>
@@ -34,16 +34,53 @@
         </mat-form-field>
       </div>
     </div>
-    
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['slug']" 
-                  placeholder="Asunto/ Objeto de la asistencia" >
-        </mat-form-field>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+          <div class="d-flex justify-content-between panel-header">
+
+          <div class="panel-header-text">{{ novedadesTitle }}</div>
+          <div class="panel-header-control" ><span 
+            (click)='addNovedad()' title="Agregar Novedad">
+            <i [class]="'fas fa-plus'" 
+              aria-hidden="true"></i></span></div>
+        </div>
       </div>
     </div>
+      
 
+    <div class="novedades-container" formArrayName='novedades'>
+    <ng-container *ngFor="let novedad of novedades.controls; let i=index" 
+                  [formGroupName]="i">
+      <div class="row d-flex align-items-center">
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select #fldNovedad placeholder="Tipo de Novedad"
+                formControlName="tnovedad" 
+                (selectionChange)="changeSelectionValue('tnovedad',fldNovedad.value)" >
+              <mat-option *ngFor="let item of novedadOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-7">
+          <mat-form-field>
+            <input matInput formControlName="novedad" placeholder="Novedad - Observación " >
+          </mat-form-field>
+        </div>
+
+        <!--div class="col-md-1">
+          <a role="button" href="#" 
+            class="mb-auto p-2" (click)='removeItem($event, i)' 
+            title='Eliminar novedad'><i class="fas fa-trash-alt"  aria-hidden="true"></i></a>
+        </div  -->
+      </div>
+    </ng-container>
+
+    </div>
+
+    
 		<!-- description;  -->
     <div class="row" >
       <div class="col">
@@ -77,6 +114,7 @@
         </mat-form-field>
       </div>
     </div>
+
 
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 

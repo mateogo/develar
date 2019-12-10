@@ -13,8 +13,20 @@
 
       <ng-container *ngIf="personFound">
 
-        <h6>{{ displayName }} </h6>
-        <h6>{{ displayDoc }} | {{ displayAddress }} </h6>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-md-12">
+              <p class='text-destacado'>{{ pname }} </p>
+              <p class='text-resaltado'>{{ alerta }} </p>
+              <p class='text-normal'>{{ pdoc }} ({{ sexo }}) - <strong>Nacionalidad:</strong> {{ nacionalidad }} {{edadTxt}}</p>
+              <p class='text-normal'>{{ estado }} - 
+                <strong>Ocupación:</strong> {{ ocupacion }} - 
+                <strong>{{ neducativo }}</strong> </p>
+            </div>
+          </div>
+        </div>
+
+        <hr>
 
         <ng-container *ngIf="hasAsistencias">
           <solasis-view [token]='lastAsistencia'></solasis-view>

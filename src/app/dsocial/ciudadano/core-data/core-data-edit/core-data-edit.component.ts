@@ -144,6 +144,7 @@ export class CoreDataEditComponent implements OnInit {
       followUp:     [null],
       especialidad: [null],
       ambito:       [null],
+      alerta:       [null],
 
       ndoc: [null, [Validators.required, 
                     Validators.minLength(7),
@@ -173,6 +174,7 @@ export class CoreDataEditComponent implements OnInit {
       followUp:     person.followUp,
 		  especialidad: person.especialidad,
 		  ambito:       person.ambito,
+      alerta:       person.alerta,
 		  ndoc:         person.ndoc,
       nacionalidad: person.nacionalidad,
       nestudios:    person.nestudios,
@@ -202,6 +204,7 @@ export class CoreDataEditComponent implements OnInit {
     entity.followUp = fvalue.followUp;
 		entity.especialidad = fvalue.especialidad;
 		entity.ambito = fvalue.ambito;
+    entity.alerta = fvalue.alerta;
     entity.nacionalidad = fvalue.nacionalidad;
     entity.nestudios =    fvalue.nestudios;
     entity.fenactx =      fvalue.fenactx;

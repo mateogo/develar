@@ -115,6 +115,22 @@ export class Encuesta {
 
 };
 
+export class Novedad {
+		tnovedad: string = 'entrega';
+		novedad: string = '';
+		fecomp_tsa:  number;
+		fecomp_txa:  string;
+		atendidox: Atendido;
+
+		constructor(){
+			let hoy = new Date();
+			this.tnovedad = 'entrega';
+
+			this.fecomp_tsa = hoy.getTime();
+			this.fecomp_txa = devutils.txFromDate(hoy);
+		}
+}
+
 export class Asistencia {
 		_id: string;
 		compPrefix:  string = 'SOL';
@@ -133,6 +149,7 @@ export class Asistencia {
 		ts_alta:     number;
 		ts_fin:      number;
 		ts_prog:     number;
+		novedades:   Array<Novedad>;;
 		requeridox:  Requirente;
 		atendidox:   Atendido;
 		modalidad:   Alimento;
@@ -284,6 +301,25 @@ const asisActionOptList: Array<any> = [
         {val: 'migracion',      isRemitible: false, key:'',          type:'Desplazam habitat', label: 'Desplazamiento x zona inundable' },
 
 ];
+
+const novedadesTypeOptList: Array<any> = [
+        {val: 'asistencia',   label: 'Asistencia directa' },
+        {val: 'entrega',      label: 'Entrega' },
+        {val: 'asesoria',     label: 'Asesoría general' },
+        {val: 'tramitacion',  label: 'Asistencia p/Tramitación' },
+        {val: 'resultado',    label: 'Resultado Tramitación' },
+        {val: 'articul_ts',   label: 'Articulación TS' },
+        {val: 'articul_hosp', label: 'Articulación Hosp S Jorge' },
+        {val: 'articul_salud',label: 'Articulación Salud' },
+        {val: 'expediente',   label: 'Apertura expediente' },
+        {val: 'notificacion', label: 'Notificación' },
+        {val: 'entrevista',   label: 'Entrevista TS' },
+        {val: 'informe',      label: 'Informe SE TS' },
+        {val: 'relevamiento', label: 'Relevam SA TS' },
+        {val: 'otros',        label: 'Otros' },
+        {val: 'no_definido',  label: 'Sin selección' },
+];
+
 
 const pedidosTypeOptList: Array<any> = [
         {val: 'alimentos',    type:'Alimentos',     label: 'Alimentos' },
@@ -718,6 +754,7 @@ const optionsLists = {
    pedidos: pedidosTypeOptList,
    periodo: periodoOptList,
    deposito: entregaDesdeOptList,
+   novedades: novedadesTypeOptList,
    causa: causasOptList
 }
 
@@ -1004,6 +1041,7 @@ export class AsistenciaHelper {
 		let ts = Date.now();
 		let requirente: Requirente;
 		let token = new Asistencia();
+		let novedad = new Novedad();
 
 		if(person){
 			requirente = AsistenciaHelper.buildRequirente(person);
@@ -1036,7 +1074,8 @@ export class AsistenciaHelper {
 		token.ts_fin = 0
 		token.ts_prog = ts;
 		token.estado = 'activo';
-		token.avance = 'emitido'
+		token.avance = 'emitido';
+		token.novedades = [ novedad ];
 
 		return token;
 	}
