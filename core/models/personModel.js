@@ -14,9 +14,11 @@ const recordCardModel = require('../models/recordcardModel.js');
 // necesarios para el proceso de importación
 const config = require('../config/config')
 const fs = require('fs');
-const xml2js = require('xml2js');
 const path = require('path');
 const utils = require('../services/commons.utils');
+
+const xml2js = require('xml2js');
+const csv = require('csvtojson')
 
 
 
@@ -1831,6 +1833,218 @@ const processArchive = function(req, errcb, cb){
 
 
 }
+
+
+async function saveAlimentarRecord(person, master){
+    if(master[person.ncuit]){
+        console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+        await Person.findByIdAndUpdate(person._id, {cobertura: person.cobertura}, { new: true }).exec();
+
+    }else{
+
+        console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+        await person.save();
+    }
+
+}
+
+
+const buildAlimentarCoreData = function(person, token){
+    person.grupo_familiar = 0;
+
+    person.displayName = token.displayName;
+    let nombres = person.displayName.split(' ');
+    let nombre = nombres && nombres.length && nombres[0];
+
+    let apellido = nombres.reduce((acum, t, index) => {
+        if(index === 0 ) return "";
+        else return acum + " " + t;
+    },"");
+
+    personType = 'fisica';
+
+    person.locacion = token.calle + ' ' + token.callenro + ' ' + token.city;
+    person.nombre = nombre;
+    person.apellido = apellido;
+
+    person.tdoc = 'DNI';
+    person.ndoc = token.ndoc;
+    person.cuil = token.ncuil;
+
+
+    person.ts_alta = Date.now();
+    person.ts_umodif = person.ts_alta;
+
+    // person.locaciones = token. ;
+    // person.familiares = token. ;
+    // person.user = token. ;
+    // person.communitylist = token. ;
+    // person.contactdata = token. ;
+    // person.oficios = token. ;
+}
+
+const buildAlimentarLocaciones = function(person, token){
+    let locaciones = [];
+    let city = normalize ('city', (token.city ? token.city.toLowerCase() : ''));
+    let barrio =  '';
+
+    let locacion = {
+        "slug": "domicilio informado",
+        "description": "",
+        "isDefault": true,
+        "addType": "principal",
+        "street1": token.calle + ' ' + token.callenro,
+        "street2": "",
+        "streetIn": "",       
+        "streetOut": "",
+        "city": city,
+        "state": "buenosaires",
+        "statetext": "Brown",
+        "zip": '',
+        "country": "AR",
+        "estado": "activo",
+        "barrio": "",
+
+    }
+
+    locaciones.push(locacion);
+    person.locaciones = locaciones;
+}
+
+const buildAlimentarCobertura = function(person, token){
+    let ingreso4 = {
+        type: 'auh',
+        tingreso: 'talimentar',
+        slug: 'recibió Tarjeta Alimentar: ' + token.dia + ' ' + token.hora,
+        monto: 0,
+        observacion: ''
+    }
+
+    let ingresosList = token.cobertura || [];
+    ingresosList.push(ingreso4);
+    person.cobertura = ingresosList;
+
+}
+
+
+
+
+const processOneAlimentarPerson = function(token, master){
+    let person = new Person();
+
+    if(master[token.ndoc]){
+        //console.log('PersonaExistente[%s] [%s]', token.displayName, master[token.ndoc].displayName);
+        buildAlimentarCobertura(person, token);
+
+    }else {
+        buildAlimentarCoreData(person, token);
+        buildAlimentarLocaciones(person, token);
+        buildAlimentarCobertura(person, token);
+
+    }
+
+
+
+    console.log('Persona [%s] [%s] [%s] [%s]', person.displayName, person.nombre, person.apellido, person.ndoc);
+    //console.dir(person.cobertura);
+    //saveAlimentarRecord(person, master);
+}
+
+
+const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
+    console.log('processAlimentarPersons BEGIN [%s]', personArray && personArray.length);
+
+    let existentes = 0;
+    personArray.forEach((token, index) => {
+
+        if(personMaster[token.ndoc]){
+            console.log('PersonaExistente[%s] [%s]', token.displayName, personMaster[token.ndoc].displayName);
+            existentes += 1;
+
+        }else {
+
+        }   
+        processOneAlimentarPerson(token, personMaster);
+
+    });
+
+    console.log('TOTAL EXISTENTES: [%s]', existentes)
+
+
+
+}
+
+
+const processAlimentarArchive = function(master, req, errcb, cb){
+    console.log('******  process ALIMENTAR ARCHIVE to BEGIN ********')
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    csv({delimiter: ';'})
+    .fromFile(arch)
+    .then((persons) => {
+        console.log('******  processARCHIVE OK ********')
+
+        // persons.forEach(per => {
+        //     // console.log(" [%s]  [%s]" ,per.displayName, per.ndoc);
+        //     // console.dir(per);
+        // })
+                    
+        processAlimentarPersons(persons, master, errcb, cb)
+        cb({result: "ok"})
+
+    });
+}
+
+
+//http://localhost:8080/api/persons/alimentar
+
+/**
+ * Proceso de importación de los beneficiarios Plan Alimentar 2020
+ * @param person
+ * @param cb
+ * @param errcb
+ */
+exports.alimentarImport = function (req, errcb, cb) {
+    //console.log('Import @496')
+
+    let promise = new Promise((resolve, reject)=> {
+        Person.find(null, '_id displayName tdoc ndoc cobertura').lean().then(persons => {
+            let master = {};
+            persons.forEach(p => {
+                master[p.ndoc] = {
+                    _id: p._id,
+                    tdoc: p.tdoc,
+                    ndoc: p.ndoc,
+                    displayName: p.displayName,
+                    cobertura: p.cobertura
+                }
+
+            })
+            resolve(master);
+
+        });
+    });
+
+    promise.then(master => {
+        console.log('PromiseFullfilled!!!!')
+        processAlimentarArchive(master, req, errcb, cb);
+
+    })        
+
+
+};
+
+
+
 //http://localhost:8080/api/persons/import
 
 /**
