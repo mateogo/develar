@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-card-content>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+			<person-fetch 
+        (person$)=personFetched($event)></person-fetch>
+		</div>
+	</mat-card-content>
+</mat-card>
+	
+<mat-card>
+  <mat-card-content>
+    <ng-container *ngIf="personFound">
+			<div 	*ngIf="hasCurrentPerson" >
+					<core-base [person]='currentPerson'
+										(updatePerson)='updateCore($event)' ></core-base>
+			</div>
+		  
+		  <hr>
+
+		  <form [formGroup]="form">
+
+		    <!---personType;  tdoc, ndoc--->
+		    <div class="row" >
+		      <div class="col">
+		        <mat-form-field>
+		          <input  matInput [formControl]="form.controls['telefono']" 
+		          	placeholder="Número de Celular" >
+		        </mat-form-field>
+		      </div>
+
+		    </div>
+
+		    <div class="row" >
+		      <div class="col">
+		        <mat-form-field>
+		        <mat-select #fldEmbarazada   formControlName='embarazada' (change)="changeSelectionValue('embarazada',fldEmbarazada )" placeholder="Embarazada">
+		          <mat-option *ngFor="let embarazo of embarazoList" [value]="embarazo.val" >{{ embarazo.label }}</mat-option>
+		        </mat-select>
+		        </mat-form-field>
+		      </div>
+		    </div>
+
+
+		    <hr>
+
+		    <div class="additional-info">
+		      <button mat-raised-button color="primary" type="submit" 
+		      		(click)="onSubmit()"
+		          [disabled]="!form.valid" >Aceptar</button>
+		      
+		      <button mat-button type="button" color="accent"
+		      		(click)="onCancel()" >Cancelar</button>
+		    </div>
+
+		  </form>
+
+		</ng-container>
+	</mat-card-content>
+</mat-card>
+
+
+<mat-card >
+  <mat-card-content>
+  </mat-card-content>
+</mat-card>

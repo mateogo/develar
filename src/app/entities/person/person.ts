@@ -114,6 +114,8 @@ export class SaludData {
     type: string = '';
     tproblema: string = '';
     problema: string = '';
+    fecha: string = '';
+    fe_ts: number = 0;
     lugaratencion: string = '';
     slug: string = '';
 }
@@ -657,6 +659,7 @@ const states = [
 ];
 
 const saludOptList: Array<any> = [
+    {val: 'embarazo',           label: 'Embarazo',    },
     {val: 'enfermedad',         label: 'Enfermedad',    },
     {val: 'discapacidad',       label: 'Discapacidad ', },
 ];
@@ -675,6 +678,13 @@ const saludSubtiposOptList = {
     {val: 'auditiva',       label: 'Auditiva'     },
     {val: 'percepcion',     label: 'Percepción'     },
     {val: 'piel',           label: 'Piel'     },
+  ],
+
+  embarazo: [
+    {val: 'embarazo',   label: 'Embarazada' },
+    {val: 'nacido',     label: 'Nacido/a' },
+    {val: 'prematuro',  label: 'Prematuro/a' },
+    {val: 'aborto',     label: 'Embarazo interrumpido' },
   ],
 
   discapacidad: [
@@ -718,8 +728,11 @@ const coberturaSubtiposOptList = {
     {val: 'pension',   label: 'Pensión' },
   ],
   auh: [
-    {val: 'noposee',  label: 'No posee' },
-    {val: 'auh',      label: 'AUH' },
+    {val: 'noposee',    label: 'No posee' },
+    {val: 'auh',        label: 'AUH' },
+    {val: 'talimentar', label: 'AUH-TARJETA ALIMENTAR' },
+    {val: 'aeps',       label: 'AEPS-Embarazo para Protección Social' },
+    {val: 'auhdis',     label: 'AUH-Hijo discapacitado' },
   ],
   asisprovincial: [
     {val: 'noposee',     label: 'No posee' },

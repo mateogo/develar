@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RecepcionPageComponent } from './recepcion-page/recepcion-page.component';
 import { TurnosPageComponent } from './turnos/turnos-page/turnos-page.component';
 import { TsocialPageComponent } from './tsocial/tsocial-page/tsocial-page.component';
+import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-page.component';
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 
 import { AlimentosPageComponent } from './alimentos/alimentos-page/alimentos-page.component';
@@ -56,6 +57,14 @@ const routes: Routes = [
 	{
 		path:'atencionsocial',
 		component: TsocialPageComponent
+	},
+	{
+		path:'tarjetaalimentar/:id',
+		component: TalimentarPageComponent
+	},
+	{
+		path:'tarjetaalimentar',
+		component: TalimentarPageComponent
 	},
 	{
 		path:'seguimiento/:id',

@@ -20,7 +20,7 @@ export class SaludDataPanelComponent implements OnInit {
 	@Input() items: Array<SaludData>;
 	@Output() updateItems = new EventEmitter<UpdateItemListEvent>();
 
-  public title = 'Eventos de salud y/o discapacidad';
+  public title = 'Eventos de salud, embarazo y/o discapacidad';
 	public showList = false;
   public openEditor = true;
 

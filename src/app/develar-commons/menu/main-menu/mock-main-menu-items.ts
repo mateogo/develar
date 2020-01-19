@@ -145,6 +145,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         title: 'Validación de Asistencias',
         routing: '/dsocial/gestion/validacionentregas'
       },
+      {
+        title: 'Tarjeta Alimentar',
+        routing: '/dsocial/gestion/tarjetaalimentar'
+      },
     ],
     routing: '',
     externalLink: '',
@@ -701,6 +705,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       {
         title: 'Validación de Asistencias',
         routing: '/dsocial/gestion/validacionentregas'
+      },
+      {
+        title: 'Tarjeta Alimentar',
+        routing: '/dsocial/gestion/tarjetaalimentar'
       },
     ],
     routing: '',

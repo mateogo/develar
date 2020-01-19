@@ -222,6 +222,8 @@ const saludSch = new mongoose.Schema( {
     type:       { type: String, required: true },
     tproblema:  { type: String, required: true },
     problema:   { type: String, required: false },
+    fecha:      { type: String, required: false},
+    fe_ts:      { type: Number, required: false },
     lugaratencion: { type: String, required: false },
     slug:       { type: String, required: false },
 });
@@ -785,6 +787,24 @@ const ciudadesBrown = [
     {val: 'sanjose',             cp:'1846', label: 'San José',   brown:'san jos' },
 ];
 
+const ciudadesTalimentar = [
+    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  brown:'Seleccione opción' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           brown:'adrogu' },
+    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           brown:'burzaco' },
+    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    brown:'calzada' },
+    {val: 'claypole',            cp:'1849', label: 'Claypole',           brown:'claypole' },
+    {val: 'donorione',           cp:'1850', label: 'Don Orione',         brown:'orione' },
+    {val: 'glew',                cp:'1856', label: 'Glew',               brown:'glew' },
+    {val: 'longchamps',          cp:'1854', label: 'Longchamps',         brown:'longchamps' },
+    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',brown:'argentinas' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           brown:'rmol' },
+    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', brown:'rivadavia' },
+    {val: 'solano',              cp:'1846', label: 'San Fco Solano',     brown:'solano' },
+    {val: 'sanjose',             cp:'1846', label: 'San José',           brown:'san jos' },
+];
+
+
+
 const barriosOptList = {
   adrogue: [
     {val: 'adrogue',    label: 'Adrogué Ctro' },
@@ -1071,6 +1091,7 @@ const optList = {
     estadocivil: estadoCivil,
     sexo: sexoOptList,
     city: ciudadesBrown,
+    cityalimentar: ciudadesTalimentar,
     nacionalidad: nacionalidadOptList,
     barrio: barriosOptList,
     estudios: nivelEstudios,
@@ -1836,13 +1857,13 @@ const processArchive = function(req, errcb, cb){
 
 
 async function saveAlimentarRecord(person, master){
-    if(master[person.ncuit]){
+    if(master[person.ndoc]){
         console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
-        await Person.findByIdAndUpdate(person._id, {cobertura: person.cobertura}, { new: true }).exec();
+        await Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).exec();
 
     }else{
 
-        console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+        //console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
         await person.save();
     }
 
@@ -1862,6 +1883,9 @@ const buildAlimentarCoreData = function(person, token){
     },"");
 
     personType = 'fisica';
+    person.isImported = true;
+    person.idbrown = "TALIMENTAR";
+    person.alerta = 'Recibe TARJETA ALIMENTAR Club Calzada - Enero 2020 - Día: ' + token.dia + ' - Hora: ' + token.hora;
 
     person.locacion = token.calle + ' ' + token.callenro + ' ' + token.city;
     person.nombre = nombre;
@@ -1885,12 +1909,12 @@ const buildAlimentarCoreData = function(person, token){
 
 const buildAlimentarLocaciones = function(person, token){
     let locaciones = [];
-    let city = normalize ('city', (token.city ? token.city.toLowerCase() : ''));
+    let city = normalize ('cityalimentar', (token.city ? token.city.toLowerCase() : ''));
     let barrio =  '';
 
     let locacion = {
         "slug": "domicilio informado",
-        "description": "",
+        "description": "Informado por Tarjeta Alimentar",
         "isDefault": true,
         "addType": "principal",
         "street1": token.calle + ' ' + token.callenro,
@@ -1915,7 +1939,7 @@ const buildAlimentarCobertura = function(person, token){
     let ingreso4 = {
         type: 'auh',
         tingreso: 'talimentar',
-        slug: 'recibió Tarjeta Alimentar: ' + token.dia + ' ' + token.hora,
+        slug: 'Tarjeta ALIMENTAR entrega prevista: ' + token.dia + ' ' + token.hora,
         monto: 0,
         observacion: ''
     }
@@ -1933,19 +1957,17 @@ const processOneAlimentarPerson = function(token, master){
     let person = new Person();
 
     if(master[token.ndoc]){
-        //console.log('PersonaExistente[%s] [%s]', token.displayName, master[token.ndoc].displayName);
-        buildAlimentarCobertura(person, token);
-
-    }else {
-        buildAlimentarCoreData(person, token);
-        buildAlimentarLocaciones(person, token);
-        buildAlimentarCobertura(person, token);
+        person._id = master[token.ndoc]._id;
 
     }
 
 
+    buildAlimentarCoreData(person, token);
+    buildAlimentarLocaciones(person, token);
+    buildAlimentarCobertura(person, token);
 
-    console.log('Persona [%s] [%s] [%s] [%s]', person.displayName, person.nombre, person.apellido, person.ndoc);
+
+    //console.log('Persona [%s] [%s] [%s] [%s]', person.displayName, person.nombre, person.apellido, person.ndoc);
     //console.dir(person.cobertura);
     //saveAlimentarRecord(person, master);
 }
@@ -1958,7 +1980,7 @@ const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
     personArray.forEach((token, index) => {
 
         if(personMaster[token.ndoc]){
-            console.log('PersonaExistente[%s] [%s]', token.displayName, personMaster[token.ndoc].displayName);
+            console.log('PersonaExistente[%s] [%s] [%s]', token.displayName, personMaster[token.ndoc].displayName, token.ndoc);
             existentes += 1;
 
         }else {
@@ -1977,7 +1999,10 @@ const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
 
 const processAlimentarArchive = function(master, req, errcb, cb){
     console.log('******  process ALIMENTAR ARCHIVE to BEGIN ********')
+    //deploy
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+
+    // local
     //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
 
     function toLowerCase(name){

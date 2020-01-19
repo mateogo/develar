@@ -67,6 +67,11 @@ export class PrioritySelectComponent implements OnInit {
         this.emitEvent(this.priority);
     }
 
+    tarjetaAlimentar(){
+        this.priority.action = 'alimentar';
+        this.emitEvent(this.priority);
+    }
+
     auditEntregas(){
         this.priority.action = 'auditoria';
         this.emitEvent(this.priority);

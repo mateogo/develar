@@ -32,6 +32,7 @@ import { Asistencia, Alimento, AsistenciaBrowse,
 import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, KitOptionList, AlimentosHelper } from './alimentos/alimentos.model';
 
 const ATTENTION_ROUTE = "atencionsocial";
+const ALIMENTAR_ROUTE = "tarjetaalimentar";
 const RECEPTION_ROUTE = "recepcion";
 const ALIMENTOS_ROUTE = "alimentos";
 const AUDITENTREGAS_ROUTE = "validacionentregas";
@@ -974,12 +975,16 @@ export class DsocialController {
 
   // navigation ROUTER
   atencionRoute(sector): string{
+    console.log('atencioRoute: [%s]', sector);
     if(this.activePerson){
       if(sector === 'alimentos'){
         return ALIMENTOS_ROUTE;
 
       }else if (sector === 'tsocial'){
         return ATTENTION_ROUTE;
+
+      }else if (sector === 'talimentar'){
+        return ALIMENTAR_ROUTE;
 
       }else if (sector === 'regionvi'){
         return ATTENTION_ROUTE;

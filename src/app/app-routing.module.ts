@@ -17,6 +17,7 @@ import { DefaultLayoutComponent }       from './develar-commons/layouts/default/
 import { ExtraLayoutComponent }         from './develar-commons/layouts/extra/extra.component';
 import { PresentacionLayoutComponent }  from './develar-commons/layouts/presentacion/presentacion.component';
 import { WorkgroupLayoutComponent }     from './develar-commons/layouts/workgroup/workgroup.component';
+//import { MinimalistLayoutComponent }    from './site-minimal/layouts/minimalist/minimalist.component';
 
 // Error pages
 import { Page404Component }             from './develar-commons/errorpages/page-404.component';
@@ -127,6 +128,14 @@ const dsocialRoutes: Routes = [
   },
 ];
 
+const alimentarRoutes: Routes = [
+  {
+    path: 'gestion',
+    component: PresentacionLayoutComponent,
+    children: ayudaSocialRoutes
+  },
+];
+
 
 const adminRoutes: Routes = [
   {
@@ -224,6 +233,10 @@ const routes: Routes = [
   {
     path: 'dsocial',
     children: dsocialRoutes
+  },
+  {
+    path: 'alimentar',
+    children: alimentarRoutes
   },
   {
     path: 'notas',

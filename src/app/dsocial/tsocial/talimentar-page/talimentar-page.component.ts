@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 
 import { Observable } from 'rxjs';
+
+import { devutils }from '../../../develar-commons/utils'
+
 
 import { DsocialController } from '../../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../dsocial.model';
@@ -38,16 +42,16 @@ const UPDATE = 'update';
 const NAVIGATE = 'navigate';
 
 @Component({
-  selector: 'tsocial-page',
-  templateUrl: './tsocial-page.component.html',
-  styleUrls: ['./tsocial-page.component.scss']
+  selector: 'talimentar-page',
+  templateUrl: './talimentar-page.component.html',
+  styleUrls: ['./talimentar-page.component.scss']
 })
-export class TsocialPageComponent implements OnInit {
+export class TalimentarPageComponent implements OnInit {
 
   public unBindList = [];
 
   // template helper
-  public title = "Asistencia al VECINO/a";
+  public title = "Entrega de Tarjeta Alimentar";
   public subtitle = "Atención del Trabajador Social";
   public titleRemitos = "Historial de entregas";
 
@@ -86,15 +90,38 @@ export class TsocialPageComponent implements OnInit {
   public sectors:SectorAtencion[] = sectores;
 
 
+	public form: FormGroup;
+	private celular: PersonContactData;
+	private embarazo: SaludData;
+	public embarazoList: Array<any> = [];
+
+
   constructor(
   		private dsCtrl: DsocialController,
+  		private fb: FormBuilder,
     	private router: Router,
     	private route: ActivatedRoute,
 
   	) { }
 
   ngOnInit() {
-    let first = true;    
+    let first = true;
+
+    this.form = this.buildForm();
+
+		this.embarazoList = [
+		    {val: 'no_definido',        label: 'No aplica' ,          mes_parto: 0},
+		    {val: 'no_embarazo',        label: 'No está embarazada' , mes_parto: 0},
+		    {val: 'embarazo3',          label: 'Embarazada 3 meses' , mes_parto: 6},
+		    {val: 'embarazo4',          label: 'Embarazada 4 meses' , mes_parto: 5},
+		    {val: 'embarazo5',          label: 'Embarazada 5 meses' , mes_parto: 4},
+		    {val: 'embarazo6',          label: 'Embarazada 6 meses' , mes_parto: 3},
+		    {val: 'embarazo7',          label: 'Embarazada 7 meses' , mes_parto: 2},
+		    {val: 'embarazo8',          label: 'Embarazada 8 meses' , mes_parto: 1},
+		    {val: 'embarazo9',          label: 'Embarazada 9 meses' , mes_parto: 0},
+		];
+
+
     this.personId = this.route.snapshot.paramMap.get('id')
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
@@ -107,7 +134,7 @@ export class TsocialPageComponent implements OnInit {
       if(readyToGo && first){
         first = false;
 
-        this.initCurrentPage();
+        //this.initCurrentPage();
 
       }
     })
@@ -139,34 +166,82 @@ export class TsocialPageComponent implements OnInit {
   }
 
   initCurrentPerson(p: Person){
-    if(p && this.currentPerson && p._id === this.currentPerson._id){
-      return;
-    }
+    // if(p && this.currentPerson && p._id === this.currentPerson._id){
+    //   return;
+    // }
 
     if(p){
       this.currentPerson = p;
       //this.contactData = p.contactdata[0];
       this.contactList = p.contactdata || [];
-      this.addressList = p.locaciones || [];
-      this.familyList  = p.familiares || [];
-      this.oficiosList = p.oficios || [];
       this.saludList =   p.salud || [];
       this.coberturaList = p.cobertura || [];
-      this.ambientalList = p.ambiental || [];
-      this.assetList = p.assets || [];
-      
-      this.initAsistenciasList()
-      this.loadHistorialRemitos()
 
+      
       this.audit = this.dsCtrl.getAuditData();
-      this.parentEntity = {
-        entityType: 'person',
-        entityId: this.currentPerson._id,
-        entitySlug: this.currentPerson.displayName
-      }
-    }
+			this.initContactData(this.contactList);
+			this.initEmbarazadaData(this.saludList);
+
+	    console.log('personFound');
+
+	    this.initForEdit(this.form, p);
+
+	    setTimeout(()=> {
+		    this.hasCurrentPerson = true;
+	  	  this.personFound = true;
+
+	    },400);
  
+
+
+
+    }
+
   }
+
+  initContactData(contactList: PersonContactData[]){
+  	let telData: PersonContactData = new PersonContactData();
+  	telData.tdato = 'CEL';
+  	telData.data = '';
+  	telData.type = 'PER';
+  	telData.slug = "Relevado en la entrega de Tarjeta Alimentar";
+  	telData.isPrincipal = true;
+
+  	if(contactList && contactList.length){
+  		let token = contactList.find(t => t.tdato === "CEL" );
+  		telData = token ? token : telData;
+
+  	}else {
+
+  	}
+
+  	this.celular = telData;
+
+  }
+
+  initEmbarazadaData(saludList: SaludData[]){
+  	let emb: SaludData = new SaludData();
+  	emb.type = "embarazo";
+  	emb.tproblema = "embarazo";
+  	emb.fecha = null;
+  	emb.fe_ts = 0;
+  	emb.lugaratencion = "";
+  	emb.slug = "Relevado en la entrega de Tarjeta Alimentar";
+
+  	if(saludList && saludList.length){
+  		let token = saludList.find(t => t.type === "embarazo" );
+  		emb = token ? token : emb;
+
+  	}else {
+
+  	}
+  	console.log('Embarazo INIT: [%s] [%s]', emb.type, emb.fecha)
+
+  	this.embarazo = emb;
+
+  }
+
+
 
   initAsistenciasList(){
     this.asistenciasList = [];
@@ -445,6 +520,27 @@ export class TsocialPageComponent implements OnInit {
     })
   }
 
+  personFetched(persons: Person[]){
+		this.hasCurrentPerson = false;
+		this.personFound = false;
+
+    if(persons.length){
+      this.currentPerson = persons[0];
+      console.log('PersonFetched!! [%s]', this.currentPerson.displayName);
+
+      this.initCurrentPerson(this.currentPerson);
+
+    }else{
+      this.resetForm();
+    }
+  }
+
+  private resetForm(){
+      this.altaPersona = false;
+      this.personFound = false;
+
+  }
+
 
 
 
@@ -475,13 +571,127 @@ export class TsocialPageComponent implements OnInit {
 
   }
 
+  buildForm(): FormGroup{
+  	let form: FormGroup;
+
+    form = this.fb.group({
+      telefono:       [null ],
+      embarazada:     [null],
+    });
+
+    return form;
+  }
+
+  initForEdit(form: FormGroup, person: Person): FormGroup {
+  	let embarazo = 'no_definido';
+
+  	if(this.embarazo.fecha){
+  		let token = this.embarazoList.find(t => {
+  			if(t.val === "no_definido" || t.var === "no_embarazo") return false;
+				let fecha_parto = new Date(2020, t.mes_parto, 1);
+				if(this.embarazo.fecha === devutils.txFromDate(fecha_parto)) return true;
+				else return false;
+  		});
+
+  		if(token){
+  			embarazo = token.val
+
+  		}else{
+  			embarazo = 'embarazo3'
+  		}
+
+  	}
+
+
+		form.reset({
+		  embarazada:  embarazo,
+		  telefono:    this.celular.data,
+
+		});
+
+		return form;
+  }
+
+
+	initForSave(form: FormGroup, person: Person): Person {
+		const fvalue = form.value;
+
+		const entity = person;
+		const telefono = fvalue.telefono;
+		const embarazo_value = fvalue.embarazada;
+
+		if(telefono){
+			this.celular.data = telefono;
+
+	  	if(this.contactList && this.contactList.length){
+	  		let token = this.contactList.find(t => t.tdato === "CEL" );
+	  		
+	  		if(token){
+	  			token.data = telefono;
+
+	  		}else{
+	  			this.contactList.push(this.celular);
+	  		}
+
+	  	}else {
+	  		this.contactList.push(this.celular);
+
+	  	}
+
+
+		}
+
+		if(embarazo_value!== 'no_definido' && embarazo_value !== "no_embarazo"){
+			let offset = this.embarazoList.find(t => t.val === embarazo_value).mes_parto;
+			let fecha_parto = new Date(2020, offset, 1);
+
+			this.embarazo.fecha = devutils.txFromDate(fecha_parto);
+			this.embarazo.fe_ts = fecha_parto.getTime();
+
+	  	if(this.saludList && this.saludList.length){
+	  		let token = this.saludList.find(t => t.type === "embarazo" );
+	  		if(token){
+	  			token.fecha = this.embarazo.fecha;
+	  			token.fe_ts = this.embarazo.fe_ts
+
+	  		}else {
+	  			this.saludList.push(this.embarazo);
+
+	  		}
+
+	  	}else {
+	  		this.saludList.push(this.embarazo);
+
+	  	}
+
+
+
+		}
+		//entity.displayName = fvalue.displayName;
+		//entity.email = fvalue.email;
+
+		return entity;
+	}
+
+  onSubmit(){
+  	console.log('Submit')
+  	this.initForSave(this.form, this.currentPerson);
+  	console.dir(this.currentPerson);
+
+    let update: UpdatePersonEvent = {
+      action: 'update',
+      token: 'core',
+      person: this.currentPerson
+    };
+    this.dsCtrl.updatePerson(update);
+    this.resetForm();
+
+  }
+
+  onCancel(){
+  	console.log('Cancel')
+  	this.resetForm();
+  }
+
+
 }
-/***
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/59701fab9c481d0391eb39b9
-http://develar-local.co:4200/dsocial/gestion/atencionsocial/5a00cb6c3ba0cd0c576a1870
-
-https://api.brown.gob.ar/empleados?legajo=5765
-
-https://api.brown.gob.ar/
-
-**/

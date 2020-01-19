@@ -88,6 +88,7 @@ export class SaludDataEditComponent implements OnInit {
       type:        [null, Validators.compose( [Validators.required])],
       tproblema:   [null, Validators.compose( [Validators.required])],
       problema:    [null],
+      fecha:       [null],
       lugaratencion: [null],
       slug:         [null],
     });
@@ -98,6 +99,7 @@ export class SaludDataEditComponent implements OnInit {
     form.reset({
       type:        token.type,
       tproblema:   token.tproblema,
+      fecha:       token.fecha,
       problema:    token.problema,
       lugaratencion: token.lugaratencion,
       slug:        token.slug,
@@ -110,7 +112,17 @@ export class SaludDataEditComponent implements OnInit {
 
   initForSave(form: FormGroup, token: SaludData): SaludData {
     const fvalue = form.value;
-    const entity = token; 
+    const entity = token;
+
+    let fecha_date =  devutils.dateFromTx(fvalue.fecha);
+    if(fecha_date){
+      entity.fecha = devutils.txFromDate(fecha_date);
+      entity.fe_ts = fecha_date.getTime();
+
+    }else {
+      entity.fecha = ''
+      entity.fe_ts = 0
+    }
 
     entity.type =        fvalue.type;
     entity.tproblema =   fvalue.tproblema;

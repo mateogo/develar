@@ -22,6 +22,7 @@ import { Person, personModel } from '../../entities/person/person';
 import { devutils }from '../../develar-commons/utils';
 
 const TSOCIAL = 'tsocial';
+const TALIMENTAR = 'talimentar';
 const AUDITORIA = 'auditoria';
 
 @Component({
@@ -269,12 +270,16 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   processTurno(priority: PriorityToken){
+    console.log('processTurno: [%s]', priority)
     if(priority.action === "update"){
       this.peso = priority.prioridad;
       this.createNuevoTurno();
 
     }else if (priority.action === "inmediata"){
       this.navigateTo();
+
+    }else if (priority.action === "alimentar"){
+      this.navigateToAlimentar();
 
     }else if (priority.action === "auditoria"){
       this.navigateToAudit();
@@ -287,6 +292,10 @@ export class RecepcionPageComponent implements OnInit {
 
   navigateTo(){
     this.router.navigate(['../', this.dsCtrl.atencionRoute(TSOCIAL), this.currentPerson._id], {relativeTo: this.route});
+  }
+
+  navigateToAlimentar(){
+    this.router.navigate(['../', this.dsCtrl.atencionRoute(TALIMENTAR), this.currentPerson._id], {relativeTo: this.route});
   }
 
   navigateToAudit(){

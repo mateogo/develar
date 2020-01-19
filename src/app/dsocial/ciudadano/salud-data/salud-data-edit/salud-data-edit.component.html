@@ -6,7 +6,7 @@
       
       <div class="col">
         <mat-form-field>
-          <mat-select #fldType placeholder="Enfermedad / Discapacidad"
+          <mat-select #fldType placeholder="Embarazo / Enfermedad / Discapacidad"
               [formControl]="form.controls['type']"
               (selectionChange)="changeTokenType()" >
             <mat-option *ngFor="let item of saludTiposOptList" 
@@ -17,7 +17,8 @@
 
       <div class="col">
         <mat-form-field>
-          <mat-select #fldTProblema placeholder="Tipo de Enfermedad/ Discapacidad"
+          <mat-select #fldTProblema 
+              placeholder="Tipo de Embarazo/ Enfermedad/ Discapacidad"
               [formControl]="form.controls['tproblema']"
               (selectionChange)="changeSelectionValue('tproblema',fldTProblema.value)" >
             <mat-option *ngFor="let item of saludSubList" 
@@ -32,6 +33,16 @@
         </mat-form-field>
       </div>
 
+    </div>
+
+    <!---fecha--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fecha']" 
+              placeholder="Fecha prevista de parto / fecha enfermedad" >
+        </mat-form-field>
+      </div>
     </div>
 
     <!---lugaratencion--->
