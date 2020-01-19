@@ -180,6 +180,7 @@ export class TalimentarPageComponent implements OnInit {
       this.coberturaList = p.cobertura || [];
 
       if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
+        this.isBeneficiarioTxt = 'Beneficiario validado';
 
         this.audit = this.dsCtrl.getAuditData();
         this.initContactData(this.contactList);
