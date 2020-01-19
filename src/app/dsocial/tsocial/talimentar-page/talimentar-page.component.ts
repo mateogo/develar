@@ -94,6 +94,7 @@ export class TalimentarPageComponent implements OnInit {
 	private celular: PersonContactData;
 	private embarazo: SaludData;
 	public embarazoList: Array<any> = [];
+  public isBeneficiarioTxt = 'Hola';
 
 
   constructor(
@@ -169,6 +170,7 @@ export class TalimentarPageComponent implements OnInit {
     // if(p && this.currentPerson && p._id === this.currentPerson._id){
     //   return;
     // }
+    this.isBeneficiarioTxt = '';
 
     if(p){
       this.currentPerson = p;
@@ -177,21 +179,30 @@ export class TalimentarPageComponent implements OnInit {
       this.saludList =   p.salud || [];
       this.coberturaList = p.cobertura || [];
 
-      
-      this.audit = this.dsCtrl.getAuditData();
-			this.initContactData(this.contactList);
-			this.initEmbarazadaData(this.saludList);
+      if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
 
-	    console.log('personFound');
+        this.audit = this.dsCtrl.getAuditData();
+        this.initContactData(this.contactList);
+        this.initEmbarazadaData(this.saludList);
 
-	    this.initForEdit(this.form, p);
+        console.log('personFound');
 
-	    setTimeout(()=> {
-		    this.hasCurrentPerson = true;
-	  	  this.personFound = true;
+        this.initForEdit(this.form, p);
 
-	    },400);
+        setTimeout(()=> {
+          this.hasCurrentPerson = true;
+          this.personFound = true;
+
+        },400);
  
+
+
+      }else{
+        this.isBeneficiarioTxt = 'NO RETIRA TARJETA EN ESTA OPORTUNIDAD';
+
+      }
+
+      
 
 
 
@@ -523,6 +534,7 @@ export class TalimentarPageComponent implements OnInit {
   personFetched(persons: Person[]){
 		this.hasCurrentPerson = false;
 		this.personFound = false;
+    this.isBeneficiarioTxt = '';
 
     if(persons.length){
       this.currentPerson = persons[0];
@@ -531,6 +543,7 @@ export class TalimentarPageComponent implements OnInit {
       this.initCurrentPerson(this.currentPerson);
 
     }else{
+      this.isBeneficiarioTxt = 'Beneficiario/a no encontrado en la base'
       this.resetForm();
     }
   }
@@ -580,6 +593,25 @@ export class TalimentarPageComponent implements OnInit {
     });
 
     return form;
+  }
+
+  isBeneficiarioTarjetaAlimentar(coberturas: CoberturaData[]):boolean {
+    let ok = false;
+
+    if(coberturas && coberturas.length){
+      let token = coberturas.find(t => t.type === 'auh' && t.tingreso === 'talimentar');
+      if(token){
+        ok = true;
+      }else{
+        ok = false;
+      }
+
+
+    }else {
+      ok = false;
+    }
+
+    return ok;
   }
 
   initForEdit(form: FormGroup, person: Person): FormGroup {
