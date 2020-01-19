@@ -94,7 +94,7 @@ export class TalimentarPageComponent implements OnInit {
 	private celular: PersonContactData;
 	private embarazo: SaludData;
 	public embarazoList: Array<any> = [];
-  public isBeneficiarioTxt = 'Hola';
+  public isBeneficiarioTxt = '';
 
 
   constructor(
