@@ -1858,7 +1858,7 @@ const processArchive = function(req, errcb, cb){
 
 async function saveAlimentarRecord(person, master){
     if(master[person.ndoc]){
-        console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+        //console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
         await Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).exec();
 
     }else{
@@ -1968,7 +1968,7 @@ const processOneAlimentarPerson = function(token, master){
 
     //console.log('Persona [%s] [%s] [%s] [%s]', person.displayName, person.nombre, person.apellido, person.ndoc);
     //console.dir(person.cobertura);
-    //saveAlimentarRecord(person, master);
+    saveAlimentarRecord(person, master);
 }
 
 
