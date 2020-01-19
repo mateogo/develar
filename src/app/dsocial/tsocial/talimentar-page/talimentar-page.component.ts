@@ -186,7 +186,6 @@ export class TalimentarPageComponent implements OnInit {
         this.initContactData(this.contactList);
         this.initEmbarazadaData(this.saludList);
 
-        console.log('personFound');
 
         this.initForEdit(this.form, p);
 
@@ -247,7 +246,6 @@ export class TalimentarPageComponent implements OnInit {
   	}else {
 
   	}
-  	console.log('Embarazo INIT: [%s] [%s]', emb.type, emb.fecha)
 
   	this.embarazo = emb;
 
@@ -539,7 +537,6 @@ export class TalimentarPageComponent implements OnInit {
 
     if(persons.length){
       this.currentPerson = persons[0];
-      console.log('PersonFetched!! [%s]', this.currentPerson.displayName);
 
       this.initCurrentPerson(this.currentPerson);
 
@@ -707,9 +704,7 @@ export class TalimentarPageComponent implements OnInit {
 	}
 
   onSubmit(){
-  	console.log('Submit')
   	this.initForSave(this.form, this.currentPerson);
-  	console.dir(this.currentPerson);
 
     let update: UpdatePersonEvent = {
       action: 'update',
@@ -722,7 +717,6 @@ export class TalimentarPageComponent implements OnInit {
   }
 
   onCancel(){
-  	console.log('Cancel')
   	this.resetForm();
   }
 
