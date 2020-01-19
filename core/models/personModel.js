@@ -1886,7 +1886,6 @@ const buildAlimentarCoreData = function(person, token){
     person.isImported = true;
     person.idbrown = "TALIMENTAR";
     person.alerta = 'Recibe TARJETA ALIMENTAR Club Calzada - Enero 2020 - Día: ' + token.dia + ' - Hora: ' + token.hora;
-
     person.locacion = token.calle + ' ' + token.callenro + ' ' + token.city;
     person.nombre = nombre;
     person.apellido = apellido;
