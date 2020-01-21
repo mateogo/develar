@@ -410,13 +410,38 @@ export class DsocialController {
 
   /************************************^***/
   /******* alimentar Beneficiario ********/
-  /**************************************/
- 
+  /**************************************/ 
   fetchBeneficiario(ndoc: string){
 
     return this.daoService.fetchTarjetaAlimentar<BeneficiarioAlimentar>('beneficiarioalimentar', ndoc);
 
   }
+
+  updateBeneficiario(beneficiario: BeneficiarioAlimentar){
+    let hoy = new Date();
+    beneficiario.estado = 'entregada';
+    beneficiario.fecha = devutils.txFromDate(hoy);
+    beneficiario.fe_ts = hoy.getTime();
+
+    this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
+      console.log('BENEFICIARIO UPDATE OK')
+    
+    })
+
+  }
+
+  fetchTarjetasPorDiaDashboard(fecharef: Date): Observable<any>{
+
+    return this.daoService.fetchTarjetasPorDiaAlimentarDashboard<any>('beneficiarioalimentar', 0);
+
+  }
+
+  fetchTarjetas(query: any): Observable<BeneficiarioAlimentar[]>{
+
+    return this.daoService.search<BeneficiarioAlimentar>('beneficiarioalimentar', query);
+
+  }
+
 
 
   /*****************************/
@@ -984,7 +1009,6 @@ export class DsocialController {
 
   // navigation ROUTER
   atencionRoute(sector): string{
-    console.log('atencioRoute: [%s]', sector);
     if(this.activePerson){
       if(sector === 'alimentos'){
         return ALIMENTOS_ROUTE;

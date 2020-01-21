@@ -149,6 +149,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         title: 'Tarjeta Alimentar',
         routing: '/dsocial/gestion/tarjetaalimentar'
       },
+      {
+        title: 'Tablero Alimentar',
+        routing: '/dsocial/gestion/tableroalimentar'
+      },
     ],
     routing: '',
     externalLink: '',
@@ -709,6 +713,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       {
         title: 'Tarjeta Alimentar',
         routing: '/dsocial/gestion/tarjetaalimentar'
+      },
+      {
+        title: 'Tablero Alimentar',
+        routing: '/dsocial/gestion/tableroalimentar'
       },
     ],
     routing: '',

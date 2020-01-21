@@ -141,9 +141,11 @@ export class DaoService {
         upsertURL:  'api/persons/upsert'
       },
       beneficiarioalimentar:{
-        backendURL: 'api/alimentar',
-        searchURL:  'api/alimentar/beneficiario',
-        upsertURL:  'api/alimentar/upsert'
+        backendURL:   'api/alimentar',
+        searchURL:    'api/alimentar/search',
+        beneficiarioURL:    'api/alimentar/beneficiario',
+        upsertURL:    'api/alimentar/upsert',
+        dashboardURL: 'api/alimentar/tablero',
       },
       parser:{
         backendURL: 'api/parser/highlight'
@@ -296,7 +298,7 @@ export class DaoService {
   }
 
   fetchTarjetaAlimentar<T>(type:string, beneficiario:string): Observable<T[]> {
-    let url = `${this.dao[type].searchURL}/${beneficiario}`;
+    let url = `${this.dao[type].beneficiarioURL}/${beneficiario}`;
 
     return this.http
                .get<T[]>(url)
@@ -334,6 +336,25 @@ export class DaoService {
   }
 
   fetchAsistenciaDashboard<T>(type: string, fecha: number): Observable<T> {
+    let url = `${this.dao[type].dashboardURL}/${fecha}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+  
+  fetchTarjetasPorDiaAlimentarDashboard<T>(type: string, fecha: number): Observable<T> {
+    let url = `${this.dao[type].dashboardURL}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+
+
+  fetchEntregasTAlimentarDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}/${fecha}`;
     return this.http
                .get<T>(url)

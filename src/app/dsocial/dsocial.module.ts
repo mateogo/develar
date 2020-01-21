@@ -83,6 +83,7 @@ import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/
 import { AlimentostableroTableComponent } from './tableros/alimentostablero-table/alimentostablero-table.component';
 import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-page.component';
+import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
 
 @NgModule({
   imports: [
@@ -169,6 +170,7 @@ import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-pa
     AlimentostableroTableComponent,
     AuditPageComponent,
     TalimentarPageComponent,
+    AlimentarDashboardComponent,
   ]
 })
 export class DsocialModule { }

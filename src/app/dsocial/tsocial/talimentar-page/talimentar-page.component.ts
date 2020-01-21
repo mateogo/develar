@@ -96,6 +96,7 @@ export class TalimentarPageComponent implements OnInit {
 	private embarazo: SaludData;
 	public embarazoList: Array<any> = [];
   public isBeneficiarioTxt = '';
+  public registroBancario: BeneficiarioAlimentar;
 
 
   constructor(
@@ -189,7 +190,6 @@ export class TalimentarPageComponent implements OnInit {
 
 
         this.initForEdit(this.form, p);
-        console.log('ALO!!!!')
 
         this.loadBankData(p)
 
@@ -618,6 +618,20 @@ export class TalimentarPageComponent implements OnInit {
     return ok;
   }
 
+  updateCobertura(coberturas: CoberturaData[]) {
+ 
+    if(coberturas && coberturas.length){
+      let token = coberturas.find(t => t.type === 'auh' && t.tingreso === 'talimentar');
+      if(token){
+        token.estado = 'activa';
+        let hoy = new Date();
+        token.fecha = devutils.txFromDate(hoy);
+        token.fe_ts = hoy.getTime();
+      }
+    }
+  }
+
+
   initForEdit(form: FormGroup, person: Person): FormGroup {
   	let embarazo = 'no_definido';
 
@@ -703,6 +717,7 @@ export class TalimentarPageComponent implements OnInit {
 
 
 		}
+    this.updateCobertura(entity.cobertura);
 		//entity.displayName = fvalue.displayName;
 		//entity.email = fvalue.email;
 
@@ -718,6 +733,8 @@ export class TalimentarPageComponent implements OnInit {
       person: this.currentPerson
     };
     this.dsCtrl.updatePerson(update);
+
+    this.dsCtrl.updateBeneficiario(this.registroBancario);
     this.resetForm();
 
   }
@@ -728,12 +745,10 @@ export class TalimentarPageComponent implements OnInit {
 
   loadBankData(person: Person){
     this.dsCtrl.fetchBeneficiario(person.ndoc).subscribe(records => {
-      console.log('loadBankData: [%s]', records&& records.length)
 
       if(records && records.length){
-        let beneficiario = records[0];
-        this.isBeneficiarioTxt = `Autenticado: Caja: ${beneficiario.caja} Orden: ${beneficiario.orden}`;
-        console.log('BENEFICIARIO: [%s]',this.isBeneficiarioTxt )
+        this.registroBancario = records[0];
+        this.isBeneficiarioTxt = `Autenticado: Caja: ${this.registroBancario.caja} Orden: ${this.registroBancario.orden}`;
 
       }
     })

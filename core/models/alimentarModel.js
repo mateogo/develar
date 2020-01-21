@@ -1,5 +1,5 @@
 /**
- * Person model
+ * Beneficiario tarjeta ALIMENTAR model
  */
 /**
  * Load module dependencies
@@ -47,6 +47,16 @@ const datosTarjetaSch = new Schema({
 
 const Beneficiario = mongoose.model('Tarjetaalimentar', datosTarjetaSch, 'tarjetasalimentar');
 
+function buildQuery(query){
+    let q = {};
+
+    if(query.dia){
+        q["dia"] = query.dia;
+    }
+
+    return q;
+
+}
 
 
 exports.load = function (errcb, cb) {
@@ -57,7 +67,24 @@ exports.importarnacion = function (errcb, cb) {
     processDatosBancoArchive(cb);
 }
 
+exports.dashboard = function (errcb, cb) {
+    dashboardProcess(cb);
+}
 
+exports.update = function (id, beneficiario, errcb, cb) {
+
+    Beneficiario.findByIdAndUpdate(id, beneficiario, { new: true }, function(err, entity) {
+        if (err){
+            console.log('[%s]validation error as validate() argument ', whoami)
+            err.itsme = whoami;
+            errcb(err);
+        
+        }else{
+            cb(entity);
+        }
+    });
+
+};
 
 exports.findByDNI = function (id, errcb, cb) {
     let query = {ndoc: id};
@@ -75,7 +102,6 @@ exports.findByDNI = function (id, errcb, cb) {
 }
 
 exports.findById = function (id, errcb, cb) {
-    console.log('Alimentar: [%s]', id);
     let token = {
         tieneBeneficio: false,
         beneficiario: '',
@@ -96,6 +122,93 @@ exports.findById = function (id, errcb, cb) {
 
 };
 
+
+/**
+ * Retrieve records from query /search/?name=something
+ * @param cb
+ * @param errcb
+ */
+exports.findByQuery = function (query, errcb, cb) {
+    let regexQuery = buildQuery(query);
+
+    Beneficiario.find(regexQuery).lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            cb(entities);
+        }
+    });
+};
+
+
+const dashboardProcess = function(cb){
+
+
+
+    Beneficiario.find().lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            processDashboardData(entities, cb)
+        }
+    });
+
+
+}
+
+function processDashboardData(records, cb){
+    let master = {};
+
+    if(records && records.length){
+
+
+        records.forEach(beneficiario => {
+
+            let dia = beneficiario.dia;
+
+            if(!master[dia]){
+                master[dia] = initAcumPorDia(beneficiario);
+            }
+
+            acumPorDia(master[dia], beneficiario.estado)
+        })
+        cb(master);
+
+    }else{
+        cb({error: 'no data'})
+    }
+
+
+
+}
+
+/**
+    {
+        dia:   //día en cuestion
+        total:  // total previstos en ése día
+        entregadas: // total atendidos
+    }
+*/
+
+function acumPorDia(token, estado){
+    token.total += 1;
+    if(estado === 'entregada'){
+        token.entregadas += 1;
+    }
+    token.porciento = token.entregadas / token.total;
+
+}
+
+function initAcumPorDia(beneficiario){
+    return {
+        dia: beneficiario.dia,
+        total: 0,
+        entregadas: 0
+    }
+
+}
 
 const processAlimentarArchive = function(master, cb){
     console.log('******  process ALIMENTAR ARCHIVE to BEGIN ********')

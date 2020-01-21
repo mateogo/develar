@@ -12,6 +12,7 @@ import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashbo
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
 import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
+import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
 
 const routes: Routes = [
 	{
@@ -29,6 +30,10 @@ const routes: Routes = [
 	{
 		path:'tableroremitos',
 		component: AlimentostableroPageComponent
+	},
+	{
+		path:'tableroalimentar',
+		component: AlimentarDashboardComponent
 	},
 	{
 		path:'validacionentregas/:id',

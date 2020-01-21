@@ -1,0 +1,91 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>Entregas de la Tarjeta ALIMENTAR</mat-card-title>
+    <mat-card-subtitle>MUNICIPIO Almte Brown - Banco Nación - {{ hoy }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ fecharef_label}}</mat-card-subtitle>
+	</mat-card-header>
+  <mat-card-content>
+
+  <div class="cards" >
+    <div class="row">
+    <ng-container *ngFor="let card of cards">
+
+        <div (click)="verDetalle($event, card)" class="col-md-4">
+          <card [bgColor]="card.isHoy ? 'danger': 'info'" class="info-card">
+            <div class="title text-uppercase">{{ card.dia }} </div>
+            <div class="count">{{ card.entregadas }}/{{ card.total }}</div>
+            <div class="title text-uppercase">Efectividad: {{ card.porciento }} </div>
+            <!-- badge class="badge-style" (click)="verDetalle($event)"  
+                    [customColor]="isHoy ? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
+                    [borderRadius]="false">Efectividad {{ card.porciento }}</badge --> 
+            <mat-icon>donut_large</mat-icon>
+          </card>
+        </div>
+
+    </ng-container>
+    </div>
+  </div>
+</mat-card-content>
+</mat-card>
+
+
+<ng-container *ngIf="showList">
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title>ESTADO DE ENTREGAS: {{searchDay}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="container">
+      <table class="table table-striped">
+
+        <thead>
+          <tr>
+            <th scope="col" >DNI</th>
+            <th scope="col" >Nombre</th>
+            <th scope="col" >Estado</th>
+            <th scope="col" >Hora</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let token of beneficiariosList" >
+
+            <tr>
+              <td class="{{token.estado}}">{{ token.ndoc}}</td>
+              <td class="{{token.estado}}">{{ token.displayName}}</td>
+              <td class="{{token.estado}}">{{ token.estado || 'pendiente'}}</td>
+              <td class="{{token.estado}}">{{ token.hora }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+
+      </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+
+<!---
+  <ngx-datatable
+    class="material"
+    [rows]="users"
+    columnMode="force"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="35"
+    [limit]="15"
+    [loadingIndicator]="loadingIndicator"
+    >
+
+   <ngx-datatable-column name="Beneficiario/a" prop="displayNme" width="300">
+    </ngx-datatable-column>
+
+   <ngx-datatable-column name="Estado" prop="estado"  width="500">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row['estado']}}
+      </ng-template>
+    </ngx-datatable-column>
+
+  </ngx-datatable>
+-->

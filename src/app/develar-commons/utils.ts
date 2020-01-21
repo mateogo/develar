@@ -25,6 +25,22 @@ const fumeList = [
         {val:'tramo'        , label:'tram'},
 ];
 
+const semana_labels = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
+
+const formatDateToStr = function(date_num) {
+    let prefix = '00';
+
+    let date = date_num ? new Date(date_num) : new Date();
+
+    let da = (prefix+date.getDate()).substr(-prefix.length);
+    let mo = (prefix+(date.getMonth()+1)).substr(-prefix.length);
+    let ye = date.getFullYear();
+
+    let dayOfWeek = date.getDay()
+
+    return semana_labels[dayOfWeek] + ' ' + da + '-' + mo;
+};
+
 const dateToStr = function(date) {
     let prefix = '00';
     date = date ? date : new Date();
@@ -537,6 +553,10 @@ class Devutils {
 	txFromDate(date){
 		return dateToStr(date);
 	}
+
+    txDayFormatFromDate(date_num){
+        return formatDateToStr(date_num);
+    }
 
     txFromDateTime(time: number){
         return dateToStr(new Date(time));
