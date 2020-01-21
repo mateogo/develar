@@ -144,10 +144,10 @@ async function upsertBeneficiario(beneficiario){
 const processDatosBancoArchive = function(cb ){
     console.log('******  process ALIMENTAR DATOS BANCO to BEGIN ********')
     //deploy
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarDatosBancoCsv.csv');
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarDatosBancoCsv.csv');
 
     //local
-    const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarDatosBancoCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarDatosBancoCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
