@@ -38,6 +38,24 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
+          <mat-select #fldEstadoCobertura placeholder="Estado"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstadoCobertura.value)" >
+            <mat-option *ngFor="let item of estados" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fecha']" 
+              placeholder="Fecha de vigencia" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
           <input  matInput [formControl]="form.controls['monto']" 
           		placeholder="ingreso / costo monetario ($/mes)" >
         </mat-form-field>

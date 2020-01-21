@@ -24,6 +24,31 @@ router.get('/load', function (req, res) {
     });
 });
 
+/**
+ * Retrieve Entity by ID
+ */
+router.get('/importarnacion', function (req, res) {
+    service.importarnacion(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+router.get('/beneficiario/:id', function (req, res) {
+    service.findByDNI(req.params.id, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
 router.get('/:id', function (req, res) {
     service.findById(req.params.id, function(err) {
         res.status(400).json(err);

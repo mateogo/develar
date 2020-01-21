@@ -29,6 +29,7 @@ export class CoberturaDataEditComponent implements OnInit {
   public coberturaSubTiposOptList   = personModel.getCoberturaSubTypeList('ingreso');
 
   public coberturaSubList = [];
+  public estados          = personModel.coberturaOptList;
 
 
   private action = "";
@@ -88,6 +89,8 @@ export class CoberturaDataEditComponent implements OnInit {
       type:        [null, Validators.compose( [Validators.required])],
       tingreso:    [null, Validators.compose( [Validators.required])],
       slug:        [null],
+      fecha:       [null],
+      estado:      [null],
       monto:       [null],
       observacion: [null],
     });
@@ -99,6 +102,8 @@ export class CoberturaDataEditComponent implements OnInit {
       type:       token.type,
       tingreso:   token.tingreso,
       slug:       token.slug,
+      fecha:      token.fecha,
+      estado:     token.estado,
       monto:      token.monto,
       observacion: token.observacion,
     });
@@ -108,12 +113,24 @@ export class CoberturaDataEditComponent implements OnInit {
   }
 
   initForSave(form: FormGroup, token: CoberturaData): CoberturaData {
-    const fvalue = form.value;
-    const entity = token; 
+    const entity = token;
+    let   fvalue = form.value;
+    let   fecha_date =  devutils.dateFromTx(fvalue.fecha);
+
+    if(fecha_date){
+      entity.fecha = devutils.txFromDate(fecha_date);
+      entity.fe_ts = fecha_date.getTime();
+
+    }else {
+      entity.fecha = ''
+      entity.fe_ts = 0
+    }
+
 
     entity.type =      fvalue.type;
     entity.tingreso =  fvalue.tingreso;
     entity.slug =      fvalue.slug;
+    entity.estado =    fvalue.estado;
     entity.monto =     fvalue.monto;
     entity.observacion = fvalue.observacion;
     return entity;

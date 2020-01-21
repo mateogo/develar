@@ -19,7 +19,7 @@ import { GenericDialogComponent } from '../develar-commons/generic-dialog/generi
 import { UserService }   from '../entities/user/user.service';
 import { Product, KitProduct } from '../entities/products/product.model';
 
-import { Person, Address, UpdatePersonEvent }        from '../entities/person/person';
+import { Person, Address, BeneficiarioAlimentar, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
@@ -408,6 +408,15 @@ export class DsocialController {
     return this.daoService.fetchAuditEntregas('auditentrega', personId);
   }
 
+  /************************************^***/
+  /******* alimentar Beneficiario ********/
+  /**************************************/
+ 
+  fetchBeneficiario(ndoc: string){
+
+    return this.daoService.fetchTarjetaAlimentar<BeneficiarioAlimentar>('beneficiarioalimentar', ndoc);
+
+  }
 
 
   /*****************************/

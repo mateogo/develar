@@ -233,6 +233,9 @@ const coberturaSch = new mongoose.Schema({
     type:          { type: String, required: true },
     tingreso:      { type: String, required: true },
     slug:          { type: String, required: false },
+    fecha:         { type: String, required: false },
+    fe_ts:         { type: Number, required: false },
+    estado:        { type: String, required: false, default: 'pendiente' },
     monto:         { type: Number, required: false },
     observacion:   { type: String, required: false }
 });
@@ -1363,6 +1366,9 @@ const buildDatosIngresos = function(person, token){
             tingreso: 'ingreso',
             slug: 'ingreso manifestado',
             monto: montoIngresos,
+            estado: 'activa',
+            fecha: '',
+            fe_ts: 0,
             observacion: token.ingresos
         }
         ingresosList.push(ingreso1);
@@ -1374,6 +1380,9 @@ const buildDatosIngresos = function(person, token){
             tingreso: 'osocial',
             slug: token.obra_social_cual,
             monto: 0,
+            estado: 'activa',
+            fecha: '',
+            fe_ts: 0,
             observacion: ''
         }
         ingresosList.push(ingreso2);
@@ -1389,6 +1398,9 @@ const buildDatosIngresos = function(person, token){
                 tingreso: 'pension',
                 slug: token.beneficios,
                 monto: 0,
+                estado: 'activa',
+                fecha: '',
+                fe_ts: 0,
                 observacion: ''
             }
             ingresosList.push(ingreso3);
@@ -1400,6 +1412,9 @@ const buildDatosIngresos = function(person, token){
                 tingreso: 'auh',
                 slug: token.beneficios,
                 monto: 0,
+                estado: 'activa',
+                fecha: '',
+                fe_ts: 0,
                 observacion: ''
             }
             ingresosList.push(ingreso4);
@@ -1411,6 +1426,9 @@ const buildDatosIngresos = function(person, token){
                 tingreso: 'plan',
                 slug: token.beneficios,
                 monto: 0,
+                estado: 'activa',
+                fecha: '',
+                fe_ts: 0,
                 observacion: ''
             }
             ingresosList.push(ingreso5);
@@ -1940,6 +1958,9 @@ const buildAlimentarCobertura = function(person, token){
         tingreso: 'talimentar',
         slug: 'Tarjeta ALIMENTAR entrega prevista: ' + token.dia + ' ' + token.hora,
         monto: 0,
+        estado: 'pendiente',
+        fecha: '',
+        fe_ts: 0,
         observacion: ''
     }
 

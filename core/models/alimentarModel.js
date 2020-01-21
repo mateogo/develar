@@ -20,12 +20,59 @@ const csv = require('csvtojson')
 const master = {};
 
 
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const self = this;
+
+const datosTarjetaSch = new Schema({
+  ndoc:     { type: String, required: true },
+  cuil:     { type: String, required: false },
+  displayName: { type: String, required: false },
+  prov:     { type: String, required: false },
+  city:     { type: String, required: false },
+  calle:    { type: String, required: false },
+  callenro: { type: String, required: false },
+  dia:      { type: String, required: false },
+  hora:     { type: String, required: false },
+  caja:     { type: String, required: false },
+  slug:     { type: String, required: false },
+  orden:    { type: String, required: false },
+  estado:   { type: String, required: false , default: 'pendiente'},
+  fecha:    { type: String, required: false },
+  fe_ts:    { type: Number, required: false, default: 0 },
+});
+ 
+
+const Beneficiario = mongoose.model('Tarjetaalimentar', datosTarjetaSch, 'tarjetasalimentar');
+
+
 
 exports.load = function (errcb, cb) {
     processAlimentarArchive(master, cb);
 }
 
+exports.importarnacion = function (errcb, cb) {
+    processDatosBancoArchive(cb);
+}
 
+
+
+exports.findByDNI = function (id, errcb, cb) {
+    let query = {ndoc: id};
+
+    Beneficiario.find(query).lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            cb(entities);
+        }
+    });
+
+
+}
 
 exports.findById = function (id, errcb, cb) {
     console.log('Alimentar: [%s]', id);
@@ -81,4 +128,54 @@ const processAlimentarArchive = function(master, cb){
     });
 }
 
+async function upsertBeneficiario(beneficiario){
+    //let beneficiario = new Beneficiario(beneficiario);
+    //delete beneficiario._id;
+
+    let query = {ndoc: beneficiario.ndoc};
+    //console.dir(beneficiario)
+
+
+    await Beneficiario.findOneAndUpdate(query, beneficiario, {new: true, upsert: true});
+
+}
+
+
+const processDatosBancoArchive = function(cb ){
+    console.log('******  process ALIMENTAR DATOS BANCO to BEGIN ********')
+    //deploy
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarDatosBancoCsv.csv');
+
+    //local
+    const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarDatosBancoCsv.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    let count = 0;
+
+    csv({delimiter: ';'})
+    .fromFile(arch)
+    .then((persons) => {
+
+        persons.forEach(per => {
+            count +=1;
+
+            if(true) {
+                upsertBeneficiario(per);
+            }
+
+
+        })
+                    
+        console.log('******  processARCHIVE OK ********')
+        cb({process: 'OK ' + count});
+
+    });
+}
 

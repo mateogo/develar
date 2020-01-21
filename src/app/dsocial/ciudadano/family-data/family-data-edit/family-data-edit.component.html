@@ -116,9 +116,9 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <mat-select #fldNestudios placeholder="Estado del vínculo"
+          <mat-select #fldEstadoVinculo placeholder="Estado del vínculo"
               [formControl]="form.controls['estado']"
-              (selectionChange)="changeSelectionValue('estado',fldNestudios.value)" >
+              (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)" >
             <mat-option *ngFor="let item of estados" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>

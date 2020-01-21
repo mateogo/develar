@@ -126,6 +126,9 @@ export class CoberturaData {
     slug: string = '';
     monto: number = 0;
     observacion: string = '';
+    fecha: string = '';
+    fe_ts: number = 0;
+    estado: string = '';
 }
 
 export class EncuestaAmbiental {
@@ -250,6 +253,29 @@ export class BusinessMembersData {
     hasta: string;
     comentario: string;
     assets: Array<CardGraph> = [];
+}
+
+export class BeneficiarioAlimentar {
+  id: string;
+  _id: string;
+
+  ndoc:     string;
+  cuil:     string;
+  displayName: string;
+  prov:     string;
+  city:     string;
+  calle:    string;
+  callenro: string;
+  dia:      string;
+  hora:     string;
+  caja:     string;
+  slug:     string;
+  orden:    string;
+  estado:   string = 'pendiente';
+  fecha:    string;
+  fe_ts:    number = 0;
+
+
 }
 
 
@@ -707,6 +733,14 @@ const coberturaOptList: Array<any> = [
     {val: 'asismunicipal',  label: 'Asis municipal',    },
     {val: 'otros',          label: 'Otras coberturas/asistencias',    },
 ];
+
+const estadoCoberturaOptList: Array<any> = [
+    {val: 'pendiente',     label: 'Pendiente'  },
+    {val: 'activa',        label: 'Activa'     },
+    {val: 'suspendida',    label: 'Suspendida' },
+    {val: 'baja',          label: 'Baja'       },
+];
+
 
 const coberturaSubtiposOptList = {
   ingreso: [
@@ -1537,6 +1571,15 @@ class PersonModel {
     getCoberturaSubTypeList(type): Array<any> {
       return coberturaSubtiposOptList[type] || coberturaSubtiposOptList['ingreso'];
     }
+
+    get coberturaOptList():Array<any>{
+      return estadoCoberturaOptList;
+    }
+
+    getCoberturaEsadoLabel(item){
+        return getLabel(item, estadoCoberturaOptList);
+    }
+
     // END Datos de cobertura
 
     // Datos de Contacto

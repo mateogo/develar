@@ -140,6 +140,11 @@ export class DaoService {
         searchURL:  'api/persons/search',
         upsertURL:  'api/persons/upsert'
       },
+      beneficiarioalimentar:{
+        backendURL: 'api/alimentar',
+        searchURL:  'api/alimentar/beneficiario',
+        upsertURL:  'api/alimentar/upsert'
+      },
       parser:{
         backendURL: 'api/parser/highlight'
       },
@@ -285,6 +290,16 @@ export class DaoService {
 
     return this.http
                .get<T[]>(url, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
+  fetchTarjetaAlimentar<T>(type:string, beneficiario:string): Observable<T[]> {
+    let url = `${this.dao[type].searchURL}/${beneficiario}`;
+
+    return this.http
+               .get<T[]>(url)
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
                  );

@@ -18,6 +18,7 @@ import {  Person,
           SaludData,
           CoberturaData,
           EncuestaAmbiental,
+          BeneficiarioAlimentar,
           personModel,
 
           UpdatePersonEvent,
@@ -180,7 +181,7 @@ export class TalimentarPageComponent implements OnInit {
       this.coberturaList = p.cobertura || [];
 
       if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
-        this.isBeneficiarioTxt = 'Beneficiario validado';
+        this.isBeneficiarioTxt = 'Beneficiario VALIDADO';
 
         this.audit = this.dsCtrl.getAuditData();
         this.initContactData(this.contactList);
@@ -188,6 +189,11 @@ export class TalimentarPageComponent implements OnInit {
 
 
         this.initForEdit(this.form, p);
+        console.log('ALO!!!!')
+
+        this.loadBankData(p)
+
+
 
         setTimeout(()=> {
           this.hasCurrentPerson = true;
@@ -718,6 +724,20 @@ export class TalimentarPageComponent implements OnInit {
 
   onCancel(){
   	this.resetForm();
+  }
+
+  loadBankData(person: Person){
+    this.dsCtrl.fetchBeneficiario(person.ndoc).subscribe(records => {
+      console.log('loadBankData: [%s]', records&& records.length)
+
+      if(records && records.length){
+        let beneficiario = records[0];
+        this.isBeneficiarioTxt = `Autenticado: Caja: ${beneficiario.caja} Orden: ${beneficiario.orden}`;
+        console.log('BENEFICIARIO: [%s]',this.isBeneficiarioTxt )
+
+      }
+    })
+
   }
 
 
