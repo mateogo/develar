@@ -95,7 +95,8 @@ export class TalimentarPageComponent implements OnInit {
 	private celular: PersonContactData;
 	private embarazo: SaludData;
 	public embarazoList: Array<any> = [];
-  public isBeneficiarioTxt = '';
+  public  isBeneficiarioTxt = '';
+  private numeroCaja = '';
   public registroBancario: BeneficiarioAlimentar;
 
 
@@ -173,6 +174,7 @@ export class TalimentarPageComponent implements OnInit {
     //   return;
     // }
     this.isBeneficiarioTxt = '';
+    this.numeroCaja = '';
 
     if(p){
       this.currentPerson = p;
@@ -182,7 +184,7 @@ export class TalimentarPageComponent implements OnInit {
       this.coberturaList = p.cobertura || [];
 
       if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
-        this.isBeneficiarioTxt = 'Beneficiario VALIDADO';
+        this.isBeneficiarioTxt = 'Beneficiario/a VALIDADO';
 
         this.audit = this.dsCtrl.getAuditData();
         this.initContactData(this.contactList);
@@ -553,6 +555,7 @@ export class TalimentarPageComponent implements OnInit {
   }
 
   private resetForm(){
+
       this.altaPersona = false;
       this.personFound = false;
 
@@ -725,6 +728,8 @@ export class TalimentarPageComponent implements OnInit {
 	}
 
   onSubmit(){
+    this.isBeneficiarioTxt = this.numeroCaja;
+
   	this.initForSave(this.form, this.currentPerson);
 
     let update: UpdatePersonEvent = {
@@ -743,12 +748,20 @@ export class TalimentarPageComponent implements OnInit {
   	this.resetForm();
   }
 
+  onAnularEntrega(){
+    this.dsCtrl.anularEntregaBeneficiario(this.registroBancario);
+    this.isBeneficiarioTxt = `Entrega ANULADA`;
+    this.resetForm();
+  }
+
+
   loadBankData(person: Person){
     this.dsCtrl.fetchBeneficiario(person.ndoc).subscribe(records => {
 
       if(records && records.length){
         this.registroBancario = records[0];
-        this.isBeneficiarioTxt = `Autenticado: Caja: ${this.registroBancario.caja} Orden: ${this.registroBancario.orden}`;
+        this.numeroCaja = `Caja: ${this.registroBancario.caja} Orden: ${this.registroBancario.orden}`;
+        this.isBeneficiarioTxt = `Beneficiario/a validado`;
 
       }
     })

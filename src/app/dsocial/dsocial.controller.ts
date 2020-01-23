@@ -424,7 +424,20 @@ export class DsocialController {
     beneficiario.fe_ts = hoy.getTime();
 
     this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
-      console.log('BENEFICIARIO UPDATE OK')
+      //console.log('BENEFICIARIO UPDATE OK')
+    
+    })
+
+  }
+
+  anularEntregaBeneficiario(beneficiario: BeneficiarioAlimentar){
+    let hoy = new Date();
+    beneficiario.estado = 'pendiente';
+    beneficiario.fecha = devutils.txFromDate(hoy);
+    beneficiario.fe_ts = hoy.getTime();
+
+    this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
+      //console.log('BENEFICIARIO ANULACIÓN ENTREGA OK')
     
     })
 
