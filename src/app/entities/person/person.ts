@@ -274,6 +274,8 @@ export class BeneficiarioAlimentar {
   estado:   string = 'pendiente';
   fecha:    string;
   fe_ts:    number = 0;
+  email:   string;
+  celular: string;
 
 
 }

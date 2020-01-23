@@ -196,8 +196,8 @@ function processDashboardData(records, cb){
         // master['lunes 20-01'].entregadas  = 1591;
         // master['lunes 20-01'].porciento  = master['lunes 20-01'].entregadas / master['lunes 20-01'].total * 100;
 
-        master['martes 21-01'].entregadas = 1887;
-        master['martes 21-01'].porciento  = master['martes 21-01'].entregadas / master['martes 21-01'].total * 100;
+        //master['martes 21-01'].entregadas = 1887;
+        //master['martes 21-01'].porciento  = master['martes 21-01'].entregadas / master['martes 21-01'].total * 100;
         cb(master);
 
     }else{
@@ -293,7 +293,19 @@ async function upsertBeneficiario(beneficiario, today){
 
 
     if(editCaja){
+        let token = {
+            caja: beneficiario.caja,
+            orden: beneficiario.orden,
+            dia: beneficiario.dia,
+            hora: beneficiario.hora
+        }
 
+        await Beneficiario.findOneAndUpdate(query, token, {new: true, upsert: true});
+
+    }
+
+    if(false){
+        await Beneficiario.findOneAndUpdate(query, beneficiario, {new: true, upsert: true});
     }
     //console.dir(beneficiario)
 
