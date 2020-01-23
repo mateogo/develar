@@ -13,6 +13,7 @@ const config = require('../config/config')
 const fs = require('fs');
 const path = require('path');
 const utils = require('../services/commons.utils');
+const person = require('./personModel');
 
 const csv = require('csvtojson')
 
@@ -42,6 +43,8 @@ const datosTarjetaSch = new Schema({
   estado:   { type: String, required: false , default: 'pendiente'},
   fecha:    { type: String, required: false },
   fe_ts:    { type: Number, required: false, default: 0 },
+  email:    { type: String, required: false },
+  celular:    { type: String, required: false },
 });
  
 
@@ -52,6 +55,16 @@ function buildQuery(query){
 
     if(query.dia){
         q["dia"] = query.dia;
+    }
+
+    if(query.estado){
+        if(query.estado === 'pendiente'){
+            q["estado"] = {$ne: 'entregada'}
+
+        }else if(query.estado === 'entregada'){
+            q["estado"] = "entregada";
+
+        }
     }
 
     return q;
@@ -65,6 +78,10 @@ exports.load = function (errcb, cb) {
 
 exports.importarnacion = function (errcb, cb) {
     processDatosBancoArchive(cb);
+}
+
+exports.buildcontactdata = function (errcb, cb) {
+    processContactData(cb);
 }
 
 exports.dashboard = function (errcb, cb) {
@@ -176,8 +193,8 @@ function processDashboardData(records, cb){
         })
 
         //Trucho OjO
-        master['lunes 20-01'].entregadas  = 1591;
-        master['lunes 20-01'].porciento  = master['lunes 20-01'].entregadas / master['lunes 20-01'].total * 100;
+        // master['lunes 20-01'].entregadas  = 1591;
+        // master['lunes 20-01'].porciento  = master['lunes 20-01'].entregadas / master['lunes 20-01'].total * 100;
 
         master['martes 21-01'].entregadas = 1887;
         master['martes 21-01'].porciento  = master['martes 21-01'].entregadas / master['martes 21-01'].total * 100;
@@ -248,21 +265,46 @@ const processAlimentarArchive = function(master, cb){
     });
 }
 
-async function upsertBeneficiario(beneficiario){
+async function upsertBeneficiario(beneficiario, today){
     //let beneficiario = new Beneficiario(beneficiario);
     //delete beneficiario._id;
 
     let query = {ndoc: beneficiario.ndoc};
+    let editEntrega = beneficiario && beneficiario.editEntrega && beneficiario.editEntrega === "1";
+
+    let editCaja = beneficiario && beneficiario.editCaja && beneficiario.editCaja === "1";
+
+    console.log('Procesando: [%s]:[%s] [%s]:[%s]  [%s]', editEntrega,beneficiario.editEntrega, editCaja,beneficiario.editCaja, beneficiario.displayName);
+
+    if(editEntrega){
+        let isEntregada = beneficiario && beneficiario.entregada && beneficiario.entregada === "1";
+        let token = {
+            estado: 'entregada',
+            fecha: utils.dateToStr(today),
+            fe_ts: today.getTime(),
+        }
+
+        if(!isEntregada){
+            token.estado = 'pendiente';
+        }
+
+        await Beneficiario.findOneAndUpdate(query, token, {new: true, upsert: true});
+    }
+
+
+    if(editCaja){
+
+    }
     //console.dir(beneficiario)
 
 
-    await Beneficiario.findOneAndUpdate(query, beneficiario, {new: true, upsert: true});
 
 }
 
 
 const processDatosBancoArchive = function(cb ){
     console.log('******  process ALIMENTAR DATOS BANCO to BEGIN ********')
+    const today = new Date();
     //deploy
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarDatosBancoCsv.csv');
 
@@ -287,7 +329,7 @@ const processDatosBancoArchive = function(cb ){
             count +=1;
 
             if(true) {
-                upsertBeneficiario(per);
+                upsertBeneficiario(per, today);
             }
 
 
@@ -298,4 +340,76 @@ const processDatosBancoArchive = function(cb ){
 
     });
 }
+
+
+const processContactData = function(cb){
+    console.log('******  process ALIMENTAR BUILD CONTACT-DATA to BEGIN ********')
+    const today = new Date();
+
+    person.buildInvertedTreeForContactData().then(pTree =>{
+        console.log('BuildPersonTree fullFilled');
+
+        Beneficiario.find().lean().exec(function(err, entities) {
+            if (err) {
+                console.log('[%s] processContactData ERROR: [%s]',whoami, err)
+                errcb(err);
+            }else{
+                buildContactData(pTree, entities, cb)
+            }
+        });
+
+        cb({proceso: "Cumplido OK"})
+
+
+
+
+    });
+
+
+
+}
+
+
+
+function buildContactData(pTree, beneficiarios, cb){
+    if(beneficiarios && beneficiarios.length){
+        beneficiarios.forEach(bene => {
+            let ndoc = bene.ndoc;
+            if(pTree[ndoc] && pTree[ndoc].contactdata && pTree[ndoc].contactdata.length){
+                updateContactData(bene, pTree[ndoc].contactdata);
+            }
+        })
+
+
+
+
+    }
+
+}
+
+function updateContactData(beneficiario, cdata){
+    let mail = '';
+    let celu = '';
+    cdata.forEach(data => {
+        if(data.tdato === "CEL"){
+            celu = celu ? data.data + " / " + celu : data.data;
+        }
+
+        if(data.tdato === "MAIL"){
+            mail = mail ? data.data + " / " + mail : data.data;
+        }
+    })
+
+    if(mail || celu){
+        let contact_data = {email: mail, celular: celu};
+        let query = {ndoc: beneficiario.ndoc};
+        insertContacData(query, contact_data);
+
+    }
+}
+
+async function insertContacData(query, token){
+        await Beneficiario.findOneAndUpdate(query, token, {new: true, upsert: true});
+}
+
 

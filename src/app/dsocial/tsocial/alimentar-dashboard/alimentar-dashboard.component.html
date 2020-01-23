@@ -10,14 +10,18 @@
     <div class="row">
     <ng-container *ngFor="let card of cards">
 
-        <div (click)="verDetalle($event, card)" class="col-md-4">
+        <div class="col-md-4">
           <card [bgColor]="card.isHoy ? 'danger': 'info'" class="info-card">
             <div class="title text-uppercase">{{ card.dia }} </div>
             <div class="count">{{ card.entregadas }}/{{ card.total }}</div>
             <div class="title text-uppercase">Efectividad: {{ card.porciento }} </div>
-            <!-- badge class="badge-style" (click)="verDetalle($event)"  
-                    [customColor]="isHoy ? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
-                    [borderRadius]="false">Efectividad {{ card.porciento }}</badge --> 
+            <badge class="badge-style" (click)="verEntregadas($event, card)" 
+                    [customColor]="card.isHoy ? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
+                    [borderRadius]="false">Entregadas </badge>
+
+            <badge class="badge-style" (click)="verRemanentes($event, card)" 
+                    [customColor]="card.isHoy ? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
+                    [borderRadius]="false">Remanente </badge>
             <mat-icon>donut_large</mat-icon>
           </card>
         </div>
@@ -44,6 +48,10 @@
             <th scope="col" >Nombre</th>
             <th scope="col" >Estado</th>
             <th scope="col" >Hora</th>
+            <th scope="col" >Caja</th>
+            <th scope="col" >Orden</th>
+            <th scope="col" >Celular</th>
+            <th scope="col" >Correo</th>
           </tr>
         </thead>
 
@@ -55,6 +63,10 @@
               <td class="{{token.estado}}">{{ token.displayName}}</td>
               <td class="{{token.estado}}">{{ token.estado || 'pendiente'}}</td>
               <td class="{{token.estado}}">{{ token.hora }}</td>
+              <td class="{{token.estado}}">{{ token.caja }}</td>
+              <td class="{{token.estado}}">{{ token.orden }}</td>
+              <td class="{{token.estado}}">{{ token.celular }}</td>
+              <td class="{{token.estado}}">{{ token.email }}</td>
             </tr>
           </ng-container>
         </tbody>

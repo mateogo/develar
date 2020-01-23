@@ -2158,4 +2158,32 @@ exports.buildInvertedTree = function(){
 }
 
 
+exports.buildInvertedTreeForContactData = function(){
+    let promise = new Promise((resolve, reject)=> {
+        Person.find(null, '_id displayName tdoc ndoc contactdata').lean().then(persons => {
+            let master = {};
+            persons.forEach(p => {
+                if(p.ndoc){
+                    master[p.ndoc] = {
+                        _id: p._id,
+                        tdoc: p.tdoc,
+                        ndoc: p.ndoc,
+                        displayName: p.displayName,
+                        contactdata: p.contactdata
+                    }
+                }
+
+            })
+            resolve(master);
+
+        })
+
+
+    });
+
+
+
+    return promise;
+}
+
 
