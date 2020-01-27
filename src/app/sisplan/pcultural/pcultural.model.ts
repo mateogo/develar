@@ -87,7 +87,7 @@ export class PculturalBrowse {
     programa:     string;
     formato:      string;
     publico:      string;
-    estado:       string = 'activo';
+    estado:       string;
     avance:       string;
     personId:     string;
 }
