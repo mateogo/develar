@@ -16,7 +16,6 @@ export class ObservacionesController {
 
 
   manageObservacionRecord(observacion:Observacion ): Subject<Observacion>{
-    console.log('controller')
     let listener = new Subject<Observacion>();
     let type = 'observacion';
 
@@ -68,10 +67,10 @@ export class ObservacionesController {
   }
 
 
-  fetchObservacionesByPerson(personId:string){
+  fetchObservacionesByParent(entity:string, id:string){
     let query = {
-    	entityType: 'person',
-      entityId: personId
+    	entityType: entity,
+      entityId: id
     }
     return this.daoService.search<Observacion>('observacion', query);
   }

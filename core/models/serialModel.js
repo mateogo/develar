@@ -66,6 +66,10 @@ serialSch.pre('save', function (next) {
 
 const tserialConfig = [
     {
+      tserial: 'pcultural',
+      usecase: 'Eventos culturales CCK',
+    },
+    {
       tserial: 'turnodiario',
       usecase: 'turnos que se otorgan en un mostrador a lo largo del día.',
     },
@@ -168,7 +172,25 @@ const serialTypeConfig = {
     resetDay: false,
     createOnTheFly: true,
     slug: 'Serial de vales de entrega almacen DSocial',
+  },
+
+  pcultural: {
+    name: ['pcultural'],
+    tserial: ['pcultural'],
+    sector: ['produccion', 'operaciones'],
+    tdoc: ['evento'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'EVENTO',
+    compName: 'S/Evento',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'Serial de eventos culturales (proyectos culturales pcultural)',
   }
+
 
 }
 

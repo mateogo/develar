@@ -1,0 +1,49 @@
+//background-color: #283593;
+//background-color: #2e3e50;
+//background-color: #3c4e62;
+//background-color: #5c6e82;
+//background-color: #5d6ee0;
+//background-color: #758290;
+//background-color: #7e8a97;
+
+.mat-toolbar {
+	background-color: #5c6582;
+	color: white;
+	height: 55px;
+}
+.mat-toolbar-row {
+}
+
+.toolbar {
+	flex: 1 1 auto;
+}
+
+agm-map {
+	height: 300px;
+}
+
+.toolbar-content {
+	//flex: 1;
+}
+
+.panel-header-control {
+		font-weight: 400;
+		font-size: 1.2rem;
+		text-align: right;
+		margin-right: 30px;
+
+		.mat-button-toggle {
+		}
+}
+
+.panel-header{
+		background-color: #f2eded;
+		height: 50px;
+}
+
+.panel-header-text {
+		margin: 0 0 0 15px;
+		font-weight: 700;
+		font-size: 1.2rem;
+}
+

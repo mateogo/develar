@@ -14,9 +14,10 @@ import { 	UpdateObservacionEvent, ObservacionesHelper } from '../observaciones.h
 })
 export class ObservacionesViewComponent implements OnInit {
 	@Input() token: Observacion;
+  @Input() type: string = 'type';
 
 	public fecha;
-  public type;
+  public typeLabel;
   public observacion;
 
   public audit;
@@ -24,7 +25,7 @@ export class ObservacionesViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	this.type = ObservacionesHelper.getOptionLabel('type', this.token.type);
+  	this.typeLabel = ObservacionesHelper.getOptionLabel(this.type, this.token.type);
   	this.observacion = this.token.observacion;
   	this.fecha = this.token.fe_tx;
     this.audit = this.buildAudit(this.token);

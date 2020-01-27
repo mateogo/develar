@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-content>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+  </mat-card-content>
+</mat-card>
+
+<div 	*ngIf="hasCurrentPcultural" >
+	<pcultural-core-base [pcultural]='currentPcultural'
+						(updatePcultural)='updateCore($event)' ></pcultural-core-base>
+
+
+
+	<observaciones-panel 
+		 							[audit]='audit'
+		 							[type]="'cck'"
+		 							[parent]='parentEntity' ></observaciones-panel>
+
+</div>
+

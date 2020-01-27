@@ -120,11 +120,26 @@ const ayudaSocialRoutes: Routes = [
   }
 ];
 
+const cckGestionRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: () => import('./sisplan/sisplan.module').then(m => m.SisplanModule)
+  }
+];
+
 const dsocialRoutes: Routes = [
   {
     path: 'gestion',
     component: DefaultLayoutComponent,
     children: ayudaSocialRoutes
+  },
+];
+
+const cckRoutes: Routes = [
+  {
+    path: 'gestion',
+    component: DefaultLayoutComponent,
+    children: cckGestionRoutes
   },
 ];
 
@@ -229,6 +244,10 @@ const routes: Routes = [
   {
     path: 'seguridadvial',
     children: mainRoutes
+  },
+  {
+    path: 'cck',
+    children: cckRoutes
   },
   {
     path: 'dsocial',

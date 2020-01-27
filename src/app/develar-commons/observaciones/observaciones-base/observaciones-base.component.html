@@ -12,12 +12,13 @@
 
 		 	<div class="col-md-11">
 		  	<ng-container *ngIf="showView">
-					<observaciones-view [token]='observacion'></observaciones-view>
+					<observaciones-view [type]="type" [token]='observacion'></observaciones-view>
 				</ng-container>
 
 			
 				<ng-container *ngIf="showEditPanel">
 					<observaciones-edit [token]='observacion'
+						              [type]="type"
 					 								(updateToken)='manageBase($event)' ></observaciones-edit>
 				</ng-container>
 			</div>

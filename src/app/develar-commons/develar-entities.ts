@@ -29,6 +29,36 @@ const newEntityConfirm = {
 };
 
 
+export class Serial {
+    type:string;
+    name:string;
+    tserial:string;
+    sector:string;
+    tdoc:string;
+    letra:string;
+    anio:number;
+    mes:number;
+    dia:number;
+    estado:string;
+    punto:number;
+    pnumero:number;
+    offset:number;
+    slug:string;
+    compPrefix:string;
+    compName:string;
+    showAnio:boolean;
+    resetDay:boolean;
+    fe_ult:number;
+}
+
+const LETRAS = ['X', 'Q', 'J', 'A', 'D'];
+// X:normal; Q:especiales; J:tercera edad; A:bebes; D:direccion
+
+function letraSerial(peso): string{
+  if(!peso || peso > 4 || peso < 0) peso = 0;
+
+  return LETRAS[peso];
+}
 
 
 /*************

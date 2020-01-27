@@ -26,9 +26,26 @@ const observacionesTypeOptList: Array<any> = [
 
 ];
 
+const observacionesCCKOptList: Array<any> = [
+		{val: 'general',      type: 'General',         label: 'General' },
+		{val: 'tramitacion',  type: 'Tramitación',     label: 'Tramitación' },
+		{val: 'reclamo',      type: 'Reclamo',         label: 'Reclamo' },
+		{val: 'articulacion', type: 'Articulación',    label: 'Articulación' },
+    {val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
+    {val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
+    {val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
+    {val: 'entrevista',   type: 'entrevista',      label: 'Entrevista' },
+    {val: 'informe',      type: 'informe',         label: 'Informe ' },
+    {val: 'relevamiento', type: 'relevamiento',    label: 'Relevam ' },
+    {val: 'otros',        type: 'otros',           label: 'Otros' },
+    {val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
+
+];
+
 const optionsLists = {
 		default: observacionesTypeOptList,
 		type: observacionesTypeOptList,
+		cck:  observacionesCCKOptList,
 };
 
 function getLabel(list, val){

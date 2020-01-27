@@ -1,0 +1,19 @@
+<div class="container-fluid">
+ 	<div class="row">
+ 		<div class="col-sm-12 col-md-12">
+ 			<p class='text-destacado'> {{ programa }} :: {{ slug }}</p>
+
+			<p class='text-resaltado'>
+				{{ compName }}:{{ compNum }} :: {{ sede }} - <strong>{{ locacion }}</strong>
+			</p>
+ 			<p class='text-normal'>{{ pcultural.description }} </p>
+ 			<p class='text-normal'><strong>{{ type }}: </strong> {{ stype }} - 
+ 				 <strong>Público: </strong> {{ publico }}  <strong>Formato: </strong> {{formato}}</p>
+ 			<p class='text-normal'><strong> {{ pcultural.fecomp }} - Área: </strong> {{ sector }} </p>
+ 			<p class='text-normal'>{{ estado }} </p>
+ 			<button mat-button (click)="navigate(pcultural)" type="button" 
+ 							color="accent">Ir a este Evento</button>
+
+ 		</div>
+	</div>
+</div>

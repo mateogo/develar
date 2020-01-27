@@ -22,6 +22,7 @@ const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
 })
 export class ObservacionesBaseComponent implements OnInit {
 	@Input() observacion: Observacion;
+  @Input() type: string = 'type';
 
 	@Output() updateToken = new EventEmitter<UpdateObservacionEvent>();
 

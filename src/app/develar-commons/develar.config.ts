@@ -4,9 +4,47 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'cck';
 
 const globals = {
+
+	cck: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'CCK',
+		mainmenu: 'cck',
+		mainmenutpl: 'default-navbar',
+		admintarget: '/cck/gestion/proyectos/navegar',
+		dashboard: '/cck/gestion/proyectos/navegar',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[CCK] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2020 - CCK  (v1.1-20.01.25) ',
+		version: '1.0 beta',
+		url: 'www.develar.co'
+	},
+
+	develar: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'develar',
+		admintarget: '/develar/fichas/lista',
+		dashboard: '/develar/fichas/lista',
+		mainmenu: 'DEFAULT',
+		mainmenutpl: 'default-navbar',
+		database: 'develar',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[develar] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 dvlr ',
+		version: '1.0',
+		url: 'www.develar.co'
+	},
+
 
 	dsocial: {
 		logoAvatar: 'avatar-develar.jpg',
@@ -42,6 +80,7 @@ const globals = {
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
+
 	fundetec: {
 		logoAvatar: 'avatar-fundetec.jpg',
 		logoUser: 'avatar-u-fundetec.jpg',
@@ -76,25 +115,6 @@ const globals = {
 		copyright: '© Copyright 2019 dvlr ',
 		version: '1.0',
 		url: 'www.lasargentinas.digital'
-	},
-
-	develar: {
-		logoAvatar: 'avatar-develar.jpg',
-		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo-publico.png',
-		logoCompany2: 'logo-publico.png',
-		company: 'develar',
-		admintarget: '/develar/fichas/lista',
-		dashboard: '/develar/fichas/lista',
-		mainmenu: 'DEFAULT',
-		mainmenutpl: 'default-navbar',
-		database: 'develar',
-		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
-		emailsubject: '[develar] Contacto',
-		emailbody: 'Formulario de contacto completado',
-		copyright: '© Copyright 2019 dvlr ',
-		version: '1.0',
-		url: 'www.develar.co'
 	},
 
 	picris: {

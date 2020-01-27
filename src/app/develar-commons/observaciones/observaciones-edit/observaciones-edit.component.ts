@@ -21,9 +21,10 @@ const DELETE = 'delete';
 })
 export class ObservacionesEditComponent implements OnInit {
 	@Input() token: Observacion;
+  @Input() type: string = 'type';
 	@Output() updateToken = new EventEmitter<UpdateObservacionEvent>();
 
-  public typeOptList =  ObservacionesHelper.getOptionlist('type');
+  public typeOptList = [];
 
 	public form: FormGroup;
 
@@ -39,6 +40,8 @@ export class ObservacionesEditComponent implements OnInit {
 
 
   ngOnInit() {
+    this.typeOptList = ObservacionesHelper.getOptionlist(this.type);
+
   	this.initForEdit(this.form, this.token);
 
   }

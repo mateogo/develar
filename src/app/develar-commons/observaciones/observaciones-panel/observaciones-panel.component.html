@@ -17,6 +17,7 @@
 		 	<div  *ngFor="let item of items" class="row">
 		 		<div class="col-sm-12 col-md-12">
 		 			<observaciones-base [observacion]='item'
+		 										[type]="type"
 												(updateToken)='updateItem($event)'></observaciones-base>
 		 		</div>
 

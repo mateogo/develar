@@ -23,12 +23,13 @@ const TOKEN_TYPE = 'observacion';
 export class ObservacionesPanelComponent implements OnInit {
 	@Input() audit: Audit;
 	@Input() parent: ParentEntity;
+  @Input() type: string = 'type';
 
   constructor(
   		private obsCtrl: ObservacionesController
   	) { }
 
-  public title = 'Historial de observaciones';
+  public title = 'Observaciones';
 	public showList = false;
   public openEditor = true;
 
@@ -44,7 +45,7 @@ export class ObservacionesPanelComponent implements OnInit {
   }
 
   loadObservaciones(){
-    this.obsCtrl.fetchObservacionesByPerson(this.parent.entityId).subscribe(observaciones => {
+    this.obsCtrl.fetchObservacionesByParent(this.parent.entityType, this.parent.entityId).subscribe(observaciones => {
       if(observaciones && observaciones.length){
 
         this.sortProperly(observaciones);
@@ -64,10 +65,9 @@ export class ObservacionesPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateObservacionEvent){
-    console.log('observaciones PANEL ready to INSERT')
+
     if(event.action === UPDATE){
       this.obsCtrl.manageObservacionRecord(event.token).subscribe(obs =>{
-        console.log('SUCESS');
         if(obs){
           event.token = obs;
         }
