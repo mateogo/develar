@@ -82,7 +82,7 @@
 
       <div class="col">
         <mat-form-field>
-          <mat-select #fldSector placeholder="Producción"
+          <mat-select #fldSector placeholder="Área ejecutiva"
               [formControl]="form.controls['sector']"
               (selectionChange)="changeSelectionValue('sector',fldSector.value)" >
             <mat-option *ngFor="let item of sectorOptList" 

@@ -115,9 +115,13 @@ const publicoOptList: Array<any> = [
 const formatoOptList: Array<any> = [
         {val: 'no_definido',   label: 'Sin selección' },
         {val: 'ciclo',         label: 'Ciclo'     },
+        {val: 'concierto',     label: 'Concierto'     },
+        {val: 'ensamble',      label: 'Ensamble'     },
         {val: 'taller',        label: 'Taller'     },
         {val: 'seminario',     label: 'Seminario'     },
         {val: 'congreso',      label: 'Congreso'     },
+        {val: 'milonga',       label: 'Milonga'     },
+        {val: 'evento',        label: 'Evento'     },
         {val: 'muestraap',     label: 'Muestra Artes Plásticas'     },
 ];
 
@@ -125,7 +129,11 @@ const tipoEventoOptList: Array<any> = [
         {val: 'no_definido',    label: 'Sin selección' },
         {val: 'musica',         label: 'Música'     },
         {val: 'milonga',        label: 'Milonga'    },
+        {val: 'danza',          label: 'Danza'      },
         {val: 'literatura',     label: 'Literatura' },
+        {val: 'cine',           label: 'Cine' },
+        {val: 'tallerinfantil', label: 'Taller infantil' },
+        {val: 'especial',       label: 'Evento especial' },
 ];
 
 const sectorOptList: Array<any> = [
@@ -139,6 +147,7 @@ const stipoEventoMap = {
   musica: [
     {val: 'academica',   label: 'Académica' },
     {val: 'popular',     label: 'Popular' },
+    {val: 'concierto',   label: 'Concierto' },
     {val: 'karaoke',     label: 'Karaoke' },
     {val: 'organo',      label: 'Órgano' },
     {val: 'homenaje',    label: 'Homenaje' },
@@ -153,6 +162,25 @@ const stipoEventoMap = {
     {val: 'poesia',      label: 'Poesía' },
     {val: 'homenaje',    label: 'Homenaje' },
   ],
+
+  tallerinfantil: [
+    {val: 'taller',     label: 'Inespecífico' },
+  ],
+
+  danza: [
+    {val: 'danza',     label: 'Inespecífico' },
+  ],
+
+  cine: [
+    {val: 'cine',     label: 'Ciclos de Cine' },
+  ],
+
+  especial: [
+    {val: 'especial',     label: 'Evento especial' },
+    {val: 'efemeride',    label: 'Evento alusivo a la fecha' },
+  ],
+
+
 }
 
 const sedeOptList: Array<any> = [
@@ -172,12 +200,15 @@ const locacionMap = {
     {val: 'sargentina',   label: 'Sala Argentina' },
     {val: 'shonor',       label: 'Salón de Honor' },
     
+    {val: 'tercero',      label: '3er Piso' },
     {val: 'sala303',      label: 'Sala 303' },
     {val: 'sala304',      label: 'Sala 304' },
     {val: 'sala305',      label: 'Sala 305' },
     {val: 'sala306',      label: 'Sala 306' },
 
     {val: 'auditorio',    label: 'Auditorios' },
+    {val: 'cine',         label: 'Cine' },
+    {val: 'xdeterminar',  label: 'a determinar...' },
 
   ],
 };
