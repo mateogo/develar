@@ -15,6 +15,7 @@ import { PculturalCoreViewComponent }  from './pcultural/manage-core/pcultural-c
 import { PculturalCorePanelComponent } from './pcultural/manage-core/pcultural-core-panel/pcultural-core-panel.component';
 import { PculturalBrowseComponent }    from './pcultural/manage-core/pcultural-browse/pcultural-browse.component';
 import { PculturalDashboardComponent } from './pcultural/pcultural-dashboard/pcultural-dashboard.component';
+import { BudgetCreateComponent } from './presupuesto/manage-core/budget-create/budget-create.component';
 
 
 
@@ -27,7 +28,8 @@ import { PculturalDashboardComponent } from './pcultural/pcultural-dashboard/pcu
   	PculturalCoreViewComponent,
   	PculturalCorePanelComponent,
   	PculturalBrowseComponent,
-  	PculturalDashboardComponent
+  	PculturalDashboardComponent,
+  	BudgetCreateComponent
   	],
   imports: [
     CommonModule,

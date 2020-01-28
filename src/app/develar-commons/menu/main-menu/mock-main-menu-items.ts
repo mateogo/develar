@@ -936,6 +936,14 @@ export const CCK_ITEMS: MainMenuItem[] = [
         title: 'Navegar Proyectos',
         routing: '/cck/gestion/proyectos/navegar'
       },
+      {
+        title: 'Nuevo Presupuesto',
+        routing: '/cck/gestion/presupuesto/nuevo'
+      },
+      {
+        title: 'Navegar Presupuesto',
+        routing: '/cck/gestion/presupuesto/navegar'
+      },
     ],
     routing: '',
     externalLink: '',

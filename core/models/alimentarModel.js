@@ -6,6 +6,7 @@
  */
 
 const whoami =  "models/alimentarModel: ";
+const Excel = require('exceljs')
 
 
 // necesarios para el proceso de importación
@@ -424,4 +425,50 @@ async function insertContacData(query, token){
         await Beneficiario.findOneAndUpdate(query, token, {new: true, upsert: true});
 }
 
+
+exports.remanentes = function(req, res ){
+    fetchRemanentes(req, res)
+
+}
+
+
+function fetchRemanentes(req, res){
+    let query = {estado: 'pendiente'}
+    let regexQuery = buildQuery(query);
+    console.dir(query);
+
+    Beneficiario.find(regexQuery).lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            console.log('REMANENTES ok[%s]', entities && entities.length)
+            buildExcelStream(entities, req, res)
+        }
+    });
+
+
+
+}
+
+function buildExcelStream(remanentes, req, res){
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="remanentes.xlsx"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('remanentes')
+
+    remanentes.forEach(row => {
+        const {ndoc, displayName, dia, prov, city, calle, callenro, email, celular } = row;
+
+        worksheet.addRow([ndoc, displayName, dia, prov, city, calle, callenro, email, celular]).commit()
+
+    })
+    worksheet.commit()
+    workbook.commit()
+
+
+}
 

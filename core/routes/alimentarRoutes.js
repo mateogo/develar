@@ -4,9 +4,9 @@
 /**
  * Load module dependencies
  */
-var express = require('express');
-var router = express.Router();
-var service = require('../models/alimentarModel.js');
+const express = require('express');
+const router = express.Router();
+const service = require('../models/alimentarModel.js');
 
 const whoami =  "Router:routes/alimentarRouter: ";
 
@@ -78,6 +78,14 @@ router.get('/tablero', function (req, res) {
     });
 });
 
+router.get('/remanentes', function(req, res) {
+
+    service.remanentes(req, res);
+
+
+});
+
+
 
 router.get('/beneficiario/:id', function (req, res) {
     service.findByDNI(req.params.id, function(err) {
@@ -113,6 +121,10 @@ router.get('/:id', function (req, res) {
 
     });
 });
+
+
+
+
 
 
 module.exports = router;

@@ -26,13 +26,16 @@ import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { Person }        from '../entities/person/person';
 
-import { Pcultural, PculturalBrowse, PculturalTable, PculturalHelper } from './pcultural/pcultural.model';
-import { SisplanService } from './sisplan.service';
+import { Pcultural, PculturalBrowse, PculturalTable } from './pcultural/pcultural.model';
+import { Budget, BudgetBrowse, BudgetTable }          from './presupuesto/presupuesto.model';
+
+import { SisplanService, BudgetService } from './sisplan.service';
 
 
 const CORE = 'core';
 const ASSETS = 'assets';
 const PCULTURAL_ROUTE = 'pcultural';
+const BUDGET_ROUTE = 'budget';
 
 @Injectable({
 	providedIn: 'root'
@@ -61,10 +64,21 @@ export class SisplanController {
   /******* daoService EndPoints *******/
   private community_type = 'community';
   private pcultural_type = 'pcultural';
-  private serial_type    = 'serial';
-  private user_type    = 'user';
-  private person_type    = 'person';
+  private budget_type =    'budget';
+  private serial_type =    'serial';
+  private user_type =      'user';
+  private person_type =    'person';
  
+
+  /******* Pcultural Table Data *******/
+  private _budgetsSelector: BudgetBrowse;
+
+  private currentBudget: Budget;
+  private budgetListener = new BehaviorSubject<Budget>(this.currentBudget);
+  private emitBudgetsDataSource = new BehaviorSubject<BudgetTable[]>([]);
+  private _budgetsSelectionModel: SelectionModel<BudgetTable>
+  private budgetsList: Array<Budget> = [];
+
 
   /******* Pcultural Table Data *******/
   private _pculturalesSelector: PculturalBrowse;
@@ -112,9 +126,20 @@ export class SisplanController {
   * obtener serial para Eventos culturles (Pcultural)
   */
   fetchSerialEventos(name, sector, peso): Observable<Serial> {
-    console.log('3')
     let serial: Serial = SisplanService.pculturalSerial(this.pcultural_type, name, sector, peso);
-    console.log('4')
+ 
+    let fecha = new Date();
+    serial.anio = fecha.getFullYear();
+    serial.mes = fecha.getMonth();
+    serial.dia = fecha.getDate();
+    return this.daoService.nextSerial<Serial>(this.serial_type, serial);
+  }
+
+ /**
+  * obtener serial para Eventos culturles (Pcultural)
+  */
+  fetchSerialBudget(name, sector, peso): Observable<Serial> {
+    let serial: Serial = BudgetService.budgetSerial(this.budget_type, name, sector, peso);
  
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -124,7 +149,218 @@ export class SisplanController {
   }
 
  
+   /***********************************/
+  /******* Presupuesto Budget ********/
+  /**********************************/
+  get activeBudget(): Budget{
+    return this.currentBudget;
+  }
+
+  private updateCurrentBudget(budget: Budget){
+    this.currentBudget = budget;
+    this.budgetListener.next(this.currentBudget);
+  }
+
+  setCurrentBudgetFromId(id: string){
+    if(!id) return;
+    let fetch$ = this.fetchBudgetById(id);
+
+    fetch$.then(p => {
+      this.updateCurrentBudget(p);
+    });
+
+    return fetch$
+
+  }
+
+  private fetchBudgetById(id: string): Promise<Budget>{
+    return this.daoService.findById<Budget>(this.budget_type, id);
+  }
+
+
+  updatePartialBudget(event: UpdateEvent){
+
+    if(event.token === CORE){
+      this.upsertBudgetCore(event.payload._id, event.payload);
+    }
+  }
+
+  private upsertBudgetCore(id:string, p:any){
+
+    this.daoService.partialUpdate<Budget>(this.budget_type, id, p).then(budget =>{
+      this.updateCurrentBudget(budget);
+    })
+
+  }
+    
+
+  manageBudgetRecord(budget:Budget ): Subject<Budget>{
+
+    let listener = new Subject<Budget>();
+
+    if(this.isNewBudget(budget)){
+      this.createBudget(listener, budget);
+
+    }else{
+      this.updateBudget(listener, budget);
+
+    }
+
+    return listener;
+  }
+
+  private isNewBudget(token:Budget): boolean{
+    let isNew = true;
+
+    if(token._id){
+      isNew = false;
+    }
+
+    return isNew;
+  }
+
+
+  /******* UPDATE BUDGET ********/
+  private updateBudget(listener:Subject<Budget>, budget:Budget){
  
+    this.initBudgetForUpdate(budget);
+
+    this.upsertBudget(listener, budget);
+
+  }
+ 
+  private initBudgetForUpdate(entity: Budget){
+
+  }
+
+  private upsertBudget(listener: Subject<Budget>,  budget: Budget){
+
+    this.daoService.update<Budget>(this.budget_type, budget._id, budget).then(t =>{
+      listener.next(t);
+    })
+
+  }
+
+  /******* CREATE BUDGET ********/
+  private createBudget(listener:Subject<Budget>, budget: Budget){
+    let sector = budget.sector || 'produccion';
+
+    if(!budget.fecomp){
+      budget.fecomp = devutils.txFromDate(new Date());
+
+    }else{
+      budget.fecomp = devutils.txNormalize(budget.fecomp);
+    }
+
+    let dateD = devutils.dateFromTx(budget.fecomp);
+    budget.fecomp_ts = dateD ? dateD.getTime() : 0;
+
+    this.fetchSerialEventos(name, sector, 0).subscribe(serial =>{
+      budget.compPrefix = serial.compPrefix ;
+      budget.compName = serial.compName;
+      budget.compNum = (serial.pnumero + serial.offset) + "";
+     
+      this.insertBudget(listener, budget);
+    });
+  }
+
+  private insertBudget(listener: Subject<Budget>, token: Budget){
+
+      this.daoService.create<Budget>(this.budget_type, token).then(token =>{
+        listener.next(token);
+      });
+  }
+
+
+
+  fetchBudgetByQuery(query:any){
+    let listener = new Subject<Budget[]>();
+    this.loadBudgetsByQuery(listener, query);
+    return listener;
+  }
+
+  private loadBudgetsByQuery(listener: Subject<Budget[]>, query){
+
+    this.daoService.search<Budget>(this.budget_type, query).subscribe(list =>{
+      if(list && list.length){
+        this.budgetsList = list;
+
+      }else{
+        this.budgetsList = [];
+
+      }
+
+      listener.next(this.budgetsList);
+
+    })
+  }
+
+
+  // Browse Budget 
+  get budgetsSelector():BudgetBrowse{
+    if(!this._budgetsSelector) this._budgetsSelector = new BudgetBrowse();
+    return this._budgetsSelector;
+  }
+  
+  set budgetsSelector(e: BudgetBrowse){
+    this._budgetsSelector = e;
+  }
+
+
+  /*****  Budget TABLE table Table    ****/
+  get budgetsDataSource(): BehaviorSubject<BudgetTable[]>{
+    return this.emitBudgetsDataSource;
+  }
+
+  get budgetsSelectionModel(): SelectionModel<BudgetTable>{
+    return this._budgetsSelectionModel;
+  }
+  set budgetsSelectionModel(selection: SelectionModel<BudgetTable>){
+    this._budgetsSelectionModel = selection;
+  }
+
+  get budgetTableActions(){
+    return SisplanService.getOptionlist('tableactions');
+  }
+
+  lookUpBudget(token: BudgetTable): Budget{
+    let budget: Budget = this.budgetsList.find(t => t._id === token._id);
+
+    if(!budget) budget = new Budget();
+    return budget;
+  }
+
+  updateBudgetsTableData(){
+
+    let tableData = BudgetService.buildDataTable(this.budgetsList);
+    this.emitBudgetsDataSource.next(tableData);
+  }
+
+  updateAvanceBudget(avance, budgetId: string){
+
+    let token = {
+      estado : avance === 'anulado' ? 'baja' : 'activo',
+      avance: avance
+    }
+    let promise = this.daoService.update(this.budget_type, budgetId, token);
+
+    promise.then(t =>{
+      //todo
+    })
+
+    return promise;
+  }
+
+
+  // updateAsistenciaListItem(item ):void{
+  //   // let pr: Asistencia = this.asistencia.find((product:any) => product._id === item._id);
+  //   // if(pr){
+  //   //   pr.pu = item.pu;
+  //   //   pr.slug = item.slug;
+  //   // }
+  // }
+
+
 
   /**********************************/
   /******* Evento PCultural ********/
@@ -302,15 +538,15 @@ export class SisplanController {
     this._pculturalesSelectionModel = selection;
   }
 
-  get pcultrualTableActions(){
-    return PculturalHelper.getOptionlist('tableactions');
+  get pculturalTableActions(){
+    return SisplanService.getOptionlist('tableactions');
   }
 
   lookUpPcultural(token: PculturalTable): Pcultural{
-    let pcultrual: Pcultural = this.pculturalesList.find(t => t._id === token._id);
+    let pcultural: Pcultural = this.pculturalesList.find(t => t._id === token._id);
 
-    if(!pcultrual) pcultrual = new Pcultural();
-    return pcultrual;
+    if(!pcultural) pcultural = new Pcultural();
+    return pcultural;
   }
 
   updatePculturalesTableData(){
@@ -319,13 +555,13 @@ export class SisplanController {
     this.emitPculturalesDataSource.next(tableData);
   }
 
-  updateAvancePcultural(avance, pcultrualId: string){
+  updateAvancePcultural(avance, pculturalId: string){
 
     let token = {
       estado : avance === 'anulado' ? 'baja' : 'activo',
       avance: avance
     }
-    let promise = this.daoService.update(this.pcultural_type, pcultrualId, token);
+    let promise = this.daoService.update(this.pcultural_type, pculturalId, token);
 
     promise.then(t =>{
       //todo
