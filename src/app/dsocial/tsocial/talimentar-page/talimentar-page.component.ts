@@ -177,41 +177,12 @@ export class TalimentarPageComponent implements OnInit {
     this.numeroCaja = '';
 
     if(p){
+
+
+      // todo
       this.currentPerson = p;
       //this.contactData = p.contactdata[0];
-      this.contactList = p.contactdata || [];
-      this.saludList =   p.salud || [];
-      this.coberturaList = p.cobertura || [];
-
-      if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
-        this.isBeneficiarioTxt = 'Beneficiario/a VALIDADO';
-
-        this.audit = this.dsCtrl.getAuditData();
-        this.initContactData(this.contactList);
-        this.initEmbarazadaData(this.saludList);
-
-
-        this.initForEdit(this.form, p);
-
-        this.loadBankData(p)
-
-
-
-        setTimeout(()=> {
-          this.hasCurrentPerson = true;
-          this.personFound = true;
-
-        },400);
- 
-
-
-      }else{
-        this.isBeneficiarioTxt = 'NO RETIRA TARJETA EN ESTA OPORTUNIDAD';
-
-      }
-
-      
-
+      this.loadBankData(p)
 
 
     }
@@ -538,6 +509,7 @@ export class TalimentarPageComponent implements OnInit {
     })
   }
 
+  //entry point tarjeta alimentar
   personFetched(persons: Person[]){
 		this.hasCurrentPerson = false;
 		this.personFound = false;
@@ -754,6 +726,16 @@ export class TalimentarPageComponent implements OnInit {
     this.resetForm();
   }
 
+  isPendiente(benef: BeneficiarioAlimentar){
+    let pendiente = true;
+    
+    if(benef && benef.estado && benef.estado === "entregada"){
+      pendiente = false;
+    } 
+
+    return pendiente;    
+  }
+
 
   loadBankData(person: Person){
     this.dsCtrl.fetchBeneficiario(person.ndoc).subscribe(records => {
@@ -761,6 +743,49 @@ export class TalimentarPageComponent implements OnInit {
       if(records && records.length){
         this.registroBancario = records[0];
         this.numeroCaja = `Caja: ${this.registroBancario.caja} Orden: ${this.registroBancario.orden}`;
+
+        if(!this.isPendiente(this.registroBancario)){
+          this.isBeneficiarioTxt = 'EL BENEFICIARIO/A YA RETIRÓ SU TARJETA ALIMENTAR EL ' + this.registroBancario.fecha;
+
+        }else if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
+
+          this.isBeneficiarioTxt = 'Beneficiario/a VALIDADO';
+
+          this.contactList = person.contactdata || [];
+          this.saludList =   person.salud || [];
+          this.coberturaList = person.cobertura || [];
+
+          this.audit = this.dsCtrl.getAuditData();
+          this.initContactData(this.contactList);
+          this.initEmbarazadaData(this.saludList);
+
+          this.initForEdit(this.form, person);
+
+          setTimeout(()=> {
+            this.hasCurrentPerson = true;
+            this.personFound = true;
+
+          },200);
+   
+
+
+        }else{
+          this.isBeneficiarioTxt = 'NO RETIRA TARJETA EN ESTA OPORTUNIDAD';
+
+        }
+
+      
+
+
+
+
+
+
+
+
+
+
+
         this.isBeneficiarioTxt = `Beneficiario/a validado`;
 
       }
