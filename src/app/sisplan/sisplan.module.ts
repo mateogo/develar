@@ -15,7 +15,14 @@ import { PculturalCoreViewComponent }  from './pcultural/manage-core/pcultural-c
 import { PculturalCorePanelComponent } from './pcultural/manage-core/pcultural-core-panel/pcultural-core-panel.component';
 import { PculturalBrowseComponent }    from './pcultural/manage-core/pcultural-browse/pcultural-browse.component';
 import { PculturalDashboardComponent } from './pcultural/pcultural-dashboard/pcultural-dashboard.component';
-import { BudgetCreateComponent } from './presupuesto/manage-core/budget-create/budget-create.component';
+import { BudgetCreateComponent }       from './presupuesto/manage-core/budget-create/budget-create.component';
+import { BudgetBrowseComponent } from './presupuesto/manage-core/budget-browse/budget-browse.component';
+import { BudgetCoreBaseComponent } from './presupuesto/manage-core/budget-core-base/budget-core-base.component';
+import { BudgetCoreEditComponent } from './presupuesto/manage-core/budget-core-edit/budget-core-edit.component';
+import { BudgetCorePanelComponent } from './presupuesto/manage-core/budget-core-panel/budget-core-panel.component';
+import { BudgetCoreViewComponent } from './presupuesto/manage-core/budget-core-view/budget-core-view.component';
+import { BudgetPageComponent } from './presupuesto/budget-page/budget-page.component';
+import { BudgetDashboardComponent } from './presupuesto/budget-dashboard/budget-dashboard.component';
 
 
 
@@ -29,7 +36,15 @@ import { BudgetCreateComponent } from './presupuesto/manage-core/budget-create/b
   	PculturalCorePanelComponent,
   	PculturalBrowseComponent,
   	PculturalDashboardComponent,
-  	BudgetCreateComponent
+  	BudgetCreateComponent,
+  	BudgetBrowseComponent,
+  	BudgetCoreBaseComponent,
+  	BudgetCoreEditComponent,
+  	BudgetCorePanelComponent,
+  	BudgetCoreViewComponent,
+  	BudgetPageComponent,
+  	BudgetDashboardComponent,
+    
   	],
   imports: [
     CommonModule,

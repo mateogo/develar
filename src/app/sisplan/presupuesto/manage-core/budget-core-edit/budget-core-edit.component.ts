@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -6,25 +6,24 @@ import { CustomValidators } from 'ng2-validation';
 import { devutils }from '../../../../develar-commons/utils'
 
 import { SisplanController } from '../../../sisplan.controller';
-import { SisplanService, BudgetService }     from '../../../sisplan.service';
+import { SisplanService, BudgetService, UpdateEvent }     from '../../../sisplan.service';
 
-import { Pcultural, PculturalHelper } from '../../../pcultural/pcultural.model';
 import { Budget, BudgetHelper       } from '../../presupuesto.model';
-
-
 
 const TOKEN_TYPE = 'budget';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const DELETE = 'delete';
 
-
 @Component({
-  selector: 'budget-create',
-  templateUrl: './budget-create.component.html',
-  styleUrls: ['./budget-create.component.scss']
+  selector: 'budget-core-edit',
+  templateUrl: './budget-core-edit.component.html',
+  styleUrls: ['./budget-core-edit.component.scss']
 })
-export class BudgetCreateComponent implements OnInit {
+export class BudgetCoreEditComponent implements OnInit {
+  @Input()  budget: Budget = new Budget();
+  @Output() updateBudget =   new EventEmitter<UpdateEvent>();
+
 
   public sectorOptList =    SisplanService.getOptionlist('sector');
   public formatoOptList =   SisplanService.getOptionlist('formato');
@@ -45,8 +44,6 @@ export class BudgetCreateComponent implements OnInit {
 	public form: FormGroup;
 
   private formAction = "";
-
-  private budget: Budget = new Budget();
 
 
   constructor(
@@ -85,15 +82,21 @@ export class BudgetCreateComponent implements OnInit {
   emitEvent(action:string){
     console.log('todo');
     
-    if(this.formAction === UPDATE){
-      this.dsCtrl.manageBudgetRecord(this.budget).subscribe(token => {
-        this.budget = token;
-        console.log('Exito: [%s]', token.slug)
-        this.navigateTo();
-      })
-    }
+    // if(this.formAction === UPDATE){
+    //   this.dsCtrl.manageBudgetRecord(this.budget).subscribe(token => {
+    //     this.budget = token;
+    //     console.log('Exito: [%s]', token.slug)
+    //     this.navigateTo();
+    //   })
+    // }
 
+    let event = {
+      action: action,
+      token: 'core',
+      payload: this.budget
+    } as UpdateEvent;
 
+    this.updateBudget.next(event)
   }
 
   navigateTo(){
@@ -135,7 +138,6 @@ export class BudgetCreateComponent implements OnInit {
 
 
 
- 
   buildForm(): FormGroup{
   	let form: FormGroup;
 
@@ -147,14 +149,16 @@ export class BudgetCreateComponent implements OnInit {
       type:        [null, Validators.compose([Validators.required])],
       stype:       [null, Validators.compose([Validators.required])],
 
+			publico:     [null],
+			formato:     [null],
+
       sector:      [null, Validators.compose([Validators.required])],
 			sede:        [null],
 			locacion:    [null],
 
-      fume:        [null, Validators.compose([Validators.required])],
-      freq:        [null, Validators.compose([Validators.required])],
-
       ume:         [null, Validators.compose([Validators.required])],
+      freq:        [null, Validators.compose([Validators.required])],
+      fume:        [null, Validators.compose([Validators.required])],
       qty:         [null, Validators.compose([Validators.required])],
       importe:     [null, Validators.compose([Validators.required])],
 
@@ -166,7 +170,6 @@ export class BudgetCreateComponent implements OnInit {
   initForEdit(form: FormGroup, budget: Budget): FormGroup {
     this.changeStypeOptList(budget.type);
     this.changeLocacionOptList(budget.sede);
-
 
 		form.reset({
 			slug:        budget.slug,
@@ -181,9 +184,8 @@ export class BudgetCreateComponent implements OnInit {
 			locacion:    budget.locacion,
 
       fume:        budget.fume,
-      freq:        budget.freq,
-
       ume:         budget.ume,
+      freq:        budget.freq,
       qty:         budget.qty,
       importe:     budget.importe,
 
@@ -197,7 +199,6 @@ export class BudgetCreateComponent implements OnInit {
 		return form;
   }
 
- 
 	initForSave(form: FormGroup, budget: Budget): Budget {
 		const fvalue = form.value;
 		const entity = budget;
@@ -222,6 +223,5 @@ export class BudgetCreateComponent implements OnInit {
 
 		return entity;
 	}
-
 
 }

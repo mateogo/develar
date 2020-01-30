@@ -72,7 +72,7 @@ const monedas = [
 ]
 
 
-const freqOptList = [
+const fumeOptList = [
         {val:'no_definido'  , label:'Unidad de Medida'},
         {val:'unidad'       , label:'UN'},
         {val:'porcentaje'   , label:'%'},
@@ -365,6 +365,9 @@ const optionsLists = {
     programa:     programaOptList,
     sede:         sedeOptList,
 
+    fume:         fumeOptList,
+    ume:          umeOptList,
+
     type:         tipoEventoOptList,
     formato:      formatoOptList,
     publico:      publicoOptList,
@@ -619,12 +622,12 @@ export class SisplanService {
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<Pcultural>;
+  items:  Array<Pcultural|Budget>;
 };
 
 
 export interface UpdateEvent {
   action:  string;
   token:   string;
-  payload: Pcultural;
+  payload: Pcultural|Budget;
 };

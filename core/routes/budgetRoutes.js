@@ -1,12 +1,12 @@
 /**
- * Proyectos Cuturales routes
+ * Módulo presupuestos routes
  */
 
 var express = require('express');
 var router = express.Router();
-var service = require('../models/pculturalModel.js');
+var service = require('../models/budgetModel.js');
 
-const whoami =  "Router:routes/pculturalRoutes: ";
+const whoami =  "Router:routes/budgetRoutes: ";
 
 
 

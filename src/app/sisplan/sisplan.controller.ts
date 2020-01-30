@@ -255,7 +255,7 @@ export class SisplanController {
     let dateD = devutils.dateFromTx(budget.fecomp);
     budget.fecomp_ts = dateD ? dateD.getTime() : 0;
 
-    this.fetchSerialEventos(name, sector, 0).subscribe(serial =>{
+    this.fetchSerialBudget(name, sector, 0).subscribe(serial =>{
       budget.compPrefix = serial.compPrefix ;
       budget.compName = serial.compName;
       budget.compNum = (serial.pnumero + serial.offset) + "";

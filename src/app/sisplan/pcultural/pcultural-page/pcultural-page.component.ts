@@ -7,11 +7,11 @@ import { SisplanController } from '../../sisplan.controller';
 
 import { Pcultural, PculturalHelper } from '../pcultural.model';
 
-import { UpdateEvent } from '../../sisplan.service';
-
 import { devutils }from '../../../develar-commons/utils'
 
 import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
+
+import { SisplanService, UpdateListEvent, UpdateEvent } from '../../sisplan.service';
 
 
 const TOKEN_TYPE = 'pcultural';

@@ -70,6 +70,10 @@ const tserialConfig = [
       usecase: 'Eventos culturales CCK',
     },
     {
+      tserial: 'budget',
+      usecase: 'Presupuesto CCK',
+    },
+    {
       tserial: 'turnodiario',
       usecase: 'turnos que se otorgan en un mostrador a lo largo del día.',
     },
@@ -189,6 +193,23 @@ const serialTypeConfig = {
     resetDay: false,
     createOnTheFly: true,
     slug: 'Serial de eventos culturales (proyectos culturales pcultural)',
+  },
+
+  budget: {
+    name: ['budget'],
+    tserial: ['budget'],
+    sector: ['produccion', 'operaciones'],
+    tdoc: ['presupuesto'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'PRE',
+    compName: 'S/Presupuesto',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'Serial de presupuestos (budget)',
   }
 
 

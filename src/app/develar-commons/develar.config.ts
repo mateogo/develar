@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'cck';
 
 const globals = {
 

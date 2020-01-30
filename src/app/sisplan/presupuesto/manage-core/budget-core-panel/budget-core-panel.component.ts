@@ -4,23 +4,25 @@ import { Observable } from 'rxjs';
 
 import { SisplanController } from '../../../sisplan.controller';
 
-import { SisplanService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
+import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
 
-import { Pcultural, PculturalHelper } from '../../pcultural.model';
+import { Budget, BudgetHelper       } from '../../presupuesto.model';
+
 
 
 const UPDATE = 'update';
 const DELETE = 'delete';
-const TOKEN_TYPE = 'pcultural';
+const TOKEN_TYPE = 'budget';
 const NAVIGATE = 'navigate';
 
+
 @Component({
-  selector: 'pcultural-core-panel',
-  templateUrl: './pcultural-core-panel.component.html',
-  styleUrls: ['./pcultural-core-panel.component.scss']
+  selector: 'budget-core-panel',
+  templateUrl: './budget-core-panel.component.html',
+  styleUrls: ['./budget-core-panel.component.scss']
 })
-export class PculturalCorePanelComponent implements OnInit {
-	@Input() items: Array<Pcultural>;
+export class BudgetCorePanelComponent implements OnInit {
+	@Input() items: Array<Budget>;
 	@Output() updateItems = new EventEmitter<UpdateListEvent>();
 
   public title = 'Eventos Culturales';
@@ -31,7 +33,7 @@ export class PculturalCorePanelComponent implements OnInit {
 
   public openEditor = true;
 
-  public activeitems: Array<Pcultural> = [];
+  public activeitems: Array<Budget> = [];
 
   constructor(
       private dsCtrl: SisplanController,
@@ -49,7 +51,7 @@ export class PculturalCorePanelComponent implements OnInit {
   private filterActiveItems(){
     this.activeitems = [];
     setTimeout(()=>{
-      this.activeitems = SisplanService.filterActivePculturales(this.items);
+      this.activeitems = BudgetService.filterActiveBudgets(this.items);
 
       if(this.activeitems && this.activeitems.length){
         this.showActiveView(true);
@@ -66,7 +68,7 @@ export class PculturalCorePanelComponent implements OnInit {
 
   updateItem(event: UpdateEvent){
     if(event.action === UPDATE){
-      this.dsCtrl.managePCulturalRecord(event.payload as Pcultural).subscribe(t =>{
+      this.dsCtrl.manageBudgetRecord(event.payload as Budget).subscribe(t =>{
         if(t){
           event.payload = t;
 
@@ -82,7 +84,7 @@ export class PculturalCorePanelComponent implements OnInit {
 
 
     } else if(event.action === DELETE){
-      this.deleteItem(event.payload as Pcultural)
+      this.deleteItem(event.payload as Budget)
 
 
       // this.dsCtrl.manageAsistenciaDeleteRecord('asistencia',event.token).subscribe(t =>{
@@ -94,7 +96,7 @@ export class PculturalCorePanelComponent implements OnInit {
     }
   }
 
-  private deleteItem(token: Pcultural){
+  private deleteItem(token: Budget){
     let isNew = token._id ? false: true;
     if(isNew){
       this.deleteFromListItems(token);
@@ -102,7 +104,7 @@ export class PculturalCorePanelComponent implements OnInit {
 
   }
 
-  deleteFromListItems(token: Pcultural){
+  deleteFromListItems(token: Budget){
     let index = this.items.indexOf(token);
     if(index !== -1){
       this.items.splice(index, 1)
@@ -110,7 +112,7 @@ export class PculturalCorePanelComponent implements OnInit {
   }
 
   addItem(){
-    let item = SisplanService.initNewPcultural('produccion', 'musica', 'popular', 'alta rápida')
+    let item = BudgetService.initNewBudget('produccion', 'musica', 'popular', 'alta rápida')
     if(!this.items) this.items = [];
     if(!this.activeitems) this.activeitems = [];
 
@@ -156,7 +158,7 @@ export class PculturalCorePanelComponent implements OnInit {
 
     }
     this.showActiveList = active;
-    this.showFullList   = !active;
+    this.showFullList = !active;
   }
 
 

@@ -33,34 +33,35 @@ export class Budget {
 		compName:    string = 'S/Presupuesto';
 		compNum:     string = '00000';
 
-    programa:    string;
     type:        string;
     stype:       string;
+    sector:      string;
+    programa:    string;
+    sede:        string = 'cck';
+    locacion:    string;
 
     monto:        number;
     monto_items:  number;
 
     items:       Array<BudgetItems>;
 
-    moneda:      string;
-    ume:         string;
-    freq:        number;
-    qty:         number;
-    importe:     number;
+    moneda:      string = 'ARS';
+    fume:        string = 'unidad';
+    freq:        number =  1;
+    ume:         string = 'unidad';
+    qty:         number =  1;
+    importe:     number =  0;
 
-		sector:      string;
 
 		slug:        string;
 		description: string;
 
     target:      TargetEvent;
 
-		sede:        string;
-		locacion:    string;
 
-		estado:      string;
-		avance:      string;
-		aprobado:    string;
+		estado:      string = 'activo';
+		avance:      string = 'emitido';
+		aprobado:    string = 'pendiente';
 
     fecomp:      string; 
     fecomp_ts:   number; 
