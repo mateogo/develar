@@ -10,18 +10,36 @@ export class TargetEvent {
   
 }
 
-export class BudgetItems {
-  productoId: string;
+
+export class BudgetCost {
+  e_currency:   string = 'ARS';
+  e_cost:       number =  0;
+
+  e_ARSCost:    number =  0;
+  e_changeRate: number =  1.0;
+  e_feRate:     string =  '';
+  
+}
+
+export class BudgetItem {
+  _id:         string; 
+  productId:  string;
   productSlug: string;
 
   slug: string;
-  moneda:      string;
-  ume:         string;
-  freq:        number;
-  qty:         number;
-  importe:     number;
 
-  
+  currency:    string = "ARS";
+  fume:        string = 'instancia';
+  qume:        string = "unidad";
+  freq:        number = 1;
+  qty:         number = 1;
+  importe:     number = 0;
+
+  itemCost:    number = 0;
+  itemARSCost: number = 0;
+  changeRate:  number = 1.0;
+  feRate:      string = '';
+ 
 }
 
 /*************************/
@@ -40,24 +58,22 @@ export class Budget {
     sede:        string = 'cck';
     locacion:    string;
 
-    monto:        number;
-    monto_items:  number;
+    currency:    string = "ARS";
 
-    items:       Array<BudgetItems>;
+    e_currency:   string = 'ARS';
+    e_cost:       number =  0;
 
-    moneda:      string = 'ARS';
-    fume:        string = 'unidad';
-    freq:        number =  1;
-    ume:         string = 'unidad';
-    qty:         number =  1;
-    importe:     number =  0;
+    e_ARSCost:    number =  0;
+    e_changeRate: number =  1.0;
+    e_feRate:     string = '';
 
+
+    items:       Array<BudgetItem>;
 
 		slug:        string;
 		description: string;
 
     target:      TargetEvent;
-
 
 		estado:      string = 'activo';
 		avance:      string = 'emitido';
@@ -70,7 +86,6 @@ export class Budget {
 		fe_req_ts:   number; 
 		
 		observacion: string;
-
 };
 
 export class BudgetTable {
@@ -86,7 +101,7 @@ export class BudgetTable {
     monto:        number;
 
     moneda:      string;
-    ume:         string;
+    qume:        string;
     freq:        number;
     qty:         number;
     importe:     number;

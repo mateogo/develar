@@ -112,7 +112,7 @@ export class BudgetDashboardComponent implements OnInit {
 
     // current selector saved in Controller
     this.query = this.dsCtrl.budgetsSelector;
-    this.fetchSolicitudes(this.query, SEARCH);
+    this.fetchPresupuestos(this.query, SEARCH);
   }
 
   // loadPerson(id){
@@ -128,7 +128,7 @@ export class BudgetDashboardComponent implements OnInit {
   /************************/
   /*    Sol/Budget   */
   /**********************/
-  fetchSolicitudes(query: any, action: string){
+  private fetchPresupuestos(query: any, action: string){
 
     if(!query){
       query = new BudgetBrowse();
@@ -216,7 +216,7 @@ export class BudgetDashboardComponent implements OnInit {
     }
 
     setTimeout(()=>{
-      this.fetchSolicitudes(this.query, SEARCH);
+      this.fetchPresupuestos(this.query, SEARCH);
     },1000)
 
   }
@@ -235,7 +235,7 @@ export class BudgetDashboardComponent implements OnInit {
     this.query = query;
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
-      this.fetchSolicitudes(this.query, query.searchAction);
+      this.fetchPresupuestos(this.query, query.searchAction);
     }
 
   }

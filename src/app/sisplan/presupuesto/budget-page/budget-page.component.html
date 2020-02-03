@@ -9,6 +9,9 @@
 						(updateBudget)='updateCore($event)' ></budget-core-base>
 
 
+	<budget-items-panel [items]='budgetCostList'
+						(updateItems)='updateCostItems($event)' ></budget-items-panel>
+
 
 	<observaciones-panel 
 		 							[audit]='audit'

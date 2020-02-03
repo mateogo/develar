@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 
+import { ProductModule } from '../entities/products/product.module';
 import { SisplanRoutingModule } from './sisplan-routing.module';
 
 import { DevelarCommonsModule }        from '../develar-commons/develar-commons.module';
@@ -23,6 +24,11 @@ import { BudgetCorePanelComponent } from './presupuesto/manage-core/budget-core-
 import { BudgetCoreViewComponent } from './presupuesto/manage-core/budget-core-view/budget-core-view.component';
 import { BudgetPageComponent } from './presupuesto/budget-page/budget-page.component';
 import { BudgetDashboardComponent } from './presupuesto/budget-dashboard/budget-dashboard.component';
+import { BudgetSummaryComponent } from './presupuesto/manage-core/budget-summary/budget-summary.component';
+import { BudgetItemsViewComponent } from './presupuesto/manage-core/budget-items-view/budget-items-view.component';
+import { BudgetItemsPanelComponent } from './presupuesto/manage-core/budget-items-panel/budget-items-panel.component';
+import { BudgetItemsBaseComponent } from './presupuesto/manage-core/budget-items-base/budget-items-base.component';
+import { BudgetItemsEditComponent } from './presupuesto/manage-core/budget-items-edit/budget-items-edit.component';
 
 
 
@@ -44,6 +50,11 @@ import { BudgetDashboardComponent } from './presupuesto/budget-dashboard/budget-
   	BudgetCoreViewComponent,
   	BudgetPageComponent,
   	BudgetDashboardComponent,
+  	BudgetSummaryComponent,
+  	BudgetItemsViewComponent,
+  	BudgetItemsPanelComponent,
+  	BudgetItemsBaseComponent,
+  	BudgetItemsEditComponent,
     
   	],
   imports: [
@@ -53,7 +64,7 @@ import { BudgetDashboardComponent } from './presupuesto/budget-dashboard/budget-
     ReactiveFormsModule,
     DevelarCommonsModule,
     NotificationsModule,
-
+    ProductModule
   ]
 })
 export class SisplanModule { }

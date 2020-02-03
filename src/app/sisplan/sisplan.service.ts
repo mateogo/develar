@@ -1,5 +1,5 @@
 import { Pcultural, PculturalTable } from './pcultural/pcultural.model';
-import { Budget, BudgetTable }       from './presupuesto/presupuesto.model';
+import { Budget, BudgetItem, BudgetCost, BudgetTable }       from './presupuesto/presupuesto.model';
 
 import { devutils } from '../develar-commons/utils';
 
@@ -61,35 +61,54 @@ const locacionMap = {
   /** BUDGET        */
   /*****************/
 
-const monedas = [
-      {val: 'ARS',    label: 'pesos',           slug:'Pesos Argentinos' },
-      {val: 'USD',    label: 'usd',             slug:'Dolar USA' },
-      {val: 'EUR',    label: 'euros',           slug:'Euros' },
-      {val: 'BRL',    label: 'reales',          slug:'Reales' },
-      {val: 'COP',    label: 'pesosCo',         slug:'Pesos Colombianos' },
-      {val: 'UYU',    label: 'pesosUy',         slug:'Pesos Uruguayos' },
+const currencyOptList = [
+      {val: 'ARS',    label: 'ARS',           slug:'Pesos Argentinos' },
+      {val: 'USD',    label: 'USD',             slug:'Dolar USA' },
+      {val: 'EUR',    label: 'EUR',           slug:'Euros' },
+      {val: 'BRL',    label: 'REAL',          slug:'Reales' },
+      {val: 'COP',    label: 'PESOS CO',         slug:'Pesos Colombianos' },
+      {val: 'UYU',    label: 'PESOS UY',         slug:'Pesos Uruguayos' },
       {val: 'CLP',    label: 'pesosCl',         slug:'Pesos Chilenos' },
 ]
+
+const exchangeRateMap = {
+  ARS: [
+    {date: '01/01/2000', rate: 1.0,     source: 'Banco Nación' },
+  ],
+
+  USD: [
+    {date: '15/01/2020', rate: 64.40,   source: 'Banco Nación' },
+    {date: '18/01/2020', rate: 63.20,   source: 'Banco Nación' },
+    {date: '15/12/2019', rate: 61.40,   source: 'Banco Nación' },
+    {date: '15/02/2020', rate: 65.40,   source: 'Banco Nación' },
+  ],
+  EUR: [
+    {date: '15/01/2020', rate: 74.40,   source: 'Banco Nación' },
+    {date: '18/01/2020', rate: 73.20,   source: 'Banco Nación' },
+  ],
+}  
+
 
 
 const fumeOptList = [
         {val:'no_definido'  , label:'Unidad de Medida'},
+        {val:'instancia'    , label:'Instancia'},
         {val:'unidad'       , label:'UN'},
         {val:'porcentaje'   , label:'%'},
-        {val:'hora'         , label:'hs'},
-        {val:'dia'          , label:'días'},
-        {val:'semana'       , label:'sem'},
-        {val:'mes'          , label:'mes'},
-        {val:'presentacion' , label:'presentaciones'},
-        {val:'evento' ,       label:'evento(s)'},
+        {val:'hora'         , label:'Hs'},
+        {val:'dia'          , label:'Días'},
+        {val:'semana'       , label:'Sem'},
+        {val:'mes'          , label:'Mes'},
+        {val:'presentacion' , label:'Presentaciones'},
+        {val:'evento' ,       label:'Evento(s)'},
         {val:'no_definido'  , label:'-------------'},
-        {val:'pasaje'       , label:'pje'},
-        {val:'alojamiento'  , label:'aloj'},
-        {val:'tramo'        , label:'tram'},
+        {val:'pasaje'       , label:'Pje'},
+        {val:'alojamiento'  , label:'Aloj'},
+        {val:'tramo'        , label:'Tram'},
 ];
 
 
-const umeOptList = [
+const qumeOptList = [
         {val:'no_definido'  , label:'Unidad de Medida'},
         {val:'noop'         , label:'no contable'},
         {val:'unidad'       , label:'UN'},
@@ -366,7 +385,9 @@ const optionsLists = {
     sede:         sedeOptList,
 
     fume:         fumeOptList,
-    ume:          umeOptList,
+    qume:         qumeOptList,
+    currency:     currencyOptList,
+
 
     type:         tipoEventoOptList,
     formato:      formatoOptList,
@@ -375,6 +396,8 @@ const optionsLists = {
     avance:       avanceOptList,
 
     tableactions: tableActionsOptList,
+
+    exchange:     exchangeRateMap,
 }
 
 function getLabel(list, val){
@@ -398,6 +421,125 @@ function getPrefixedLabel(list, prefix, val){
 /*****************/
 /**  BUDGET     */
 /***************/
+export class BudgetCostService {
+  private _budget: Budget;
+  private _budgetCost: BudgetCost;
+  private estimatedCost: number = 0;
+  private exchangeMap = {};
+  private date: Date;
+  private dateTx: string;
+  private dateTs: number;
+
+  private _item: BudgetItem;
+
+
+  constructor(bdgt: Budget, exchange?){
+    this.budget = bdgt;
+    this.initBudgetCost();
+    this.exchangeMap = exchange || {};
+    this.date = new Date();
+    this.dateTx = devutils.txFromDate(this.date);
+    this.dateTs = this.date.getTime();
+  }
+
+  get budget(): Budget{
+    return this._budget;
+  }
+ 
+  set budget(bdgt:  Budget){
+    this._budget = bdgt;
+    this.initBudgetCost()
+  }
+
+  get budgetCost(): BudgetCost{
+    return this._budgetCost;
+  }
+ 
+  set budgetCost(bdgt:  BudgetCost){
+    this._budgetCost = bdgt;
+  }
+
+  get item(): BudgetItem{
+    return this._item;
+  }
+ 
+  set item(bdgt:  BudgetItem){
+    this._item = bdgt;
+  }
+
+  evaluateItemCost(item: BudgetItem): BudgetItem{
+    this.item = item;
+    this.evalItemCost();
+    return item;
+  }
+
+  fetchExchangeRate(currency: string){
+    let xchange = {};
+    let xList = this.exchangeMap[currency] || [];
+    
+    this.sortProperly(xList);
+    
+    xList.forEach(t => {
+      console.log('Xlist forEach: [%s]',t.date);
+      if(devutils.dateFromTx(t.date).getTime() <= this.dateTs){
+        xchange = t;
+      }
+    })
+
+    return xchange;
+  }
+
+  calculateARSCost(currency: string): BudgetCost{
+    let xchange = this.fetchExchangeRate(currency);
+    if(xchange){
+      this._budgetCost.e_currency = currency;
+      this._budgetCost.e_feRate = xchange['date'];
+      this._budgetCost.e_changeRate = xchange['rate']|| 1;
+      this._budgetCost.e_ARSCost = this._budgetCost.e_cost * this._budgetCost.e_changeRate;
+    }
+
+    return this._budgetCost;
+  }
+
+  private evalItemCost(){
+    let item = this._item;
+    
+    let costo = item.freq * item.qty * item.importe;
+    let xchange = this.fetchExchangeRate(item.currency);
+
+    item.itemCost = costo;
+    item.feRate = xchange['date'];
+    item.changeRate = xchange['rate'] || 1;
+    item.itemARSCost = costo * item.changeRate;
+
+
+  }
+
+  private initBudgetCost(){
+    this._budgetCost = new BudgetCost();
+    this._budgetCost.e_currency =    this.budget.currency || "ARS";
+    this._budgetCost.e_cost =        this.budget.e_cost || 0;
+    this._budgetCost.e_ARSCost =     this.budget.e_ARSCost || 0;
+    this._budgetCost.e_changeRate =  this.budget.e_changeRate || 1.0;
+
+  }
+
+  private sortProperly(records){
+    records.sort((fel, sel)=> {
+      let first = devutils.dateFromTx(fel.date).getTime();
+      let second =  devutils.dateFromTx(sel.date).getTime();
+
+      if(first < second) return -1;
+      else if(first > second) return 1;
+      else return 0;
+    })
+  }
+
+
+}
+
+
+
 export class BudgetService {
 
   static filterActiveBudgets(list: Budget[]): Budget[]{
@@ -493,6 +635,10 @@ export class SisplanService {
   /***************/
   static getOptionlist(type){
     return optionsLists[type] || optionsLists['default'];
+  }
+
+  static getSubOptionlist(type, stype){
+    return optionsLists[type][stype] || optionsLists['default'];
   }
 
   static getOptionLabel(type, val){
@@ -622,12 +768,12 @@ export class SisplanService {
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<Pcultural|Budget>;
+  items:  Array<Pcultural|Budget|BudgetItem>;
 };
 
 
 export interface UpdateEvent {
   action:  string;
   token:   string;
-  payload: Pcultural|Budget;
+  payload: Pcultural|Budget|BudgetItem;
 };

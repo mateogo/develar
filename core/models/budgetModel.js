@@ -15,41 +15,49 @@ const targetEventSch = new Schema({
   slug:         { type: String, required: false },
 });
 
-const budgetItemsSch = new Schema({
-  productoId:  { type: String, required: false },
+const budgetItemSch = new Schema({
+  productId:   { type: String, required: false },
   productSlug: { type: String, required: false },
   slug:        { type: String, required: false },
-  moneda:      { type: String, required: true },
+
+  currency:    { type: String, required: true },
   fume:        { type: String, required: true },
-  ume:         { type: String, required: true },
-  freq:        { type: String, required: true },
-  qty:         { type: String, required: true },
-  importe:     { type: String, required: true },
+  qume:        { type: String, required: true },
+
+  freq:        { type: Number, required: true },
+  qty:         { type: Number, required: true },
+  importe:     { type: Number, required: true },
+
+  itemCost:    { type: Number, required: true },
+  itemARSCost: { type: Number, required: true },
+  changeRate:  { type: Number, required: true },
+  feRate:      { type: String, required: true },
+
 });
 
 
 const budgetSch = new Schema({
 
-    compPrefix:    { type: String, required: true },
-    compName:      { type: String, required: true },
-    compNum:       { type: String, required: true },
+    compPrefix:   { type: String, required: true  },
+    compName:     { type: String, required: true  },
+    compNum:      { type: String, required: true  },
 
-    type:         { type: String, required: true },
-    stype:        { type: String, required: true },
-    sector:       { type: String, required: true },
+    type:         { type: String, required: true  },
+    stype:        { type: String, required: true  },
+    sector:       { type: String, required: true  },
     programa:     { type: String, required: false },
     sede:         { type: String, required: false },
     locacion:     { type: String, required: false },
 
-    monto:         { type: Number, required: false },
-    monto_items:   { type: Number, required: false },
-    items:        [ budgetItemsSch ],
-    moneda:       { type: String, required: false },
-    fume:         { type: String, required: false },
-    ume:          { type: String, required: false },
-    freq:         { type: Number, required: false },
-    qty:          { type: Number, required: false },
-    importe:      { type: Number, required: false },
+    currency:     { type: String, required: false },
+    
+    e_currency:   { type: String, required: false },
+    e_cost:       { type: Number, required: false },
+    e_ARSCost:    { type: Number, required: false },
+    e_changeRate: { type: Number, required: false },
+    e_feRate:     { type: String, required: false },
+
+    items:        [ budgetItemSch ],
 
     slug:         { type: String, required: false },
     description:  { type: String, required: false },
@@ -59,10 +67,13 @@ const budgetSch = new Schema({
     estado:       { type: String, required: false },
     avance:       { type: String, required: false },
     aprobado:     { type: String, required: false },
+
     fecomp:       { type: String, required: false },
     fecomp_ts:    { type: Number, required: false },
+
     fe_req:       { type: String, required: false },
     fe_req_ts:    { type: Number, required: false },
+
     observacion:  { type: String, required: false },
 
 
@@ -119,14 +130,6 @@ function buildQuery(query){
 
   if(query['programa']){
       q["programa"] = query['programa'];
-  }
-
-  if(query['publico']){
-      q["publico"] = query['publico'];
-  }
-
-  if(query['formato']){
-      q["formato"] = query['formato'];
   }
 
   if(query['sede']){

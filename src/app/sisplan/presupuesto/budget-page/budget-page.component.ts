@@ -11,9 +11,8 @@ import { Audit, ParentEntity } from '../../../develar-commons/observaciones/obse
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../sisplan.service';
 
-import { Budget, BudgetHelper       } from '../presupuesto.model';
+import { Budget, BudgetItem, BudgetHelper       } from '../presupuesto.model';
 
-const TOKEN_TYPE = 'budget';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const DELETE = 'delete';
@@ -51,6 +50,8 @@ export class BudgetPageComponent implements OnInit {
   private hasBudgetIdOnURL: boolean = false;
   private currentBudget: Budget;
   private budgetId: string;
+
+  public budgetCostList: BudgetItem[] = [];
 
 
   constructor(
@@ -122,6 +123,7 @@ export class BudgetPageComponent implements OnInit {
     if(budget){
 
       this.currentBudget = budget;
+      this.budgetCostList = budget.items || [];
 
       this.audit = this.dsCtrl.getAuditData();
       this.parentEntity = {
@@ -160,6 +162,24 @@ export class BudgetPageComponent implements OnInit {
 
   }
 
+  updateCostItems(event:UpdateListEvent){
+    if(event.action === UPDATE){
+      this.upsertBudgetCostItemsList(event);
+    }
+  }
+
+  private upsertBudgetCostItemsList(event:UpdateListEvent){
+    this.currentBudget.items = event.items as BudgetItem[];
+
+    let update: UpdateEvent = {
+      action: event.action,
+      token: event.type,
+      payload: this.currentBudget
+    };
+    this.dsCtrl.updatePartialBudget(update);
+  }
+
+
   /**********************/
   /*      Helpers        */
   /**********************/
@@ -175,4 +195,5 @@ export class BudgetPageComponent implements OnInit {
 
 }
 
+//http://develar-local.co:4200/cck/gestion/presupuesto/5e3200b1dd0e0d21128e88d7
 //http://develar-local.co:4200/cck/gestion/presupuesto/5e31ea1b5d6d201d4e4dd2ec

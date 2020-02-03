@@ -60,7 +60,7 @@ import { ProductSearchComponent } from './product-search/product-search.componen
       ProductKitEditComponent,
       ProductSearchComponent
   ],
-  exports: [ProductBaseComponent, MyproductsPageComponent],
+  exports: [ProductSearchComponent, ProductBaseComponent, MyproductsPageComponent],
   providers: [ProductController]
 })
 export class ProductModule { }

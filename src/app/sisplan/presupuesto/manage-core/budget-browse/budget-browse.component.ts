@@ -147,8 +147,6 @@ export class BudgetBrowseComponent implements OnInit {
 			type:         [null],
 			stype:        [null],
 			programa:     [null],
-			formato:      [null],
-			publico:      [null],
 			sede:         [null],
 			locacion:     [null],
 			fe_req_d:     [null],

@@ -1,0 +1,16 @@
+<div class="container-fluid">
+ 	<div class="row">
+ 		<div class="col-sm-12 col-md-12">
+ 			<p class='text-resaltado'>{{ slug }}: {{ arsCosto | currency }}</p>
+
+			<p class='text-resaltado'>
+				{{ freq }}:{{fume}} x {{ qty }}:{{qume}} x {{ importe | currency  }}:{{ moneda }} = 
+				{{ costo | currency }}:{{ moneda  }}
+
+			</p>
+ 			<p class='text-normal'>{{ productSlug }} </p>
+ 			<p class='text-normal'><strong>Tipo de cambio: </strong> {{ changeRate }} ({{ feRate }})</p>
+
+ 		</div>
+	</div>
+</div>

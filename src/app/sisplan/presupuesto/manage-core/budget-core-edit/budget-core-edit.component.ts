@@ -6,9 +6,9 @@ import { CustomValidators } from 'ng2-validation';
 import { devutils }from '../../../../develar-commons/utils'
 
 import { SisplanController } from '../../../sisplan.controller';
-import { SisplanService, BudgetService, UpdateEvent }     from '../../../sisplan.service';
+import { SisplanService, BudgetCostService, BudgetService, UpdateEvent }     from '../../../sisplan.service';
 
-import { Budget, BudgetHelper       } from '../../presupuesto.model';
+import { Budget, BudgetCost, BudgetHelper       } from '../../presupuesto.model';
 
 const TOKEN_TYPE = 'budget';
 const CANCEL = 'cancel';
@@ -39,7 +39,12 @@ export class BudgetCoreEditComponent implements OnInit {
   public locacionOptMap =   SisplanService.getLocacionMap();
 
   public fumeOptList =      SisplanService.getOptionlist('fume');
-  public umeOptList =       SisplanService.getOptionlist('ume');
+  public umeOptList =       SisplanService.getOptionlist('qume');
+  public currencyOptList =  SisplanService.getOptionlist('currency');
+  public exchangeMap =      SisplanService.getOptionlist('exchange');
+  
+  public budgetCost: BudgetCost;
+  private budgetService: BudgetCostService;
 
 	public form: FormGroup;
 
@@ -47,10 +52,10 @@ export class BudgetCoreEditComponent implements OnInit {
 
 
   constructor(
-  	private fb:     FormBuilder,
-    private dsCtrl: SisplanController,
-    private route:  ActivatedRoute,
-    private router: Router,
+  	private fb:      FormBuilder,
+    private dsCtrl:  SisplanController,
+    private route:   ActivatedRoute,
+    private router:  Router,
   	) { 
       this.form = this.buildForm();
 	}
@@ -114,6 +119,10 @@ export class BudgetCoreEditComponent implements OnInit {
       this.changeLocacionOptList(val);
     }
 
+    if(type === 'currency'){
+      this.changeBudgetCurrency(val);
+    }
+
   }
 
   private changeStypeOptList(parent: string){
@@ -136,32 +145,35 @@ export class BudgetCoreEditComponent implements OnInit {
 
   }
 
+  private changeBudgetCurrency(val){
+    this.initForSave(this.form, this.budget);
+
+    this.budgetCost = this.budgetService.calculateARSCost(val);
+    console.dir(this.budgetCost);
+
+
+  }
 
 
   buildForm(): FormGroup{
   	let form: FormGroup;
 
     form = this.fb.group({
-			slug:        [null, Validators.compose([Validators.required])],
-      description: [null],
+			slug:         [null, Validators.compose([Validators.required]) ],
+      description:  [null],
 
-      programa:    [null, Validators.compose([Validators.required])],
-      type:        [null, Validators.compose([Validators.required])],
-      stype:       [null, Validators.compose([Validators.required])],
+      programa:     [null, Validators.compose([Validators.required]) ],
+      type:         [null, Validators.compose([Validators.required]) ],
+      stype:        [null, Validators.compose([Validators.required]) ],
 
-			publico:     [null],
-			formato:     [null],
+      sector:       [null, Validators.compose([Validators.required]) ],
+			sede:         [null],
+			locacion:     [null],
 
-      sector:      [null, Validators.compose([Validators.required])],
-			sede:        [null],
-			locacion:    [null],
+      currency:     [null, Validators.compose([Validators.required]) ],
+      e_cost:       [null, Validators.compose([Validators.required]) ],
 
-      ume:         [null, Validators.compose([Validators.required])],
-      freq:        [null, Validators.compose([Validators.required])],
-      fume:        [null, Validators.compose([Validators.required])],
-      qty:         [null, Validators.compose([Validators.required])],
-      importe:     [null, Validators.compose([Validators.required])],
-
+      fe_req:       [null, Validators.compose([Validators.required]) ],
     });
 
     return form;
@@ -170,6 +182,10 @@ export class BudgetCoreEditComponent implements OnInit {
   initForEdit(form: FormGroup, budget: Budget): FormGroup {
     this.changeStypeOptList(budget.type);
     this.changeLocacionOptList(budget.sede);
+
+    this.budgetService = new BudgetCostService(budget, this.exchangeMap);
+
+    this.budgetCost = this.budgetService.budgetCost;
 
 		form.reset({
 			slug:        budget.slug,
@@ -183,11 +199,13 @@ export class BudgetCoreEditComponent implements OnInit {
 			sede:        budget.sede,
 			locacion:    budget.locacion,
 
-      fume:        budget.fume,
-      ume:         budget.ume,
-      freq:        budget.freq,
-      qty:         budget.qty,
-      importe:     budget.importe,
+      currency:     this.budgetCost.e_currency,
+      e_cost:       this.budgetCost.e_cost,
+      e_ARSCost:    this.budgetCost.e_ARSCost,
+      e_changeRate: this.budgetCost.e_changeRate,
+
+      fe_req:       budget.fe_req,
+
 
 		});
 
@@ -215,11 +233,26 @@ export class BudgetCoreEditComponent implements OnInit {
     entity.sede =      fvalue.sede;
     entity.locacion =  fvalue.locacion;
 
-    entity.ume =       fvalue.ume;
-    entity.fume =      fvalue.fume;
-    entity.freq =      fvalue.freq;
-    entity.qty =       fvalue.qty;
-    entity.importe =   fvalue.importe;
+
+    entity.currency =  fvalue.currency;
+    
+    entity.e_currency =   fvalue.currency;
+    entity.e_cost =       fvalue.e_cost;
+
+    entity.fe_req =       fvalue.fe_req;
+
+    //this.budgetService = new BudgetCostService(entity, this.exchangeMap);
+
+    this.budgetService.budget = entity
+    this.budgetCost = this.budgetService.calculateARSCost(entity.currency);
+
+    
+
+    entity.e_ARSCost =    this.budgetCost.e_ARSCost;
+    entity.e_changeRate = this.budgetCost.e_changeRate;
+    entity.e_feRate =     this.budgetCost.e_feRate;
+
+
 
 		return entity;
 	}

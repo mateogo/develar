@@ -28,11 +28,13 @@ import { Person }        from '../entities/person/person';
 
 import { Pcultural, PculturalBrowse, PculturalTable } from './pcultural/pcultural.model';
 import { Budget, BudgetBrowse, BudgetTable }          from './presupuesto/presupuesto.model';
+import { Product } from '../entities/products/product.model';
 
 import { SisplanService, BudgetService } from './sisplan.service';
 
 
 const CORE = 'core';
+const COST_ITEMS = 'budget_items';
 const ASSETS = 'assets';
 const PCULTURAL_ROUTE = 'pcultural';
 const BUDGET_ROUTE = 'budget';
@@ -68,6 +70,7 @@ export class SisplanController {
   private serial_type =    'serial';
   private user_type =      'user';
   private person_type =    'person';
+  private product_type =   'product';
  
 
   /******* Pcultural Table Data *******/
@@ -181,18 +184,31 @@ export class SisplanController {
   updatePartialBudget(event: UpdateEvent){
 
     if(event.token === CORE){
-      this.upsertBudgetCore(event.payload._id, event.payload);
+      this.upsertBudgetCore(event.payload._id, event.payload as Budget);
     }
+
+    if(event.token === COST_ITEMS){
+      this.upsertBudgetCore(event.payload._id, event.payload as Budget);
+    }
+
   }
 
-  private upsertBudgetCore(id:string, p:any){
+  private upsertBudgetCore(id:string, budget:Budget){
 
-    this.daoService.partialUpdate<Budget>(this.budget_type, id, p).then(budget =>{
+    this.daoService.partialUpdate<Budget>(this.budget_type, id, budget).then(budget =>{
       this.updateCurrentBudget(budget);
     })
 
   }
     
+  private upsertBudgetItems(id:string, budget:Budget){
+    let items = {items: budget.items};
+
+    this.daoService.partialUpdate<Budget>(this.budget_type, id, items).then(budget =>{
+      this.updateCurrentBudget(budget);
+    })
+
+  }
 
   manageBudgetRecord(budget:Budget ): Subject<Budget>{
 
@@ -652,6 +668,15 @@ export class SisplanController {
       //console.log('action???? [%s]', e);
     })
   }
+
+  /****************************/
+  /******* Kit Product *******/
+  /**************************/
+ 
+  fetchProductById(id: string): Promise<Product>{
+    return this.daoService.findById<Product>(this.product_type, id);
+  }
+
 
 
   /***************************/

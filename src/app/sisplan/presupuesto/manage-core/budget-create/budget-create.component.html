@@ -11,6 +11,48 @@
       </div>
     </div>
 
+
+    <div class="row" >
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fe_req']" 
+                    placeholder="Fecha necesidad" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['e_cost']" 
+                    placeholder="Costo presupuestado" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCurrency placeholder="Moneda"
+              [formControl]="form.controls['currency']"
+              (selectionChange)="changeSelectionValue('currency',fldCurrency.value)" >
+            <mat-option *ngFor="let item of currencyOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="row cost-summary">
+      <div class="col">
+        <span>Costo presupuestado: 
+              {{ budgetCost.e_currency}} {{ budgetCost.e_cost | currency}}
+        </span>
+        <span *ngIf="budgetCost.e_currency !== 'ARS' "> ::|::               
+              En ARS: {{ budgetCost.e_ARSCost | currency}} 
+              (tipo de cambio: {{ budgetCost.e_changeRate}} al: {{ budgetCost.e_feRate}})
+        </span>
+      </div>
+    </div>
+
     <div class="row" >
       <div class="col">
         <mat-form-field>
@@ -19,51 +61,6 @@
           </textarea> 
         </mat-form-field>
       </div>
-    </div>
-
-    <div class="row" >
-
-      <div class="col">
-        <mat-form-field>
-          <input matInput type="number" [formControl]="form.controls['freq']" 
-                    placeholder="Frecuencia" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldFume placeholder="UM freq"
-              [formControl]="form.controls['fume']"
-              (selectionChange)="changeSelectionValue('fume',fldFume.value)" >
-            <mat-option *ngFor="let item of fumeOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input matInput type="number" [formControl]="form.controls['qty']" 
-                    placeholder="Cantidad" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldUME placeholder="UM"
-              [formControl]="form.controls['ume']"
-              (selectionChange)="changeSelectionValue('ume',fldUME.value)" >
-            <mat-option *ngFor="let item of umeOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input matInput type="number" [formControl]="form.controls['importe']" 
-                    placeholder="Importe" >
-        </mat-form-field>
-      </div>
-
     </div>
 
     <div class="row" >

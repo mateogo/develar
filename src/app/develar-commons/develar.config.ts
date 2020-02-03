@@ -4,9 +4,27 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'cck';
 
 const globals = {
+
+	dsocial: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'MAB',
+		mainmenu: 'dsocial',
+		mainmenutpl: 'default-navbar',
+		admintarget: '/dsocial/gestion/recepcion',
+		dashboard: '/dsocial/gestion/recepcion',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[MAB] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2019 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.1-19.12.10) ',
+		version: '1.0 beta',
+		url: 'dsocial.brown.gob.ar'
+	},
 
 	cck: {
 		logoAvatar: 'avatar-develar.jpg',
@@ -45,24 +63,6 @@ const globals = {
 		url: 'www.develar.co'
 	},
 
-
-	dsocial: {
-		logoAvatar: 'avatar-develar.jpg',
-		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo-publico.png',
-		logoCompany2: 'logo-publico.png',
-		company: 'MAB',
-		mainmenu: 'dsocial',
-		mainmenutpl: 'default-navbar',
-		admintarget: '/dsocial/gestion/recepcion',
-		dashboard: '/dsocial/gestion/recepcion',
-		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
-		emailsubject: '[MAB] Contacto',
-		emailbody: 'Formulario de contacto completado',
-		copyright: '© Copyright 2019 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.1-19.12.10) ',
-		version: '1.0 beta',
-		url: 'dsocial.brown.gob.ar'
-	},
 	comercios: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',

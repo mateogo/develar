@@ -64,7 +64,7 @@ export class BudgetCoreViewComponent implements OnInit {
   navigate(p:Budget){
     let id = p._id;
     console.log('ready To Navigate: [%s]', id);
-    this.router.navigate(['/cck/gestion/presupuestos', id] );
+    this.router.navigate(['/cck/gestion/presupuesto', id] );
   }
 
 }
