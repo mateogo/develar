@@ -151,7 +151,6 @@ export class BudgetDashboardComponent implements OnInit {
     })
 
     this.dsCtrl.fetchBudgetByQuery(query).subscribe(list => {
-      console.log('QUERY [%s]',list&& list.length);
       if(list && list.length > 0){
         this.budgetsList = list;
         this.dsCtrl.updateBudgetsTableData();
@@ -192,7 +191,14 @@ export class BudgetDashboardComponent implements OnInit {
   }
 
   addItem(){
-    let item = BudgetService.initNewBudget('produccion', 'musica', 'popular', 'Alta rapida');
+
+   let spec = {
+        sector: 'produccion',
+        type:   'musica',
+        stype:  'popular',
+        slug:   'alta rápida'      
+    }
+    let item = BudgetService.initNewBudget(spec);
   }
 
   emitEvent(event:UpdateEvent){

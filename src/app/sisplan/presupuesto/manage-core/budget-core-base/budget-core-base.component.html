@@ -13,7 +13,7 @@
 
 		 		</div>
 		 		<div class="col-sm-11 col-md-11">
-		 			<budget-core-view [budget]='budget'></budget-core-view>
+		 			<budget-core-view [budget]='budget'  [pcultural]="pcultural"></budget-core-view>
 		 		</div>
 			</div>
 		 </ng-container>
@@ -21,7 +21,7 @@
   		<ng-container *ngIf="showEdit">
 		 	<div class="row">
 		 		<div class="col-sm-12 col-md-12">
-		 			<budget-core-edit [budget]='budget'
+		 			<budget-core-edit [budget]='budget'  [pcultural]="pcultural"
 		 								(updateBudget)='updateCore($event)' ></budget-core-edit>
 		 		</div>
 			</div>

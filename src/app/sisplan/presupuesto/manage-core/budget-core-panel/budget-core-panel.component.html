@@ -1,5 +1,6 @@
 <mat-card>
   <mat-card-content>
+
 		<div class="row">
 			<div class="col-sm-12 col-md-12">
 			  	<div class="d-flex justify-content-between panel-header">
@@ -14,11 +15,13 @@
 		</div>
 			
 		<ng-container *ngIf="showList">
+			<budget-summary [budgetList]='items' ></budget-summary>
+
 			<ng-container *ngIf="showActiveList">
 
 				<div  *ngFor="let item of activeitems" class="row">
 					<div class="col-sm-12 col-md-12">
-						<budget-core-base [budget]='item'
+						<budget-core-base [budget]='item' [pcultural]="pcultural"
 												(updateBudget)='updateItem($event)'></budget-core-base>
 
 
@@ -31,14 +34,14 @@
 				<div  *ngFor="let item of items" class="row">
 					<div class="col-sm-12 col-md-12">
 
-						<budget-core-base [budget]='item'
+						<budget-core-base [budget]='item'  [pcultural]="pcultural"
 												(updateBudget)='updateItem($event)'></budget-core-base>
 
 					</div>
 				</div>
 
-				<p><button mat-button type="button" color="accent" title="Solicitudes activas"
-  				(click)="activeView()" >Filtrar solo solicitudes activas</button></p>
+				<!--p><button mat-button type="button" color="accent" title="Solicitudes activas"
+  				(click)="activeView()" >Filtrar solo solicitudes activas</button></p -->
 
 
 			</ng-container>

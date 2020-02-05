@@ -1,18 +1,28 @@
 <div class="container-fluid">
- 	<div class="row">
- 		<div class="col-sm-12 col-md-12">
- 			<p class='text-destacado'> {{ programa }} :: {{ slug }}</p>
+
+ 		<div class="d-flex flex-row align-items-between justify-content-between ">
+ 			<span class='text-destacado'> {{ programa }} :: {{ slug }}</span>
+
+ 			<span class='text-resaltado'>ARS::{{ arsCosto | currency }}</span>
+ 		</div>
+
+ 		<div class="d-flex flex-row align-items-start justify-content-between ">
 
 			<p class='text-resaltado'>
-				{{ compName }}:{{ compNum }} :: {{ sede }} - <strong>{{ locacion }}</strong>
+				{{ compName }}:{{ compNum }}:: {{ budget.fecomp }} :: {{ sede }} - 
+				<strong>{{ locacion }}</strong>
 			</p>
- 			<p class='text-normal'>{{ budget.description }} </p>
- 			<p class='text-normal'><strong>{{ type }}: </strong> {{ stype }} </p>
- 			<p class='text-normal'><strong> {{ budget.fecomp }} - Área: </strong> {{ sector }} </p>
- 			<p class='text-normal'>{{ estado }} </p>
- 			<button mat-button (click)="navigate(budget)" type="button" 
- 							color="accent">Ir a este Evento</button>
+		</div>
 
+ 		<div class="d-flex flex-column align-items-start justify-content-start ">
+ 			<!--p class='text-normal'>{{ budget.description }} </p-->
+			<span class='text-normal'><strong>Fecha necesidad {{ budget.fe_req }} </strong>
+					 {{ sector }} :: <strong>{{ type }}: </strong> {{ stype }} </span>
+			<span class='text-normal'>{{ estado }} 
+				<button mat-button (click)="navigate(budget)" type="button" 
+						color="accent">Ir a este Presupuesto</button>
+			</span>
  		</div>
-	</div>
+
+
 </div>

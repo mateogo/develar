@@ -10,6 +10,10 @@
 
 
 
+	<budget-core-panel [pcultural]='currentPcultural'
+		 							(updateItems)='updateBudgetList($event)' ></budget-core-panel>
+
+
 	<observaciones-panel 
 		 							[audit]='audit'
 		 							[type]="'cck'"

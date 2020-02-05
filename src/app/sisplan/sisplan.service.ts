@@ -1,5 +1,5 @@
 import { Pcultural, PculturalTable } from './pcultural/pcultural.model';
-import { Budget, BudgetItem, BudgetCost, BudgetTable }       from './presupuesto/presupuesto.model';
+import { Budget, BudgetItem, PculturalItem, BudgetCost, BudgetCostSummary, BudgetTable }       from './presupuesto/presupuesto.model';
 
 import { devutils } from '../develar-commons/utils';
 
@@ -429,6 +429,8 @@ export class BudgetCostService {
   private date: Date;
   private dateTx: string;
   private dateTs: number;
+  private summaryCost: BudgetCostSummary;
+  private budgetList: Budget[];
 
   private _item: BudgetItem;
 
@@ -440,6 +442,19 @@ export class BudgetCostService {
     this.date = new Date();
     this.dateTx = devutils.txFromDate(this.date);
     this.dateTs = this.date.getTime();
+  }
+
+  get summary(): BudgetCostSummary{
+    this.summaryCost = this.buildSummaryCost();
+    return this.summaryCost;
+  }
+ 
+  get budgetlist(): Budget[]{
+    return this.budgetList;
+  }
+ 
+  set budgetlist(list:  Budget[]){
+    this.budgetList = list;
   }
 
   get budget(): Budget{
@@ -467,11 +482,67 @@ export class BudgetCostService {
     this._item = bdgt;
   }
 
+  evaluateBugetListCost(): BudgetCostSummary
+   {
+    return this.buildBudgetListCost();
+
+  }
+
+  private buildBudgetListCost():BudgetCostSummary{
+    let globalsCost:Array<BudgetCost> = [];
+    let itemsCost: Array<BudgetCost> = [];
+
+    if(this.budgetList && this.budgetList.length){
+      this.budgetList.forEach(bgt => {
+
+        this.acumBudgetSumary(globalsCost, bgt);
+
+        let items = bgt.items
+
+        if(items && items.length){
+          this.acumItemSummaryCost(itemsCost,items);
+        }
+
+      })
+    }
+    let budgetSummary = {
+      globals: globalsCost,
+      items: itemsCost
+    } as BudgetCostSummary;
+    return budgetSummary;
+
+  }
+
+  private acumBudgetSumary(acumList: BudgetCost[], budget: Budget){
+    let token = acumList.find(t => t.e_currency === budget.e_currency);
+
+    if(token){
+      token.e_cost += budget.e_cost;
+      token.e_ARSCost += budget.e_ARSCost;
+
+    }else {
+      token = {
+        e_cost: budget.e_cost,
+        e_ARSCost: budget.e_ARSCost,
+        e_currency: budget.e_currency,
+        e_changeRate: budget.e_changeRate,
+        e_feRate: budget.e_feRate,
+
+      } as BudgetCost;
+      acumList.push(token);
+
+    }
+
+    return acumList;
+  }
+
+
   evaluateItemCost(item: BudgetItem): BudgetItem{
     this.item = item;
     this.evalItemCost();
     return item;
   }
+
 
   fetchExchangeRate(currency: string){
     let xchange = {};
@@ -512,7 +583,6 @@ export class BudgetCostService {
     item.changeRate = xchange['rate'] || 1;
     item.itemARSCost = costo * item.changeRate;
 
-
   }
 
   private initBudgetCost(){
@@ -521,6 +591,7 @@ export class BudgetCostService {
     this._budgetCost.e_cost =        this.budget.e_cost || 0;
     this._budgetCost.e_ARSCost =     this.budget.e_ARSCost || 0;
     this._budgetCost.e_changeRate =  this.budget.e_changeRate || 1.0;
+    return this._budgetCost;
 
   }
 
@@ -535,6 +606,52 @@ export class BudgetCostService {
     })
   }
 
+  private buildSummaryCost(): BudgetCostSummary{
+    let budgetCost = new BudgetCost();
+    let itemsCost: Array<BudgetCost> = [];
+
+    budgetCost.e_currency =    this.budget.currency || "ARS";
+    budgetCost.e_cost =        this.budget.e_cost || 0;
+    budgetCost.e_ARSCost =     this.budget.e_ARSCost || 0;
+    budgetCost.e_changeRate =  this.budget.e_changeRate || 1.0;
+    budgetCost.e_feRate =      this.budget.e_feRate;
+
+    let items = this.budget.items;
+    if(items && items.length){
+      itemsCost = this.acumItemSummaryCost(itemsCost,items);
+    }
+    let budgetSummary = {
+      globals: [budgetCost],
+      items: itemsCost
+    } as BudgetCostSummary;
+    return budgetSummary;
+  }
+
+  private acumItemSummaryCost(itemsCost:BudgetCost[], items: BudgetItem[]): BudgetCost[]{
+    items.forEach(item =>{
+      let token = itemsCost.find(t => (t.e_currency === item.currency && t.productSlug === item.productSlug));
+      if(token){
+        token.e_cost += item.itemCost;
+        token.e_ARSCost += item.itemARSCost;
+
+      }else {
+        token = {
+          e_cost: item.itemCost,
+          e_ARSCost: item.itemARSCost,
+          e_currency: item.currency,
+          e_changeRate: item.changeRate,
+          e_feRate: item.feRate,
+          productSlug: item.productSlug
+
+        } as BudgetCost;
+        itemsCost.push(token);
+
+      }
+
+    });
+
+    return itemsCost;
+  }
 
 }
 
@@ -553,26 +670,38 @@ export class BudgetService {
 
     return filteredList;
   }
-
-  static initNewBudget(sector, type, stype, slug,  serial?: Serial){
+  // spec: sector, type, stype, slug,  serial?: Serial
+  static initNewBudget(spec: any){
     let ts = Date.now();
     let token = new Budget();
+
+    if(!spec){
+      spec = {
+        sector: 'produccion',
+        type: 'musica',
+        stype: 'popular',
+        slug: 'alta rápida'
+      }
+    }
 
 
     token.fecomp = devutils.txFromDateTime(ts);
     token.fecomp_ts = ts;
 
-    token.sector = sector;
-    token.type =   type;
-    token.stype =  stype;
-    token.slug =   slug;
+    token.sector = spec.sector;
+    token.type =   spec.type;
+    token.stype =  spec.stype;
+    token.slug =   spec.slug;
+    token.sede =   spec.sede;
+    token.locacion =  spec.locacion;
+    token.programa = spec.programa;
 
     token.description = '';
 
-    if(serial){
-      token.compPrefix = serial.compPrefix ;
-      token.compName = serial.compName;
-      token.compNum = serial.pnumero + "";
+    if(spec.serial){
+      token.compPrefix = spec.serial.compPrefix ;
+      token.compName = spec.serial.compName;
+      token.compNum = spec.serial.pnumero + "";
     }
 
     token.estado = 'activo';
@@ -768,12 +897,12 @@ export class SisplanService {
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<Pcultural|Budget|BudgetItem>;
+  items:  Array<Pcultural|Budget|BudgetItem|PculturalItem>;
 };
 
 
 export interface UpdateEvent {
   action:  string;
-  token:   string;
-  payload: Pcultural|Budget|BudgetItem;
+  token:   string;  
+  payload: Pcultural|Budget|BudgetItem|PculturalItem;
 };

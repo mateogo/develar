@@ -80,7 +80,6 @@ export class PculturalCoreEditComponent implements OnInit {
   }
 
   emitEvent(action:string){
-    console.log('todo');
 
     let event = {
       action: action,

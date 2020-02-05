@@ -6,7 +6,8 @@ import { SisplanController } from '../../../sisplan.controller';
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
 
-import { Budget, BudgetHelper       } from '../../presupuesto.model';
+import { Budget, BudgetHelper } from '../../presupuesto.model';
+import { Pcultural       }      from '../../../pcultural/pcultural.model';
 
 
 
@@ -23,9 +24,10 @@ const NAVIGATE = 'navigate';
 })
 export class BudgetCorePanelComponent implements OnInit {
 	@Input() items: Array<Budget>;
+  @Input() pcultural: Pcultural;
 	@Output() updateItems = new EventEmitter<UpdateListEvent>();
 
-  public title = 'Eventos Culturales';
+  public title = 'Presupuestos';
 
 	public showList = false;
   public showActiveList = false;
@@ -34,6 +36,9 @@ export class BudgetCorePanelComponent implements OnInit {
   public openEditor = true;
 
   public activeitems: Array<Budget> = [];
+
+  //Budget
+  public budgetList: Budget[] = [];
 
   constructor(
       private dsCtrl: SisplanController,
@@ -44,7 +49,9 @@ export class BudgetCorePanelComponent implements OnInit {
   	if(this.items && this.items.length){
       this.filterActiveItems();
   		this.showList = true;
-  	}
+  	}else{
+      if(this.pcultural) this.initBudgetListFromPcultural(this.pcultural);
+    }
 
   }
 
@@ -66,13 +73,45 @@ export class BudgetCorePanelComponent implements OnInit {
 
   }
 
+  /**********************/
+  /*      Budget        */
+  /**********************/
+  private initBudgetListFromPcultural(currentPcultural: Pcultural){
+    this.showList = false;
+    this.items = [];
+    if(!currentPcultural) return;
+
+    this.dsCtrl.fetchBudgetByPcultural(currentPcultural._id).subscribe(list => {
+      this.items = list || [];
+      this.sortProperly(this.items);
+
+      this.showList = true;
+    })
+  }
+
+  private sortProperly(records){
+    records.sort((fel, sel)=> {
+      if(fel.fe_req_ts < sel.fe_req_ts) return 1;
+      else if(fel.fe_req_ts > sel.fe_req_ts) return -1;
+      else return 0;
+    })
+  }
+
+  updateBudgetList(event: UpdateListEvent){
+    if(event.action === UPDATE){
+      this.initBudgetListFromPcultural(this.pcultural);
+    }
+
+  }
+
+
   updateItem(event: UpdateEvent){
     if(event.action === UPDATE){
       this.dsCtrl.manageBudgetRecord(event.payload as Budget).subscribe(t =>{
         if(t){
           event.payload = t;
-
-          this.filterActiveItems();
+          if(this.pcultural) this.initBudgetListFromPcultural(this.pcultural);
+          else this.filterActiveItems();
         }
 
         this.emitEvent(event);
@@ -112,7 +151,27 @@ export class BudgetCorePanelComponent implements OnInit {
   }
 
   addItem(){
-    let item = BudgetService.initNewBudget('produccion', 'musica', 'popular', 'alta rápida')
+    let spec = {
+        sector: 'produccion',
+        type:   'musica',
+        stype:  'popular',
+        slug:   'alta rápida' ,
+        sede:   'cck',
+        locacion: '',
+        programa: ''     
+    }
+
+    if(this.pcultural){
+      spec.slug = this.pcultural.slug;
+      spec.sector = this.pcultural.sector;
+      spec.type = this.pcultural.type;
+      spec.stype = this.pcultural.stype;
+      spec.sede = this.pcultural.sede;
+      spec.locacion = this.pcultural.locacion;
+      spec.programa = this.pcultural.programa;
+    }
+
+    let item = BudgetService.initNewBudget(spec);
     if(!this.items) this.items = [];
     if(!this.activeitems) this.activeitems = [];
 

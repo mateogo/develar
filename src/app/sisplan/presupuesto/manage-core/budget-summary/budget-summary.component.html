@@ -1,1 +1,43 @@
-<p>budget-summary works!</p>
+<mat-card>
+<mat-card-content>
+	<div class="row">
+		<div class="col-md-6">
+			<p class="text-resaltado">Costo general ESTIMADO</p>
+			<table class="table table-bordered">
+				<thead class="thead-light text-head">
+					<tr>
+						<th class="text-right">COSTO DIVISA</th>
+						<th class="text-right">COSTO ARS</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let global of globals">
+						<td class="text-right">{{ global.e_currency}} {{ global.e_cost|currency }}</td>
+						<td class="text-right">{{ global.e_ARSCost|currency }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>		
+		<div *ngIf="items && items.length" class="col-md-6">
+			<p  class="text-resaltado">Costo según APERTURA DE GASTOS</p>
+			<table class="table table-striped">
+				<thead class="thead-dark  text-head">
+					<tr>
+						<th>CONCEPTO</th>
+						<th class="text-right">COSTO DIVISA</th>
+						<th class="text-right">COSTO ARS</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of items">
+						<td>{{ item.productSlug}}</td>
+						<td class="text-right">{{ item.e_currency}} {{ item.e_cost|currency }}</td>
+						<td class="text-right">{{ item.e_ARSCost|currency }}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>		
+	</div>
+</mat-card-content>
+</mat-card>

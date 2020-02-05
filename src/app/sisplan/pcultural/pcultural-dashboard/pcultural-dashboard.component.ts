@@ -144,7 +144,6 @@ export class PculturalDashboardComponent implements OnInit {
     })
 
     this.dsCtrl.fetchPculturalByQuery(query).subscribe(list => {
-      console.log('QUERY [%s]',list&& list.length);
       if(list && list.length > 0){
         this.pculturalesList = list;
         this.dsCtrl.updatePculturalesTableData();

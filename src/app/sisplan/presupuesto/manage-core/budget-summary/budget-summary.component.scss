@@ -1,0 +1,19 @@
+@import '../../../../../assets/sass/variable';
+$color-destacado: #3c4e62;
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 600;
+		font-size: 1.2rem;
+		font-style: normal;
+
+}
+
+.text-head {
+		color: $color-destacado;
+		font-weight: 600;
+		font-size: 1rem;
+		font-style: normal;
+
+}

@@ -10,7 +10,8 @@ import { SisplanController } from '../../../sisplan.controller';
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
 
-import { Budget, BudgetHelper       } from '../../presupuesto.model';
+import { Budget, BudgetHelper } from '../../presupuesto.model';
+import { Pcultural       }      from '../../../pcultural/pcultural.model';
 
 
 @Component({
@@ -20,6 +21,8 @@ import { Budget, BudgetHelper       } from '../../presupuesto.model';
 })
 export class BudgetCoreViewComponent implements OnInit {
 	@Input() budget: Budget;
+  @Input() pcultural: Pcultural;
+
 	public compPrefix ;
 	public compName;
 	public compNum ;
@@ -31,6 +34,8 @@ export class BudgetCoreViewComponent implements OnInit {
 	public locacion ;
 	public slug;
   public estado;
+  public arsCosto;
+  public currency;
 
 
   constructor(
@@ -43,6 +48,8 @@ export class BudgetCoreViewComponent implements OnInit {
   	this.compName = this.budget.compName;
   	this.compNum = this.budget.compNum;
   	this.slug = this.budget.slug;
+    this.arsCosto = this.budget.e_ARSCost;
+    this.currency = this.budget.currency;
 
   	let stypeOptList = SisplanService.getSubTypeMap()[this.budget.type] || [];
   	let locacionOptList = SisplanService.getLocacionMap()[this.budget.sede] || [];
@@ -51,19 +58,18 @@ export class BudgetCoreViewComponent implements OnInit {
   	this.type = SisplanService.getOptionLabel('type', this.budget.type);
  		this.stype = SisplanService.getOptionLabelFromList(stypeOptList, this.budget.stype);
 
-  	this.sector = SisplanService.getOptionLabel('sector', this.budget.sector);
+  	this.sector = SisplanService.getPrefixedOptionLabel('sector','Área: ', this.budget.sector);
   	this.programa = SisplanService.getOptionLabel('programa', this.budget.programa);
 
   	this.sede = SisplanService.getOptionLabel('sede', this.budget.sede);
   	this.locacion = SisplanService.getOptionLabelFromList(locacionOptList, this.budget.locacion);
-    this.estado = this.budget.estado;
+    this.estado = SisplanService.getPrefixedOptionLabel('estado', "Estado: ",this.budget.estado);
 
 
   }
 
   navigate(p:Budget){
     let id = p._id;
-    console.log('ready To Navigate: [%s]', id);
     this.router.navigate(['/cck/gestion/presupuesto', id] );
   }
 

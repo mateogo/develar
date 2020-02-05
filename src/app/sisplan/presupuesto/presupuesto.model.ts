@@ -3,11 +3,12 @@ import { Serial }   from '../../develar-commons/develar-entities';
 import { Person }   from '../../entities/person/person';
 
 
-export class TargetEvent {
-  pculturalId: string;
-  slug: string;
 
-  
+export interface BudgetCostSummary {
+
+  globals: Array<BudgetCost>;
+  items: Array<BudgetCost>;
+
 }
 
 
@@ -18,7 +19,17 @@ export class BudgetCost {
   e_ARSCost:    number =  0;
   e_changeRate: number =  1.0;
   e_feRate:     string =  '';
+  productSlug?: string;
   
+}
+
+export class PculturalItem {
+  _id:         string; 
+  pculturalId: string;
+  slug:        string;
+  programa:    string;
+  sede:        string;
+  locacion:    string;
 }
 
 export class BudgetItem {
@@ -68,12 +79,11 @@ export class Budget {
     e_feRate:     string = '';
 
 
+    pculturals:  Array<PculturalItem>;
     items:       Array<BudgetItem>;
 
 		slug:        string;
 		description: string;
-
-    target:      TargetEvent;
 
 		estado:      string = 'activo';
 		avance:      string = 'emitido';

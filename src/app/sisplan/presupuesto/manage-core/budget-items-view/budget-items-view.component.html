@@ -1,16 +1,17 @@
 <div class="container-fluid">
- 	<div class="row">
- 		<div class="col-sm-12 col-md-12">
- 			<p class='text-resaltado'>{{ slug }}: {{ arsCosto | currency }}</p>
-
-			<p class='text-resaltado'>
-				{{ freq }}:{{fume}} x {{ qty }}:{{qume}} x {{ importe | currency  }}:{{ moneda }} = 
-				{{ costo | currency }}:{{ moneda  }}
-
-			</p>
- 			<p class='text-normal'>{{ productSlug }} </p>
- 			<p class='text-normal'><strong>Tipo de cambio: </strong> {{ changeRate }} ({{ feRate }})</p>
+ 		<div class="d-flex flex-row align-items-between justify-content-between ">
+ 			<span class='text-resaltado'>{{ slug }} {{ arsCosto | currency }}</span>
+ 			<span class='text-resaltado'>ARS::{{ arsCosto | currency }}</span>
+ 		</div>
+ 		<div class="d-flex flex-row align-items-start justify-content-between ">
+ 			<span class='text-secundario'>{{ freq }}:{{fume}} x {{ qty }}:{{qume}} x {{ importe | currency  }}:{{ moneda }} =</span>
+ 			<span class='text-secundario'>{{ moneda  }}:{{ costo | currency }}</span>
 
  		</div>
-	</div>
+
+ 		<div class="d-flex flex-row align-items-start justify-content-between ">
+ 			<span class='text-normal'>{{ productSlug }} </span>
+ 			<span class='text-normal'><strong>Tipo de cambio: </strong> 
+ 				{{ changeRate }} ({{ feRate }})</span>
+ 		</div>
 </div>

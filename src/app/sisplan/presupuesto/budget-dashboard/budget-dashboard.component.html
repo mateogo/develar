@@ -45,6 +45,9 @@
 			</ng-container>
 
 			<ng-container *ngIf='!view.value || view.value=="grid"'>
+
+
+
 				<budget-core-panel [items]='budgetsList'
 		 							(updateItems)='updateBudgetList($event)' ></budget-core-panel>
 			</ng-container>

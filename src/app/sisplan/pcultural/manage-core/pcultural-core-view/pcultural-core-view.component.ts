@@ -64,7 +64,6 @@ export class PculturalCoreViewComponent implements OnInit {
 
   navigate(p:Pcultural){
     let id = p._id;
-    console.log('ready To Navigate: [%s]', id);
     this.router.navigate(['/cck/gestion/proyectos', id] );
   }
 }

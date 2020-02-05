@@ -4,13 +4,17 @@
   		<ng-container *ngIf="showView">
 		 	<div class="row">
 		 		<div class="col-md-1">
-		 			<div>
 					<span class="edit-control"
 						(click)='editToken()' title="Editar datos">
 						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></span>
-					</div>
-		 		</div>
+	
+					<span class="edit-control"
+						(click)='cloneToken()' title="Clonar item">
+						<i [class]="'fas fa-plus'" 
+						aria-hidden="true"></i></span>
+	
+			 		</div>
 
 		 		<div class="col-md-11">
 		 			<budget-items-view [token]='token'></budget-items-view>

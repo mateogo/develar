@@ -288,6 +288,15 @@ export class SisplanController {
   }
 
 
+  fetchBudgetByPcultural(itemId: string){
+    let query = {
+      pculturalId: itemId
+    }
+
+    let listener = new Subject<Budget[]>();
+    this.loadBudgetsByQuery(listener, query);
+    return listener;
+  }
 
   fetchBudgetByQuery(query:any){
     let listener = new Subject<Budget[]>();

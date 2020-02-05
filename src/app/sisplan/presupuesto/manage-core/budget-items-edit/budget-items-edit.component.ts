@@ -89,7 +89,7 @@ export class BudgetItemsEditComponent implements OnInit {
   }
 
   emitEvent(action:string){
-    console.log('todo');
+    //console.log('todo');
     
     // if(this.formAction === UPDATE){
     //   this.dsCtrl.manageBudgetRecord(this.token).subscribe(token => {
@@ -148,7 +148,6 @@ export class BudgetItemsEditComponent implements OnInit {
   private changeBudgetCurrency(val){
 
     this.budgetCost = this.budgetCostService.calculateARSCost(val);
-    console.dir(this.budgetCost);
 
 
   }
@@ -246,7 +245,6 @@ export class BudgetItemsEditComponent implements OnInit {
   		this.productText = '';
   	}
 
-  	console.log('handleProduct:[%s]', p.name)
     //this.insertProduct(p);
   }
 

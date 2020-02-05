@@ -8,10 +8,19 @@
 	<budget-core-base [budget]='currentBudget'
 						(updateBudget)='updateCore($event)' ></budget-core-base>
 
+	<ng-container *ngIf="showSummary">
+		
+		<budget-summary [budget]='currentBudget' ></budget-summary>
+	
+	</ng-container>
+
+
 
 	<budget-items-panel [items]='budgetCostList'
 						(updateItems)='updateCostItems($event)' ></budget-items-panel>
 
+	<budget-pculturals-panel [items]='pculturalList'
+						(updateItems)='updatePculturalList($event)' ></budget-pculturals-panel>
 
 	<observaciones-panel 
 		 							[audit]='audit'

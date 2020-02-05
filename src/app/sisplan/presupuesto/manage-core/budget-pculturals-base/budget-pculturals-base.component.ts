@@ -6,21 +6,18 @@ import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../
 
 import { Budget, BudgetItem, BudgetHelper   } from '../../presupuesto.model';
 
-
-
-const TOKEN_TYPE = 'budget_items';
+const TOKEN_TYPE = 'budget_pculturals';
 const CANCEL = 'cancel';
 const DELETE = 'delete';
 const UPDATE = 'update';
 const CLONE =  'clone';
 
-
 @Component({
-  selector: 'budget-items-base',
-  templateUrl: './budget-items-base.component.html',
-  styleUrls: ['./budget-items-base.component.scss']
+  selector: 'budget-pculturals-base',
+  templateUrl: './budget-pculturals-base.component.html',
+  styleUrls: ['./budget-pculturals-base.component.scss']
 })
-export class BudgetItemsBaseComponent implements OnInit {
+export class BudgetPculturalsBaseComponent implements OnInit {
 	@Input() token: BudgetItem;
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
@@ -52,9 +49,9 @@ export class BudgetItemsBaseComponent implements OnInit {
   }
 
 	editToken(){
-		this.openEditor = !this.openEditor;
-		this.showView = !this.showView;
-		this.showEdit = !this.showEdit;
+		// this.openEditor = !this.openEditor;
+		// this.showView = !this.showView;
+		// this.showEdit = !this.showEdit;
 	}
 
   cloneToken(){
@@ -76,4 +73,3 @@ export class BudgetItemsBaseComponent implements OnInit {
 	}
 
 }
-

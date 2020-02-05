@@ -4,11 +4,11 @@ import { SisplanController } from '../../../sisplan.controller';
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
 
-import { Budget, BudgetItem, BudgetHelper   } from '../../presupuesto.model';
+import { Budget, BudgetItem, PculturalItem, BudgetHelper   } from '../../presupuesto.model';
 
 
 
-const TOKEN_TYPE = 'budget_items';
+const TOKEN_TYPE = 'budget_pculturals';
 const CANCEL = 'cancel';
 const DELETE = 'delete';
 const UPDATE = 'update';
@@ -16,15 +16,15 @@ const CLONE =  'clone';
 
 
 @Component({
-  selector: 'budget-items-panel',
-  templateUrl: './budget-items-panel.component.html',
-  styleUrls: ['./budget-items-panel.component.scss']
+  selector: 'budget-pculturals-panel',
+  templateUrl: './budget-pculturals-panel.component.html',
+  styleUrls: ['./budget-pculturals-panel.component.scss']
 })
-export class BudgetItemsPanelComponent implements OnInit {
-	@Input() items: Array<BudgetItem>;
+export class BudgetPculturalsPanelComponent implements OnInit {
+	@Input() items: Array<PculturalItem>;
 	@Output() updateItems = new EventEmitter<UpdateListEvent>();
 
-  public title = 'Detalle de Presupuesto';
+  public title = 'Eventos culturales presupuestados';
 	public showList = false;
   public showAddresses = false;
   public openEditor = true;
@@ -38,19 +38,19 @@ export class BudgetItemsPanelComponent implements OnInit {
 
   }
 
-  updateBudgetItem(event: UpdateEvent){
+  updatePculturalItem(event: UpdateEvent){
     if(event.action === DELETE){
-      this.deleteItem(event.payload as BudgetItem);
+      this.deleteItem(event.payload as PculturalItem);
     }
 
     if(event.action === CLONE){
-      this.cloneItem(event.payload as BudgetItem);
+      this.cloneItem(event.payload as PculturalItem);
     }
 
   	this.emitEvent(event);
   }
 
-  private cloneItem(t: BudgetItem){
+  private cloneItem(t: PculturalItem){
     let cloneItem = { ...t };
     
     delete cloneItem._id;
@@ -68,7 +68,7 @@ export class BudgetItemsPanelComponent implements OnInit {
   }
 
 
-  private deleteItem(t:BudgetItem){
+  private deleteItem(t:PculturalItem){
     let index = this.items.indexOf(t);
 
     if(index !== -1){
@@ -78,7 +78,7 @@ export class BudgetItemsPanelComponent implements OnInit {
   }
 
   addItem(){
-    let item = new BudgetItem();
+    let item = new PculturalItem();
     if(this.items){
       this.items.push(item);
 

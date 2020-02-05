@@ -77,12 +77,10 @@ export class PculturalCreateComponent implements OnInit {
   }
 
   emitEvent(action:string){
-    console.log('todo');
     
     if(this.formAction === UPDATE){
       this.dsCtrl.managePCulturalRecord(this.pcultural).subscribe(token => {
         this.pcultural = token;
-        console.log('Exito: [%s]', token.slug)
         this.navigateTo();
       })
     }

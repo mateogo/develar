@@ -4,8 +4,8 @@ import { SisplanController } from '../../../sisplan.controller';
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../../sisplan.service';
 
-import { Budget, BudgetHelper       } from '../../presupuesto.model';
-
+import { Budget, BudgetHelper } from '../../presupuesto.model';
+import { Pcultural       }      from '../../../pcultural/pcultural.model';
 
 const UPDATE = 'update';
 const CORE = 'core';
@@ -17,6 +17,7 @@ const CORE = 'core';
 })
 export class BudgetCoreBaseComponent implements OnInit {
 	@Input() budget: Budget;
+  @Input() pcultural: Pcultural;
 	@Output() updateBudget = new EventEmitter<UpdateEvent>();
 
 	public showView = true;
@@ -31,6 +32,11 @@ export class BudgetCoreBaseComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    if(!this.budget._id){
+      this.editToken();
+    }
+
   }
 
   updateCore(event: UpdateEvent){

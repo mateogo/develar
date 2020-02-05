@@ -29,6 +29,9 @@ import { BudgetItemsViewComponent } from './presupuesto/manage-core/budget-items
 import { BudgetItemsPanelComponent } from './presupuesto/manage-core/budget-items-panel/budget-items-panel.component';
 import { BudgetItemsBaseComponent } from './presupuesto/manage-core/budget-items-base/budget-items-base.component';
 import { BudgetItemsEditComponent } from './presupuesto/manage-core/budget-items-edit/budget-items-edit.component';
+import { BudgetPculturalsBaseComponent } from './presupuesto/manage-core/budget-pculturals-base/budget-pculturals-base.component';
+import { BudgetPculturalsPanelComponent } from './presupuesto/manage-core/budget-pculturals-panel/budget-pculturals-panel.component';
+import { BudgetPculturalsViewComponent } from './presupuesto/manage-core/budget-pculturals-view/budget-pculturals-view.component';
 
 
 
@@ -55,6 +58,9 @@ import { BudgetItemsEditComponent } from './presupuesto/manage-core/budget-items
   	BudgetItemsPanelComponent,
   	BudgetItemsBaseComponent,
   	BudgetItemsEditComponent,
+  	BudgetPculturalsBaseComponent,
+  	BudgetPculturalsPanelComponent,
+  	BudgetPculturalsViewComponent,
     
   	],
   imports: [

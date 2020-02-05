@@ -1,0 +1,21 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+
+  		<ng-container *ngIf="showView">
+		 	<div class="row">
+		 		<div class="col-md-1">
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+	
+			 		</div>
+
+		 		<div class="col-md-11">
+		 			<budget-pculturals-view [token]='token'></budget-pculturals-view>
+		 		</div>
+			</div>
+		 </ng-container>
+	
+  </mat-card-content>
+</mat-card>

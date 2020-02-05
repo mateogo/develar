@@ -10,11 +10,6 @@ const Schema = mongoose.Schema;
 
 const self = this;
 
-const targetEventSch = new Schema({
-  pculturalId:  { type: String, required: false },
-  slug:         { type: String, required: false },
-});
-
 const budgetItemSch = new Schema({
   productId:   { type: String, required: false },
   productSlug: { type: String, required: false },
@@ -34,6 +29,16 @@ const budgetItemSch = new Schema({
   feRate:      { type: String, required: true },
 
 });
+
+const pculturalItemSch = new Schema({
+  pculturalId: { type: String, required: true  },
+  slug:        { type: String, required: false },
+  programa:    { type: String, required: false },
+  sede:        { type: String, required: false },
+  locacion:    { type: String, required: false },
+});
+
+
 
 
 const budgetSch = new Schema({
@@ -58,11 +63,10 @@ const budgetSch = new Schema({
     e_feRate:     { type: String, required: false },
 
     items:        [ budgetItemSch ],
+    pculturals:   [ pculturalItemSch ],
 
     slug:         { type: String, required: false },
     description:  { type: String, required: false },
-
-    target:       { type: targetEventSch, required: false },
 
     estado:       { type: String, required: false },
     avance:       { type: String, required: false },
@@ -138,6 +142,10 @@ function buildQuery(query){
 
   if(query['locacion']){
       q["locacion"] = query['locacion'];
+  }
+
+  if(query['pculturalId']){
+      q["pculturals.pculturalId"] = query['pculturalId'];
   }
 
 

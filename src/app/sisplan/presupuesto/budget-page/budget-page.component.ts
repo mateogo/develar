@@ -11,7 +11,8 @@ import { Audit, ParentEntity } from '../../../develar-commons/observaciones/obse
 
 import { SisplanService, BudgetService, UpdateListEvent, UpdateEvent } from '../../sisplan.service';
 
-import { Budget, BudgetItem, BudgetHelper       } from '../presupuesto.model';
+import { Budget, BudgetItem, PculturalItem, BudgetHelper } from '../presupuesto.model';
+import { Pcultural      } from '../../pcultural/pcultural.model';
 
 const CANCEL = 'cancel';
 const UPDATE = 'update';
@@ -42,11 +43,16 @@ export class BudgetPageComponent implements OnInit {
 
   private unBindList = [];
 
+  //Pcultural
+  public pculturalList: PculturalItem[];
+
   //Observaciones
   public audit: Audit;
   public parentEntity: ParentEntity;
 
   public hasCurrentBudget: boolean = false;
+  public showSummary: boolean = false;
+ 
   private hasBudgetIdOnURL: boolean = false;
   private currentBudget: Budget;
   private budgetId: string;
@@ -59,7 +65,6 @@ export class BudgetPageComponent implements OnInit {
     private route:  ActivatedRoute,
  		private router: Router,
   	) { 
-  	console.log('0000000')
 
 	}
 
@@ -90,7 +95,6 @@ export class BudgetPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    console.log('1')
 
     if(!this.budgetId){
       if(this.dsCtrl.activeBudget){
@@ -114,7 +118,6 @@ export class BudgetPageComponent implements OnInit {
   }
 
   initCurrentBudget(budget: Budget){
-    console.log('3')
 
     if(budget && this.currentBudget && budget._id === this.currentBudget._id){
       return;
@@ -124,6 +127,7 @@ export class BudgetPageComponent implements OnInit {
 
       this.currentBudget = budget;
       this.budgetCostList = budget.items || [];
+      this.pculturalList = budget.pculturals || [];
 
       this.audit = this.dsCtrl.getAuditData();
       this.parentEntity = {
@@ -132,6 +136,11 @@ export class BudgetPageComponent implements OnInit {
         entitySlug: this.currentBudget.slug
       }
 
+      if(this.pculturalList && this.pculturalList.length){
+        //todo
+      }
+
+      this.showSummary = true;
 			this.hasCurrentBudget = true;
     }
  
@@ -141,7 +150,6 @@ export class BudgetPageComponent implements OnInit {
   /*      Budget        */
   /**********************/
   loadBudget(id){
-    console.log('2')
     this.dsCtrl.setCurrentBudgetFromId(id).then(pcul => {
       if(pcul){
 
@@ -158,8 +166,18 @@ export class BudgetPageComponent implements OnInit {
   updateCore(event: UpdateEvent){
     if(event.action === UPDATE){
       this.dsCtrl.updatePartialBudget(event);
+      this.enableSummary();
     }
 
+  }
+
+
+  updatePculturalList(event:UpdateListEvent){
+    if(event.action === UPDATE){
+      //this.upsertBudgetCostItemsList(event);
+      this.enableSummary();
+ 
+    }
   }
 
   updateCostItems(event:UpdateListEvent){
@@ -169,7 +187,9 @@ export class BudgetPageComponent implements OnInit {
   }
 
   private upsertBudgetCostItemsList(event:UpdateListEvent){
+    this.showSummary = false;
     this.currentBudget.items = event.items as BudgetItem[];
+    this.enableSummary();
 
     let update: UpdateEvent = {
       action: event.action,
@@ -190,6 +210,12 @@ export class BudgetPageComponent implements OnInit {
     } else {
       this.router.navigate(['../', this.dsCtrl.navigationRoute('recepcion')], {relativeTo: this.route});
     }
+
+  }
+
+  private enableSummary(){
+    this.showSummary = false;
+    setTimeout(()=>{this.showSummary = true}, 400);
 
   }
 

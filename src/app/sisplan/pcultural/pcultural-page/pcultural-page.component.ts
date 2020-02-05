@@ -13,6 +13,8 @@ import { Audit, ParentEntity } from '../../../develar-commons/observaciones/obse
 
 import { SisplanService, UpdateListEvent, UpdateEvent } from '../../sisplan.service';
 
+import { Budget, BudgetItem, BudgetHelper       } from '../../presupuesto/presupuesto.model';
+
 
 const TOKEN_TYPE = 'pcultural';
 const CANCEL = 'cancel';
@@ -43,6 +45,10 @@ export class PculturalPageComponent implements OnInit {
 
   private unBindList = [];
 
+  //Budget
+  // public budgetList: Budget[] = [];
+  // public hasBudgetList = false;
+
   //Observaciones
   public audit: Audit;
   public parentEntity: ParentEntity;
@@ -58,7 +64,6 @@ export class PculturalPageComponent implements OnInit {
     private route:  ActivatedRoute,
  		private router: Router,
   	) { 
-  	console.log('0000000')
 
 	}
 
@@ -145,6 +150,38 @@ export class PculturalPageComponent implements OnInit {
     });
   }
 
+
+
+  /**********************/
+  /*      Budget        */
+  /**********************/
+  // private initBudgetList(){
+  //   this.hasBudgetList = false;
+  //   this.budgetList = [];
+
+  //   this.dsCtrl.fetchBudgetByPcultural(this.currentPcultural._id).subscribe(list => {
+  //     this.budgetList = list || [];
+  //     this.sortProperly(this.budgetList);
+
+  //     this.hasBudgetList = true;
+  //   })
+  // }
+
+  // private sortProperly(records){
+  //   records.sort((fel, sel)=> {
+  //     if(fel.fe_req_ts < sel.fe_req_ts) return 1;
+  //     else if(fel.fe_req_ts > sel.fe_req_ts) return -1;
+  //     else return 0;
+  //   })
+  // }
+
+  updateBudgetList(event: UpdateListEvent){
+    //console.log('ToDo?')
+    // if(event.action === UPDATE){
+    //   this.initBudgetList();
+    // }
+
+  }
 
   /**********************/
   /*      Events        */

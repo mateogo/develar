@@ -8,7 +8,8 @@ import { devutils }from '../../../../develar-commons/utils'
 import { SisplanController } from '../../../sisplan.controller';
 import { SisplanService, BudgetCostService, BudgetService, UpdateEvent }     from '../../../sisplan.service';
 
-import { Budget, BudgetCost, BudgetHelper       } from '../../presupuesto.model';
+import { Budget, BudgetCost, PculturalItem, BudgetHelper } from '../../presupuesto.model';
+import { Pcultural }      from '../../../pcultural/pcultural.model';
 
 const TOKEN_TYPE = 'budget';
 const CANCEL = 'cancel';
@@ -22,6 +23,7 @@ const DELETE = 'delete';
 })
 export class BudgetCoreEditComponent implements OnInit {
   @Input()  budget: Budget = new Budget();
+  @Input() pcultural: Pcultural;
   @Output() updateBudget =   new EventEmitter<UpdateEvent>();
 
 
@@ -68,7 +70,7 @@ export class BudgetCoreEditComponent implements OnInit {
   }
 
   onSubmit(){
-  	this.initForSave(this.form, this.budget);
+  	this.initForSave(this.form, this.budget, this.pcultural);
   	this.formAction = UPDATE;
   	this.emitEvent(this.formAction);
   }
@@ -85,7 +87,6 @@ export class BudgetCoreEditComponent implements OnInit {
   }
 
   emitEvent(action:string){
-    console.log('todo');
     
     // if(this.formAction === UPDATE){
     //   this.dsCtrl.manageBudgetRecord(this.budget).subscribe(token => {
@@ -149,8 +150,6 @@ export class BudgetCoreEditComponent implements OnInit {
     this.initForSave(this.form, this.budget);
 
     this.budgetCost = this.budgetService.calculateARSCost(val);
-    console.dir(this.budgetCost);
-
 
   }
 
@@ -217,7 +216,7 @@ export class BudgetCoreEditComponent implements OnInit {
 		return form;
   }
 
-	initForSave(form: FormGroup, budget: Budget): Budget {
+	initForSave(form: FormGroup, budget: Budget, pcultural?: Pcultural): Budget {
 		const fvalue = form.value;
 		const entity = budget;
 
@@ -241,6 +240,9 @@ export class BudgetCoreEditComponent implements OnInit {
 
     entity.fe_req =       fvalue.fe_req;
 
+    entity.pculturals = this.updatePculturalKey(entity, pcultural)
+
+
     //this.budgetService = new BudgetCostService(entity, this.exchangeMap);
 
     this.budgetService.budget = entity
@@ -256,5 +258,33 @@ export class BudgetCoreEditComponent implements OnInit {
 
 		return entity;
 	}
+
+  private updatePculturalKey(entity: Budget, pcultural: Pcultural): PculturalItem[] {
+    let items = entity.pculturals || [];
+
+    if(!pcultural) return items;
+
+    let pculturalToken: PculturalItem = (({ _id:pculturalId, slug, programa, sede, locacion })=> ({ pculturalId, slug, programa, sede, locacion }))(pcultural) as PculturalItem;
+
+
+    if(items && items.length){
+      let t = items.find(item => item.pculturalId === pcultural._id);
+      if(t){
+        t.slug = pcultural.slug;
+        t.programa = pcultural.programa;
+        t.sede = pcultural.sede;
+        t.locacion = pcultural.locacion;
+
+      }else{
+        items.push(pculturalToken);
+      }
+
+    }else {
+      items = [ pculturalToken ]
+
+    }
+    return items;
+  }
+
 
 }
