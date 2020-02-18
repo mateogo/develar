@@ -49,6 +49,7 @@ const locacionMap = {
     {val: 'sala305',      label: 'Sala 305' },
     {val: 'sala306',      label: 'Sala 306' },
 
+    {val: 'auditnacional',  label: 'Auditorio Nacional' },
     {val: 'auditorio',    label: 'Auditorios' },
     {val: 'cine',         label: 'Cine' },
     {val: 'xdeterminar',  label: 'a determinar...' },

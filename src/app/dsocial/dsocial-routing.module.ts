@@ -7,12 +7,13 @@ import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-pa
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 
 import { AlimentosPageComponent } from './alimentos/alimentos-page/alimentos-page.component';
-import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
+import { RemitoalmacenEntregaComponent } from './alimentos/remitoalmacen/remitoalmacen-entrega/remitoalmacen-entrega.component';
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
 import { AsistableroPageComponent } from './tableros/asistablero-page/asistablero-page.component';
 import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/alimentostablero-page.component';
 import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
+import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
 
 const routes: Routes = [
 	{
@@ -36,6 +37,10 @@ const routes: Routes = [
 		component: AlimentarDashboardComponent
 	},
 	{
+		path:'exportaralmacen',
+		component: EntregasExportComponent
+	},
+	{
 		path:'validacionentregas/:id',
 		component: AuditPageComponent
 	},
@@ -53,7 +58,7 @@ const routes: Routes = [
 	},
 	{
 		path:'almacen',
-		component: RemitoalmacenBrowseComponent
+		component: RemitoalmacenEntregaComponent
 	},
 	{
 		path:'atencionsocial/:id',

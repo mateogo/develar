@@ -53,7 +53,7 @@ import { RemitoalmacenCreateComponent } from './alimentos/remitoalmacen/remitoal
 import { RemitoalmacenViewComponent } from './alimentos/remitoalmacen/remitoalmacen-view/remitoalmacen-view.component';
 import { SolListPageComponent } from './asistencia/sol-list/sol-list-page/sol-list-page.component';
 import { SolListTableComponent } from './asistencia/sol-list/sol-list-table/sol-list-table.component';
-import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
+import { RemitoalmacenEntregaComponent } from './alimentos/remitoalmacen/remitoalmacen-entrega/remitoalmacen-entrega.component';
 import { RemitoalmacenTableComponent } from './alimentos/remitoalmacen/remitoalmacen-table/remitoalmacen-table.component';
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 import { PrioritySelectComponent } from './helpers/priority-select/priority-select.component';
@@ -84,6 +84,8 @@ import { AlimentostableroTableComponent } from './tableros/alimentostablero-tabl
 import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-page.component';
 import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
+import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
+import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
 
 @NgModule({
   imports: [
@@ -140,7 +142,7 @@ import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alime
     RemitoalmacenViewComponent,
     SolListPageComponent,
     SolListTableComponent,
-    RemitoalmacenBrowseComponent,
+    RemitoalmacenEntregaComponent,
     RemitoalmacenTableComponent,
     SegumientoPageComponent,
     PrioritySelectComponent,
@@ -171,6 +173,8 @@ import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alime
     AuditPageComponent,
     TalimentarPageComponent,
     AlimentarDashboardComponent,
+    EntregasExportComponent,
+    RemitoalmacenBrowseComponent,
   ]
 })
 export class DsocialModule { }

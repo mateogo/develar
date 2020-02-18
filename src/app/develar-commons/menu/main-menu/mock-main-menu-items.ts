@@ -146,12 +146,8 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/validacionentregas'
       },
       {
-        title: 'Tarjeta Alimentar',
-        routing: '/dsocial/gestion/tarjetaalimentar'
-      },
-      {
-        title: 'Tablero Alimentar',
-        routing: '/dsocial/gestion/tableroalimentar'
+        title: 'Exportar Movimientos Almacén',
+        routing: '/dsocial/gestion/exportaralmacen'
       },
     ],
     routing: '',
@@ -711,12 +707,8 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/validacionentregas'
       },
       {
-        title: 'Tarjeta Alimentar',
-        routing: '/dsocial/gestion/tarjetaalimentar'
-      },
-      {
-        title: 'Tablero Alimentar',
-        routing: '/dsocial/gestion/tableroalimentar'
+        title: 'Exportar Movimientos Almacén',
+        routing: '/dsocial/gestion/exportaralmacen'
       },
     ],
     routing: '',

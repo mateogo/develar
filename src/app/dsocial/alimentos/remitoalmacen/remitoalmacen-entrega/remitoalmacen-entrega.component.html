@@ -1,0 +1,36 @@
+<mat-card>
+  <mat-card-content>
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+
+				<div class="d-flex justify-content-between panel-header">
+					<div class="panel-header-text">{{ title }}</div>
+				</div>
+
+			</div>
+		</div>
+
+		<ng-container *ngIf='showView'>
+			<remitoalmacen-view [token]='selectedVoucher' ></remitoalmacen-view>
+			<div class="additional-info">
+				<button mat-raised-button color="primary" type="submit"
+				    (click)="onSubmit()"  >Entregar</button>
+
+				<button mat-button type="button" color="accent"
+				    (click)="onCancel()" >Cancelar</button>
+
+				<button mat-raised-button color="warn"
+				    (click)="onDelete()"  >Anular entrega</button>
+
+			</div>
+		
+		</ng-container>
+				
+				
+		<ng-container *ngIf='showTable'>
+			<remitoalmacen-table (actionTriggered)="tableAction($event)"  ></remitoalmacen-table>
+		</ng-container>
+				
+		
+  </mat-card-content>
+</mat-card>

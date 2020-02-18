@@ -1,35 +1,22 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Person, Address, personModel } from '../../../../entities/person/person';
 
-import { DsocialController } from '../../../dsocial.controller';
-import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../../dsocial.model';
+import { devutils }from '../../../../develar-commons/utils'
 
-import {  Person,
-          Address,
-          FamilyData,
-          OficiosData,
-          personModel,
-          UpdatePersonEvent,
-          UpdateContactEvent,
-          UpdateFamilyEvent,
-          UpdateOficiosEvent,
-          UpdateItemListEvent,
-          UpdateAddressEvent,
-          PersonContactData 
-        } from '../../../../entities/person/person';
+import { 	Asistencia,
+					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
+import {  RemitoAlmacen,
+          Tile,
+          RemitoalmacenBrowse,
+          ProductosAlmacenTable,
+          AlimentosHelper } from '../../../alimentos/alimentos.model';
 
-import { 	RemitoAlmacen, 
-					UpdateRemitoEvent,
-					UpdateRemitoListEvent,
-					RemitoAlmacenTable } from '../../alimentos.model';
-
-import { Turno, TurnoAction, TurnosModel }  from '../../../turnos/turnos.model';
-
-const UPDATE = 'update';
-const TOKEN_TYPE = 'remitoalmacen';
 
 
 @Component({
@@ -38,221 +25,211 @@ const TOKEN_TYPE = 'remitoalmacen';
   styleUrls: ['./remitoalmacen-browse.component.scss']
 })
 export class RemitoalmacenBrowseComponent implements OnInit {
-	@Input() items: Array<RemitoAlmacen>;
-	@Output() updateItems = new EventEmitter<UpdateRemitoListEvent>();
-
-	@Input() remito: RemitoAlmacen;
-  @Input() asistencia: RemitoAlmacen;
-	@Output() updateRemito = new EventEmitter<UpdateRemitoEvent>();
+	@Input() query: RemitoalmacenBrowse = AlimentosHelper.defaultQueryForAlmacen();
+	@Output() updateQuery = new EventEmitter<RemitoalmacenBrowse>();
 
 
+  public title = 'Selección de movimientos de almacén';
   public unBindList = [];
 
-  // template helper
-  public title = "Galpón: Confirmación de entregas";
-  public subtitle = "Emisión de remito de entrega";
+  public actionOptList =   AsistenciaHelper.getOptionlist('actions');
+  public _sectorOptList =   AsistenciaHelper.getOptionlist('sectores');
+  public sectorOptList =    [];
+  public depositoOptList =  AsistenciaHelper.getOptionlist('deposito');
 
-  public tDoc = "DNI";
-  public nDoc = "";
+  public avanceOptList =   AsistenciaHelper.getOptionlist('avance');
+  public estadoOptList =   AsistenciaHelper.getOptionlist('estado');
 
-  public currentPerson: Person;
-  public contactList: PersonContactData[];
-  public addressList: Address[];
-  public familyList:  FamilyData[];
-  public oficiosList: OficiosData[];
+  public tmovOptList =     AlimentosHelper.getOptionlist('tmov');
+  public umeOptList =      AlimentosHelper.getOptionlist('ume');
+
+  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
+  public ciudadesList =    personModel.ciudades;
 
 
-  //public contactData = new PersonContactData();
+	public form: FormGroup;
 
-  public hasCurrentPerson = false;
-  public personFound = false;
-  public altaPersona = false;
-  private personId: string;
+  private fecharef: string;
+  private fecharef_date: Date;
+  public  fecharef_label: string;
 
-  public isAutenticated = false;
-  public currentTurno:Turno;
-  
-  public sectors:SectorAtencion[] = sectores;
+  public isHoy =  false;
+  public isSem =  false;
+  public isMes =  false;
+  public isAnio = false;
 
-  // RemitosAlmacen
-  public remitosList: RemitoAlmacen[];
+
+	private personHelperByCity = {};
+	public  personByCity: ChartData = new ChartData();
+
+  private remitoalmacenHelperByAction = {};
+  public  remitoalmacenByAction: ChartData = new ChartData();
+
+  private remitoalmacenHelperBySector = {};
+  public  remitoalmacenBySector: ChartData = new ChartData();
+
+  private remitoalmacenHelperByTmov = {};
+  public  remitoalmacenByTmov: ChartData = new ChartData();
+
+  private remitoalmacenHelperByDeposito = {};
+  public  remitoalmacenByDeposito: ChartData = new ChartData();
+
+
+  // Sol de Asistencia
+  public remitoalmacenList: Asistencia[];
   public itemsFound = false;
-  public selectedVoucher: RemitoAlmacen;
+  public currentAsistencia:Asistencia;
 
-  public showPanel = true;
-  public showTable = false;
-  public showView = false;
-
+  // TABLERO
+  private masterData;
+  public tiles: Tile[] = [];
 
   constructor(
-  		private dsCtrl: DsocialController,
-    	private router: Router,
-    	private route: ActivatedRoute,
+    	private fb: FormBuilder,
+    ) { 
+  		this.form = this.buildForm();
+      this.sectorOptList = this._sectorOptList.map(t => t);
+      this.sectorOptList.unshift({val: 'no_definido',  type:'Sin selección', label: 'Sin selección' })
 
-  	) { }
+  }
 
   ngOnInit() {
-    let first = true;    
-    this.personId = this.route.snapshot.paramMap.get('id')
-    this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
+  	this.initCurrentPage();
+  }
 
-    let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
+  private initCurrentPage(){
 
-      if(readyToGo && first){
-        first = false;
-
-        this.initCurrentPage();
-
-      }
-    })
-    this.unBindList.push(sscrp2);
+    this.fecharef_date = new Date();
+    this.fecharef = devutils.txFromDate(this.fecharef_date);
+    this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
+    
+    this.initForm(this.form, this.query);
   }
 
 
-  initCurrentPage(){
-
-    if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
-        this.loadPerson(this.personId);
-    }
-
-    if(!this.dsCtrl.activePerson && this.personId){
-        this.loadPerson(this.personId);
-    }
-
-    if(this.dsCtrl.activePerson){
-        this.initCurrentPerson(this.dsCtrl.activePerson);
-    }
-
-
-    this.fetchRemitos();
-
-  }
-
-  fetchRemitos(){
-    this.dsCtrl.fetchRemitoAlmacenByQuery({avance: 'emitido'}).subscribe(list => {
-      if(list && list.length > 0){
-        this.remitosList = list;
-        this.dsCtrl.updateRemitosTableData();
-
-        this.showTable = true;
-
-      }
-
-    })
-
-  }
-
-  onSubmit(){
-    this.dsCtrl.updateAvanceRemito('remitoalmacen', 'entregado', this.selectedVoucher._id);
-    setTimeout(()=>{
-      this.fetchRemitos();
-      setTimeout(()=>{this.showView = false;}, 1000)      
-    },1000)
-
-  }
-
-  onDelete(){
-    this.dsCtrl.updateAvanceRemito('remitoalmacen', 'anulado', this.selectedVoucher._id);
-    setTimeout(()=>{
-      this.fetchRemitos();
-      setTimeout(()=>{this.showView = false;}, 1000)      
-    },1000)
-
+  /************************/
+  /*     EVENTS           */
+  /**********************/
+  onSubmit(action){
+    this.submitQuery(this.form, this.query);
+    this.emitEvent(action);
   }
 
   onCancel(){
-    this.showView = false;
+    this.emitEvent('cancel');
+  }
+
+  private emitEvent(action: string){
+    console.log('emitEvent: [%s]', action)
+    this.query.searchAction = action;
+    this.updateQuery.next(this.query);
   }
 
 
-  initCurrentPerson(p: Person){
-    if(p){
-      this.currentPerson = p;
-    }
-
-  }
-
-
+  /************************/
+  /*     FORM            */
   /**********************/
-  /*      Events        */
-  /**********************/
-  createRemito(event: UpdateRemitoEvent){
+  private buildForm(): FormGroup{
+    let form: FormGroup;
 
-    if(event.action === UPDATE){
-      this.initNewRemito(event);
-
-      this.dsCtrl.manageRemitosAlmacenRecord('remitoalmacen',this.remito).subscribe(remito =>{
-        this.remito = remito;
-        event.token = remito;
-        this.emitEvent(event);
-
-
-      });
-
-    } else {
-      this.emitEvent(event);
-    }
-
-  }
-
-  initNewRemito(event: UpdateRemitoEvent){
-    this.remito = event.token;
-    this.remito.deposito =   this.remito.deposito || 'almacen';
-    this.remito.tmov =       this.remito.tmov || 'entrega';
-    this.remito.action =     this.remito.action || 'alimentos';
-    this.remito.description= this.remito.description || '';
-    this.remito.sector =     this.remito.sector || 'alimentos';
-    this.remito.estado =     this.remito.estado || 'activo';
-    this.remito.avance =     this.remito.avance || 'emitido';
-    if(this.asistencia){
-      this.remito.parentId = this.asistencia._id;
-      this.remito.parent = {
-        id: this.asistencia._id,
-        type: 'asistencia',
-        kit: this.asistencia.parent && this.asistencia.parent.type,
-        action: this.asistencia.action,
-        compNum: this.asistencia.compNum
-      }
-
-    }
-  }
-
-  emitEvent(event:UpdateRemitoEvent){
-    this.updateRemito.next(event);
-
-  }
-
-  tableAction(action){
-    let selection = this.dsCtrl.remitosSelectionModel;
-    let selected = selection.selected as RemitoAlmacenTable[];
-    if(selected && selected.length){
-      this.selectedVoucher = this.dsCtrl.lookUpRemitoAlmacen(selected[0]);
-      this.showView = true
-
-    }else{
-      this.showView = false;
-    }
-
-    // selected.forEach(t =>{
-
-    //   this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
-    //   console.log(t.compNum);
-
-    // })
-  }
-
-
-  /**********************/
-  /*      Person        */
-  /**********************/
-  loadPerson(id){
-    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
-      if(p){
-        this.initCurrentPerson(p);
-
-      }
+    form = this.fb.group({
+      sector:       [null],
+      action:       [null],
+      avance:       [null],
+      estado:       [null],
+      fecharef:     [null]
     });
+
+    return form;
+  }
+
+  private initForm(form: FormGroup, query: RemitoalmacenBrowse): FormGroup {
+
+		form.reset({
+        action:      query.action,
+        sector:      query.sector,
+        estado:      query.estado,
+        avance:      query.avance,
+        fecharef:    this.fecharef
+		});
+		return form;
+  }
+
+  private submitQuery(form: FormGroup, query: RemitoalmacenBrowse): RemitoalmacenBrowse {
+    const fvalue = form.value;
+    const entity = query;
+    let dateD = devutils.dateFromTx(fvalue.fecomp_d);
+    let dateH = devutils.dateFromTx(fvalue.fecomp_h);
+
+    // entity.fecomp_d =   fvalue.fecomp_d;
+    // entity.fecomp_h =   fvalue.fecomp_h;
+
+    // entity.fecomp_ts_d = dateD ? dateD.getTime() : null;
+    // entity.fecomp_ts_h = dateH ? dateH.getTime() : null;
+
+
+    entity.action =       fvalue.action;
+    entity.sector =       fvalue.sector;
+    entity.estado =       fvalue.estado;
+    entity.avance =       fvalue.avance;
+
+    return entity;
+  }
+
+  /************************/
+  /*    Product Table    */
+  /**********************/
+
+  tableAction(e){
+    //console.log('TableAction ToDo');
+  }
+
+
+  /************************/
+  /*  Dashboard control  */
+  /**********************/
+	changeSelectionValue(type, val){
+		//console.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
+		this.query[type] = val;
+		
+  }
+
+
+  refreshData(e){
+    let fe = this.form.value.fecharef;
+    this.fecharef_date = devutils.dateFromTx(fe);
+    this.fecharef = devutils.txFromDate(this.fecharef_date);
+    this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
+    console.log('refreshData to BEGIN')
+
+    // let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(this.fecharef_date).subscribe(master => {
   }
 
 
 }
+
+
+
+interface DashboardData {
+	label: string;
+	cardinal: number;
+	slug: string;
+
+}
+
+class ChartData {
+	type: string;
+	labels: string[] = [];
+	data : any[] = [];
+	styles: any[] = [];
+	opts: any ={};
+	title: string = "";
+	stitle: string = "";
+	slug: string = "";
+	error: string = "";
+
+}
+
+
+
+

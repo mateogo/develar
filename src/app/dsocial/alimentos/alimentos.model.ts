@@ -87,6 +87,15 @@ export class DashboardBrowse {
 		fecharef?:   string;
 }
 
+export class RemitoalmacenBrowse {
+		searchAction: string;
+		action:      string;
+		sector:      string;
+		estado:      string;
+		avance:      string;
+		fecharef?:   string;
+}
+
 export class ProductosAlmacenTable {
 		_id: string;
 		sector:      string;
@@ -551,6 +560,7 @@ export class AlimentosHelper {
 		})
 
 	}
+
 	static defaultQueryForTablero(): DashboardBrowse{
 		let q = new DashboardBrowse();
 		q.estado = "no_definido";
@@ -561,6 +571,16 @@ export class AlimentosHelper {
 		return q;
 	}
 
+	static defaultQueryForAlmacen(): RemitoalmacenBrowse{
+		let q = new RemitoalmacenBrowse();
+		q.estado = "no_definido";
+		q.avance = "no_definido";
+		q.action = "no_definido";
+		q.sector = "no_definido";
+		q.searchAction = 'search';
+
+		return q;
+	}
 
 
 }
