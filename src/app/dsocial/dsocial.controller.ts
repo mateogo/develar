@@ -320,7 +320,46 @@ export class DsocialController {
     return listener;
   }
 
+  exportAlmacenByQuery(query:any){
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+      //if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
+    })
+
+    let params = this.daoService.buildParams(query);
+    const Url = 'api/remitosalmacen/exportarmovimientos?' + params.toString();
+
+    console.log(Url);
+
+    // console.log('export: [%s]', params);
+    // console.dir(params);
+
+    const windw = window.open(Url, 'about:blank')
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('GET', Url, true);
+    // xhr.send();
+
+    //fetch(Url);
+
+    //window.location.href = 'api/remitosalmacen/exportarmovimientos'
+    
+    // this.daoService.exportarMovimientos<RemitoAlmacen>('remitoalmacen', query).subscribe(list =>{
+    //   console.log('export cb')
+
+    // })
+
+
+  }
+
+
+
   private loadRemitoAlmacensByQuery(listener: Subject<RemitoAlmacen[]>, query){
+
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+      //if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
+    })
+
 
     this.daoService.search<RemitoAlmacen>('remitoalmacen', query).subscribe(list =>{
       if(list && list.length){
@@ -334,6 +373,7 @@ export class DsocialController {
       listener.next(this.remitosList);
 
     })
+
   }
 
 
@@ -370,6 +410,7 @@ export class DsocialController {
 
 
   updateRemitosTableData(){
+    console.log('updateRemitosTableData: [%s]', this.remitosList.length);
 
     let tableData = AlimentosHelper.buildDataTable(this.remitosList);
     this.emitRemitosDataSource.next(tableData);

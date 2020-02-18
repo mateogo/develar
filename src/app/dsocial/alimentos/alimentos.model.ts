@@ -89,11 +89,16 @@ export class DashboardBrowse {
 
 export class RemitoalmacenBrowse {
 		searchAction: string;
+		fecomp_ts_d:        number;
+		fecomp_ts_h:        number;
 		action:      string;
 		sector:      string;
 		estado:      string;
 		avance:      string;
 		fecharef?:   string;
+
+		constructor(){
+		}
 }
 
 export class ProductosAlmacenTable {

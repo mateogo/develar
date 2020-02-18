@@ -92,6 +92,7 @@ export class DaoService {
         backendURL:   'api/remitosalmacen',
         searchURL:    'api/remitosalmacen/search',
         dashboardURL: 'api/remitosalmacen/tablero',
+        exportarURL:  'api/remitosalmacen/exportarmovimientos',
         nextItemURL:  'api/remitosalmacen/nextitem'
       },
       folder:{
@@ -392,6 +393,17 @@ export class DaoService {
       .toPromise()
       .catch(this.handleError);
   }
+
+  exportarMovimientos<T>(type:string, query): Observable<T[]> {
+    let exportUrl = `${this.dao[type].exportarURL}`;
+    let params = this.buildParams(query);
+    return this.http
+               .get<T[]>(exportUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
 
   //********* MAIL **************************
   //          sendMail send mail

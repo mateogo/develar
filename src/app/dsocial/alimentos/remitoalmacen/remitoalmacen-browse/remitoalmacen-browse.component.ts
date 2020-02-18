@@ -58,6 +58,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   public isMes =  false;
   public isAnio = false;
 
+  public exportUrl = 'api/remitosalmacen/exportarmovimientos';
 
 	private personHelperByCity = {};
 	public  personByCity: ChartData = new ChartData();
@@ -119,8 +120,12 @@ export class RemitoalmacenBrowseComponent implements OnInit {
     this.emitEvent('cancel');
   }
 
+  onExport(){
+    this.emitEvent('export');
+  }
+
+
   private emitEvent(action: string){
-    console.log('emitEvent: [%s]', action)
     this.query.searchAction = action;
     this.updateQuery.next(this.query);
   }
@@ -137,7 +142,9 @@ export class RemitoalmacenBrowseComponent implements OnInit {
       action:       [null],
       avance:       [null],
       estado:       [null],
-      fecharef:     [null]
+      fecharef:     [null],
+      fed:          [null],
+      feh:          [null]
     });
 
     return form;
@@ -158,8 +165,10 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   private submitQuery(form: FormGroup, query: RemitoalmacenBrowse): RemitoalmacenBrowse {
     const fvalue = form.value;
     const entity = query;
+
     let dateD = devutils.dateFromTx(fvalue.fecomp_d);
     let dateH = devutils.dateFromTx(fvalue.fecomp_h);
+
 
     // entity.fecomp_d =   fvalue.fecomp_d;
     // entity.fecomp_h =   fvalue.fecomp_h;
@@ -167,6 +176,8 @@ export class RemitoalmacenBrowseComponent implements OnInit {
     // entity.fecomp_ts_d = dateD ? dateD.getTime() : null;
     // entity.fecomp_ts_h = dateH ? dateH.getTime() : null;
 
+    entity.fecomp_ts_d =       devutils.dateFromTx(fvalue.fed).getTime();
+    entity.fecomp_ts_h =       devutils.dateFromTx(fvalue.feh).getTime();
 
     entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
@@ -200,7 +211,6 @@ export class RemitoalmacenBrowseComponent implements OnInit {
     this.fecharef_date = devutils.dateFromTx(fe);
     this.fecharef = devutils.txFromDate(this.fecharef_date);
     this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
-    console.log('refreshData to BEGIN')
 
     // let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(this.fecharef_date).subscribe(master => {
   }

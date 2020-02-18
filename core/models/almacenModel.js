@@ -7,7 +7,8 @@ const whoami =  "models/almacenModel: ";
 const mongoose = require('mongoose');
 const utils =    require('../services/commons.utils');
 const person =   require('./personModel');
-const product =   require('./productModel');
+const product =  require('./productModel');
+const Excel =    require('exceljs')
 
 const Schema = mongoose.Schema;
 
@@ -119,6 +120,17 @@ function buildQuery(query){
       q["estado"] = query['estado'];
   }
 
+  if(query['fed']){
+    let fed_ts = utils.parseDateStr(query['fed']).getTime();
+    q['fecomp_tsa'] = { $gte: fed_ts}
+
+  }
+
+  if(query['feh']){
+    let feh_ts = utils.parseDateStr(query['feh']).getTime();
+    q['fecomp_tsa'] = { $lte: feh_ts}
+
+  }
 
   let comp_range = [];
   if(query["fecomp_ts_d"]){
@@ -193,12 +205,14 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
         }else{
+          console.log('fetched: [%s]', entities && entities.length);
             cb(entities);
         }
     });
@@ -281,6 +295,95 @@ exports.fetchRemitosByPerson = function(personId){
 
   return Record.find(query).lean();
 }
+
+exports.exportarmovimientos = function(query, req, res ){
+    
+    if(!query){
+      query = {estado: 'activo'}
+    }
+
+    console.log('EXPORT BEGIN *********')
+    fetchMovimientos(query, req, res)
+
+}
+
+
+function fetchMovimientos(query, req, res){
+    let regexQuery = buildQuery(query)
+    console.dir(regexQuery);
+
+    Record.find(regexQuery).lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
+            buildExcelStream(entities, req, res)
+        }
+    });
+
+
+
+}
+
+function buildExcelStream(remanentes, req, res){
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="movimientos_almacen.xlsx"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('movimientos')
+
+    
+    worksheet.addRow(['Movimientos de Almacén']).commit()
+    worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
+
+    worksheet.addRow().commit()
+    worksheet.addRow(['Comprobante','Número','Cantidad','Acción','Estado','Avance','Fecha','Comentario','Depósito','T/Mov','T/Kit','Kit','DOC','Documento','Beneficiario/a','Cód','Artículo','Descripción','UME','Cant']).commit();
+
+    remanentes.forEach(row => {
+        const parent = row.parent || {type: 's/d', kit: 's/d', compNum: 's/d'};
+
+        const requeridox = row.requeridox || {slug: 'Sin beneficiario', tdoc: 's/d', ndoc: 's/d'};
+
+        const entregas = row.entregas
+
+
+        const {compName, compNum, qty, action, estado, avance, fecomp_txa, slug, deposito, tmov} = row;
+        let basicArr = [compName, compNum, qty, action, estado, avance, fecomp_txa, slug, deposito, tmov];
+
+
+        const { type, kit} = parent;
+        let parentArr = [ type, kit ];
+
+        const { tdoc, ndoc, slug:name } = requeridox;
+        let requeridoxArr = [ tdoc, ndoc, name];
+
+        if(entregas && entregas.length){
+          entregas.forEach(token => {
+            const {code, name, slug, ume, qty} = token
+            let itemArr = [code, name, slug, ume, qty];
+
+            worksheet.addRow([...basicArr, ...parentArr, ... requeridoxArr, ...itemArr]).commit()
+
+          })
+
+        }else {
+          worksheet.addRow([...basicArr, ...parentArr, ... requeridoxArr]).commit()
+
+        }
+
+
+    })
+    worksheet.commit()
+    workbook.commit()
+
+
+}
+
+
+
 
 /**********************************/
 /*          TABLERO              */

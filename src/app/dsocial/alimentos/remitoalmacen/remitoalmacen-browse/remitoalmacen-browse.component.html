@@ -19,6 +19,19 @@
       </div>
     </div>
 
+    <div class="row" >
+      <div class="col-md-3 d-flex justifay-content start align-items-center">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fed']" placeholder="Fecha desde" >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 d-flex justifay-content start align-items-center">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['feh']" placeholder="Fecha hasta" >
+        </mat-form-field>
+      </div>
+    </div>
 		<!-- fecomp_txa; action; slug; -->
     <div class="row" >
       <div class="col-md-3">
@@ -71,6 +84,14 @@
             
       <button mat-button type="button" color="accent"
           (click)="onCancel()" >Cancelar</button>
+
+      <button mat-button type="button" color="warning"
+          (click)="onExport()" >Exportar datos</button>
+
+
+      <a target="_blank" rel="noopener" class="text-social" 
+          href="{{ exportUrl }}"  title="exportar movimientos">Exportar</a>
+           <!-- i class='{{ social.icon }}'></i></a -->
 
     </div>
 

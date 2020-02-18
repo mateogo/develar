@@ -123,6 +123,7 @@ export class RemitoalmacenTableComponent implements OnInit {
     })
 
     this.dataRecordsSource.subscribe(token =>{
+      console.log('RemitoAlmacen TABLE')
       //this.acumCurrencies(token)
     })
 

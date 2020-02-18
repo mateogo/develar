@@ -50,6 +50,14 @@ router.get('/search', function (req, res) {
     });
 });
 
+/**
+ * search entities
+ */
+router.get('/exportarmovimientos', function (req, res) {
+    console.log('exportar movimientos ROUTER')
+    service.exportarmovimientos(req.query, req, res);
+});
+
 
 /**
  * import and [update | insert ]

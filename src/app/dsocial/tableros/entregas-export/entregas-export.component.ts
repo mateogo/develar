@@ -45,7 +45,7 @@ export class EntregasExportComponent implements OnInit {
   public title = "GALPÓN: Exportación de movimientos";
   public subtitle = "Movimientos de mercadería del Galpón";
 
-  public query: RemitoalmacenBrowse ;
+  public query: RemitoalmacenBrowse = new RemitoalmacenBrowse();
 
   public tDoc = "DNI";
   public nDoc = "";
@@ -96,7 +96,6 @@ export class EntregasExportComponent implements OnInit {
 
 
   initCurrentPage(){
-  	this.query = new RemitoalmacenBrowse();
 
     // if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
     //     this.loadPerson(this.personId);
@@ -111,18 +110,24 @@ export class EntregasExportComponent implements OnInit {
     // }
 
 
-    this.fetchRemitos();
+    //this.fetchRemitos(this.query);
 
   }
 
-  private fetchRemitos(){
-    this.dsCtrl.fetchRemitoAlmacenByQuery({avance: 'emitido'}).subscribe(list => {
+  private fetchRemitos(query: RemitoalmacenBrowse){
+    this.dsCtrl.fetchRemitoAlmacenByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.remitosList = list;
         this.dsCtrl.updateRemitosTableData();
 
         this.showTable = true;
 
+      }else{
+        console.log('Resultado Nulo')
+        this.remitosList = [];
+        this.dsCtrl.updateRemitosTableData();
+
+        this.showTable = true;
       }
 
     })
@@ -132,7 +137,7 @@ export class EntregasExportComponent implements OnInit {
   onSubmit(){
     this.dsCtrl.updateAvanceRemito('remitoalmacen', 'entregado', this.selectedVoucher._id);
     setTimeout(()=>{
-      this.fetchRemitos();
+      this.fetchRemitos(this.query);
       setTimeout(()=>{this.showView = false;}, 1000)      
     },1000)
 
@@ -144,7 +149,18 @@ export class EntregasExportComponent implements OnInit {
   }
 
 
-  updateTableData(){
+  updateTableData(query: RemitoalmacenBrowse){
+    console.log('updateTableData');
+    console.dir(query);
+    this.query = query;
+    if(query.searchAction === 'search'){
+      this.fetchRemitos(this.query);
+
+    }else if(query.searchAction === 'export'){
+      console.log('To Export Process BEGIN')
+      this.dsCtrl.exportAlmacenByQuery(this.query);
+
+    }
 
   }
 

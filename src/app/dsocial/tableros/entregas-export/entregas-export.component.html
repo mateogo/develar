@@ -1,8 +1,6 @@
 <remitoalmacen-browse
 		[query]='query'
-		(queryUpdate)="updateTableData($event)"
-
-></remitoalmacen-browse>
+		(updateQuery)="updateTableData($event)"></remitoalmacen-browse>
 
 <ng-container *ngIf='showTable'>
 	<remitoalmacen-table (actionTriggered)="tableAction($event)"  ></remitoalmacen-table>
