@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '© Copyright 2019 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.1-19.12.10) ',
+		copyright: '© Copyright 2020 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.2-20.02.21) ',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
