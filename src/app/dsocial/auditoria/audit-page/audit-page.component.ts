@@ -39,7 +39,7 @@ export class AuditPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Auditoría de entregas ";
+  public title = "RED FAMILIAR y de VECINDAD";
   public subtitle = "Asistencia Social Directa";
   public titleRemitos = "Historial de entregas";
   public titleAuditoria = "Auditoría de entregas";

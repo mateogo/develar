@@ -86,6 +86,7 @@ import { TalimentarPageComponent } from './tsocial/talimentar-page/talimentar-pa
 import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
 import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
+import { AuditMemberComponent } from './auditoria/audit-member/audit-member.component';
 
 @NgModule({
   imports: [
@@ -175,6 +176,7 @@ import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoal
     AlimentarDashboardComponent,
     EntregasExportComponent,
     RemitoalmacenBrowseComponent,
+    AuditMemberComponent,
   ]
 })
 export class DsocialModule { }

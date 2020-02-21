@@ -1,10 +1,14 @@
 <h5>{{ title }}</h5>
 <div 	*ngIf="hasCurrentPerson" >
 			<core-view [person]='currentPerson'></core-view>
+			<button mat-button  color="accent" 
+				(click)="auditPerson()">Validar este Referente</button>
+
+
+			<audit-member [person]='currentPerson'></audit-member>
+
 </div>
 
-<button mat-button  color="accent" 
-				(click)="auditPerson()">Validar este Referente</button>
 
 <mat-card>
   <mat-card-content *ngIf="showAuditoria" >

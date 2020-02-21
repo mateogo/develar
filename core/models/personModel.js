@@ -400,6 +400,16 @@ function buildQuery(query){
         q["user.userid"] = query.userId;
     }
 
+    if(query.familiar){
+        q['familiares.personId'] = query.familiar;
+    }
+
+    if(query.mismalocacion){
+        q['_id'] = {$ne: query.personId};
+        q['locaciones.street1'] =  {"$regex": query.street1, "$options": "i"};
+        q['locaciones.city'] = query.city;
+
+    }
 
     if(query.list){
         //console.log('///// buildQuery')

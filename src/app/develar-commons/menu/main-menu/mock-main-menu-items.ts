@@ -118,6 +118,10 @@ export const MAINMENUITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/atencionsocial'
       },
       {
+        title: 'Auditoría red familiar',
+        routing: '/dsocial/gestion/validacionentregas'
+      },
+      {
         title: 'Seguimiento',
         routing: '/dsocial/gestion/seguimiento'
       },
@@ -140,10 +144,6 @@ export const MAINMENUITEMS: MainMenuItem[] = [
       {
         title: 'Tablero remitos',
         routing: '/dsocial/gestion/tableroremitos'
-      },
-      {
-        title: 'Validación de Asistencias',
-        routing: '/dsocial/gestion/validacionentregas'
       },
       {
         title: 'Exportar Movimientos Almacén',
@@ -679,6 +679,10 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/atencionsocial'
       },
       {
+        title: 'Auditoría red familiar',
+        routing: '/dsocial/gestion/validacionentregas'
+      },
+      {
         title: 'Seguimiento',
         routing: '/dsocial/gestion/seguimiento'
       },
@@ -701,10 +705,6 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
       {
         title: 'Tablero remitos',
         routing: '/dsocial/gestion/tableroremitos'
-      },
-      {
-        title: 'Validación de Asistencias',
-        routing: '/dsocial/gestion/validacionentregas'
       },
       {
         title: 'Exportar Movimientos Almacén',

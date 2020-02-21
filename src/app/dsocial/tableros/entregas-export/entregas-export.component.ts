@@ -123,7 +123,6 @@ export class EntregasExportComponent implements OnInit {
         this.showTable = true;
 
       }else{
-        console.log('Resultado Nulo')
         this.remitosList = [];
         this.dsCtrl.updateRemitosTableData();
 
@@ -150,14 +149,11 @@ export class EntregasExportComponent implements OnInit {
 
 
   updateTableData(query: RemitoalmacenBrowse){
-    console.log('updateTableData');
-    console.dir(query);
     this.query = query;
     if(query.searchAction === 'search'){
       this.fetchRemitos(this.query);
 
     }else if(query.searchAction === 'export'){
-      console.log('To Export Process BEGIN')
       this.dsCtrl.exportAlmacenByQuery(this.query);
 
     }

@@ -1,0 +1,84 @@
+
+<div class="container-fluid">
+
+
+	<div 	*ngIf="hasSaludEvents" >
+		<salud-panel [items]='saludList'
+							(updateItems)='updateSaludList($event)' ></salud-panel>
+	</div>
+
+	<div 	*ngIf="hasCobertura" >
+		<cobertura-panel [items]='coberturaList'
+							(updateItems)='updateCoberturaList($event)' ></cobertura-panel>
+	</div>
+
+
+<ng-container *ngIf="hasFamilyMembers">
+	<p class='text-resaltado'>Es cabeza de familia</p>
+
+	<div class="container-fluid">
+	<ng-container *ngFor="let member of familyList">
+	 	<div class="row">
+ 			<div class="col-sm-12 col-md-12">
+				<p class='text-destacado'>{{ member.pname }} {{member.edadTxt}}  ::{{ member.vinculoTxt }}::</p>
+				<p class='text-normal'>{{ member.pdoc }}</p>
+				<p class='text-normal'>Estado: {{ member.estado }} - 
+						<strong>{{ member.ocupacion }} / </strong>
+						<strong>{{ member.neducativo }}</strong> </p>
+				<p class='text-resaltado'>{{ member.inverted }}</p>
+				<hr>
+
+			</div>
+
+		</div>
+	</ng-container>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="isFamilyMember">
+	<p class='text-resaltado'>Es miembro de familia</p>
+
+	<div class="container-fluid">
+	<ng-container *ngFor="let member of parentList">
+	 	<div class="row">
+ 			<div class="col-sm-12 col-md-12">
+				<p class='text-destacado'>{{ member.pname }} {{member.edadTxt}}  ::{{ member.vinculoTxt }}::</p>
+				<p class='text-normal'>{{ member.pdoc }}</p>
+				<p class='text-normal'>Estado: {{ member.estado }} - 
+						<strong>{{ member.ocupacion }} / </strong>
+						<strong>{{ member.neducativo }}</strong> </p>
+				<p class='text-resaltado'>{{ member.inverted }}</p>
+				<hr>
+
+			</div>
+
+		</div>
+	</ng-container>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="hasSameLocation">
+	<p class='text-resaltado'>Otros integrantes de la vivienda</p>
+
+	<div class="container-fluid">
+	<ng-container *ngFor="let member of locationList">
+	 	<div class="row">
+ 			<div class="col-sm-12 col-md-12">
+				<p class='text-destacado'>{{ member.pname }} {{member.edadTxt}}  :: Misma dirección</p>
+				<p class='text-normal'>{{ member.pdoc }}</p>
+				<p class='text-normal'>Estado: {{ member.estado }} - 
+						<strong>{{ member.ocupacion }} / </strong>
+						<strong>{{ member.neducativo }}</strong> </p>
+				<p class='text-resaltado'>{{ member.inverted }}</p>
+				<hr>
+
+			</div>
+
+		</div>
+	</ng-container>
+	</div>
+</ng-container>
+
+
+
+</div> 

@@ -329,7 +329,6 @@ export class DsocialController {
     let params = this.daoService.buildParams(query);
     const Url = 'api/remitosalmacen/exportarmovimientos?' + params.toString();
 
-    console.log(Url);
 
     // console.log('export: [%s]', params);
     // console.dir(params);
@@ -410,7 +409,6 @@ export class DsocialController {
 
 
   updateRemitosTableData(){
-    console.log('updateRemitosTableData: [%s]', this.remitosList.length);
 
     let tableData = AlimentosHelper.buildDataTable(this.remitosList);
     this.emitRemitosDataSource.next(tableData);
@@ -883,6 +881,10 @@ export class DsocialController {
 
   fetchPersonById(id: string): Promise<Person>{
     return this.daoService.findById<Person>('person', id);
+  }
+
+  fetchPersonByQuery(query: any): Observable<Person[]>{
+    return this.daoService.search<Person>('person', query);
   }
 
   setCurrentPersonFromId(id: string){

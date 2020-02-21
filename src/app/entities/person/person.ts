@@ -1607,7 +1607,13 @@ class PersonModel {
     }
 
     getPersonDocum(p:Person|FamilyData):string{
-    	let ndoc = (p.tdoc ? p.tdoc + ': ' : '') + (p.ndoc ? p.ndoc : '');
+
+    	let ndoc = (p.ndoc ? p.ndoc : '');
+
+      if(ndoc){
+        ndoc = (p.tdoc ? p.tdoc + ': ' + ndoc : ndoc);
+      }
+
     	return ndoc ? ndoc : 'Docum no informado';
     }
 
