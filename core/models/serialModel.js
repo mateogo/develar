@@ -89,6 +89,10 @@ const tserialConfig = [
       tserial: 'rol',
       usecase: 'Emisión de Rol de Nocturnidad',
     },
+    {
+      tserial: 'censo',
+      usecase: 'Censo Industrias MAB',
+    },
 
 ]
 // uso serialTypeConfit[type]
@@ -178,6 +182,23 @@ const serialTypeConfig = {
     slug: 'Serial de vales de entrega almacen DSocial',
   },
 
+  censo: {
+    name: ['censoindustrias'],
+    tserial: ['censo'],
+    sector: ['produccion'],
+    tdoc: ['CENSO'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'CEN',
+    compName: 'S/Evento',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'Serial de censos industriales - MAB 2020',
+  },
+
   pcultural: {
     name: ['pcultural'],
     tserial: ['pcultural'],
@@ -194,6 +215,7 @@ const serialTypeConfig = {
     createOnTheFly: true,
     slug: 'Serial de eventos culturales (proyectos culturales pcultural)',
   },
+
 
   budget: {
     name: ['budget'],

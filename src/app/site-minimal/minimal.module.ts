@@ -53,25 +53,6 @@ import { TopMissionComponent } from './top-mission/top-mission.component';
 import { RegistroIngresoComponent } from './registracion/registro-ingreso/registro-ingreso.component';
 import { RegistroClaveComponent } from './registracion/registro-clave/registro-clave.component';
 import { RegistroAltaComponent } from './registracion/registro-alta/registro-alta.component';
-import { RegistroEmpresaPageComponent } from './comercio/registro-empresa-page/registro-empresa-page.component';
-import { ComercioCoreBaseComponent } from './comercio/comercio-core/comercio-core-base/comercio-core-base.component';
-import { ComercioCoreEditComponent } from './comercio/comercio-core/comercio-core-edit/comercio-core-edit.component';
-import { ComercioCoreViewComponent } from './comercio/comercio-core/comercio-core-view/comercio-core-view.component';
-import { ComercioAddressBaseComponent } from './comercio/comercio-address/comercio-address-base/comercio-address-base.component';
-import { ComercioAddressEditComponent } from './comercio/comercio-address/comercio-address-edit/comercio-address-edit.component';
-import { ComercioAddressViewComponent } from './comercio/comercio-address/comercio-address-view/comercio-address-view.component';
-import { ComercioAddressPanelComponent } from './comercio/comercio-address/comercio-address-panel/comercio-address-panel.component';
-import { ComercioMembersPanelComponent } from './comercio/comercio-members/comercio-members-panel/comercio-members-panel.component';
-import { ComercioMembersBaseComponent } from './comercio/comercio-members/comercio-members-base/comercio-members-base.component';
-import { ComercioMembersEditComponent } from './comercio/comercio-members/comercio-members-edit/comercio-members-edit.component';
-import { ComercioMembersViewComponent } from './comercio/comercio-members/comercio-members-view/comercio-members-view.component';
-import { ComercioContactdataPanelComponent } from './comercio/comercio-contactdata/comercio-contactdata-panel/comercio-contactdata-panel.component';
-import { ComercioContactdataBaseComponent } from './comercio/comercio-contactdata/comercio-contactdata-base/comercio-contactdata-base.component';
-import { ComercioContactdataEditComponent } from './comercio/comercio-contactdata/comercio-contactdata-edit/comercio-contactdata-edit.component';
-import { ComercioContactdataViewComponent } from './comercio/comercio-contactdata/comercio-contactdata-view/comercio-contactdata-view.component';
-import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
-import { ComerciosLayoutComponent } from './layouts/comercios-layout/comercios-layout.component';
-import { ComercioCoreStatusComponent } from './comercio/comercio-core/comercio-core-status/comercio-core-status.component';
 import { RegistroAltapfComponent } from './registracion/registro-altapf/registro-altapf.component';
 
 
@@ -125,25 +106,6 @@ import { RegistroAltapfComponent } from './registracion/registro-altapf/registro
   	RegistroIngresoComponent,
   	RegistroClaveComponent,
   	RegistroAltaComponent,
-  	RegistroEmpresaPageComponent,
-  	ComercioCoreBaseComponent,
-  	ComercioCoreEditComponent,
-  	ComercioCoreViewComponent,
-  	ComercioAddressBaseComponent,
-  	ComercioAddressEditComponent,
-  	ComercioAddressViewComponent,
-  	ComercioAddressPanelComponent,
-  	ComercioMembersPanelComponent,
-  	ComercioMembersBaseComponent,
-  	ComercioMembersEditComponent,
-  	ComercioMembersViewComponent,
-  	ComercioContactdataPanelComponent,
-  	ComercioContactdataBaseComponent,
-  	ComercioContactdataEditComponent,
-  	ComercioContactdataViewComponent,
-  	DashboardComercioPageComponent,
-  	ComerciosLayoutComponent,
-  	ComercioCoreStatusComponent,
   	RegistroAltapfComponent
   ],
   providers:[

@@ -1,0 +1,112 @@
+@import '../../../../assets/sass/variable';
+
+// azul 0645f5
+// verde 0bc869
+// violáceo: 1e1fc5;
+
+:host {
+	.mat-card {
+		// background: main-color(900);
+		// color: rgba(0, 0, 0, 0.87);
+	}
+
+	.footer {
+
+		margin: 20px 0 20px 0;
+		
+		.social-box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+
+			.text-social {
+				text-align: center;
+				
+				.social-token{
+					font-size: 3em;
+					color: #1e1fc5;
+					margin:  0 35px 0 0;				
+				}
+			}
+
+		}
+
+		.footer-row {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+			.footer-box {
+
+				.footer-text {
+					font-size: 0.8em;
+					color: rgba(0, 0, 0, 0.8);
+					//color: main-color(50);
+
+					.separator {
+						border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+						margin: 0 0 15px 0;
+						width: 100%;
+					}
+				}
+
+				.footer-img {
+					height: auto;
+					width: auto;
+				}
+			}
+		}	
+	}
+
+
+	.branding {
+		background-color: rgba(220, 220, 220, .4);
+		margin: 0 -32px 0 -32px;
+	
+		.branding-box {
+			height: 180px;
+			max-height: 180px;
+			margin: 15px 0 15px 0;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			width: 100%;
+			text-align: center;
+	
+			.branding-row{
+				justify-content: center;
+				align-items: center;
+
+				.branding-img {
+					width: auto;
+					max-height: 140px;
+					//align-items: center;
+				}
+				.branding-text {
+					font-size: 1em;
+					text-align: center;
+					color: rgba(0, 0, 0, 0.87);
+					margin-bottom: 15px;
+					color: #0645f5;
+					
+					.separator {
+						border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+						margin: 0 0 15px 0;
+						width: 100%;
+					}
+				}
+
+			}
+		}
+	}
+
+
+	.bottom-image {
+	}
+
+}

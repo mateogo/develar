@@ -1,0 +1,18 @@
+<mat-card>
+	<mat-card-content>
+		<ng-container *ngIf='firstStep'>
+			<div id='items' class="row">
+				<div class='col-md-12 item'>
+
+					<ng-container *ngIf='showBanner'>
+			    	<a role="button" title="{{nodes[0].linkTo}}" href="#" 
+			       		(click)="gotoCensoPage($event, 0, nodes[0])">
+			       <img class='item-image' src='{{ nodes[0].imageUrl }}'></a>
+			     </ng-container>
+
+				</div>
+			</div>
+		</ng-container>
+
+	</mat-card-content>
+</mat-card>

@@ -12,10 +12,6 @@ import { PortfolioPageComponent }   from './portfolio/portfolio-page/portfolio-p
 import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
 import { PostDetailContainerComponent } from './foros/post-detail-container/post-detail-container.component';
 
-import { RegistroEmpresaPageComponent } from './comercio/registro-empresa-page/registro-empresa-page.component';
-import { ComerciosLayoutComponent }       from './layouts/comercios-layout/comercios-layout.component';
-import { DashboardComercioPageComponent } from './comercio/dashboard-comercio-page/dashboard-comercio-page.component';
-
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
 const routes: Routes = [
@@ -56,29 +52,6 @@ const routes: Routes = [
     ]  
   },
   {
-    path: 'comercios',
-    component: ComerciosLayoutComponent,
-    children: [
-      {
-        path: 'registro/:id',
-        component: DashboardComercioPageComponent,
-      },
-      {
-        path: 'registro',
-        component: DashboardComercioPageComponent,
-      },
-      {
-        path: 'empresa/:id',
-        component: RegistroEmpresaPageComponent,
-      },
-      {
-        path: '',
-        component: HomeComponent,
-        pathMatch: 'full'
-      },
-    ]  
-  },
-  {
     path: '',
     component: MinimalistLayoutComponent,
     children: [
@@ -112,10 +85,6 @@ const routes: Routes = [
     ]
   }
 ];
-
-
-
-
 
 @NgModule({
   imports: [

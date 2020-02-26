@@ -72,6 +72,12 @@ export class DaoService {
         dashboardURL: 'api/eventosculturales/tablero',
         nextItemURL:  'api/eventosculturales/nextitem'
       },
+      censoindustrias:{
+        backendURL:   'api/censoindustrias',
+        searchURL:    'api/censoindustrias/search',
+        dashboardURL: 'api/censoindustrias/tablero',
+        nextItemURL:  'api/censoindustrias/nextitem'
+      },
       budget:{
         backendURL:   'api/presupuestos',
         searchURL:    'api/presupuestos/search',

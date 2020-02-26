@@ -176,6 +176,7 @@ const templateList: Array<any> = [
 		{val: 'destacado',      label: 'destacado',          slug:'destacado' },
 		{val: 'footer',         label: 'footer',             slug:'footer' },
 		{val: 'carrousel',      label: 'carrousel',          slug:'carrousel' },
+		{val: 'xternos',        label: 'renderizado x App',  slug:'Render externo' },
 ];
 
 const scopeList: Array<any> = [

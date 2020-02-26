@@ -1,0 +1,21 @@
+<mat-card class="detail-card">
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+		 	
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-core-status [person]='currentPerson'
+		 					(updatePerson)='navigateToProfile($event)' ></empresa-core-status>
+
+				<censoindustrias-banner></censoindustrias-banner>
+
+		 		<h5>Emisión del Rol de Nocturnidad</h5>
+				<rol-noche-panel  [items]='rolnocturnidadList' 
+											(updateItems)='updateRolnocturnidadList($event)' ></rol-noche-panel>		
+			</div>
+
+
+		</div>
+
+ 	</mat-card-content>
+</mat-card>

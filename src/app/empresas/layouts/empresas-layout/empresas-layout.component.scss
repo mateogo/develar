@@ -1,0 +1,28 @@
+@import '../../../../assets/sass/variable';
+
+:host {
+
+
+  .main-content {
+    height: 100%;
+    transition: padding .2s $animation;
+    @media #{$max991} {
+      padding-left: 0;
+    }
+
+    .top-container{
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .top-image {
+      margin-top: 40px;
+    }
+
+		.main-content-wrap {
+	    height: 100%;
+	    padding: 1px 0 0 0;
+	    width: 100%;
+	  }
+  }
+}

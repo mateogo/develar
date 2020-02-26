@@ -1,0 +1,30 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-core-base [person]='currentPerson'
+		 					(updatePerson)='updateCore($event)' ></empresa-core-base>
+			</div>
+	
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-contactdata-panel [items]='contactList'
+		 					(updateItems)='updateContactList($event)' ></empresa-contactdata-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-address-panel [items]='addressList'
+		 					(updateItems)='updateAddressList($event)' ></empresa-address-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-members-panel [items]='businessList'
+		 					(updateItems)='updateBusinessList($event)' ></empresa-members-panel>
+			</div>
+
+		</div>
+ 	</mat-card-content>
+</mat-card>

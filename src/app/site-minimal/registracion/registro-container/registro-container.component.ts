@@ -231,11 +231,13 @@ export class RegistroContainerComponent implements OnInit {
 
       this.minimalCtrl.initLoginUser().subscribe(u => {
 
+        console.log('ready to NAVIGATE')
+
         if(this.target === TARGET_COMERCIO) {
-          this.router.navigate(['/mab/comercios/registro', person._id]);
+          this.router.navigate(['/mab/empresas/inicio', person._id]);
 
         }else {
-          this.router.navigate(['/mab/comercios/registro', person._id]);
+          this.router.navigate(['/mab/empresas/inicio', person._id]);
 
         }
       })

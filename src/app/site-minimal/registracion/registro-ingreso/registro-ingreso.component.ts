@@ -27,9 +27,9 @@ const TARGET_SEGURIDAD = "personalseguridad";
 const dataLabel = {
   comercio: {
     text: {
-      h1: 'Gestione el registro de su comercio',
-      p1: 'Los locales nocturnos deben tener un registro actualizado y aprobado por la Municipalidad',
-      p2: 'Si Usted es titular/aporderado de un local nocturno, ingrese con el número de CUIT de su establecimiento'
+      h1: 'Espacio digital de trabajo y diálogo',
+      p1: 'Registre y gestione su empresa ante la Municipalidad de Almirante Brown',
+      p2: 'Ingrese con el número de CUIT de su establecimiento'
     },
     value: {
       tdoc: 'CUIT',

@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'empresas';
 
 const globals = {
 
@@ -77,6 +77,24 @@ const globals = {
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
+		version: '1.0 beta',
+		url: 'dsocial.brown.gob.ar'
+	},
+
+	empresas: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'MAB',
+		mainmenu: 'empresas',
+		mainmenutpl: 'default-navbar',
+		admintarget: '/develar/fichas/lista',
+		dashboard: '/mab/empresas/registro',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[MAB] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2020 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},

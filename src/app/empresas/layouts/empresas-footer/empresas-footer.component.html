@@ -1,0 +1,120 @@
+<ng-container *ngIf="isFooter">
+<mat-card>
+	<mat-card-content>
+		<div *ngIf="isModoUNO" class="container-fluid">
+			<div id='footer' class="row align-items-end">
+				<div class='col-md' *ngFor='let node of nodes'>
+
+					<ng-container *ngIf='node.hasImage'>
+					<div class="image-box">
+						<ng-container *ngIf='node.navigateTo'>
+							<a routerLink='{{ node.navigateTo }}'>
+								<img class='footer-img' src='{{ node.imageUrl }}' ></a>
+						</ng-container>
+
+						<ng-container *ngIf='node.linkTo'>
+		          <a rel="noopener noreferrer"  target="_blank" 
+		          	 title="{{node.linkTo}}" href="{{node.linkTo}}" >
+	          		<img class='footer-img' src='{{ node.imageUrl }}' ></a> 
+						</ng-container>
+						
+						<ng-container *ngIf='node.noLink'>
+	             <img class='footer-img' src='{{ node.imageUrl }}' >
+	           </ng-container>
+					</div>
+					</ng-container>
+
+					<div class='footer-text' innerHtml='{{node.description}}'></div>
+				
+				</div>
+			</div>
+		</div>
+
+		<div *ngIf="isModoDOS" >
+
+			<!-- SOLO HOME VIEW -- muestra las subfichas con topic===branding
+				Logos branding: company && auspicios -->
+			<div *ngIf="isHomeView" class='row branding'>
+				<ng-container *ngFor='let bnode of bnodes'>
+
+					<div class="col-md-12 col-sm-12 branding-box">
+						<ng-container *ngIf='bnode.navigateTo'>
+							<a routerLink='{{ bnode.navigateTo }}'>
+								<img class='branding-img' src='{{ bnode.imageUrl }}' ></a>
+						</ng-container>
+
+						<ng-container *ngIf='bnode.linkTo'>
+		          <a rel="noopener noreferrer"  target="_blank" 
+		          	 title="{{bnode.linkTo}}" href="{{bnode.linkTo}}" >
+	          		<img class='branding-img' src='{{ bnode.imageUrl }}' ></a> 
+						</ng-container>
+						
+						<ng-container *ngIf='bnode.noLink'>
+							<div class="row branding-row">
+								<div *ngIf="bnode.description" 
+											class='col-md-4 col-sm-12  branding-text'>
+									<p  innerHtml='{{bnode.description}}' ></p>
+								</div>
+								<div class="col-md-8 col-sm-12" >
+									<img class='branding-img' src='{{ bnode.imageUrl }}' >
+								</div>
+							</div>
+	           </ng-container>
+
+					</div>
+
+				</ng-container>
+			</div>
+
+			<!--  Logos branding: company && auspicios -->
+			<ng-container *ngFor='let fnode of fnodes'>
+			<div class='row footer'>
+			
+				<div class="col-md-6 col-sm-12  footer-row">
+					<div class="footer-box">
+						<ng-container *ngIf='fnode.navigateTo'>
+							<a routerLink='{{ fnode.navigateTo }}'>
+								<img class='footer-img' src='{{ fnode.imageUrl }}' ></a>
+						</ng-container>
+
+						<ng-container *ngIf='fnode.linkTo'>
+		          <a rel="noopener noreferrer"  target="_blank" 
+		          	 title="{{fnode.linkTo}}" href="{{fnode.linkTo}}" >
+	          		<img class='footer-img' src='{{ fnode.imageUrl }}' ></a> 
+						</ng-container>
+						
+						<ng-container *ngIf='fnode.noLink'>
+	             <img class='footer-img' src='{{ fnode.imageUrl }}' >
+	           </ng-container>
+
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-12 social-box">
+					<ng-container *ngIf="fnode.description">
+						<div  class='footer-text' innerHtml='{{fnode.description}}' >
+						</div>
+					</ng-container>
+		  	</div>
+
+			</div>
+			</ng-container>
+
+			<!--  Redes sociales -->
+			<div class='row footer'>
+				<div class="col-md-12 col-sm-12 social-box">
+					<div class="text-social">
+					<ng-container *ngFor='let social of socialItems'>
+				        <a class="social-token" mat-icon target="_blank" rel="noopener" 
+				            href="{{ social.url }}"  title="{{ social.title }}">
+				              <i class='{{ social.icon }}'></i></a>
+			  	</ng-container>
+			  	</div>
+		  	</div>
+		  </div>
+
+		</div>
+
+	</mat-card-content>
+</mat-card>
+</ng-container>

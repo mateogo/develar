@@ -1,0 +1,26 @@
+<div class="site-container">
+
+	<empresas-navbar [title]="pageTitle" ></empresas-navbar>
+  
+
+  <main class="main-content">
+    <div class="top-container d-flex flex-horizontal justify-content-center">
+      <div class="top-image" *ngIf='mainimage'>
+        <a role="button" title="{{topBrandingCard.linkTo}}" href="#"
+          (click)="gotoHome($event)">
+          <img class='header-image' src='{{ mainimage }}'></a>
+      </div>
+    </div>
+
+
+ 		<div class="main-content-wrap">
+    	<router-outlet></router-outlet>
+  	</div>
+
+
+		<div class="footer" *ngIf='footerCard'>
+			<empresas-footer></empresas-footer>
+		</div>
+
+  </main>
+</div>

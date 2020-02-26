@@ -257,6 +257,14 @@ function buildQuery(query, user){
             q["publish.topics"] = query['publish.tag'];
         }
 
+        if(query['publish.topics']){
+            q["publish.topics"] = query['publish.topics'];
+        }
+
+        if(query['publish.publishOrder']){
+            q["publish.topics"] = query['publish.topics'];
+        }
+
         if(query['publish.template']){
             q["publish.template"] = query['publish.template'];
         }

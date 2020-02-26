@@ -196,6 +196,10 @@ const mainRoutes:Routes = [
     loadChildren: () => import('./timebased/timebased.module').then(m => m.TimebasedModule)
   },
   { 
+    path: 'empresas', 
+    loadChildren: () => import('./empresas/empresas.module').then(m => m.EmpresasModule)
+  },
+  { 
     path: '', 
     loadChildren: () => import('./site-minimal/minimal.module').then(m => m.MinimalModule)
   },
