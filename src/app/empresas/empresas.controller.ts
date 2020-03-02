@@ -474,6 +474,7 @@ export class EmpresasController {
   }
 
   updateCurrentPerson(person: Person){
+    console.log('UPDATE CURRENT PERSON')
     this.currentPerson = person;
     this.personListener.next(this.currentPerson);
     this.personListener.subscribe(p => {

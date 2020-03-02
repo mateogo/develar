@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { CustomValidators } from 'ng2-validation';
 
@@ -18,7 +19,10 @@ import { devutils }from '../../../../../develar-commons/utils'
 const CORE = 'core';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
-
+const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
+const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
+const CENSO_CORE =      '/mab/empresas/gestion/censo2020/core/:id';
+const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 
 
@@ -28,16 +32,17 @@ const UPDATE = 'update';
   styleUrls: ['./censo-core-edit.component.scss']
 })
 export class CensoCoreEditComponent implements OnInit {
-	@Input() censoindustria: CensoIndustrias;
 
+	public  censoindustria: CensoIndustrias;
 	private censoindustrias: CensoIndustrias[];
   private censoindustriaId: string;
   private censodata: CensoData;
 
   private currentPerson: Person;
-  public empresa: Empresa;
 
 	public form: FormGroup;
+  public showForm = false;
+  public isAlta = false;
 
   private action = "";
   private token = CORE;
@@ -49,48 +54,107 @@ export class CensoCoreEditComponent implements OnInit {
   public texto1 = "Genere la carátula del Censo 2020 para iniciar el proceso";
   public texto2: string;
 
+  private unBindList = [];
+  public nuevaAlta: NuevaAlta;
+
+
 
   constructor(
   	private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
     private censoCtrl: CensoIndustriasController,
   	) { 
 	}
 
+  ngOnDestroy(){
+    console.log('CORE EDIT::onDestroy!!!')
+    this.unBindList.forEach(x => {x.unsubscribe()});
+  }
 
 
   ngOnInit() {
-    this.form = this.buildForm();
-    this.loadOrInitCenso();
-  }
+    console.log('CORE-EDIT ON-INIT')
+    let first = true;    
+    let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
 
-  private loadOrInitCenso(){
-  	this.censoindustria = new CensoIndustrias();
-  	this.censodata = new CensoData();
-  	this.censoindustria.censo= this.censodata;
+      if(readyToGo && first){
+        first = false;
+        this.initComponent();
 
-    this.currentPerson = this.censoCtrl.currentPerson;
-    this.initPerson(this.currentPerson);
+      }
+    })
+    this.unBindList.push(sscrp2);
 
-    this.form = this.buildForm();
-    this.initForEdit(this.form, this.censoindustria);
 
   }
 
-  private initPerson(person: Person){
-		this.censoCtrl.personListener.subscribe(p => {
+  private initComponent(){
+    this.form = this.buildForm();
+
+    let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
+      if(censo){
+
+        this.loadOrInitCenso(censo);
+
+      }else{
+        // ToDo.... qué pasa si no hay una Person activa?
+      }
+    })
+    this.unBindList.push(sscrp4);
+
+
+  }
+
+  private loadOrInitCenso(censo?: CensoIndustrias){
+    this.showForm = false;
+    this.isAlta = false;
+    this.censodata = new CensoData();
+
+    console.log('LoadOrInitCenso [%s] [%s]', censo, this.showForm)
+
+    if(censo && censo._id){
+      this.censoindustria = censo;
+      this.censoindustriaId = censo._id;
+      this.censodata = censo.censo;
+
+      this.currentPerson = this.censoCtrl.currentPerson;
+
+      //this.initPerson(this.currentPerson);
+
+      this.initForEdit(this.form, this.censoindustria);
+      this.showForm = true;
+
+
+    }else{
+      console.log('LOAD-OR-INIT: NOT CENSO')
+      this.censoindustria = new CensoIndustrias();
+      this.censoindustria.censo= this.censodata;
+
+      this.currentPerson = this.censoCtrl.currentPerson;
+      //this.initPerson(this.currentPerson);
+
+      this.initForEdit(this.form, this.censoindustria);
+      this.nuevaAlta = new NuevaAlta(this.currentPerson);
+      this.isAlta = true;
+
+    }
+  }
+
+  private initPersonDeprecatedToErase(person: Person){
+		let sscrp2 = this.censoCtrl.personListener.subscribe(p => {
 			console.log('person Listener')
 			if(p){
 				console.log('personListener YES!!')
-				this.empresa = CensoIndustriasService.empresaFromPerson(person);
-				this.censoindustria.empresa = this.empresa;
+				let empresa = CensoIndustriasService.empresaFromPerson(person);
+				this.censoindustria.empresa = empresa;
 
 			}else{
 				console.log('merde... tampoco funciona el listener');
 
 			}
 		})
-
-		this.censoCtrl.loadPerson();
+    this.unBindList.push(sscrp2);
 
   }
 
@@ -100,12 +164,20 @@ export class CensoCoreEditComponent implements OnInit {
   	this.saveCensoCore();
   }
 
+  onCreateNew(){
+    this.initForNew(this.censoindustria);
+    this.action = UPDATE;
+    this.saveCensoCore();
+  }
+
   onCancel(){
   	this.action = CANCEL;
   	this.manageEvent(this.action);
   }
 
+
   private manageEvent(action:string){
+    this.navigateToDashboard();
   	// todo
 
   }
@@ -114,9 +186,19 @@ export class CensoCoreEditComponent implements OnInit {
   	this.censoCtrl.manageCensoIndustriasRecord(this.censoindustria).subscribe(t => {
 
   		console.log('Grabación exitosa: [%s]', t && t.compNum);
+      this.navigateToDashboard();
 
   	})
   	// todo
+  }
+
+  private navigateToDashboard(){
+    if(this.isAlta){
+      this.router.navigate(['../'], { relativeTo: this.route });
+
+    }else{
+      this.router.navigate(['../../'], { relativeTo: this.route });
+    }
   }
 
   hasError = (controlName: string, errorName: string) =>{
@@ -180,7 +262,43 @@ export class CensoCoreEditComponent implements OnInit {
 		return form;
   }
 
-	initForSave(form: FormGroup, entity: CensoIndustrias): CensoIndustrias {
+  private initForNew (entity: CensoIndustrias): CensoIndustrias {
+    const today = new Date();
+    let estado = 'activo';
+    let navance = 'enproceso';
+
+    entity.fecomp_txa = devutils.txFromDate(today);
+    entity.fecomp_tsa = today.getTime();
+
+    if(entity.estado){
+      entity.estado.estado = estado;
+      entity.estado.navance = navance;
+
+
+    }else{
+      let token = {
+        estado: estado,
+        navance: navance,
+        isCerrado: false,
+        ts_alta: today.getTime(),
+        ts_umodif:today.getTime(),
+        fecierre_txa: '',
+        fecierre_tsa: 0,
+        cerradoPor: null,
+
+      } as EstadoCenso
+      entity.estado = token;
+
+    }
+    this.censoindustria.censo= this.censodata;
+
+    let empresa = CensoIndustriasService.empresaFromPerson(this.currentPerson);
+    this.censoindustria.empresa = empresa;
+
+    return entity;
+  }
+
+	private initForSave(form: FormGroup, entity: CensoIndustrias): CensoIndustrias {
 		const fvalue = form.value;
 		const today = new Date();
 
@@ -213,6 +331,24 @@ export class CensoCoreEditComponent implements OnInit {
 		return entity;
 	}
 
+}
+
+class NuevaAlta {
+  bienvenido = 'Gracias por iniciar el CENSO-2020';
+  code = ACTUAL_CENSO;
+  indicacion1 = 'La información que Usted informe será tratada con carácter confidencial'
+  indicacion2 = 'Este documento permanecerá <EN PROCESO> hasta tanto se completen todos los datos.'
+  indicacion3 = 'Una vez completada y validada la carga, Usted presta conformidad al momento'
+  indicacion4 = 'en que EMITE el CENSO, dando por concluido el proceso.'
+  fecha: string;
+  empName: string;
+  ndoc: string;
+
+  constructor(p:Person){
+    this.fecha = devutils.txFromDate(new Date())
+    this.empName = p.displayName;
+    this.ndoc = p.ndoc;
+  }
 }
 
 

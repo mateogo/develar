@@ -192,7 +192,7 @@ const serialTypeConfig = {
     pnumero: 1,
     offset: 100000,
     compPrefix: 'CEN',
-    compName: 'S/Evento',
+    compName: 'CENSO/MAB',
     showAnio: false,
     resetDay: false,
     createOnTheFly: true,

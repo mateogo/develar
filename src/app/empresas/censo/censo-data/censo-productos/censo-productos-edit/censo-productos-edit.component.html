@@ -1,0 +1,138 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>{{ title }} </mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+
+  <ng-container *ngIf="showForm">
+    <hr>
+
+  <form [formGroup]="form">
+    <div class="row" >
+      <div class="col">
+      	<p class="text-normal">{{ texto1 }}</p>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTipoBien placeholder="Tipo de bien"
+              [formControl]="form.controls['type']"
+              (selectionChange)="changeSelectionValue('type',fldTipoBien.value)" >
+            <mat-option *ngFor="let item of tipoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Seleccione Producto, Materia prima, Maquinaria, etc.</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['slug']" 
+                  placeholder="Descripción ejecutiva" >
+          <mat-hint>Nombre del producto o descripción ejecutiva</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-2 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isImportada']"
+                                      >Es importado/a</mat-checkbox>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldOrigen placeholder="Origen del bien"
+              [formControl]="form.controls['origen']"
+              (selectionChange)="changeSelectionValue('origen',fldOrigen.value)" >
+            <mat-option *ngFor="let item of origenOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Indique origen del producto según fabricación o tecnología dominante</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['parancelaria']" 
+                  placeholder="Posición arancelaria" >
+          <mat-hint>Posición arancelaria del producto o bien</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-2 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isExportable']"
+                                      >Es exportable</mat-checkbox>
+      </div>
+
+      <div class="col">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['exportableTxt']" 
+                  placeholder="Descripción de fortalezas u oportunidades" ></textarea>
+          <mat-hint>Describa las condiciones para crear / ampliar potencial exportador</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-2 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isSustituible']"
+                                      >Puede sustituir importación?</mat-checkbox>
+      </div>
+
+      <div class="col">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['sustituibleTxt']" 
+                  placeholder="Descripción de fortalezas u oportunidades" ></textarea>
+          <mat-hint>Describa las condiciones para sustituir impotaciones</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <hr>
+
+
+    <div class="row" >
+      <div class="col-md-2 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isInnovacion']"
+                                      >Es factor de innovación?</mat-checkbox>
+      </div>
+
+      <div class="col">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['innovacionTxt']" 
+                  placeholder="Descripción de fortalezas u oportunidades" ></textarea>
+          <mat-hint>Describa las ventajas competitivas que asigna a la innovación relacionadas con este bien o producto</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+      		(click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+      		(click)="onCancel()" >Cancelar</button>
+    </div>
+  </form>
+
+  </ng-container>
+  </mat-card-content>
+</mat-card>

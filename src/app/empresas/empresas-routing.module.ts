@@ -22,6 +22,11 @@ const routes: Routes = [
         component: CensoCoreEditComponent,
       },
       {
+        path: 'censo2020/core/:id',
+        component: CensoCoreEditComponent,
+      },
+
+      {
         path: 'censo2020',
         component: CensoPageComponent,
       },

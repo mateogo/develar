@@ -37,6 +37,13 @@ import { EmpresasFooterComponent } from './layouts/empresas-footer/empresas-foot
 import { CensoindustriasBannerComponent } from './banners/censoindustrias-banner/censoindustrias-banner.component';
 import { CensoPageComponent } from './censo/censo-page/censo-page.component';
 import { CensoCoreEditComponent } from './censo/censo-data/censo-core/censo-core-edit/censo-core-edit.component';
+import { CensoPanelComponent } from './censo/censo-data/censo-panel/censo-panel/censo-panel.component';
+import { CensoActividadEditComponent } from './censo/censo-data/censo-actividad/censo-actividad-edit/censo-actividad-edit.component';
+import { CensoActividadViewComponent } from './censo/censo-data/censo-actividad/censo-actividad-view/censo-actividad-view.component';
+import { CensoBaseComponent } from './censo/censo-data/censo-base/censo-base/censo-base.component';
+import { CensoCoreViewComponent } from './censo/censo-data/censo-core/censo-core-view/censo-core-view.component';
+import { CensoProductosViewComponent } from './censo/censo-data/censo-productos/censo-productos-view/censo-productos-view.component';
+import { CensoProductosEditComponent } from './censo/censo-data/censo-productos/censo-productos-edit/censo-productos-edit.component';
 
 
 
@@ -75,7 +82,14 @@ import { CensoCoreEditComponent } from './censo/censo-data/censo-core/censo-core
     EmpresasNavbarComponent,
     CensoindustriasBannerComponent,
     CensoPageComponent,
-    CensoCoreEditComponent
+    CensoCoreEditComponent,
+    CensoPanelComponent,
+    CensoActividadEditComponent,
+    CensoActividadViewComponent,
+    CensoBaseComponent,
+    CensoCoreViewComponent,
+    CensoProductosViewComponent,
+    CensoProductosEditComponent
   ],
 
 })

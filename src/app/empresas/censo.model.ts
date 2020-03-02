@@ -39,6 +39,49 @@ export class CensoData {
 	slug: string = 'Censo Industrias - MAB 2020'
 }
 
+export class CensoActividad {
+	_id?: string;
+	type: string;
+	level: number; //porcentaje de la facturación o la inversión
+	codigo: string ;
+	seccion: string;
+	rubro: string;
+	slug: string;
+	rol: string;
+	anio: number;
+
+
+}
+
+export class CensoBienes {
+	_id?: string;
+	type: string;
+	slug: string;
+	anio: number;
+	capainstalada: number; // unidades año
+	capautilizada: number; // unidades año
+
+	tactividad: string;
+	actividadId: string;
+
+	isImportada: boolean = false;
+	origen: string;
+	parancelaria: string ;
+
+	isExportable: boolean = false;
+	exportableTxt: string;
+	propExportada: number; // todo
+
+
+	isSustituible: boolean = false;
+	sustituibleTxt: string;
+
+	isInnovacion: boolean = false;
+	innovacionTxt: string;
+
+	level: number; //porcentaje de la facturación o la inversión
+
+}
 
 
 /**************************/
@@ -61,6 +104,8 @@ export class CensoIndustrias {
 		responsable:  Responsable;
 
 		estado: EstadoCenso;
+		actividades: Array<CensoActividad>;
+		bienes: Array<CensoBienes>;
 
 		censo: CensoData;
 

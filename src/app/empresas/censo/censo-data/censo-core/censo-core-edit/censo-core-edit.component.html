@@ -2,7 +2,35 @@
 	<mat-card-header>
 		<mat-card-title>{{ title }} </mat-card-title>
 	</mat-card-header>
+
   <mat-card-content>
+  <ng-container *ngIf="isAlta">
+    <p class="text-normal">Almirante Brown {{ nuevaAlta.fecha }}</p>
+    <p class="text-normal">{{ nuevaAlta.bienvenido }}</p>
+    <p class="text-normal">Está dando inicio al CENSO: {{ nuevaAlta.code }}</p>
+    <p class="text-normal">Para la empresa: {{ nuevaAlta.empName }}</p>
+    <p class="text-normal">CUIT: {{ nuevaAlta.ndoc }}</p>
+
+    <p class="text-normal">{{ nuevaAlta.indicacion1 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion2 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion3 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion4 }}</p>
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onCreateNew()" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
+    </div>
+
+
+  </ng-container>
+
+
+  <ng-container *ngIf="showForm">
+
   <form [formGroup]="form">
     <div class="row" >
       <div class="col">
@@ -53,7 +81,8 @@
       <button mat-button type="button" color="accent"
       		(click)="onCancel()" >Cancelar</button>
     </div>
-
   </form>
+
+  </ng-container>
   </mat-card-content>
 </mat-card>

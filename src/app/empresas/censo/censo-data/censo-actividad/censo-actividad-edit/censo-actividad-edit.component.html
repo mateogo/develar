@@ -1,0 +1,120 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>{{ title }} </mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+
+  <ng-container *ngIf="showForm">
+
+  <form [formGroup]="form">
+    <div class="row" >
+      <div class="col">
+      	<p class="text-normal">{{ texto1 }}</p>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSeccion placeholder="Seccion"
+              [formControl]="form.controls['seccion']"
+              (selectionChange)="changeSelectionValue('seccion',fldSeccion.value)" >
+            <mat-option *ngFor="let item of seccionOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldRubro placeholder="Rubro"
+              [formControl]="form.controls['rubro']"
+              (selectionChange)="changeSelectionValue('rubro',fldRubro.value)" >
+            <mat-option *ngFor="let item of rubroOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCodigo placeholder="Codigo"
+              [formControl]="form.controls['codigo']"
+              (selectionChange)="changeSelectionValue('codigo',fldCodigo.value)" >
+            <mat-option *ngFor="let item of codigoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldActividad placeholder="Tipo de actividad"
+              [formControl]="form.controls['type']"
+              (selectionChange)="changeSelectionValue('type',fldActividad.value)" >
+            <mat-option *ngFor="let item of actividadOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Indique cómo clasifica esta actividad en términos relativos</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['level']" 
+                  type="number" min="10" max="100" step="5"          
+                  placeholder="En porcentaje aproximado" >
+          <mat-hint>En porcentaje de la facturación anual ó de la inversión</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['anio']" 
+                  type="number" min="1950" max="2020"          
+                  placeholder="Año de inicio de la actividad" >
+          <mat-hint>Indique el año con cuatro dígitos</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCadena placeholder="Ubicación en la cadena productiva"
+              [formControl]="form.controls['rol']"
+              (selectionChange)="changeSelectionValue('rol',fldCadena.value)" >
+            <mat-option *ngFor="let item of cadenaOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Ubique la posición relativa de esta actividad en la cadena productiva industrial</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <textarea  matInput [formControl]="form.controls['slug']" 
+                  placeholder="Ventaja competitiva" ></textarea>
+          <mat-hint>Justifique sintéticamente su posicionamiento en relación con la actividad</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+      		(click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+      		(click)="onCancel()" >Cancelar</button>
+    </div>
+  </form>
+
+  </ng-container>
+  </mat-card-content>
+</mat-card>

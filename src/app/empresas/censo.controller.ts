@@ -20,12 +20,19 @@ import { CensoIndustrias } from './censo.model';
 import { CensoIndustriasService } from './censo-service';
 
 const CENSO_TYPE = 'censoindustrias'
+const ACTUAL_CENSO = "censo:industrias:2020:00";
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CensoIndustriasController {
+
+	private _currentCenso: CensoIndustrias;
+
+
+  private _censoListener: BehaviorSubject<CensoIndustrias>;
 
   constructor(
       private daoService:    DaoService,
@@ -58,7 +65,7 @@ export class CensoIndustriasController {
   }
 
 
-  /******* UPDATE ROL NOCTURNIDAD ********/
+  /******* UPDATE CENSO INDUSTRIAL ********/
   private updateCensoIndustrias(censoindustria$:Subject<CensoIndustrias>, censoRecord:CensoIndustrias){
  
     this.initCensoIndustriasForUpdate(censoRecord);
@@ -102,6 +109,68 @@ export class CensoIndustriasController {
         listener.next(t);
       });
   }
+  /*********************************/
+  /*  PARTIAL UPDATE */
+  /*******************************/
+  partialUpdateCenso(censoRecord:CensoIndustrias ): Subject<CensoIndustrias>{
+		let listener = new Subject<CensoIndustrias>();
+
+		this.refreshCensoState(censoRecord);
+
+		this.partialUpdateToDB(listener, censoRecord);
+
+		return listener; 	
+  }
+
+  private refreshCensoState(censo:CensoIndustrias){
+  	let today = new Date();
+
+  	if(censo.estado){
+  		censo.estado.ts_umodif = today.getTime();
+  	}
+
+  }
+
+  private partialUpdateToDB(listener: Subject<CensoIndustrias>,  censoRecord: CensoIndustrias){
+    this.daoService.update<CensoIndustrias>(CENSO_TYPE, censoRecord._id, censoRecord).then(t =>{
+      listener.next(t);
+    })
+  }
+
+
+
+  /*********************************/
+  /*  Censo Retrieve, fetch, load */
+  /*******************************/
+  fetchActiveCensoFromOrganisation(organisationId){
+  	let query = {
+  		search: 'actual:censo',
+  		empresaId: organisationId,
+  		codigo: ACTUAL_CENSO
+  	}
+
+  	this.daoService.search<CensoIndustrias>('censoindustrias',query).subscribe(censos => {
+  		if(censos && censos.length){
+  			this._currentCenso = censos[0];
+  			this._censoListener.next(this._currentCenso);
+  		}
+
+  	})
+
+  }
+
+  get censoListener(): Subject<CensoIndustrias>{
+  	if(!this._censoListener){
+  		if(!this._currentCenso){
+  			this._currentCenso = new CensoIndustrias();
+
+  		}
+  		this._censoListener = new BehaviorSubject<CensoIndustrias>(this._currentCenso);
+  	}
+  	return this._censoListener;
+  }
+
+
 
   /*****************
     Person
@@ -134,6 +203,14 @@ export class CensoIndustriasController {
     serial.dia = fecha.getDate();
     return this.daoService.nextSerial<Serial>('serial', serial);
   }
+
+  /*****************
+    PassThrú
+  *****************/
+  get onReady():BehaviorSubject<boolean>{
+  	return this.empCtrl.onReady;
+  }
+
 
 
 } // endService

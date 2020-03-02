@@ -6,16 +6,46 @@
   <mat-card-content>
   	<div class="container-fluid search-panel">
 
-  		<div class="row">
-  			<div class="col">
-  				<p class="line-text">{{ censoHeaderTitleTxt}}</p>
-  			</div>
-  			<div class="col">
-  				<button (click)='editCensoHeader($event)'>{{ censoHeaderTxt }}</button>
-  			</div>
-  		</div>
-		 	
+      <ng-container *ngIf="!hasCurrentCenso">
+        <div class="row">
+          <div class="col">
+            <p class="line-text">{{ censoHeaderTitleTxt}}</p>
+          </div>
+          <div class="col">
+            <button (click)='editCensoHeader($event)'>{{ censoAltaTxt }}</button>
+          </div>
+        </div>
+      </ng-container>
 
+      <ng-container *ngIf="hasCurrentCenso">
+
+        <div class="row">
+          <div class="col-md-1">
+            <div>
+            <span class="edit-control"
+              (click)='editCensoHeader($event)' title="{{ censoEditHeaderTxt }}">
+              <i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+              aria-hidden="true"></i></span>
+            </div>
+          </div>
+
+          <div class="col-md-11">
+            <censo-core-view [token]='currentCenso'></censo-core-view>
+          </div>
+        </div>
+  
+
+        <div  *ngIf="hasActividades" >
+          <censo-panel [items]='actividades'  [type]="'actividades'"
+                (updateItems)='updateActividadesList($event)' ></censo-panel>
+        </div>
+
+        <div  *ngIf="hasBienes" >
+          <censo-panel [items]='bienes'  [type]="'bienes'"
+                (updateItems)='updateBienesList($event)' ></censo-panel>
+        </div>
+
+      </ng-container>
 
 		</div>
 

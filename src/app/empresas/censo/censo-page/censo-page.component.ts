@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { EmpresasController } from '../../empresas.controller';
 import { CensoIndustriasController } from '../../censo.controller';
+import { CensoIndustriasService, UpdateListEvent } from '../../censo-service';
 
 import {  Person,
           Address,
@@ -22,10 +23,13 @@ import {  Person,
           PersonContactData 
         } from '../../../entities/person/person';
 
-import { CensoIndustrias } from '../../censo.model';
+import {  CensoIndustrias, 
+          CensoActividad,
+          CensoBienes } from '../../censo.model';
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
+const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 @Component({
   selector: 'app-censo-page',
@@ -33,7 +37,7 @@ const NAVIGATE = 'navigate';
   styleUrls: ['./censo-page.component.scss']
 })
 export class CensoPageComponent implements OnInit {
-  public unBindList = [];
+  private unBindList = [];
 
   // template helper
   public title = "Censo Industrias 2020 - MAB";
@@ -41,15 +45,23 @@ export class CensoPageComponent implements OnInit {
 
   //CensoIndustrias
   public currentCenso: CensoIndustrias;
+  private censoId: string;
+  public hasCurrentCenso = false;
+
+  //Actividades
+  public hasActividades = false;
+  public actividades: CensoActividad[] = [];
+
+  //Actividades
+  public hasBienes = false;
+  public bienes: CensoBienes[] = [];
 
 
   // Block SaludData
   public censoHeaderTitleTxt = "Inicie Censo 2020";
-  public censoHeaderTxt = "Alta / edición de datos generales";
 
-
-
-
+  public censoEditHeaderTxt = "Edición de datos Básicos";
+  public censoAltaTxt = "INICIE EL CENSO 2020 AQUÍ";
 
   public currentPerson: Person;
   public contactList:   PersonContactData[];
@@ -69,7 +81,6 @@ export class CensoPageComponent implements OnInit {
   public isAutenticated = false;
   private count = 0;
   
-  private censoId: string;
 
 
   constructor(
@@ -81,7 +92,7 @@ export class CensoPageComponent implements OnInit {
 
   ngOnInit() {
     let first = true;    
-    this.censoId = this.route.snapshot.paramMap.get('id')
+    //this.censoId = this.route.snapshot.paramMap.get('id')
 
     this.empCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
@@ -107,18 +118,72 @@ export class CensoPageComponent implements OnInit {
     let sscrp3 = this.empCtrl.personListener.subscribe(p => {
       if(p){
         this.initCurrentPerson(p);
+
+      }else{
+        // ToDo.... qué pasa si no hay una Person activa?
+      }
+    })
+
+    let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
+      if(censo){
+
+        this.initCurrentCenso(censo);
+
+      }else{
+        // ToDo.... qué pasa si no hay una Person activa?
       }
     })
 
     this.unBindList.push(sscrp3);
+    this.unBindList.push(sscrp4);
   
   }
 
 
+  private initCurrentCenso(censo: CensoIndustrias){
+    this.hasActividades = false;
+    this.hasBienes = false;
+
+    if(censo && censo._id){
+      console.log('CurrentCenso LOADED: [%s] [%s]', censo.empresa && censo.empresa.slug, censo.compNum);
+      this.censoId = censo._id;
+      this.currentCenso = censo;
+
+      this.actividades = censo.actividades || [];
+      this.initActividades(this.actividades);
+
+      this.bienes = censo.bienes || [];
+      this.initBienes(this.bienes);
+
+      this.refreshCenso(censo);
+
+    } else{
+      this.hasCurrentCenso = false;
+
+    }
+
+  }
+
+  private initActividades(actividades: CensoActividad[]){
+    if(actividades ){
+      this.hasActividades = true;
+    }
+  }
+
+  private initBienes(bienes: CensoBienes[]){
+    if(bienes ){
+      this.hasBienes = true;
+    }
+  }
+
+  private refreshCenso(censo){
+    this.hasCurrentCenso = true;
+  }
+
 
   private initCurrentPerson(p: Person){
     if(p){
-      console.log('CensoPage: [%s]', p.displayName);
+      console.log('CensoPage: [%s] [%s]', p.displayName, p._id);
       this.personId = p._id;
       this.currentPerson = p;
       //this.contactData = p.contactdata[0];
@@ -132,9 +197,15 @@ export class CensoPageComponent implements OnInit {
       this.ambientalList = p.ambiental || [];
 
       this.hasCurrentPerson = true;
+
+      this.fetchActiveCenso(p);
       
     }
     // todo: Search For S/Asistencias
+  }
+
+  private fetchActiveCenso(p: Person){
+    this.censoCtrl.fetchActiveCensoFromOrganisation(p._id);
   }
 
 
@@ -157,6 +228,38 @@ export class CensoPageComponent implements OnInit {
 
   }
 
+  updateActividadesList(event: UpdateListEvent){
+    console.log('Actividades BUBBLED')
+
+    if(event.action === UPDATE){
+      this.updateActividades(event);
+    }
+  }
+
+  private updateActividades(event: UpdateListEvent){
+    this.currentCenso.actividades = event.items as CensoActividad[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+
+  updateBienesList(event: UpdateListEvent){
+    console.log('Bienes BUBBLED')
+
+    if(event.action === UPDATE){
+      this.updateBienes(event);
+    }
+  }
+
+  private updateBienes(event: UpdateListEvent){
+    this.currentCenso.bienes = event.items as CensoBienes[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+
   /**********************/
   /*      Person        */
   /**********************/
@@ -174,8 +277,9 @@ export class CensoPageComponent implements OnInit {
   /*     Censo           */
   /**********************/
   private upsertCensoIndustrias(){
-    if(this.currentCenso){
+    if(this.currentCenso && this.censoId){
       console.log('update')
+      this.router.navigate(['/map/empresas/gestion/censo2020/core', this.censoId])
 
 
     }else{
@@ -187,14 +291,12 @@ export class CensoPageComponent implements OnInit {
 
 
 
-
-
-
 }
 
 
 
 /***
+http://develar-local.co:4200/mab/empresas/inicio/5e52cc650dbe2f1ac00d5c38
 http://develar-local.co:4200/mab/empresas/gestion/registro/5e52cc650dbe2f1ac00d5c38
 
 http://develar-local.co:4200/mab/comercios/registro/5da4df4b1cd64809a3f18861
