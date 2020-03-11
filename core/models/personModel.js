@@ -240,6 +240,38 @@ const coberturaSch = new mongoose.Schema({
     observacion:   { type: String, required: false }
 });
 
+const permisosSch = new mongoose.Schema({
+    type:             { type: String,  required: false},  
+    slug:             { type: String,  required: false},  
+    observacion:      { type: String,  required: false},  
+    isTramitacionMAB: { type: Boolean, required: false},  
+    expedidopor:      { type: String,  required: false},  
+    fechaexpe:        { type: String,  required: false},  
+    tramitacionURL:   { type: String,  required: false},  
+    tramitacionNro:   { type: String,  required: false},  
+    fechavigencia:    { type: String,  required: false},  
+    fechavigencia_ts: { type: Number,  required: false},  
+    estado:           { type: String,  required: false},  
+
+})
+
+const habilitacionesSch = new mongoose.Schema({
+    type:             { type: String,  required: false},  
+    slug:             { type: String,  required: false},  
+    observacion:      { type: String,  required: false},  
+    isTramitacionMAB: { type: Boolean, required: false},  
+    expedidopor:      { type: String,  required: false},  
+    fechaexpe:        { type: String,  required: false},  
+    tramitacionURL:   { type: String,  required: false},  
+    tramitacionNro:   { type: String,  required: false},  
+    fechavigencia:    { type: String,  required: false},  
+    fechavigencia_ts: { type: Number,  required: false},  
+    estado:           { type: String,  required: false},  
+
+})
+
+
+
 const personSch = new mongoose.Schema({
     displayName:    { type: String, required: true },
     idbrown:        { type: String, required: false },
@@ -289,6 +321,8 @@ const personSch = new mongoose.Schema({
     messages:       [ notif_messageSch ],
     ambiental:      [ encuestaSch ],
     fichas:         [ recordCardSch ],
+    permisos:       [ permisosSch],
+    habilitaciones: [ habilitacionesSch],
     assets:         [ assetSch ]
 });
 

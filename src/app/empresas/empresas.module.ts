@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmpresasRoutingModule } from './empresas-routing.module';
 
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
+import { MinimalModule } from '../site-minimal/minimal.module';
 
 import { TimebasedModule }  from '../timebased/timebased.module';
 
@@ -44,6 +45,11 @@ import { CensoBaseComponent } from './censo/censo-data/censo-base/censo-base/cen
 import { CensoCoreViewComponent } from './censo/censo-data/censo-core/censo-core-view/censo-core-view.component';
 import { CensoProductosViewComponent } from './censo/censo-data/censo-productos/censo-productos-view/censo-productos-view.component';
 import { CensoProductosEditComponent } from './censo/censo-data/censo-productos/censo-productos-edit/censo-productos-edit.component';
+import { EmpresaDocumentosBaseComponent } from './master-data/empresa-documentos/empresa-documentos-base/empresa-documentos-base.component';
+import { EmpresaDocumentosEditComponent } from './master-data/empresa-documentos/empresa-documentos-edit/empresa-documentos-edit.component';
+import { EmpresaDocumentosViewComponent } from './master-data/empresa-documentos/empresa-documentos-view/empresa-documentos-view.component';
+import { EmpresaDocumentosPanelComponent } from './master-data/empresa-documentos/empresa-documentos-panel/empresa-documentos-panel.component';
+import { CensoAssetsPanelComponent } from './censo/censo-data/censo-assets/censo-assets-panel/censo-assets-panel.component';
 
 
 
@@ -55,6 +61,7 @@ import { CensoProductosEditComponent } from './censo/censo-data/censo-productos/
     EmpresasRoutingModule,
     ReactiveFormsModule,
     DevelarCommonsModule,
+    MinimalModule,
     TimebasedModule
   ],
 
@@ -89,7 +96,12 @@ import { CensoProductosEditComponent } from './censo/censo-data/censo-productos/
     CensoBaseComponent,
     CensoCoreViewComponent,
     CensoProductosViewComponent,
-    CensoProductosEditComponent
+    CensoProductosEditComponent,
+    EmpresaDocumentosBaseComponent,
+    EmpresaDocumentosEditComponent,
+    EmpresaDocumentosViewComponent,
+    EmpresaDocumentosPanelComponent,
+    CensoAssetsPanelComponent
   ],
 
 })

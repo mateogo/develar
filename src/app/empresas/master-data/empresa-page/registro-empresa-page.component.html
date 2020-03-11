@@ -21,6 +21,18 @@
 			</div>
 
 		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<empresa-documentos-panel 
+		 					[items]='habilitacionesList'
+		 					[isHabilitacion]='true'
+		 					(updateItems)='updateHabilitacionesList($event)' ></empresa-documentos-panel>
+
+		 		<empresa-documentos-panel 
+		 					[items]='permisosList'
+		 					[isHabilitacion]='false'
+		 					(updateItems)='updateDocumentsList($event)' ></empresa-documentos-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<empresa-members-panel [items]='businessList'
 		 					(updateItems)='updateBusinessList($event)' ></empresa-members-panel>
 			</div>

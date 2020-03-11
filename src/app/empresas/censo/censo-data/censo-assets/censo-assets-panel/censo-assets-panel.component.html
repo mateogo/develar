@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-card-content>
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+			  	<div class="d-flex justify-content-between panel-header">
+
+					<div class="panel-header-text">{{ title }}</div>
+					<div class="panel-header-control" ><span 
+						(click)='addItem()' title="Agregar Item">
+						<i [class]="openEditor ? 'fas fa-plus' : 'far fa-plus'" 
+							aria-hidden="true"></i></span></div>
+				</div>
+			</div>
+		</div>
+
+		<ng-container *ngIf="showEdit">
+		  <asset-page 	[relatedList]='assetList' 
+		                [addCardToList]='addAssetToList'
+		                [entityType]="assetType"  ></asset-page>
+
+		  <asset-create (assetEmitted)='createCardGraphFromAsset($event)' ></asset-create>
+
+		  <div class="additional-info">
+		    <button mat-raised-button color="primary" 
+		    		(click)="onSubmit()" >Aceptar</button>
+		    
+		    <button mat-button type="button" color="accent"
+		    		(click)="onCancel()" >Cancelar</button>
+		  </div>
+		</ng-container>
+	
+		<ng-container *ngIf="showList">
+			<div class="d-flex justify-content-start align-items-center">
+					<div  *ngFor="let token of assetList">
+						<a rel="noopener noreferrer" target="_blank"
+										href="/download/{{token.entityId}}" >
+							<img  class="imagepreview" src="download/{{token.entityId}}"  alt="{token.slug}}" 
+										title="{{token.slug}}"></a>
+				</div>
+			</div>
+		</ng-container>
+
+  </mat-card-content>
+</mat-card>

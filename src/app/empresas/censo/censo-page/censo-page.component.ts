@@ -7,6 +7,8 @@ import { EmpresasController } from '../../empresas.controller';
 import { CensoIndustriasController } from '../../censo.controller';
 import { CensoIndustriasService, UpdateListEvent } from '../../censo-service';
 
+import { CardGraph } from '../../../develar-commons/asset-helper';
+
 import {  Person,
           Address,
           FamilyData,
@@ -26,6 +28,9 @@ import {  Person,
 import {  CensoIndustrias, 
           CensoActividad,
           CensoBienes } from '../../censo.model';
+
+import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
+
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
@@ -58,10 +63,11 @@ export class CensoPageComponent implements OnInit {
 
 
   // Block SaludData
-  public censoHeaderTitleTxt = "Inicie Censo 2020";
+  public censoHeaderTitleTxt = "MUNICIPALIDAD DE ALMIRANTE BROWN - SECRETARÍA DE PRODUCCIÓN";
+  public censoAltaTxt = "INICIE EL CENSO AQUÍ";
+  public censoBajada = "CENSO INDUSTRIAL 2020";
 
   public censoEditHeaderTxt = "Edición de datos Básicos";
-  public censoAltaTxt = "INICIE EL CENSO 2020 AQUÍ";
 
   public currentPerson: Person;
   public contactList:   PersonContactData[];
@@ -81,6 +87,13 @@ export class CensoPageComponent implements OnInit {
   public isAutenticated = false;
   private count = 0;
   
+  public audit: Audit;
+  public parentEntity: ParentEntity;
+  public hasObservaciones = false;
+  public observacionesOptListType = 'censo';
+
+  public assetList:     CardGraph[] = []
+
 
 
   constructor(
@@ -156,6 +169,13 @@ export class CensoPageComponent implements OnInit {
       this.initBienes(this.bienes);
 
       this.refreshCenso(censo);
+
+      this.audit = this.censoCtrl.getUserData();
+      this.parentEntity = this.censoCtrl.parentEntity(censo);
+      this.hasObservaciones = this.parentEntity ? true : false;
+
+      this.assetList = censo.assets || [];
+
 
     } else{
       this.hasCurrentCenso = false;
@@ -287,6 +307,23 @@ export class CensoPageComponent implements OnInit {
       this.router.navigate(['/map/empresas/gestion/censo2020/core'])
 
     }
+  }
+
+  /************************/
+  /*     Assets           */
+  /**********************/
+  updateAssetList(event:UpdateListEvent){
+    if(event.action === UPDATE){
+      this.upsertAssetlList(event);
+    }
+  }
+
+  private upsertAssetlList(event:UpdateListEvent){
+    this.currentCenso.assets = event.items as CardGraph[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+
   }
 
 

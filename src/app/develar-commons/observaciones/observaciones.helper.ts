@@ -42,10 +42,20 @@ const observacionesCCKOptList: Array<any> = [
 
 ];
 
+const observacionesCensoOptList: Array<any> = [
+		{val: 'consulta',     type: 'consulta',     label: 'Consulta Empresa' },
+		{val: 'observación',  type: 'observacion',  label: 'Observación Empresa' },
+    {val: 'notificacion', type: 'notificacion', label: 'Notificación MAB' },
+		{val: 'general',      type: 'general',      label: 'General' },
+    {val: 'no_definido',  type: 'no_definido',  label: 'Sin selección' },
+
+];
+
 const optionsLists = {
 		default: observacionesTypeOptList,
-		type: observacionesTypeOptList,
-		cck:  observacionesCCKOptList,
+		type:    observacionesTypeOptList,
+		cck:     observacionesCCKOptList,
+		censo:   observacionesCensoOptList
 };
 
 function getLabel(list, val){

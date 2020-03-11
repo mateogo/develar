@@ -21,7 +21,7 @@ export class EmpresaMembersPanelComponent implements OnInit {
 	@Input() items: Array<BusinessMembersData>;
 	@Output() updateItems = new EventEmitter<UpdateItemListEvent>();
 
-  public title = 'Personal de seguridad - Vínculos/ Roles laborales';
+  public title = 'Personal Directivo y Técnico';
 	public showList = false;
   public openEditor = true;
 

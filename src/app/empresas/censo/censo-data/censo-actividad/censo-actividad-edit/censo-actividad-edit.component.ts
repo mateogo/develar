@@ -56,7 +56,7 @@ export class CensoActividadEditComponent implements OnInit {
   public actividadOptList = CensoIndustriasService.getOptionlist('actividad');
   public cadenaOptList = CensoIndustriasService.getOptionlist('cadena');
 
-  public title = "Actividades de la compañíoa";
+  public title = "Actividades de la compañía";
   public texto1 = "Identifique la actividad en la clasificiación propuesta (Sección/Rubro/Código)";
   public texto2: string;
 

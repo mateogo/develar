@@ -74,6 +74,17 @@ const censoBienesSch = new Schema({
   level:          { type: Number,  required: false},
 })
 
+const assetSch = new mongoose.Schema({
+    entity:      {type: String, required: false,  default: ""},
+    displayAs:   {type: String, required: false,  default: ""},
+    predicate:   {type: String, required: false,  default: ""},
+    slug:        {type: String, required: false,  default: ""},
+    description: {type: String, required: false,  default: ""},
+    avatar:      {type: Number, required: false,  default: ""},
+    entityId:    {type: String, required: false,  default: ""},
+
+});
+
 
 /**************************/
 /**   CENSO INDUSTRIAS  **/
@@ -83,6 +94,9 @@ const censoindustriaSch = new Schema({
     compName:      { type: String, required: false},
     compNum:       { type: String, required: false},
     action:        { type: String, required: false},
+    categoriaEmp:  { type: String, required: false},
+    rubroEmp:      { type: String, required: false},
+
     sector:        { type: String, required: false},
     fecomp_txa:    { type: String, required: false},
     fecomp_tsa:    { type: Number, required: false},
@@ -92,6 +106,7 @@ const censoindustriaSch = new Schema({
     censo:         { type: censoDataSch,   required: false},
     actividades:   [ censoActividadSch],
     bienes:        [ censoBienesSch],
+    assets:        [ assetSch ],
 });
 
 

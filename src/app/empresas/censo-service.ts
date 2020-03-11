@@ -1,23 +1,38 @@
 import { CensoIndustrias, CensoActividad, CensoBienes, Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
-import { Person }      from '../entities/person/person';
+import { Person, DocumentData }      from '../entities/person/person';
 import { nomencladorList } from './nomenclador-data';
+import { CardGraph } from '../develar-commons/asset-helper';
 
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<CensoActividad|CensoBienes>;
+  items:  Array<CensoActividad|CensoBienes|DocumentData|CardGraph>;
 };
 
+
+export interface TipoEmpresa {
+  x:number;
+  y:number;
+  categoria:string;
+  categoria_lbl: string;
+
+
+  rubro:string;
+  rubro_lbl: string;
+
+  tope: number;
+
+
+}
 
 export interface UpdateEvent {
   action:  string;
   token:   string;  
-  payload: CensoActividad|CensoBienes;
+  payload: CensoActividad|CensoBienes|DocumentData|CardGraph;
 };
 
 function fetchAction(val, type){
-	console.log('fetaction: [%s] [%s]', val, type)
 	let isSeccion = 0, isTitulo = 0;
 	if(type === 'seccion'){
 		isSeccion = 1;
@@ -144,6 +159,16 @@ export class CensoIndustriasService {
 
 	}
 
+	static findRubroCategoria(rubro, categoria): TipoEmpresa{
+		let list = categoriaEmpresasOptList;
+		let catList: TipoEmpresa[] = list.find(t => t[0].categoria === categoria);
+		let tipoEmpresa: TipoEmpresa;
+		if(catList && catList.length){
+			tipoEmpresa = catList.find(t => t.rubro === rubro);
+		}
+		return tipoEmpresa;
+	}
+
 
 	static censoIndustriasSerial(){
 		let serial = new Serial();
@@ -217,7 +242,7 @@ const actionOptList: Array<any> = [
 ];
 
 const estadosOptList = [
-      {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
+      {val: 'no_definido', label: 'Sin selección',  slug:'Seleccione opción' },
       {val: 'activo',      label: 'Activo',      slug:'Activo' },
       {val: 'cerrado',     label: 'Cerrado',     slug:'Cerrado' },
       {val: 'suspendido',  label: 'Suspendido',  slug:'Suspendido' },
@@ -290,7 +315,7 @@ const origenOptList = [
 const posCadenaProductivaOptList = [
       {val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
       {val: 'primario',      label: 'Extracción; cultivo, criadero',         slug:'Extracción; cultivo, criadero' },
-      {val: 'intermedio',    label: 'Ind Bienes intermadios',         slug:'Ind Bienes intermadios' },
+      {val: 'intermedio',    label: 'Ind Bienes intermedios',         slug:'Ind Bienes intermedios' },
       {val: 'insumos',       label: 'Ind Insumos indus/comerciales',   slug:'Ind Insumos indus/comerciales' },
       {val: 'mayorista',     label: 'Distribuidor mayorista',              slug:'Distribuidor mayorista' },
       {val: 'consmasivo',    label: 'Ind Bienes consumo masivo',               slug:'Ind Bienes consumo masivo' },
@@ -300,6 +325,117 @@ const posCadenaProductivaOptList = [
       {val: 'investigacion', label: 'Investigación',         slug:'Investigación' },
       {val: 'educacion',     label: 'Educación',   slug:'Educación' },
 ]
+
+/******** Categoría Empresa **********/
+const categoriaEmpresasOptList = [
+	[
+		{x:0, y:0 , categoria: "micro",    rubro: "construccion", categoria_lbl: "Micro",       rubro_lbl: "Construcción", tope:  15230000 },
+		{x:0, y:1 , categoria: "micro",    rubro: "servicios",    categoria_lbl: "Micro",       rubro_lbl: "Servicios",    tope:   8500000 },
+		{x:0, y:2 , categoria: "micro",    rubro: "comercio",     categoria_lbl: "Micro",       rubro_lbl: "Comercio",     tope:  29740000 },
+		{x:0, y:3 , categoria: "micro",    rubro: "industria",    categoria_lbl: "Micro",       rubro_lbl: "Industria",    tope:  26450000 },
+		{x:0, y:4 , categoria: "micro",    rubro: "mineria",      categoria_lbl: "Micro",       rubro_lbl: "Minería",      tope:  26540000 },
+		{x:0, y:5 , categoria: "micro",    rubro: "agropecuario", categoria_lbl: "Micro",       rubro_lbl: "Agropecuario", tope:  12890000 },
+	],
+	[
+		{x:1, y:0 , categoria: "pequenia", rubro: "construccion", categoria_lbl: "Pequeña", rubro_lbl: "Construcción", tope:  90310000 },
+		{x:1, y:1 , categoria: "pequenia", rubro: "servicios",    categoria_lbl: "Pequeña", rubro_lbl: "Servicios",    tope:   5095000 },
+		{x:1, y:2 , categoria: "pequenia", rubro: "comercio",     categoria_lbl: "Pequeña", rubro_lbl: "Comercio",     tope: 178860000 },
+		{x:1, y:3 , categoria: "pequenia", rubro: "industria",    categoria_lbl: "Pequeña", rubro_lbl: "Industria",    tope: 190410000 },
+		{x:1, y:4 , categoria: "pequenia", rubro: "mineria",      categoria_lbl: "Pequeña", rubro_lbl: "Minería",      tope: 190410000 },
+		{x:1, y:5 , categoria: "pequenia", rubro: "agropecuario", categoria_lbl: "Pequeña", rubro_lbl: "Agropecuario", tope:  48480000 },
+	],
+	[
+		{x:2, y:0 , categoria: "mediana1", rubro: "construccion", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Construcción", tope:  503880000 },
+		{x:2, y:1 , categoria: "mediana1", rubro: "servicios",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Servicios",    tope:  425170000 },
+		{x:2, y:2 , categoria: "mediana1", rubro: "comercio",     categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Comercio",     tope: 1502750000 },
+		{x:2, y:3 , categoria: "mediana1", rubro: "industria",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Industria",    tope: 1190330000 },
+		{x:2, y:4 , categoria: "mediana1", rubro: "mineria",      categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Minería",      tope: 1190330000 },
+		{x:2, y:5 , categoria: "mediana1", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Agropecuario", tope: 345343000 },
+	],
+	[
+		{x:3, y:0 , categoria: "mediana2", rubro: "construccion", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Construcción", tope:  755740000 },
+		{x:3, y:1 , categoria: "mediana2", rubro: "servicios",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Servicios",    tope:  607210000 },
+		{x:3, y:2 , categoria: "mediana2", rubro: "comercio",     categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Comercio",     tope: 2146810000 },
+		{x:3, y:3 , categoria: "mediana2", rubro: "industria",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Industria",    tope: 1739590000 },
+		{x:3, y:4 , categoria: "mediana2", rubro: "mineria",      categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Minería",      tope: 1739590000 },
+		{x:3, y:5 , categoria: "mediana2", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Agropecuario", tope:  547890000 },
+	]
+];
+
+/******** Datos Empresa **********/
+const contactOptList: Array<any> = [
+    {val: 'no_definido', label: 'Seleccione opción',   slug:'Seleccione opción' },
+    {val: 'APODERADO',  label: 'Apoderado',            slug:'Apoderado' },
+    {val: 'RTEC',       label: 'Responsable Técnico',  slug:'Responsable Técnico' },
+    {val: 'ADMIN',      label: 'Administración',       slug:'Administración' },
+    {val: 'RRHH',       label: 'RRHH',                 slug:'RRHH' },
+    {val: 'COMERCIAL',  label: 'COMERCIAL',            slug:'COMERCIAL' },
+    {val: 'RJURIDICO',  label: 'Responsable Jurídico', slug:'Responsable Jurídico' },
+    {val: 'CENSO',      label: 'Encargado CENSO',      slug:'Encargado CENSO' },
+];
+
+const contactTypeOptList: Array<any> = [
+		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+		{val: 'CEL',   label: 'CEL',    slug:'CEL' },
+		{val: 'MAIL',  label: 'MAIL',   slug:'MAIL' },
+		{val: 'TEL',   label: 'TEL',    slug:'TEL' },
+		{val: 'WEB',   label: 'WEB',    slug:'WEB' },
+];
+
+const addressTypeOptList: Array<any> = [
+		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+		{val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
+		{val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
+		{val: 'admin',          label: 'Administración',   slug:'Sede administración' },
+		{val: 'fiscal', 	      label: 'Fiscal',           slug:'Domicilio fiscal' },
+		{val: 'comercial', 	    label: 'Comercial',        slug:'Domicilio comercial' },
+		{val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
+		{val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
+		{val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
+		{val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
+		{val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
+		{val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
+		{val: 'principal',      label: 'Principal',        slug:'Locación principal' },
+		{val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
+    {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
+];
+
+const profesionesOptList: Array<any> = [
+       {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
+        {val: 'profesional',     label: 'Profesional',    slug:'Profesional' },
+        {val: 'empresarix',      label: 'Empresario/a',   slug:'Empresario/a' },
+        {val: 'microemprendim',  label: 'Microemprendedor/a',  slug:'Microemprendedor/a' },
+        {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
+        {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
+        {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
+        {val: 'seguridad',       label: 'Seguridad',      slug:'Seguridad' },
+        {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
+        {val: 'estudiante',      label: 'Estudiante',     slug:'Estudiante' },
+        {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
+        {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
+        {val: 'pensionadx',      label: 'Pensionado/a',   slug:'Pensionado/a' },
+        {val: 'docente',         label: 'Docente',        slug:'Docente' },
+        {val: 'reciclador',      label: 'Reciclador urbano',  slug:'Reciclador urbano' },
+        {val: 'desocupax',       label: 'Desocupado/a',   slug:'Desocupado/a' },
+        {val: 'otro',            label: 'Otra ocupación', slug:'Otra ocupación' },
+];
+
+const tipoDocumentosOptList: Array<any> = [
+			{val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
+			{val: 'certificacion', label: 'Certificación',  slug:'Certificación' },
+			{val: 'patente',       label: 'Patente',        slug:'Patente' },
+			{val: 'licencia',      label: 'Licencia',       slug:'Licencia' },
+			{val: 'marca',         label: 'Marca',          slug:'Marca' },
+			{val: 'excencion',     label: 'Exención',       slug:'Exención' },
+			{val: 'acta',          label: 'Acta',           slug:'Acta' },
+			{val: 'estatuto',      label: 'Estatuto',       slug:'Estatuto' },
+			{val: 'permiso',       label: 'Permiso',        slug:'Permiso' },
+];
+
+const habilitacionOptList: Array<any> = [
+			{val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
+			{val: 'habilitacion',  label: 'Habilitación',   slug:'Habilitación' },
+];
 
 const optionsLists = {
 	 default: default_option_list,
@@ -313,6 +449,14 @@ const optionsLists = {
    tipoBienes: bienesTypeOptList,
    origenBienes: origenOptList,
    cadena: posCadenaProductivaOptList,
+   tipoEmp: categoriaEmpresasOptList,
+   contactos: contactOptList,
+   contactType: contactTypeOptList,
+   address: addressTypeOptList,
+   profesiones: profesionesOptList,
+   documentos: tipoDocumentosOptList,
+   habilitacion: habilitacionOptList,
+
 }
 
 

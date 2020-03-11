@@ -162,6 +162,10 @@ export const predicateLabels = {
 		formTitle: 'Recursos relacionados',
 		formAddLabel: 'Agregar nuevo objeto digital'
 	},
+	censoasset: {
+		formTitle: 'Recursos digitales',
+		formAddLabel: 'Agregar nuevo objeto digital'
+	},
 	image: {
 		formTitle: 'Imágenes relacionadas',
 		formAddLabel: 'Agregar nueva imagen'
@@ -251,6 +255,21 @@ export const predicateType = {
 			{val: 'subsidio',       label: 'Subsidio digitalizado', slug:'Subsidio' },
 		]
 	},
+	censoasset: {
+		predicates: [
+			{val: 'no_definido', 	  label: 'Seleccione opción',  		slug:'Seleccione opción' },
+			{val: 'dnia',           label: 'DNI Anverso',           slug:'DNI Anverso' },
+			{val: 'dnir',           label: 'DNI Reverso',           slug:'DNI Reverso' },
+			{val: 'acta',           label: 'Acta',                  slug:'Acta' },
+			{val: 'licencia',       label: 'Licen;Marca;Patente',   slug:'Licen;Marca;Patente' },
+			{val: 'habilitacion',   label: 'Habilitación',          slug:'Habilitación' },
+			{val: 'avatar',         label: 'Avatar',             		slug:'Avatar personal' },
+			{val: 'featureimage',   label: 'Imagen Destacada',   		slug:'Imagen para vista detallada' },
+			{val: 'documento',      label: 'Otros documentos',      slug:'Otros documentos' },
+			{val: 'images',         label: 'Otras imágenes',        slug:'Otras imágenes' },
+			{val: 'subsidio',       label: 'Subsidio digitalizado', slug:'Subsidio' },
+		]
+	},
 	image: {
 		predicates: [
 			{val: 'no_definido', 	  label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -263,7 +282,6 @@ export const predicateType = {
 	}
 
 }
-
 
 const	profesiones =  [
 	   	{val: 'no_definido',    label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -365,6 +383,16 @@ function personassetAdapter(model, data, entity, predicate){
     return model;
 }
 
+function censoassetAdapter(model, data, entity, predicate){
+    model.slug =        data.slug;
+    model.description = data.description;
+    model.displayAs =   data.assetId;
+    model.entityId =    data._id || data.assetId;
+    model.predicate =   predicate || 'documento'
+    model.entity =      entity || 'asset';
+    return model;
+}
+
 function imageAdapter(model, data, entity, predicate){
     model.slug = data.slug;
     model.description = data.description;
@@ -377,6 +405,7 @@ function imageAdapter(model, data, entity, predicate){
 
 
 const extendedUtilites = {
+
 	person: {
 		initCardGraph: function(list){
 			let graph = new CardGraphPerson();
@@ -397,6 +426,35 @@ const extendedUtilites = {
 	  	})
 	  	return graphs;
 	  }
+	},
+
+	censoasset: {
+		initCardGraph: function(list){
+			let graph = new CardGraphAsset();
+			if(list && list.length >0){
+				graph.predicate = list[0].predicate;
+				graph.slug = list[0].slug;
+			}
+			return graph;
+		},
+
+		initCardGrpahFromAsset: function(data, predicate){
+			let graph = censoassetAdapter(new CardGraphAsset(), data, 'asset', predicate)
+
+			return graph;
+		},
+
+
+	  buildCardGraphList(rawList): Array<CardGraphAsset>{
+	  	let graphs: Array<CardGraphAsset>;
+	  	let token:CardGraphAsset;
+	  	graphs = rawList.map(model =>{
+	  		token = new CardGraphAsset();
+	  		Object.assign(token, model);
+	  		return token;
+	  	})
+	  	return graphs;
+		}
 	},
 	product: {
 		initCardGraph: function(list){
@@ -539,10 +597,7 @@ const extendedUtilites = {
 	  	return graphs;
 	  }
 	}
-
-
 }
-
 
 
 export const graphUtilities = {

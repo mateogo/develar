@@ -1,5 +1,6 @@
 import { devutils } from '../develar-commons/utils';
 import { Person, CoberturaData }  from '../entities/person/person';
+import { CardGraph } from '../develar-commons/asset-helper';
 
 
 
@@ -26,8 +27,6 @@ export interface EstadoCenso {
 	fecierre_txa: string;
 	fecierre_tsa: number;
 	cerradoPor: Responsable;
-
-
 }
 
 export class CensoData {
@@ -49,8 +48,6 @@ export class CensoActividad {
 	slug: string;
 	rol: string;
 	anio: number;
-
-
 }
 
 export class CensoBienes {
@@ -96,6 +93,9 @@ export class CensoIndustrias {
 		action:      string = 'censo';
 		sector:      string = 'produccion';
 
+		categoriaEmp:   string;
+		rubroEmp:       string;
+
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
 
@@ -106,6 +106,8 @@ export class CensoIndustrias {
 		estado: EstadoCenso;
 		actividades: Array<CensoActividad>;
 		bienes: Array<CensoBienes>;
+
+    assets: Array<CardGraph> = [];
 
 		censo: CensoData;
 

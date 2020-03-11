@@ -27,6 +27,8 @@ const ALIMENTOS_ROUTE = "alimentos";
 const SEGUIMIENTO_ROUTE = "seguimiento";
 const CORE = 'core';
 const CONTACT = 'contact';
+const PERMISOS = 'permisos';
+const HABILITACIONES = 'habilitaciones';
 const ADDRESS = 'address';
 const FAMILY = 'family';
 const OFICIOS = 'oficios';
@@ -437,6 +439,14 @@ export class EmpresasController {
     }
     
     if(event.token === CONTACT){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === PERMISOS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === HABILITACIONES){
       this.upsertPersonCore(event.person._id, event.person);
     }
 

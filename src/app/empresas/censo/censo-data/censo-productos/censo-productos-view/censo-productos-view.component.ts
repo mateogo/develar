@@ -3,20 +3,9 @@ import { CensoIndustriasController } from '../../../../censo.controller';
 import { CensoIndustriasService } from '../../../../censo-service';
 
 import { 	CensoIndustrias, 
-					EstadoCenso, 
-					Empresa, 
-					CensoActividad,
-					CensoData } from '../../../../censo.model';
+					CensoBienes } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
-
-const ACTIVIDAD = 'actividad';
-const CANCEL = 'cancel';
-const UPDATE = 'update';
-const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
-const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
-const CENSO_ACTIVIDAD =      '/mab/empresas/gestion/censo2020/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 
 @Component({
@@ -25,16 +14,20 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
   styleUrls: ['./censo-productos-view.component.scss']
 })
 export class CensoProductosViewComponent implements OnInit {
-	@Input() token: CensoActividad;
+	@Input() token: CensoBienes;
 
   public type = "";
+  public origen = "";
   public slug = "";
 
   constructor() { }
 
   ngOnInit() {
     this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
+    
+
     this.slug = this.token.slug;
+    this.origen = this.token.origen;
 
 
   }

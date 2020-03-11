@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@ang
 import { Observable } from 'rxjs';
 import { EmpresasController } from '../../empresas.controller';
 
-import { DsocialModel, Ciudadano, SectorAtencion, sectores } from '../../../dsocial/dsocial.model';
+import { CensoIndustriasService, UpdateEvent, UpdateListEvent } from '../../censo-service';
 
 import {  Person,
           Address,
@@ -14,6 +14,8 @@ import {  Person,
           SaludData,
           CoberturaData,
           EncuestaAmbiental,
+          DocumentData,
+
           personModel,
 
           UpdatePersonEvent,
@@ -22,15 +24,7 @@ import {  Person,
           PersonContactData 
         } from '../../../entities/person/person';
 
-import {   Asistencia, 
-          Alimento, 
-          UpdateAsistenciaEvent, 
-          UpdateAlimentoEvent, 
-          UpdateAsistenciaListEvent,
-          AsistenciaHelper } from '../../../dsocial/asistencia/asistencia.model';
-
-
-const UPDATE = 'update';
+const UPDATE =   'update';
 const NAVIGATE = 'navigate';
 
 @Component({
@@ -57,9 +51,8 @@ export class RegistroEmpresaPageComponent implements OnInit {
   public saludList:     SaludData[];
   public coberturaList: CoberturaData[];
   public ambientalList: EncuestaAmbiental[];
-
-  public asistenciasList: Asistencia[];
-
+  public permisosList: DocumentData[];
+  public habilitacionesList: DocumentData[];
 
   //public contactData = new PersonContactData();
 
@@ -118,6 +111,8 @@ export class RegistroEmpresaPageComponent implements OnInit {
       this.saludList =     p.salud || [];
       this.coberturaList = p.cobertura || [];
       this.ambientalList = p.ambiental || [];
+      this.permisosList =  p.permisos || [];
+      this.habilitacionesList =  p.habilitaciones || [];
 
       this.hasCurrentPerson = true;
       
@@ -204,6 +199,47 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
+    this.empCtrl.updatePerson(update);
+  }
+
+  // Permisos Habilitaciones Documentos
+  updateDocumentsList(event:UpdateListEvent){
+    console.log('44')
+    if(event.action === UPDATE){
+      this.upsertPermisosList(event);
+    }
+  }
+
+  private upsertPermisosList(event:UpdateListEvent){
+    this.currentPerson.permisos = event.items as DocumentData[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    console.log('55')
+    this.empCtrl.updatePerson(update);
+  }
+
+  // Permisos Habilitaciones Documentos
+  updateHabilitacionesList(event:UpdateListEvent){
+    console.log('66')
+    if(event.action === UPDATE){
+      this.upsertHabilitacionesList(event);
+    }
+  }
+
+  private upsertHabilitacionesList(event:UpdateListEvent){
+    this.currentPerson.habilitaciones = event.items as DocumentData[];
+
+    let update: UpdatePersonEvent = {
+      action: event.action,
+      token: event.type,
+      person: this.currentPerson
+    };
+    console.log('76')
+    console.log('H[%s]  P[%s]', this.currentPerson.habilitaciones.length, this.currentPerson.permisos.length);
     this.empCtrl.updatePerson(update);
   }
 

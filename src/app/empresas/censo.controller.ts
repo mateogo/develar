@@ -16,6 +16,8 @@ import { Person }      from '../entities/person/person';
 
 import { EmpresasController } from './empresas.controller';
 
+import { Audit, ParentEntity } from '../develar-commons/observaciones/observaciones.model';
+
 import { CensoIndustrias } from './censo.model';
 import { CensoIndustriasService } from './censo-service';
 
@@ -210,6 +212,37 @@ export class CensoIndustriasController {
   get onReady():BehaviorSubject<boolean>{
   	return this.empCtrl.onReady;
   }
+
+  /*****************
+    User / Audit
+  *****************/
+ /**
+  * obtener serial para Asistencias
+  */
+  getUserData(): Audit{
+  	let user = this.userService.currentUser;
+  	console.log('audit: [%s]', user && user.displayName);
+
+    if(!user) return null;
+
+    return {
+        userId: user.id,
+        username: user.username,
+        ts_alta: Date.now()
+    } as Audit
+  }
+
+  parentEntity(censo: CensoIndustrias): ParentEntity {
+  	if(!censo) return null;
+  	let pentity = {
+  		entityType: 'censo',
+  		entityId: censo._id,
+  		entitySlug: censo.empresa.slug,
+
+  	} as ParentEntity
+  	return pentity;
+  }
+
 
 
 

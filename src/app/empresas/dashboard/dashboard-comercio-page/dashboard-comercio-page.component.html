@@ -2,20 +2,29 @@
 
   <mat-card-content>
   	<div class="container-fluid search-panel">
-		 	
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-core-status [person]='currentPerson'
+		 	<div 	*ngIf="hasCurrentPerson">
+
+		 		<div 	*ngIf="hasCurrentPerson" class="d-flex justify-content-end">
+		 			<empresa-core-status [person]='currentPerson'
 		 					(updatePerson)='navigateToProfile($event)' ></empresa-core-status>
+		 		</div>
 
 				<censoindustrias-banner></censoindustrias-banner>
 
+				<!--
+
 		 		<h5>Emisión del Rol de Nocturnidad</h5>
 				<rol-noche-panel  [items]='rolnocturnidadList' 
-											(updateItems)='updateRolnocturnidadList($event)' ></rol-noche-panel>		
+											(updateItems)='updateRolnocturnidadList($event)' ></rol-noche-panel>
+				-->
 			</div>
 
 
-		</div>
+			<ng-container *ngIf="isPosts">
+				<post-top-container [destaque]="'destaque2'"></post-top-container>
+			</ng-container>
 
+
+		</div>
  	</mat-card-content>
 </mat-card>

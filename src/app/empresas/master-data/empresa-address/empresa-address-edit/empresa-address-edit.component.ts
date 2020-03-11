@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel, Address, Geocoder, UpdateAddressEvent } from '../../../../entities/person/person';
+import { CensoIndustriasService } from '../../../censo-service';
 
 import { EmpresasController } from '../../../empresas.controller';
 
@@ -24,11 +25,14 @@ export class EmpresaAddressEditComponent implements OnInit {
 
   public countriesList =  personModel.paises;
   public provinciasList = personModel.provincias;
-  public addTypeList =    personModel.addressTypes;
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
+
   public estadoVivOptList = personModel.estadoVivOptList;
   public cualificacionVivOptList = personModel.cualificacionVivOptList;
+
+  public addTypeList = CensoIndustriasService.getOptionlist('address')
+
 
 	public form: FormGroup;
 

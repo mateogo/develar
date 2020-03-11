@@ -1,0 +1,34 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+
+  		<ng-container *ngIf="showView">
+		 	<div class="row">
+		 		<div class="col-md-1">
+		 			<div>
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos">
+						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+					</div>
+		 		</div>
+
+		 		<div class="col-md-11">
+		 			<empresa-documentos-view	[token]='token' 
+		 																[isHabilitacion]='isHabilitacion' ></empresa-documentos-view>
+		 		</div>
+			</div>
+		 </ng-container>
+	
+  		<ng-container *ngIf="showEdit">
+		 	<div class="row">
+		 		<div class="col-sm-12 col-md-12">
+		 			<empresa-documentos-edit 
+		 								[token]='token'
+		 								[isHabilitacion]='isHabilitacion'
+		 								(updateToken)='updateDocument($event)' ></empresa-documentos-edit>
+		 		</div>
+			</div>
+		 </ng-container>
+	
+  </mat-card-content>
+</mat-card>

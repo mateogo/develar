@@ -15,6 +15,8 @@ export class EmpresaContactdataViewComponent implements OnInit {
 	public type;
 	public data;
 	public slug;
+
+
 	
   constructor() { }
 

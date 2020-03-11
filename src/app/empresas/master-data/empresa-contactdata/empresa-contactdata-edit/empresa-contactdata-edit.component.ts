@@ -4,6 +4,8 @@ import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel, PersonContactData, UpdateContactEvent } from '../../../../entities/person/person';
 
+import { CensoIndustriasService } from '../../../censo-service';
+
 import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'contact';
@@ -21,8 +23,8 @@ export class EmpresaContactdataEditComponent implements OnInit {
 	@Input() token: PersonContactData;
 	@Output() updateToken = new EventEmitter<UpdateContactEvent>();
 
-  public tipoDeContactoList = personModel.contactTipoList;
-  public contactTypeList = personModel.contactTypeList;
+  public tipoDeContactoList = CensoIndustriasService.getOptionlist('contactType')
+  public contactTypeList = CensoIndustriasService.getOptionlist('contactos')
 
 	public form: FormGroup;
 

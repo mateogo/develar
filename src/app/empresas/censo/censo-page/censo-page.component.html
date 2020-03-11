@@ -9,10 +9,14 @@
       <ng-container *ngIf="!hasCurrentCenso">
         <div class="row">
           <div class="col">
-            <p class="line-text">{{ censoHeaderTitleTxt}}</p>
-          </div>
-          <div class="col">
-            <button (click)='editCensoHeader($event)'>{{ censoAltaTxt }}</button>
+            <card [bgColor]="'warning'" class="info-card">
+              <div class="title text-uppercase">{{ censoHeaderTitleTxt }}</div>
+              <div class="count">{{ censoBajada }}</div>
+              <badge (click)="editCensoHeader($event)"  
+                      [customColor]="'rgba(255,255,255,0.1)'" 
+                      [borderRadius]="false">{{ censoAltaTxt }}</badge> 
+              <mat-icon>donut_large</mat-icon>
+            </card>
           </div>
         </div>
       </ng-container>
@@ -44,6 +48,21 @@
           <censo-panel [items]='bienes'  [type]="'bienes'"
                 (updateItems)='updateBienesList($event)' ></censo-panel>
         </div>
+
+        <div  *ngIf="hasCurrentPerson" >
+          <censo-assets-panel  [assetList]='assetList' 
+                    (updateAssets)='updateAssetList($event)' ></censo-assets-panel>
+        </div>
+
+        <div *ngIf="hasObservaciones" >
+          <observaciones-panel 
+                    [audit]='audit'
+                    [type]='observacionesOptListType'
+                    [parent]='parentEntity' ></observaciones-panel>
+        </div>
+  
+
+
 
       </ng-container>
 

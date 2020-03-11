@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Person, personModel } from '../../../../entities/person/person';
+import { CensoIndustriasService } from '../../../censo-service';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -28,11 +29,11 @@ export class EmpresaCoreViewComponent implements OnInit {
   	this.pname = personModel.getPersonDisplayName(this.person);
   	this.pdoc = personModel.getPersonDocum(this.person);
     this.edad = devutils.edadActual(new Date(this.person.fenac));
-    this.ocupacion = personModel.getProfesion(this.person.tprofesion)
     this.nacionalidad = personModel.getNacionalidad(this.person.nacionalidad)
     this.estado = personModel.getEstadoCivilLabel(this.person.ecivil);
     this.neducativo = personModel.getNivelEducativo(this.person.nestudios);
     this.sexo = this.person.sexo;
+    this.ocupacion = CensoIndustriasService.getOptionLabel('profesiones', this.person.tprofesion)
 
     if(this.person.fenac){
       this.edad = devutils.edadActual(new Date(this.person.fenac));

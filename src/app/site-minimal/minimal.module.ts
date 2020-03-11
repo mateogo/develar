@@ -110,6 +110,12 @@ import { RegistroAltapfComponent } from './registracion/registro-altapf/registro
   ],
   providers:[
     HighlightService
+  ],
+  exports: [
+    PostDetailContainerComponent,
+    PostDetailComponent,
+    PostTopContainerComponent,
+    PostTokenComponent,
   ]
 })
 export class MinimalModule { }

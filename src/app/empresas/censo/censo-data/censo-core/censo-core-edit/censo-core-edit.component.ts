@@ -10,7 +10,7 @@ import { map  }   from 'rxjs/operators';
 import { Person, UpdatePersonEvent, Address, personModel } from '../../../../../entities/person/person';
 
 import { CensoIndustriasController } from '../../../../censo.controller';
-import { CensoIndustriasService } from '../../../../censo-service';
+import { CensoIndustriasService, TipoEmpresa } from '../../../../censo-service';
 
 import { CensoIndustrias, EstadoCenso, Empresa, CensoData } from '../../../../censo.model';
 
@@ -49,6 +49,7 @@ export class CensoCoreEditComponent implements OnInit {
 
   public navanceOptList = CensoIndustriasService.getOptionlist('avance');
   public estadoOptList = CensoIndustriasService.getOptionlist('estado');
+  public tipoEmpresaOptList = CensoIndustriasService.getOptionlist('tipoEmp');
 
   public title = "Carátula del Censo 2020";
   public texto1 = "Genere la carátula del Censo 2020 para iniciar el proceso";
@@ -56,6 +57,14 @@ export class CensoCoreEditComponent implements OnInit {
 
   private unBindList = [];
   public nuevaAlta: NuevaAlta;
+
+  private toggleTipoEmpresa = false;
+  private empCategoria = "";
+  private empRubro = "";
+  private empTipoEmpresa: TipoEmpresa;
+  private categoryTemplateTxt1 = "";
+  private categoryTemplateTxt2 = "";
+  private categoryTemplateTxt3 = "";
 
 
 
@@ -175,6 +184,45 @@ export class CensoCoreEditComponent implements OnInit {
   	this.manageEvent(this.action);
   }
 
+  toggleTipoEmp(e, tipo: TipoEmpresa){
+    e.stopPropagation();
+    e.preventDefault();
+
+    this.toggleTipoEmpresa = !this.toggleTipoEmpresa;
+    console.log('TipoEmpresa TOGGLE', tipo.categoria);
+
+    if(this.toggleTipoEmpresa){
+      console.log('1', this.empTipoEmpresa)
+      if(!this.empTipoEmpresa){
+        this.empCategoria  = tipo.categoria;
+        this.empRubro  = tipo.rubro;
+        this.empTipoEmpresa = tipo;
+        e.target.style.color = "#0645f5";
+        e.target.style.fontSize = "1.2em";
+        this.categoryTemplateTxt1 = `La principal actividad de su empresa es `;
+        this.categoryTemplateTxt2 = ` ${ tipo.rubro_lbl } `;
+        this.categoryTemplateTxt3 = `De acuerdo a la facturación seleccionada su Empresa queda categorizada como: ${ tipo.categoria_lbl } `;
+
+        //.style.color = "#0645f5";
+      }
+
+    }else{
+      console.log('2', this.empTipoEmpresa)
+      if(this.empTipoEmpresa === tipo){
+        this.empCategoria  = "";
+        this.empRubro  = "";
+        this.empTipoEmpresa = null;
+        e.target.style.color = "#000";
+        e.target.style.fontSize = "1em";
+        this.categoryTemplateTxt1 = "";
+        this.categoryTemplateTxt2 = "";
+        this.categoryTemplateTxt3 = `No se ha seleccionado una categoría`;
+      }
+
+    }
+
+
+  }
 
   private manageEvent(action:string){
     this.navigateToDashboard();
@@ -252,6 +300,12 @@ export class CensoCoreEditComponent implements OnInit {
   	let estado, navance;
   	estado = token.estado ? token.estado.estado : 'activo';
   	navance = token.estado ? token.estado.navance : 'caratulado';
+    this.empCategoria = token.categoriaEmp;
+    this.empRubro = token.rubroEmp;
+
+    this.findCategoryOnArray(this.empRubro, this.empCategoria );
+
+
 
 		form.reset({
 		  fecomp_txa:   token.fecomp_txa,
@@ -261,6 +315,27 @@ export class CensoCoreEditComponent implements OnInit {
 
 		return form;
   }
+  private findCategoryOnArray(rubro, categoria){
+    this.toggleTipoEmpresa = false;
+    this.empTipoEmpresa = null;
+    this.categoryTemplateTxt1 = '';
+    this.categoryTemplateTxt2 = '';
+    this.categoryTemplateTxt3 = '';
+
+    if(rubro && categoria){
+      this.empTipoEmpresa = CensoIndustriasService.findRubroCategoria(rubro, categoria);
+    }
+    if(this.empTipoEmpresa){
+      this.toggleTipoEmpresa = true;
+      this.categoryTemplateTxt1 = `La principal actividad de su empresa es `;
+      this.categoryTemplateTxt2 = ` ${ this.empTipoEmpresa.rubro_lbl } `;
+      this.categoryTemplateTxt3 = `De acuerdo a la facturación seleccionada su Empresa queda categorizada como: ${ this.empTipoEmpresa.categoria_lbl } `;
+
+
+
+    }
+    
+  }
 
   private initForNew (entity: CensoIndustrias): CensoIndustrias {
     const today = new Date();
@@ -269,6 +344,10 @@ export class CensoCoreEditComponent implements OnInit {
 
     entity.fecomp_txa = devutils.txFromDate(today);
     entity.fecomp_tsa = today.getTime();
+
+    entity.categoriaEmp = this.empCategoria;
+    entity.rubroEmp = this.empRubro;
+
 
     if(entity.estado){
       entity.estado.estado = estado;
@@ -298,6 +377,7 @@ export class CensoCoreEditComponent implements OnInit {
     return entity;
   }
 
+
 	private initForSave(form: FormGroup, entity: CensoIndustrias): CensoIndustrias {
 		const fvalue = form.value;
 		const today = new Date();
@@ -305,6 +385,9 @@ export class CensoCoreEditComponent implements OnInit {
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);
 		entity.fecomp_txa = devutils.txFromDate(feDate);
 		entity.fecomp_tsa = feDate.getTime();
+
+    entity.categoriaEmp = this.empCategoria;
+    entity.rubroEmp = this.empRubro;
 
 		if(entity.estado){
 			entity.estado.estado = fvalue.estado;
@@ -330,6 +413,22 @@ export class CensoCoreEditComponent implements OnInit {
 
 		return entity;
 	}
+  /***** Template Helpers ******/
+  public tableRowStyle(row: number){
+    return {}
+
+  }
+  /***** Template Helpers ******/
+  public tableColStyle(tipoEmp: TipoEmpresa){
+    if(tipoEmp.rubro === this.empRubro && tipoEmp.categoria === this.empCategoria){
+
+      return {'font-size':'1.2em', 'color':'#0645f5'}
+    }else{
+      return {};
+
+    }
+    
+  }
 
 }
 
@@ -346,9 +445,10 @@ class NuevaAlta {
 
   constructor(p:Person){
     this.fecha = devutils.txFromDate(new Date())
-    this.empName = p.displayName;
-    this.ndoc = p.ndoc;
+    if(p){
+      this.empName = p.displayName;
+      this.ndoc = p.ndoc;
+    }
   }
 }
-
 

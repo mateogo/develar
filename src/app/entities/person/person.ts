@@ -131,6 +131,24 @@ export class CoberturaData {
     estado: string = '';
 }
 
+export class DocumentData {
+    type: string = '';
+    slug: string = '';
+    observacion: string = '';
+
+    isTramitacionMAB: boolean;
+    expedidopor: string = '';
+    fechaexpe: string = '';
+    tramitacionURL: string = '';
+    tramitacionNro: string = '';
+
+    fechavigencia: string = '';
+    fechavigencia_ts: number = 0;
+    estado: string = '';
+
+}
+
+
 export class EncuestaAmbiental {
       _id: string;
       id_address: string;
@@ -330,6 +348,8 @@ export class Person {
   locaciones: Array<Address>;
   familiares: Array<FamilyData>;
   integrantes: Array<BusinessMembersData>;
+  habilitaciones: Array<DocumentData>;
+  permisos: Array<DocumentData>;
 
   salud: Array<SaludData>;
   cobertura: Array<CoberturaData>;
@@ -1697,7 +1717,7 @@ class PersonModel {
     getPersonFamilyName(p:Person|FamilyData):string{
       let token = (p as Person).displayName;
 
-      if(!token && p.nombre && p.apellido){
+      if(!token && p.nombre && p.apellido || (p as Person).personType !== "fisica"){
         token = p.apellido + ", " + p.nombre;
       }
       return token;

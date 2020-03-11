@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Person, UpdatePersonEvent } from '../../../../entities/person/person';
+import { Person, UpdatePersonEvent, personModel } from '../../../../entities/person/person';
+import { devutils }from '../../../../develar-commons/utils'
+import { CensoIndustriasService } from '../../../censo-service';
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
@@ -14,11 +16,24 @@ export class EmpresaCoreStatusComponent implements OnInit {
 	@Input() person: Person;
 	@Output() updatePerson = new EventEmitter<UpdatePersonEvent>();
 
-	public showView = true;
+	public showView = false;
 	public showEdit = false;
 	public openEditor = false;
 
 	public chips: ChipSchema[] = [];
+
+  public pname;
+  public familyName;
+  public pdoc;
+  public edad;
+  public edadTxt;
+  public ocupacion;
+  public nacionalidad;
+  public estado;
+  public neducativo;
+  public sexo;
+
+
 
 	public token = {
 		description: 'token description'
@@ -29,15 +44,38 @@ export class EmpresaCoreStatusComponent implements OnInit {
 
   ngOnInit() {
   	this.buildChipList();
+    this.showView = true;
   }
 
-  buildChipList(){
+  private buildChipList(){
   	if(!this.person) return;
 
+    this.buildPersonData();
   	this.chips.push(this.coreDataStatus());
   	this.chips.push(this.contactDataStatus());
   	this.chips.push(this.locacionesDataStatus());
   	this.chips.push(this.personalDataStatus());
+  }
+
+  private buildPersonData(){
+    this.familyName = personModel.getPersonFamilyName(this.person);
+    this.pname = personModel.getPersonDisplayName(this.person);
+    this.pdoc = personModel.getPersonDocum(this.person);
+    this.edad = devutils.edadActual(new Date(this.person.fenac));
+    this.nacionalidad = personModel.getNacionalidad(this.person.nacionalidad)
+    this.estado = personModel.getEstadoCivilLabel(this.person.ecivil);
+    this.neducativo = personModel.getNivelEducativo(this.person.nestudios);
+    this.sexo = this.person.sexo;
+    this.ocupacion = CensoIndustriasService.getOptionLabel('profesiones', this.person.tprofesion)
+
+    if(this.person.fenac){
+      this.edad = devutils.edadActual(new Date(this.person.fenac));
+    }else{
+      this.edad = 0
+    }
+    this.edadTxt = this.edad ? '(' + this.edad + ')' : '';
+
+
   }
 
   coreDataStatus(): ChipSchema {

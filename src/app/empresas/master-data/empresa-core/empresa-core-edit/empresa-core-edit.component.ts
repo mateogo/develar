@@ -6,9 +6,11 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
+
 import { Person, UpdatePersonEvent, Address, personModel } from '../../../../entities/person/person';
 
 import { EmpresasController } from '../../../empresas.controller';
+import { CensoIndustriasService } from '../../../censo-service';
 
 import { devutils }from '../../../../develar-commons/utils'
 
@@ -33,12 +35,12 @@ export class EmpresaCoreEditComponent implements OnInit {
 	public form: FormGroup;
   public persontypes        = personModel.persontypes;
   public tcompPersonaFisica = personModel.tipoDocumPF;
-  public tprofPersonaFisica = personModel.profesiones;
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;
   public docBelongsTo = {error: ''};
 
+  public tprofPersonaFisica = CensoIndustriasService.getOptionlist('profesiones');
 
   public paises     = personModel.paises;
 

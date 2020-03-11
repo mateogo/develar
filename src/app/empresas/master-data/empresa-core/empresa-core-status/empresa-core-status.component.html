@@ -1,10 +1,14 @@
-<mat-card class="detail-card">
-  <mat-card-content>
-
   	<ng-container *ngIf="showView">
 		 	<div class="row">
 		 		<div class="col-sm-12 col-md-12">
-		 			<empresa-core-view [person]='person'></empresa-core-view>
+		 			<!-- empresa-core-view [person]='person'></empresa-core-view -->
+		 			<p class='text-destacado'>{{ pname }} </p>
+		 			<!--
+		 			<p class='text-normal'>{{ pdoc }}</p>
+		 			<p class='text-normal'>{{ familyName }} ({{ sexo }}) :: <strong>Ocupación:</strong> {{ ocupacion }} </p>
+
+		 			<p class='text-normal'>{{ person.email }}</p>
+					-->
 		 		</div>
 			</div>
 
@@ -13,8 +17,8 @@
       		<button mat-button type="button" color="accent"
       				(click)="navigateTo()" >Editar perfil de la empresa</button>
 
-      		<button mat-button type="button" color="accent"
-      				(click)="editToken()" >Actualizar datos básicos</button>
+      		<!-- button mat-button type="button" color="accent"
+      				(click)="editToken()" >Actualizar datos básicos</button -->
 		 		</div>
 			</div>
 			
@@ -33,5 +37,3 @@
 			</div>
 		 </ng-container>
 	
-  </mat-card-content>
-</mat-card>
