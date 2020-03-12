@@ -44,7 +44,8 @@ export class CensoProductosEditComponent implements OnInit {
   private action = "";
 
   public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
-  public tipoOptList = CensoIndustriasService.getOptionlist('tipoBienes');
+  public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
+  public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
 
   public title = "Bienes estratégicos de la compañía";
   public texto1 = "Identifique los productos, materias primas, insumos y/o maquinaria utilizada";
@@ -111,6 +112,15 @@ export class CensoProductosEditComponent implements OnInit {
       isInnovacion:    token.isInnovacion,
       innovacionTxt:   token.innovacionTxt,
 
+      destino:         token.destino,
+      anio:            token.anio,
+      capainstalada:   token.capainstalada,
+      capautilizada:   token.capautilizada,
+
+      competencia:       token.competencia,
+      competenciaTxt:    token.competenciaTxt,
+      competenciaOrigen: token.competenciaOrigen,
+
       level:           token.level,
 		});
 
@@ -173,7 +183,14 @@ export class CensoProductosEditComponent implements OnInit {
       sustituibleTxt:  [ null ],
       innovacionTxt:   [ null ],
 
+      destino:         [ null ],
+      anio:            [ null ],
+      capainstalada:   [ null ],
+      capautilizada:   [ null ],
 
+      competencia:         [ null ],
+      competenciaTxt:      [ null ],
+      competenciaOrigen:   [ null ],
 
     });
     return form;
@@ -199,6 +216,16 @@ export class CensoProductosEditComponent implements OnInit {
 		entity.parancelaria =    fvalue.parancelaria;
 		entity.sustituibleTxt =  fvalue.sustituibleTxt;
 		entity.innovacionTxt =   fvalue.innovacionTxt;
+
+    entity.destino =          fvalue.destino;
+    entity.anio =             fvalue.anio;
+    entity.capainstalada =    fvalue.capainstalada;
+    entity.capautilizada =    fvalue.capautilizada;
+
+    entity.competencia =        fvalue.competencia;
+    entity.competenciaTxt =     fvalue.competenciaTxt;
+    entity.competenciaOrigen =  fvalue.competenciaOrigen;
+
 
 		entity.isImportada =   entity.isImportada   || false;
 		entity.isInnovacion =  entity.isInnovacion  || false;

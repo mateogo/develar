@@ -58,20 +58,34 @@ const censoActividadSch = new Schema({
 })
 
 const censoBienesSch = new Schema({
-  type:           { type: String,  required: false},
-  slug:           { type: String,  required: false},
-  tactividad:     { type: String,  required: false},
-  actividadId:    { type: String,  required: false},
-  isImportada:    { type: Boolean, required: false},
-  origen:         { type: String,  required: false},
-  parancelaria:   { type: String,  required: false},
-  isExportable:   { type: Boolean, required: false},
-  exportableTxt:  { type: String,  required: false},
-  isSustituible:  { type: Boolean, required: false},
-  sustituibleTxt: { type: String,  required: false},
-  isInnovacion:   { type: Boolean, required: false},
-  innovacionTxt:  { type: String,  required: false},
-  level:          { type: Number,  required: false},
+  type:           { type: String,  required: false },
+  slug:           { type: String,  required: false },
+  tactividad:     { type: String,  required: false },
+  actividadId:    { type: String,  required: false },
+
+  isImportada:    { type: Boolean, required: false },
+  origen:         { type: String,  required: false },
+  parancelaria:   { type: String,  required: false },
+
+  isExportable:   { type: Boolean, required: false },
+  exportableTxt:  { type: String,  required: false },
+
+  isSustituible:  { type: Boolean, required: false },
+  sustituibleTxt: { type: String,  required: false },
+
+  isInnovacion:   { type: Boolean, required: false },
+  innovacionTxt:  { type: String,  required: false },
+  level:          { type: Number,  required: false },
+
+  anio:           { type: Number,  required: false },
+  destino:        { type: String,  required: false },
+  capainstalada:  { type: Number,  required: false },
+  capautilizada:  { type: Number,  required: false },
+
+  competencia:        { type: String,  required: false },
+  competenciaTxt:     { type: String,  required: false },
+  competenciaOrigen:  { type: String,  required: false },
+
 })
 
 const assetSch = new mongoose.Schema({

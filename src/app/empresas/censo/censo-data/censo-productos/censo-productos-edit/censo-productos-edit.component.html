@@ -119,10 +119,86 @@
       </div>
 
     </div>
+    <hr>
 
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldDestinoBien placeholder="Destino de la producción "
+              [formControl]="form.controls['destino']"
+              (selectionChange)="changeSelectionValue('destino',fldDestinoBien.value)" >
+            <mat-option *ngFor="let item of origenOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Aplica a productos de venta o maquinaria de fabricación</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['capainstalada']" 
+                  placeholder="Capacidad instalada" >
+          <mat-hint>Capacidad nominal de producción en UNIDADES/AÑO</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['capautilizada']" 
+                  placeholder="Capacidad utilizada" >
+          <mat-hint>Capacidad efectivamente utilizada promedio último año en UNIDADES/AÑO</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['anio']" 
+                  placeholder="Año de lanzamiento" >
+          <mat-hint>Año en que inició venta o producción del bien o maquinaria</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
 
+    <p class="text-destacado" >Describa la COMPETENCIA (para el caso de tratarse de un producto de REVENTA)</p>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCompetencia placeholder="Fuente competencia "
+              [formControl]="form.controls['competencia']"
+              (selectionChange)="changeSelectionValue('competencia',fldCompetencia.value)" >
+            <mat-option *ngFor="let item of competenciaTypeOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Motivo principal de la amenaza de la competencia para este producto</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCompetenciaOrigen placeholder="Origen de la competencia"
+              [formControl]="form.controls['competenciaOrigen']"
+              (selectionChange)="changeSelectionValue('competenciaOrigen',fldCompetenciaOrigen.value)" >
+            <mat-option *ngFor="let item of origenOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Origen del producto que compite con el suyo</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row" >
+      <div class="col">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['competenciaTxt']" 
+                  placeholder="Describa su situación en relación con la competencia" ></textarea>
+          <mat-hint>Explique sus necesidades, debilidades o amenazas en relación con la competencia</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
 
     <hr>
+
+
+
+
+
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 
       		(click)="onSubmit()"

@@ -289,41 +289,43 @@ const sectorOptList = [
 	// innovacionTxt: string;
 
 const bienesTypeOptList = [
-      {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
-      {val: 'pventa',     label: 'Producto de Venta',    slug:'Producto de Venta' },
-      {val: 'matprima',   label: 'Mat prima/Semielab',   slug:'Mat prima/Semielab' },
-      {val: 'insumo',     label: 'Insumo ppal',          slug:'Insumo ppal' },
-      {val: 'maquinaria', label: 'Maquinaria o BUso',    slug:'Maquinaria o BUso' },
-      {val: 'licencia',   label: 'Licencia/Derecho',     slug:'Licencia/Derecho' },
-      {val: 'tecnologia', label: 'Tecnología',           slug:'Tecnología' },
+      {val: 'no_definido',  label: 'Seleccione opción',  slug: 'Seleccione opción' },
+      {val: 'pventa',     label: 'Producto de Venta',    slug: 'Producto de Venta' },
+      {val: 'matprima',   label: 'Mat prima/Semielab',   slug: 'Mat prima/Semielab' },
+      {val: 'insumo',     label: 'Insumo ppal',          slug: 'Insumo ppal' },
+      {val: 'maquinaria', label: 'Maquinaria o BUso',    slug: 'Maquinaria o BUso' },
+      {val: 'licencia',   label: 'Licencia/Derecho',     slug: 'Licencia/Derecho' },
+      {val: 'tecnologia', label: 'Tecnología',           slug: 'Tecnología' },
 ]
 
 const origenOptList = [
       {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
-      {val: 'nacional',     label: 'Nacional',         slug:'Nacional' },
-      {val: 'mercosur',     label: 'Mercosur',         slug:'Mercosur' },
-      {val: 'america',      label: 'Región América',   slug:'Región América' },
-      {val: 'usa',          label: 'USA',              slug:'USA' },
-      {val: 'europa',       label: 'EU',               slug:'EU' },
-      {val: 'china',        label: 'China',            slug:'China' },
-      {val: 'japon',        label: 'Japón',            slug:'Japón' },
-      {val: 'corea',        label: 'Corea del Sur',    slug:'Corea del Sur' },
-      {val: 'vietnam',      label: 'Vietnam',          slug:'Vietnam' },
-      {val: 'oriente',      label: 'Región Oriente',   slug:'Región Oriente' },
+      {val: 'brown',        label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
+      {val: 'pba',          label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
+      {val: 'nacional',     label: 'Nacional',         slug: 'Nacional' },
+      {val: 'mercosur',     label: 'Mercosur',         slug: 'Mercosur' },
+      {val: 'america',      label: 'Región América',   slug: 'Región América' },
+      {val: 'usa',          label: 'USA',              slug: 'USA' },
+      {val: 'europa',       label: 'EU',               slug: 'EU' },
+      {val: 'china',        label: 'China',            slug: 'China' },
+      {val: 'japon',        label: 'Japón',            slug: 'Japón' },
+      {val: 'corea',        label: 'Corea del Sur',    slug: 'Corea del Sur' },
+      {val: 'vietnam',      label: 'Vietnam',          slug: 'Vietnam' },
+      {val: 'oriente',      label: 'Región Oriente',   slug: 'Región Oriente' },
 ]
 
 const posCadenaProductivaOptList = [
       {val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
-      {val: 'primario',      label: 'Extracción; cultivo, criadero',         slug:'Extracción; cultivo, criadero' },
+      {val: 'primario',      label: 'Extracción; cultivo, criadero',  slug:'Extracción; cultivo, criadero' },
       {val: 'intermedio',    label: 'Ind Bienes intermedios',         slug:'Ind Bienes intermedios' },
-      {val: 'insumos',       label: 'Ind Insumos indus/comerciales',   slug:'Ind Insumos indus/comerciales' },
-      {val: 'mayorista',     label: 'Distribuidor mayorista',              slug:'Distribuidor mayorista' },
-      {val: 'consmasivo',    label: 'Ind Bienes consumo masivo',               slug:'Ind Bienes consumo masivo' },
-      {val: 'retail',        label: 'Comercio - Retail',            slug:'Comercio - Retail' },
-      {val: 'transporte',    label: 'Transporte-logística',            slug:'Transporte-logística' },
-      {val: 'servicios',     label: 'Servicios',    slug:'Servicios' },
-      {val: 'investigacion', label: 'Investigación',         slug:'Investigación' },
-      {val: 'educacion',     label: 'Educación',   slug:'Educación' },
+      {val: 'insumos',       label: 'Ind Insumos indus/comerciales',  slug:'Ind Insumos indus/comerciales' },
+      {val: 'mayorista',     label: 'Distribuidor mayorista',         slug:'Distribuidor mayorista' },
+      {val: 'consmasivo',    label: 'Ind Bienes consumo masivo',      slug:'Ind Bienes consumo masivo' },
+      {val: 'retail',        label: 'Comercio - Retail',              slug:'Comercio - Retail' },
+      {val: 'transporte',    label: 'Transporte-logística',           slug:'Transporte-logística' },
+      {val: 'servicios',     label: 'Servicios',     slug:'Servicios' },
+      {val: 'investigacion', label: 'Investigación', slug:'Investigación' },
+      {val: 'educacion',     label: 'Educación',     slug:'Educación' },
 ]
 
 /******** Categoría Empresa **********/
@@ -432,6 +434,19 @@ const tipoDocumentosOptList: Array<any> = [
 			{val: 'permiso',       label: 'Permiso',        slug:'Permiso' },
 ];
 
+const competenciaTypeOptList: Array<any> = [
+			{val: 'no_definido',      label: 'Seleccione opción',    slug:'Seleccione opción' },
+			{val: 'calidad',          label: 'Calidad de Producto',  slug:'Calidad de Producto' },
+			{val: 'tecnologia',       label: 'Mejor tecnología',     slug:'Mejor tecnología' },
+			{val: 'precio',           label: 'Precio de venta',      slug:'Precio de venta' },
+			{val: 'comercializacion', label: 'Estructura de comercialización',  slug:'Estructura de comercialización' },
+			{val: 'escalaproductiva', label: 'Escala productiva',    slug:'Escala productiva' },
+			{val: 'mercado',          label: 'Cuota de mercado',     slug:'Cuota de mercado' },
+			{val: 'marca',            label: 'Desarrollo de marca',  slug:'Desarrollo de marca' },
+			{val: 'vision',           label: 'Visión de producto',   slug:'Visión de producto' },
+];
+
+
 const habilitacionOptList: Array<any> = [
 			{val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
 			{val: 'habilitacion',  label: 'Habilitación',   slug:'Habilitación' },
@@ -456,6 +471,8 @@ const optionsLists = {
    profesiones: profesionesOptList,
    documentos: tipoDocumentosOptList,
    habilitacion: habilitacionOptList,
+   competencia: competenciaTypeOptList,
+   
 
 }
 

@@ -54,10 +54,7 @@ export class CensoBienes {
 	_id?: string;
 	type: string;
 	slug: string;
-	anio: number;
-	capainstalada: number; // unidades año
-	capautilizada: number; // unidades año
-
+	
 	tactividad: string;
 	actividadId: string;
 
@@ -75,6 +72,16 @@ export class CensoBienes {
 
 	isInnovacion: boolean = false;
 	innovacionTxt: string;
+
+	anio: number;
+	destino: string; // destino de la produccion opciones ídem origen
+	capainstalada: number; // unidades año
+	capautilizada: number; // unidades año
+
+	competencia: string;
+	competenciaTxt: string;
+	competenciaOrigen: string;
+
 
 	level: number; //porcentaje de la facturación o la inversión
 
