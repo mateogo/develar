@@ -19,6 +19,12 @@ const UPDATE = 'update';
 const DELETE = 'delete';
 const EVOLUCION = 'evolucion';
 
+const FIEBRE_TXT = [
+              'Tuvo 38 o más grados de fiebre en los últimos 14 días',
+              'Cree haber tenido fiebre en los últimos 14 días',
+              'No tuvo fiebre en los últimos 14 días',
+      ]
+
 const ACTION = {
 	descartar:   'descartar',
 	observacion: 'observacion',
@@ -365,16 +371,11 @@ export class SolcovidFollowupComponent implements OnInit {
 	}
 
   private leyendaFiebre(valor): string{
-    let fiebreTxt = 'No tuvo fiebre en los últimos 14 días';
-    if(valor === 2){
-      fiebreTxt = 'Cree haber tenido fiebre en los últimos 14 días';
-    }
-    if(valor === 1){
-      fiebreTxt = 'Tuvo 38 o más grados de fiebre en los últimos 14 días';
-    }
-
-    return fiebreTxt;
+    if(!valor || valor >3 || valor <1) valor = 3
+    return FIEBRE_TXT[valor-1]
   }
+
+
 
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();
@@ -430,7 +431,7 @@ export class SolcovidFollowupComponent implements OnInit {
 
     this.indicacion = covid.indicacion;
     this.fiebreTxt = covid.hasFiebre ? covid.fiebreTxt + ' :: ' + covid.fiebre + 'C' :  covid.fiebreTxt ;
-    this.sintomasTxt = 'Sintomas: ' + (covid.hasDifRespiratoria ? ' + DIF RESPIRATORIA':'') + (covid.hasTos ? ' + TOS':'') + (covid.hasDolorGarganta ? ' + DolorGarganta':'') + covid.sintomas;
+    this.sintomasTxt = 'Sintomas: ' + (covid.hasDifRespiratoria ? ' + DIF RESPIRATORIA':'') + (covid.hasTos ? ' + TOS':'') + (covid.hasDolorGarganta ? ' + DolorGarganta':'') + (covid.sintomas ? ' = ' + covid.sintomas :'') 
     this.contagioTxt = 'Contexto: ' + (covid.hasViaje ? ' + VIAJÓ':'') + (covid.hasContacto ? ' + CONTACTO C/COVID':'') + (covid.hasEntorno ? ' + ENTORNO C/COVID':'');
     this.contexto = covid.contexto;
 
@@ -440,7 +441,7 @@ export class SolcovidFollowupComponent implements OnInit {
   private buildData(){
   	this.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', this.token.action);
     this.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', this.token.sector);
-    this.solicitante = this.token.requeridox.slug  + ' :: DNI: ' + this.token.ndoc + ' ::  ' + this.token.telefono;
+    this.solicitante = this.token.requeridox.slug + (this.token.edad ? '('+ this.token.edad + ')' : '')  + (this.token.sexo ? '('+ this.token.sexo + ')' : '') + ' :: DNI: ' + this.token.ndoc + ' ::  ' + this.token.telefono;
   	this.cPrefix = this.token.compPrefix;
   	this.cName = this.token.compName;
   	this.cNum = this.token.compNum;  

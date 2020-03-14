@@ -165,6 +165,8 @@ const asisprevencionSch = new Schema({
     compNum:     { type: String, required: true },
     ndoc:        { type: String, required: false },
     tdoc:        { type: String, required: false },
+    edad:        { type: String, required: false },
+    sexo:        { type: String, required: false },
     telefono:    { type: String, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },

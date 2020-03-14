@@ -33,8 +33,24 @@
           <input matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
         </mat-form-field>
       </div>
-    </div>
+        <div class="col">
+          <mat-form-field>
+            <input  matInput [formControl]="form.controls['edad']" placeholder="Edad" >
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <mat-select #fldSexo placeholder="Sexo"
+                [formControl]="form.controls['sexo']"
+                (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
+              <mat-option *ngFor="let item of sexoOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
+
+    </div>
 
 
     <div class="row">
@@ -121,7 +137,7 @@
           <mat-checkbox 
                 [checked]="form.controls['hasEntorno'].value===true"
                 [formControl]="form.controls['hasEntorno']" >
-                  ¿Hay casos de COVID en su entorno?
+                  ¿Hay sospechas de COVID en su entorno?
                 </mat-checkbox>
       </div>
     </div>

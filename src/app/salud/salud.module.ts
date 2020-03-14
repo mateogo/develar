@@ -69,6 +69,7 @@ import { PersonAssetsPanelComponent } from './ciudadano/person-assets/person-ass
 import { SolcovidEditComponent } from './covid/sol-covid-data/solcovid-edit/solcovid-edit.component';
 import { SolcovidPageComponent } from './covid/sol-covid-page/solcovid-page/solcovid-page.component';
 import { SolcovidFollowupComponent } from './covid/sol-covid-data/solcovid-followup/solcovid-followup.component';
+import { SolcovidPanelComponent } from './covid/sol-covid-page/solcovid-panel/solcovid-panel.component';
 
 @NgModule({
   imports: [
@@ -137,6 +138,7 @@ import { SolcovidFollowupComponent } from './covid/sol-covid-data/solcovid-follo
     SolcovidEditComponent,
     SolcovidPageComponent,
     SolcovidFollowupComponent,
+    SolcovidPanelComponent,
   ]
 })
 export class SaludModule { }

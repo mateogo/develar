@@ -14,6 +14,11 @@ const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const DELETE = 'delete';
+const FIEBRE_TXT = [
+              'Tuvo 38 o más grados de fiebre en los últimos 14 días',
+              'Cree haber tenido fiebre en los últimos 14 días',
+              'No tuvo fiebre en los últimos 14 días',
+      ]
 
 @Component({
   selector: 'solcovid-edit',
@@ -33,6 +38,7 @@ export class SolcovidEditComponent implements OnInit {
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
   public tcompPersonaFisica = personModel.tipoDocumPF;
+  public sexoOptList        = personModel.sexoList;
 
 	public form: FormGroup;
 
@@ -128,6 +134,8 @@ export class SolcovidEditComponent implements OnInit {
       tdoc:        [null],
       ndoc:        [null],
       telefono:    [null],
+      sexo:        [null],
+      edad:        [null],
 
       fiebre:           [null],
       fiebreRB:         [null],
@@ -164,6 +172,8 @@ export class SolcovidEditComponent implements OnInit {
       tdoc:        token.tdoc,
       ndoc:        token.ndoc,
       telefono:    token.telefono,
+      sexo:        token.sexo,
+      edad:        token.edad,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
@@ -235,6 +245,8 @@ export class SolcovidEditComponent implements OnInit {
     entity.tdoc =       fvalue.tdoc;
     entity.ndoc =       fvalue.ndoc;
     entity.telefono =   fvalue.telefono;
+    entity.sexo =       fvalue.sexo;
+    entity.edad =       fvalue.edad;
 
 		entity.estado = entity.estado || 'activo';
     entity.novedades = novedades || [];
@@ -245,15 +257,8 @@ export class SolcovidEditComponent implements OnInit {
 	}
 
   private leyendaFiebre(valor): string{
-    let fiebreTxt = 'No tuvo fiebre en los últimos 14 días';
-    if(valor === 2){
-      fiebreTxt = 'Cree haber tenido fiebre en los últimos 14 días';
-    }
-    if(valor === 1){
-      fiebreTxt = 'Tuvo 38 o más grados de fiebre en los últimos 14 días';
-    }
-
-    return fiebreTxt;
+    if(!valor || valor >3 || valor <1) valor = 3
+    return FIEBRE_TXT[valor-1]
   }
 
 

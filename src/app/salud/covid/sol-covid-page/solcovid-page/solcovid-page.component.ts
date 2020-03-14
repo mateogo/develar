@@ -26,7 +26,7 @@ import {  Person,
         } from '../../../../entities/person/person';
 
 import {   Asistencia, 
-          Alimento, 
+          Locacion, 
           UpdateAsistenciaEvent, 
           UpdateAlimentoEvent, 
           UpdateAsistenciaListEvent,
@@ -121,47 +121,49 @@ export class SolcovidPageComponent implements OnInit {
     this.personId = this.route.snapshot.paramMap.get('id')
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
-    if(!this.personId){
-      this.hasPersonIdOnURL = false;
-    }
+    this.resetForm()
 
-    let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
+    // if(!this.personId){
+    //   this.hasPersonIdOnURL = false;
+    // }
 
-      if(readyToGo && first){
-        first = false;
+    // let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
 
-        this.initCurrentPage();
+    //   if(readyToGo && first){
+    //     first = false;
 
-      }
-    })
-    this.unBindList.push(sscrp2);
+    //     this.initCurrentPage();
+
+    //   }
+    // })
+    // this.unBindList.push(sscrp2);
   }
 
 
-  initCurrentPage(){
-    this.searchPerson = true;
+  // initCurrentPage(){
+  //   this.searchPerson = true;
 
-    if(!this.personId){
-      if(this.dsCtrl.activePerson){
-        this.personId = this.dsCtrl.activePerson._id;
-        this.initCurrentPerson(this.dsCtrl.activePerson);
+  //   if(!this.personId){
+  //     if(this.dsCtrl.activePerson){
+  //       this.personId = this.dsCtrl.activePerson._id;
+  //       this.initCurrentPerson(this.dsCtrl.activePerson);
 
-      } else {
-        //this.initNewAsistencia();
-        // ToDo
-      }
+  //     } else {
+  //       //this.initNewAsistencia();
+  //       // ToDo
+  //     }
 
-    } else {
-      if(!this.dsCtrl.activePerson || this.dsCtrl.activePerson._id !== this.personId){
-        this.loadPerson(this.personId);
+  //   } else {
+  //     if(!this.dsCtrl.activePerson || this.dsCtrl.activePerson._id !== this.personId){
+  //       this.loadPerson(this.personId);
 
-      } else {
-        this.initCurrentPerson(this.dsCtrl.activePerson);
+  //     } else {
+  //       this.initCurrentPerson(this.dsCtrl.activePerson);
 
-      }
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   private initNewAsistencia(){
     this.asistencia = AsistenciaHelper.initNewAsistenciaCovid('covid', 'com', this.currentPerson);
@@ -389,7 +391,7 @@ export class SolcovidPageComponent implements OnInit {
         if(t){
           this.asistencia = t;
 
-          
+
           if(event.action === EVOLUCION){
 
             this.dsCtrl.createPersonFromAsistencia(t);
@@ -428,10 +430,10 @@ export class SolcovidPageComponent implements OnInit {
     this.tDoc = token.tdoc;
     this.dsCtrl.fetchAsistenciaByDNI(this.tDoc, this.nDoc).subscribe(asis =>{
       if(asis && asis.length){
-
         this.asistencia = asis[0];
         this.asistencia.ndoc = this.nDoc;
         this.asistencia.tdoc = this.tDoc;
+
         this.editAsistencia();
 
       }else {
@@ -439,12 +441,35 @@ export class SolcovidPageComponent implements OnInit {
 
       }
 
-
     })
- 
+  }
+
+  private loadPersonDataIntoAsistencia(asistencia: Asistencia, person: Person){
+    console.log('actualizando data')
+      let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
+      asistencia.sexo = person.sexo ? (asistencia.sexo ? asistencia.sexo : person.sexo) : asistencia.sexo;
+      asistencia.telefono = asistencia.telefono  ? asistencia.telefono  : telefono.data
+
+
+      let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+      console.log('address [%s]', address)
+      if(address) {
+        let locacion = asistencia.locacion || new Locacion();
+        locacion.street1 =  locacion.street1  ? locacion.street1 : address.street1;
+        locacion.streetIn = locacion.streetIn ? locacion.streetIn : address.streetIn;
+        locacion.streetOut = locacion.streetOut ? locacion.streetOut : address.streetOut;
+        locacion.city = locacion.city ? locacion.city :  address.city;
+        locacion.barrio = locacion.barrio ? locacion.barrio :  address.barrio;
+
+        asistencia.locacion = locacion;
+
+      }
+
+
 
 
   }
+
 
   personFetched(persons: Person[]){
     this.showAsistenciaEditor = false;
@@ -484,10 +509,11 @@ export class SolcovidPageComponent implements OnInit {
   }
 
   private resetForm(){
+    this.searchPerson = true;
+
     this.personFound = false;
     this.showAsistenciaEditor = false;
     this.showFollowUp = false;
-    this.searchPerson = true;
     this.asistencia = null;
     this.currentPerson = null;
     this.dsCtrl.resetCurrentPerson();
@@ -571,14 +597,29 @@ export class SolcovidPageComponent implements OnInit {
 
       if(list && list.length){
         this.asistencia = list[0];
+
         this.asistencia.ndoc = this.currentPerson.ndoc;
         this.asistencia.tdoc = this.currentPerson.tdoc;
 
+        this.loadPersonDataIntoAsistencia(this.asistencia, this.currentPerson );
         this.editAsistencia();
 
       }else {
-        this.initNewAsistencia();
+        this.dsCtrl.fetchAsistenciaByDNI(this.currentPerson.tdoc,this.currentPerson.ndoc).subscribe(asis =>{
+          if(asis && asis.length){
+            this.asistencia = asis[0];
+            this.asistencia.ndoc = this.nDoc;
+            this.asistencia.tdoc = this.tDoc;
+            this.asistencia.idPerson = this.currentPerson._id;
+            this.asistencia.requeridox = AsistenciaHelper.buildCovidRequirente(this.currentPerson);
+            this.loadPersonDataIntoAsistencia(this.asistencia, this.currentPerson );
 
+            this.editAsistencia();
+          }else {
+             this.initNewAsistencia();
+
+          }
+        })
       }
 
     })

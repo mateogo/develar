@@ -186,6 +186,8 @@ export class Asistencia {
 		idPerson:    string;
 		ndoc:        string;
 		tdoc:        string;
+		sexo:        string;
+		edad:        string;
 		telefono:    string;
 		osocial:     string;
 		osocialTxt:  string;
@@ -1049,6 +1051,22 @@ export class AsistenciaHelper {
 		if(person){
 			requirente = AsistenciaHelper.buildCovidRequirente(person);
 			token.idPerson = person._id;
+
+			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
+			token.telefono = telefono.data
+
+
+			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+			if(address) {
+				let locacion = new Locacion();
+				locacion.street1 = address.street1;
+				locacion.streetIn = address.streetIn;
+				locacion.streetOut = address.streetOut;
+				locacion.city = address.city;
+				locacion.barrio = address.barrio;
+				token.locacion = locacion;
+			}
+
 		}else{
 			requirente = new Requirente();
 			token.idPerson = '';
