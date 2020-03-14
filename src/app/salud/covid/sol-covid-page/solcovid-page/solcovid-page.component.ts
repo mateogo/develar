@@ -387,6 +387,9 @@ export class SolcovidPageComponent implements OnInit {
 
       this.dsCtrl.manageCovidRecord(event.token).subscribe(t =>{
         if(t){
+          this.asistencia = t;
+
+          
           if(event.action === EVOLUCION){
 
             this.dsCtrl.createPersonFromAsistencia(t);
