@@ -1,0 +1,38 @@
+<mat-card [ngStyle]="tokenStyle[card_size]">
+	<mat-card-header>
+		<mat-card-title><strong>Turno: {{turno.letra}}{{turno.compNum}}</strong>
+		</mat-card-title>
+		<mat-card-subtitle><strong>{{turno.requeridox.slug}}</strong></mat-card-subtitle>
+		<mat-card-subtitle>{{turno.requeridox.tdoc}}::{{turno.requeridox.ndoc}}
+		</mat-card-subtitle>
+	</mat-card-header>
+  <mat-card-content>
+  	<div class="container-fluid">
+		 	<div *ngIf="showToggle"
+		 	class="d-flex flex-column justify-content-between align-items-start flex-wrap">
+		 		<div><strong>Sector: </strong>{{turno.sector}}</div>
+		 		<div><strong>Estado: </strong>{{turno.estado}}</div>
+		 		<div><strong>Espera: </strong>{{espera}}</div>
+		 		<div><strong>Ingreso: </strong>{{ingreso}}</div>
+			</div>
+		 	<div *ngIf="isCallDesk"
+		 	class="d-flex flex-row justify-content-start align-items-center flex-wrap">
+		 		<button  [ngStyle]="btnGroupStyle[card_size]" 
+		 							mat-stroked-button color="primary"
+		 							(click)="procesarTurno('atender')">Atender</button>
+		 		<button [ngStyle]="btnGroupStyle[card_size]" 
+		 						mat-stroked-button color="warn"
+		 						(click)="procesarTurno('baja')">Baja</button>
+		 	</div>
+		 	<div *ngIf="isAttentionDesk"
+		 	class="d-flex flex-row justify-content-start align-items-center flex-wrap">
+		 		<button  [ngStyle]="btnGroupStyle[card_size]" 
+		 						mat-stroked-button color="primary"
+		 						(click)="procesarTurno('cumplido')">Atendido</button>
+		 		<button [ngStyle]="btnGroupStyle[card_size]" 
+		 						mat-stroked-button color="warn"
+		 						(click)="procesarTurno('derivar')">Derivar</button>
+			</div>		
+		</div>
+  </mat-card-content>
+</mat-card>

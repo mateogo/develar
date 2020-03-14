@@ -1,0 +1,15 @@
+<div class="sector" *ngIf="sector">
+		<a  class="sector-turno" [ngStyle]='sector.style'
+					role="button" (click)='emitPendingList($event)' >
+		  <ng-container *ngIf='true'>
+				<span matBadge="{{items}}" 
+							matBadgeColor="warn" 
+							matBadgeHidden="{{!items}}"
+							class="sector-label">{{ sector.label }}</span>		  	
+		  </ng-container>
+		  <!--ng-container *ngIf='!items'>
+				  <span class="sector-label">{{ sector.label }}</span>		  	
+			 		<mat-icon >home</mat-icon>
+		  </ng-container  -->
+		</a>
+</div>

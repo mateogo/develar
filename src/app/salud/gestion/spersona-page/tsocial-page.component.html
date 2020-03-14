@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-card-content>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+  </mat-card-content>
+</mat-card>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<core-base [person]='currentPerson'
+		 							(updatePerson)='updateCore($event)' ></core-base>
+
+		    <div class="additional-info">
+
+		      <button mat-button type="button" color="accent"
+		          (click)="auditEntregas()" >Validar historial entregas</button>
+		    </div>
+
+			</div>
+	
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<contact-panel [items]='contactList'
+		 							(updateItems)='updateContactList($event)' ></contact-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<address-panel [items]='addressList'
+		 							(updateItems)='updateAddressList($event)' ></address-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<family-panel [items]='familyList'
+		 							(updateItems)='updateFamilyList($event)' ></family-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<oficios-panel [items]='oficiosList'
+		 							(updateItems)='updateOficiosList($event)' ></oficios-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<salud-panel [items]='saludList'
+		 							(updateItems)='updateSaludList($event)' ></salud-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<cobertura-panel [items]='coberturaList'
+		 							(updateItems)='updateCoberturaList($event)' ></cobertura-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<ambiental-panel 	[items]='ambientalList' 
+		 											[addresses]='addressList'
+		 							(updateItems)='updateAmbientalList($event)' ></ambiental-panel>
+			</div>
+						
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<person-assets-panel 	[assetList]='assetList' 
+		 							(updateAssets)='updateAssetList($event)' ></person-assets-panel>
+			</div>
+						
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<solasis-panel [items]='asistenciasList'
+		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<observaciones-panel 
+		 							[audit]='audit'
+		 							[parent]='parentEntity' ></observaciones-panel>
+			</div>

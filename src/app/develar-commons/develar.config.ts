@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'empresas';
+const user = 'salud';
 
 const globals = {
 
@@ -24,6 +24,24 @@ const globals = {
 		copyright: '© Copyright 2020 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.2-20.02.21) ',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
+	},
+
+	salud: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo-publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'MAB',
+		mainmenu: 'salud',
+		mainmenutpl: 'default-navbar',
+		admintarget: '/salud/gestion/recepcion',
+		dashboard: '/salud/gestion/recepcion',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[MAB] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '© Copyright 2020 - DGTS@modernización - Secretaría de Salud - Municipalidad de Almte. Brown (v1.0-20.03.12) ',
+		version: '1.0 beta',
+		url: 'salud.brown.gob.ar'
 	},
 
 	cck: {

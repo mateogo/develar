@@ -1,0 +1,63 @@
+<mat-card class="detail-card">
+	<mat-card-header>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+		<mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
+	</mat-card-header>
+
+  <mat-card-content>
+  	<div class="container-fluid search-panel">
+ 
+  		<h5>Turnos de Atención</h5>
+  		<person-fetch 
+        (person$)=personFetched($event)></person-fetch>
+
+      <ng-container *ngIf="personFound">
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-md-12">
+              <p class='text-destacado'>{{ pname }} </p>
+              <p class='text-resaltado'>{{ alerta }} </p>
+              <p class='text-normal'>{{ pdoc }} ({{ sexo }}) - <strong>Nacionalidad:</strong> {{ nacionalidad }} {{edadTxt}}</p>
+              <p class='text-normal'>{{ estado }} - 
+                <strong>Ocupación:</strong> {{ ocupacion }} - 
+                <strong>{{ neducativo }}</strong> </p>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <ng-container *ngIf="hasAsistencias">
+          <solasis-view [token]='lastAsistencia'></solasis-view>
+        </ng-container>
+
+        <hr>
+
+        <ng-container *ngIf="selectTurno">
+          <h5>Seleccione el sector de atención</h5>
+          <h5 class="alert" *ngIf="!canIssueVoucher || !canReciveAlimentos">ATENCIÓN: {{ forbiddenText }}</h5>
+          <turno-select [isAlimentos]="canIssueVoucher && canReciveAlimentos" 
+                        [sectorpreferencial]="sectorAtencion"
+                        (turno$)="turnoSelected($event)"></turno-select>
+        </ng-container>
+        
+        <h5 class="alert" *ngIf="hasAlreadyTurno">ATENCIÓN: Hay un turno vigente para este sector</h5>
+
+        <ng-container *ngIf="selectPriority">
+          <hr>
+          <priority-select [person]="currentPerson" 
+                           [sector]="sectorLabel" 
+                           (action$)="processTurno($event)"></priority-select>
+        </ng-container>
+
+
+      </ng-container>
+
+
+
+
+
+  	</div>
+  </mat-card-content>
+</mat-card>

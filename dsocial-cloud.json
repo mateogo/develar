@@ -11,6 +11,19 @@
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/dsocial"
 		  }
+		},
+
+		{
+			"name": "salud",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8081",
+		          "DBASE": "salud",
+		          "SERVER": "https://salud.brown.gob.ar",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/salud"
+		  }
 		}
 
 	]

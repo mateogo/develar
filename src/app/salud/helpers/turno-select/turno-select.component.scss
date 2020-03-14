@@ -1,0 +1,19 @@
+@import '../../../../assets/sass/variable';
+
+.turnos {
+	padding: 15px;
+	margin: 15px;
+	min-width: 250px;
+	min-height: 100px;
+	display: table;
+	text-align: center;
+
+	.turno-label {
+		display: table-cell;
+		vertical-align: middle;
+
+	
+	}
+}
+
+

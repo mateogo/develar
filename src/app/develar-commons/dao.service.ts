@@ -66,6 +66,12 @@ export class DaoService {
         dashboardURL: 'api/asistencias/tablero',
         nextItemURL:  'api/asistencias/nextitem'
       },
+      asisprevencion:{
+        backendURL:   'api/asisprevencion',
+        searchURL:    'api/asisprevencion/search',
+        dashboardURL: 'api/asisprevencion/tablero',
+        nextItemURL:  'api/asisprevencion/nextitem'
+      },
       pcultural:{
         backendURL:   'api/eventosculturales',
         searchURL:    'api/eventosculturales/search',

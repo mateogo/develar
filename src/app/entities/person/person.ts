@@ -14,6 +14,13 @@ export interface PersonTable {
 	email: string;
 };
 
+export interface UpdateEventEmitter {
+      action: string;
+      ndoc: string;
+      tdoc: string;
+
+}
+
 export interface UpdateItemListEvent {
       action: string;
       type: string;
@@ -55,6 +62,7 @@ export interface UpdateBusinessMemberEvent {
       type: string;
       token: BusinessMembersData;
 };
+
 export interface UpdateOficiosEvent {
       action: string;
       type: string;

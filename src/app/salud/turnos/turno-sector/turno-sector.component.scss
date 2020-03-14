@@ -1,0 +1,17 @@
+@import '../../../../assets/sass/variable';
+.sector {
+	.sector-turno {
+		padding: 15px;
+		margin: 15px;
+		min-width: 250px;
+		min-height: 100px;
+		display: table;
+		text-align: center;
+
+		.sector-label {
+			display: table-cell;
+			vertical-align: middle;
+		}
+	}
+}
+

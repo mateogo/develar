@@ -113,10 +113,17 @@ const notificationRoutes: Routes = [
   }
 ];
 
-const ayudaSocialRoutes: Routes = [
+const dsocialModuleRoutes: Routes = [
   {
     path: '', 
     loadChildren: () => import('./dsocial/dsocial.module').then(m => m.DsocialModule)
+  }
+];
+
+const saludModuleRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: () => import('./salud/salud.module').then(m => m.SaludModule)
   }
 ];
 
@@ -131,7 +138,15 @@ const dsocialRoutes: Routes = [
   {
     path: 'gestion',
     component: DefaultLayoutComponent,
-    children: ayudaSocialRoutes
+    children: dsocialModuleRoutes
+  },
+];
+
+const saludRoutes: Routes = [
+  {
+    path: 'gestion',
+    component: DefaultLayoutComponent,
+    children: saludModuleRoutes
   },
 ];
 
@@ -147,7 +162,7 @@ const alimentarRoutes: Routes = [
   {
     path: 'gestion',
     component: PresentacionLayoutComponent,
-    children: ayudaSocialRoutes
+    children: dsocialModuleRoutes
   },
 ];
 
@@ -256,6 +271,10 @@ const routes: Routes = [
   {
     path: 'dsocial',
     children: dsocialRoutes
+  },
+  {
+    path: 'salud',
+    children: saludRoutes
   },
   {
     path: 'alimentar',

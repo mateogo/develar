@@ -1,0 +1,67 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+  	<ng-container *ngIf="showView">
+		 	<div [ngStyle]=selectedStyle class="row">
+		 		<div class="col-md-12">
+		 			<solasis-view [token]='asistencia'></solasis-view>
+		 		</div>
+			</div>
+		</ng-container>
+
+	 	<div [ngStyle]=selectedStyle class="row">
+	 		<div class="col-md-12 d-flex justify-content-between align-items-center">
+	 			<div *ngIf="showEditControl">
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos base">
+						<i [class]="showEditBase ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+
+					<span class="edit-control"
+						(click)='editModalidad()' title="Editar datos modalidad">
+						<i [class]="showEditModalidad ? 'fas fa-pencil-alt' : 'fas fa-pencil-alt'" 
+						aria-hidden="true"></i></span>
+
+
+					<span class="edit-control"
+						(click)='navigateSeguimiento()' title="Realizar seguimiento">
+						<i [class]="openEditor ? 'far fa-bell' : 'far fa-bell'" 
+						aria-hidden="true"></i></span>
+				</div>
+
+				<mat-chip-list *ngIf="!showEditPanel" aria-label="Falta perfeccionar la S/Asistencia">
+				  <mat-chip  *ngFor='let chip of chips' 
+				  		(click)='editModalidad()'
+				  		[color]="chip.color"  selected>{{ chip.text }}</mat-chip>
+				</mat-chip-list>
+
+
+	 			<div *ngIf="showSelectControl" >
+	      		<button mat-raised-button color="accent" 
+	        		  (click)="tokenSelected()" >Seleccionar</button>
+	 			</div>
+	 		</div>
+		</div>
+	
+		<ng-container *ngIf="showEditPanel">
+			<ng-container *ngIf="showEditBase">
+			 	<div class="row">
+			 		<div class="col-sm-12 col-md-12">
+			 			<solcovid-edit [token]='asistencia'
+			 								(updateToken)='manageBase($event)' ></solcovid-edit>
+			 		</div>
+				</div>
+			</ng-container>
+		  		
+			<ng-container *ngIf="showEditModalidad">
+				<div class="row">
+					<div class="col-sm-12 col-md-12">
+
+
+
+					</div>
+				</div>
+			</ng-container>
+		</ng-container>
+
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-content>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf="searchPerson">
+
+	<mat-card>
+  	<mat-card-content>
+      <p class="text-resaltado">Buscar DNI</p>
+      <person-fetch 
+      	(event$)='altaEvent($event)'
+        (person$)='personFetched($event)'></person-fetch>
+		</mat-card-content>
+
+		<ng-container *ngIf="personFound">
+		  <div class="container-fluid">
+		    <div class="row">
+		      <div class="col-sm-12 col-md-12">
+		        <p class='text-destacado'>{{ pname }} </p>
+		        <p class='text-resaltado'>{{ alerta }} </p>
+		        <p class='text-normal'>{{ pdoc }} ({{ sexo }}) - <strong>Nacionalidad:</strong> {{ nacionalidad }} {{edadTxt}}</p>
+		        <p class='text-normal'>{{ estado }} - 
+		          <strong>Ocupación:</strong> {{ ocupacion }} - 
+		          <strong>{{ neducativo }}</strong> </p>
+		      </div>
+		    </div>
+		  </div>
+		  <hr>
+		</ng-container>
+
+	</mat-card>
+
+</ng-container>
+
+
+<ng-container *ngIf="showAsistenciaEditor">
+
+	<solcovid-edit  [token]='asistencia'
+								(updateToken)='manageBase($event)'></solcovid-edit>
+
+</ng-container>
+
+
+
+<ng-container *ngIf="showFollowUp">
+
+	<solcovid-followup  [token]='asistencia'
+								(updateToken)='manageBase($event)'></solcovid-followup>
+
+</ng-container>

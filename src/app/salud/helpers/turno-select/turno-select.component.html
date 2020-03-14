@@ -1,0 +1,6 @@
+	<div class="d-flex flex-row justify-content-start align-items-center flex-wrap">
+		<a  class="turnos" [ngStyle]='token.style' *ngFor="let token of tokens"
+					role="button" (click)='turnoFor($event, token)'	>
+			<span class="turno-label">{{token.label}}</span>
+		</a>
+	</div>
