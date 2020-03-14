@@ -54,9 +54,6 @@ export class SolcovidEditComponent implements OnInit {
 
 
   ngOnInit() {
-
-    console.dir(this.token);
-
     
   	this.initForEdit(this.form, this.token);
 
@@ -227,7 +224,6 @@ export class SolcovidEditComponent implements OnInit {
 		const entity = token;
     const novedades: Novedad[] = fvalue.novedades.map(t => Object.assign({}, t))
 
-    console.log('FiebreRB', fvalue.fiebreRB);
 //https://www.concretepage.com/angular-material/angular-material-radio-button
 		entity.description =  fvalue.description;
 		entity.action =       fvalue.action;
@@ -263,7 +259,6 @@ export class SolcovidEditComponent implements OnInit {
 
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();
-    console.log('BuildCovid: [%s]', fvalue.fiebreRB);
 
     covid.hasFiebre = fvalue.fiebreRB !== 3;
     covid.fiebreTxt = this.leyendaFiebre(fvalue.fiebreRB);

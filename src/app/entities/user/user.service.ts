@@ -33,6 +33,9 @@ const avances = [
 const modulos = [
 	{val: 'no_definido', 	label: 'Seleccione opción'},
 	{val: 'core', 		    label: 'General'},
+	{val: 'com',      	  label: 'COM'},
+	{val: 'medico',   	  label: 'Médico'},
+	{val: 'same',     	  label: '107Same'},
 	{val: 'webmaster', 	  label: 'Webmaster'},
 	{val: 'marketing', 	  label: 'Marketing'},
 	{val: 'encuestador', 	label: 'Encuestador'},

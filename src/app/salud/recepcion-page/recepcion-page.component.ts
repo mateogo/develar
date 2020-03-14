@@ -32,7 +32,7 @@ export class RecepcionPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Secretaría de Desarrollo Social";
+  public title = "Secretaría de Salud - Almte Brown";
   public subtitle = "Recepción del Vecino/a";
 
   public tDoc = "DNI";
@@ -250,7 +250,6 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   processTurno(priority: PriorityToken){
-    console.log('processTurno: [%s]', priority)
     if(priority.action === "update"){
       this.peso = priority.prioridad;
       this.createNuevoTurno();

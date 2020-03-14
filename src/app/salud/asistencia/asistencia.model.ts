@@ -824,7 +824,6 @@ export class AsistenciaHelper {
 	}
 
 	static buildRequirente(person: Person): Requirente {
-		console.log('BuildRequirente [%s]', person && person.displayName)
 		let req:Requirente = {
 			id:   person._id ,
 			slug: person.displayName ,

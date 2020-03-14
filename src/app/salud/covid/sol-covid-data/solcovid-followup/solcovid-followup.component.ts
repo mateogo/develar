@@ -122,14 +122,12 @@ export class SolcovidFollowupComponent implements OnInit {
     this.audit = this.buildAudit(this.token);
 
     this.nextStepOptList = this.buildWorkflow(this.token);
-    console.log('worflow leng [%s]',this.nextStepOptList.length)
 
   	this.initForEdit(this.form, this.token);
 
   }
 
 	buttonActionEvent(e, step){
-		console.log('button action: [%s]', step.val);
 		this.initForSave(this.form, this.token);
   	this.formAction = EVOLUCION;
   	this.token = AsistenciaHelper.workfloStep(this.token, step);
@@ -139,9 +137,6 @@ export class SolcovidFollowupComponent implements OnInit {
   onSubmit(){
   	this.initForSave(this.form, this.token);
   	this.formAction = UPDATE;
-
-   let requerido = this.token.requeridox;
-    console.log('REQUERIDOX: [%s]',requerido && requerido.ndoc);
 
   	this.emitEvent(this.formAction);
   }
@@ -383,7 +378,6 @@ export class SolcovidFollowupComponent implements OnInit {
 
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();
-    console.log('BuildCovid: [%s]', fvalue.fiebreRB);
 
     covid.hasFiebre = fvalue.fiebreRB !== 3;
     covid.fiebreTxt = this.leyendaFiebre(fvalue.fiebreRB);
@@ -484,8 +478,6 @@ export class SolcovidFollowupComponent implements OnInit {
 
   private buildWorkflow(token: Asistencia){
   	let wrkflw = [];
-  	console.log('worflow [%s]', token.avance)
-  	console.dir(this.workflowOptList)
 
   	if(token && token.avance){
   		wrkflw = this.workflowOptList[token.avance]|| []

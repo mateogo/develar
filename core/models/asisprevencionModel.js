@@ -271,23 +271,19 @@ function buildQuery(query){
   let comp_range = [];
 
   if(query["compNum_d"]){
-    console.log('compNum_d [%s]', query["compNum_d"])
     comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
   }
     
   if(query["compNum_h"]){
-    console.log('compNum_h [%s]', query["compNum_h"])
     comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
   }
 
   if(query["fecomp_ts_d"]){
-    console.log('fecomp_ts_d [%s]',query["fecomp_ts_d"]);
 
     comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
   }
 
   if(query["fecomp_ts_h"]){
-    console.log('fecomp_ts_h [%s]',query["fecomp_ts_h"]);
 
     comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
   }
@@ -362,7 +358,6 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
-    console.dir(regexQuery)
 
     Record.find(regexQuery)
           .limit(100)
@@ -410,9 +405,6 @@ exports.findById = function (id, errcb, cb) {
  * @param errcb
  */
 exports.update = function (id, record, errcb, cb) {
-
-  console.log('Asis Backend UPDATE')
-  console.dir(record);
 
     Record.findByIdAndUpdate(id, record, { new: true } ,function(err, entity) {
         if (err){
@@ -512,7 +504,6 @@ const buildObservacion = function(token){
 function buildInverteTree(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
     if(personTree){
-      console.log('PersonTree CREATED')
       //console.dir(personTree);
     }
     processArchive(personTree, req, errcb, cb)
