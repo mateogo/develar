@@ -10,9 +10,9 @@
 				</div>
 		</div>
 		<ng-container *ngIf="openEditor">
-			<solasis-browse [query]="query" 
+			<solcovid-browse [query]="query" 
 											(updateQuery)="refreshSelection($event)"
-											(mapRequest)="mapRequest($event)" ></solasis-browse>
+											(mapRequest)="mapRequest($event)" ></solcovid-browse>
 		</ng-container>
 	</mat-card-content>
 </mat-card>
@@ -57,8 +57,8 @@
 			</ng-container>
 
 			<ng-container *ngIf='view.value=="grid"'>
-				<solasis-panel [items]='asistenciasList'
-		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
+				<solcovid-list [items]='asistenciasList'
+		 							(updateItems)='updateAsistenciaList($event)' ></solcovid-list>
 			</ng-container>
 		</ng-container>
   </mat-card-content>

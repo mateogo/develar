@@ -1,1 +1,6 @@
-<p>solcovid-panel works!</p>
+<ng-container *ngIf="showFollowUp">
+
+	<solcovid-followup  [token]='asistencia'
+								(updateToken)='manageBase($event)'></solcovid-followup>
+
+</ng-container>

@@ -675,20 +675,12 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/covid'
       },
       {
+        title: 'Evolución COVID',
+        routing: '/salud/gestion/solicitudes'
+      },
+      {
         title: 'Padrón personas',
         routing: '/salud/gestion/atencionsocial'
-      },
-      {
-        title: 'Auditoría red familiar',
-        routing: '/salud/gestion/validacionentregas'
-      },
-      {
-        title: 'Seguimiento',
-        routing: '/salud/gestion/seguimiento'
-      },
-      {
-        title: 'Navegar solicitudes',
-        routing: '/salud/gestion/solicitudes'
       },
     ],
     routing: '',
