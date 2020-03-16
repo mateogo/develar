@@ -584,6 +584,7 @@ const acumAvance = function(master, asistencia, today, today_time, semana ){
 const acumBruto = function(master, asistencia, today, today_time, semana ){
   //console.log(semana.semd.getTime(), asistencia.fecomp_txa, asistencia.fecomp_tsa, semana.semh.getTime());
 
+  console.log('tx[%s] asis[%s] today[%s] [%s][%s]',asistencia.fecomp_txa,asistencia.fecomp_txa, today_time, asistencia.fecomp_tsa === today_time,asistencia.fecomp_tsa == today_time);
   if(asistencia.fecomp_tsa === today_time){
     master.hoy.cardinal +=1;
 

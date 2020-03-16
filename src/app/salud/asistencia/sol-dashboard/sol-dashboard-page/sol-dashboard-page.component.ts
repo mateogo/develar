@@ -215,19 +215,19 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   tableAction(action){
-    let selection = this.dsCtrl.selectionModel;
-    let selected = selection.selected as AsistenciaTable[];
+    // let selection = this.dsCtrl.selectionModel;
+    // let selected = selection.selected as AsistenciaTable[];
 
-    if(action === 'autorizar'){
-      selected.forEach(t =>{
-        this.dsCtrl.updateAvanceAsistencia('autorizado', t.asistenciaId);
-      })
-    }
+    // if(action === 'autorizar'){
+    //   selected.forEach(t =>{
+    //     this.dsCtrl.updateAvanceAsistencia('autorizado', t.asistenciaId);
+    //   })
+    // }
 
-    if(action === 'editarencuestas'){
-      //
+    // if(action === 'editarencuestas'){
+    //   //
 
-    }
+    // }
 
     setTimeout(()=>{
       this.fetchSolicitudes(this.query, SEARCH);
