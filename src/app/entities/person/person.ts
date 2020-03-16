@@ -1342,9 +1342,9 @@ const entityTableActions = [
 
 const tiposCompPersonaFisica: Array<any> = [
 		{val: 'DNI', 	     label: 'DNI',                slug:'DNI' },
+    {val: 'PROV',      label: 'PROVISORIA',         slug:'Identif Provisoria' },
 		{val: 'LE',        label: 'LE',                 slug:'Libreta Enrolam' },
 		{val: 'LC',        label: 'LC',                 slug:'Libreta Cívica' },
-		{val: 'PROV',      label: 'PROVISORIA',         slug:'Identif Provisoria' },
 		{val: 'CUIL',      label: 'CUIL',               slug:'CUIL' },
 		{val: 'CUIT',      label: 'CUIT',               slug:'CUIT' },
 		{val: 'PAS',       label: 'PASP',               slug:'Pasaporte' },

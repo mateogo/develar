@@ -489,6 +489,7 @@ const avanceOptList = [
       {val: 'no_definido',    label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',        label: 'Emitida',        slug:'Emitida' },
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
+      {val: 'denuncia',       label: 'Denuncia',       slug:'Denuncia' },
       {val: 'enobservacion',  label: 'En observación', slug:'En observación' },
       {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
@@ -509,11 +510,16 @@ const workflow = {
   emitido: [
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
+      {val: 'denuncia',       label: 'Denuncia incumpl Aislamiento', slug:'Denuncia incumpl Aislamiento' },
   ],
 
   descartado: [
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
     	{val: 'enobservacion',  label: 'En observación', slug:'En observación' },
+  ],
+
+  denuncia: [
+      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
   ],
 
   enobservacion: [
@@ -555,6 +561,9 @@ const workflow = {
       {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
   ],
 
+  fallecido: [
+      {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
+  ],
 
 }
 
@@ -569,6 +578,10 @@ const avance_estadoRelation = {
   ],
 
   descartado: [
+    {val: 'cerrado',   label: 'Cerrado' },
+  ],
+
+  denuncia: [
     {val: 'cerrado',   label: 'Cerrado' },
   ],
 

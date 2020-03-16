@@ -428,6 +428,26 @@ export class SolcovidPageComponent implements OnInit {
   altaEvent(token:UpdateEventEmitter){
     this.nDoc = token.ndoc;
     this.tDoc = token.tdoc;
+    if(token.tdoc === 'PROV' && !token.ndoc) {
+      this.createNumeroProvisorio(this.tDoc, this.nDoc);
+
+    }else{
+      this.fetchAsistenciasByDNI(this.tDoc, this.nDoc);
+
+    }
+  }
+
+  private createNumeroProvisorio(tdoc, ndoc){
+
+    this.dsCtrl.fetchSerialDocumProvisorio().subscribe(serial =>{
+      this.nDoc = serial.pnumero + serial.offset + '';
+      this.fetchAsistenciasByDNI(this.tDoc, this.nDoc);
+
+    });
+
+  }
+
+  private fetchAsistenciasByDNI(tdoc, ndoc){
     this.dsCtrl.fetchAsistenciaByDNI(this.tDoc, this.nDoc).subscribe(asis =>{
       if(asis && asis.length){
         this.asistencia = asis[0];
@@ -442,6 +462,7 @@ export class SolcovidPageComponent implements OnInit {
       }
 
     })
+
   }
 
   private loadPersonDataIntoAsistencia(asistencia: Asistencia, person: Person){

@@ -582,12 +582,14 @@ const acumAvance = function(master, asistencia, today, today_time, semana ){
 
 
 const acumBruto = function(master, asistencia, today, today_time, semana ){
-  //console.log(semana.semd.getTime(), asistencia.fecomp_tsa, semana.semh.getTime());
+  //console.log(semana.semd.getTime(), asistencia.fecomp_txa, asistencia.fecomp_tsa, semana.semh.getTime());
 
   if(asistencia.fecomp_tsa === today_time){
     master.hoy.cardinal +=1;
 
-  } else if(asistencia.fecomp_tsa >= semana.semd.getTime() && asistencia.fecomp_tsa <= semana.semh.getTime()){
+  }
+
+  if(asistencia.fecomp_tsa >= semana.semd.getTime() && asistencia.fecomp_tsa <= semana.semh.getTime()){
     master.semana.cardinal +=1;
 
   }

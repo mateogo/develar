@@ -133,7 +133,7 @@ export class SolcovidEditComponent implements OnInit {
       estado:      [null, Validators.compose([Validators.required])],
       tdoc:        [null],
       ndoc:        [null],
-      telefono:    [null],
+      telefono:    [null, Validators.compose([Validators.required])],
       sexo:        [null],
       edad:        [null],
 
