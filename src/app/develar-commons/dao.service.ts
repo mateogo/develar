@@ -378,6 +378,15 @@ export class DaoService {
                  );
   }
 
+  buildTableroCovid<T>(type: string, fecha: number): Observable<T> {
+    let url = `${this.dao[type].dashboardURL}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+
 
   fetchEntregasTAlimentarDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}/${fecha}`;

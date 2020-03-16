@@ -1,0 +1,55 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>COVID-19@Brown</mat-card-title>
+    <mat-card-subtitle>MUNICIPIO Almte Brown - Seguimiento de casos reportados</mat-card-subtitle>
+    <mat-card-subtitle>{{ fecharef_label}}</mat-card-subtitle>
+	</mat-card-header>
+  <mat-card-content>
+
+  <div class="cards" >
+    <div class="row">
+    <ng-container *ngFor="let card of summaryCards">
+
+        <div class="col-md-4">
+          <card [bgColor]="card.label == 'HOY' ? 'danger': 'info'" class="info-card">
+            <div class="title text-uppercase">{{ card.label }} </div>
+            <div class="count">{{ card.cardinal }}</div>
+            <badge class="badge-style" (click)="verEntregadas($event, card)" 
+                    [customColor]="card.label == 'HOY'? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
+                    [borderRadius]="false">{{ card.slug }}</badge>
+
+            <mat-icon>donut_large</mat-icon>
+          </card>
+        </div>
+
+    </ng-container>
+    </div>
+    <div class="row">
+    	<div class="col-md-12">
+    		<h5>Estado de casos</h5>
+    	</div>
+    </div>
+
+    <div class="row">
+    <ng-container *ngFor="let card of stateCards">
+        <div class="col-md-4">
+          <card [bgColor]="card.label == 'HOY' ? 'danger': 'info'" class="info-card">
+            <div class="title text-uppercase">{{ card.label }} </div>
+            <div class="count">{{ card.cardinal }}</div>
+            <badge class="badge-style" (click)="verEntregadas($event, card)" 
+                    [customColor]="card.label == 'HOY'? 'rgba(135,135,135,0.6)': 'rgba(245,245,245,0.3)'" 
+                    [borderRadius]="false">{{ card.slug }}</badge>
+
+            <mat-icon>donut_large</mat-icon>
+          </card>
+        </div>
+
+    </ng-container>
+
+
+    </div>
+  </div>
+</mat-card-content>
+</mat-card>
+
+

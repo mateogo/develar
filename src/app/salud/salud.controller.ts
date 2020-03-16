@@ -214,6 +214,15 @@ export class SaludController {
   /****************************************/
   /******* Asistencias PREVENCIÓN ********/
   /**************************************/
+  buildTableroCovid(fecharef: Date): Observable<any> {
+
+    return this.daoService.buildTableroCovid<any>('asisprevencion', 0);
+
+
+  }
+
+
+
 
   manageCovidRecord(asistencia:Asistencia ): Subject<Asistencia>{
     let listener = new Subject<Asistencia>();

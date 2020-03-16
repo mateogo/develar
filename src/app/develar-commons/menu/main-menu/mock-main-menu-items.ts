@@ -679,6 +679,10 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/solicitudes'
       },
       {
+        title: 'Tablero COVID',
+        routing: '/salud/gestion/tablerocovid'
+      },
+      {
         title: 'Padrón personas',
         routing: '/salud/gestion/atencionsocial'
       },

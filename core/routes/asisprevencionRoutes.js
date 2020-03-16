@@ -23,15 +23,12 @@ router.get('/', function (req, res) {
     });
 });
 
-
-
-
 /**
- * import and [update | insert ]
+ * Retrieve Entity by ID
  */
-router.get('/tablero/:fecha', function (req, res) {
-    let fechanum = parseInt(req.params.fecha, 10);
-    service.tablero(fechanum, function(err) {
+router.get('/tablero', function (req, res) {
+    console.log('tablero ROUTE BEGIN')
+    service.dashboard(function(err) {
         res.status(400).json(err);
 
     }, function(entities) {
@@ -39,6 +36,22 @@ router.get('/tablero/:fecha', function (req, res) {
 
     });
 });
+
+
+
+// /**
+//  * import and [update | insert ]
+//  */
+// router.get('/tablero/:fecha', function (req, res) {
+//     let fechanum = parseInt(req.params.fecha, 10);
+//     service.tablero(fechanum, function(err) {
+//         res.status(400).json(err);
+
+//     }, function(entities) {
+//         res.status(200).json(entities);
+
+//     });
+// });
 
 /**
  * Retrieve all entity
@@ -108,5 +121,6 @@ router.put('/:id', function (req, res) {
 
         });
 });
+
 
 module.exports = router;

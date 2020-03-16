@@ -465,6 +465,160 @@ exports.create = function (record, errcb, cb) {
     encuesta:    { type: encuestaSch,   required: false },
 */
 
+exports.dashboard = function (errcb, cb) {
+    dashboardProcess(cb);
+}
+
+const dashboardProcess = function(cb){
+
+    Record.find().lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            processDashboardData(entities, cb)
+        }
+    });
+}
+
+const mesLabel = [
+  'ENE',
+  'FEB',
+  'MAR',
+  'ABR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SET',
+  'OCT',
+  'NOV',
+  'DIC',
+
+]
+
+function processDashboardData(records, cb){
+
+    /***
+      token: {
+        label:string
+        cardinal:number
+        slug:slug
+      }
+
+
+
+    **/
+    let master = {
+      hoy: {
+        label: 'HOY',
+        cardinal: 0,
+        slug: 'Eventos/día'
+      },
+      semana: {
+        label: 'ESTA SEMANA',
+        cardinal: 0,
+        slug: 'Eventos/semana'
+
+      },
+      meses: [],
+
+      estados: [],
+
+    };
+    let now = new Date();
+    let today = new Date(now.getFullYear(), now.getMonth(),now.getDate());
+    let today_time = today.getTime();
+    let semana = utils.buildDateFrameForCurrentWeek(today_time);
+
+    if(records && records.length){
+
+
+        records.forEach(asistencia => {
+
+            acumBruto(master, asistencia, today, today_time, semana );
+            acumAvance(master, asistencia, today, today_time, semana );
+
+        })
+
+        //Trucho OjO
+        // master['lunes 20-01'].entregadas  = 1591;
+        // master['lunes 20-01'].porciento  = master['lunes 20-01'].entregadas / master['lunes 20-01'].total * 100;
+
+        //master['martes 21-01'].entregadas = 1887;
+        //master['martes 21-01'].porciento  = master['martes 21-01'].entregadas / master['martes 21-01'].total * 100;
+        cb(master);
+
+    }else{
+        cb({error: 'no data'})
+    }
+
+
+
+}
+
+
+const acumAvance = function(master, asistencia, today, today_time, semana ){
+  let key = asistencia.avance;
+  let estados = master.estados;
+  let cavance = estados.find(t => t.avance === key);
+  if(cavance){
+    cavance.token.cardinal +=1;
+
+
+  }else {
+    let  nuevoAvance = {
+      avance: key,
+      token: {
+        label: key,
+        cardinal: 1,
+        slug: 'Estado actual'
+      }
+    }
+    estados.push(nuevoAvance);
+  }
+
+}
+
+
+const acumBruto = function(master, asistencia, today, today_time, semana ){
+  //console.log(semana.semd.getTime(), asistencia.fecomp_tsa, semana.semh.getTime());
+
+  if(asistencia.fecomp_tsa === today_time){
+    master.hoy.cardinal +=1;
+
+  } else if(asistencia.fecomp_tsa >= semana.semd.getTime() && asistencia.fecomp_tsa <= semana.semh.getTime()){
+    master.semana.cardinal +=1;
+
+  }
+  acumMes(master, asistencia, today, today_time, semana )
+
+
+}
+
+const acumMes = function(master, asistencia, today, today_time, semana ){
+  let key = today.getFullYear()+':'+today.getMonth();
+  let meses = master.meses;
+  let mes = meses.find(t => t.mes === key);
+  if(mes){
+    mes.token.cardinal +=1;
+
+
+  }else {
+    let  nuevoMes = {
+      mes: key,
+      token: {
+        label: mesLabel[today.getMonth()],
+        cardinal: 1,
+        slug: 'Eventos/mes'
+      }
+    }
+    meses.push(nuevoMes);
+  }
+
+
+}
+
 
 const isThisYear = function(fechaPHP){
   let currentYear = false;
