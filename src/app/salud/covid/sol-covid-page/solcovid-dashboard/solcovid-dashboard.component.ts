@@ -112,50 +112,6 @@ export class SolcovidDashboardComponent implements OnInit {
   }
 
 
-  verEntregadas(e, card: EntregasDia){
-    let query = {dia: card.dia, estado: 'entregada'};
-    this.searchDay = card.dia;
-
-    this.dsCtrl.fetchTarjetas(query).subscribe(tokens => {
-
-      this.beneficiariosList = tokens;
-      this.normaliseList(this.beneficiariosList);
-
-      this.showList = true;
-
-    });
-  }
-
-  verRemanentes(e, card: EntregasDia){
-    let query = {dia: card.dia, estado: 'pendiente'};
-    this.searchDay = card.dia;
-
-    this.dsCtrl.fetchTarjetas(query).subscribe(tokens => {
-
-      this.beneficiariosList = tokens;
-      this.normaliseList(this.beneficiariosList);
-
-      this.showList = true;
-
-    });
-  }
-
-
-  private normaliseList(lista: BeneficiarioAlimentar[]){
-    if(lista && lista.length){
-
-      lista.forEach(t => {
-        if(t.estado === 'entregada'){
-          let d = new Date(t.fe_ts);
-          t.hora = d.getHours() + ":" + d.getMinutes();
-        } else {
-          t.hora = '';
-        }
-
-      })
-    }
-  }
-
 
 
 }
