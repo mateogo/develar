@@ -10,6 +10,24 @@
 	<!-- sector; estado; avance; ts_alta; ts_fin; ts_prog;  -->
 
 		<!-- fecomp_txa; action; slug;  : 'far fa-plus'-->
+    <div class="row">
+      <div class="col-md-3 d-flex align-items-center">
+        <span class="text-normal">Tipo de llamado</span>
+      </div>
+      <div class="col-md-8 d-flex align-items-center">
+        <mat-radio-group  formControlName="tipo" aria-label="Tipo de llamado recibido">
+          <mat-radio-button 
+                [checked]="form.controls['tipo'].value===1" 
+                value="1">Asistencia/ consulta médica COVID</mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['tipo'].value===2" 
+                value="2">Denuncia violación de aislamiento</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+    </div>
+
+    <h5>Alta evento COVID</h5>
 
     <div class="row">
       <div class="col-sm-12 col-md-3">
@@ -22,23 +40,23 @@
         </mat-form-field>
       </div>
 
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-2">
         <mat-form-field>
           <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
         </mat-form-field>
       </div>
 
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-2">
         <mat-form-field>
           <input matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
         </mat-form-field>
       </div>
-        <div class="col">
+        <div class="col-sm-12 col-md-2">
           <mat-form-field>
             <input  matInput [formControl]="form.controls['edad']" placeholder="Edad" >
           </mat-form-field>
         </div>
-        <div class="col">
+        <div class="col-sm-12 col-md-2">
           <mat-form-field>
             <mat-select #fldSexo placeholder="Sexo"
                 [formControl]="form.controls['sexo']"
@@ -48,8 +66,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-
-
     </div>
 
 
@@ -164,6 +180,60 @@
       </div>
     </div>
 
+    <hr>
+
+    <h5>Denuncia</h5>
+    <div class="row">
+      <div class="col-md-2 d-flex align-items-center">
+        <span class="text-normal">Denunciante</span>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input  matInput  
+                  formControlName="denunciante" placeholder="Nombre y apellido" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <input  matInput  
+                  formControlName="dendoc" placeholder="DNI Denunciante" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <input  matInput  
+                  formControlName="dentel" placeholder="Teléfono" >
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 d-flex align-items-center">
+        <span class="text-normal">Denunciado</span>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input  matInput  
+                  formControlName="inombre" placeholder="Nombre" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input  matInput  
+                  formControlName="iapellido" placeholder="Apellido" >
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <mat-form-field>
+          <textarea  matInput  
+                  formControlName="islug" placeholder="Descripción de la denuncia" ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
     <hr>
 
     <!------------- pasa a followUP

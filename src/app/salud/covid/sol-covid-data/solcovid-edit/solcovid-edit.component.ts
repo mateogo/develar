@@ -5,6 +5,7 @@ import { CustomValidators } from 'ng2-validation';
 import { Person, personModel } from '../../../../entities/person/person';
 import {  Asistencia, 
           ContextoCovid,
+          ContextoDenuncia,
           Novedad, 
           UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
@@ -136,6 +137,15 @@ export class SolcovidEditComponent implements OnInit {
       telefono:    [null, Validators.compose([Validators.required])],
       sexo:        [null],
       edad:        [null],
+      tipo:        [null],
+
+
+      denunciante: [null],
+      dendoc:      [null],
+      dentel:      [null],
+      inombre:      [null],
+      iapellido:    [null],
+      islug:        [null],
 
       fiebre:           [null],
       fiebreRB:         [null],
@@ -159,6 +169,7 @@ export class SolcovidEditComponent implements OnInit {
   initForEdit(form: FormGroup, token: Asistencia): FormGroup {
     this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'Nueva asistencia'
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
+    let denunciaCovid = token.denuncia || new ContextoDenuncia();
     let fiebreOptions = 1;
 
 		form.reset({
@@ -174,6 +185,7 @@ export class SolcovidEditComponent implements OnInit {
       telefono:    token.telefono,
       sexo:        token.sexo,
       edad:        token.edad,
+      tipo:        token.tipo,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
@@ -187,6 +199,13 @@ export class SolcovidEditComponent implements OnInit {
 
       fiebre:             sintomaCovid.fiebre,
       fiebreRB:           sintomaCovid.fiebreRB,
+
+      denunciante:        denunciaCovid.denunciante,
+      dendoc:             denunciaCovid.dendoc,
+      dentel:             denunciaCovid.dentel,
+      inombre:            denunciaCovid.inombre,
+      iapellido:          denunciaCovid.iapellido,
+      islug:              denunciaCovid.islug,
 
 		});
 
@@ -247,11 +266,13 @@ export class SolcovidEditComponent implements OnInit {
     entity.telefono =   fvalue.telefono;
     entity.sexo =       fvalue.sexo;
     entity.edad =       fvalue.edad;
+    entity.tipo =       fvalue.tipo;
 
 		entity.estado = entity.estado || 'activo';
     entity.novedades = novedades || [];
 
     entity.sintomacovid = this.buildCovid(fvalue, entity);
+    entity.denuncia = this.buildDenuncia(fvalue, entity);
 
 		return entity;
 	}
@@ -261,6 +282,17 @@ export class SolcovidEditComponent implements OnInit {
     return FIEBRE_TXT[valor-1]
   }
 
+  private buildDenuncia(fvalue, entity: Asistencia): ContextoDenuncia{
+    let denuncia = entity.denuncia || new ContextoDenuncia();
+    denuncia.denunciante =        fvalue.denunciante;
+    denuncia.dendoc =             fvalue.dendoc;
+    denuncia.dentel =             fvalue.dentel;
+    denuncia.inombre =            fvalue.inombre;
+    denuncia.iapellido =          fvalue.iapellido;
+    denuncia.islug =              fvalue.islug;
+
+    return denuncia;
+  }
 
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();

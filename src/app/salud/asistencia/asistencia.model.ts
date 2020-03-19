@@ -132,6 +132,15 @@ export class Novedad {
 		}
 }
 
+export class ContextoDenuncia {
+		denunciante: string; 
+		dendoc: string;
+		dentel: string;
+		inombre: string;
+		iapellido: string; 
+		islug: string; 
+}
+
 export class ContextoCovid {
 	hasFiebre: boolean = false;
 	fiebreTxt: string = 'cree';
@@ -158,10 +167,8 @@ export class ContextoCovid {
 	estaInternado:   boolean = false;
 	estaEnDomicilio: boolean = false;
 
-
 	hasCOVID: boolean = false;
 	isCOVID: boolean = false;
-
 }
 
 export class Locacion {
@@ -182,6 +189,7 @@ export class Asistencia {
 		compPrefix:  string = 'SOL';
 		compName:    string = 'S/Asistencia';
 		compNum:     string = '00000';
+		tipo:        number = 1; // 1: COVID 2:Denuncia
 
 		idPerson:    string;
 		ndoc:        string;
@@ -193,6 +201,7 @@ export class Asistencia {
 		osocialTxt:  string;
 
 		sintomacovid: ContextoCovid;
+		denuncia: ContextoDenuncia;
 
 		idbrown:     string;
 		fecomp_tsa:  number;
@@ -371,10 +380,11 @@ const default_option_list: Array<any> = [
 ];
 
 const asisActionOptList: Array<any> = [
-        {val: 'no_definido',    isRemitible: false, key:'',          type:'Sin selección',     label: 'Sin selección' },
-        {val: 'covid',      isRemitible: false,  key:'modalidad',  type:'covid',         label: 'COVID' },
-        {val: 'prevencion',      isRemitible: false,  key:'modalidad',  type:'prevencion',         label: 'Llamado prevención' },
-        {val: 'same',      isRemitible: false,  key:'modalidad',  type:'same',         label: 'Derivar SAME' },
+        {val: 'no_definido', isRemitible: false,  key:'',           type:'Sin selección',  label: 'Sin selección' },
+        {val: 'denuncia',    isRemitible: false,  key:'modalidad',  type:'denuncia',       label: 'COVID' },
+        {val: 'covid',       isRemitible: false,  key:'modalidad',  type:'covid',          label: 'COVID' },
+        {val: 'prevencion',  isRemitible: false,  key:'modalidad',  type:'prevencion',     label: 'Llamado prevención' },
+        {val: 'same',        isRemitible: false,  key:'modalidad',  type:'same',           label: 'Derivar SAME' },
 
 ];
 
@@ -415,13 +425,15 @@ const causasOptList: Array<any> = [
 
 const sector_actionRelation = {
   com: [
-    {val: 'covid',   label: 'Atención telefónica COVID' },
+    {val: 'covid',    label: 'Atención telefónica COVID' },
+    {val: 'denuncia', label: 'Denuncia COVID' },
+    {val: 'same',     label: 'Requerir Same' },
   ],
 
   prevencion: [
-    {val: 'atenciontel',   label: 'Atención telefónica' },
-    {val: 'same',   label: 'Requerir Same' },
-    {val: 'prevencion',       label: 'Seguimiento de prevención' },
+    {val: 'emergencia',      label: 'Atención telefónica' },
+    {val: 'same',             label: 'Requerir Same' },
+    {val: 'covid',    label: 'Atención telefónica COVID' },
   ],
 
   same: [
@@ -429,7 +441,8 @@ const sector_actionRelation = {
   ],
 
   direccion: [
-    {val: 'atenciontel',   label: 'Atención telefónica' },
+    {val: 'covid',    label: 'Atención telefónica COVID' },
+    {val: 'denuncia', label: 'Denuncia COVID' },
     {val: 'same',   label: 'Requerir Same' },
     {val: 'prevencion',       label: 'Seguimiento de prevención' },
   ],
@@ -496,7 +509,6 @@ const avanceOptList = [
       {val: 'no_definido',    label: 'Sin selección',  slug:'Sin selección' },
       {val: 'emitido',        label: 'Emitida',        slug:'Emitida' },
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
-      {val: 'denuncia',       label: 'Denuncia',       slug:'Denuncia' },
       {val: 'enobservacion',  label: 'En observación', slug:'En observación' },
       {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
@@ -506,6 +518,11 @@ const avanceOptList = [
       {val: 'dadodealta',     label: 'Alta médica',    slug:'Alta médica' },
       {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
       {val: 'anulado',        label: 'Anulado',        slug:'Anulado' },
+      {val: 'denuncia',             label: 'Denuncia',             slug:'Denuncia' },
+			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia:verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
+			{val: 'denuncia:notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
+			{val: 'denuncia:descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
 ]
 
 
@@ -526,15 +543,41 @@ const workflow = {
   ],
 
   denuncia: [
-      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
+      {val: 'denuncia',             label: 'Denuncia recibida',    slug:'Denuncia recibida' },
+			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+	],
+
+  denuncia_avisitar: [
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
+			{val: 'denuncia_notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+	],
+ 	
+ 	denuncia_verificada: [
+			{val: 'denuncia_verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
+			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
   ],
 
-  enobservacion: [
+ 	denuncia_notificada: [
+			{val: 'denuncia_notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
+			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+  ],
+
+ 	denuncia_descartada: [
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+  ],
+	
+	enobservacion: [
     	{val: 'enobservacion',  label: 'En observación', slug:'En observación' },
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
       {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
-  ],
+	],
 
   enaislamiento: [
       {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
@@ -589,6 +632,22 @@ const avance_estadoRelation = {
   ],
 
   denuncia: [
+    {val: 'cerrado',   label: 'Cerrado' },
+  ],
+
+  denuncia_notificada: [
+    {val: 'cerrado',   label: 'Cerrado' },
+  ],
+
+  denuncia_verificada: [
+    {val: 'cerrado',   label: 'Cerrado' },
+  ],
+
+  denuncia_avisitar: [
+		{val: 'activo',   label: 'Activa' },
+  ],
+
+  denuncia_descartada: [
     {val: 'cerrado',   label: 'Cerrado' },
   ],
 

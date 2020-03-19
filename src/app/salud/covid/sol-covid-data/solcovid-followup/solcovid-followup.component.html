@@ -1,34 +1,11 @@
+
+
 <mat-card >
 <mat-card-content>
-<p class='text-resaltado'>{{ cName }}: {{ cNum }} - {{ fecha }} -  <strong>{{ action }}</strong></p>
-<p class='text-resaltado'>{{ solicitante }}</p>
-<p class='text-normal'>{{ locacionTxt }}</p>
-
-<p class='text-normal'>{{ fiebreTxt }}</p>
-<p class='text-normal'>{{ sintomasTxt }}</p>
-<p class='text-normal'>{{ contagioTxt }}</p>
-<p class='text-normal'>{{ contexto }}</p>
-<p class='text-normal'>{{ indicacion }}</p>
-<p class='text-normal'>{{ description }} </p>
-
-<p class='text-resaltado'>{{ sector }} :: {{slug}} :: {{ avance }}</p>
-
-
-<!--div class="novedades-container">
-	<ng-container *ngFor="let item of novedadesList" >
-			<p class='text-resaltado'>{{ item.tnovedad }} :: {{ item.novedad }} </p>
-			<p class='text-audit'>{{ item.audit }} </p>
-	</ng-container>
-</div -->
+<solcovid-view [token]=token ></solcovid-view>
 
 <div class="novedades-container">
   <form [formGroup]="form">
-	<!-- compPrefix; compName; compNum; -->
-	<!-- fecomp_txa; action; slug; -->
-	<!-- description;  -->
-	<!-- sector; estado; avance; ts_alta; ts_fin; ts_prog;  -->
-
-		<!-- fecomp_txa; action; slug;  : 'far fa-plus'-->
 
     <div class="row">
       <div class="col-sm-12 col-md-3">
@@ -86,6 +63,7 @@
         </mat-form-field>
       </div>
     </div>
+    <hr>
 
     <!---street1;  street2; --->
     <div class="row" >

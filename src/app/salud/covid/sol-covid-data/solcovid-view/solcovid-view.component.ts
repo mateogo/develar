@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import {   Asistencia, 
           AsistenciaTable,
           AsistenciaBrowse,
+          ContextoDenuncia,
           AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 
@@ -30,7 +31,9 @@ export class SolcovidViewComponent implements OnInit {
     let covid = token.sintomacovid;
     let toPrint = new AsistenciaToPrint();
 
-    if(token.avance === 'denuncia'){
+    let tipo = token.tipo || 1;
+
+    if(tipo === 2){
     	toPrint.isDenuncia = true;
     	toPrint.isAsistencia = false;
 
@@ -58,11 +61,26 @@ export class SolcovidViewComponent implements OnInit {
     toPrint.description = token.description;
     toPrint.fecha = token.fecomp_txa;
     toPrint.estado =  AsistenciaHelper.getPrefixedOptionLabel('estado', 'Estado', token.estado);
-    toPrint.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', this.estado, token.avance);
+    toPrint.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', token.estado, token.avance);
     toPrint.locacionTxt = this.buildDireccion(token)
+
+    this.buildDenuncia(toPrint, token);
+
     return toPrint;
   }
 
+
+  private buildDenuncia(target: AsistenciaToPrint, token: Asistencia): string {
+    let data = token.denuncia|| new ContextoDenuncia()
+
+    target.denunciante = data.denunciante;
+    target.dendoc = data.dendoc;
+    target.dentel = data.dentel;
+    target.inombre = data.inombre;
+    target.iapellido = data.iapellido;
+    target.islug = data.islug;
+
+  }
 
   private buildDireccion(token: Asistencia): string {
     let direccion = '';
@@ -110,5 +128,13 @@ class AsistenciaToPrint {
     estado: string = '' ;
     avance: string = '' ;
     locacionTxt: string = '' ;
+
+    denunciante: string; 
+    dendoc: string;
+    dentel: string;
+    inombre: string;
+    iapellido: string; 
+    islug: string; 
+
 }
 

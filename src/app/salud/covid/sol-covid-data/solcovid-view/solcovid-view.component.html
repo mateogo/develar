@@ -15,10 +15,13 @@
 </ng-container>
 
 <ng-container *ngIf='asistencia.isDenuncia'>
-	<p class='text-resaltado'>{{ asistencia.cName }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
-	<p class='text-resaltado'>{{ asistencia.solicitante }}</p>
-	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
 
-	<p class='text-normal'>{{ asistencia.description }} </p>
+	<p class='text-resaltado'>{{ asistencia.cName }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
+	<p class='text-resaltado'>Denunciado: {{ asistencia.inombre }} {{ asistencia.apellido }} </p>
+	<p class='text-normal'>{{ asistencia.islug }} </p>
+	<p class='text-normal'><strong>Dirección del denunciado: </strong>{{ asistencia.locacionTxt }}</p>
+
+	<p class='text-normal'><strong>Denunciante: </strong>{{ asistencia.denunciante }} :: {{ asistencia.dentel }}</p>
+
 
 </ng-container>

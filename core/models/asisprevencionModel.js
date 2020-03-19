@@ -119,6 +119,14 @@ const encuestaSch = new Schema({
     evaluacion:   { type:String, required: false },
 })
 
+const contextoDenunciaSch = new Schema({
+    denunciante: { type: String, required: false },
+    dendoc:      { type: String, required: false },
+    dentel:      { type: String, required: false },
+    inombre:     { type: String, required: false },
+    iapellido:   { type: String, required: false },
+    islug:       { type: String, required: false },
+})
 
 const contextoCovidSch = new Schema({
     hasFiebre:    { type: Boolean, required: false },
@@ -168,6 +176,7 @@ const asisprevencionSch = new Schema({
     edad:        { type: String, required: false },
     sexo:        { type: String, required: false },
     telefono:    { type: String, required: false },
+    tipo:        { type: Number, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },
 
@@ -186,6 +195,7 @@ const asisprevencionSch = new Schema({
     ts_prog:     { type: Number, required: false },
     locacion:    { type: locacionSch, required: false }, 
     sintomacovid:{ type: contextoCovidSch, required: false }, 
+    denuncia:    { type: contextoDenunciaSch, required: false }, 
     requeridox:  { type: requirenteSch, required: false },
     novedades:   [ novedadSch ],
     atendidox:   { type: atendidoSch,   required: false },
