@@ -70,7 +70,7 @@ export class SolcovidViewComponent implements OnInit {
   }
 
 
-  private buildDenuncia(target: AsistenciaToPrint, token: Asistencia): string {
+  private buildDenuncia(target: AsistenciaToPrint, token: Asistencia){
     let data = token.denuncia|| new ContextoDenuncia()
 
     target.denunciante = data.denunciante;
@@ -79,7 +79,6 @@ export class SolcovidViewComponent implements OnInit {
     target.inombre = data.inombre;
     target.iapellido = data.iapellido;
     target.islug = data.islug;
-
   }
 
   private buildDireccion(token: Asistencia): string {
