@@ -185,7 +185,7 @@ export class SolcovidEditComponent implements OnInit {
       telefono:    token.telefono,
       sexo:        token.sexo,
       edad:        token.edad,
-      tipo:        token.tipo,
+      tipo:        token.tipo || 1,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,

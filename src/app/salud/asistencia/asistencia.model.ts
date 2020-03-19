@@ -519,10 +519,10 @@ const avanceOptList = [
       {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
       {val: 'anulado',        label: 'Anulado',        slug:'Anulado' },
       {val: 'denuncia',             label: 'Denuncia',             slug:'Denuncia' },
-			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
-			{val: 'denuncia:verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
-			{val: 'denuncia:notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
-			{val: 'denuncia:descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
+			{val: 'denuncia_notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
+			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
 ]
 
 
@@ -544,7 +544,7 @@ const workflow = {
 
   denuncia: [
       {val: 'denuncia',             label: 'Denuncia recibida',    slug:'Denuncia recibida' },
-			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
 			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
 	],
 
@@ -557,19 +557,19 @@ const workflow = {
  	
  	denuncia_verificada: [
 			{val: 'denuncia_verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
-			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
 			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
   ],
 
  	denuncia_notificada: [
 			{val: 'denuncia_notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
-			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
 			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
   ],
 
  	denuncia_descartada: [
 			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
-			{val: 'denuncia:avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
   ],
 	
 	enobservacion: [
