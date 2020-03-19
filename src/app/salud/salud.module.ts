@@ -73,6 +73,7 @@ import { SolcovidPanelComponent } from './covid/sol-covid-page/solcovid-panel/so
 import { SolcovidListComponent } from './covid/sol-covid-page/solcovid-list/solcovid-list.component';
 import { SolcovidBrowseComponent } from './covid/sol-covid-data/solcovid-browse/solcovid-browse.component';
 import { SolcovidDashboardComponent } from './covid/sol-covid-page/solcovid-dashboard/solcovid-dashboard.component';
+import { SolcovidViewComponent } from './covid/sol-covid-data/solcovid-view/solcovid-view.component';
 
 @NgModule({
   imports: [
@@ -145,6 +146,7 @@ import { SolcovidDashboardComponent } from './covid/sol-covid-page/solcovid-dash
     SolcovidListComponent,
     SolcovidBrowseComponent,
     SolcovidDashboardComponent,
+    SolcovidViewComponent,
   ]
 })
 export class SaludModule { }

@@ -228,10 +228,17 @@ export class AsistenciaTable {
 		action:      string;
 		slug:        string;
 		description: string;
+		osocial:  string;
 		sector:      string;
 		estado:      string;
 		avance:      string;
 		ts_alta:     number;
+
+		covid: string = '';
+		locacion: string ='';
+
+
+
 
 		fe_visita:   string;
 		fe_visita_ts: number;
@@ -801,7 +808,27 @@ function expectedQty(type, val){
 		return t ? t.q : 0;
 }
 
+function covidToPrint(covid: ContextoCovid): string{
+	let tx = '';
+	if(covid.hasFiebre) tx += ':Fie';
+	if(covid.hasDifRespiratoria) tx += ':DefResp '
+	if(covid.hasDolorGarganta) tx += ':DolGar '
+	if(covid.hasTos) tx += ':Tos'
+	tx += ' :: '		
+	if(covid.hasViaje) tx += ':VIAJE'
+	if(covid.hasContacto) tx += ':CONTACTO'
+	if(covid.hasEntorno) tx += ':ENTORNO'
 
+	return tx;
+}
+
+function locacionToPrint(loc: Locacion): string{	
+	let tx = '';
+	tx += (loc.city ? loc.city + ': '  : '')
+	tx += (loc.street1 ? loc.street1 : '')
+	
+	return tx;
+}
 
 export class AsistenciaHelper {
 
@@ -961,54 +988,6 @@ export class AsistenciaHelper {
 		return token;
 	}
 
-/*
-		searchAction: string;
-		compPrefix:  string = 'SOL';
-		compName:    string = 'S/Asistencia';
-		compNum_d:   string;
-		requirenteId: string;
-		compNum_h:   string;
-		idPerson:    string;
-		fecomp_d:    string;
-		fecomp_h:    string;
-		fecomp_ts_d:    number;
-		fecomp_ts_h:    number;
-		action:      string;
-		sector:      string;
-		estado:      string = 'activo';
-		avance:      string = 'emitido';
-		fe_visita:   string;
-		ruta:        string;
-		barrio:      string;
-		city:        string;
-		urgencia:    number;
-		trabajadorId: string;
-		avance_encuesta: string;
-
-		_id: string;
-		compPrefix:  string = 'SOL';
-		compName:    string = 'S/Asistencia';
-		compNum:     string = '00000';
-		idPerson:    string;
-		fecomp_tsa:  number;
-		fecomp_txa:  string;
-		action:      string = 'alimentos';
-		slug:        string;
-		description: string;
-		sector:      string;
-		estado:      string = 'activo';
-		avance:      string = 'emitido';
-		ts_alta:     number;
-		ts_fin:      number;
-		ts_prog:     number;
-		requeridox:  Requirente;
-		atendidox:   Atendido;
-		modalidad:   Alimento;
-		encuesta:    Encuesta;
-
-
-
-*/
 	static initNewAsistencia(action, sector, person?: Person, serial?: Serial, slug?){
 		let ts = Date.now();
 		let requirente: Requirente;
@@ -1193,7 +1172,7 @@ export class AsistenciaHelper {
 			td.compName = sol.compName;
 			td.compNum = sol.compNum;
 			td.personId = sol.idPerson;
-			td.personSlug = sol.requeridox.slug;
+			td.personSlug = sol.requeridox.nombre ? (sol.requeridox.apellido ? sol.requeridox.apellido + ', ' + sol.requeridox.nombre : sol.requeridox.nombre) : (sol.requeridox.slug ? sol.requeridox.slug: '');
 			td.fecomp_tsa = sol.fecomp_tsa;
 			td.fecomp_txa = sol.fecomp_txa;
 			td.action = this.getOptionLabel('actions', sol.action);
@@ -1201,8 +1180,18 @@ export class AsistenciaHelper {
 			td.description = sol.description;;
 			td.sector = sol.sector;
 			td.estado = sol.estado;
-			td.avance = sol.avance;
+			td.avance = this.getOptionLabel('avance', sol.avance);
 			td.ts_alta = sol.ts_alta;
+			td.osocial = sol.osocial + '::' + sol.osocialTxt
+			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
+
+			if(sol.sintomacovid){
+				td.covid = covidToPrint(sol.sintomacovid);
+			}
+
+			if(sol.locacion){
+				td.locacion = locacionToPrint(sol.locacion);
+			}
 
 			if(sol.encuesta){
 				td.fe_visita = sol.encuesta.fe_visita;

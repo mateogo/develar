@@ -513,12 +513,14 @@ function processDashboardData(records, cb){
       hoy: {
         label: 'HOY',
         cardinal: 0,
-        slug: 'Eventos/día'
+        slug: 'Eventos/día',
+        key: ''
       },
       semana: {
         label: 'ESTA SEMANA',
         cardinal: 0,
-        slug: 'Eventos/semana'
+        slug: 'Eventos/semana',
+        key: ''
 
       },
       meses: [],
@@ -572,6 +574,7 @@ const acumAvance = function(master, asistencia, today, today_time, semana ){
       token: {
         label: key,
         cardinal: 1,
+        key: key,
         slug: 'Estado actual'
       }
     }
@@ -613,6 +616,7 @@ const acumMes = function(master, asistencia, today, today_time, semana ){
       token: {
         label: mesLabel[today.getMonth()],
         cardinal: 1,
+        key: asistencia.avance,
         slug: 'Eventos/mes'
       }
     }

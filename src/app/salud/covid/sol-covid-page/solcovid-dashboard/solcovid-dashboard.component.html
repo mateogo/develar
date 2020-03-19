@@ -14,7 +14,7 @@
           <card [bgColor]="card.label == 'HOY' ? 'danger': 'info'" class="info-card">
             <div class="title text-uppercase">{{ card.label }} </div>
             <div class="count">{{ card.cardinal }}</div>
-            <badge class="badge-style" (click)="verEntregadas($event, card)" 
+            <badge class="badge-style"  
                     [customColor]="card.label == 'HOY'? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
                     [borderRadius]="false">{{ card.slug }}</badge>
 
@@ -36,7 +36,7 @@
           <card [bgColor]="card.label == 'HOY' ? 'danger': 'info'" class="info-card">
             <div class="title text-uppercase">{{ card.label }} </div>
             <div class="count">{{ card.cardinal }}</div>
-            <badge class="badge-style" (click)="verEntregadas($event, card)" 
+            <badge class="badge-style" (click)="verDetalle($event, card)" 
                     [customColor]="card.label == 'HOY'? 'rgba(135,135,135,0.6)': 'rgba(245,245,245,0.3)'" 
                     [borderRadius]="false">{{ card.slug }}</badge>
 
@@ -51,5 +51,24 @@
   </div>
 </mat-card-content>
 </mat-card>
+
+<ng-container *ngIf="showList">
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title>Detalle</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="container">
+          <ng-container *ngFor="let token of asistenciasList" >
+            <solcovid-view [token]=token ></solcovid-view>
+            <hr>
+
+
+          </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
 
 

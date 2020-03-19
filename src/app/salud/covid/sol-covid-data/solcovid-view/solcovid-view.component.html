@@ -1,0 +1,24 @@
+
+<ng-container *ngIf='asistencia.isAsistencia'>
+	<p class='text-resaltado'>{{ asistencia.cName }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
+	<p class='text-resaltado'>{{ asistencia.solicitante }}</p>
+	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
+
+	<p class='text-normal'>{{ asistencia.fiebreTxt }}</p>
+	<p class='text-normal'>{{ asistencia.sintomasTxt }}</p>
+	<p class='text-normal'>{{ asistencia.contagioTxt }}</p>
+	<p class='text-normal'>{{ asistencia.contexto }}</p>
+	<p class='text-normal'>{{ asistencia.indicacion }}</p>
+	<p class='text-normal'>{{ asistencia.description }} </p>
+
+	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
+</ng-container>
+
+<ng-container *ngIf='asistencia.isDenuncia'>
+	<p class='text-resaltado'>{{ asistencia.cName }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
+	<p class='text-resaltado'>{{ asistencia.solicitante }}</p>
+	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
+
+	<p class='text-normal'>{{ asistencia.description }} </p>
+
+</ng-container>

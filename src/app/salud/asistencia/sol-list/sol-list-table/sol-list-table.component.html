@@ -97,6 +97,19 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> TS </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.trabajador}} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="locacion">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Locación </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.locacion}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="covid">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> COVID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covid}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="osocial">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> O/Social </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.osocial}} </mat-cell>
+    </ng-container>
 
 
     <ng-container matColumnDef="slug">
@@ -104,9 +117,14 @@
       <mat-cell *matCellDef="let element"> {{element.slug}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+    </ng-container>
+
 
     <ng-container matColumnDef="avance">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Estado avance </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Estado</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.avance}} </mat-cell>
     </ng-container>
 <!-- 
