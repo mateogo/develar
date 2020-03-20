@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, AbstractControl, ValidatorFn, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
-import {  Asistencia, 
+import {  Asistencia,
+          Requirente,
           ContextoCovid,
           ContextoDenuncia,
           Novedad, 
@@ -51,6 +52,12 @@ export class SolcovidEditComponent implements OnInit {
 
   public novedadesTitle = 'Seguimiento de novedades relativas a esta SOLICITUD';
   public currentEventTxt = '';
+
+  public isCovid = false;
+  public isDenuncia = false;
+  public showButtons = false;
+  public tipoEdit = 1;
+
 
   constructor(
   	private fb: FormBuilder,
@@ -134,18 +141,18 @@ export class SolcovidEditComponent implements OnInit {
       estado:      [null, Validators.compose([Validators.required])],
       tdoc:        [null],
       ndoc:        [null],
-      telefono:    [null, Validators.compose([Validators.required])],
+      telefono:    [null, [this.validateCovidFlds(this)]],
       sexo:        [null],
       edad:        [null],
       tipo:        [null],
 
 
-      denunciante: [null],
-      dendoc:      [null],
-      dentel:      [null],
-      inombre:      [null],
-      iapellido:    [null],
-      islug:        [null],
+      denunciante: [null, [this.validateDenunciaFlds(this)]],
+      dendoc:      [null, [this.validateDenunciaFlds(this)]],
+      dentel:      [null, [this.validateDenunciaFlds(this)]],
+      inombre:      [null, [this.validateDenunciaFlds(this)]],
+      iapellido:    [null, [this.validateDenunciaFlds(this)]],
+      islug:        [null, [this.validateDenunciaFlds(this)]],
 
       fiebre:           [null],
       fiebreRB:         [null],
@@ -166,11 +173,14 @@ export class SolcovidEditComponent implements OnInit {
     return form;
   }
 
-  initForEdit(form: FormGroup, token: Asistencia): FormGroup {
-    this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'Nueva asistencia'
+  private initForEdit(form: FormGroup, token: Asistencia): FormGroup {
+    this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'Nueva asistencia' + token._id
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let denunciaCovid = token.denuncia || new ContextoDenuncia();
+    let requirente = token.requeridox || new Requirente();
     let fiebreOptions = 1;
+
+    token.tipo = token.tipo || 1;
 
 		form.reset({
 			description: token.description,
@@ -185,7 +195,7 @@ export class SolcovidEditComponent implements OnInit {
       telefono:    token.telefono,
       sexo:        token.sexo,
       edad:        token.edad,
-      tipo:        token.tipo || 1,
+      tipo:        token.tipo,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
@@ -200,19 +210,24 @@ export class SolcovidEditComponent implements OnInit {
       fiebre:             sintomaCovid.fiebre,
       fiebreRB:           sintomaCovid.fiebreRB,
 
-      denunciante:        denunciaCovid.denunciante,
-      dendoc:             denunciaCovid.dendoc,
-      dentel:             denunciaCovid.dentel,
+      denunciante:        denunciaCovid.denunciante || requirente.slug || '',
+      dendoc:             denunciaCovid.dendoc || token.ndoc,
+      dentel:             denunciaCovid.dentel || token.telefono,
       inombre:            denunciaCovid.inombre,
       iapellido:          denunciaCovid.iapellido,
       islug:              denunciaCovid.islug,
 
 		});
-
+//https://malcoded.com/posts/angular-ngif-else/
 
 
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
     this.buildNovedades(token.novedades)
+
+    this.isCovid = token.tipo === 1;
+    this.isDenuncia = token.tipo === 2;
+    this.tipoEdit = token.tipo;
+    this.showButtons = true;
 
 		return form;
   }
@@ -252,7 +267,7 @@ export class SolcovidEditComponent implements OnInit {
 		const fvalue = form.value;
 		const entity = token;
     const novedades: Novedad[] = fvalue.novedades.map(t => Object.assign({}, t))
-
+//https://medium.com/better-programming/expressionchangedafterithasbeencheckederror-in-angular-what-why-and-how-to-fix-it-c6bdc0b22787
 //https://www.concretepage.com/angular-material/angular-material-radio-button
 		entity.description =  fvalue.description;
 		entity.action =       fvalue.action;
@@ -323,6 +338,26 @@ export class SolcovidEditComponent implements OnInit {
 
   }
 
+  private validateDenunciaFlds(that: any): ValidatorFn {
+
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          
+          return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidAge': true} : null
+
+      }) ;
+
+  }
+
+  private validateCovidFlds(that: any): ValidatorFn {
+
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+
+          return !control.value && that.form && that.form.controls['tipo'].value == 1  ?  {'invalidAge': true} : null
+
+      }) ;
+
+  }
+
   public getAuditNovedad(novedad: Novedad){
     let audit = ''
     let ts, sector, fecha, fecha_txt;
@@ -341,5 +376,42 @@ export class SolcovidEditComponent implements OnInit {
     return audit;
   }
 
+  public onBlurDocNum(e){
+    this.form.get('dendoc').setValue(this.form.get('ndoc').value);
+  }
+
+  public onBlurTel(e){
+    this.form.get('dentel').setValue(this.form.get('telefono').value);
+  }
+  public changeTipo(e){
+    this.showButtons = false;
+
+    setTimeout(()=> {
+      this.tipoEdit = e;
+      if(this.tipoEdit === 1){
+        this.isDenuncia = false
+        this.isCovid = true;
+
+      }else{
+        this.isCovid = false
+        this.isDenuncia = true
+
+      }
+      setTimeout(()=>{
+        // if(this.tipoEdit === 2){
+        //   this.isDenuncia = true
+
+        // }else{
+        //   this.isCovid = true;
+
+        // }
+
+        this.showButtons = true;
+
+
+      },200)
+
+    },50)
+  }
 
 }

@@ -18,15 +18,17 @@
         <mat-radio-group  formControlName="tipo" aria-label="Tipo de llamado recibido">
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===1" 
+                (change)='changeTipo(1)'
                 value="1">Asistencia/ consulta médica COVID</mat-radio-button>
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===2" 
+                (change)='changeTipo(2)'
                 value="2">Denuncia violación de aislamiento</mat-radio-button>
         </mat-radio-group>
       </div>
 
     </div>
-
+    <ng-container *ngIf="isCovid">
     <h5>Alta evento COVID</h5>
 
     <div class="row">
@@ -42,13 +44,13 @@
 
       <div class="col-sm-12 col-md-2">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
+          <input matInput (blur)="onBlurDocNum($event)" [formControl]="form.controls['ndoc']" placeholder="Número documento">
         </mat-form-field>
       </div>
 
       <div class="col-sm-12 col-md-2">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
+          <input matInput (blur)="onBlurTel($event)" [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
         </mat-form-field>
       </div>
         <div class="col-sm-12 col-md-2">
@@ -180,8 +182,10 @@
       </div>
     </div>
 
-    <hr>
+    <hr>      
+    </ng-container>
 
+    <ng-container *ngIf="isDenuncia">
     <h5>Denuncia</h5>
     <div class="row">
       <div class="col-md-2 d-flex align-items-center">
@@ -235,58 +239,7 @@
       </div>
     </div>
     <hr>
-
-    <!------------- pasa a followUP
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-          <div class="d-flex justify-content-between panel-header">
-
-          <div class="panel-header-text">{{ novedadesTitle }}</div>
-          <div class="panel-header-control" ><span 
-            (click)='addNovedad()' title="Agregar Novedad">
-            <i [class]="'fas fa-plus'" 
-              aria-hidden="true"></i></span></div>
-        </div>
-      </div>
-    </div>
-      
-    <div class="novedades-container" formArrayName='novedades'>
-    <ng-container *ngFor="let novedad of novedades.controls; let i=index" 
-                  [formGroupName]="i">
-      <div class="row d-flex align-items-center">
-        <ng-container *ngIf="novedad.value._id">
-          <div class="col-md-12">
-          <p class='text-resaltado'>{{ getNovedadTxt(novedad.value) }}</p>
-          <p class='text-audit'>{{ getAuditNovedad(novedad.value) }} </p>          
-          </div>
-        </ng-container>
-
-
-        <ng-container *ngIf="!novedad.value._id">
-        <div class="col-md-3">
-          <mat-form-field>
-            <mat-select #fldNovedad placeholder="Tipo de Novedad"
-                formControlName="tnovedad" 
-                (selectionChange)="changeSelectionValue('tnovedad',fldNovedad.value)" >
-              <mat-option *ngFor="let item of novedadOptList" 
-                [value]="item.val" >{{ item.label }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-7">
-          <mat-form-field>
-            <input matInput formControlName="novedad" placeholder="Novedad - Observación " >
-          </mat-form-field>
-        </div>
-        </ng-container>
-
-      </div>
     </ng-container>
-
-    </div>
-    ---------->
-
-    
 
     <div class="row" >
       <div class="col">
@@ -341,6 +294,7 @@
     </div>
 
     <hr>
+    <ng-container *ngIf="showButtons">
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 
           (click)="onSubmit()"
@@ -353,6 +307,7 @@
           (click)="deleteToken()" >Borrar</button  -->
 
     </div>
+    </ng-container>
 
 </form>
 </mat-card-content>

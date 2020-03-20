@@ -454,6 +454,11 @@ export class SolcovidPageComponent implements OnInit {
         this.asistencia.ndoc = this.nDoc;
         this.asistencia.tdoc = this.tDoc;
 
+        if(this.asistencia.denuncia){
+          this.asistencia.denuncia.dendoc = this.asistencia.denuncia.dendoc ? this.asistencia.denuncia.dendoc : this.asistencia.ndoc;
+          this.asistencia.denuncia.dentel = this.asistencia.denuncia.dentel ? this.asistencia.denuncia.dentel : this.asistencia.telefono;
+        }
+
         this.editAsistencia();
 
       }else {
@@ -620,6 +625,11 @@ export class SolcovidPageComponent implements OnInit {
 
         this.asistencia.ndoc = this.currentPerson.ndoc;
         this.asistencia.tdoc = this.currentPerson.tdoc;
+
+        if(this.asistencia.denuncia){
+          this.asistencia.denuncia.dendoc = this.asistencia.denuncia.dendoc ? this.asistencia.denuncia.dendoc : this.asistencia.ndoc;
+          this.asistencia.denuncia.dentel = this.asistencia.denuncia.dentel ? this.asistencia.denuncia.dentel : this.asistencia.telefono;
+        }
 
         this.loadPersonDataIntoAsistencia(this.asistencia, this.currentPerson );
         this.editAsistencia();

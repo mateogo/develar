@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel, Address } from '../../../../entities/person/person';
 
 import {  Asistencia, 
           ContextoCovid,
+          ContextoDenuncia,
           Locacion,
           Requirente,
           Novedad, 
@@ -94,6 +95,13 @@ export class SolcovidFollowupComponent implements OnInit {
 
   public showViewAlimento = false;
   public showEditAlimento = false;
+
+  public isCovid = false;
+  public isDenuncia = false;
+  public showButtons = false;
+  public tipoEdit = 1;
+
+
 
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
@@ -211,6 +219,7 @@ export class SolcovidFollowupComponent implements OnInit {
       telefono:    [null],
       osocial:     [null],
       osocialTxt:  [null],
+      tipo:        [null],
 
       fiebre:           [null],
       fiebreRB:    [null],
@@ -224,6 +233,13 @@ export class SolcovidFollowupComponent implements OnInit {
       hasContacto:        [null],
       hasEntorno:         [null],
       contexto:           [null],
+
+      denunciante: [null, [this.validateDenunciaFlds(this)]],
+      dendoc:      [null, [this.validateDenunciaFlds(this)]],
+      dentel:      [null, [this.validateDenunciaFlds(this)]],
+      inombre:      [null, [this.validateDenunciaFlds(this)]],
+      iapellido:    [null, [this.validateDenunciaFlds(this)]],
+      islug:        [null, [this.validateDenunciaFlds(this)]],
 
     	street1:            [null],
     	streetIn:           [null],
@@ -246,6 +262,9 @@ export class SolcovidFollowupComponent implements OnInit {
     let locacion = token.locacion || new Locacion();
 		this.barrioList = personModel.getBarrioList(locacion.city);
 		let requirente = token.requeridox || new Requirente()
+    let denunciaCovid = token.denuncia || new ContextoDenuncia();
+    
+    token.tipo = token.tipo || 1;
 
 		form.reset({
 			description: token.description,
@@ -257,6 +276,7 @@ export class SolcovidFollowupComponent implements OnInit {
 
       tdoc:        token.tdoc || requirente.tdoc,
       ndoc:        token.ndoc || requirente.ndoc,
+      tipo:        token.tipo,
  
       telefono:    token.telefono,
       osocial:     token.osocial,
@@ -275,6 +295,13 @@ export class SolcovidFollowupComponent implements OnInit {
       fiebre:             sintomaCovid.fiebre,
       fiebreRB:           sintomaCovid.fiebreRB,
 
+      denunciante:        denunciaCovid.denunciante || requirente.slug || '',
+      dendoc:             denunciaCovid.dendoc || token.ndoc,
+      dentel:             denunciaCovid.dentel || token.telefono,
+      inombre:            denunciaCovid.inombre,
+      iapellido:          denunciaCovid.iapellido,
+      islug:              denunciaCovid.islug,
+
 
     	street1:       locacion.street1,
     	streetIn:      locacion.streetIn,
@@ -290,6 +317,12 @@ export class SolcovidFollowupComponent implements OnInit {
 
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
     this.buildNovedades(token.novedades)
+
+    this.isCovid = token.tipo === 1;
+    this.isDenuncia = token.tipo === 2;
+    this.tipoEdit = token.tipo;
+    this.showButtons = true;
+
 
 		return form;
   }
@@ -343,6 +376,7 @@ export class SolcovidFollowupComponent implements OnInit {
     entity.telefono =   fvalue.telefono;
     entity.osocial =    fvalue.osocial;
     entity.osocialTxt =    fvalue.osocialTxt;
+    entity.tipo =       fvalue.tipo;
 
 		entity.estado = entity.estado || 'activo';
     entity.novedades = novedades || [];
@@ -546,5 +580,24 @@ export class SolcovidFollowupComponent implements OnInit {
 			// this.form.controls['zip'].setValue(zip);
 
 	}
+  private validateDenunciaFlds(that: any): ValidatorFn {
+
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          
+          return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidAge': true} : null
+
+      }) ;
+
+  }
+
+  private validateCovidFlds(that: any): ValidatorFn {
+
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+
+          return !control.value && that.form && that.form.controls['tipo'].value == 1  ?  {'invalidAge': true} : null
+
+      }) ;
+
+  }
 
 }
