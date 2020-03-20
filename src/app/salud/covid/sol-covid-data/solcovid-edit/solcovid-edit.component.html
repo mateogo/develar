@@ -205,7 +205,7 @@
       </div>
       <div class="col-md-2">
         <mat-form-field>
-          <input  matInput  
+          <input  matInput  (blur)="onBlurDenunTel($event)"
                   formControlName="dentel" placeholder="Teléfono" >
         </mat-form-field>
       </div>

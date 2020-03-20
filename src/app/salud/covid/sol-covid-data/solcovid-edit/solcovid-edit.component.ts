@@ -341,6 +341,7 @@ export class SolcovidEditComponent implements OnInit {
   private validateDenunciaFlds(that: any): ValidatorFn {
 
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          console.log('ValidDenunciaFlds')
           
           return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidAge': true} : null
 
@@ -383,6 +384,12 @@ export class SolcovidEditComponent implements OnInit {
   public onBlurTel(e){
     this.form.get('dentel').setValue(this.form.get('telefono').value);
   }
+
+  public onBlurDenunTel(e){
+    let tel = this.form.get('telefono').value;
+    if(!tel) this.form.get('telefono').setValue(this.form.get('dentel').value);
+  }
+
   public changeTipo(e){
     this.showButtons = false;
 
