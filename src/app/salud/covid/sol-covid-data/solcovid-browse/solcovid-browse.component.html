@@ -3,7 +3,7 @@
 
 	<div class="novedades-container">
 		<ng-container *ngFor="let step of nextStepOptList" >
-			<button mat-raised-button color="primary" class='button-action'
+			<button mat-raised-button class='button-selector' [ngClass]="getClasses(step)" 
 							(click)='buttonActionEvent($event, step)' >{{ step.label }}
 			</button>
 		</ng-container>

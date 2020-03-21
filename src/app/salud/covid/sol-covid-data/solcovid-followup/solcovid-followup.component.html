@@ -183,11 +183,21 @@
       <div class="col-sm-12 col-md-12">
           <div class="d-flex justify-content-start panel-header">
 
-          <div class="panel-header-text">{{ novedadesTitle }}  :: Agregar nueva</div>
-          <div class="panel-header-control" ><span 
-            (click)='addNovedad()' title="Agregar Novedad">
-            <i [class]="'fas fa-plus'" 
-              aria-hidden="true"></i></span></div>
+          <div class="panel-header-text">{{ novedadesTitle }} Aregar: </div>
+
+          <badge class="badge-style"
+            [size]="'large'"
+            (click)='addNovedad()'
+            [customColor]="true? 'rgba(74,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="false">Nueva evolución</badge>
+
+          <badge class="badge-style"
+            [size]="'large'"
+            (click)='noContestaEvent()'
+            [customColor]="true? 'rgba(64,74,130,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="false">No contesta teléfono</badge>
+
+
         </div>
       </div>
     </div>

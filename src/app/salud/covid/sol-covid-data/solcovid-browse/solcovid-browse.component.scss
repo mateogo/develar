@@ -1,6 +1,9 @@
 @import '../../../../../assets/sass/variable';
-$color-destacado: #0645f5;
-$color-button: #3c4e62;
+$color-button: #3a4a62;
+$color-destacado: #5a6a82;
+$color-selected: #5a7a92;
+// $color-destacado: #0645f5;
+// $color-button: #3c4e62;
 
 .panel-header{
 		background-color: #f2eded;
@@ -68,3 +71,39 @@ $color-button: #3c4e62;
 		font-style: italic;
 
 }
+
+
+.button-selector{
+		width: 250px;
+		height: 50px;
+
+		padding: 0.35em 1.2em;
+		border:  0.1em solid #FFFFFF;
+		margin:  0 0.3em 0.3em 0;
+		border-radius: 0.12em;
+		box-sizing: border-box;
+		text-decoration: none;
+		font-family: 'Roboto',sans-serif;
+		font-weight: 300;
+		color: #FFFFFF;
+		text-align: center;
+		transition: all 0.2s;
+		background-color: $color-button;
+
+		&:hover{
+			color: #000000;
+			background-color: $color-destacado;
+		}
+		&.button-selected {
+			background-color: $color-selected;
+
+		}
+
+
+}
+
+
+	// @media #{$max991} {
+	//   left: 0;
+	// }
+

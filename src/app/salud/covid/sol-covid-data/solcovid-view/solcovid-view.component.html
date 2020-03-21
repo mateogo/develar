@@ -1,5 +1,6 @@
 
 <ng-container *ngIf='asistencia.isAsistencia'>
+
 	<p class='text-resaltado'>{{ asistencia.cName }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
 	<p class='text-resaltado'>{{ asistencia.solicitante }}</p>
 	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
@@ -12,6 +13,22 @@
 	<p class='text-normal'>{{ asistencia.description }} </p>
 
 	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
+    <badge class="badge-style"  *ngIf="asistencia.isNuevo"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Nuevo</badge>
+
+    <badge class="badge-style"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,100,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Intervenciones: {{asistencia.intervenciones}}</badge>
+
+    <badge class="badge-style"
+    				[size]="'large'"
+            [customColor]="asistencia.ponderacionColor" 
+            [borderRadius]="true">Ponderación: {{asistencia.costo}}</badge>
+
+
 </ng-container>
 
 <ng-container *ngIf='asistencia.isDenuncia'>
@@ -22,6 +39,17 @@
 	<p class='text-normal'><strong>Dirección del denunciado: </strong>{{ asistencia.locacionTxt }}</p>
 
 	<p class='text-normal'><strong>Denunciante: </strong>{{ asistencia.denunciante }} :: {{ asistencia.dentel }}</p>
+	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
+
+    <badge class="badge-style"  *ngIf="asistencia.isNuevo"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Nuevo</badge>
+
+    <badge class="badge-style"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,100,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Intervenciones: {{asistencia.intervenciones}}</badge>
 
 
 </ng-container>

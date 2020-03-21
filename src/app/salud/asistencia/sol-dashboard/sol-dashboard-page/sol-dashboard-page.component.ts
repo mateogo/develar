@@ -21,6 +21,7 @@ const TOKEN_TYPE = 'asistencia';
 const CREATE = 'create';
 const SEARCH = 'search';
 const NAVIGATE = 'navigate';
+const EVOLUCION = 'evolucion';
 const SEARCH_NEXT = 'search_next';
 const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
 
@@ -110,7 +111,7 @@ export class SolDashboardPageComponent implements OnInit {
 
     // current selector saved in Controller
     this.query = this.dsCtrl.asistenciasSelector;
-    this.fetchSolicitudes(this.query, SEARCH);
+    //this.fetchSolicitudes(this.query, SEARCH);
   }
 
   loadPerson(id){
@@ -305,6 +306,10 @@ export class SolDashboardPageComponent implements OnInit {
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
     if(event.action === NAVIGATE){
         this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento')], {relativeTo: this.route});
+     }
+
+    if(event.action === EVOLUCION){
+      //this.fetchSolicitudes(this.query, SEARCH);
      }
   }
 

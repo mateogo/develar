@@ -390,6 +390,7 @@ export class SolcovidPageComponent implements OnInit {
       this.dsCtrl.manageCovidRecord(event.token).subscribe(t =>{
         if(t){
           this.asistencia = t;
+          this.dsCtrl.openSnackBar('Grabación exitosa', 'Aceptar');
 
 
           if(event.action === EVOLUCION){

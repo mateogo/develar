@@ -39,6 +39,8 @@ export class SolcovidBrowseComponent implements OnInit {
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
 
+  public selected: any;
+
 	public form: FormGroup;
   public currentPerson: Person;
 
@@ -67,8 +69,11 @@ export class SolcovidBrowseComponent implements OnInit {
 
 	buttonActionEvent(e, step){
   	this.formAction = SEARCH;
+
   	this.query = new AsistenciaBrowse();
   	this.query.avance = step.val;
+
+    this.selected = step;
   	this.emitEvent(this.formAction);
 	}
 
@@ -79,7 +84,12 @@ export class SolcovidBrowseComponent implements OnInit {
 
   onCancel(){
   	this.formAction = CANCEL;
+    this.selected = null;
   	this.emitEvent(this.formAction);
+  }
+
+  getClasses(step){
+    return{ 'button-selected': this.selected == step}
   }
 
 
@@ -87,6 +97,8 @@ export class SolcovidBrowseComponent implements OnInit {
   	this.query.searchAction = action;
   	this.updateQuery.next(this.query);
   }
+
+
 
 
 }

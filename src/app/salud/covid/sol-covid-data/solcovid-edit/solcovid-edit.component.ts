@@ -341,7 +341,6 @@ export class SolcovidEditComponent implements OnInit {
   private validateDenunciaFlds(that: any): ValidatorFn {
 
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
-          console.log('ValidDenunciaFlds')
           
           return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidAge': true} : null
 

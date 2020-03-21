@@ -148,6 +148,13 @@ export class SolcovidFollowupComponent implements OnInit {
   	this.emitEvent(this.formAction);
 	}
 
+  noContestaEvent(){
+    this.initForSave(this.form, this.token);
+    this.formAction = EVOLUCION;
+    this.token = AsistenciaHelper.addNoContesta(this.token);
+    this.emitEvent(this.formAction);
+  }
+
   onSubmit(){
   	this.initForSave(this.form, this.token);
   	this.formAction = UPDATE;

@@ -394,6 +394,7 @@ const novedadesTypeOptList: Array<any> = [
         {val: 'enviarsame',   label: 'SAME' },
         {val: 'recomendacion',label: 'Recomendación' },
         {val: 'evolucion',    label: 'Evolución' },
+        {val: 'nocontesta',   label: 'No contesta' },
         {val: 'otros',        label: 'Otros' },
         {val: 'no_definido',  label: 'Sin selección' },
 ];
@@ -514,6 +515,7 @@ const avanceOptList = [
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
       {val: 'esperasame',     label: 'Espera SAME',    slug:'Espera SAME' },
       {val: 'hospitalizado',  label: 'Hospitalizado',  slug:'Hospitalizado' },
+      {val: 'nocontesta',     label: 'No contesta',    slug:'No contesta' },
       {val: 'derivado',       label: 'Derivado',       slug:'Derivado' },
       {val: 'dadodealta',     label: 'Alta médica',    slug:'Alta médica' },
       {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
@@ -587,6 +589,16 @@ const workflow = {
 
   esperamedico: [
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
+      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
+      {val: 'nocontesta',     label: 'No contesta',    slug:'No contesta' },
+      {val: 'enobservacion',  label: 'En observación', slug:'En observación' },
+      {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
+      {val: 'esperasame',     label: 'Espera SAME',    slug:'Espera SAME' },
+  ],
+
+  nocontesta: [
+      {val: 'nocontesta',     label: 'No contesta',    slug:'No contesta' },
+    	{val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
       {val: 'enobservacion',  label: 'En observación', slug:'En observación' },
       {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
@@ -1035,6 +1047,17 @@ export class AsistenciaHelper {
 
 		}
 
+		return token;
+	}
+
+	static addNoContesta(token:Asistencia): Asistencia{
+		let novedades = token.novedades || [];
+		let novedad = new Novedad();
+		novedad.tnovedad = "nocontesta";
+		novedad.novedad  = 'Llamado telefónico: No atendido';
+
+		novedades.push(novedad);
+		token.novedades = novedades;
 		return token;
 	}
 

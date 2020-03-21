@@ -76,6 +76,7 @@ export class SolcovidPanelComponent implements OnInit {
 
   private hasPersonIdOnURL = true;
   private personId: string;
+  private currentAvance: string;
 
   
   //COVID
@@ -112,6 +113,8 @@ export class SolcovidPanelComponent implements OnInit {
 
   ngOnInit() {
     if(this.asistencia){
+      this.currentAvance = this.asistencia.avance;
+
 
       this.showFollowUp = true;
  
@@ -130,20 +133,27 @@ export class SolcovidPanelComponent implements OnInit {
   /**********************/
   manageBase(event: UpdateAsistenciaEvent){
 
+
     this.processRecord(event);
   }
 
   private processRecord(event: UpdateAsistenciaEvent){
+    this.showFollowUp = false;
     if(event.action === UPDATE || event.action === EVOLUCION){
       //
 
       this.dsCtrl.manageCovidRecord(event.token).subscribe(t =>{
         if(t){
           this.asistencia = t;
+          this.dsCtrl.openSnackBar('Grabación exitosa', 'Aceptar');
 
           this.dsCtrl.createPersonFromAsistencia(t);
 
           this.emitEvent(event);
+
+          if(this.asistencia.avance === this.currentAvance){
+            this.showFollowUp = true;
+          }
         }
 
       });

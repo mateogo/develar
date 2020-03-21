@@ -6,6 +6,8 @@ import {   Asistencia,
           ContextoDenuncia,
           AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
+const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
+
 
 @Component({
   selector: 'solcovid-view',
@@ -32,7 +34,14 @@ export class SolcovidViewComponent implements OnInit {
     let toPrint = new AsistenciaToPrint();
 
     let tipo = token.tipo || 1;
+    let iCount = this.countIntervenciones(token);
 
+    toPrint.isNuevo = (iCount <= 1);
+    toPrint.intervenciones = iCount >= 1 ? iCount - 1: iCount;
+    toPrint.costo = COSTO[this.getPesoAsistencia(token)];
+    toPrint.ponderacionColor = `rgba(${250 - (toPrint.costo * 15)} ,${180 - (toPrint.costo * 15)},150,0.6)`
+
+ 
     if(tipo === 2){
     	toPrint.isDenuncia = true;
     	toPrint.isAsistencia = false;
@@ -42,7 +51,7 @@ export class SolcovidViewComponent implements OnInit {
     	toPrint.isAsistencia = true;
 
     }
-
+    
     if(covid){
       toPrint.indicacion = covid.indicacion;
       toPrint.fiebreTxt = covid.hasFiebre ? covid.fiebreTxt + ' :: ' + covid.fiebre + 'C' :  covid.fiebreTxt ;
@@ -67,6 +76,13 @@ export class SolcovidViewComponent implements OnInit {
     this.buildDenuncia(toPrint, token);
 
     return toPrint;
+  }
+
+  private countIntervenciones(token: Asistencia):number {
+    let count = token && token.novedades && token.novedades.length;
+    count = count || 0;
+
+    return count;
   }
 
 
@@ -103,6 +119,21 @@ export class SolcovidViewComponent implements OnInit {
     return direccion;
   }
 
+  private getPesoAsistencia(asis: Asistencia): number{
+    let peso = 0;
+    let covid = asis.sintomacovid;
+
+    if( !covid ) return peso;
+    peso += (covid.hasFiebre ? (covid.fiebre > 38 ? 2: 1) : 0);
+    peso += ( covid.hasDifRespiratoria ? 2: 0);
+    peso += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);
+    peso += ( (covid.hasViaje || covid.hasContacto || covid.hasEntorno) ? 3: 0);
+
+    if(peso>8) peso = 8
+
+    return peso;
+  }
+
 
 
 }
@@ -134,6 +165,11 @@ class AsistenciaToPrint {
     inombre: string;
     iapellido: string; 
     islug: string; 
+    intervenciones: number = 0;
+    costo: number = 0;
+    ponderacionColor:string;
+
+    isNuevo:boolean = false;
 
 }
 

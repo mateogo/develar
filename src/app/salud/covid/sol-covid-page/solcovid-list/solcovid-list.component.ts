@@ -13,6 +13,7 @@ import { 	Asistencia,
 					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 const UPDATE =     'update';
+const EVOLUCION =  'evolucion';
 const DELETE =     'delete';
 const TOKEN_TYPE = 'asistencia';
 const NAVIGATE =   'navigate';
@@ -60,6 +61,12 @@ export class SolcovidListComponent implements OnInit {
   		type: TOKEN_TYPE,
   		items: this.items
   	  });
+    } else if(event.action === EVOLUCION){
+      this.updateItems.next({
+      action: EVOLUCION,
+      type: TOKEN_TYPE,
+      items: this.items
+      });
 
   	} else if(event.action === NAVIGATE){
       this.updateItems.next({
