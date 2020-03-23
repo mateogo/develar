@@ -583,6 +583,7 @@ const workflow = {
 
  	denuncia_descartada: [
 			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+      {val: 'denuncia',             label: 'Denuncia recibida',    slug:'Denuncia recibida' },
 			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
   ],
 	

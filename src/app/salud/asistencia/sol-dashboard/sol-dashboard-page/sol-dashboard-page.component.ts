@@ -264,6 +264,7 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   tableAction(action){
+    this.showEditor = false;
 
     let selection = this.dsCtrl.selectionModel;
     let selected = selection.selected as AsistenciaTable[];
@@ -295,12 +296,14 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   private editData(id: string){
-    this.showEditor = false;
     let token = this.asistenciasList.find(t => t._id === id);
 
     if(token){
       this.currentAsistencia = token;
-      this.showEditor = true;
+
+      setTimeout(() =>{
+        this.showEditor = true;
+      }, 300)
     }else {
       this.currentAsistencia = null
     }
