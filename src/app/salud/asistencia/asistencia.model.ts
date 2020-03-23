@@ -190,6 +190,7 @@ export class Asistencia {
 		compName:    string = 'S/Asistencia';
 		compNum:     string = '00000';
 		tipo:        number = 1; // 1: COVID 2:Denuncia
+		prioridad:   number = 2; // 1:baja 2:media 3: alta
 
 		idPerson:    string;
 		ndoc:        string;
@@ -242,6 +243,8 @@ export class AsistenciaTable {
 		estado:      string;
 		avance:      string;
 		ts_alta:     number;
+		prioridad:   string;
+		denuncia:    string;
 
 		covid: string = '';
 		locacion: string ='';
@@ -489,6 +492,7 @@ const urgenciaOptList = [
       {val: 3,  label: 'Alta',  slug:'Urgencia alta' },
 ]
 
+
 const periodoOptList = [
       {val: "UNICO", q:0,  label: 'Única vez', slug:'Entrega única' },
       {val: "3M",    q:3,  label: ' 3 meses',  slug:'Período de validez: 3 meses' },
@@ -506,25 +510,34 @@ const estadosOptList = [
       {val: 'baja',        label: 'Baja',        slug:'Baja' },
 ]
 
+const prioridadOptList = [
+      {val: 3,      label: 'Alta',      slug:'Alta'  },
+      {val: 2,      label: 'Media',     slug:'Media' },
+      {val: 1,      label: 'Baja',      slug:'Baja'  },
+]
+
 const avanceOptList = [
-      {val: 'no_definido',    label: 'Sin selección',  slug:'Sin selección' },
-      {val: 'emitido',        label: 'Emitida',        slug:'Emitida' },
-      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
-      {val: 'enobservacion',  label: 'En observación', slug:'En observación' },
-      {val: 'enaislamiento',  label: 'En aislamiento', slug:'En aislamiento' },
-      {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
-      {val: 'esperasame',     label: 'Espera SAME',    slug:'Espera SAME' },
-      {val: 'hospitalizado',  label: 'Hospitalizado',  slug:'Hospitalizado' },
-      {val: 'nocontesta',     label: 'No contesta',    slug:'No contesta' },
-      {val: 'derivado',       label: 'Derivado',       slug:'Derivado' },
-      {val: 'dadodealta',     label: 'Alta médica',    slug:'Alta médica' },
-      {val: 'fallecido',      label: 'Fallecido',      slug:'Fallecido' },
-      {val: 'anulado',        label: 'Anulado',        slug:'Anulado' },
-      {val: 'denuncia',             label: 'Denuncia',             slug:'Denuncia' },
-			{val: 'denuncia_avisitar',    label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
-			{val: 'denuncia_verificada',  label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
-			{val: 'denuncia_notificada',  label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
-			{val: 'denuncia_descartada',  label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+      {val: 'no_definido',          tipo:0, order:  1, label: 'Sin selección',        slug:'Sin selección' },
+      {val: 'emitido',              tipo:0, order:  2, label: 'Emitida',              slug:'Emitida' },
+
+      {val: 'esperamedico',         tipo:1, order: 11, label: 'Espera médico/a',      slug:'Esepra médico/a' },
+      {val: 'enobservacion',        tipo:1, order: 12, label: 'En observación',       slug:'En observación' },
+      {val: 'enaislamiento',        tipo:1, order: 13, label: 'En aislamiento',       slug:'En aislamiento' },
+      {val: 'esperasame',           tipo:1, order: 14, label: 'Espera SAME',          slug:'Espera SAME' },
+      {val: 'hospitalizado',        tipo:1, order: 15, label: 'Hospitalizado',        slug:'Hospitalizado' },
+      {val: 'derivado',             tipo:1, order: 16, label: 'Derivado',             slug:'Derivado' },
+      {val: 'dadodealta',           tipo:1, order: 17, label: 'Alta médica',          slug:'Alta médica' },
+      {val: 'fallecido',            tipo:1, order: 18, label: 'Fallecido/a',            slug:'Fallecido/a' },
+
+      {val: 'denuncia',             tipo:2, order: 21, label: 'Denuncia',             slug:'Denuncia' },
+			{val: 'denuncia_avisitar',    tipo:2, order: 22, label: 'Denuncia a visitar',   slug:'Denuncia a visitar' },
+			{val: 'denuncia_verificada',  tipo:2, order: 23, label: 'Denuncia Verificada',  slug:'Denuncia Verificada' },
+			{val: 'denuncia_notificada',  tipo:2, order: 24, label: 'Denuncia Notificada',  slug:'Denuncia Notificada' },
+			{val: 'denuncia_descartada',  tipo:2, order: 25, label: 'Denuncia Descartada',  slug:'Denuncia Descartada' },
+
+      {val: 'nocontesta',           tipo:9, order: 91, label: 'No contesta',          slug:'No contesta' },
+      {val: 'descartado',           tipo:9, order: 92, label: 'Descartado',           slug:'Descartado' },
+      {val: 'anulado',              tipo:9, order: 93, label: 'Anulado',              slug:'Anulado' },
 ]
 
 
@@ -536,7 +549,6 @@ const workflow = {
   emitido: [
       {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
       {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
-      {val: 'denuncia',       label: 'Denuncia incumpl Aislamiento', slug:'Denuncia incumpl Aislamiento' },
   ],
 
   descartado: [
@@ -850,6 +862,7 @@ const optionsLists = {
    causa: causasOptList,
    indicaciones: indicacionOptList,
    osocial: obrasSociales,
+   prioridad: prioridadOptList,
 }
 
 
@@ -879,6 +892,12 @@ function expectedQty(type, val){
 		return t ? t.q : 0;
 }
 
+function denunciaToPrint(denuncia: ContextoDenuncia): string{
+	let tx = '';
+	tx += denuncia.islug;
+
+	return tx;
+}
 function covidToPrint(covid: ContextoCovid): string{
 	let tx = '';
 	if(covid.hasFiebre) tx += ':Fie';
@@ -1108,6 +1127,7 @@ export class AsistenciaHelper {
 		token.ts_prog = ts;
 		token.estado = 'activo';
 		token.avance = 'emitido';
+		token.tipo = 1;
 		token.novedades = [ novedad ];
 
 		return token;
@@ -1250,6 +1270,9 @@ export class AsistenciaHelper {
 
 		return list.map(sol => {
 			let td = new AsistenciaTable();
+			let prioridad = sol.prioridad || 2; 
+			td.prioridad = this.getOptionLabel('prioridad', prioridad);
+
 			td.asistenciaId = sol._id;
 			td.compName = sol.compName;
 			td.compNum = sol.compNum;
@@ -1267,8 +1290,11 @@ export class AsistenciaHelper {
 			td.osocial = sol.osocial + '::' + sol.osocialTxt
 			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
 
-			if(sol.sintomacovid){
+			if(sol.sintomacovid && sol.tipo === 1){
 				td.covid = covidToPrint(sol.sintomacovid);
+			}
+			if(sol.denuncia && sol.tipo === 2){
+				td.covid = denunciaToPrint(sol.denuncia);
 			}
 
 			if(sol.locacion){

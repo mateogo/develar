@@ -30,11 +30,12 @@ export class SolcovidBrowseComponent implements OnInit {
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
   public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
-  public avanceOptList = AsistenciaHelper.getOptionlist('avance');
+  public avanceOptList: Array<any> = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
   public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
-  public nextStepOptList =  AsistenciaHelper.getOptionlist('avance');
+
+  public nextStepOptList: Array<any>;
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -59,6 +60,9 @@ export class SolcovidBrowseComponent implements OnInit {
 
 
   ngOnInit() {
+    this.nextStepOptList =  this.avanceOptList.slice(1);
+    console.log('INIT Browse [%s]', this.nextStepOptList.length);
+
     this.sectorOptList.push(
        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }
      );
@@ -89,7 +93,14 @@ export class SolcovidBrowseComponent implements OnInit {
   }
 
   getClasses(step){
-    return{ 'button-selected': this.selected == step}
+    return{
+        'button-emitida':  step.tipo === 0,
+        'button-covid':    step.tipo === 1,
+        'button-denuncia': step.tipo === 2,
+        'button-baja':     step.tipo === 9,
+        'button-selected': this.selected == step,
+
+   }
   }
 
 

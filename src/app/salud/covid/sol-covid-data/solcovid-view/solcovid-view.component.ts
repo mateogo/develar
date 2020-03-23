@@ -18,6 +18,7 @@ export class SolcovidViewComponent implements OnInit {
 	@Input() token: Asistencia;
 
 	public asistencia: AsistenciaToPrint;
+  private prioridad_colors = ['', 'rgba(0,201,0,0.6)', 'rgba(255,189,0,0.9)', 'rgba(255,36,69,0.8)']
 
   constructor() { }
 
@@ -37,6 +38,11 @@ export class SolcovidViewComponent implements OnInit {
     let iCount = this.countIntervenciones(token);
 
     toPrint.isNuevo = (iCount <= 1);
+
+    token.prioridad = token.prioridad || 2;
+    toPrint.prioridad = AsistenciaHelper.getPrefixedOptionLabel('prioridad', 'Prioridad', token.prioridad);
+
+    toPrint.prioridadColor = this.prioridad_colors[token.prioridad]
     toPrint.intervenciones = iCount >= 1 ? iCount - 1: iCount;
     toPrint.costo = COSTO[this.getPesoAsistencia(token)];
     toPrint.ponderacionColor = `rgba(${250 - (toPrint.costo * 15)} ,${180 - (toPrint.costo * 15)},150,0.6)`
@@ -168,6 +174,8 @@ class AsistenciaToPrint {
     intervenciones: number = 0;
     costo: number = 0;
     ponderacionColor:string;
+    prioridadColor: string;
+    prioridad: number = 2;
 
     isNuevo:boolean = false;
 

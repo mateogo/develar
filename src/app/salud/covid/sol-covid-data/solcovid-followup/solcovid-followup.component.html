@@ -178,23 +178,39 @@
       </div>
         
     </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldPrioridad placeholder="Prioridad"
+              [formControl]="form.controls['prioridad']"
+              (selectionChange)="changeSelectionValue('prioridad',fldPrioridad.value)" >
+            <mat-option *ngFor="let item of prioridadOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
 
     <div class="row">
       <div class="col-sm-12 col-md-12">
-          <div class="d-flex justify-content-start panel-header">
+          <div class="d-flex justify-content-start align-items-center panel-header">
 
           <div class="panel-header-text">{{ novedadesTitle }} Aregar: </div>
 
           <badge class="badge-style"
-            [size]="'large'"
+            [size]="'medium'"
             (click)='addNovedad()'
-            [customColor]="true? 'rgba(74,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [arrow]="'right'"
+            [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
             [borderRadius]="false">Nueva evolución</badge>
 
           <badge class="badge-style"
-            [size]="'large'"
+            [size]="'medium'"
             (click)='noContestaEvent()'
-            [customColor]="true? 'rgba(64,74,130,0.6)': 'rgba(255,255,255,0.3)'" 
+            [arrow]="'right'"
+            [customColor]="true? 'rgba(182,137,137,1)': 'rgba(255,255,255,0.3)'" 
             [borderRadius]="false">No contesta teléfono</badge>
 
 

@@ -39,6 +39,8 @@ export class SolcovidEditComponent implements OnInit {
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
+  public prioridadOptList = AsistenciaHelper.getOptionlist('prioridad');
+
   public tcompPersonaFisica = personModel.tipoDocumPF;
   public sexoOptList        = personModel.sexoList;
 
@@ -144,15 +146,15 @@ export class SolcovidEditComponent implements OnInit {
       telefono:    [null, [this.validateCovidFlds(this)]],
       sexo:        [null],
       edad:        [null],
-      tipo:        [null],
-
+      tipo:        [1],
+      prioridad:   [null],
 
       denunciante: [null, [this.validateDenunciaFlds(this)]],
       dendoc:      [null, [this.validateDenunciaFlds(this)]],
       dentel:      [null, [this.validateDenunciaFlds(this)]],
-      inombre:      [null, [this.validateDenunciaFlds(this)]],
-      iapellido:    [null, [this.validateDenunciaFlds(this)]],
-      islug:        [null, [this.validateDenunciaFlds(this)]],
+      inombre:     [null, [this.validateDenunciaFlds(this)]],
+      iapellido:   [null, [this.validateDenunciaFlds(this)]],
+      islug:       [null, [this.validateDenunciaFlds(this)]],
 
       fiebre:           [null],
       fiebreRB:         [null],
@@ -174,7 +176,8 @@ export class SolcovidEditComponent implements OnInit {
   }
 
   private initForEdit(form: FormGroup, token: Asistencia): FormGroup {
-    this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'Nueva asistencia' + token._id
+    this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'NUEVO EVENTO'
+
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let denunciaCovid = token.denuncia || new ContextoDenuncia();
     let requirente = token.requeridox || new Requirente();
@@ -196,6 +199,7 @@ export class SolcovidEditComponent implements OnInit {
       sexo:        token.sexo,
       edad:        token.edad,
       tipo:        token.tipo,
+      prioridad:   token.prioridad || 2,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
@@ -265,10 +269,11 @@ export class SolcovidEditComponent implements OnInit {
 
 	initForSave(form: FormGroup, token: Asistencia): Asistencia {
 		const fvalue = form.value;
+
 		const entity = token;
     const novedades: Novedad[] = fvalue.novedades.map(t => Object.assign({}, t))
-//https://medium.com/better-programming/expressionchangedafterithasbeencheckederror-in-angular-what-why-and-how-to-fix-it-c6bdc0b22787
-//https://www.concretepage.com/angular-material/angular-material-radio-button
+    //https://medium.com/better-programming/expressionchangedafterithasbeencheckederror-in-angular-what-why-and-how-to-fix-it-c6bdc0b22787
+    //https://www.concretepage.com/angular-material/angular-material-radio-button
 		entity.description =  fvalue.description;
 		entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
@@ -283,12 +288,18 @@ export class SolcovidEditComponent implements OnInit {
     entity.edad =       fvalue.edad;
     entity.tipo =       fvalue.tipo;
 
+    entity.prioridad =  fvalue.prioridad;
+
 		entity.estado = entity.estado || 'activo';
     entity.novedades = novedades || [];
 
     entity.sintomacovid = this.buildCovid(fvalue, entity);
     entity.denuncia = this.buildDenuncia(fvalue, entity);
 
+    entity.avance = (entity.avance === 'emitido' && entity.tipo == 2) ? 'denuncia' : entity.avance || 'emitido';
+    entity.avance = (entity.avance === 'denuncia' && entity.tipo == 1) ? 'emitido' : entity.avance || 'emitido';
+
+    
 		return entity;
 	}
 
@@ -298,13 +309,19 @@ export class SolcovidEditComponent implements OnInit {
   }
 
   private buildDenuncia(fvalue, entity: Asistencia): ContextoDenuncia{
-    let denuncia = entity.denuncia || new ContextoDenuncia();
-    denuncia.denunciante =        fvalue.denunciante;
-    denuncia.dendoc =             fvalue.dendoc;
-    denuncia.dentel =             fvalue.dentel;
-    denuncia.inombre =            fvalue.inombre;
-    denuncia.iapellido =          fvalue.iapellido;
-    denuncia.islug =              fvalue.islug;
+    let denuncia;
+
+    if(entity.tipo == 2 ) {
+      denuncia = entity.denuncia || new ContextoDenuncia();
+      denuncia.denunciante =    fvalue.denunciante;
+      denuncia.dendoc =         fvalue.dendoc;
+      denuncia.dentel =         fvalue.dentel;
+      denuncia.inombre =        fvalue.inombre;
+      denuncia.iapellido =      fvalue.iapellido;
+      denuncia.islug =          fvalue.islug;
+    }else{
+      denuncia = entity.denuncia;
+    }
 
     return denuncia;
   }
@@ -342,7 +359,7 @@ export class SolcovidEditComponent implements OnInit {
 
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
           
-          return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidAge': true} : null
+          return !control.value && that.form && that.form.controls['tipo'].value == 2  ?  {'invalidTel': true} : null
 
       }) ;
 
@@ -352,7 +369,7 @@ export class SolcovidEditComponent implements OnInit {
 
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
 
-          return !control.value && that.form && that.form.controls['tipo'].value == 1  ?  {'invalidAge': true} : null
+          return !control.value && that.form && that.form.controls['tipo'].value == 1  ?  {'invalidTel': true} : null
 
       }) ;
 
@@ -392,6 +409,10 @@ export class SolcovidEditComponent implements OnInit {
   public changeTipo(e){
     this.showButtons = false;
 
+    this.form.get('tipo').setValue(e);
+    this.initForSave(this.form, this.token);
+    this.initForEdit(this.form, this.token);
+
     setTimeout(()=> {
       this.tipoEdit = e;
       if(this.tipoEdit === 1){
@@ -404,13 +425,6 @@ export class SolcovidEditComponent implements OnInit {
 
       }
       setTimeout(()=>{
-        // if(this.tipoEdit === 2){
-        //   this.isDenuncia = true
-
-        // }else{
-        //   this.isCovid = true;
-
-        // }
 
         this.showButtons = true;
 

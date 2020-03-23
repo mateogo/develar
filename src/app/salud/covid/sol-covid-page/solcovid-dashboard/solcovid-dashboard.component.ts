@@ -162,15 +162,25 @@ export class SolcovidDashboardComponent implements OnInit {
     let ts_now = Date.now();
 
     records.sort((fel: Asistencia, sel: Asistencia)=> {
-      let cfel = this.costo(fel, ts_now);
-      let csel = this.costo(sel, ts_now);
+      let fprio = fel.prioridad || 2;
+      let sprio = sel.prioridad || 2;
+
+      if(fprio < sprio ) return 1;
+
+      else if(fprio > sprio ) return -1;
+
+      else{
+        let cfel = this.costo(fel, ts_now);
+        let csel = this.costo(sel, ts_now);
+
+        if(cfel < csel ) return 1;
+
+        else if(cfel > csel) return -1;
+
+        else return 0;
+      }
 
 
-      if(cfel < csel ) return 1;
-
-      else if(cfel > csel) return -1;
-
-      else return 0;
     });
   }
 
@@ -186,7 +196,7 @@ export class SolcovidDashboardComponent implements OnInit {
     let peso = 0;
     let covid = asis.sintomacovid;
 
-    if( !covid ) return peso;
+    if( !covid || asis.tipo === 2) return peso;
     peso += (covid.hasFiebre ? (covid.fiebre > 38 ? 2: 1) : 0);
     peso += ( covid.hasDifRespiratoria ? 2: 0);
     peso += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);

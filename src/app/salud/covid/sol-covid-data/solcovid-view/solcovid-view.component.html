@@ -28,6 +28,11 @@
             [customColor]="asistencia.ponderacionColor" 
             [borderRadius]="true">Ponderación: {{asistencia.costo}}</badge>
 
+    <badge class="badge-style"
+                    [size]="'large'"
+            [customColor]="asistencia.prioridadColor" 
+            [borderRadius]="true">{{asistencia.prioridad}}</badge>
+
 
 </ng-container>
 
@@ -50,6 +55,11 @@
     				[size]="'large'"
             [customColor]="true? 'rgba(84,100,150,0.6)': 'rgba(255,255,255,0.3)'" 
             [borderRadius]="true">Intervenciones: {{asistencia.intervenciones}}</badge>
+
+    <badge class="badge-style"
+                    [size]="'large'"
+            [customColor]="asistencia.prioridadColor" 
+            [borderRadius]="true">{{asistencia.prioridad}}</badge>
 
 
 </ng-container>

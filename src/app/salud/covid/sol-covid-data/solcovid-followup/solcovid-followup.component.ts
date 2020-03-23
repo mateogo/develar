@@ -84,6 +84,7 @@ export class SolcovidFollowupComponent implements OnInit {
   public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
   public tcompPersonaFisica = personModel.tipoDocumPF;
   public osocialOptList = AsistenciaHelper.getOptionlist('osocial');
+  public prioridadOptList = AsistenciaHelper.getOptionlist('prioridad');
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -227,6 +228,7 @@ export class SolcovidFollowupComponent implements OnInit {
       osocial:     [null],
       osocialTxt:  [null],
       tipo:        [null],
+      prioridad:   [null],
 
       fiebre:           [null],
       fiebreRB:    [null],
@@ -284,7 +286,8 @@ export class SolcovidFollowupComponent implements OnInit {
       tdoc:        token.tdoc || requirente.tdoc,
       ndoc:        token.ndoc || requirente.ndoc,
       tipo:        token.tipo,
- 
+      prioridad:   token.prioridad || 2,
+
       telefono:    token.telefono,
       osocial:     token.osocial,
       osocialTxt:  token.osocialTxt,
@@ -382,8 +385,9 @@ export class SolcovidFollowupComponent implements OnInit {
     entity.ndoc =       fvalue.ndoc;
     entity.telefono =   fvalue.telefono;
     entity.osocial =    fvalue.osocial;
-    entity.osocialTxt =    fvalue.osocialTxt;
+    entity.osocialTxt = fvalue.osocialTxt;
     entity.tipo =       fvalue.tipo;
+    entity.prioridad =  fvalue.prioridad;
 
 		entity.estado = entity.estado || 'activo';
     entity.novedades = novedades || [];

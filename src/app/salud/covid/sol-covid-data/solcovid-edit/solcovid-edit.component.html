@@ -19,11 +19,11 @@
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===1" 
                 (change)='changeTipo(1)'
-                value="1">Asistencia/ consulta médica COVID</mat-radio-button>
+                [value]="1">Asistencia/ consulta médica COVID</mat-radio-button>
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===2" 
                 (change)='changeTipo(2)'
-                value="2">Denuncia violación de aislamiento</mat-radio-button>
+                [value]="2">Denuncia violación de aislamiento</mat-radio-button>
         </mat-radio-group>
       </div>
 
@@ -230,14 +230,16 @@
       </div>
 
     </div>
+
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-9">
         <mat-form-field>
           <textarea  matInput  
                   formControlName="islug" placeholder="Descripción de la denuncia" ></textarea>
         </mat-form-field>
       </div>
     </div>
+
     <hr>
     </ng-container>
 

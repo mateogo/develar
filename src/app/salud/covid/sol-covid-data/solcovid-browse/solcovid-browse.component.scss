@@ -1,7 +1,14 @@
 @import '../../../../../assets/sass/variable';
-$color-button: #3a4a62;
+$color-button:   #3a4a62;
+$color-emitida:  #3a4a62;
+$color-covid:    #3a607f;
+$color-denuncia: #6f5689;
+$color-baja:     #b65689;
+
+
+
 $color-destacado: #5a6a82;
-$color-selected: #5a7a92;
+$color-selected: #5a9aa2;
 // $color-destacado: #0645f5;
 // $color-button: #3c4e62;
 
@@ -93,6 +100,22 @@ $color-selected: #5a7a92;
 		&:hover{
 			color: #000000;
 			background-color: $color-destacado;
+		}
+		&.button-emitida {
+			background-color: $color-emitida;
+
+		}
+		&.button-covid {
+			background-color: $color-covid;
+
+		}
+		&.button-denuncia {
+			background-color: $color-denuncia;
+
+		}
+		&.button-baja {
+			background-color: $color-baja;
+
 		}
 		&.button-selected {
 			background-color: $color-selected;

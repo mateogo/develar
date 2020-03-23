@@ -13,8 +13,8 @@
     <span style="margin: 0 15px 0 15px;" >
       <small>{{ getLabel(selectedAction, actionList, 'Seleccionado: ') }}</small></span>
 
-    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Autorizar solicitudes" 
-        (click)='triggerAction("autorizar")'  >
+    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Ver EVENTO" 
+        (click)='triggerAction("editar")'  >
         <i class='fas fa-pencil-alt'></i></button>
 
     <button mat-button color="accent" title="Limpiar lista de items inspeccionados"
@@ -58,8 +58,13 @@
       <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="prioridad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.prioridad}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="personSlug">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Persona </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> PersonA</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.personSlug}} </mat-cell>
     </ng-container>
 

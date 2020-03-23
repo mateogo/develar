@@ -81,14 +81,14 @@ const removeRelation = {
   styleUrls: ['./sol-list-table.component.scss']
 })
 export class SolListTableComponent implements OnInit {
-  @Input() public displayedColumns =  ['select', "compNum", "avance", "personSlug", "fecomp_txa", "covid", "locacion", "osocial"];
+  @Input() public displayedColumns =  ['select', "compNum", "avance", "prioridad", "personSlug", "fecomp_txa", "covid", "locacion", "osocial"];
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "personId", "personSlug", "fecomp_tsa", "fecomp_txa", "covid", "action", "slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta", "fe_visita", "fe_visita_ts", "ruta", "trabajador", "trabajadorId"];
+  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "personSlug", "fecomp_tsa", "fecomp_txa", "covid", "action", "slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta", "fe_visita", "fe_visita_ts", "ruta", "trabajador", "trabajadorId"];
 
   private table_columns_sel = {
     'select':     false,
@@ -106,6 +106,7 @@ export class SolListTableComponent implements OnInit {
     'sector':     false,
     'estado':     false,
     'avance':     false,
+    'prioridad':  false,
     'ts_alta':    false,
     'fe_visita':  false,
     'ruta':       false,
@@ -267,6 +268,7 @@ export class TableDataSource extends DataSource<any> {
         case 'sector':        [propertyA, propertyB] = [a.sector, b.sector]; break;
         case 'compNum':       [propertyA, propertyB] = [a.asistenciaId, b.asistenciaId]; break;
         case 'action':        [propertyA, propertyB] = [a.action, b.action]; break;
+        case 'prioridad':     [propertyA, propertyB] = [a.prioridad, b.prioridad]; break;
         case 'slug':          [propertyA, propertyB] = [a.slug, b.slug]; break;
         case 'fecomp_txa':    [propertyA, propertyB] = [a.fecomp_tsa, b.fecomp_tsa]; break;
         case 'avance':        [propertyA, propertyB] = [a.avance, b.avance]; break;

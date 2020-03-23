@@ -44,6 +44,7 @@ export class SolDashboardPageComponent implements OnInit {
   public showData =  false;
 	public showTable = false;
   public showGrid =  true;
+  public showEditor = false;
 
   public renderMap = false;
   public zoom = 15;
@@ -153,8 +154,10 @@ export class SolDashboardPageComponent implements OnInit {
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
+        
+        let ts_now = Date.now();
 
-        this.sortProperly(this.asistenciasList);
+        this.sortProperly(this.asistenciasList, ts_now);
 
         this.dsCtrl.updateTableData();
 
@@ -171,19 +174,28 @@ export class SolDashboardPageComponent implements OnInit {
 
   }
 
-  private sortProperly(records: Asistencia[]){
-    let ts_now = Date.now();
+  private sortProperly(records: Asistencia[], ts_now: number){
 
     records.sort((fel: Asistencia, sel: Asistencia)=> {
-      let cfel = this.costo(fel, ts_now);
-      let csel = this.costo(sel, ts_now);
+      let fprio = fel.prioridad || 2;
+      let sprio = sel.prioridad || 2;
+
+      if(fprio < sprio ) return 1;
+
+      else if(fprio > sprio ) return -1;
+
+      else{
+        let cfel = this.costo(fel, ts_now);
+        let csel = this.costo(sel, ts_now);
+
+        if(cfel < csel ) return 1;
+
+        else if(cfel > csel) return -1;
+
+        else return 0;
+      }
 
 
-      if(cfel < csel ) return 1;
-
-      else if(cfel > csel) return -1;
-
-      else return 0;
     });
   }
 
@@ -199,7 +211,7 @@ export class SolDashboardPageComponent implements OnInit {
     let peso = 0;
     let covid = asis.sintomacovid;
 
-    if( !covid ) return peso;
+    if( !covid || asis.tipo === 2) return peso;
     peso += (covid.hasFiebre ? (covid.fiebre > 38 ? 2: 1) : 0);
     peso += ( covid.hasDifRespiratoria ? 2: 0);
     peso += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);
@@ -228,19 +240,6 @@ export class SolDashboardPageComponent implements OnInit {
     }
   }
 
-  //deprecated
-  fetchAsistenciasList(){ 
-    this.asistenciasList = [];
-    let query = {};
-
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length) this.asistenciasList = list;
-
-      this.itemsFound = true;
-  		this.showData = true;
-    })
-  }
-
 
   updateItem(event: UpdateAsistenciaEvent){
     if(event.action === UPDATE){
@@ -265,23 +264,46 @@ export class SolDashboardPageComponent implements OnInit {
   }
 
   tableAction(action){
-    // let selection = this.dsCtrl.selectionModel;
-    // let selected = selection.selected as AsistenciaTable[];
 
-    // if(action === 'autorizar'){
-    //   selected.forEach(t =>{
-    //     this.dsCtrl.updateAvanceAsistencia('autorizado', t.asistenciaId);
-    //   })
-    // }
+    let selection = this.dsCtrl.selectionModel;
+    let selected = selection.selected as AsistenciaTable[];
 
-    // if(action === 'editarencuestas'){
-    //   //
+    if(action === 'autorizar'){
+      selected.forEach(t =>{
+        this.dsCtrl.updateAvanceAsistencia('autorizado', t.asistenciaId);
+      })
+    }
 
-    // }
+    if(action === 'editar'){
+      let eventToEdit = selected && selected.length && selected[0];
+
+      if(eventToEdit){
+        this.editData(eventToEdit.asistenciaId)
+
+      }
+    }
+
+    if(action === 'editarencuestas'){
+      //
+
+    }
 
     setTimeout(()=>{
-      this.fetchSolicitudes(this.query, SEARCH);
+      //this.fetchSolicitudes(this.query, SEARCH);
     },1000)
+
+  }
+
+  private editData(id: string){
+    this.showEditor = false;
+    let token = this.asistenciasList.find(t => t._id === id);
+
+    if(token){
+      this.currentAsistencia = token;
+      this.showEditor = true;
+    }else {
+      this.currentAsistencia = null
+    }
 
   }
 
@@ -302,6 +324,20 @@ export class SolDashboardPageComponent implements OnInit {
     }
 
   }
+  
+  //deprecated
+  // fetchAsistenciasList(){ 
+  //   this.asistenciasList = [];
+  //   let query = {};
+
+  //   this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
+  //     if(list && list.length) this.asistenciasList = list;
+
+  //     this.itemsFound = true;
+  //     this.showData = true;
+  //   })
+  // }
+
 
   updateAsistenciaList(event: UpdateAsistenciaListEvent){
     if(event.action === NAVIGATE){
@@ -311,6 +347,12 @@ export class SolDashboardPageComponent implements OnInit {
     if(event.action === EVOLUCION){
       //this.fetchSolicitudes(this.query, SEARCH);
      }
+  }
+
+  updateCurrentAsistencia(e){
+    this.showEditor = false;
+    this.currentAsistencia = null;
+    this.fetchSolicitudes(this.query, SEARCH);
   }
 
   mapRequest(act:string){
