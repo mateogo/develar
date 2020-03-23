@@ -58,6 +58,16 @@
       <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="faudit_alta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha alta </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.faudit_alta}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="faudit_um">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha ult.modif </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.faudit_um}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="prioridad">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.prioridad}} </mat-cell>

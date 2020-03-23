@@ -81,14 +81,14 @@ const removeRelation = {
   styleUrls: ['./sol-list-table.component.scss']
 })
 export class SolListTableComponent implements OnInit {
-  @Input() public displayedColumns =  ['select', "compNum", "avance", "prioridad", "personSlug", "fecomp_txa", "covid", "locacion", "osocial"];
+  @Input() public displayedColumns =  ['select', "compNum", "avance", "prioridad", "personSlug", "faudit_alta", "covid", "locacion", "osocial"];
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "personSlug", "fecomp_tsa", "fecomp_txa", "covid", "action", "slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta", "fe_visita", "fe_visita_ts", "ruta", "trabajador", "trabajadorId"];
+  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "personSlug","faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "covid", "action", "slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta", "fe_visita", "fe_visita_ts", "ruta", "trabajador", "trabajadorId"];
 
   private table_columns_sel = {
     'select':     false,

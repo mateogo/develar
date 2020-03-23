@@ -251,6 +251,8 @@ export class AsistenciaTable {
 
 
 
+		faudit_alta:  string;
+		faudit_um:    string;
 
 		fe_visita:   string;
 		fe_visita_ts: number;
@@ -1290,6 +1292,8 @@ export class AsistenciaHelper {
 			td.ts_alta = sol.ts_alta;
 			td.osocial = sol.osocial + '::' + sol.osocialTxt
 			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
+			td.faudit_alta = ((new Date(sol.ts_alta)).toString()).substr(0,21);
+			td.faudit_um = ((new Date(sol.ts_prog)).toString()).substr(0,21);
 
 			if(sol.sintomacovid && sol.tipo === 1){
 				td.covid = covidToPrint(sol.sintomacovid);
