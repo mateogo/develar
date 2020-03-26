@@ -2,7 +2,7 @@
 	<p class='text-destacado'>{{ token.fecomp_txa }} {{ token.compName }}: {{ token.compNum }} 
 		 <strong> Beneficiario/a: </strong>{{ token.requeridox.slug }}</p>
 	<p class='text-normal'>
-		<strong>{{ action }}</strong> :: Mov: {{ entrega }} :: {{ kitEntrega }} :: {{ avance }}
+		<strong>{{ action }}</strong> :: Mov: {{ entrega }} :: {{ kitEntrega }} :: {{ avance }} :: {{ deposito }}
 		<ng-container *ngIf='isDeleteable'>
 			<span (click)='deleteVoucher()' title="Anular voucher">
 							<i [class]="'fas fa-trash-alt'"

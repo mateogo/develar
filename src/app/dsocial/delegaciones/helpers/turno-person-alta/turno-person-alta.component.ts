@@ -102,17 +102,17 @@ export class TurnoPersonAltaComponent implements OnInit {
 
     form = this.fb.group({
       tdoc:        [null],
-      ndoc:        [null],
+      ndoc:        [null,[Validators.required]],
 
-    	nombre:             [null],
-    	apellido:           [null],
+    	nombre:             [null, [Validators.required]],
+    	apellido:           [null, [Validators.required]],
 
-      telefono:    [null],
+      telefono:    [null, [Validators.required]],
       osocial:     [null],
       osocialTxt:  [null],
 
 
-    	street1:            [null],
+    	street1:            [null ,[Validators.required]],
     	streetIn:           [null],
     	streetOut:          [null],
     	city:               [null],

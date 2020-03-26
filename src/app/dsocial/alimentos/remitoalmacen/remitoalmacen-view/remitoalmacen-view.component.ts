@@ -28,6 +28,7 @@ export class RemitoalmacenViewComponent implements OnInit {
   public avance;
 	public entrega;
 	public kitEntrega;
+  public deposito;
 
 
 	public items: Array<ItemAlmacen>;
@@ -68,6 +69,7 @@ export class RemitoalmacenViewComponent implements OnInit {
   	this.action = AsistenciaHelper.getOptionLabel('actions', this.token.action);
   	this.entrega = AlimentosHelper.getOptionLabel('tmov', this.token.tmov);
     this.avance = AlimentosHelper.getOptionLabel('avance', this.token.avance);
+    this.deposito = this.token.deposito;
 
     if(!(this.token.avance === 'emitido' && this.token.estado === 'activo'))
       this.isDeleteable = false;

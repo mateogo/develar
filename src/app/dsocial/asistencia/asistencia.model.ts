@@ -1003,7 +1003,6 @@ export class AsistenciaHelper {
 
   static checkVoucherConditions(asistencia: Asistencia, entregas: RemitoAlmacen[] ): any{
   	//ToDo
-  	console.log('checkVou [%s]', entregas && entregas.length)
 
   	let anteriores: RemitoAlmacen[] = [];
   	let valid = {message: 'OK', valid: true};
@@ -1015,7 +1014,6 @@ export class AsistenciaHelper {
   	});
 
   	if(anteriores && anteriores.length){
-  		console.log('validate anteriores')
 
   		valid = validateFlujoEntregas(asistencia, anteriores)
   	}

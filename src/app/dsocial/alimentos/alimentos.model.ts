@@ -96,6 +96,7 @@ export class RemitoalmacenBrowse {
 		estado:      string;
 		avance:      string;
 		fecharef?:   string;
+		justCabecera?: boolean;
 
 		constructor(){
 		}

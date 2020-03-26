@@ -71,6 +71,7 @@ export class TurnoValidateComponent implements OnInit {
 	public gturno: GTurno;
 	public turnoShow = false;
 	public delegacionOptList = AsistenciaHelper.getOptionlist('delegaciones')
+  public direccion;
 
   public hasFailedShow = false;
   public turnoSuccess = false;
@@ -152,7 +153,9 @@ export class TurnoValidateComponent implements OnInit {
   	}
 
   	if(this.hasTurnoAlready){
-  		this.hasFailed('Turnos', 'Ya tiene un turno Asignado', 'Tienes un turno asignado:  ' + this.currentTurno.slug);
+      this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
+      let msj = `Tienes un turno asignado para el ${ this.currentTurno.fe_tx} en ${ this.currentTurno.slug}, sito en ${ this.direccion }`
+  		this.hasFailed('Turnos', 'Ya tiene un turno Asignado', msj);
   		return true;
   	}
 
@@ -220,10 +223,8 @@ export class TurnoValidateComponent implements OnInit {
   	this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
   		if(list && list.length){
   			this.currentTurno = list[0];
-
+        this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
   			this.processRemito()
-
-
 
   		}else{
   			this.hasFailed('Turnos', 'Cupo diario excedido',CUPOS )
@@ -234,11 +235,15 @@ export class TurnoValidateComponent implements OnInit {
 
   		}
 
-
-
-
   	})
+  }
 
+  private fetchDelegacionAddress(val): string {
+    let direccion = '';
+    let token = this.delegacionOptList.find(t => t.val === val);
+    if(token) direccion = token.locacion;
+
+    return direccion;
   }
 
   private processRemito(){

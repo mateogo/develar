@@ -142,6 +142,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
       action:       [null],
       avance:       [null],
       estado:       [null],
+      justCabecera: [null],
       fecharef:     [null],
       fed:          [null],
       feh:          [null]
@@ -155,6 +156,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 		form.reset({
         action:      query.action,
         sector:      query.sector,
+        justCabecera: query.justCabecera,
         estado:      query.estado,
         avance:      query.avance,
         fecharef:    this.fecharef
@@ -178,6 +180,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
 
     entity.fecomp_ts_d =       devutils.dateFromTx(fvalue.fed).getTime();
     entity.fecomp_ts_h =       devutils.dateFromTx(fvalue.feh).getTime();
+    entity.justCabecera =      fvalue.justCabecera;
 
     entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;

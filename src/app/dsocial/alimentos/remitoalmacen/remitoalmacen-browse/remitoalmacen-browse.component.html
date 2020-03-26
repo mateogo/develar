@@ -31,6 +31,16 @@
           <input matInput [formControl]="form.controls['feh']" placeholder="Fecha hasta" >
         </mat-form-field>
       </div>
+
+      <div class="col-md-2 d-flex align-items-center" 
+          title="Seleccione para obtener solo las cabeceras del movimiento">
+          <mat-checkbox 
+                [checked]="form.controls['justCabecera'].value===true"
+                [formControl]="form.controls['justCabecera']" >
+                  exportar sólo las cabeceras</mat-checkbox>
+      </div>
+
+
     </div>
 		<!-- fecomp_txa; action; slug; -->
     <div class="row" >

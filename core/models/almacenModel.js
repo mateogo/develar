@@ -297,6 +297,8 @@ exports.fetchRemitosByPerson = function(personId){
 }
 
 exports.exportarmovimientos = function(query, req, res ){
+    console.log('exportar movimeits')
+    console.dir(query)
     
     if(!query){
       query = {estado: 'activo'}
