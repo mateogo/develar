@@ -25,7 +25,7 @@ import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
-import { Asistencia, Alimento, AsistenciaBrowse,
+import { Asistencia, Alimento, AsistenciaBrowse,Requirente,TurnosAsignados,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
@@ -116,57 +116,6 @@ export class DsocialController {
   }
 
 
-  /***************************/
-  /****** Person EVENTS ******/
-  /***************************/
-  updatePerson(event: UpdatePersonEvent){
-
-    if(event.token === CORE){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-    
-    if(event.token === CONTACT){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === ADDRESS){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-    
-    if(event.token === FAMILY){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === OFICIOS){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === SALUD){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === COBERTURA){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === ENCUESTA){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-    if(event.token === ASSETS){
-      this.upsertPersonCore(event.person._id, event.person);
-    }
-
-
-  }
-
-  upsertPersonCore(id:string, p:any){
-    this.daoService.partialUpdate<Person>('person', id, p).then(person =>{
-      this.updateCurrentPerson(person);
-    })
-
-  }
-
 
   /***************************/
   /******* Seriales *******/
@@ -216,6 +165,29 @@ export class DsocialController {
     return this.daoService.nextSerial<Serial>('serial', serial);
   }
 
+
+  /*********************************/
+  /******* Gturnos ********/
+  /*******************************/
+  fetchTurnoForDelegaciones(gturno: GTurno, person: Person): Observable<TurnosAsignados[]>{
+    let requirente = new Requirente();
+    requirente.slug = person.displayName;
+    requirente.tdoc = person.tdoc;
+    requirente.ndoc = person.ndoc;
+    requirente.id   = person._id;
+    
+    gturno.requeridox = requirente;
+    return this.daoService.processGTurno<TurnosAsignados>('gturno', gturno);
+
+  }
+
+  fetchGTurnosByPerson(person: Person): Observable<TurnosAsignados[]>{
+    let query = {
+      personId: person._id
+    }
+    return this.daoService.search<TurnosAsignados>('gturno', query);
+
+  }
 
 
   /*********************************/
@@ -850,6 +822,62 @@ export class DsocialController {
   }
 
   /***************************/
+  /****** Person EVENTS ******/
+  /***************************/
+  updatePerson(event: UpdatePersonEvent){
+
+    if(event.token === CORE){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+    
+    if(event.token === CONTACT){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ADDRESS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+    
+    if(event.token === FAMILY){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === OFICIOS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === SALUD){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === COBERTURA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ENCUESTA){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+    if(event.token === ASSETS){
+      this.upsertPersonCore(event.person._id, event.person);
+    }
+
+
+  }
+
+  upsertPersonCore(id:string, p:any){
+    this.daoService.partialUpdate<Person>('person', id, p).then(person =>{
+      this.updateCurrentPerson(person);
+    })
+
+  }
+
+  updatePersonPromise(id:string, p:Person): Promise<Person>{
+    return this.daoService.partialUpdate<Person>('person', id, p)
+  }
+
+
+  /***************************/
   /******* Person *******/
   /***************************/
   /**
@@ -1114,6 +1142,9 @@ export class DsocialController {
         return ATTENTION_ROUTE;
 
       }else if (sector === 'subsidios'){
+        return ATTENTION_ROUTE;
+
+      }else if (sector === 'altaweb'){
         return ATTENTION_ROUTE;
 
       }else if (sector === 'direccion'){
@@ -1391,3 +1422,14 @@ class UserToken {
   userCommunity: Community;
   data: User;
 }
+
+class GTurno {
+  agenda ='ALIM:DEL';
+  lugar =  'MUNI';
+  lugarId: string;
+  fecha: string;
+  qty = 1;
+  dry = true;
+  requeridox: Requirente;
+}
+

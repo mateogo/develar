@@ -192,7 +192,7 @@ export class RecepcionPageComponent implements OnInit {
       if(list && list.length) {
         this.asistenciasList = AsistenciaHelper.asistenciasSortProperly(list);
 
-        this.lastAsistencia = list[list.length - 1]
+        this.lastAsistencia = list[0]
         this.hasAsistencias = true;
         this.canIssueVoucher = false;
 
@@ -211,7 +211,7 @@ export class RecepcionPageComponent implements OnInit {
     if(this.activeAsistenciasList && this.activeAsistenciasList.length) {
       this.hasActiveAsistencias = true;
       this.canIssueVoucher = true;
-      this.lastAsistencia = this.activeAsistenciasList[this.activeAsistenciasList.length - 1]
+      this.lastAsistencia = this.activeAsistenciasList[0]
     }
   }
 
@@ -270,7 +270,6 @@ export class RecepcionPageComponent implements OnInit {
   }
 
   processTurno(priority: PriorityToken){
-    console.log('processTurno: [%s]', priority)
     if(priority.action === "update"){
       this.peso = priority.prioridad;
       this.createNuevoTurno();

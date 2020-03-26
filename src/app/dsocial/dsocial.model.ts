@@ -19,6 +19,8 @@ export interface SectorAtencion {
 
 const asistenciaBlackList = [
 	{val: 'asisnacional:pnsa',  type:'asisnacional', tingreso:'pnsa', action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'auh:auh',            type:'auh',          tingreso:'auh', action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'ahu:talimentar',     type:'auh',          tingreso:'talimentar', action: 'alimentos',  slug:'No entrega alimentos' },
 ]
 
 function isInAsistenciaBlackList(token, action){
@@ -41,6 +43,7 @@ export const sectores: SectorAtencion[] = [
 			{val:'referentebarrial',   serial:'referentebarrial',   label: 'Referente Barrial',   style: {'background-color': "#f2dded"}},
 			{val:'cimientos',    serial:'cimientos',   label: 'Envión-Cimientos',  style: {'background-color': "#f2dded"}},
 			{val:'subsidios',    serial:'subsidios',   label: 'Subsidios',  style: {'background-color': "#f2dded"}},
+			{val:'altaweb',      serial:'tsocial',     label: 'Alta Web',   style: {'background-color': "#f2dded"}},
 			{val:'direccion',    serial:'direccion',   label: 'Atención Especial', style: {'background-color': "#f2dded"}},
 	];
 

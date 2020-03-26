@@ -945,6 +945,22 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
+  {
+    title: 'Entrega en delegaciones',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Alta de turno',
+        routing: '/dsocial/gestion/registro'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
 
   {
     title: 'Comunidades',

@@ -1,0 +1,52 @@
+<mat-card>
+	<mat-card-content>
+		<ng-container *ngIf='firstStep'>
+			<div id='items' class="row">
+				<div class='col-md-12 item'>
+
+					<ng-container *ngIf='!showLogin'>
+			    	<a role="button" title="{{nodes[0].linkTo}}" href="#" 
+			       		(click)="openLoginPanel($event, 0, nodes[0])">
+			       <img class='item-image' src='{{ nodes[0].imageUrl }}'></a>
+			    </ng-container>
+
+					<ng-container *ngIf="showLogin">
+						<div class="d-flex justify-content-center align-items-center">
+							<turno-documento [target]='target' (event)="documentEvent($event)"></turno-documento>
+						</div>
+					</ng-container>
+
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-container *ngIf='coreDataStep'>
+			<div id='items' class="row">
+				<div class='col-md-12 item'>
+
+					<ng-container *ngIf="!showPersonEditor">
+							<turno-validate 
+										[person]='person' 
+										(updateToken)=validatePersonEvent($event)></turno-validate>
+					</ng-container>
+
+					<ng-container *ngIf="showPersonEditor">
+						<turno-person-alta 	
+														(updateToken)=altaPersonEvent($event)
+														[token]='person' ></turno-person-alta>
+
+					</ng-container>
+
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf='validateConditionsStep'>
+			<div id='items' class="row">
+				<div class='col-md-12 item'>
+					<h4>Nos contactaremos contigo a la brevedad para perfeccionar el alta</h4>
+				</div>
+			</div>
+		</ng-container>
+
+	</mat-card-content>
+</mat-card>

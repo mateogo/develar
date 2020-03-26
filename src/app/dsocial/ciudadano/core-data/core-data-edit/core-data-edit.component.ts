@@ -215,6 +215,7 @@ export class CoreDataEditComponent implements OnInit {
 
     entity.ecivil =       fvalue.ecivil;
     entity.sexo =         fvalue.sexo;
+    entity.estado = 'activo';
 
 		return entity;
 	}

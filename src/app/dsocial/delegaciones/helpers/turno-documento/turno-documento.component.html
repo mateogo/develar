@@ -1,0 +1,43 @@
+<mat-card class="mat-elevation-z8 custom-table">
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div class="container content-box">
+      <h3> {{ text.h1 }} </h3>
+      <p>  {{ text.p1 }} </p>
+      <p>  {{ text.p2 }} </p>
+
+      <!---tdoc; ndoc; provisorio; --->
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <mat-form-field>
+            <mat-select #fldTdoc [formControl]="form.controls['tdoc']"
+              (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+              <mat-option *ngFor="let item of tcompPersonaFisica" 
+                          [value]="item.val">{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 col-md-8">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['ndoc']" 
+                  placeholder="Número documento">
+            <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <div class="additional-info">
+        <button mat-raised-button color="primary"
+            (click)="onSubmit()"
+            [disabled]="!form.valid">Siguiente</button>
+
+        <button mat-button type="button" color="accent" 
+                (click)="cancel()">Cancelar</button>
+      </div>
+
+    </div>
+    </form>
+  </mat-card-content>
+</mat-card>

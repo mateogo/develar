@@ -1,0 +1,118 @@
+<mat-card >
+<mat-card-content>
+<p class="text-destacado">El número de documento {{ ndoc }} no figura en nuestros registros.</p>
+<p class="text-normal">Si el número ingresado es incorrecto, cliqueá CANCELAR más abajo e intentá nuevamente</p>
+<hr>
+<p class="text-destacado">Solicitud de alta en el padrón de beneficiarios</p>
+<p class="text-normal"></p>
+<div class="novedades-container">
+  <form [formGroup]="form">
+
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldTdoc placeholder="Tipo de documento" 
+            [formControl]="form.controls['tdoc']"
+            (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+            <mat-option *ngFor="let item of tcompPersonaFisica" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 col-md-2">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
+        </mat-form-field>
+      </div>
+
+
+    </div>
+
+
+
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
+
+    <!---street1;  street2; --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['street1']" placeholder="Calle número" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!---street1;  street2; --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['streetIn']" placeholder="Entre calle (o esquina con...)" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['streetOut']" placeholder="...y calle" >
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <!--- city; barrio; zip;--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCiudad placeholder="Ciudad"
+              [formControl]="form.controls['city']"
+              (selectionChange)="changeCity()" >
+            <mat-option *ngFor="let item of ciudadesList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldbarrio placeholder="Barrio"
+              [formControl]="form.controls['barrio']"
+              (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+            <mat-option *ngFor="let item of barrioList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+        
+    </div>
+    <hr>
+
+      <div class="additional-info">
+        <button mat-raised-button color="primary"
+            (click)="onSubmit()"
+            [disabled]="!form.valid">Aceptar</button>
+
+        <button mat-button type="button" color="accent" 
+                (click)="onCancel()">CANCELAR</button>
+      </div>
+
+  </form>
+</div>
+</mat-card-content>
+</mat-card>

@@ -66,6 +66,12 @@ export class DaoService {
         dashboardURL: 'api/asistencias/tablero',
         nextItemURL:  'api/asistencias/nextitem'
       },
+      gturno:{
+        backendURL:   'api/turnosasignados',
+        searchURL:    'api/turnosasignados/search',
+        dashboardURL: 'api/turnosasignados/tablero',
+        nuevoturnoURL:  'api/turnosasignados/nuevoturno'
+      },
       asisprevencion:{
         backendURL:   'api/asisprevencion',
         searchURL:    'api/asisprevencion/search',
@@ -309,6 +315,14 @@ export class DaoService {
     return this.http
                .post<T>(url, JSON.stringify(entity), {headers: this.headers, params: params})
   }
+
+  processGTurno<T>(type:string, entity): Observable<T[]> {
+    let url = `${this.dao[type].nuevoturnoURL}`;
+
+    return this.http
+               .post<T[]>(url, JSON.stringify(entity), {headers: this.headers})
+  }
+
 
 
   fetch<T>(type:string, searchUrl:string,  query): Observable<T[]> {

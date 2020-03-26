@@ -108,7 +108,6 @@ export class AuditMemberComponent implements OnInit {
 
   	this.dsCtrl.fetchPersonByQuery(query).subscribe(list => {
   		if(list && list.length){
-  			console.log('fetchPersonByQuery[%s] [%s]', list.length, list[0].displayName);
 
   			list.forEach(person_locacion =>{
   				this.locationList.push(this.familyTokenFromPerson(person_locacion, person))
@@ -126,7 +125,6 @@ export class AuditMemberComponent implements OnInit {
 
   	this.dsCtrl.fetchPersonByQuery(query).subscribe(list => {
   		if(list && list.length){
-  			console.log('fetchPersonByQuery[%s] [%s]', list.length, list[0].displayName);
   			this.parentList = list.map(prnt => this.familyTokenFromPerson(prnt, person));
   			this.isFamilyMember = true;
   		}

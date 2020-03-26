@@ -554,6 +554,7 @@ const followUpOptList: Array<any> = [
         {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
         {val: 'tsocial',       label: 'TS',           slug:'TS' },
         {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
+        {val: 'altaweb',       label: 'AltaWeb',      slug:'AltaWeb' },
  ];
 
 

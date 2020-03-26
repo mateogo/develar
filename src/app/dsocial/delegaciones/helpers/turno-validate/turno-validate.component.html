@@ -1,0 +1,75 @@
+
+<h1>estamos verificando... </h1>
+<turno-person-view 
+			[person]='person' 
+			(updateToken)=viewPersonEvent($event)></turno-person-view>
+
+<ng-container *ngIf='hasFailedShow'>
+	<div id='items' class="row">
+		<div class='col-md-12 item'>
+			<p class="text-resaltado">{{ failedToken.message }}</p>
+
+      <div class="additional-info">
+        	<button mat-raised-button color="primary"
+            (click)="onFailed()"
+            [disabled]="!form.valid">Siguiente</button>
+
+      </div>
+		</div>
+
+
+	</div>
+</ng-container>
+
+<ng-container *ngIf='turnoShow'>
+	<div class="row">
+		<div class='col-md-12'>
+			<p class="text-resaltado">Seleccioná la Delegación Municipal o el Centro de Integración Comunitaria (CIC) más cercana a tu domicilio</p>
+
+		</div>
+
+
+	</div>
+
+
+	<div class="novedades-container">
+	  <form [formGroup]="form">
+
+	    <div class="row">
+	      <div class="col-sm-12 col-md-3">
+	        <mat-form-field>
+	          <mat-select #fldDelegacion placeholder="Delegación" 
+	            [formControl]="form.controls['delegacion']"
+	            (selectionChange)="changeSelectionValue('delegacion',fldDelegacion.value)">
+	            <mat-option *ngFor="let item of delegacionOptList" [value]="item.val">{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+	    </div>
+
+	      <div class="additional-info">
+	        <button mat-raised-button color="primary"
+	            (click)="onFormSubmit()"
+	            [disabled]="!form.valid">Generar Turno</button>
+
+	        <button mat-button type="button" color="accent" 
+	                (click)="onFormCancel()">CANCELAR</button>
+	      </div>
+
+
+
+
+	  </form>
+	</div>
+
+</ng-container>
+
+<ng-container *ngIf='turnoSuccess'>
+	<div class="row">
+		<div class='col-md-12'>
+			<p class="text-resaltado">Tu turno se ha generado con éxito: </p>
+			<p class="text-resaltado">Retiras {{ currentTurno.slug }}</p>
+		</div>
+	</div>
+</ng-container>
+

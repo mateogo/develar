@@ -87,6 +87,11 @@ import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alime
 import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
 import { RemitoalmacenBrowseComponent } from './alimentos/remitoalmacen/remitoalmacen-browse/remitoalmacen-browse.component';
 import { AuditMemberComponent } from './auditoria/audit-member/audit-member.component';
+import { RegistroPageComponent } from './delegaciones/turnos/registro-page/registro-page.component';
+import { TurnoDocumentoComponent } from './delegaciones/helpers/turno-documento/turno-documento.component';
+import { TurnoPersonAltaComponent } from './delegaciones/helpers/turno-person-alta/turno-person-alta.component';
+import { TurnoPersonViewComponent } from './delegaciones/helpers/turno-person-view/turno-person-view.component';
+import { TurnoValidateComponent } from './delegaciones/helpers/turno-validate/turno-validate.component';
 
 @NgModule({
   imports: [
@@ -177,6 +182,11 @@ import { AuditMemberComponent } from './auditoria/audit-member/audit-member.comp
     EntregasExportComponent,
     RemitoalmacenBrowseComponent,
     AuditMemberComponent,
+    RegistroPageComponent,
+    TurnoDocumentoComponent,
+    TurnoPersonAltaComponent,
+    TurnoPersonViewComponent,
+    TurnoValidateComponent,
   ]
 })
 export class DsocialModule { }

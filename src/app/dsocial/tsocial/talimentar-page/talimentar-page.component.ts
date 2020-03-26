@@ -728,7 +728,6 @@ export class TalimentarPageComponent implements OnInit {
 
   isPendiente(benef: BeneficiarioAlimentar){
     let pendiente = true;
-    console.dir(benef)
     
     if(benef && benef.estado && benef.estado === "entregada"){
       pendiente = false;
@@ -790,7 +789,6 @@ export class TalimentarPageComponent implements OnInit {
 
         if(this.isBeneficiarioTarjetaAlimentar(this.coberturaList)){
           if(!this.isPendiente(this.registroBancario)){
-              console.log('Ya retiró')
               this.isBeneficiarioTxt = 'EL BENEFICIARIO/A YA RETIRÓ SU TARJETA ALIMENTAR EL ' + this.registroBancario.fecha;
           }else{
             this.isBeneficiarioTxt = 'Beneficiario/a VALIDADO';

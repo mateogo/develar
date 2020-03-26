@@ -14,6 +14,7 @@ import { AlimentostableroPageComponent } from './tableros/alimentostablero-page/
 import { AuditPageComponent } from './auditoria/audit-page/audit-page.component';
 import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
 import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
+import { RegistroPageComponent } from './delegaciones/turnos/registro-page/registro-page.component';
 
 const routes: Routes = [
 	{
@@ -47,6 +48,10 @@ const routes: Routes = [
 	{
 		path:'validacionentregas',
 		component: AuditPageComponent
+	},
+	{
+		path:'registro',
+		component: RegistroPageComponent
 	},
 	{
 		path:'alimentos/:id',

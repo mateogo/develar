@@ -281,6 +281,44 @@ export class AsistenciaslModel {
 
 }
 
+    // turnoId:    { type: String,  required: true  },
+    // agenda:     { type: String,  required: true  },
+
+    // recurso:    { type: recursoSch, required: true },
+
+    // qty:        { type: Number,  required: false  },
+    // ume:        { type: String,  required: false },
+
+    // estado:     { type: String , required: true, default: 'activo'},
+
+    // fe_tx:      { type: String,  required: true},
+    // fe_ts:      { type: Number,  required: true, default: 0},
+
+    // hora:       { type: Number,  required: false, default: 0},
+
+    // requeridox: { type: requirenteSch, required: true },
+
+
+export class TurnoLugar {
+	lugar: string;
+	lugarId: string;
+
+}
+
+export class TurnosAsignados{
+    turnoId: string;
+    slug: string;
+    agenda: string = 'ALIM:DEL'
+    recurso: TurnoLugar;
+    qty: number = 1;
+    ume: string = "KIT-ALIM-STD";
+    estado: string;
+    fe_tx: string;
+    fe_ts: number;
+    hora: number;
+    requeridox: Requirente;
+} 
+
 
 const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
@@ -350,6 +388,30 @@ const causasOptList: Array<any> = [
         {val: 'otro',           type:'Otro',     label: 'Otro' },
         {val: 'no_definido',    type:'Sin selección', label: 'Sin selección' },
 ];
+
+
+const delegacionesOptList = [
+
+{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',         locacion:	'9 de Julio y Roca',         telefono: '4299-2273'},
+{val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',        locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
+{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',      locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
+{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',            locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
+{val: 'josemarmol',   type: 'delegacion', label: 'Delegación José Marmol',     locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
+{val: 'longchamps',   type: 'delegacion', label: 'Delegación Longchamps',      locacion:	'Av. Longchamps y vías del FFCC', telefono: '4293-4299'},
+{val: 'malvinas',     type: 'delegacion', label: 'Delegación Malvinas Arg',    locacion:	'Policastro 2389',           telefono: '4297-8615'},
+{val: 'minrivadavia', type: 'delegacion', label: 'Delegación Min Rivadavia',   locacion:	'25 de Mayo y Quiroga',      telefono: '4279-0052'},
+{val: 'rcalzada',     type: 'delegacion', label: 'Delegación Rafael Calzada',  locacion:	'Guemes 1996',               telefono: '4291-1666'},
+{val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',  locacion:	'Lirio 423',                 telefono: '4277-5203'},
+{val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',        locacion:	'Salta 1915',                telefono: '4211-1007'},
+{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',    locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
+{val: 'cicburzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco', locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
+
+];
+
+const agendasOptList = [
+ {val: 'ALIM:DEL', label: 'Asis Alimen en Delegaciones'}
+
+]
 
 
 /**
@@ -423,6 +485,10 @@ const sector_actionRelation = {
     {val: 'alimentos',   label: 'Alimentos' },
   ],
 
+  altaweb: [
+    {val: 'alimentos',   label: 'Alimentos' },
+  ],
+
   referentebarrial: [
     {val: 'alimentos',    label: 'Alimentos' },
     {val: 'habitacional', label: 'Habitacional' },
@@ -461,7 +527,8 @@ const sector_actionRelation = {
 const followUpOptList: Array<any> = [  
         {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
         {val: 'tsocial',       label: 'TS',           slug:'TS' },
-        {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
+        {val: 'altaweb',       label: 'Alta vía Web',      slug:'Alta vía Web' },
+        {val: 'habitat',       label: 'HABITAT',      slug:'Habitat' },
  ];
 
 
@@ -755,7 +822,9 @@ const optionsLists = {
    periodo: periodoOptList,
    deposito: entregaDesdeOptList,
    novedades: novedadesTypeOptList,
-   causa: causasOptList
+   causa: causasOptList,
+   delegaciones: delegacionesOptList,
+   agendas: agendasOptList,
 }
 
 
@@ -934,6 +1003,8 @@ export class AsistenciaHelper {
 
   static checkVoucherConditions(asistencia: Asistencia, entregas: RemitoAlmacen[] ): any{
   	//ToDo
+  	console.log('checkVou [%s]', entregas && entregas.length)
+
   	let anteriores: RemitoAlmacen[] = [];
   	let valid = {message: 'OK', valid: true};
 
@@ -944,6 +1015,7 @@ export class AsistenciaHelper {
   	});
 
   	if(anteriores && anteriores.length){
+  		console.log('validate anteriores')
 
   		valid = validateFlujoEntregas(asistencia, anteriores)
   	}

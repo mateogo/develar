@@ -304,6 +304,8 @@ const personSch = new mongoose.Schema({
 
     ts_alta:        { type: Number, required: false },
     ts_umodif:      { type: Number, required: false },
+    estado:         { type: String, required: false, default: 'activo'},
+
 
     user_alta:        { type: String, required: false },
     user_umodif:      { type: String, required: false },

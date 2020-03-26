@@ -134,6 +134,14 @@ const cckGestionRoutes: Routes = [
   }
 ];
 
+const webRoutes: Routes = [
+  {
+    path: 'gestion',
+    component: PresentacionLayoutComponent,
+    children: dsocialModuleRoutes
+  },
+];
+
 const dsocialRoutes: Routes = [
   {
     path: 'gestion',
@@ -271,6 +279,10 @@ const routes: Routes = [
   {
     path: 'dsocial',
     children: dsocialRoutes
+  },
+  {
+    path: 'web',
+    children: webRoutes
   },
   {
     path: 'salud',
