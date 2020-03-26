@@ -208,23 +208,19 @@ function buildQuery(query){
   let comp_range = [];
 
   if(query["compNum_d"]){
-    console.log('compNum_d [%s]', query["compNum_d"])
     comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
   }
     
   if(query["compNum_h"]){
-    console.log('compNum_h [%s]', query["compNum_h"])
     comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
   }
 
   if(query["fecomp_ts_d"]){
-    console.log('fecomp_ts_d [%s]',query["fecomp_ts_d"]);
 
     comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
   }
 
   if(query["fecomp_ts_h"]){
-    console.log('fecomp_ts_h [%s]',query["fecomp_ts_h"]);
 
     comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
   }
@@ -299,7 +295,6 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
-    console.dir(regexQuery)
 
     Record.find(regexQuery)
           .limit(100)
@@ -407,7 +402,6 @@ exports.create = function (record, errcb, cb) {
 
 async function insertAlimentosToDB (asistencia){
 
-  //console.dir(JSON.stringify(asistencia));
   await asistencia.save();
 
 }
@@ -450,7 +444,6 @@ const buildAlimentos = function (token, num, isLast) {
   let observacion = buildObservacion(token);
   let avance = ' ' //ToDo verificar lista de avance
   let fechaPHP = token.entrega.f_entrega;
-  //console.log('buildAlimentos: [%s]', fechaPHP);
   let fechaDate = utils.parsePHPDateStr(fechaPHP);
   let projectedDate = utils.parsePHPDateStr(fechaPHP);
   let isCurrentYear = isThisYear(fechaDate);
@@ -548,7 +541,7 @@ const insertDataFromPerson = function(tree){
 
 const reviewMasterData = function (tree, master){
   let beneficiarios = {};
-  console.log('ReviewMasterData')
+
   for(let token in master){
     let record = master[token];
     if(beneficiarios[record.brownPersonId]){
@@ -612,8 +605,7 @@ const processEachAlimento = function(tree, master, token){
 
         }
     });
-    // console.dir(alimento);
-    // console.log('---------------------------');
+
     populateMasterAlimento(tree, master, alimento);
 }
 
@@ -628,20 +620,19 @@ const processAlimentos = function(tree, data, errcb, cb){
 
     });
 
-    //console.dir(alimentosMaster);
     let beneficiarios = reviewMasterData(tree, alimentosMaster);
     cb({process: "ok"});
-    //insertMasterData(alimentosMaster);
+
     insertDataFromPerson(beneficiarios);
 
 }
 
 
 const processArchive = function(tree, req, errcb, cb){
-    console.log('******  processARCHIVE to BEGIN ********')
+    //console.log('******  processARCHIVE to BEGIN ********')
     //const arch = path.join(config.rootPath, 'public/migracion/alimentos/alimentos.xml');
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentos/alimentos.xml');
-    console.log('******  processARCHIVE OK ********')
+    //console.log('******  processARCHIVE OK ********')
 
 
     function toLowerCase(name){
@@ -655,10 +646,9 @@ const processArchive = function(tree, req, errcb, cb){
 
     let parser = new xml2js.Parser();
 
-    console.log('Ready to begin PROCESS: [%s]', arch);
     fs.readFile(arch, function( err, data){
         if(err){
-            console.dir(err);
+            console.log(err);
 
         }else{
             parser.parseString(data, 
@@ -666,7 +656,6 @@ const processArchive = function(tree, req, errcb, cb){
             function(err, jdata){
                 if(err){
                     console.log('error*************')
-                    console.dir(err);
 
                 }else{
                     console.log('Parser OK');
@@ -684,8 +673,7 @@ const processArchive = function(tree, req, errcb, cb){
 function buildInverteTree(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
     if(personTree){
-      console.log('PersonTree CREATED')
-      //console.dir(personTree);
+
     }
     processArchive(personTree, req, errcb, cb)
   });
@@ -700,7 +688,6 @@ function buildInverteTree(req, errcb, cb){
  * @param errcb
  */
 exports.importalimentos = function (req, errcb, cb) {
-    console.log('Import @496')
     //ToDo: ojo SQL que traiga también las pendientes
 
     buildInverteTree(req, errcb, cb);
@@ -761,20 +748,16 @@ const processToken = function(token, master){
 /*         TABLERO-ASISTENCIA    */
 /********************************/
 const procesTableroAsistencia = function(ptree, entities, timeframe, errcb, cb){
-  console.log('processTableroAsistencia BEGIN [%s]', entities && entities.length);
   let master = {};
 
   entities.forEach(asistencia => {
-    //console.dir(asistencia);
     let fecomp = utils.parseDateStr(asistencia.fecomp_txa)
-    //console.log('asistencia: [%s]  [%s]',asistencia.fecomp_txa, (asistencia.fecomp_tsa == fecomp.getTime()));
     let person = ptree[asistencia.idPerson];
     let fenac = 0;
     let sexo = 'X';
     let ciudad = 'ciudad';
 
     if(person){
-      //console.log('PERSON: [%s]  [%s] [%s] [%s]' , person.displayName, person.fenac, person.fenactx, ("00" + Math.floor(utils.calcularEdad(person.fenac)/10)).substr(-2))
       fenac = person.fenac || 0;
       sexo = person.sexo || 'X';
       if(person.locaciones && person.locaciones.length){
@@ -800,12 +783,10 @@ const procesTableroAsistencia = function(ptree, entities, timeframe, errcb, cb){
     };
 
     token.id = buildId(token,fecomp, timeframe);
-    console.log('MasterTree: [%s] SEM:[%s]', token.id, token.sem)
     processToken(token, master);
 
   })
   // fin del proceso
-  console.log('ready to cb')
   cb(master);
 
 
@@ -815,10 +796,8 @@ const procesTableroAsistencia = function(ptree, entities, timeframe, errcb, cb){
 /********************************/
 
 exports.tablero = function(fecha, errcb, cb) {
-  console.log('****** Build TABLERO BEGIN [%s] *******', fecha);
  
   let time_frame = utils.buildDateFrameForCurrentWeek(fecha);
-  console.dir(time_frame)
 
   let query = {
       fecomp_ts_d: time_frame.begin.getTime(),
@@ -829,7 +808,6 @@ exports.tablero = function(fecha, errcb, cb) {
 
     
   person.buildIdTree().then(pTree =>{
-    console.log('BuildPeronTree fullFilled [%s]', regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
 
@@ -837,7 +815,7 @@ exports.tablero = function(fecha, errcb, cb) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
         }else{
-          console.log('entities [%s]', entities.length)
+
           procesTableroAsistencia(pTree, entities, time_frame, errcb, cb);
         }
     });
@@ -880,14 +858,12 @@ const populateMasterHabitacional = function(person_tree, product_tree, master, r
   let ume = "UN";
   let productId = null;
 
-  //console.dir(record);
 
   if(!record.producto || record.producto === 'NULL' ){
     return;
   }
 
   if(!product_tree[record.producto]){
-    console.log('Product TREE NOT FOUND: [%s]', record.producto)
   
   }else{
     name =        product_tree[record.producto].name || 'producto genérico';
@@ -945,7 +921,7 @@ const populateMasterHabitacional = function(person_tree, product_tree, master, r
       master[record.id] = token;
 
     }else{
-      //console.log('AUXILIO: NO encuentro persona!!! [%s]', record.id)
+
     }
 
   }
@@ -963,8 +939,7 @@ const processEachHabitacional = function(person_tree, product_tree, master, toke
 
         }
     });
-    // console.dir(record);
-    // console.log('---------------------------');
+
     populateMasterHabitacional(person_tree, product_tree, master, record);
 }
 
@@ -1071,9 +1046,6 @@ const buildHabitacional = function (token, num) {
 }
 
 const insertHabitacionalData = function(person_tree, product_tree, habitacionalMaster){
-  console.log('**********************')
-  console.log('Insert DATA')
-  console.log('**********************')
 
   let serialNum = 200000;
   let isLast = false;
@@ -1116,10 +1088,8 @@ const processHabitacionalRecords = function(person_tree, product_tree, data, err
 }
 
 const processHabitacionalArchive = function(person_tree, product_tree, req, errcb, cb){
-    console.log('******  processARCHIVE to BEGIN ********')
     //const arch = path.join(config.rootPath,     'public/migracion/habitacional/habitacional.xml');
     const arch = path.join(config.rootPath,  'www/dsocial/migracion/habitacional/habitacional.xml');
-    console.log('******  processARCHIVE OK ********')
 
 
     function toLowerCase(name){
@@ -1133,10 +1103,9 @@ const processHabitacionalArchive = function(person_tree, product_tree, req, errc
 
     let parser = new xml2js.Parser();
 
-    console.log('Ready to begin PROCESS: [%s]', arch);
     fs.readFile(arch, function( err, data){
         if(err){
-            console.dir(err);
+            console.log(err);
 
         }else{
             parser.parseString(data, 
@@ -1144,10 +1113,8 @@ const processHabitacionalArchive = function(person_tree, product_tree, req, errc
             function(err, jdata){
                 if(err){
                     console.log('error*************')
-                    console.dir(err);
 
                 }else{
-                    console.log('Parser OK');
                     processHabitacionalRecords(person_tree, product_tree, jdata, errcb, cb);
                 }
             });
@@ -1161,12 +1128,11 @@ const processHabitacionalArchive = function(person_tree, product_tree, req, errc
 function buildHabitacionalTree(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
     if(personTree){
-      console.log('PersonTree CREATED')
-      //console.dir(personTree);
+
     }
     product.buildInvertedTree().then(productTree => {
       if(productTree){
-        console.log('ProductTree CREATED')
+
       }
       processHabitacionalArchive(personTree, productTree, req, errcb, cb)
 
@@ -1176,8 +1142,6 @@ function buildHabitacionalTree(req, errcb, cb){
 
 
 exports.importhabitacional = function (req, errcb, cb) {
-    console.log('Import @0811')
-    //ToDo: ojo SQL que traiga también las pendientes
 
     buildHabitacionalTree(req, errcb, cb);
 
@@ -1188,8 +1152,6 @@ exports.importhabitacional = function (req, errcb, cb) {
 /***********************/
 
 const buildSanitarian = function (token, num) {
-
-console.dir(token);
 
   let observacion = buildObservacion(token);
   let avance = 'entregado'; //ToDo verificar lista de 
@@ -1318,9 +1280,6 @@ console.dir(token);
 
 
 const insertSanitarianData = function(person_tree, product_tree, sanitarianMaster){
-  console.log('**********************')
-  console.log('Insert DATA')
-  console.log('**********************')
 
   let serialNum = 300000;
   let isLast = false;
@@ -1386,14 +1345,11 @@ const populateMasterSanitaria = function(person_tree, product_tree, master, reco
   let productId = null;
   let especificacion = record.especificacion || '';
 
-  //console.dir(record);
-
   if(!record.producto || record.producto === 'NULL' ){
     return;
   }
 
   if(!product_tree[record.producto]){
-    console.log('Product TREE NOT FOUND: [%s]', record.producto)
   
   }else{
     name =        product_tree[record.producto].name || 'producto genérico';
@@ -1470,8 +1426,7 @@ const processEachSanitarian = function(person_tree, product_tree, master, token)
 
         }
     });
-    // console.dir(record);
-    // console.log('---------------------------');
+
     populateMasterSanitaria(person_tree, product_tree, master, record);
 }
 
@@ -1493,10 +1448,8 @@ const processSanitarianRecords = function(person_tree, product_tree, data, errcb
 }
 
 const processSanitarianArchive = function(person_tree, product_tree, req, errcb, cb){
-    console.log('******  processARCHIVE to BEGIN ********')
     //const arch = path.join(config.rootPath,        'public/migracion/sanitaria/sanitaria.xml');
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/sanitaria/sanitaria.xml');
-    console.log('******  processARCHIVE OK ********')
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -1508,7 +1461,6 @@ const processSanitarianArchive = function(person_tree, product_tree, req, errcb,
 
     let parser = new xml2js.Parser();
 
-    console.log('Ready to begin PROCESS: [%s]', arch);
     fs.readFile(arch, function( err, data){
         if(err){
             console.dir(err);
@@ -1522,7 +1474,6 @@ const processSanitarianArchive = function(person_tree, product_tree, req, errcb,
                     console.dir(err);
 
                 }else{
-                    console.log('Parser OK');
                     processSanitarianRecords(person_tree, product_tree, jdata, errcb, cb);
                 }
             });
@@ -1534,12 +1485,11 @@ const processSanitarianArchive = function(person_tree, product_tree, req, errcb,
 function buildTreeForSanitarian(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
     if(personTree){
-      console.log('PersonTree CREATED')
-      //console.dir(personTree);
+
     }
     product.buildInvertedTree().then(productTree => {
       if(productTree){
-        console.log('ProductTree CREATED')
+
       }
       processSanitarianArchive(personTree, productTree, req, errcb, cb)
 
@@ -1549,8 +1499,6 @@ function buildTreeForSanitarian(req, errcb, cb){
 
 
 exports.importsanitaria = function (req, errcb, cb) {
-    console.log('Import  SANITARIA @0911')
-    //ToDo: ojo SQL que traiga también las pendientes
 
     buildTreeForSanitarian(req, errcb, cb);
 

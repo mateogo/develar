@@ -96,6 +96,9 @@ export class RegistroPageComponent implements OnInit {
   openLoginPanel(e, i, node){
     e.stopPropagation();
     e.preventDefault();
+
+    if(this.timeOutOfScope()) return;
+
     if(i === 0){
       this.showLogin = true;
     }
@@ -104,6 +107,7 @@ export class RegistroPageComponent implements OnInit {
     }
 
   }
+
 
   altaPersonEvent(e: UpdatePersonEvent) {
     this.personExists = false;
@@ -141,6 +145,24 @@ export class RegistroPageComponent implements OnInit {
       
 
     }
+
+  }
+
+  private timeOutOfScope(): boolean{
+    let ok = false;
+    let today = new Date();
+    let hours = today.getHours();
+    let day = today.getDay()
+
+    console.log('day [%s]   hours[%s]', day, hours)
+    if((hours>=14 || hours <= 8) || (day < 1 || day > 5) ){
+      ok = true;
+
+      this.dsCtrl.openSnackBar('Este espacio queda habilitado de Lunes a Viernes de 8:00 a 14:00hs', 'Cerrar');
+
+    } 
+
+    return ok;
 
   }
 

@@ -368,13 +368,30 @@ const pedidosTypeOptList: Array<any> = [
 ];
 
 const entregaDesdeOptList: Array<any> = [
-        {val: 'galpon',       type:'Galpón',     label: 'Galpón' },
-        {val: 'proveedor',    type:'Proveedor',  label: 'Proveedor' },
-        {val: 'secretaria',    type:'Secretaría',  label: 'Secretaría' },
-        {val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' },
-        {val: 'envio',        type:'Envío domicilio',     label: 'Envío domicilio' },
-        {val: 'otro',         type:'Otro',     label: 'Otro' },
+        {val: 'almacen',      type: 'Galpón',     label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
+				{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',         locacion:	'9 de Julio y Roca',         telefono: '4299-2273'},
+				{val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',        locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
+				{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',      locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
+				{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',            locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
+				{val: 'josemarmol',   type: 'delegacion', label: 'Delegación José Marmol',     locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
+				{val: 'longchamps',   type: 'delegacion', label: 'Delegación Longchamps',      locacion:	'Av. Longchamps y vías del FFCC', telefono: '4293-4299'},
+				{val: 'malvinas',     type: 'delegacion', label: 'Delegación Malvinas Arg',    locacion:	'Policastro 2389',           telefono: '4297-8615'},
+				{val: 'minrivadavia', type: 'delegacion', label: 'Delegación Min Rivadavia',   locacion:	'25 de Mayo y Quiroga',      telefono: '4279-0052'},
+				{val: 'rcalzada',     type: 'delegacion', label: 'Delegación Rafael Calzada',  locacion:	'Guemes 1996',               telefono: '4291-1666'},
+				{val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',  locacion:	'Lirio 423',                 telefono: '4277-5203'},
+				{val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',        locacion:	'Salta 1915',                telefono: '4211-1007'},
+				{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',    locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
+				{val: 'cicburzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco', locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
+
+        {val: 'secretaria',   type:'Secretaría',       label: 'Secretaría'      , locacion: 'erezcano',  telefono: '11 2222 3333'},
+        {val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+        {val: 'envio',        type:'Envío domicilio',  label: 'Envío domicilio' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+
+        {val: 'proveedor',    type:'Proveedor',        label: 'Proveedor'       , locacion: 'erezcano',  telefono: '11 2222 3333'},
+        {val: 'otro',         type:'Otro',             label: 'Otro'            , locacion: 'erezcano',  telefono: '11 2222 3333'},
         {val: 'no_definido',  type:'Sin selección', label: 'Sin selección' },
+
+
 ];
 
 const causasOptList: Array<any> = [

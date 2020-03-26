@@ -32,6 +32,17 @@
         </mat-form-field>
       </div>
 
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-select #fldDepo placeholder="Depósito"
+              [formControl]="form.controls['deposito']"
+              (selectionChange)="changeSelectionValue('deposito',fldDepo.value)" >
+            <mat-option *ngFor="let item of depositoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div class="col-md-2 d-flex align-items-center" 
           title="Seleccione para obtener solo las cabeceras del movimiento">
           <mat-checkbox 

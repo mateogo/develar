@@ -198,34 +198,14 @@ function lookUpByLocationIQ(address, errcb, cb){
 	let path = buildLocationIQQueryPath(location);
 	let url = locationIQHost + path;
 
-	console.log('lookUpByLocationIQ [%s]', location);
-	console.log('URL [%s]', url);
-
-	// geocoder.geocode(location, (err, res)=>{
-	// 	console.log('geocoder cb ********')
-	// 	console.log(err);
-
-	// 	console.log(res);
-
-
-
-	// });
-	// geocoder.geocode(location)
-	// 	.then(function(res){
-	// 		console.log(res);
-
-	// 	})
-	// 	.catch(function(err){
-	// 		console.log(err)
-	// 	})
-
 	request(url, {json: true}, (err,res,body) =>{
-		console.log('** lookUp LocationIQ RESPONSE ****')
+
 		if(err) {
 			console.log(err);
 		}else {
    		cb(decodeLocationIQResponse(body));
-			console.dir(body);
+
+
 		}
 
 	});
@@ -240,11 +220,11 @@ function lookUpByNominatimOldTwo(address, errcb, cb){
 	let url = nominatimHost + path;
 
 	request(url, {json: true}, (err,res,body) =>{
-		console.log('** lookUpNominatim RESPONSE ****')
+
 		if(err) {
 			console.log(err);
 		}else {
-			console.dir(body);
+
 		}
 
 	});
@@ -267,22 +247,6 @@ function lookUpByNominatimOld(address, errcb, cb){
 		const contentType = res.headers['content-type'];
 		let error;
 
-		console.log('** lookUpNominatim RESPONSE ****')
-		console.log(contentType);
-		//console.dir(res);
-
-		// if(statusCode !== 200) {
-		// 	error = new Error('Request failed. \n' + `Status code. ${statusCode}`);
-
-		// } else if(!/^application\/json/.test(contentType)){
-		// 	console.log(contentType);
-		// 	error = new Error('Invalid content-type. \n' + `Expected json, but received. ${contentType}`);
-		// }
-		// if(error){
-		// 	console.error(error.message);
-		// 	res.resume();
-		// 	errcb(error);
-		// }
 		res.setEncoding('utf8');
 		let rawData = '';
 

@@ -61,7 +61,6 @@ const querybase = {
 
 function getQueryBase(machine){
 	let engine = machines.find(x => (x.id === machine));
-	//console.log('getQueryBase: [%s]', machine, engine && engine.cx )
 	if(!engine) engine = defaultMachine;
 	querybase.cx = engine.cx;
 	return querybase;
@@ -98,8 +97,7 @@ exports.gsearch = function(query, opts, errcb, cb){
 
 	request(optionsbase)
 		.then(data => {
-			//console.log('request.then [%s]', (res.json ? 'exists':'no existe'));
-			//console.dir(data);
+
 	  	cb(parseResponse(data, opts));
 		})
 		.catch(err => {

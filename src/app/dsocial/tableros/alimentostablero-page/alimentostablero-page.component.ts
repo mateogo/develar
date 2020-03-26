@@ -154,7 +154,6 @@ export class AlimentostableroPageComponent implements OnInit {
       this.masterData = master;
 
       Object.keys(this.masterData).forEach(t => {
-        // console.dir(t)
         // console.log('Edad [%s] [%s] [%s]', this.masterData[t].edadId, this.masterData[t].sexo, this.masterData[t].cardinal)
         this.tiles.push(this.masterData[t]);
       })
@@ -263,7 +262,6 @@ export class AlimentostableroPageComponent implements OnInit {
     this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
 
     // let sscrp2 = this.dsCtrl.fetchRemitoalmacenDashboard(this.fecharef_date).subscribe(master => {
-    //   console.dir(master);
 
     // })
 

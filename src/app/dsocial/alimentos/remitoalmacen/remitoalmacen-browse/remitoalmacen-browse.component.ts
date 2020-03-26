@@ -142,10 +142,11 @@ export class RemitoalmacenBrowseComponent implements OnInit {
       action:       [null],
       avance:       [null],
       estado:       [null],
+      deposito:     [null],
       justCabecera: [null],
       fecharef:     [null],
-      fed:          [null],
-      feh:          [null]
+      fed:          [null, Validators.required],
+      feh:          [null, Validators.required]
     });
 
     return form;
@@ -158,6 +159,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
         sector:      query.sector,
         justCabecera: query.justCabecera,
         estado:      query.estado,
+        deposito:    query.deposito,
         avance:      query.avance,
         fecharef:    this.fecharef
 		});
@@ -185,6 +187,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
     entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
     entity.estado =       fvalue.estado;
+    entity.deposito =       fvalue.deposito;
     entity.avance =       fvalue.avance;
 
     return entity;

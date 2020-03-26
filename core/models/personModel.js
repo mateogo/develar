@@ -376,7 +376,7 @@ exports.findById = function (id, errcb, cb) {
 
     Person.findById(id, function(err, entity) {
         if (err){
-            //console.log('[%s] findByID ERROR() argument [%s]', whoami, iarguments.length);
+
             err.itsme = whoami;
             errcb(err);
         
@@ -448,14 +448,10 @@ function buildQuery(query){
     }
 
     if(query.list){
-        //console.log('///// buildQuery')
-        //console.log(query.list);
+
         let ids = query.list.split(',');
         let new_ids = ids.map(t => mongoose.Types.ObjectId(t));
-
-        //console.log('build Query [%s]', new_ids && new_ids.length);
         q["_id"] = { $in: new_ids}
-            //db.collection.find( { _id : { $in : [1,2,3,4] } } );
     }
 
     return q;
@@ -1299,8 +1295,7 @@ const buildEncuesta = function(person, token){
     if(!hasEncuesta(token)){
         return;
     }
-    // console.log( '*********Has encuesta***************');
-    // console.log('[%s] [%s] [%s] [%s] ', person.displayName, person.ndoc, token.id45, token.calle);
+
     let address = getAddress(person);
 
     encuesta.id_address = '';
@@ -1390,8 +1385,6 @@ const buildEncuesta = function(person, token){
 ****/
 
 const buildDatosIngresos = function(person, token){
-    // console.log( '************************************')
-    // console.log('== [%s] [%s] [%s] [%s]', person.displayName, token.ingresos, token.obra_social, token.beneficios);
 
     let ingresosList = [];
     let ingreso1, ingreso2, ingreso3, ingreso4, ingreso5, ingreso6;
@@ -1494,9 +1487,7 @@ const buildDatosIngresos = function(person, token){
     }
 
     if(ingresosList.length){
-        // console.log('================================')
-        // console.log('ingresos: [%s]', ingresosList.length);
-        // console.dir(ingresosList);
+
         person.cobertura = ingresosList;
     }else{
         person.cobertura = [];
@@ -1743,14 +1734,14 @@ const buildCoreData = function(person, token){
 async function saveRecord(person, master){
     if(master[person.idbrown]){
         person._id = master[person.idbrown];
-        console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+
         await Person.findByIdAndUpdate(person._id, person, { new: true }).exec();
 
     }else{
         if(person.idbrown){
             master[person.idbrown] = person._id;
         }
-        console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+
         await person.save();
     }
 
@@ -1847,8 +1838,6 @@ const processOnePerson = function(token, master){
         }
 
     });
-    //console.dir(person);
-    //console.log('---------------------------');
 
     insertImportedPerson(person, master);
 
@@ -1871,15 +1860,8 @@ const processImportedPersons = function(data, errcb, cb){
 
 
 const processArchive = function(req, errcb, cb){
-    console.log('******  processARCHIVE to BEGIN ********')
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
     //const arch = path.join(config.rootPath, 'public/migracion/persona/persona.xml');
-    console.log('******  processARCHIVE OK ********')
-
-                // tagNameProcessors: [toUpperCase],
-                // attrNameProcessors: [toUpperCase],
-                // valueProcessors: [toUpperCase],
-                // attrValueProcessors: [toUpperCase]
 
 
     function toLowerCase(name){
@@ -1893,7 +1875,6 @@ const processArchive = function(req, errcb, cb){
 
     let parser = new xml2js.Parser();
 
-    console.log('Ready to begin PROCESS: [%s]', arch);
     fs.readFile(arch, function( err, data){
         if(err){
             console.dir(err);
@@ -1907,10 +1888,9 @@ const processArchive = function(req, errcb, cb){
                     console.dir(err);
 
                 }else{
-                    console.log('Parser OK');
-                    //console.dir(jdata);
                     cb({result: "ok"})
                     processImportedPersons(jdata, errcb, cb);
+
                 }
             });
         }
@@ -1922,12 +1902,11 @@ const processArchive = function(req, errcb, cb){
 
 async function saveAlimentarRecord(person, master){
     if(master[person.ndoc]){
-        //console.log('saveRecord: UPDATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
+
         await Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).exec();
 
     }else{
 
-        //console.log('saveRecord: CREATE person:[%s] [%s] [%s]', person._id, person.nombre, person.apellido)
         await person.save();
     }
 
@@ -2024,29 +2003,23 @@ const processOneAlimentarPerson = function(token, master){
 
     if(master[token.ndoc]){
         person._id = master[token.ndoc]._id;
-
     }
-
 
     buildAlimentarCoreData(person, token);
     buildAlimentarLocaciones(person, token);
     buildAlimentarCobertura(person, token);
 
-
-    //console.log('Persona [%s] [%s] [%s] [%s]', person.displayName, person.nombre, person.apellido, person.ndoc);
-    //console.dir(person.cobertura);
     saveAlimentarRecord(person, master);
 }
 
 
 const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
-    console.log('processAlimentarPersons BEGIN [%s]', personArray && personArray.length);
 
     let existentes = 0;
     personArray.forEach((token, index) => {
 
         if(personMaster[token.ndoc]){
-            console.log('PersonaExistente[%s] [%s] [%s]', token.displayName, personMaster[token.ndoc].displayName, token.ndoc);
+
             existentes += 1;
 
         }else {
@@ -2056,15 +2029,11 @@ const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
 
     });
 
-    console.log('TOTAL EXISTENTES: [%s]', existentes)
-
-
 
 }
 
 
 const processAlimentarArchive = function(master, req, errcb, cb){
-    console.log('******  process ALIMENTAR ARCHIVE to BEGIN ********')
     //deploy
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
 
@@ -2082,12 +2051,6 @@ const processAlimentarArchive = function(master, req, errcb, cb){
     csv({delimiter: ';'})
     .fromFile(arch)
     .then((persons) => {
-        console.log('******  processARCHIVE OK ********')
-
-        // persons.forEach(per => {
-        //     // console.log(" [%s]  [%s]" ,per.displayName, per.ndoc);
-        //     // console.dir(per);
-        // })
                     
         processAlimentarPersons(persons, master, errcb, cb)
         cb({result: "ok"})
@@ -2105,7 +2068,6 @@ const processAlimentarArchive = function(master, req, errcb, cb){
  * @param errcb
  */
 exports.alimentarImport = function (req, errcb, cb) {
-    //console.log('Import @496')
 
     let promise = new Promise((resolve, reject)=> {
         Person.find(null, '_id displayName tdoc ndoc cobertura').lean().then(persons => {
@@ -2126,7 +2088,7 @@ exports.alimentarImport = function (req, errcb, cb) {
     });
 
     promise.then(master => {
-        console.log('PromiseFullfilled!!!!')
+
         processAlimentarArchive(master, req, errcb, cb);
 
     })        
@@ -2145,7 +2107,6 @@ exports.alimentarImport = function (req, errcb, cb) {
  * @param errcb
  */
 exports.import = function (req, errcb, cb) {
-    //console.log('Import @496')
 
     processArchive(req, errcb, cb);
 

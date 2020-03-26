@@ -116,6 +116,10 @@ function buildQuery(query){
       q["sector"] = query['sector'];
   }
 
+  if(query['deposito']){
+      q["deposito"] = query['deposito'];
+  }
+
   if(query['estado']){
       q["estado"] = query['estado'];
   }
@@ -205,7 +209,9 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
-    console.dir(regexQuery);
+    console.dir(query)
+    console.log('justCabecera. [%s]', query.justCabecera === "false")
+
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
@@ -297,8 +303,7 @@ exports.fetchRemitosByPerson = function(personId){
 }
 
 exports.exportarmovimientos = function(query, req, res ){
-    console.log('exportar movimeits')
-    console.dir(query)
+    console.log('exportar movimientos')
     
     if(!query){
       query = {estado: 'activo'}
@@ -312,7 +317,6 @@ exports.exportarmovimientos = function(query, req, res ){
 
 function fetchMovimientos(query, req, res){
     let regexQuery = buildQuery(query)
-    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
@@ -320,7 +324,7 @@ function fetchMovimientos(query, req, res){
             errcb(err);
         }else{
             console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
-            buildExcelStream(entities, req, res)
+            buildExcelStream(entities, query, req, res)
         }
     });
 
@@ -328,7 +332,7 @@ function fetchMovimientos(query, req, res){
 
 }
 
-function buildExcelStream(remanentes, req, res){
+function buildExcelStream(remanentes, query, req, res){
     res.writeHead(200, {
         'Content-Disposition': 'attachment; filename="movimientos_almacen.xlsx"',
         'Transfer-Encoding': 'chunked',
@@ -336,6 +340,8 @@ function buildExcelStream(remanentes, req, res){
     })
     var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
     var worksheet = workbook.addWorksheet('movimientos')
+
+    var justCabecera = query.justCabecera === "true"
 
     
     worksheet.addRow(['Movimientos de Almacén']).commit()
@@ -362,7 +368,7 @@ function buildExcelStream(remanentes, req, res){
         const { tdoc, ndoc, slug:name } = requeridox;
         let requeridoxArr = [ tdoc, ndoc, name];
 
-        if(entregas && entregas.length){
+        if(entregas && entregas.length && !justCabecera){
           entregas.forEach(token => {
             const {code, name, slug, ume, qty} = token
             let itemArr = [code, name, slug, ume, qty];

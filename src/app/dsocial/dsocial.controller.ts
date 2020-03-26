@@ -303,7 +303,6 @@ export class DsocialController {
 
 
     // console.log('export: [%s]', params);
-    // console.dir(params);
 
     const windw = window.open(Url, 'about:blank')
     // const xhr = new XMLHttpRequest();

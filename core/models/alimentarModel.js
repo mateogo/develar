@@ -236,7 +236,7 @@ function initAcumPorDia(beneficiario){
 }
 
 const processAlimentarArchive = function(master, cb){
-    console.log('******  process ALIMENTAR ARCHIVE to BEGIN ********')
+
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
     //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
 
@@ -253,14 +253,11 @@ const processAlimentarArchive = function(master, cb){
     .then((persons) => {
 
         persons.forEach(per => {
-            // console.log(" [%s]  [%s]" ,per.displayName, per.ndoc);
-            // console.dir(per);
 
             master[per['ndoc']] = per;
             master[per['ncuil']] = per;
         })
                     
-        console.log('******  processARCHIVE OK ********')
         cb({process: 'OK'});
 
     });
@@ -274,8 +271,6 @@ async function upsertBeneficiario(beneficiario, today){
     let editEntrega = beneficiario && beneficiario.editEntrega && beneficiario.editEntrega === "1";
 
     let editCaja = beneficiario && beneficiario.editCaja && beneficiario.editCaja === "1";
-
-    console.log('Procesando: [%s]:[%s] [%s]:[%s]  [%s]', editEntrega,beneficiario.editEntrega, editCaja,beneficiario.editCaja, beneficiario.displayName);
 
     if(editEntrega){
         let isEntregada = beneficiario && beneficiario.entregada && beneficiario.entregada === "1";
@@ -308,7 +303,6 @@ async function upsertBeneficiario(beneficiario, today){
     if(false){
         await Beneficiario.findOneAndUpdate(query, beneficiario, {new: true, upsert: true});
     }
-    //console.dir(beneficiario)
 
 
 
@@ -316,7 +310,7 @@ async function upsertBeneficiario(beneficiario, today){
 
 
 const processDatosBancoArchive = function(cb ){
-    console.log('******  process ALIMENTAR DATOS BANCO to BEGIN ********')
+
     const today = new Date();
     //deploy
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarDatosBancoCsv.csv');
@@ -340,15 +334,11 @@ const processDatosBancoArchive = function(cb ){
 
         persons.forEach(per => {
             count +=1;
-
             if(true) {
                 upsertBeneficiario(per, today);
             }
-
-
         })
                     
-        console.log('******  processARCHIVE OK ********')
         cb({process: 'OK ' + count});
 
     });
@@ -356,11 +346,9 @@ const processDatosBancoArchive = function(cb ){
 
 
 const processContactData = function(cb){
-    console.log('******  process ALIMENTAR BUILD CONTACT-DATA to BEGIN ********')
     const today = new Date();
 
     person.buildInvertedTreeForContactData().then(pTree =>{
-        console.log('BuildPersonTree fullFilled');
 
         Beneficiario.find().lean().exec(function(err, entities) {
             if (err) {
@@ -435,14 +423,13 @@ exports.remanentes = function(req, res ){
 function fetchRemanentes(req, res){
     let query = {estado: 'pendiente'}
     let regexQuery = buildQuery(query);
-    console.dir(query);
 
     Beneficiario.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
         }else{
-            console.log('REMANENTES ok[%s]', entities && entities.length)
+
             buildExcelStream(entities, req, res)
         }
     });

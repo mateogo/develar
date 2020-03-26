@@ -94,9 +94,10 @@ export class RemitoalmacenBrowse {
 		action:      string;
 		sector:      string;
 		estado:      string;
+		deposito:    string;
 		avance:      string;
 		fecharef?:   string;
-		justCabecera?: boolean;
+		justCabecera?: boolean = false;
 
 		constructor(){
 		}
@@ -108,7 +109,7 @@ export class ProductosAlmacenTable {
 		action:      string;
 		estado:      string = 'activo';
 		avance:      string = 'emitido';
-		deposito:      string = 'galpon';
+		deposito:      string = 'almacen';
 		tmov:      string = 'entrega';
 		code: string;
 		name: string;
