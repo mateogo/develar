@@ -26,6 +26,20 @@ const FAILED = 'failed';
 const SUCCESS = 'success';
 const MENSAJE = 'Te llamaremos para analizar tu caso';
 const CUPOS = 'No hay más cupos para retirar mañana.'
+
+const AUH = `
+Usted percibe la Tarjeta Alimentar|AUH u otra forma de asitencia Nacional o Provincial.
+Además se duplicará el ingreso por la AUH durante el transcurso de esta emergencia sanitaria.
+Si aún así no accede a los alimentos necesarios comuníquese al 50346266 de Lunes a Viernes de 8 a 14 hs.
+¡Gracias!
+`
+
+const DUPLICE = ` 
+Ud. ha recibido alimentos de nuestra parte en los últimos 30 días.
+Si aún así, no accede a los alimentos necesarios comuníquese al 50346266 de Lunes a Viernes de 8 a 14 hs.
+¡Gracias!
+`
+
 @Component({
   selector: 'turno-validate',
   templateUrl: './turno-validate.component.html',
@@ -83,7 +97,8 @@ export class TurnoValidateComponent implements OnInit {
   	hasFailed: false,
   	type: '',
   	slug: '',
-  	message: ''
+  	message: '',
+    reporta: 1
   }
 
   constructor(
@@ -143,29 +158,29 @@ export class TurnoValidateComponent implements OnInit {
   	let isApta = false;
 
   	if(this.person.estado === 'pendiente'){
-  		this.hasFailed('alta', 'Alta provisoria vía Web', 'Serás contactada/o para perfeccionar tu empadronamiento ');
+  		this.hasFailed('alta', 'Alta provisoria vía Web', 'Serás contactada/o para perfeccionar tu empadronamiento ', 1);
   		return true;
   	}
 
   	if(!this.currentAsistencia){
-  		this.hasFailed('asistencia','No tiene asistencias',  MENSAJE);
+  		this.hasFailed('asistencia','No tiene sol asistencia',  MENSAJE, 1);
   		return true;
   	}
 
   	if(this.hasTurnoAlready){
       this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
       let msj = `Tienes un turno asignado para el ${ this.currentTurno.fe_tx} en ${ this.currentTurno.slug}, sito en ${ this.direccion }`
-  		this.hasFailed('Turnos', 'Ya tiene un turno Asignado', msj);
+  		this.hasFailed('Turnos', 'Ya tiene un turno Asignado', msj, 0);
   		return true;
   	}
 
   	if(!this.canReciveAlimentos){
-  		this.hasFailed('cobertura', 'Tiene planes sociales',MENSAJE )
+  		this.hasFailed('cobertura', 'Tiene planes sociales',AUH, 0 )
   		return true;
   	}
 
   	if(!this.canIssueVoucher){
-  		this.hasFailed('asistencia', 'No tiene asistencias activas',MENSAJE);
+  		this.hasFailed('asistencia', 'No tiene asistencias activas',MENSAJE,1);
   		return true;
 
   	}
@@ -173,11 +188,12 @@ export class TurnoValidateComponent implements OnInit {
   	return isApta;
   }
 
-  private hasFailed(type, slug, message){
+  private hasFailed(type, slug, message, reporta){
   	this.failedToken['hasFailed'] = true;
   	this.failedToken['type'] = type;
   	this.failedToken['slug'] = slug;
   	this.failedToken['message'] = message;
+    this.failedToken['reporta'] = reporta;
 
   }
 
@@ -216,8 +232,10 @@ export class TurnoValidateComponent implements OnInit {
 
   private processTurno(){
   	let today = new Date();
-  	let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+  	let tomorrow = devutils.nextLaborDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()), 1)
   	let fe_txt = devutils.txFromDate(tomorrow);
+    console.log('processTurno [%s]', fe_txt);
+
   	this.gturno.fecha = fe_txt;
 
   	this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
@@ -227,7 +245,7 @@ export class TurnoValidateComponent implements OnInit {
   			this.processRemito()
 
   		}else{
-  			this.hasFailed('Turnos', 'Cupo diario excedido',CUPOS )
+  			this.hasFailed('Turnos', 'Cupo diario excedido en esta locación ', CUPOS, 0 )
   			this.hasFailedShow = true;
   			this.turnoShow = false;
 
@@ -457,11 +475,17 @@ export class TurnoValidateComponent implements OnInit {
   	this.person.followUp = 'altaweb';
   	this.dsCtrl.updatePersonPromise(this.person._id, this.person).then(p => {
   		this.person = p;
-	  	this.updateToken.next({
-				action: FAILED,
-				token: CORE,
-				person: this.person
-	  	});
+
+      if(failed.reporta){
+        this.updateToken.next({
+          action: FAILED,
+          token: CORE,
+          person: this.person
+        });
+
+      }else{
+        this.emitEvent(CANCEL);
+      }
 
   	})
   }

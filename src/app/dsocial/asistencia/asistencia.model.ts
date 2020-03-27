@@ -732,6 +732,7 @@ const MODALIDAD_SANITARIA =    'sanitaria';
 const MODALIDAD_ENCUESTA =     'encuesta';
 
 
+
 function validateCoreAsistencia(as: Asistencia, valid: boolean): boolean {
 	if(as.estado !== "activo"){
 		valid = false;

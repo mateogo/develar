@@ -352,6 +352,26 @@ function buildFecharefLabel(fecharef: Date): string{
 
 
 
+const inactivosList = ["31/03/2020"]
+const laborDayOfWeek = [0, 1, 1, 1, 1, 1, 0]
+
+function nextLaborDay(date: Date, offset): Date{
+    let day = date.getDate();
+    let m = date.getMonth();
+    let y = date.getFullYear();
+    let blackList = inactivosList.map(t => devutils.dateFromTx(t));
+
+    for(let i = 0; i<10; i++){
+        let dd = day + i + offset;
+        let test = new Date(y, m, dd);
+        if(laborDayOfWeek[test.getDay()]){
+            let inac = blackList.find(t => t.getTime() == test.getTime())
+            if(!inac) return test;
+        }
+    }
+    return null;
+
+}
 
 
 /***
@@ -564,6 +584,11 @@ class Devutils {
 
     txForCurrentWeek(date: Date):string {
         return buildFecharefLabel(date);
+    }
+
+    nextLaborDate(date: Date, offset: number){
+        offset = offset || 0;
+        return nextLaborDay(date, offset);
     }
 
     isWithinPeriod(fd, fh): boolean{
