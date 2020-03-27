@@ -155,7 +155,7 @@ export class RegistroPageComponent implements OnInit {
     let day = today.getDay()
 
     console.log('day [%s]   hours[%s]', day, hours)
-    if((hours>=14 || hours <= 8) || (day < 1 || day > 5) ){
+    if((hours>=14 || hours < 8) || (day < 1 || day > 5) ){
       ok = true;
 
       this.dsCtrl.openSnackBar('Este espacio queda habilitado de Lunes a Viernes de 8:00 a 14:00hs', 'Cerrar');
