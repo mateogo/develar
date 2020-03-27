@@ -794,7 +794,7 @@ exports.createInitialData = function (){
     }
 
     let capacidad = {
-      qty: 30,
+      qty: 60,
       ume: 'KIT-ALIM-STD'
     }
 
