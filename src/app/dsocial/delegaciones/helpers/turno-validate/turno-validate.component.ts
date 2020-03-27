@@ -30,13 +30,13 @@ const CUPOS = 'No hay más cupos para retirar mañana.'
 const AUH = `
 Usted percibe la Tarjeta Alimentar|AUH u otra forma de asitencia Nacional o Provincial.
 Además se duplicará el ingreso por la AUH durante el transcurso de esta emergencia sanitaria.
-Si aún así no accede a los alimentos necesarios comuníquese al 50346266 de Lunes a Viernes de 8 a 14 hs.
+Si aún así no accede a los alimentos necesarios comuníquese al 5034 6266 de Lunes a Viernes de 8 a 14 hs.
 ¡Gracias!
 `
 
 const DUPLICE = ` 
 Ud. ha recibido alimentos de nuestra parte en los últimos 30 días.
-Si aún así, no accede a los alimentos necesarios comuníquese al 50346266 de Lunes a Viernes de 8 a 14 hs.
+Si aún así no accede a los alimentos necesarios comuníquese al 5034 6266 de Lunes a Viernes de 8 a 14 hs.
 ¡Gracias!
 `
 
@@ -158,7 +158,7 @@ export class TurnoValidateComponent implements OnInit {
   	let isApta = false;
 
   	if(this.person.estado === 'pendiente'){
-  		this.hasFailed('alta', 'Alta provisoria vía Web', 'Serás contactada/o para perfeccionar tu empadronamiento ', 1);
+  		this.hasFailed('alta', 'Alta provisoria vía Web', 'Serás CONTACTADO/o para perfeccionar tu empadronamiento ', 1);
   		return true;
   	}
 
@@ -184,6 +184,18 @@ export class TurnoValidateComponent implements OnInit {
   		return true;
 
   	}
+
+    if(this.currentAsistencia && this.remitosList && this.remitosList.length){
+      let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
+      if(!error.valid){
+        this.hasFailed('entregas', 'Supera entregas del período', DUPLICE, 0);
+        return true;
+
+      }
+
+
+    }
+
 
   	return isApta;
   }
