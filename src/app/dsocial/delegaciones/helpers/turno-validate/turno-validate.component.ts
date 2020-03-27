@@ -207,7 +207,6 @@ export class TurnoValidateComponent implements OnInit {
   }
 
   private validatePerson(p: Person){
-
     this.canReciveAlimentos = DsocialModel.asistenciaPermitida('alimentos', p)
     
     this.forbiddenText = this.canReciveAlimentos ? '' : 'Tiene planes sociales. '
@@ -216,19 +215,22 @@ export class TurnoValidateComponent implements OnInit {
     this.loadHistorialRemitos(p);
     this.loadTurnosAsignados(p);
 
-
-
-
   }
 
   private loadTurnosAsignados(p:Person){
+
   	this.dsCtrl.fetchGTurnosByPerson(p).subscribe(list => {
   		if(list && list.length){
-  			this.currentTurno = list[0]
-  			this.hasTurnoAlready = true;
+        let t = list.find(tur => tur.fe_ts > new Date().getTime() )
+        if(t){
+          this.currentTurno = t;
+          this.hasTurnoAlready = true;
+        }else {
+          this.currentTurno = null
+          this.hasTurnoAlready = false;
+        }
   		}
   	})
-
 
   }
 
