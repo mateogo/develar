@@ -96,6 +96,10 @@ function buildQuery(query){
       q["estado"] = query['estado'];
   }
 
+  if(query['personId']){
+      q["requeridox.id"] = query['personId'];
+  }
+
   if(query['ts_prog']){
       q["ts_prog"] = { $gte: query['ts_prog'] };
   }
@@ -218,7 +222,7 @@ exports.update = function (id, record, errcb, cb) {
             errcb(err);
         
         }else{
-          console.log('TurnoModelUPDATE, ready to emit')
+
             turnosUpdateEmitter.next({turno: 'update'})
             cb(entity);
         }

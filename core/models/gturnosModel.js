@@ -212,11 +212,10 @@ const filterTurnos = function (query, tokens){
 }
 
 const validateCupo = function(turnos, asignados, query){
-  console.log('ValidateCupo [%s] [%s]', turnos.length, asignados.length)
 
   let filterList = turnos.filter(turno => {
     let qty_asignada = asignados.reduce((qty,asig )=>{
-      console.log('turno: [%s] [%s]   asignados: [%s] [%s] [%s]', turno._id, turno.hora, asig.hora, (asig.turnoId === turno.id), asig.qty)
+      //console.log('turno: [%s] [%s]   asignados: [%s] [%s] [%s]', turno._id, turno.hora, asig.hora, (asig.turnoId === turno.id), asig.qty)
       if(asig.turnoId === turno.id){
         qty += asig.qty
         return qty;        
@@ -226,7 +225,7 @@ const validateCupo = function(turnos, asignados, query){
 
     },0)
 
-    console.log('Reduce: [%s] [%s] [%s]',qty_asignada, turno._id, turno.hora, turno.capacidad.qty )
+    //console.log('Reduce: [%s] [%s] [%s]',qty_asignada, turno._id, turno.hora, turno.capacidad.qty )
     if((qty_asignada + query.qty) > turno.capacidad.qty){
 
       return false;

@@ -163,6 +163,18 @@ export class TurnosModel {
 		return query;
 	}
 
+	static turnosPorPersonId(type, name, sector, id){
+
+		let query = {
+			type: type, //turnos
+			name: name, // ayudadirecta
+			sector: sector, // altaweb
+			estado: 'pendiente',
+			personId: id
+		};
+
+		return query;
+	}
 	static turnosPendientesQuery(type, name){
 
 		let query = {

@@ -137,8 +137,9 @@ export class TurnoValidateComponent implements OnInit {
   }
 
   onFailed(){
-  	if(this.failedToken.type === 'Turnos') this.onCancel();
-  	else  this.emitFailedEvent(this.failedToken)
+
+    this.emitFailedEvent(this.failedToken)
+
   }
 
   onFormSubmit(){
@@ -158,44 +159,40 @@ export class TurnoValidateComponent implements OnInit {
   	let isApta = false;
 
   	if(this.person.estado === 'pendiente'){
-  		this.hasFailed('alta', 'Alta provisoria vía Web', 'Serás CONTACTADO/o para perfeccionar tu empadronamiento ', 1);
+  		this.hasFailed('alta', 'Alta provisoria vía Web', '(ref#1) Serás CONTACTADO/o para perfeccionar tu empadronamiento ', 1);
   		return true;
   	}
+
+    if(!this.canReciveAlimentos){
+      this.hasFailed('cobertura', 'Tiene planes sociales','(ref#3) ' +  AUH, 0 )
+      return true;
+    }
+
+    if(this.hasTurnoAlready){
+      this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
+      let msj = `(ref#4) Tienes un turno asignado para el ${ this.currentTurno.fe_tx} en ${ this.currentTurno.slug}, sito en ${ this.direccion }`
+      this.hasFailed('Turnos', 'Ya tiene un turno Asignado', msj, 0);
+      return true;
+    }
 
   	if(!this.currentAsistencia){
-  		this.hasFailed('asistencia','No tiene sol asistencia',  MENSAJE, 1);
+  		this.hasFailed('asistencia','No tiene sol asistencia',  '(ref#2) ' +  MENSAJE, 1);
   		return true;
-  	}
-
-  	if(this.hasTurnoAlready){
-      this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
-      let msj = `Tienes un turno asignado para el ${ this.currentTurno.fe_tx} en ${ this.currentTurno.slug}, sito en ${ this.direccion }`
-  		this.hasFailed('Turnos', 'Ya tiene un turno Asignado', msj, 0);
-  		return true;
-  	}
-
-  	if(!this.canReciveAlimentos){
-  		this.hasFailed('cobertura', 'Tiene planes sociales',AUH, 0 )
-  		return true;
-  	}
-
-  	if(!this.canIssueVoucher){
-  		this.hasFailed('asistencia', 'No tiene asistencias activas',MENSAJE,1);
-  		return true;
-
   	}
 
     if(this.currentAsistencia && this.remitosList && this.remitosList.length){
       let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
       if(!error.valid){
-        this.hasFailed('entregas', 'Supera entregas del período', DUPLICE, 0);
+        this.hasFailed('entregas', 'Supera entregas del período', '(ref#6) ' +  DUPLICE, 0);
         return true;
-
       }
-
-
     }
 
+  	if(!this.canIssueVoucher){
+  		this.hasFailed('asistencia', 'No tiene asistencias activas', '(ref#5) ' +  MENSAJE,1);
+  		return true;
+
+  	}
 
   	return isApta;
   }
@@ -246,7 +243,6 @@ export class TurnoValidateComponent implements OnInit {
   	let today = new Date();
   	let tomorrow = devutils.nextLaborDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()), 1)
   	let fe_txt = devutils.txFromDate(tomorrow);
-    console.log('processTurno [%s]', fe_txt);
 
   	this.gturno.fecha = fe_txt;
 
@@ -257,7 +253,7 @@ export class TurnoValidateComponent implements OnInit {
   			this.processRemito()
 
   		}else{
-  			this.hasFailed('Turnos', 'Cupo diario excedido en esta locación ', CUPOS, 0 )
+  			this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
   			this.hasFailedShow = true;
   			this.turnoShow = false;
 
@@ -286,6 +282,7 @@ export class TurnoValidateComponent implements OnInit {
       }else {
         //todo negativa
         this.dsCtrl.openSnackBar(error.message, 'Aceptar');
+        this.emitEvent(CANCEL);
       }
   }
 
@@ -410,12 +407,29 @@ export class TurnoValidateComponent implements OnInit {
 
     if(this.activeAsistenciasList && this.activeAsistenciasList.length) {
 
-      this.hasActiveAsistencias = true;
-      this.canIssueVoucher = true;
-      this.currentAsistencia = this.activeAsistenciasList[0]
+        this.hasAsistenciaAlimentos(this.activeAsistenciasList);
+
     }else {
     	this.currentAsistencia = null
     }
+  }
+
+  private hasAsistenciaAlimentos(asistencias: Asistencia[]){
+    let asis = asistencias.find(t => {
+      return (t.action === "alimentos" && t.modalidad )
+
+    })
+
+    if(asis){
+      this.hasActiveAsistencias = true;
+      this.canIssueVoucher = true;
+      this.currentAsistencia = asis
+    }else{
+      this.hasActiveAsistencias = false;
+      this.canIssueVoucher = false;
+      this.currentAsistencia = null
+    }
+
   }
 
 
@@ -483,23 +497,24 @@ export class TurnoValidateComponent implements OnInit {
 
 
   private emitFailedEvent(failed: any){
-  	this.person.alerta = failed.type + ':: ' + failed.slug;
-  	this.person.followUp = 'altaweb';
-  	this.dsCtrl.updatePersonPromise(this.person._id, this.person).then(p => {
-  		this.person = p;
-
-      if(failed.reporta){
+    if(failed.reporta){
+      this.person.alerta = failed.type + ':: ' + failed.slug;
+      this.person.followUp = 'altaweb';
+      this.dsCtrl.updatePersonPromise(this.person._id, this.person).then(p => {
+        this.person = p;
         this.updateToken.next({
           action: FAILED,
           token: CORE,
           person: this.person
         });
 
-      }else{
-        this.emitEvent(CANCEL);
-      }
 
-  	})
+      })
+
+    }else{
+      this.emitEvent(CANCEL);
+    }
+
   }
 
   private initForEdit(form: FormGroup, token: GTurno): FormGroup {

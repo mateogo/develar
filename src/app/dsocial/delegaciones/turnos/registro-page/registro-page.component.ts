@@ -131,11 +131,10 @@ export class RegistroPageComponent implements OnInit {
       this.createNuevoTurnoMostrador()
       this.moveToFirstStep(false)
 
-
-
     }
 
     if(e.action === CANCEL){
+      this.moveToFirstStep(false)
       //console.log('CANCEL')
 
 
@@ -154,7 +153,6 @@ export class RegistroPageComponent implements OnInit {
     let hours = today.getHours();
     let day = today.getDay()
 
-    console.log('day [%s]   hours[%s]', day, hours)
     if((hours>=14 || hours < 8) || (day < 1 || day > 5) ){
       ok = true;
 
@@ -168,8 +166,16 @@ export class RegistroPageComponent implements OnInit {
 
   private createNuevoTurnoMostrador(){
     if(this.readyToCreateNewTurno()){
-      this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', this.currentSector.val, this.peso, this.person).subscribe(turno =>{
 
+      this.dsCtrl.turnosByPersonId$(this.person, 'altaweb').subscribe(turnos =>{
+        if(turnos && turnos.length){
+
+        }else{
+            this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', this.currentSector.val, this.peso, this.person).subscribe(turno =>{
+
+            })
+
+          }
       })
 
     }
@@ -248,7 +254,7 @@ export class RegistroPageComponent implements OnInit {
       this.dsCtrl.updatePersonPromise(person._id, person).then(per =>{
         this.person = per;
         this.personExists = true;
-        this.moveToValidateConditionsStep();
+        this.moveToCoreDataStep(true);
       })
 
     }else{
@@ -256,7 +262,7 @@ export class RegistroPageComponent implements OnInit {
         if(per){
           this.person = per;
           this.personExists = true;
-          this.moveToValidateConditionsStep();
+          this.moveToCoreDataStep(true);
         }
       });
     }

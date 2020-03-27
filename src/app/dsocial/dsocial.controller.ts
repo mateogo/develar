@@ -812,6 +812,11 @@ export class DsocialController {
     return this.daoService.search<Turno>('turno', query);
   }
 
+  public turnosByPersonId$(p: Person, sector?: string):Observable<Turno[]>{
+    let query = TurnosModel.turnosPorPersonId('turnos', 'ayudadirecta', sector, p._id);
+    return this.daoService.search<Turno>('turno', query);
+  }
+
   /**
   * cola de turnos en un sector
   */
