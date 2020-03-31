@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { devutils }from '../../../../develar-commons/utils'
 
 import { DsocialController } from '../../../dsocial.controller';
 import { BookshelfController } from '../../../bookshelf.controller';
@@ -148,16 +149,10 @@ export class RegistroPageComponent implements OnInit {
   }
 
   private timeOutOfScope(): boolean{
-    let ok = false;
-    let today = new Date();
-    let hours = today.getHours();
-    let day = today.getDay()
+    let ok = devutils.timeOutOfScope();
 
-    if((hours>=14 || hours < 8) || (day < 1 || day > 5) ){
-      ok = true;
-
-      this.dsCtrl.openSnackBar('Este espacio queda habilitado de Lunes a Viernes de 8:00 a 14:00hs', 'Cerrar');
-
+    if(ok){
+      this.dsCtrl.openSnackBar('Este espacio queda habilitado días hábiles, de Lunes a Viernes de 8:00 a 14:00hs', 'Cerrar');
     } 
 
     return ok;

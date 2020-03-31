@@ -361,7 +361,7 @@ function nextLaborDay(date: Date, offset): Date{
     let y = date.getFullYear();
     let blackList = inactivosList.map(t => devutils.dateFromTx(t));
 
-    for(let i = 0; i<10; i++){
+    for(let i = 0; i < 10; i += 1){
         let dd = day + i + offset;
         let test = new Date(y, m, dd);
         if(laborDayOfWeek[test.getDay()]){
@@ -370,6 +370,31 @@ function nextLaborDay(date: Date, offset): Date{
         }
     }
     return null;
+
+}
+
+function timeOutOfScope():boolean {
+    let ok = false;
+    let today = new Date();
+
+    let d = today.getDate();
+    let m = today.getMonth();
+    let y = today.getFullYear();
+    let test = new Date(y, m, d);    
+
+    let blackList = inactivosList.map(t => devutils.dateFromTx(t));
+    let inac = blackList.find(t => t.getTime() === test.getTime())
+    if(inac) ok = true;
+
+    let hours = today.getHours();
+    let dow = today.getDay()
+
+    if((hours>=14 || hours < 8) || (dow < 1 || dow > 5) ){
+      ok = true;
+
+    } 
+
+    return ok;
 
 }
 
@@ -589,6 +614,10 @@ class Devutils {
     nextLaborDate(date: Date, offset: number){
         offset = offset || 0;
         return nextLaborDay(date, offset);
+    }
+
+    timeOutOfScope(): boolean{
+        return timeOutOfScope();
     }
 
     isWithinPeriod(fd, fh): boolean{
