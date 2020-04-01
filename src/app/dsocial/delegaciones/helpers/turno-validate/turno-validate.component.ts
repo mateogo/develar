@@ -33,6 +33,10 @@ Además se duplicará el ingreso por la AUH durante el transcurso de esta emerge
 Si aún así no accede a los alimentos necesarios comuníquese al 5034 6266 de Lunes a Viernes de 8 a 14 hs.
 ¡Gracias!
 `
+const INVALIDADO = `
+Usted ya fue evaluado por un Trabajador Social y no puede solicitar alimentos por esta vía.
+¡Gracias!
+`
 
 const DUPLICE = ` 
 Ud. ha recibido alimentos de nuestra parte en los últimos 30 días.
@@ -84,6 +88,8 @@ export class TurnoValidateComponent implements OnInit {
 
 	public gturno: GTurno;
 	public turnoShow = false;
+  public submited = true;
+
 	public delegacionOptList = AsistenciaHelper.getOptionlist('delegaciones')
   public direccion;
 
@@ -143,8 +149,9 @@ export class TurnoValidateComponent implements OnInit {
   }
 
   onFormSubmit(){
-  	this.initForSave(this.form, this.gturno);
-  	this.processTurno()
+    this.submited = true;
+    this.initForSave(this.form, this.gturno);
+    this.processTurno()
 
   }
 
@@ -158,10 +165,10 @@ export class TurnoValidateComponent implements OnInit {
   private hasRestricciones(): boolean{
   	let isApta = false;
 
-  	if(this.person.estado === 'pendiente'){
-  		this.hasFailed('alta', 'Alta provisoria vía Web', '(ref#1) Serás CONTACTADO/o para perfeccionar tu empadronamiento ', 1);
-  		return true;
-  	}
+    if(this.person.estado === 'invalidado'){
+      this.hasFailed('alta', 'Persona invalidada para alimentos', '(ref#8)  ' + INVALIDADO, 0);
+      return true;
+    }
 
     if(!this.canReciveAlimentos){
       this.hasFailed('cobertura', 'Tiene planes sociales','(ref#3) ' +  AUH, 0 )
@@ -175,10 +182,10 @@ export class TurnoValidateComponent implements OnInit {
       return true;
     }
 
-  	if(!this.currentAsistencia){
-  		this.hasFailed('asistencia','No tiene sol asistencia',  '(ref#2) ' +  MENSAJE, 1);
-  		return true;
-  	}
+    if(this.person.estado === 'pendiente'){
+      this.hasFailed('alta', '(ref#1) Alta provisoria vía Web', '(ref#1) Serás CONTACTADO/A para perfeccionar tu empadronamiento ', 1);
+      return true;
+    }
 
     if(this.currentAsistencia && this.remitosList && this.remitosList.length){
       let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
@@ -188,8 +195,13 @@ export class TurnoValidateComponent implements OnInit {
       }
     }
 
+  	if(!this.currentAsistencia){
+  		this.hasFailed('asistencia','(ref#2) No tiene sol asistencia',  '(ref#2) ' +  MENSAJE, 1);
+  		return true;
+  	}
+
   	if(!this.canIssueVoucher){
-  		this.hasFailed('asistencia', 'No tiene asistencias activas', '(ref#5) ' +  MENSAJE,1);
+  		this.hasFailed('asistencia', '(ref#5) No tiene asistencias activas', '(ref#5) ' +  MENSAJE,1);
   		return true;
 
   	}
@@ -237,6 +249,7 @@ export class TurnoValidateComponent implements OnInit {
   private assignTurno(){
   	this.gturno = new GTurno();
   	this.initForEdit(this.form, this.gturno);
+    this.submited = false;
   	this.turnoShow = true;
 
   }
@@ -257,6 +270,7 @@ export class TurnoValidateComponent implements OnInit {
   		}else{
   			this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
   			this.hasFailedShow = true;
+        this.submited = true;
   			this.turnoShow = false;
 
   			//todo: se acabó el cupo
@@ -326,6 +340,7 @@ export class TurnoValidateComponent implements OnInit {
     this.dsCtrl.manageRemitosAlmacenRecord('remitoalmacen',this.remitoalmacen).subscribe(remito =>{
       this.remitoalmacen = remito;
 			this.turnoSuccess = true;
+      this.submited = true;
 			this.turnoShow = false;
  
 

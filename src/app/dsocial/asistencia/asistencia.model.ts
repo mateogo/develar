@@ -1143,10 +1143,10 @@ export class AsistenciaHelper {
 		token.fecomp_tsa = ts;
 
 		token.action = action;
-		token.slug = slug || '';
+		token.slug =  '';
 		token.sector = sector;
 		token.requeridox = requirente;
-		token.description = '';
+		token.description = slug ||'';
 
 		if(serial){
 			token.compPrefix = serial.compPrefix ;
@@ -1219,9 +1219,10 @@ export class AsistenciaHelper {
 	static initNewAlimento(fe: string, fe_ts: number):Alimento{
 		let alimento = new Alimento();
 		alimento.fe_txd = fe;
-		alimento.fe_txh = fe;
 		alimento.fe_tsd = fe_ts;
-		alimento.fe_tsh = fe_ts;
+
+		alimento.fe_tsh = fe_ts + (1000 * 60 * 24 * 7);
+		alimento.fe_txh = devutils.txFromDateTime(alimento.fe_tsh);
 		return alimento;
 	}
 

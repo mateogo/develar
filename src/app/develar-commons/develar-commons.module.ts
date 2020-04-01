@@ -30,6 +30,7 @@ import { GcseComponent }           from './gcse/gcse.component';
 import { MediumEditorDirective }   from './medium-editor/medium.directive';
 import { CrawlerComponent, CrawlerDialogComponent } from './crawler/crawler.component';
 import { GenericDialogComponent }  from './generic-dialog/generic-dialog.component';
+import { ModalDialogComponent }    from './modal-dialog/modal-dialog.component';
 import { UploadComponent }         from './upload/upload.component';
 import { AssetcreateComponent }    from './assets/assetcreate/assetcreate.component';
 import { AsseteditComponent }      from './assets/assetedit/assetedit.component';
@@ -114,6 +115,7 @@ import { PrismHighlightService }     from './highlighter.service';
     MediumEditorDirective,
     CrawlerDialogComponent,
     GenericDialogComponent,
+    ModalDialogComponent,
     UploadComponent,
     AssetcreateComponent,
     FoldercreateComponent,
@@ -170,6 +172,7 @@ import { PrismHighlightService }     from './highlighter.service';
     CrawlerComponent,
     MediumEditorDirective,
     GenericDialogComponent,
+    ModalDialogComponent,
     UploadComponent,
     AssetcreateComponent,
     FoldercreateComponent,
@@ -198,6 +201,6 @@ import { PrismHighlightService }     from './highlighter.service';
     BreadcrumbComponent
   ],
   providers: [AssetService, DaoService, ModelController, TagService, CommunityController, PrismHighlightService],
-  entryComponents: [CrawlerDialogComponent, GenericDialogComponent]
+  entryComponents: [CrawlerDialogComponent, GenericDialogComponent, ModalDialogComponent]
 })
 export class DevelarCommonsModule { }

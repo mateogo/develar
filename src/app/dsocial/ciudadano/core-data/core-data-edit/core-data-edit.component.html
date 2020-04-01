@@ -182,6 +182,19 @@
       </div>
     </div>
 
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstadoPersona placeholder="Estado del registro"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstadoPersona.value)" >
+            <mat-option *ngFor="let item of estadosOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
     <hr>
 
     <div class="additional-info">

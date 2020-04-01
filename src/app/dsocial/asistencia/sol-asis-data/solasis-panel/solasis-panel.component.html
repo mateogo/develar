@@ -5,6 +5,10 @@
 			  	<div class="d-flex justify-content-between panel-header">
 
 					<div class="panel-header-text">{{ title }}</div>
+
+		      <button mat-button type="button" color="accent"
+		          (click)="altaRapida1vez()" >Alta rápida ALIM-1vez</button>
+
 					<div class="panel-header-control" ><span 
 						(click)='addItem()' title="Agregar Item">
 						<i [class]="openEditor ? 'fas fa-plus' : 'far fa-plus'" 

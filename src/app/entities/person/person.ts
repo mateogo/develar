@@ -1369,6 +1369,12 @@ const estadoVivienda: Array<any> = [
     {val: 'ribera',         label: 'Ribera Acumar',  slug:'Ribera Acumar' },
     {val: 'destino',        label: 'Destino Acumar', slug:'Destino Acumar' },
 ];
+const estadoPersona: Array<any> = [
+    {val: 'activo',       label: 'Registro Activo',            slug:'Registro Activo' },
+    {val: 'pendiente',    label: 'Pendiente de validar TS',    slug:'Pendiente de validar TS' },
+    {val: 'baja',         label: 'Baja',                       slug:'Baja' },
+    {val: 'invalidado',   label: 'Invalidado para ALIMENTOS',  slug:'Invalidado para ALIMENTOS' },
+];
 
 const cualificacionVivienda: Array<any> = [
     {val: 'buena',        label: 'Buena',                 slug:'Buena' },
@@ -1515,6 +1521,10 @@ class PersonModel {
         return oficios_tocupacion;
     }
 
+    get estadosPersona():Array<any>{
+        return estadoPersona;
+    }
+
     get estadoVivOptList():Array<any>{
         return estadoVivienda;
     }
@@ -1536,6 +1546,11 @@ class PersonModel {
     }
     getEstadoVivLabel(item, token):string {      
       return getLabel(item, estados_viv.filter(t => token === t.type ));
+    }
+
+    getEstadoPersonaLabel(item):string {
+      return getLabel(item, estadoPersona);
+
     }
 
     getTiposVivienda(token):Array<any>{

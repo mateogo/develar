@@ -18,9 +18,11 @@ export interface SectorAtencion {
 }
 
 const asistenciaBlackList = [
-	{val: 'asisnacional:pnsa',  type:'asisnacional', tingreso:'pnsa', action: 'alimentos',  slug:'No entrega alimentos' },
-	{val: 'auh:auh',            type:'auh',          tingreso:'auh', action: 'alimentos',  slug:'No entrega alimentos' },
-	{val: 'ahu:talimentar',     type:'auh',          tingreso:'talimentar', action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'asisnacional:pnsa',  type:'asisnacional', tingreso:'pnsa',       action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'auh:auh',            type:'auh',          tingreso:'auh',        action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'auh:auhdis',         type:'auh',          tingreso:'auhdis',     action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'auh:aeps',           type:'auh',          tingreso:'aeps',       action: 'alimentos',  slug:'No entrega alimentos' },
+	{val: 'auh:talimentar',     type:'auh',          tingreso:'talimentar', action: 'alimentos',  slug:'No entrega alimentos' },
 ]
 
 function isInAsistenciaBlackList(token, action){
@@ -188,6 +190,7 @@ export class DsocialModel {
 
 		if(coberturas && coberturas.length){
 			coberturas.forEach(co => {
+				//console.log('asistencia Permitida: [%s] [%s]',co.type + ':' + co.tingreso, action )
 				if(isInAsistenciaBlackList(co.type + ':' + co.tingreso, action)) cumple = false;
 			})
 		}

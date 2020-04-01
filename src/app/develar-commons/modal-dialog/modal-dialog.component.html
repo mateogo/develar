@@ -1,0 +1,24 @@
+<div mat-dialog-title>{{data.caption}}</div>
+
+<div mat-dialog-content>
+	
+	<div style="margin-bottom: 15px;" *ngIf="!headerTemplate">
+		<p class="text-resaltado">{{data.title}}</p> 
+		<p innerHtml='{{data.body}}'></p>
+	</div>
+
+	<ng-container *ngTemplateOutlet="headerTemplate" ></ng-container>
+
+  <mat-form-field>
+    <mat-label>{{ data.input.label}}</mat-label>
+    <input matInput [(ngModel)]="data.input.value">
+  </mat-form-field>
+
+</div>
+
+<div mat-dialog-actions>
+	<button *ngIf='hasAccept' mat-button color="primary"
+			[mat-dialog-close]='data.input.value'  >{{data.accept.label}}</button>
+	<button *ngIf='hasCancel' mat-button color="accent"
+	  	(click)="onNoClick()"> {{data.cancel.label}} </button>
+</div>

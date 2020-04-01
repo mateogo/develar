@@ -5,13 +5,20 @@
 </mat-card>
 
 		 	<div 	*ngIf="hasCurrentPerson" >
+		 		<ng-container *ngIf='showCoreData'>
 		 		<core-base [person]='currentPerson'
 		 							(updatePerson)='updateCore($event)' ></core-base>
+		 		</ng-container>
 
 		    <div class="additional-info">
 
 		      <button mat-button type="button" color="accent"
 		          (click)="auditEntregas()" >Validar historial entregas</button>
+
+
+
+		      <button mat-button type="button" color="accent"
+		          (click)="invalidarDialog()" >Invalidar para alimentos</button>
 		    </div>
 
 			</div>
@@ -59,10 +66,11 @@
 						
 		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<solasis-panel [items]='asistenciasList'
+		 							[person]='currentPerson'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
 			</div>
 
-		 	<div 	*ngIf="hasCurrentPerson" >
+		 	<div 	*ngIf="hasCurrentPerson && showCoreData" >
 		 		<observaciones-panel 
 		 							[audit]='audit'
 		 							[parent]='parentEntity' ></observaciones-panel>
@@ -83,4 +91,7 @@
 		</ng-container>
 	</mat-card-content>
 </mat-card>
+<ng-template #actionsTmpl let-row="row" let-value="value" let-i="index">
+	<a routerLink="/test/folder/{{ value}}" ><i class="far fa-edit" aria-hidden="true"></i></a>
+</ng-template>
 

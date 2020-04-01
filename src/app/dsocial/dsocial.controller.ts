@@ -24,6 +24,7 @@ import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
+import { Observacion } from '../develar-commons/observaciones/observaciones.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse,Requirente,TurnosAsignados,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
@@ -477,13 +478,16 @@ export class DsocialController {
   /***************************/
 
   createExpressAsistencia(action: string, person: Person, slug: string){
+    let listener = new Subject<Asistencia>();
+
     if(action === "alimentos") {
-      this.createExpressAlimento(action, person, slug);
+      this.createExpressAlimento(listener, action, person, slug);
     }
+    return listener;
 
   }
 
-  createExpressAlimento(action:string, person: Person, slug: string){
+  private createExpressAlimento(listener: Subject<Asistencia>, action:string, person: Person, slug: string){
     let sector = "alimentos"
     let serial_name = 'solicitud';
     let serial_type = 'asistencia';
@@ -507,6 +511,10 @@ export class DsocialController {
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
       this.daoService.create<Asistencia>('asistencia', asistencia).then(token =>{
         // console.log('Update Asistencia OK [%s]', token._id);
+        if(token){
+          listener.next(token)
+        }
+
       });
      
     });
@@ -1334,7 +1342,45 @@ export class DsocialController {
         ts_alta: Date.now()
     }
   }
- 
+
+
+  /***************************/
+  /******* Observaciones *******/
+  /***************************/
+
+   manageObservacionRecord(text, audit, parent ): Subject<Observacion>{
+    let listener = new Subject<Observacion>();
+    let record = 'observacion';
+    let observacion = this.initNewObservacion(text, audit, parent);
+
+    this.insertObservacion(listener, record, observacion);
+
+    return listener;
+  }
+
+  private initNewObservacion(text, audit, parent){
+    // ToDo
+    let fe = new Date();
+    let obs = new Observacion();
+    obs.type = 'informe';
+
+    obs.fe_tx = devutils.txFromDate(fe);
+    obs.fe_ts = fe.getTime();
+    obs.ts_umod = obs.fe_ts;
+    obs.parent = parent;
+    obs.audit = audit;
+    obs.observacion = text;
+    return obs;
+
+  }
+
+  private insertObservacion(listener: Subject<Observacion>,type,  observacion: Observacion){
+      this.daoService.create<Observacion>(type, observacion).then(obs =>{
+        listener.next(obs);
+      });
+  }
+
+
 
   /***************************/
   /******* KitProduct *******/

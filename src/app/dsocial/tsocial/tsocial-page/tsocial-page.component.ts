@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject,TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Observable } from 'rxjs';
 
@@ -32,10 +33,15 @@ import {   Asistencia,
 import { RemitoAlmacen } from '../../alimentos/alimentos.model';
 
 import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
+
+import { ModalDialogComponent, DialogData, DialogActionData } from '../../../develar-commons/modal-dialog/modal-dialog.component';
+
 import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
+const PERSONA_INVALIDADA = 'invalidado'
+const CORE = 'core';
 
 @Component({
   selector: 'tsocial-page',
@@ -43,6 +49,7 @@ const NAVIGATE = 'navigate';
   styleUrls: ['./tsocial-page.component.scss']
 })
 export class TsocialPageComponent implements OnInit {
+  @ViewChild('actionsTmpl', { static: true }) public actionsTemplate: TemplateRef<any>
 
   public unBindList = [];
 
@@ -83,13 +90,17 @@ export class TsocialPageComponent implements OnInit {
   public isAutenticated = false;
   public currentTurno:Turno;
   
+  public showCoreData = true;
+
   public sectors:SectorAtencion[] = sectores;
+
 
 
   constructor(
   		private dsCtrl: DsocialController,
     	private router: Router,
     	private route: ActivatedRoute,
+      public dialog: MatDialog
 
   	) { }
 
@@ -193,6 +204,7 @@ export class TsocialPageComponent implements OnInit {
   updateCore(event: UpdatePersonEvent){
     if(event.action === UPDATE){
       this.dsCtrl.updatePerson(event);
+      this.dsCtrl.openSnackBar('Actualización de datos. Estado del registro: ' + this.currentPerson.estado, 'Cerrar')
     }
 
   }
@@ -215,7 +227,6 @@ export class TsocialPageComponent implements OnInit {
   }
 
   auditEntregas(){
-
     if(this.hasPersonIdOnURL){
       this.router.navigate(['../../', this.dsCtrl.atencionRoute('auditoria'), 
          this.personId], {relativeTo: this.route});
@@ -225,9 +236,75 @@ export class TsocialPageComponent implements OnInit {
          this.personId], {relativeTo: this.route});
 
     }
+  }
 
+  invalidarDialog(){
+    let dialog = {
+      caption: '¡ATENCIÓN!',
+      title: 'Invalidación para recibir ALIMENTOS',
+      body: 'Al confirmar este diálogo, el Vecino/a quedará invalidado para recibir alimentos. Debes justificar esta decisión. ',
+      accept: {
+        action: 'alta',
+        label: 'CONFIRMAR INVALIDACIÓN'
+      } ,
+      cancel: {
+        action: 'alta',
+        label: 'CANCELAR'        
+      } ,
+      input: {
+        value: '',
+        label: 'Observación / Justificación',
+        action: 'novedad'        
+      },
+
+    } as DialogData;
+
+    this.openDialog(dialog)
 
   }
+
+  private openDialog(dialog: DialogData): void {
+    this.showCoreData = false;
+
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      width: '450px',
+      data: dialog
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.invalidateThisPerson(result);
+      }else {
+        this.showCoreData = true;
+      }
+
+    });
+  }
+
+  private invalidateThisPerson(justifica: string){
+    this.currentPerson.estado = PERSONA_INVALIDADA;
+    this.currentPerson.alerta = justifica;
+
+    let update: UpdatePersonEvent = {
+      action: UPDATE,
+      token: CORE,
+      person: this.currentPerson
+    };
+
+    this.dsCtrl.updatePerson(update);
+
+    justifica = 'INVALIDACIÓN PARA ALIMENTOS: ' + justifica;
+    this.dsCtrl.manageObservacionRecord(justifica, this.audit, this.parentEntity).subscribe(obs =>{
+
+    })
+
+    setTimeout(()=>{
+      this.showCoreData = true;
+    },500)
+  }
+
+
 
   // Address Data
   updateAddressList(event:UpdateItemListEvent){

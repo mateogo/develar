@@ -50,7 +50,7 @@
 	      <div class="additional-info">
 	        <button mat-raised-button color="primary"
 	            (click)="onFormSubmit()"
-	            [disabled]="!form.valid">Generar Turno</button>
+	            [disabled]="!form.valid || submited ">Generar Turno</button>
 
 	        <button mat-button type="button" color="accent" 
 	                (click)="onFormCancel()">CANCELAR</button>

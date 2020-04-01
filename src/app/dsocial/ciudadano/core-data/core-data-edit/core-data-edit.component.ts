@@ -36,6 +36,7 @@ export class CoreDataEditComponent implements OnInit {
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;
   public seguimientoOptList = personModel.followUpOptList;
+  public estadosOptList     = personModel.estadosPersona;
   public docBelongsTo = {error: ''};
 
 
@@ -145,6 +146,7 @@ export class CoreDataEditComponent implements OnInit {
       especialidad: [null],
       ambito:       [null],
       alerta:       [null],
+      estado:       [null], 
 
       ndoc: [null, [Validators.required, 
                     Validators.minLength(7),
@@ -172,6 +174,7 @@ export class CoreDataEditComponent implements OnInit {
 		  tdoc:         person.tdoc,
 		  tprofesion:   person.tprofesion,
       followUp:     person.followUp,
+      estado:       person.estado || 'activo',
 		  especialidad: person.especialidad,
 		  ambito:       person.ambito,
       alerta:       person.alerta,
@@ -202,6 +205,7 @@ export class CoreDataEditComponent implements OnInit {
 		entity.ndoc = fvalue.ndoc;
 		entity.tprofesion = fvalue.tprofesion;
     entity.followUp = fvalue.followUp;
+    entity.estado = fvalue.estado;
 		entity.especialidad = fvalue.especialidad;
 		entity.ambito = fvalue.ambito;
     entity.alerta = fvalue.alerta;
@@ -215,7 +219,6 @@ export class CoreDataEditComponent implements OnInit {
 
     entity.ecivil =       fvalue.ecivil;
     entity.sexo =         fvalue.sexo;
-    entity.estado = 'activo';
 
 		return entity;
 	}

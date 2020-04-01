@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Observable } from 'rxjs';
 
 import { DsocialController } from '../../../dsocial.controller';
 
 import {  Person } from '../../../../entities/person/person';
+
+import { ModalDialogComponent, DialogData, DialogActionData } from '../../../../develar-commons/modal-dialog/modal-dialog.component';
 
 import { 	Asistencia, 
 					Alimento, 
@@ -26,6 +29,7 @@ const NAVIGATE = 'navigate';
 })
 export class SolasisPanelComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
+  @Input() person: Person;
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
 
   public title = 'Solicitudes de Asistencia';
@@ -41,6 +45,8 @@ export class SolasisPanelComponent implements OnInit {
 
   constructor(
       private dsCtrl: DsocialController,
+      public dialog: MatDialog
+
     ) { }
 
   ngOnInit() {
@@ -116,15 +122,94 @@ export class SolasisPanelComponent implements OnInit {
     }
   }
 
+
+  altaRapida1vez(){
+    if(this.person && this.person.estado !== 'activo'){
+
+      this.dsCtrl.openSnackBar('El registro del requirente no esta ACTIVO', 'Cerrar');
+
+    }else{
+      this.altaRapidaDialog();
+
+    }
+
+  }
+
+  private altaRapidaDialog(){
+    let dialog = {
+      caption: 'ALTA RÁPIDA',
+      title: 'Solicitud de Alimentos x ÚNICA VEZ',
+      body: 'Estas por generar una Solicitud de Asistencia de ALIMENTOS. Justifica la decisión',
+      accept: {
+        action: 'alta',
+        label: 'CONFIRMAR ALTA RÁPIDA'
+      } ,
+      cancel: {
+        action: 'alta',
+        label: 'CANCELAR'        
+      } ,
+      input: {
+        value: '',
+        label: 'Observación / Justificación',
+        action: 'novedad'        
+      },
+
+    } as DialogData;
+
+    this.openDialog(dialog)
+
+  }
+
+  private openDialog(dialog: DialogData): void {
+
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      width: '450px',
+      data: dialog
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.createSolAsistenciaUnicaVez(result);
+      }else {
+
+      }
+
+    });
+  }
+
+  private createSolAsistenciaUnicaVez(justifica: string){
+    this.dsCtrl.createExpressAsistencia('alimentos', this.person, justifica).subscribe(alim => {
+      if(alim){
+        if(!this.items) this.items = [];
+        if(!this.activeitems) this.activeitems = [];
+
+        this.items.unshift(alim);
+        this.activeitems.unshift(alim);
+
+        this.showList = true;
+      }
+    })
+
+  }
+
+
   addItem(){
-    let item = AsistenciaHelper.initNewAsistencia('alimentos', 'alimentos')
-    if(!this.items) this.items = [];
-    if(!this.activeitems) this.activeitems = [];
+    if(this.person && this.person.estado !== 'activo'){
 
-    this.items.unshift(item);
-    this.activeitems.unshift(item);
+      this.dsCtrl.openSnackBar('El registro del requirente no esta ACTIVO', 'Cerrar');
 
-    this.showList = true;
+    }else{
+      let item = AsistenciaHelper.initNewAsistencia('alimentos', 'alimentos')
+      if(!this.items) this.items = [];
+      if(!this.activeitems) this.activeitems = [];
+
+      this.items.unshift(item);
+      this.activeitems.unshift(item);
+
+      this.showList = true;
+
+    }
 
   }
 
