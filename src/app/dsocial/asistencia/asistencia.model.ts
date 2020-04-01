@@ -1221,7 +1221,7 @@ export class AsistenciaHelper {
 		alimento.fe_txd = fe;
 		alimento.fe_tsd = fe_ts;
 
-		alimento.fe_tsh = fe_ts + (1000 * 60 * 24 * 7);
+		alimento.fe_tsh = fe_ts + (1000 * 60 * 60 * 24 * 7);
 		alimento.fe_txh = devutils.txFromDateTime(alimento.fe_tsh);
 		return alimento;
 	}

@@ -150,7 +150,7 @@ export class SolicitaAlimentosEditComponent implements OnInit {
       observacion:  token.observacion,
 		});
 
-    this.projectedDate(token.periodo);
+    //this.projectedDate(token.periodo);
 		return form;
   }
 

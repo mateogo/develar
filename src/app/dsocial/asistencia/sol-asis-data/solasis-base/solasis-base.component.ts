@@ -133,7 +133,7 @@ export class SolasisBaseComponent implements OnInit {
     this.isPedido = false;
 
     if(this.asistencia.action === MODALIDAD_ALIMENTO) {
-      this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad : new Alimento();
+      this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad :AsistenciaHelper.initNewAlimento(this.asistencia.fecomp_txa, this.asistencia.fecomp_tsa);
       this.modalidad = MODALIDAD_ALIMENTO;
       this.isAlimentos = true;
 
