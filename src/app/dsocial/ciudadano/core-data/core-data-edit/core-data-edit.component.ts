@@ -156,8 +156,8 @@ export class CoreDataEditComponent implements OnInit {
 
       nacionalidad: [null],
       nestudios:    [null],
-      fenactx:      [null, [this.fechaNacimientoValidator()] ],
       ecivil:       [null],
+      fenactx:      [null, [this.fechaNacimientoValidator()] ],
       sexo:         [null,Validators.compose([Validators.required]) ],
     });
     return form;
@@ -211,7 +211,6 @@ export class CoreDataEditComponent implements OnInit {
     entity.alerta = fvalue.alerta;
     entity.nacionalidad = fvalue.nacionalidad;
     entity.nestudios =    fvalue.nestudios;
-    entity.fenactx =      fvalue.fenactx;
 
     entity.fenactx = fvalue.fenactx;
     let dateD = devutils.dateFromTx(entity.fenactx);

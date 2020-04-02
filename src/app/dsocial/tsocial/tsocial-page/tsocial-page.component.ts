@@ -23,7 +23,7 @@ import {  Person,
           PersonContactData 
         } from '../../../entities/person/person';
 
-import {   Asistencia, 
+import {  Asistencia, 
           Alimento, 
           UpdateAsistenciaEvent, 
           UpdateAlimentoEvent, 

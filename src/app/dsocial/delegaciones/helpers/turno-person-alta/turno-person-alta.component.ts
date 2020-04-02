@@ -28,6 +28,7 @@ export class TurnoPersonAltaComponent implements OnInit {
 
   public tcompPersonaFisica = personModel.tipoDocumPF;
 
+  public sexoOptList =    personModel.sexoList;
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
   public ndoc: string;
@@ -44,6 +45,8 @@ export class TurnoPersonAltaComponent implements OnInit {
 
   private formAction = "";
   private fireEvent: UpdatePersonEvent;
+
+  public sumbitted = false;
 
 
 
@@ -70,10 +73,14 @@ export class TurnoPersonAltaComponent implements OnInit {
 
 
   onSubmit(){
-  	this.initForSave(this.form, this.token);
-  	this.formAction = UPDATE;
+    this.sumbitted = true;
 
-  	this.emitEvent(this.formAction);
+    this.initForSave(this.form, this.token);
+    this.formAction = UPDATE;
+
+    this.emitEvent(this.formAction);
+
+    
   }
 
   onCancel(){
@@ -81,6 +88,27 @@ export class TurnoPersonAltaComponent implements OnInit {
   	this.emitEvent(this.formAction);
   }
 
+  currentAge(){
+       let edad = '';
+       let value = this.form.value.fenactx
+       let validAge = devutils.validAge(value);
+       if(validAge){
+           edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
+       }
+       return edad;
+   }
+
+  fechaNacimientoValidator(): ValidatorFn {
+      return ((control: AbstractControl) : {[key: string]: any} | null  => {
+          let validAge = devutils.validAge(control.value);
+          return validAge ? null : {'invalidAge': true}
+
+      }) ;
+  }
+    
+  hasError = (controlName: string, errorName: string) =>{
+    return this.form.controls[controlName].hasError(errorName);
+  }
 
   private emitEvent(action:string){
   	this.updateToken.next({
@@ -101,23 +129,24 @@ export class TurnoPersonAltaComponent implements OnInit {
   	let form: FormGroup;
 
     form = this.fb.group({
-      tdoc:        [null],
-      ndoc:        [null,[Validators.required]],
+      tdoc:        [ null ],
+      ndoc:        [ null,[ Validators.required ]],
 
-    	nombre:             [null, [Validators.required]],
-    	apellido:           [null, [Validators.required]],
+    	nombre:       [null, [ Validators.required ]],
+    	apellido:     [null, [ Validators.required ]],
 
-      telefono:    [null, [Validators.required]],
-      osocial:     [null],
-      osocialTxt:  [null],
+      telefono:     [null, [ Validators.required ]],
+      osocial:      [null],
+      osocialTxt:   [null],
 
 
-    	street1:            [null ,[Validators.required]],
-    	streetIn:           [null],
-    	streetOut:          [null],
-    	city:               [null],
-    	barrio:             [null],
-
+    	street1:      [null ,[ Validators.required ]],
+    	streetIn:     [null],
+    	streetOut:    [null],
+    	city:         [null],
+    	barrio:       [null],
+      fenactx:      [null, [this.fechaNacimientoValidator() ]],
+      sexo:         [null, [ Validators.required ]],
     });
 
     return form;
@@ -143,6 +172,8 @@ export class TurnoPersonAltaComponent implements OnInit {
    		
    		nombre:        token.nombre ,
       apellido:      token.apellido,
+      sexo:          token.sexo,
+      fenactx:       token.fenactx,
 
       telefono:    celular.data,
       osocial:     '',
@@ -153,9 +184,10 @@ export class TurnoPersonAltaComponent implements OnInit {
     	streetOut:     locacion.streetOut,
     	city:          locacion.city,
     	barrio:        locacion.barrio,
- 
+
 		});
 
+    this.sumbitted = false;
 		return form;
   }
 
@@ -167,8 +199,14 @@ export class TurnoPersonAltaComponent implements OnInit {
 
     entity.tdoc =       fvalue.tdoc;
     entity.ndoc =       fvalue.ndoc;
-    entity.nombre =       fvalue.nombre;
-    entity.apellido =       fvalue.apellido;
+    entity.nombre =     fvalue.nombre;
+    entity.apellido =   fvalue.apellido;
+
+    entity.fenactx = fvalue.fenactx;
+    let dateD = devutils.dateFromTx(entity.fenactx);
+    entity.fenac = dateD ? dateD.getTime() : 0;
+
+    entity.sexo =         fvalue.sexo;
 
     entity.displayName = entity.apellido + ', ' + entity.nombre;
     entity.alerta = 'Alta Provisoria Web';

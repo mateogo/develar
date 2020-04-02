@@ -31,6 +31,13 @@
         </mat-form-field>
       </div>
 
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+        </mat-form-field>
+      </div>
 
     </div>
 
@@ -49,6 +56,18 @@
           <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
         </mat-form-field>
       </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSexo placeholder="Sexo"
+              [formControl]="form.controls['sexo']"
+              (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
+            <mat-option *ngFor="let item of sexoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
     </div>
     <hr>
 
@@ -106,7 +125,7 @@
       <div class="additional-info">
         <button mat-raised-button color="primary"
             (click)="onSubmit()"
-            [disabled]="!form.valid">Aceptar</button>
+            [disabled]="!form.valid || sumbitted">ALTA DE DATOS</button>
 
         <button mat-button type="button" color="accent" 
                 (click)="onCancel()">CANCELAR</button>

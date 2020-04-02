@@ -98,6 +98,8 @@ export class RegistroPageComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
 
+    //ToDo
+
     if(this.timeOutOfScope()) return;
 
     if(i === 0){

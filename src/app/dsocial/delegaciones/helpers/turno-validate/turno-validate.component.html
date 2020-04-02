@@ -12,7 +12,7 @@
       <div class="additional-info">
         	<button mat-raised-button color="primary"
             (click)="onFailed()"
-            [disabled]="!form.valid">Siguiente</button>
+            [disabled]="!form.valid || submited" >Siguiente</button>
 
       </div>
 		</div>
@@ -25,12 +25,8 @@
 	<div class="row">
 		<div class='col-md-12'>
 			<p class="text-resaltado">Seleccioná la Delegación Municipal o el Centro de Integración Comunitaria (CIC) más cercana a tu domicilio</p>
-
 		</div>
-
-
 	</div>
-
 
 	<div class="novedades-container">
 	  <form [formGroup]="form">
@@ -47,17 +43,14 @@
 	      </div>
 	    </div>
 
-	      <div class="additional-info">
-	        <button mat-raised-button color="primary"
-	            (click)="onFormSubmit()"
-	            [disabled]="!form.valid || submited ">Generar Turno</button>
+      <div class="additional-info">
+        <button mat-raised-button color="primary"
+            (click)="onFormSubmit()"
+            [disabled]="!form.valid || submited ">Generar Turno</button>
 
-	        <button mat-button type="button" color="accent" 
-	                (click)="onFormCancel()">CANCELAR</button>
-	      </div>
-
-
-
+        <button mat-button type="button" color="accent" 
+                (click)="onFormCancel()">CANCELAR</button>
+      </div>
 
 	  </form>
 	</div>

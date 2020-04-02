@@ -26,6 +26,7 @@ const FAILED = 'failed';
 const SUCCESS = 'success';
 const MENSAJE = 'Te llamaremos para analizar tu caso';
 const CUPOS = 'No hay más cupos para retirar mañana.'
+const SISTEMA = 'Se produjo un error en el procesamiento de la información. Intente más tarde.'
 
 const AUH = `
 Usted percibe la Tarjeta Alimentar|AUH u otra forma de asitencia Nacional o Provincial.
@@ -40,6 +41,11 @@ Usted ya fue evaluado por un Trabajador Social y no puede solicitar alimentos po
 
 const DUPLICE = ` 
 Ud. ha recibido alimentos de nuestra parte en los últimos 30 días.
+Si aún así no accede a los alimentos necesarios comuníquese al 5034 6266 de Lunes a Viernes de 8 a 14 hs.
+¡Gracias!
+`
+const MES_EN_CURSO = ` 
+Ud. ha recibido alimentos de nuestra parte en el mes en curso.
 Si aún así no accede a los alimentos necesarios comuníquese al 5034 6266 de Lunes a Viernes de 8 a 14 hs.
 ¡Gracias!
 `
@@ -79,7 +85,6 @@ export class TurnoValidateComponent implements OnInit {
   public hasRemitos = false;
   public voucherType: VoucherType;
   public remitoalmacen: RemitoAlmacen;
-  public emitRemito = false;
   public kitList: KitProduct[];
   public currentKit: KitProduct;
   public currentItemList: ItemAlmacen[];
@@ -126,6 +131,7 @@ export class TurnoValidateComponent implements OnInit {
   	setTimeout(()=>{
   		if(this.hasRestricciones()){
   			this.hasFailedShow = true;
+        this.submited = false;
 
   		}else {
   			this.assignTurno();
@@ -143,15 +149,14 @@ export class TurnoValidateComponent implements OnInit {
   }
 
   onFailed(){
-
+    this.submited = true;
     this.emitFailedEvent(this.failedToken)
-
   }
 
   onFormSubmit(){
     this.submited = true;
     this.initForSave(this.form, this.gturno);
-    this.processTurno()
+    this.verifyTurnoAndNext()
 
   }
 
@@ -186,24 +191,36 @@ export class TurnoValidateComponent implements OnInit {
       this.hasFailed('alta', '(ref#1) Alta provisoria vía Web', '(ref#1) Serás CONTACTADO/A para perfeccionar tu empadronamiento ', 1);
       return true;
     }
+// 40412219
 
-    if(this.currentAsistencia && this.remitosList && this.remitosList.length){
-      let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
-      if(!error.valid){
-        this.hasFailed('entregas', 'Supera entregas del período', '(ref#6) ' +  DUPLICE, 0);
-        return true;
+    // validación #6
+    console.log('asistencia: [%s] remito:[%s]', this.currentAsistencia, (this.remitosList && this.remitosList.length))
+    if(this.remitosList && this.remitosList.length){
+      if(this.currentAsistencia){
+        let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
+        if(!error.valid){
+          this.hasFailed('entregas', 'Supera entregas del período', '(ref#6.1) ' +  DUPLICE, 0);
+          return true;
+        }
+
+      }else{
+        let hasEntregasMes = AsistenciaHelper.hasEntregasMes(this.remitosList);
+        if(hasEntregasMes){
+          this.hasFailed('entregas', 'Ya recibió alimentos en el mes en curso', '(ref#6.2) ' +  MES_EN_CURSO, 0);
+          return true;          
+        }
       }
+    }
+
+    if(!this.canIssueVoucher){
+      this.hasFailed('asistencia', '(ref#5) No tiene asistencias activas', '(ref#5) ' +  MENSAJE,1);
+      return true;
+
     }
 
   	if(!this.currentAsistencia){
   		this.hasFailed('asistencia','(ref#2) No tiene sol asistencia',  '(ref#2) ' +  MENSAJE, 1);
   		return true;
-  	}
-
-  	if(!this.canIssueVoucher){
-  		this.hasFailed('asistencia', '(ref#5) No tiene asistencias activas', '(ref#5) ' +  MENSAJE,1);
-  		return true;
-
   	}
 
   	return isApta;
@@ -254,30 +271,55 @@ export class TurnoValidateComponent implements OnInit {
 
   }
 
-  private processTurno(){
+  private verifyTurnoAndNext(){
   	let today = new Date();
   	let tomorrow = devutils.nextLaborDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()), 1)
   	let fe_txt = devutils.txFromDate(tomorrow);
 
   	this.gturno.fecha = fe_txt;
+    this.gturno.dry = true
 
   	this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
   		if(list && list.length){
-  			this.currentTurno = list[0];
-        this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
+  		  //   this.currentTurno = list[0];
+        //   this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
   			this.processRemito()
 
   		}else{
   			this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
   			this.hasFailedShow = true;
-        this.submited = true;
+        this.submited = false;
   			this.turnoShow = false;
 
   			//todo: se acabó el cupo
-
   		}
 
   	})
+  }
+
+  private insertTurno(){
+    this.gturno.dry = false;
+
+    this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
+      if(list && list.length){
+        this.currentTurno = list[0];
+        this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
+
+        this.turnoSuccess = true;
+        this.submited = true;
+        this.turnoShow = false; 
+
+
+      }else{
+        this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
+        this.hasFailedShow = true;
+        this.submited = false;
+        this.turnoShow = false;
+
+        //todo: se acabó el cupo
+      }
+
+    })
   }
 
   private fetchDelegacionAddress(val): string {
@@ -290,16 +332,8 @@ export class TurnoValidateComponent implements OnInit {
 
   private processRemito(){
 
-      let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
-
-      if(error.valid) {
-        this.initRemitoForEdit(this.currentAsistencia);
-        this.insertRemito()
-      }else {
-        //todo negativa
-        this.dsCtrl.openSnackBar(error.message, 'Aceptar');
-        this.emitEvent(CANCEL);
-      }
+    this.initRemitoForEdit(this.currentAsistencia);
+    this.insertRemito()
   }
 
   private findCurrentKit(code): KitProduct{
@@ -338,10 +372,18 @@ export class TurnoValidateComponent implements OnInit {
     }
 
     this.dsCtrl.manageRemitosAlmacenRecord('remitoalmacen',this.remitoalmacen).subscribe(remito =>{
-      this.remitoalmacen = remito;
-			this.turnoSuccess = true;
-      this.submited = true;
-			this.turnoShow = false;
+      if(remito){
+        this.remitoalmacen = remito;
+        this.insertTurno()
+      }else {
+
+        this.hasFailed('Remitos', '(ref#9) Se produjo un error en el sistema ', SISTEMA, 0 )
+        this.hasFailedShow = true;
+        this.submited = false;
+        this.turnoShow = false;
+
+      }
+      //TODO
  
 
     });
@@ -366,8 +408,6 @@ export class TurnoValidateComponent implements OnInit {
   }
 
   private initRemitoForEdit(asistencia: Asistencia){
-    if(asistencia.action === 'habitat') asistencia.action = 'habitacional';
-
     this.voucherType = AsistenciaHelper.getVoucherType(asistencia);
 
     let action = asistencia.action;
@@ -388,8 +428,6 @@ export class TurnoValidateComponent implements OnInit {
     this.remitoalmacen = RemitoAlmacenModel.initNewRemito(action, slug, sector, serial, person,this.voucherType, kitEntrega, qty);
     this.remitoalmacen.entregas = RemitoAlmacenModel.bindItemListFromAsistencia(asistencia)
 
-
-    this.emitRemito = true;
   }
 
 
@@ -452,6 +490,7 @@ export class TurnoValidateComponent implements OnInit {
 
   private loadHistorialRemitos(p: Person){
     this.dsCtrl.fetchRemitoAlmacenByPerson(p).subscribe(list =>{
+      console.log('list [%s]', list && list.length)
       this.remitosList = list || []
       this.sortProperly(this.remitosList);
 
@@ -565,6 +604,7 @@ export class TurnoValidateComponent implements OnInit {
 
 		return entity;
 	}
+
 	public changeSelectionValue(type, value){
 
 	}

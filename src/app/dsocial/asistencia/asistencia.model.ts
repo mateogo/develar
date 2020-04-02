@@ -872,6 +872,20 @@ function expectedQty(type, val){
 		return t ? t.q : 0;
 }
 
+function entregasMes(list: RemitoAlmacen[]){
+	let hasEntregas = false;
+	if(list && list.length){
+		let today = new Date()
+		let mesd = new Date(today.getFullYear(), today.getMonth(), 1).getTime();
+		let mesh = new Date(today.getFullYear(), today.getMonth() + 1, 0 ).getTime();
+		let token = list.find(t => (mesd <= t.fecomp_tsa && t.fecomp_tsa < mesh) )
+		if(token ) hasEntregas = true;
+
+	}
+
+	return hasEntregas;
+}
+
 
 function validateFlujoEntregas(asistencia: Asistencia, entregas: RemitoAlmacen[]):any{
 	let entregasMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
@@ -1017,6 +1031,11 @@ export class AsistenciaHelper {
       else return 0;
     });
     return records;
+  }
+
+  static hasEntregasMes (entregas: RemitoAlmacen[]): boolean{
+  	return entregasMes(entregas)
+
   }
 
   static checkVoucherConditions(asistencia: Asistencia, entregas: RemitoAlmacen[] ): any{
