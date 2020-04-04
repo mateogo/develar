@@ -137,6 +137,8 @@ function buildTurnosDadosQuery(query){
       q["fe_ts"] = utils.parseDateStr(query['fecha']).getTime();
   }
 
+  return q;
+
 }
 
 function buildNextTurnoQuery(query){
@@ -187,10 +189,9 @@ const dowValidate = function (dow, target){
 }
 
 const fetchTurnos = function(query){
+
       let regexQuery = buildTurnosDadosQuery(query);
       return Asignado.find(regexQuery);
-
-
 }
 
 const filterTurnos = function (query, tokens){
@@ -215,7 +216,7 @@ const validateCupo = function(turnos, asignados, query){
 
   let filterList = turnos.filter(turno => {
     let qty_asignada = asignados.reduce((qty,asig )=>{
-      //console.log('turno: [%s] [%s]   asignados: [%s] [%s] [%s]', turno._id, turno.hora, asig.hora, (asig.turnoId === turno.id), asig.qty)
+
       if(asig.turnoId === turno.id){
         qty += asig.qty
         return qty;        
@@ -225,10 +226,9 @@ const validateCupo = function(turnos, asignados, query){
 
     },0)
 
-    //console.log('Reduce: [%s] [%s] [%s]',qty_asignada, turno._id, turno.hora, turno.capacidad.qty )
     if((qty_asignada + query.qty) > turno.capacidad.qty){
-
       return false;
+
     } else {
       return true;
     }
@@ -242,15 +242,18 @@ const validateTurnos = function(query, tokens, errcb, cb, count){
   let validateSet = [];
 
   if(resultSet && resultSet.length){
+
     fetchTurnos(query).then(list => {
 
       validateSet = validateCupo(resultSet, list, query);
+
       cb(validateSet);
 
     })
 
 
   } else {
+
       cb([])
 
   }
@@ -721,11 +724,11 @@ exports.createInitialData = function (){
       {recurso: 'josemarmol', dow: 5, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
 
       // longchamps
-      {recurso: 'longchamps', dow: 1, hora: 11, slug: 'DEL LONGSCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 2, hora: 11, slug: 'DEL LONGSCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 3, hora: 11, slug: 'DEL LONGSCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 4, hora: 11, slug: 'DEL LONGSCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 5, hora: 11, slug: 'DEL LONGSCHAMPS 10:00hs' },
+      {recurso: 'longchamps', dow: 1, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
+      {recurso: 'longchamps', dow: 2, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
+      {recurso: 'longchamps', dow: 3, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
+      {recurso: 'longchamps', dow: 4, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
+      {recurso: 'longchamps', dow: 5, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
 
       // malvinas
       {recurso: 'malvinas', dow: 1, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },

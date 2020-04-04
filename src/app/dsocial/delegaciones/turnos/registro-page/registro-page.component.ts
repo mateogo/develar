@@ -98,9 +98,8 @@ export class RegistroPageComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
 
-    //ToDo
-
-    if(this.timeOutOfScope()) return;
+    //ToDo OjO
+    //if(this.timeOutOfScope()) return;
 
     if(i === 0){
       this.showLogin = true;

@@ -194,7 +194,6 @@ export class TurnoValidateComponent implements OnInit {
 // 40412219
 
     // validación #6
-    console.log('asistencia: [%s] remito:[%s]', this.currentAsistencia, (this.remitosList && this.remitosList.length))
     if(this.remitosList && this.remitosList.length){
       if(this.currentAsistencia){
         let error = AsistenciaHelper.checkVoucherConditions(this.currentAsistencia, this.remitosList);
@@ -281,17 +280,14 @@ export class TurnoValidateComponent implements OnInit {
 
   	this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
   		if(list && list.length){
-  		  //   this.currentTurno = list[0];
-        //   this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
+
   			this.processRemito()
 
   		}else{
-  			this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
+  			this.hasFailed('Turnos', '(ref#7.1) Cupo diario excedido en esta locación ', '(ref#7.1) ' + CUPOS, 0 )
   			this.hasFailedShow = true;
         this.submited = false;
   			this.turnoShow = false;
-
-  			//todo: se acabó el cupo
   		}
 
   	})
@@ -302,6 +298,7 @@ export class TurnoValidateComponent implements OnInit {
 
     this.dsCtrl.fetchTurnoForDelegaciones(this.gturno, this.person).subscribe(list => {
       if(list && list.length){
+
         this.currentTurno = list[0];
         this.direccion = this.fetchDelegacionAddress(this.currentTurno.recurso.lugarId)
 
@@ -309,14 +306,11 @@ export class TurnoValidateComponent implements OnInit {
         this.submited = true;
         this.turnoShow = false; 
 
-
       }else{
-        this.hasFailed('Turnos', '(ref#7) Cupo diario excedido en esta locación ', CUPOS, 0 )
+        this.hasFailed('Turnos', '(ref#7.2) Cupo diario excedido en esta locación ', '(ref#7.2) ' + CUPOS, 0 )
         this.hasFailedShow = true;
         this.submited = false;
         this.turnoShow = false;
-
-        //todo: se acabó el cupo
       }
 
     })
@@ -490,7 +484,6 @@ export class TurnoValidateComponent implements OnInit {
 
   private loadHistorialRemitos(p: Person){
     this.dsCtrl.fetchRemitoAlmacenByPerson(p).subscribe(list =>{
-      console.log('list [%s]', list && list.length)
       this.remitosList = list || []
       this.sortProperly(this.remitosList);
 
