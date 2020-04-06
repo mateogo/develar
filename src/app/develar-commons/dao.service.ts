@@ -1,11 +1,7 @@
 import { Injectable }    from '@angular/core';
-
 import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
 import { Observable, of }    from 'rxjs';
 import { catchError }     from 'rxjs/operators';
-
-
-
 
 const whoami = 'DAO.service';
 
@@ -170,6 +166,11 @@ export class DaoService {
         backendURL: 'api/persons',
         searchURL:  'api/persons/search',
         upsertURL:  'api/persons/upsert'
+      },
+      locacionhospitalaria:{
+        backendURL: 'api/locacionhospitalaria',
+        searchURL:  'api/locacionhospitalaria/search',
+        upsertURL:  'api/locacionhospitalaria/upsert'
       },
       beneficiarioalimentar:{
         backendURL:   'api/alimentar',

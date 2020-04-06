@@ -24,6 +24,7 @@ import { devutils }from '../../develar-commons/utils';
 const TSOCIAL = 'tsocial';
 const TALIMENTAR = 'talimentar';
 const AUDITORIA = 'auditoria';
+const UNICA = 1
 
 @Component({
   selector: 'recepcion-page',
@@ -319,7 +320,7 @@ export class RecepcionPageComponent implements OnInit {
     if(!this.hasAsistencias && this.currentSector.val === "alimentos"){
       let slug = 'Alimentos otorgados de oficio, presentación espontánea 1ra vez'
 
-      this.dsCtrl.createExpressAsistencia(this.currentSector.val, this.currentPerson, slug);
+      this.dsCtrl.createExpressAsistencia(this.currentSector.val, this.currentPerson, slug, UNICA);
     }
   }
 

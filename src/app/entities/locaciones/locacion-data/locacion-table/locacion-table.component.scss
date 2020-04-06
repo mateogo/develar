@@ -1,0 +1,59 @@
+.data-table {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  margin: 15px 0 0 0;
+}
+
+
+.mat-header-cell {
+  font-weight: 600;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 800px;
+}
+
+.mat-column-select {
+  overflow: initial;
+  flex: 0 0 55px;
+}
+
+.mat-column-code {
+  flex: 0 0 150px;
+}
+
+.mat-column-slug {
+  flex: 1 1 150px;
+}
+
+.mat-column-estado {
+  flex: 0 0 60px;
+}
+.mat-column-type {
+  flex: 0 0 130px;
+}
+
+.mat-column-faudit_um {
+  flex: 0 0 90px;
+}
+
+
+.mat-column-covid {
+  flex: 1 2 300px;
+}
+
+.mat-column-locacion {
+  flex: 1 2 300px;
+}
+
+.mat-column-osocial {
+  flex: 1 2 200px;
+}
+
+
+.mat-column-freq {
+  display: flex;
+  justify-content: flex-end;
+}

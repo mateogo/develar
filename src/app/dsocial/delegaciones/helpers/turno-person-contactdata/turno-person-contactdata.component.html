@@ -1,0 +1,34 @@
+<mat-card >
+<mat-card-content>
+<p class="text-destacado">Confirma tus datos de contacto</p>
+<p class="text-normal">El dato que ingreses posibilitará que seas contactado/a por nuestra parte, toda vez que sea necesario</p>
+<hr>
+<p class="text-normal"></p>
+<div class="novedades-container">
+  <form [formGroup]="form">
+
+    <div class="row">
+      <div class="col-sm-12 col-md-2">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
+        </mat-form-field>
+      </div>
+
+    </div>
+
+
+    <hr>
+
+    <div class="additional-info">
+      <button mat-raised-button color="primary"
+          (click)="onSubmit()"
+          [disabled]="!form.valid || sumbitted">ALTA DE DATOS</button>
+
+      <button mat-button type="button" color="accent" 
+              (click)="onCancel()">CANCELAR</button>
+    </div>
+
+  </form>
+</div>
+</mat-card-content>
+</mat-card>

@@ -1,0 +1,60 @@
+<mat-card>
+	<mat-card-content>
+		<div class="selector">
+	  	<div class="d-flex align-items-center justify-content-between panel-header">
+				<div class="panel-header-text">{{ searchTitle }}</div>
+				<div class="panel-header-control" ><span 
+					(click)='openSearchForm()' title="Abrir panel de búsqueda avanzada">
+					<i [class]="openBrowsePanel ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span></div>
+				</div>
+		</div>
+		<ng-container *ngIf="openBrowsePanel">
+			<locacion-browse [query]="query" 
+											(updateQuery)="refreshSelectionEvent($event)"></locacion-browse>
+		</ng-container>
+	</mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+	 	<div class="row">
+			<div class="col-sm-12 col-md-12">
+	 	  	<div class="d-flex justify-content-between align-items-center panel-header">
+
+					<div class="panel-header-text">{{ title }}</div>
+
+					<div class="panel-header-control" >
+					  <mat-button-toggle-group #view="matButtonToggleGroup"  >
+					    <mat-button-toggle value="list">
+					      <mat-icon>view_list</mat-icon>
+					    </mat-button-toggle>
+					    <mat-button-toggle value="grid">
+					      <mat-icon>view_module</mat-icon>
+					    </mat-button-toggle>
+					  </mat-button-toggle-group>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<ng-container *ngIf='showEditor'>
+				<locacion-base [locacion]='currentLocacion'
+										(updateToken)='updateCurrentLocacion($event)'></locacion-base>
+
+		</ng-container>
+
+		<ng-container *ngIf='showData'>
+			<ng-container *ngIf='!view.value || view.value=="list"'>
+				<locacion-table (actionTriggered)="tableActionEvent($event)" ></locacion-table>
+
+			</ng-container>
+
+			<ng-container *ngIf='view.value=="grid"'>
+				<locacion-list [locaciones]='locacionesList'
+		 							(updateItems)='updateLocacionList($event)' ></locacion-list>
+			</ng-container>
+		</ng-container>
+  </mat-card-content>
+</mat-card>

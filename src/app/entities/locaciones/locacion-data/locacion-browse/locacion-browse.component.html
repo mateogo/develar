@@ -1,0 +1,34 @@
+<mat-card >
+  <mat-card-content>
+  <form [formGroup]="form">
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput  
+          		[formControl]="form.controls['code']" placeholder="Código" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTipoLocacion placeholder="Tipo de Locacion"
+              [formControl]="form.controls['type']"
+              (selectionChange)="changeSelectionValue('type',fldTipoLocacion.value)" >
+            <mat-option *ngFor="let item of hospitalOL" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit('search')"
+          [disabled]="!form.valid" >Buscar</button>
+      
+    </div>
+
+</form>
+</mat-card-content>
+</mat-card>

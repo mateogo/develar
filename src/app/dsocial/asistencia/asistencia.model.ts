@@ -1235,13 +1235,34 @@ export class AsistenciaHelper {
 
 */
 
-	static initNewAlimento(fe: string, fe_ts: number):Alimento{
+	static initNewAlimento(fe: string, fe_ts: number, count):Alimento{
 		let alimento = new Alimento();
 		alimento.fe_txd = fe;
 		alimento.fe_tsd = fe_ts;
+		let febase = devutils.dateFromTx(alimento.fe_txd);
+		let month = febase.getMonth();
+		let day = febase.getDate();
+		let endDay;
 
-		alimento.fe_tsh = fe_ts + (1000 * 60 * 60 * 24 * 7);
-		alimento.fe_txh = devutils.txFromDateTime(alimento.fe_tsh);
+
+		if(count === 1){
+			endDay = new Date(febase.getFullYear(), month, day + 7);
+			alimento.fe_tsh = endDay.getTime();
+			alimento.fe_txh = devutils.txFromDate(endDay);
+			alimento.periodo = 'UNICO';
+			alimento.freq = 'unica';
+			alimento.type = 'ALIM';
+
+		}else if(count === 3){
+			endDay = new Date(febase.getFullYear(), month + 3, 0);
+			alimento.fe_tsh = endDay.getTime();
+			alimento.fe_txh = devutils.txFromDate(endDay);
+			alimento.periodo = '3M';
+			alimento.freq = 'mensual';
+			alimento.type = 'ALIM';
+
+		}
+
 		return alimento;
 	}
 

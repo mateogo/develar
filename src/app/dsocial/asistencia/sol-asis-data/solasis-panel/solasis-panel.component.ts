@@ -123,19 +123,19 @@ export class SolasisPanelComponent implements OnInit {
   }
 
 
-  altaRapida1vez(){
+  altaRapida1vez(count: number){
     if(this.person && this.person.estado !== 'activo'){
 
       this.dsCtrl.openSnackBar('El registro del requirente no esta ACTIVO', 'Cerrar');
 
     }else{
-      this.altaRapidaDialog();
+      this.altaRapidaDialog(count);
 
     }
 
   }
 
-  private altaRapidaDialog(){
+  private altaRapidaDialog(count: number){
     let dialog = {
       caption: 'ALTA RÁPIDA',
       title: 'Solicitud de Alimentos x ÚNICA VEZ',
@@ -156,11 +156,11 @@ export class SolasisPanelComponent implements OnInit {
 
     } as DialogData;
 
-    this.openDialog(dialog)
+    this.openDialog(dialog, count)
 
   }
 
-  private openDialog(dialog: DialogData): void {
+  private openDialog(dialog: DialogData, count: number): void {
 
     const dialogRef = this.dialog.open(ModalDialogComponent, {
       width: '450px',
@@ -170,7 +170,7 @@ export class SolasisPanelComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.createSolAsistenciaUnicaVez(result);
+        this.createSolAsistenciaUnicaVez(result, count);
       }else {
 
       }
@@ -178,8 +178,8 @@ export class SolasisPanelComponent implements OnInit {
     });
   }
 
-  private createSolAsistenciaUnicaVez(justifica: string){
-    this.dsCtrl.createExpressAsistencia('alimentos', this.person, justifica).subscribe(alim => {
+  private createSolAsistenciaUnicaVez(justifica: string, count: number){
+    this.dsCtrl.createExpressAsistencia('alimentos', this.person, justifica, count).subscribe(alim => {
       if(alim){
         if(!this.items) this.items = [];
         if(!this.activeitems) this.activeitems = [];

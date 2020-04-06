@@ -26,6 +26,8 @@ const MODALIDAD_ENCUESTA = 'encuesta';
 const BG_COLOR_DEFAULT = "#ffffff";
 const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
 
+const UNICA = 1;
+
 
 @Component({
   selector: 'solasis-base',
@@ -133,7 +135,7 @@ export class SolasisBaseComponent implements OnInit {
     this.isPedido = false;
 
     if(this.asistencia.action === MODALIDAD_ALIMENTO) {
-      this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad :AsistenciaHelper.initNewAlimento(this.asistencia.fecomp_txa, this.asistencia.fecomp_tsa);
+      this.alimento = this.asistencia.modalidad ? this.asistencia.modalidad :AsistenciaHelper.initNewAlimento(this.asistencia.fecomp_txa, this.asistencia.fecomp_tsa, UNICA);
       this.modalidad = MODALIDAD_ALIMENTO;
       this.isAlimentos = true;
 

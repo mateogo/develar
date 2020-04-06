@@ -191,7 +191,6 @@ export class TurnoValidateComponent implements OnInit {
       this.hasFailed('alta', '(ref#1) Alta provisoria vía Web', '(ref#1) Serás CONTACTADO/A para perfeccionar tu empadronamiento ', 1);
       return true;
     }
-// 40412219
 
     // validación #6
     if(this.remitosList && this.remitosList.length){

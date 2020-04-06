@@ -1,0 +1,35 @@
+<mat-card class="detail-card">
+  <mat-card-content>
+  	<ng-container *ngIf="showView">
+		 	<div [ngStyle]=selectedStyle class="row">
+		 		<div class="col-md-12">
+		 			<locacion-view [locacion]='locacion' ></locacion-view>
+		 		</div>
+			</div>
+		</ng-container>
+
+	 	<div [ngStyle]=selectedStyle class="row">
+	 		<div class="col-md-12 d-flex justify-content-between align-items-center">
+	 			<div *ngIf="showEditControl">
+					<span class="edit-control"
+						(click)='editToken()' title="Editar datos base">
+						<i [class]="showEditBase ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+					</div>
+	 		</div>
+		</div>
+	
+		<ng-container *ngIf="showEditPanel">
+			<ng-container *ngIf="showEditBase">
+			 	<div class="row">
+			 		<div class="col-sm-12 col-md-12">
+			 			<locacion-edit [locacion]="locacion"
+			 											(updateToken)='updateLocacionEvent($event)' ></locacion-edit>
+			 		</div>
+				</div>
+			</ng-container>		  		
+		</ng-container>
+
+  </mat-card-content>
+</mat-card>
+<!-- [locacion]='locacion'  (updateToken)='updateLocacionEvent($event)' -->

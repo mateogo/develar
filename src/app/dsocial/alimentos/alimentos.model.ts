@@ -30,6 +30,7 @@ export class Parent {
 export class Alimento {
 		id:          string; 
 		type:        string;
+		periodo:     string = 'UNICO';
 		fe_tsd:      number; 
 		fe_tsh:      number; 
 		fe_txd:      string; 

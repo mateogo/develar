@@ -477,17 +477,17 @@ export class DsocialController {
   /******* Asistencias ********/
   /***************************/
 
-  createExpressAsistencia(action: string, person: Person, slug: string){
+  createExpressAsistencia(action: string, person: Person, slug: string, count: number){
     let listener = new Subject<Asistencia>();
 
     if(action === "alimentos") {
-      this.createExpressAlimento(listener, action, person, slug);
+      this.createExpressAlimento(listener, action, person, slug, count);
     }
     return listener;
 
   }
 
-  private createExpressAlimento(listener: Subject<Asistencia>, action:string, person: Person, slug: string){
+  private createExpressAlimento(listener: Subject<Asistencia>, action:string, person: Person, slug: string, count: number){
     let sector = "alimentos"
     let serial_name = 'solicitud';
     let serial_type = 'asistencia';
@@ -497,7 +497,7 @@ export class DsocialController {
 
     const asistencia = AsistenciaHelper.initNewAsistencia(action, sector, person, null, slug);
 
-    let alimento = AsistenciaHelper.initNewAlimento(asistencia.fecomp_txa, asistencia.fecomp_tsa);
+    let alimento = AsistenciaHelper.initNewAlimento(asistencia.fecomp_txa, asistencia.fecomp_tsa, count);
     alimento.type = kit.val;
 
     asistencia.modalidad = alimento;

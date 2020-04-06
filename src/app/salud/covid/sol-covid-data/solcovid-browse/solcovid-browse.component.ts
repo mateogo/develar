@@ -61,7 +61,6 @@ export class SolcovidBrowseComponent implements OnInit {
 
   ngOnInit() {
     this.nextStepOptList =  this.avanceOptList.slice(1);
-    console.log('INIT Browse [%s]', this.nextStepOptList.length);
 
     this.sectorOptList.push(
        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }

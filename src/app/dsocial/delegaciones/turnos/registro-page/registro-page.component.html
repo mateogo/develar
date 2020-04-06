@@ -23,24 +23,36 @@
 		<ng-container *ngIf='coreDataStep'>
 			<div id='items' class="row">
 				<div class='col-md-12 item'>
-
-					<ng-container *ngIf="!showPersonEditor">
-							<turno-validate 
-										[person]='person' 
-										(updateToken)=validatePersonEvent($event)></turno-validate>
-					</ng-container>
-
-					<ng-container *ngIf="showPersonEditor">
+					<ng-container *ngIf="isNewPerson">
 						<turno-person-alta 	
-														(updateToken)=altaPersonEvent($event)
-														[token]='person' ></turno-person-alta>
+											[token]='person' 
+											(updateToken)=altaPersonEvent($event) ></turno-person-alta>
 
 					</ng-container>
+
+					<ng-container *ngIf="!isNewPerson">
+							<turno-person-contactdata 
+										[token]='person' 
+										(updateToken)=updatePersonContactDataEvent($event)></turno-person-contactdata>
+					</ng-container>
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-container *ngIf='validatePersonStep'>
+			<div id='items' class="row">
+				<div class='col-md-12 item'>
+
+					<turno-validate 
+								[person]='person' 
+			 					(updateToken)=validatePersonEvent($event)></turno-validate>
 
 				</div>
 			</div>
 		</ng-container>
-		<ng-container *ngIf='validateConditionsStep'>
+
+
+		<ng-container *ngIf='failedGoodByeStep'>
 			<div id='items' class="row">
 				<div class='col-md-12 item'>
 					<h4>Nos contactaremos contigo a la brevedad para perfeccionar el alta</h4>

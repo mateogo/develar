@@ -686,6 +686,14 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         title: 'Padrón personas',
         routing: '/salud/gestion/atencionsocial'
       },
+      {
+        title: 'Hospitales',
+        routing: '/salud/entidades/locaciones/navegar'
+      },
+      {
+        title: 'HospitalesAlta',
+        routing: '/salud/entidades/locaciones/alta'
+      },
     ],
     routing: '',
     externalLink: '',

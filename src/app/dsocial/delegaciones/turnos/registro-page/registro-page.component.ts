@@ -54,10 +54,11 @@ export class RegistroPageComponent implements OnInit {
   public showLogin = false;
 
   public coreDataStep = false;
-  public validateConditionsStep = false;
+  public failedGoodByeStep = false;
+  public validatePersonStep = false;
 
-  private  personExists= false;
-  public showPersonEditor = false;
+  private  personExists = false;
+  public  isNewPerson = false;
 
   public person: Person;
   public isComercio = true;
@@ -99,7 +100,7 @@ export class RegistroPageComponent implements OnInit {
     e.preventDefault();
 
     //ToDo OjO
-    //if(this.timeOutOfScope()) return;
+    if(this.timeOutOfScope()) return;
 
     if(i === 0){
       this.showLogin = true;
@@ -124,9 +125,25 @@ export class RegistroPageComponent implements OnInit {
 
   }
 
+  updatePersonContactDataEvent(e: UpdatePersonEvent) {
+    this.personExists = true;
+
+    if(e.action === UPDATE){
+      this.updatePersonRecord(e);
+    }
+
+    if(e.action === CANCEL){
+      this.moveToFirstStep(true)
+    }
+
+  }
+
+
+
+
   validatePersonEvent(e: UpdatePersonEvent){
     if(e.action === NEXT){
-      this.moveToValidateConditionsStep()
+      this.moveToFailedAndGoodByeStep()
     }
 
     if(e.action === FAILED){
@@ -248,9 +265,11 @@ export class RegistroPageComponent implements OnInit {
     let person = e.person;
     if(person._id){
       this.dsCtrl.updatePersonPromise(person._id, person).then(per =>{
-        this.person = per;
-        this.personExists = true;
-        this.moveToCoreDataStep(true);
+        if(per){
+          this.person = per;
+          this.personExists = true;
+          this.moveToValidationStep(true);
+        }
       })
 
     }else{
@@ -258,7 +277,7 @@ export class RegistroPageComponent implements OnInit {
         if(per){
           this.person = per;
           this.personExists = true;
-          this.moveToCoreDataStep(true);
+          this.moveToValidationStep(true);
         }
       });
     }
@@ -271,11 +290,13 @@ export class RegistroPageComponent implements OnInit {
 
         Object.assign(person, token);
         this.personExists = true;
+        this.isNewPerson = false;
 
         this.moveToCoreDataStep(true)//OjO solo por prueba 
 
       } else {
         this.personExists = false;
+        this.isNewPerson = true;
         this.moveToCoreDataStep(false)//OjO solo por prueba 
 
       }
@@ -344,35 +365,43 @@ export class RegistroPageComponent implements OnInit {
   private moveToFirstStep(loginShow: boolean) {
     this.firstStep = true;
     this.showLogin = loginShow;
+    this.validatePersonStep = false;
 
     this.coreDataStep = false;
-    this.showPersonEditor = false;
 
-    this.validateConditionsStep = false;
+    this.failedGoodByeStep = false;
 
   }
 
-  private moveToCoreDataStep(hasPerson: boolean) {
+  private moveToCoreDataStep(hasPerson: boolean) { 
+    this.firstStep = false;
+    this.showLogin = false;
+    this.failedGoodByeStep = false;
+    this.validatePersonStep = false;
+
+    console.log('movToCoreSteP: [%s]', this.isNewPerson);
+
     this.coreDataStep = true;
-    this.showPersonEditor = !hasPerson;
- 
+  }
 
+
+  private moveToValidationStep(hasPerson: boolean) { 
     this.firstStep = false;
     this.showLogin = false;
-
-
-    this.validateConditionsStep = false;
+    this.coreDataStep = false;
+    this.failedGoodByeStep = false;
+    this.validatePersonStep = true;
 
   }
 
-  private moveToValidateConditionsStep() {
+
+  private moveToFailedAndGoodByeStep() {
     this.firstStep = false;
     this.showLogin = false;
-
     this.coreDataStep = false;
-    this.showPersonEditor = false;
+    this.validatePersonStep = false;
 
-    this.validateConditionsStep = true;
+    this.failedGoodByeStep = true;
 
   }
 

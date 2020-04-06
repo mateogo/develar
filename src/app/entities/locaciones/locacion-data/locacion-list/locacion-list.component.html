@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-content>
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+				<div class="d-flex justify-content-between panel-header">
+					<div class="panel-header-text">{{ title }}</div>
+				</div>
+			</div>
+		</div>
+			
+		<ng-container *ngIf="showList">
+			<div  *ngFor="let item of locaciones" class="row">
+				<div class="col-sm-12 col-md-12">
+					<locacion-base [locacion]='item'
+											(updateToken)='updateItemEevent($event)'></locacion-base>
+					<hr>											
+				</div>
+			</div>
+		</ng-container>
+			
+  </mat-card-content>
+</mat-card>

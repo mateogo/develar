@@ -50,10 +50,18 @@ const personRoutes: Routes = [
     loadChildren: () => import('./entities/person/person.module').then(m => m.PersonModule)
   },
 ];
+
 const userRoutes: Routes = [
   { 
     path: '', 
     loadChildren: () => import('./entities/user/user/user.module').then(m => m.UserModule)
+  },
+];
+
+const locacionRoutes: Routes = [
+  { 
+    path: '', 
+    loadChildren: () => import('./entities/locaciones/locacion.module').then(m => m.LocacionHospitalariaModule)
   },
 ];
 
@@ -90,9 +98,10 @@ const bookshelfRoutes: Routes = [
 ];
 
 const entityRoutes: Routes = [
-  { path: 'personas',  children:  personRoutes },
-  { path: 'productos', children:  productRoutes },
-  { path: 'usuarios',  children:  userRoutes },
+  { path: 'personas',    children:  personRoutes },
+  { path: 'productos',   children:  productRoutes },
+  { path: 'usuarios',    children:  userRoutes },
+  { path: 'locaciones',  children:  locacionRoutes },
 ];
 
 const afterLogin: Routes = [
@@ -155,6 +164,11 @@ const saludRoutes: Routes = [
     path: 'gestion',
     component: DefaultLayoutComponent,
     children: saludModuleRoutes
+  },
+  {
+    path: 'entidades',
+    component: DefaultLayoutComponent,
+    children: entityRoutes
   },
 ];
 

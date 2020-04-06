@@ -92,6 +92,7 @@ import { TurnoDocumentoComponent } from './delegaciones/helpers/turno-documento/
 import { TurnoPersonAltaComponent } from './delegaciones/helpers/turno-person-alta/turno-person-alta.component';
 import { TurnoPersonViewComponent } from './delegaciones/helpers/turno-person-view/turno-person-view.component';
 import { TurnoValidateComponent } from './delegaciones/helpers/turno-validate/turno-validate.component';
+import { TurnoPersonContactdataComponent } from './delegaciones/helpers/turno-person-contactdata/turno-person-contactdata.component';
 
 @NgModule({
   imports: [
@@ -187,6 +188,7 @@ import { TurnoValidateComponent } from './delegaciones/helpers/turno-validate/tu
     TurnoPersonAltaComponent,
     TurnoPersonViewComponent,
     TurnoValidateComponent,
+    TurnoPersonContactdataComponent,
   ]
 })
 export class DsocialModule { }
