@@ -291,13 +291,12 @@ export class RegistroPageComponent implements OnInit {
         Object.assign(person, token);
         this.personExists = true;
         this.isNewPerson = false;
-
-        this.moveToCoreDataStep(true)//OjO solo por prueba 
+        this.moveToCoreDataStep(true)
 
       } else {
         this.personExists = false;
         this.isNewPerson = true;
-        this.moveToCoreDataStep(false)//OjO solo por prueba 
+        this.moveToCoreDataStep(false)
 
       }
     });

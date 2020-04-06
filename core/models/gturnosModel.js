@@ -689,11 +689,11 @@ exports.createInitialData = function (){
 
     if(true){
       return  [
-      {recurso: 'burzaco', dow: 1, hora: 10, slug: 'DEL BURZACO 10:00hs' },
-      {recurso: 'burzaco', dow: 2, hora: 10, slug: 'DEL BURZACO 10:00hs' },
-      {recurso: 'burzaco', dow: 3, hora: 10, slug: 'DEL BURZACO 10:00hs' },
-      {recurso: 'burzaco', dow: 4, hora: 10, slug: 'DEL BURZACO 10:00hs' },
-      {recurso: 'burzaco', dow: 5, hora: 10, slug: 'DEL BURZACO 10:00hs' },
+      {recurso: 'burzaco', dow: 1, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
+      {recurso: 'burzaco', dow: 2, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
+      {recurso: 'burzaco', dow: 3, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
+      {recurso: 'burzaco', dow: 4, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
+      {recurso: 'burzaco', dow: 5, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
 
       // claypole
       {recurso: 'claypole', dow: 1, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},

@@ -5,7 +5,8 @@ import { Person, CoberturaData }  from '../entities/person/person';
 
 const delegaciones = [
 
-{val: 'burzaco',      type: 'delegacion', name: 'Delegación Burzaco',         locacion:	'9 de Julio y Roca',         telefono: '4299-2273'},
+
+{val: 'burzaco',      type: 'delegacion', name: 'Delegación Burzaco (playón)',         locacion:	'Calle Quintana entre 25 de Mayo y Amenedo',         telefono: '4299-2273'},
 {val: 'claypole',     type: 'delegacion', name: 'Delegación Claypole',        locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
 {val: 'donorione',    type: 'delegacion', name: 'Delegación Don Orione',      locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
 {val: 'glew',         type: 'delegacion', name: 'Delegación Glew',            locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
