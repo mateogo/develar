@@ -25,11 +25,20 @@ export class TestUnoComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-  	this.createSolIntervencion()
+  	//this.createSolIntervencion()
+  	//this.fetchRecursosDisponibles()
 
 
   }
 
+  fetchRecursos(){
+  	this.fetchRecursosDisponibles()
+  }
+
+
+  createAsitenciaPool(){
+  	this.createSolIntervencion()
+  }
 
 
 
@@ -61,9 +70,40 @@ export class TestUnoComponent implements OnInit {
   		}
   	})
 
-
-
   }
+
+
+
+	private fetchRecursosDisponibles(){
+		this.intSrv.fetchCapacidadDisponible().subscribe(alocationList =>{
+			this.perSrv.fetchPersonByDNI('DNI', '22111353').subscribe(person => {
+				console.log('PersonFetched: [%s]', person.displayName);
+				let hosp = alocationList[0];
+				console.log('Hospital Selected [%s]', hosp.code);
+				this.intSrv.fetchInternacionesByPersonId(person._id).subscribe(list => {
+					if(list && list.length){
+						let asistencia = list[0];
+						console.log('asistencia RETRIEVE [%s]', asistencia.compNum);
+						this.intSrv.allocateInternacion(asistencia, hosp._id, 'UTI' ).subscribe(sol =>{
+
+							console.dir(sol)
+						})
+
+					}
+				})
+
+
+
+			})
+
+
+
+
+
+		});
+
+	}
+
 
 
 

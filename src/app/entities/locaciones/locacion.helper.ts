@@ -52,9 +52,9 @@ export class  LocacionHelper {
             rec.rservicio = servicio.srvtype;
             rec.piso = 'PISO';
             rec.sector = 'SECTOR';
-            rec.sala = 'SALA';
+            rec.hab = 'HAB';
             rec.code = (i + 1) + '';
-            rec.slug = rec.rtype + ':' + rec.code + ' (' + rec.piso + '-' + rec.sector + '-' + rec.sala  + ')';
+            rec.slug = rec.rtype + ':' + rec.code + ' (' + rec.piso + '-' + rec.sector + '-' + rec.hab  + ')';
             rec.description = '';
             recursos.push(rec);
           }
@@ -124,21 +124,33 @@ const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
 ];
 
-const serviciosOptList: Array<any> = [
+const areasOptList: Array<any> = [
     {val: 'UTI',           ord: '1.1', label: 'UTI'          },
     {val: 'UTE',           ord: '1.2', label: 'UTE'          },
     {val: 'UCO',           ord: '1.3', label: 'UCO'          },
-    {val: 'UTI',       ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'AISL',          ord: '2.1', label: 'AISLAMIENTO'  },
-    {val: 'INTPREV',       ord: '2.2', label: 'INT-PRVENT'   },
-    {val: 'CONSEXT',       ord: '3.1', label: 'CONS-EXT'     },
+    {val: 'INTERNACION',   ord: '1.4', label: 'INT-GENERAL'  },
+    {val: 'AISLAMIENTO',   ord: '2.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',     ord: '3.1', label: 'CONSULTORIO EXT'},
     {val: 'GUARDIA',       ord: '3.2', label: 'GUARDIA'      },
+
     {val: 'TRANSITO',      ord: '4.1', label: 'TRANSITO'     },
     {val: 'TRASLADO',      ord: '4.2', label: 'TRASLADO'     },
     {val: 'ADMISION',      ord: '5.1', label: 'ADMISIÓN'     },
     {val: 'EXTERNACION',   ord: '5.2', label: 'EXTERNACIÓN'  },
 
 ];
+
+const serviciosOptList: Array<any> = [
+    {val: 'UTI',           target: 'UTI',           ord: '1.1', label: 'UTI'          },
+    {val: 'UTE',           target: 'UTI',           ord: '1.2', label: 'UTE'          },
+    {val: 'UCO',           target: 'UTI',           ord: '1.3', label: 'UCO'          },
+    {val: 'INTERNACION',   target: 'INTERNACION',   ord: '1.4', label: 'INT-GENERAL'  },
+    {val: 'AISLAMIENTO',   target: 'INTERNACION',   ord: '2.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',     target: 'GUARDIA',       ord: '3.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',       target: 'GUARDIA',       ord: '3.2', label: 'GUARDIA'      },
+];
+
+
 
 const especialidadesOptList: Array<any> = [
     {val: 'PEDIATRIA',         ord: '1.2', label: 'PEDIATRIA'    },

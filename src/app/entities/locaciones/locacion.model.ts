@@ -50,9 +50,9 @@ export class Recurso {
     rservicio: string = 'uti'
 
     //ubicacion
-    piso: string = "PISO-1";
-    sector: string = "SEC-1";
-    sala: string = "SALA-1";
+    piso: string = "PISO-1"; // piso o nivel
+    sector: string = "SEC-1"; // sector / area / sala
+    hab: string = "HAB-1"; //sala o habitacion
     code: string = '';
     slug: string = '';
     description: string = '';

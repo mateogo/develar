@@ -63,15 +63,24 @@ export class Transito {
 	slug:          string;
 }
 
+export class MotivoInternacion {
+	afeccion: string = 'COVID'; //
+	target: string = 'intermedios';
+	servicio: string = 'INTERNACION';
+	especialidad: string = 'clinica'
+	slug: string =     'Intervención COVID';
+
+}
+
 export class Internacion {
 	locId:         string;
 	locSlug:       string;
-	locEstado:     string =   'programado' // programado|transito|admision|alocado|traslado|externacion|salida|baja
+	locEstado:     string = 'programado' // programado|transito|admision|alocado|traslado|externacion|salida|baja
 	transitoId:    string;
 	locServicio:   string;
 	locSector:     string;
 	locPiso:       string;
-	locSala:       string;
+	locHab:        string;
 	locCama:       string;
 }
 
@@ -90,7 +99,7 @@ export class Internacion {
 //  
 
 // AREA DE INTERNACIÓN // CUIDADOS PROGRESIVOS
-// CLINICA MEDICA / QUIRURGICA / CIDADOS INTEREDIS.
+// CLINICA MEDICA / QUIRURGICA / CUIDADOS INTEREDIS.
 
 // AREA
 // cirujía
@@ -134,6 +143,7 @@ export class SolicitudInternacion {
 		ts_umodif:   number;
 		ts_baja:     number;
 		
+		triage:      MotivoInternacion;
 		internacion: Internacion;
 		requeridox:  Requirente;
 		atendidox:   Atendido;

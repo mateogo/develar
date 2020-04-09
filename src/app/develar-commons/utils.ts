@@ -352,7 +352,7 @@ function buildFecharefLabel(fecharef: Date): string{
 
 
 // feriados
-const inactivosList = ["31/03/2020", "08/04/2020"]
+const inactivosList = ["31/03/2020", "10/04/2020"]
 const laborDayOfWeek = [0, 1, 1, 1, 1, 1, 0]
 
 function nextLaborDay(date: Date, offset): Date{

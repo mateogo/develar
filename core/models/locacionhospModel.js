@@ -29,7 +29,7 @@ const recursoSh = new Schema({
     rservicio:   { type: String, required: false },
     piso:        { type: String, required: false },
     sector:      { type: String, required: false },
-    sala:        { type: String, required: false },
+    habitacion:  { type: String, required: false },
     code:        { type: String, required: false },
     slug:        { type: String, required: false },
     description: { type: String, required: false },
@@ -88,7 +88,7 @@ const RecordManager = {
 
 
 /////////   API /////////////
-
+exports.fetchAvailability = fetchAvailability
 /////////   LOCACIONES /////////////
 exports.upsertNext = function (rtype, query, errcb, cb) {
     let Record = RecordManager[rtype];
@@ -186,4 +186,82 @@ exports.create = function (rtype, record, errcb, cb) {
     });
 
 };
+
+
+function fetchAvailability(spec, errcb, cb){
+
+  Locacion.find().lean().exec(function(err, entities) {
+      if (err) {
+          console.log('[%s] fetchAvailability ERROR: [%s]',whoami, err)
+          errcb(err);
+      }else{
+        if(entities && entities.length){
+          let recursosNominales = entities.map(loc => {
+            let token = {
+              id:   loc._id,
+              code: loc.code,
+              slug: loc.slug,
+              direccion: loc.ubicacion ? loc.ubicacion.street1 + ' ' + loc.ubicacion.city : '',
+              servicios: buildServiciosAllocation(loc.servicios),
+            }
+            return token
+          })
+
+          cb(recursosNominales)
+
+        }else{
+          cb([])
+        }
+
+      }
+  });
+}
+
+const areasOptList = [
+    {val: 'TRANSITO',      ord: '4.1', label: 'TRANSITO'     },
+    {val: 'TRASLADO',      ord: '4.2', label: 'TRASLADO'     },
+    {val: 'ADMISION',      ord: '5.1', label: 'ADMISIÓN'     },
+    {val: 'EXTERNACION',   ord: '5.2', label: 'EXTERNACIÓN'  },
+];
+
+function initAreas(){
+  let areas = areasOptList.map(area => {
+      return {
+          type:   area.val,
+          code:   area.label,          
+          nominal:   0,
+          adicional:  0,
+          ocupado: 0
+      }
+  })
+  return areas;
+}
+
+function buildServiciosAllocation(servicios){
+  let capacity = []
+  if(servicios && servicios.length){
+    capacity = servicios.map(s =>{
+      return {
+          type:   s.srvtype,
+          code:   s.srvcode,          
+          nominal:   s.srvQDisp,
+          adicional:   s.srvQMax,
+          ocupado: 0
+      }
+
+    })
+  }
+
+  areasOptList.forEach(area => {
+      capacity.push({
+          type:   area.val,
+          code:   area.label,          
+          nominal:   0,
+          adicional:  0,
+          ocupado: 0
+      })
+  })
+  return capacity;
+}
+
 

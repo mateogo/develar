@@ -135,7 +135,17 @@ export class InternacionService {
   /******* Internaciones Search   ********/
   /****************************************/
 
-  fetchInternacionesByQuery(query:any){
+  fetchInternacionesByPersonId(id: string): Observable<SolicitudInternacion[]>{
+  	let query = {
+  		requirenteId: id
+  	}
+
+		return this.daoService.search<SolicitudInternacion>(RECORD, query)
+  }
+
+
+
+  fetchInternacionesByQuery(query:any): Subject<SolicitudInternacion[]>{
     let listener = new Subject<SolicitudInternacion[]>();
     this.loadSolicitudesByQuery(listener, query);
     return listener;
@@ -153,6 +163,67 @@ export class InternacionService {
       listener.next(this.solinternacionList);
     })
   }
+
+
+  /******************************************/
+  /**** DISPONIBLE                 *********/
+	/****************************************/
+	fetchCapacidadDisponible(): Subject<any[]>{
+    let listener = new Subject<any[]>();
+    this.fetchProcess(listener);
+
+    return listener;
+	}
+
+  private fetchProcess(listener: Subject<any[]>){
+  	let query = {
+  		process: 'fetch:disponible'
+  	}
+
+    this.daoService.search<any>(RECORD, query).subscribe(list =>{
+      if(list && list.length){
+      	listener.next(list);
+
+      }else{
+      	listener.next(null);
+
+      }
+    })
+  }
+
+
+  /******************************************/
+  /**** ALOCACION                 *********/
+	/****************************************/
+	allocateInternacion(internacion: SolicitudInternacion, hospId: string, servicio: string): Subject<SolicitudInternacion>{
+    let listener = new Subject<SolicitudInternacion>();
+    this.allocateSolicitud(listener, internacion._id, hospId, servicio,'SeCtOr', 'PiSo', 'HAB', '101');
+
+    return listener;
+	}
+
+  private allocateSolicitud(listener: Subject<SolicitudInternacion>, solicitudId, hospId, servicio, sector?, piso?, hab?, cama?){
+  	let query = {
+  		process: 'allocate:solicitud',
+  		waction: 'pool:transito',
+  		solinternacionId: solicitudId,
+  		hospitalId:  hospId,
+  		servicio: servicio,
+
+  	}
+
+    this.daoService.search<any>(RECORD, query).subscribe(list =>{
+      if(list && list.length){
+      	listener.next(list[0]);
+
+      }else{
+      	listener.next(null);
+
+      }
+    })
+  }
+
+
 
 
   /******************************************/
