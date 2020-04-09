@@ -172,6 +172,11 @@ export class DaoService {
         searchURL:  'api/locacionhospitalaria/search',
         upsertURL:  'api/locacionhospitalaria/upsert'
       },
+      internacion:{
+        backendURL: 'api/solinternacion',
+        searchURL:  'api/solinternacion/search',
+        upsertURL:  'api/solinternacion/upsert'
+      },
       beneficiarioalimentar:{
         backendURL:   'api/alimentar',
         searchURL:    'api/alimentar/search',

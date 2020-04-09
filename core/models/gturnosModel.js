@@ -689,99 +689,172 @@ exports.createInitialData = function (){
 
     if(true){
       return  [
-      {recurso: 'burzaco', dow: 1, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
-      {recurso: 'burzaco', dow: 2, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
-      {recurso: 'burzaco', dow: 3, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
-      {recurso: 'burzaco', dow: 4, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
-      {recurso: 'burzaco', dow: 5, hora: 10, slug: 'DEL BURZACO (PLAYÓN) 10:00hs' },
-
-      // claypole
-      {recurso: 'claypole', dow: 1, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},
-      {recurso: 'claypole', dow: 2, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},
-      {recurso: 'claypole', dow: 3, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},
-      {recurso: 'claypole', dow: 4, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},
-      {recurso: 'claypole', dow: 5, hora: 11 , slug: 'DEL CLAYPOLE 11:00hs'},
-
-      // donorione
-      {recurso: 'donorione', dow: 1, hora: 10, slug: 'DEL DON ORIONE 10:00hs' },
-      {recurso: 'donorione', dow: 2, hora: 10, slug: 'DEL DON ORIONE 10:00hs' },
-      {recurso: 'donorione', dow: 3, hora: 10, slug: 'DEL DON ORIONE 10:00hs' },
-      {recurso: 'donorione', dow: 4, hora: 10, slug: 'DEL DON ORIONE 10:00hs' },
-      {recurso: 'donorione', dow: 5, hora: 10, slug: 'DEL DON ORIONE 10:00hs' },
-
-      // glew
-      {recurso: 'glew', dow: 1, hora: 10, slug: 'DEL GLEW 10:00hs' },
-      {recurso: 'glew', dow: 2, hora: 10, slug: 'DEL GLEW 10:00hs' },
-      {recurso: 'glew', dow: 3, hora: 10, slug: 'DEL GLEW 10:00hs' },
-      {recurso: 'glew', dow: 4, hora: 10, slug: 'DEL GLEW 10:00hs' },
-      {recurso: 'glew', dow: 5, hora: 10, slug: 'DEL GLEW 10:00hs' },
-
-      // josemarmol
-      {recurso: 'josemarmol', dow: 1, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
-      {recurso: 'josemarmol', dow: 2, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
-      {recurso: 'josemarmol', dow: 3, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
-      {recurso: 'josemarmol', dow: 4, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
-      {recurso: 'josemarmol', dow: 5, hora: 9 , slug: 'DEL JOSÉ MÁRMOL 09:00hs' },
-
-      // longchamps
-      {recurso: 'longchamps', dow: 1, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 2, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 3, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 4, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
-      {recurso: 'longchamps', dow: 5, hora: 11, slug: 'DEL LONGCHAMPS 11:00hs' },
-
       // malvinas
-      {recurso: 'malvinas', dow: 1, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },
-      {recurso: 'malvinas', dow: 2, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },
-      {recurso: 'malvinas', dow: 3, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },
-      {recurso: 'malvinas', dow: 4, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },
-      {recurso: 'malvinas', dow: 5, hora: 11, slug: 'DEL MALVINAS ARG 11:00hs' },
-
-      //minrivadavia
-      {recurso: 'minrivadavia', dow: 1, hora: 9, slug: 'DEL MIN RIVADAVIA 09:00hs' },
-      {recurso: 'minrivadavia', dow: 2, hora: 9, slug: 'DEL MIN RIVADAVIA 09:00hs' },
-      {recurso: 'minrivadavia', dow: 3, hora: 9, slug: 'DEL MIN RIVADAVIA 09:00hs' },
-      {recurso: 'minrivadavia', dow: 4, hora: 9, slug: 'DEL MIN RIVADAVIA 09:00hs' },
-      {recurso: 'minrivadavia', dow: 5, hora: 9, slug: 'DEL MIN RIVADAVIA 09:00hs' },
-
-      //rcalzada
-      {recurso: 'rcalzada', dow: 1, hora: 9,  slug: 'DEL RAFAEL CALZADA 09hs'},
-      {recurso: 'rcalzada', dow: 2, hora: 9,  slug: 'DEL RAFAEL CALZADA 09hs'},
-      {recurso: 'rcalzada', dow: 3, hora: 9,  slug: 'DEL RAFAEL CALZADA 09hs'},
-      {recurso: 'rcalzada', dow: 4, hora: 9,  slug: 'DEL RAFAEL CALZADA 09hs'},
-      {recurso: 'rcalzada', dow: 5, hora: 9,  slug: 'DEL RAFAEL CALZADA 09hs'},
-
-      //solano
-      {recurso: 'solano', dow: 1, hora: 11, slug: 'DEL SAN FCO SOLANO 11:00hs' },
-      {recurso: 'solano', dow: 2, hora: 11, slug: 'DEL SAN FCO SOLANO 11:00hs' },
-      {recurso: 'solano', dow: 3, hora: 11, slug: 'DEL SAN FCO SOLANO 11:00hs' },
-      {recurso: 'solano', dow: 4, hora: 11, slug: 'DEL SAN FCO SOLANO 11:00hs' },
-      {recurso: 'solano', dow: 5, hora: 11, slug: 'DEL SAN FCO SOLANO 11:00hs' },
-
-      //sanjose
-      {recurso: 'sanjose', dow: 1, hora: 10, slug: 'DEL SAN JOSÉ 10hs' },
-      {recurso: 'sanjose', dow: 2, hora: 10, slug: 'DEL SAN JOSÉ 10hs' },
-      {recurso: 'sanjose', dow: 3, hora: 10, slug: 'DEL SAN JOSÉ 10hs' },
-      {recurso: 'sanjose', dow: 4, hora: 10, slug: 'DEL SAN JOSÉ 10hs' },
-      {recurso: 'sanjose', dow: 5, hora: 10, slug: 'DEL SAN JOSÉ 10hs' },
-
-      //cicglew
-      {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CIC GLEW 09hs' },
-      {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CIC GLEW 09hs' },
-      {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CIC GLEW 09hs' },
-      {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CIC GLEW 09hs' },
-      {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CIC GLEW 09hs' },
+      {recurso: 'malvinas', dow: 1, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
+      {recurso: 'malvinas', dow: 1, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
+      {recurso: 'malvinas', dow: 2, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
+      {recurso: 'malvinas', dow: 2, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
+      {recurso: 'malvinas', dow: 3, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
+      {recurso: 'malvinas', dow: 3, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
+      {recurso: 'malvinas', dow: 4, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
+      {recurso: 'malvinas', dow: 4, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
+      {recurso: 'malvinas', dow: 5, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
+      {recurso: 'malvinas', dow: 5, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
 
       //cicburzaco
-      {recurso: 'cicburzaco', dow: 1, hora: 9, slug: 'CIC BURZACO 09:00hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 9, slug: 'CIC BURZACO 09:00hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 9, slug: 'CIC BURZACO 09:00hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 9, slug: 'CIC BURZACO 09:00hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 9, slug: 'CIC BURZACO 09:00hs' },
+      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+
+      //burzaco
+      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
+      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+
+
+
+      // claypole
+      {recurso: 'claypole', dow: 1, hora: 9 , slug: 'DEL CLAYPOLE 09:00 hs'},
+      {recurso: 'claypole', dow: 1, hora: 9 , slug: 'DEL CLAYPOLE 09:30 hs'},
+      {recurso: 'claypole', dow: 2, hora: 9 , slug: 'DEL CLAYPOLE 09:00 hs'},
+      {recurso: 'claypole', dow: 2, hora: 9 , slug: 'DEL CLAYPOLE 09:30 hs'},
+      {recurso: 'claypole', dow: 3, hora: 9 , slug: 'DEL CLAYPOLE 09:00 hs'},
+      {recurso: 'claypole', dow: 3, hora: 9 , slug: 'DEL CLAYPOLE 09:30 hs'},
+      {recurso: 'claypole', dow: 4, hora: 9 , slug: 'DEL CLAYPOLE 09:00 hs'},
+      {recurso: 'claypole', dow: 4, hora: 9 , slug: 'DEL CLAYPOLE 09:30 hs'},
+      {recurso: 'claypole', dow: 5, hora: 9 , slug: 'DEL CLAYPOLE 09:00 hs'},
+      {recurso: 'claypole', dow: 5, hora: 9 , slug: 'DEL CLAYPOLE 09:30 hs'},
+
+      //minrivadavia
+      {recurso: 'minrivadavia', dow: 1, hora: 10, slug: 'DEL MIN RIVADAVIA 10:00 hs' },
+      {recurso: 'minrivadavia', dow: 1, hora: 10, slug: 'DEL MIN RIVADAVIA 10:30 hs' },
+      {recurso: 'minrivadavia', dow: 2, hora: 10, slug: 'DEL MIN RIVADAVIA 10:00 hs' },
+      {recurso: 'minrivadavia', dow: 2, hora: 10, slug: 'DEL MIN RIVADAVIA 10:30 hs' },
+      {recurso: 'minrivadavia', dow: 3, hora: 10, slug: 'DEL MIN RIVADAVIA 10:00 hs' },
+      {recurso: 'minrivadavia', dow: 3, hora: 10, slug: 'DEL MIN RIVADAVIA 10:30 hs' },
+      {recurso: 'minrivadavia', dow: 4, hora: 10, slug: 'DEL MIN RIVADAVIA 10:00 hs' },
+      {recurso: 'minrivadavia', dow: 4, hora: 10, slug: 'DEL MIN RIVADAVIA 10:30 hs' },
+      {recurso: 'minrivadavia', dow: 5, hora: 10, slug: 'DEL MIN RIVADAVIA 10:00 hs' },
+      {recurso: 'minrivadavia', dow: 5, hora: 10, slug: 'DEL MIN RIVADAVIA 10:30 hs' },
+
+      // donorione
+      {recurso: 'donorione', dow: 1, hora: 11, slug: 'DEL DON ORIONE 11:00 hs' },
+      {recurso: 'donorione', dow: 1, hora: 11, slug: 'DEL DON ORIONE 11:30 hs' },
+      {recurso: 'donorione', dow: 2, hora: 11, slug: 'DEL DON ORIONE 11:00 hs' },
+      {recurso: 'donorione', dow: 2, hora: 11, slug: 'DEL DON ORIONE 11:30 hs' },
+      {recurso: 'donorione', dow: 3, hora: 11, slug: 'DEL DON ORIONE 11:00 hs' },
+      {recurso: 'donorione', dow: 3, hora: 11, slug: 'DEL DON ORIONE 11:30 hs' },
+      {recurso: 'donorione', dow: 4, hora: 11, slug: 'DEL DON ORIONE 11:00 hs' },
+      {recurso: 'donorione', dow: 4, hora: 11, slug: 'DEL DON ORIONE 11:30 hs' },
+      {recurso: 'donorione', dow: 5, hora: 11, slug: 'DEL DON ORIONE 11:00 hs' },
+      {recurso: 'donorione', dow: 5, hora: 11, slug: 'DEL DON ORIONE 11:30 hs' },
+
+
+
+
+      // longchamps
+      {recurso: 'longchamps', dow: 1, hora: 9, slug: 'DEL LONGCHAMPS 09:00 hs' },
+      {recurso: 'longchamps', dow: 1, hora: 9, slug: 'DEL LONGCHAMPS 09:30 hs' },
+      {recurso: 'longchamps', dow: 2, hora: 9, slug: 'DEL LONGCHAMPS 09:00 hs' },
+      {recurso: 'longchamps', dow: 2, hora: 9, slug: 'DEL LONGCHAMPS 09:30 hs' },
+      {recurso: 'longchamps', dow: 3, hora: 9, slug: 'DEL LONGCHAMPS 09:00 hs' },
+      {recurso: 'longchamps', dow: 3, hora: 9, slug: 'DEL LONGCHAMPS 09:30 hs' },
+      {recurso: 'longchamps', dow: 4, hora: 9, slug: 'DEL LONGCHAMPS 09:00 hs' },
+      {recurso: 'longchamps', dow: 4, hora: 9, slug: 'DEL LONGCHAMPS 09:30 hs' },
+      {recurso: 'longchamps', dow: 5, hora: 9, slug: 'DEL LONGCHAMPS 09:00 hs' },
+      {recurso: 'longchamps', dow: 5, hora: 9, slug: 'DEL LONGCHAMPS 09:30 hs' },
+
+      //cicglew
+      {recurso: 'cicglew', dow: 1, hora: 10, slug: 'CIC GLEW 10:00 hs' },
+      {recurso: 'cicglew', dow: 1, hora: 10, slug: 'CIC GLEW 10:30 hs' },
+      {recurso: 'cicglew', dow: 2, hora: 10, slug: 'CIC GLEW 10:00 hs' },
+      {recurso: 'cicglew', dow: 2, hora: 10, slug: 'CIC GLEW 10:30 hs' },
+      {recurso: 'cicglew', dow: 3, hora: 10, slug: 'CIC GLEW 10:00 hs' },
+      {recurso: 'cicglew', dow: 3, hora: 10, slug: 'CIC GLEW 10:30 hs' },
+      {recurso: 'cicglew', dow: 4, hora: 10, slug: 'CIC GLEW 10:00 hs' },
+      {recurso: 'cicglew', dow: 4, hora: 10, slug: 'CIC GLEW 10:30 hs' },
+      {recurso: 'cicglew', dow: 5, hora: 10, slug: 'CIC GLEW 10:00 hs' },
+      {recurso: 'cicglew', dow: 5, hora: 10, slug: 'CIC GLEW 10:30 hs' },
+
+      // glew
+      {recurso: 'glew', dow: 1, hora: 11, slug: 'DEL GLEW 11:00 hs' },
+      {recurso: 'glew', dow: 1, hora: 11, slug: 'DEL GLEW 11:30 hs' },
+      {recurso: 'glew', dow: 2, hora: 11, slug: 'DEL GLEW 11:00 hs' },
+      {recurso: 'glew', dow: 2, hora: 11, slug: 'DEL GLEW 11:30 hs' },
+      {recurso: 'glew', dow: 3, hora: 11, slug: 'DEL GLEW 11:00 hs' },
+      {recurso: 'glew', dow: 3, hora: 11, slug: 'DEL GLEW 11:30 hs' },
+      {recurso: 'glew', dow: 4, hora: 11, slug: 'DEL GLEW 11:00 hs' },
+      {recurso: 'glew', dow: 4, hora: 11, slug: 'DEL GLEW 11:30 hs' },
+      {recurso: 'glew', dow: 5, hora: 11, slug: 'DEL GLEW 11:00 hs' },
+      {recurso: 'glew', dow: 5, hora: 11, slug: 'DEL GLEW 11:30 hs' },
+
+
+
+      //solano
+      {recurso: 'solano', dow: 1, hora: 9, slug: 'DEL SAN FCO SOLANO 09:00 hs' },
+      {recurso: 'solano', dow: 1, hora: 9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
+      {recurso: 'solano', dow: 2, hora: 9, slug: 'DEL SAN FCO SOLANO 09:00 hs' },
+      {recurso: 'solano', dow: 2, hora: 9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
+      {recurso: 'solano', dow: 3, hora: 9, slug: 'DEL SAN FCO SOLANO 09:00 hs' },
+      {recurso: 'solano', dow: 3, hora: 9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
+      {recurso: 'solano', dow: 4, hora: 9, slug: 'DEL SAN FCO SOLANO 09:00 hs' },
+      {recurso: 'solano', dow: 4, hora: 9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
+      {recurso: 'solano', dow: 5, hora: 9, slug: 'DEL SAN FCO SOLANO 09:00 hs' },
+      {recurso: 'solano', dow: 5, hora: 9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
+
+      // josemarmol
+      {recurso: 'josemarmol', dow: 1, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:00 hs' },
+      {recurso: 'josemarmol', dow: 1, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:30 hs' },
+      {recurso: 'josemarmol', dow: 2, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:00 hs' },
+      {recurso: 'josemarmol', dow: 2, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:30 hs' },
+      {recurso: 'josemarmol', dow: 3, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:00 hs' },
+      {recurso: 'josemarmol', dow: 3, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:30 hs' },
+      {recurso: 'josemarmol', dow: 4, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:00 hs' },
+      {recurso: 'josemarmol', dow: 4, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:30 hs' },
+      {recurso: 'josemarmol', dow: 5, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:00 hs' },
+      {recurso: 'josemarmol', dow: 5, hora: 10 , slug: 'DEL JOSÉ MÁRMOL 10:30 hs' },
+
+      //sanjose
+      {recurso: 'sanjose', dow: 1, hora: 11, slug: 'DEL SAN JOSÉ 11:00 hs' },
+      {recurso: 'sanjose', dow: 1, hora: 11, slug: 'DEL SAN JOSÉ 11:30 hs' },
+      {recurso: 'sanjose', dow: 2, hora: 11, slug: 'DEL SAN JOSÉ 11:00 hs' },
+      {recurso: 'sanjose', dow: 2, hora: 11, slug: 'DEL SAN JOSÉ 11:30 hs' },
+      {recurso: 'sanjose', dow: 3, hora: 11, slug: 'DEL SAN JOSÉ 11:00 hs' },
+      {recurso: 'sanjose', dow: 3, hora: 11, slug: 'DEL SAN JOSÉ 11:30 hs' },
+      {recurso: 'sanjose', dow: 4, hora: 11, slug: 'DEL SAN JOSÉ 11:00 hs' },
+      {recurso: 'sanjose', dow: 4, hora: 11, slug: 'DEL SAN JOSÉ 11:30 hs' },
+      {recurso: 'sanjose', dow: 5, hora: 11, slug: 'DEL SAN JOSÉ 11:00 hs' },
+      {recurso: 'sanjose', dow: 5, hora: 11, slug: 'DEL SAN JOSÉ 11:30 hs' },
+
+
+      //rcalzada
+      {recurso: 'rcalzada', dow: 1, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:00 hs'},
+      {recurso: 'rcalzada', dow: 1, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:30 hs'},
+      {recurso: 'rcalzada', dow: 2, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:00 hs'},
+      {recurso: 'rcalzada', dow: 2, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:30 hs'},
+      {recurso: 'rcalzada', dow: 3, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:00 hs'},
+      {recurso: 'rcalzada', dow: 3, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:30 hs'},
+      {recurso: 'rcalzada', dow: 4, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:00 hs'},
+      {recurso: 'rcalzada', dow: 4, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:30 hs'},
+      {recurso: 'rcalzada', dow: 5, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:00 hs'},
+      {recurso: 'rcalzada', dow: 5, hora: 11,  slug: 'DEL RAFAEL CALZADA 11:30 hs'},
+
 
       ]
-
-
     }
 
     return []
@@ -796,7 +869,7 @@ exports.createInitialData = function (){
     }
 
     let capacidad = {
-      qty: 60,
+      qty: 30,
       ume: 'KIT-ALIM-STD'
     }
 
@@ -818,7 +891,7 @@ exports.createInitialData = function (){
 
     turno.day_of_w = token.dow;
     turno.hora = token.hora;
-    turno.duracion = 60;
+    turno.duracion = 30;
     turno.thorario = 2;
 
     turno.save().then(entity => {

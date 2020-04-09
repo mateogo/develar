@@ -124,11 +124,11 @@ const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
 ];
 
-const servicioTypeOptList: Array<any> = [
+const serviciosOptList: Array<any> = [
     {val: 'UTI',           ord: '1.1', label: 'UTI'          },
     {val: 'UTE',           ord: '1.2', label: 'UTE'          },
     {val: 'UCO',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTGRAL',       ord: '1.4', label: 'INT-GENERAL'  },
+    {val: 'UTI',       ord: '1.4', label: 'INT-GENERAL'  },
     {val: 'AISL',          ord: '2.1', label: 'AISLAMIENTO'  },
     {val: 'INTPREV',       ord: '2.2', label: 'INT-PRVENT'   },
     {val: 'CONSEXT',       ord: '3.1', label: 'CONS-EXT'     },
@@ -140,11 +140,25 @@ const servicioTypeOptList: Array<any> = [
 
 ];
 
+const especialidadesOptList: Array<any> = [
+    {val: 'PEDIATRIA',         ord: '1.2', label: 'PEDIATRIA'    },
+
+];
+
+const queueOptList: Array<any> = [
+    {val: 'POOL',          ord: '1.1', label: 'POOL'      },
+    {val: 'TRANSITO',      ord: '1.2', label: 'TRANSITO'  },
+    {val: 'ALOCADO',       ord: '1.3', label: 'ALOCADO'   },
+    {val: 'BAJA',          ord: '1.4', label: 'BAJA'      },
+];
+
+
 const hospitalTypeOptList: Array<any> = [
     {val: 'no_definido',   label: 'Seleccione opción' },
     {val: 'HOSPPROV',      label: 'HOSP PROV'  },
     {val: 'HOSPNAC',       label: 'HOSP NAC'   },
     {val: 'EXHOSP',        label: 'EXTRA HOSP' },
+    {val: 'CAPS',          label: 'CAPS' },
 ];
 
 const recursosTypeOptList: Array<any> = [
@@ -161,7 +175,8 @@ const tableActionsOptList = [
 
 const optionsLists = {
    default: default_option_list,
-   servicios: servicioTypeOptList,
+   servicios: serviciosOptList,
+   especialidades: especialidadesOptList,
    hospital: hospitalTypeOptList,
    tableactions: tableActionsOptList,
    recursos: recursosTypeOptList,

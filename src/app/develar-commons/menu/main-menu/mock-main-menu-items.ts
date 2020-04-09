@@ -694,6 +694,10 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         title: 'HospitalesAlta',
         routing: '/salud/entidades/locaciones/alta'
       },
+      {
+        title: 'Internacion TestUNO',
+        routing: '/salud/gestion/testuno'
+      },
     ],
     routing: '',
     externalLink: '',

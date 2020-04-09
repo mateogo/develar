@@ -36,12 +36,6 @@ const recursoSh = new Schema({
     estado:      { type: String, required: false },
 })
 
-
-
-
-
-
-
 const locacionhospSch = new Schema({
     code:        { type: String,  required: true  },
     type:        { type: String,  required: true  },
@@ -61,11 +55,9 @@ const locacionhospSch = new Schema({
 
 
 
-
 locacionhospSch.pre('save', function (next) {
     return next();
 });
-
 
 
 function buildQuery(query){

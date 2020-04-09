@@ -6,6 +6,7 @@ import { TsocialPageComponent } from './gestion/spersona-page/tsocial-page.compo
 import { SegumientoPageComponent } from './seguimiento/segumiento-page/segumiento-page.component';
 import { SolcovidPageComponent } from './covid/sol-covid-page/solcovid-page/solcovid-page.component';
 import { SolcovidDashboardComponent } from './covid/sol-covid-page/solcovid-dashboard/solcovid-dashboard.component';
+import { TestUnoComponent } from './internacion/tests/test-uno/test-uno.component'
 
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
 
@@ -17,6 +18,10 @@ const routes: Routes = [
 	{
 		path:'ayudadirecta',
 		component: TurnosPageComponent
+	},
+	{
+		path:'testuno',
+		component: TestUnoComponent
 	},
 	{
 		path:'tablerocovid',

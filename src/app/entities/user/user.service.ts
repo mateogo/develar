@@ -61,7 +61,7 @@ export class UserService {
 
 	private _currentUser: User;
 	private _userEmitter: BehaviorSubject<User>;
-
+	
 	private isLogIn = false;
 	private hasLogout = false;
 
@@ -448,3 +448,15 @@ class SendMail{
 
 
 }
+
+export class UserToken {
+  isLogged: boolean = false;
+  hasCommunity: boolean = false;
+  username: string = "";
+  email:string = "";
+  id: string = "";
+  communityId: string = "";
+  userCommunity: Community;
+  data: User;
+}
+

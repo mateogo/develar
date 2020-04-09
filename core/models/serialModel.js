@@ -93,6 +93,10 @@ const tserialConfig = [
       tserial: 'censo',
       usecase: 'Censo Industrias MAB',
     },
+    {
+      tserial: 'internacion',
+      usecase: 'Solicitud internacion MAB',
+    },
 
 ]
 // uso serialTypeConfit[type]
@@ -146,6 +150,23 @@ const serialTypeConfig = {
     resetDay: false,
     createOnTheFly: true,
     slug: 'serial para numerar las solicitudes de asistencia de Desarrollo social',
+  },
+
+  internacion: {
+    name: ['solinternacion'],
+    tserial: ['solinternacion'],
+    sector: ['internacion'],
+    tdoc: ['solicitud'],
+    letra: ['X'],
+    punto: 0,
+    pnumero: 1,
+    offset: 100000,
+    compPrefix: 'SOL',
+    compName: 'S/Internacion',
+    showAnio: false,
+    resetDay: false,
+    createOnTheFly: true,
+    slug: 'serial para numerar las solicitudes de Internacion Hospitalaria Sec Salud',
   },
 
   rol: {
