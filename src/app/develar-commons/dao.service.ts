@@ -173,9 +173,10 @@ export class DaoService {
         upsertURL:  'api/locacionhospitalaria/upsert'
       },
       internacion:{
-        backendURL: 'api/solinternacion',
-        searchURL:  'api/solinternacion/search',
-        upsertURL:  'api/solinternacion/upsert'
+        backendURL:  'api/solinternacion',
+        searchURL:   'api/solinternacion/search',
+        upsertURL:   'api/solinternacion/upsert',
+        workflowURL: 'api/solinternacion/updateprocess'
       },
       beneficiarioalimentar:{
         backendURL:   'api/alimentar',
@@ -440,6 +441,32 @@ export class DaoService {
     let params = this.buildParams(query);
     return this.http
                .get<T[]>(exportUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
+                 );
+  }
+
+  processCovidWorkflow<T>(type:string, query: any): Observable<T> {
+
+    let url = `${this.dao[type].workflowURL}`;
+
+    return this.http
+               .post<T>(url, JSON.stringify(query), { headers: this.headers })
+  }
+
+  fetchMasterAllocato3r<T>(type:string, query: any): Observable<T> {
+
+    let url = `${this.dao[type].workflowURL}`;
+
+    return this.http
+               .post<T>(url, JSON.stringify(query), { headers: this.headers })
+  }
+
+  fetchMasterAllocator<T>(type:string, query: any): Observable<T[]> {
+    let searchUrl = `${this.dao[type].workflowURL}`;
+    let params = this.buildParams(query);
+    return this.http
+               .get<T[]>(searchUrl, { params })
                .pipe(
                    catchError(this.handleObsError<T[]>('search',[]))
                  );

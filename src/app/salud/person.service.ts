@@ -192,9 +192,14 @@ export class PersonService {
     this.partialUpdatePerson(event.person._id, event.person);
   }
 
-  partialUpdatePerson(id:string, p:any){
-    this.daoService.partialUpdate<Person>(RECORD, id, p).then(person =>{
-      this.updateCurrentPerson(person);
+  partialUpdatePerson(id:string, p:any): Promise<Person>{
+    return this.daoService.partialUpdate<Person>(RECORD, id, p).then(person =>{
+      if(person){
+        console.log('en SERVICE')
+        this.updateCurrentPerson(person);
+        return person;
+
+      }
     })
   }
 

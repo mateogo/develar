@@ -106,6 +106,10 @@ export class LocacionEditComponent implements OnInit {
   }
 
   private initForEdit(form: FormGroup, token: LocacionHospitalaria): FormGroup {
+    token.servicios.forEach(t => {
+      t.srvQAdic = 5
+    })
+
 		form.reset({
 			slug:        token.slug,
 			description: token.description,
@@ -195,7 +199,7 @@ export class LocacionEditComponent implements OnInit {
 	private initForSave(form: FormGroup, token: LocacionHospitalaria): LocacionHospitalaria {
 		const fvalue = form.value;
 		const entity = token;
-    const servicios: Servicio[] = fvalue.servicios.map(t => Object.assign({}, t,  {srvIsActive: ((parseInt(t.srvQDisp, 10) + parseInt(t.srvQMax,10)) > 0 ? true : false)}))
+    const servicios: Servicio[] = fvalue.servicios.map(t => Object.assign({}, t,  {srvIsActive: ((parseInt(t.srvQDisp, 10) + parseInt(t.srvQAdic,10)) > 0 ? true : false)}))
 
     const recursos: Recurso[] = fvalue.recursos.map(t => Object.assign({}, t));
 

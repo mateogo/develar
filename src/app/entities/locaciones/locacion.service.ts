@@ -18,7 +18,9 @@ import { LocacionHospitalaria, LocacionHospTable, LocacionHospBrowse, LocacionEv
 const RECORD = 'locacionhospitalaria'
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LocacionService {
 
   private _locacionesSelector: LocacionHospBrowse;
@@ -98,7 +100,12 @@ export class LocacionService {
   /******* Locaciones Hosp Search   ********/
   /****************************************/
 
-  fetchLocacionesByQuery(query:any){
+  fetchLocacionById(id: string):Promise<LocacionHospitalaria>{
+    let listener = new Subject<LocacionHospitalaria[]>();
+    return this.daoService.findById(RECORD, id);
+  }
+
+  fetchLocacionesByQuery(query:any):Subject<LocacionHospitalaria[]>{
     let listener = new Subject<LocacionHospitalaria[]>();
     this.loadLocHospitalariaByQuery(listener, query);
     return listener;

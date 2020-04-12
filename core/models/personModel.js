@@ -57,9 +57,9 @@ function comparePasswd (passwd, actualpasswd, cb){
 
 
 const oficiosSch = new mongoose.Schema({
-    tdato:         {type: String, required: true,  default: "formal"},
-    tocupacion:    {type: String, required: true,  default: "empleadx"},
-    ocupacion:     {type: String, required: true,  default: "Empleado"},
+    tdato:         {type: String, required: false,  default: "formal"},
+    tocupacion:    {type: String, required: false,  default: "empleadx"},
+    ocupacion:     {type: String, required: false,  default: "Empleado"},
     lugar:         {type: String, required: false,  default: ""},
     qdiasmes:      {type: String, required: false,  default: ""},
     remuneracion:  {type: Number, required: false,  default: ""},

@@ -1,0 +1,82 @@
+<div>
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldAfeccion placeholder="Tipo de afección" [formControl]="form.controls['afeccion']"
+            (selectionChange)="changeSelectionValue('afeccion',fldAfeccion.value)">
+            <mat-option *ngFor="let item of afeccionOptList" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldServicio placeholder="Servicio de internación buscado" 
+                        [formControl]="form.controls['servicio']"
+                        (selectionChange)="changeSelectionValue('servicio',fldServicio.value)">
+            <mat-option *ngFor="let item of servicioOptList" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldEspecialidad placeholder="Especialidad médica" 
+                        [formControl]="form.controls['especialidad']"
+                        (selectionChange)="changeSelectionValue('especialidad',fldEspecialidad.value)">
+            <mat-option *ngFor="let item of especialidadOptList" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['slug']" placeholder="Instrucción de internación">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <mat-form-field>
+          <textarea matInput [formControl]="form.controls['description']" 
+                    placeholder="Descripción"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <mat-form-field>
+            <mat-select #fldTranitType placeholder="Tipo de TRANSITO" 
+                          [formControl]="form.controls['transitType']"
+                          (selectionChange)="changeSelectionValue('transitType',fldTranitType.value)">
+              <mat-option *ngFor="let item of tranitTypeOptList" 
+                          [value]="item.val">{{ item.actionLabel }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+    <div class="additional-info">
+      <button class="additional-info" mat-raised-button color="primary"
+          (click)="onSubmit()"
+          [disabled]="!form.valid">Continuar</button>
+
+      <button class="additional-info"  mat-raised-button color="accent"
+          (click)="onLocationSearch()"
+          [disabled]="!form.valid">Buscar locación de internación</button>
+
+      <button class="additional-info" mat-button type="button" color="accent" 
+              (click)="cancel()">Cancelar</button>
+    </div>
+
+  </form>
+</div>

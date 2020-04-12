@@ -19,10 +19,13 @@ import { DaoService }    from '../../develar-commons/dao.service';
 import { UserService }    from '../../entities/user/user.service';
 import { User }           from '../../entities/user/user';
 
+import { LocacionService } from '../../entities/locaciones/locacion.service';
+
 import { LocacionHospitalaria, LocacionEvent} from '../../entities/locaciones/locacion.model';
 
-import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
-					Internacion, SolInternacionBrowse, InternacionSpec, SolInternacionTable } from './internacion.model';
+import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion,
+					Internacion, SolInternacionBrowse, InternacionSpec, SolInternacionTable,
+					MasterAllocation } from './internacion.model';
 
 import { InternacionHelper } from './internacion.helper';
 
@@ -41,6 +44,7 @@ export class InternacionService {
 
 	constructor(
 		private daoService: DaoService,
+		private locSrv: LocacionService,
 		private userSrv: UserService,
     private snackBar:    MatSnackBar,
 		) {
@@ -52,9 +56,9 @@ export class InternacionService {
   /******************************************/
   /******* Internaciones Hospitalarias ********/
   /****************************************/
-  createNewSolicitudInternacion(spec: InternacionSpec, person: Person): Subject<SolicitudInternacion>{
+  createNewSolicitudInternacion(spec: InternacionSpec, person: Person, triage?: MotivoInternacion): Subject<SolicitudInternacion>{
     let listener = new Subject<SolicitudInternacion>();
-    let internacion = InternacionHelper.buildNewInternacion(this.user, person, spec);
+    let internacion = InternacionHelper.buildNewInternacion(this.user, person, spec, triage);
     
     this.fetchSerialAsistencias().subscribe(serial => {
       internacion.compPrefix = serial.compPrefix ;
@@ -131,10 +135,118 @@ export class InternacionService {
     });
   }
 
+
+  /******************************************/
+  /**** ALOCACION                 *********/
+  /****************************************/
+  manageInternacionTransition(solinternacion: SolicitudInternacion, internacion: Internacion, transition: string){
+    let listener = new Subject<SolicitudInternacion>();
+
+    this.transitionOrchestration(listener, solinternacion,internacion,transition)
+    return listener;
+  }
+
+
+// {val: 'pool:transito',           label: 'Locación de internación asignada',  actionLabel: 'Alocar y disponer traslado'},
+// {val: 'pool:internacion',        label: 'Locación de internación asignada',  actionLabel: 'Alocar en Admisión'},
+// {val: 'transito:internacion',    label: 'Internación efectivizada',          actionLabel: 'Traslado SAME a Admisión' },
+// {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Traslado SAME a Servicio'  },
+// {val: 'internacion:internacion', label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación'   },
+// {val: 'internacion:transito',    label: 'Tránsito inter-locación',           actionLabel: 'Tránsito inter-locación. Disponer traslado'},
+// {val: 'internacion:pool',        label: 'Espera asignación de locación',     actionLabel: 'Externa y espera reasignación de locación' },
+// {val: 'transito:pool',           label: 'Espera asignación de locación',     actionLabel: 'Traslada y espera reasignación de locación' },
+  transitionOrchestration(listener: Subject<SolicitudInternacion>, solint: SolicitudInternacion, internacion: Internacion, transition: string){
+    let oldInternacion = solint.internacion;
+    let triage = solint.triage;
+    let transito = new Transito()
+    let atendidoPor = InternacionHelper.atendidoPor(this.user, {sector: solint.sector})
+    let today = new Date()
+
+    triage.transitType = transition;
+    transito.transitType = transition;
+    transito.target = internacion;
+    transito.from = oldInternacion;
+    transito.atendidox = atendidoPor;
+
+    transito.fe_prog = devutils.txFromDate(today);
+    transito.fe_cumplido = transito.fe_prog;
+    transito.fe_ts = today.getTime();
+    transito.slug = internacion.slug;
+
+    solint.estado = 'activo';
+
+    if(transition ===       'pool:transito'){ //'Alocar y disponer traslado'},
+      solint.queue =        'transito';
+      solint.avance =       'esperatraslado';
+      internacion.estado =  'transito';
+      transito.estado =     'enejecucion';
+
+    }else if(transition === 'pool:internacion'){ //'Alocar en Admisión'},
+      solint.queue =        'alocado';
+      solint.avance =       'esperacama';
+      internacion.estado =  'admision';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'transito:internacion'){ //'Traslado SAME a Admisión' },
+      solint.queue =        'alocado';
+      solint.avance =       'esperacama';
+      internacion.estado =  'admision';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'transito:servicio'){ //'Traslado SAME a Servicio'  },
+      solint.queue =        'alocado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'alocado';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'internacion:internacion'){ //'Traslado intra-locación'   },
+      solint.queue =        'traslado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'traslado';
+      transito.estado =     'enejecucion';
+
+    }else if(transition === 'internacion:transito'){ //'Tránsito inter-locación. Disponer traslado'},
+      solint.queue =        'transito';
+      solint.avance =       'esperacama';
+      internacion.estado =  'transito';
+      transito.estado =     'enejecucion';
+
+    }else if(transition === 'internacion:pool'){ //'Externa y espera reasignación de locación' },
+      solint.queue =        'pool';
+      solint.avance =       'esperatraslado';
+      internacion.estado =  'externacion';
+      transito.estado =     'programado';
+
+    }else if(transition === 'transito:pool'){ // 'Traslada y espera reasignación de locación' },
+      solint.queue =        'pool';
+      solint.avance =       'esperatraslado';
+      internacion.estado =  'externacion';
+      transito.estado =     'enejecucion';
+
+    }
+
+    if(solint.transitos && solint.transitos.length){
+      solint.transitos.push(transito);
+
+    }else{
+      solint.transitos = [ transito ];
+    }
+
+    solint.internacion = internacion;
+    solint.atendidox = atendidoPor;
+
+  /******************************************/
+
+    this.updateSolicitudInternacion(listener, solint);
+
+  /******************************************/
+
+
+  }
+
   /******************************************/
   /******* Internaciones Search   ********/
   /****************************************/
-
   fetchInternacionesByPersonId(id: string): Observable<SolicitudInternacion[]>{
   	let query = {
   		requirenteId: id
@@ -142,8 +254,6 @@ export class InternacionService {
 
 		return this.daoService.search<SolicitudInternacion>(RECORD, query)
   }
-
-
 
   fetchInternacionesByQuery(query:any): Subject<SolicitudInternacion[]>{
     let listener = new Subject<SolicitudInternacion[]>();
@@ -168,19 +278,18 @@ export class InternacionService {
   /******************************************/
   /**** DISPONIBLE                 *********/
 	/****************************************/
-	fetchCapacidadDisponible(): Subject<any[]>{
-    let listener = new Subject<any[]>();
-    this.fetchProcess(listener);
+	fetchCapacidadDisponible(query?: any): Subject<MasterAllocation[]>{
+    let listener = new Subject<MasterAllocation[]>();
+    this.fetchProcess(listener, query);
 
     return listener;
 	}
 
-  private fetchProcess(listener: Subject<any[]>){
-  	let query = {
-  		process: 'fetch:disponible'
-  	}
+  private fetchProcess(listener: Subject<MasterAllocation[]>, query?: any){
+    query = query || {} 
+    query['process'] =  'fetch:disponible'
 
-    this.daoService.search<any>(RECORD, query).subscribe(list =>{
+    this.daoService.fetchMasterAllocator<MasterAllocation>(RECORD, query).subscribe(list =>{
       if(list && list.length){
       	listener.next(list);
 
@@ -195,36 +304,85 @@ export class InternacionService {
   /******************************************/
   /**** ALOCACION                 *********/
 	/****************************************/
-	allocateInternacion(internacion: SolicitudInternacion, hospId: string, servicio: string): Subject<SolicitudInternacion>{
+	allocateInServicio(internacion: SolicitudInternacion, servicio: string, spec: any): Subject<SolicitudInternacion>{
     let listener = new Subject<SolicitudInternacion>();
-    this.allocateSolicitud(listener, internacion._id, hospId, servicio,'SeCtOr', 'PiSo', 'HAB', '101');
+    this.allocateSolInServicio(listener, internacion, servicio, spec);
 
     return listener;
 	}
 
-  private allocateSolicitud(listener: Subject<SolicitudInternacion>, solicitudId, hospId, servicio, sector?, piso?, hab?, cama?){
+	private allocateSolInServicio(listener: Subject<SolicitudInternacion>, solicitud: SolicitudInternacion, servicio: string, spec: any){
   	let query = {
-  		process: 'allocate:solicitud',
-  		waction: 'pool:transito',
-  		solinternacionId: solicitudId,
-  		hospitalId:  hospId,
+  		process: 'enter:facility',
+  		waction: 'transito:servicio',
+  		solinternacionId: solicitud._id,
   		servicio: servicio,
-
+  		estado: 'alocado'
   	}
 
-    this.daoService.search<any>(RECORD, query).subscribe(list =>{
-      if(list && list.length){
-      	listener.next(list[0]);
+  	query = Object.assign(query, spec);
+
+  	console.dir(query)
+
+    this.daoService.processCovidWorkflow<SolicitudInternacion>(RECORD, query).subscribe(internacion =>{
+      if(internacion){
+      	listener.next(internacion);
 
       }else{
       	listener.next(null);
 
       }
     })
+
+	}
+
+	allocateInTransit(internacion: SolicitudInternacion, hospId: string, servicio: string): Subject<SolicitudInternacion>{
+    let listener = new Subject<SolicitudInternacion>();
+    this.allocateSolInTransit(listener, internacion._id, hospId, servicio, 'SeCtOr', 'PiSo', 'HAB', '101');
+
+    return listener;
+	}
+
+  private allocateSolInTransit(listener: Subject<SolicitudInternacion>, solicitudId, hospId, servicio, sector?, piso?, hab?, cama?){
+  	let query = {
+  		process: 'allocate:solicitud',
+  		waction: 'pool:transito',
+  		solinternacionId: solicitudId,
+  		estado: 'programado',
+
+  		hospitalId:  hospId,
+  		servicio: servicio,
+  		sector: sector,
+  		piso: piso,
+  		hab: hab,
+  		camaCode: cama,
+  		camaSlug: cama,
+  		recursoId: null,
+  	}
+
+    this.daoService.processCovidWorkflow<SolicitudInternacion>(RECORD, query).subscribe(internacion =>{
+      if(internacion){
+      	listener.next(internacion);
+
+      }else{
+      	listener.next(null);
+
+      }
+    })
+
   }
 
 
+  /******************************************/
+  /******* Locaciones Hospitalarias ********/
+  /****************************************/
+  fetchLocacionesHospitalarias(query:any){
+  	return this.locSrv.fetchLocacionesByQuery(query);
+  }
 
+  fetchLocacionById(id: string): Promise<LocacionHospitalaria>{
+    return this.locSrv.fetchLocacionById(id);
+  }
 
   /******************************************/
   /******* Internaciones Hosp Browsing ********/
@@ -282,6 +440,16 @@ export class InternacionService {
     })
   }
 
+  /***************************/
+  /******* Seriales *******/
+  /***************************/
+  /**
+  * obtener serial para Documento Provisorio
+  */
+  fetchSerialDocumProvisorio(): Observable<Serial> {
+    let serial: Serial = InternacionHelper.buildSerialDocumProvisorio();
+    return this.daoService.nextSerial<Serial>('serial', serial);
+  }
 
 
 }

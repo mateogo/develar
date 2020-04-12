@@ -68,12 +68,13 @@ export class CoreDataEditComponent implements OnInit {
   	this.emitEvent(this.action);
   }
 
+
   emitEvent(action:string){
-  	this.updatePerson.next({
-  		action: action,
-  		token: this.token,
-  		person: this.person
-  	});
+    this.updatePerson.next({
+      action: action,
+      token: this.token,
+      person: this.person
+    });
 
   }
 

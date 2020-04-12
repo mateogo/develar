@@ -48,6 +48,35 @@ router.get('/initdata', function (req, res) {
 });
 
 /**
+ * Create new entity
+ */
+router.post('/updateprocess', function (req, res) {
+    service.updateProcess(req.body, 
+        function(err) {
+            res.status(400).json(err);
+
+        }, function(entity) {
+            res.status(201).json(entity);
+
+        });
+});
+
+/**
+ * Create new entity
+ */
+router.get('/updateprocess', function (req, res) {
+    service.fetchMasterAllocator(req.query,
+        function(err) {
+            res.status(400).json(err);
+
+        }, function(entity) {
+            res.status(201).json(entity);
+
+        });
+});
+
+
+/**
  * search entities
  */
 router.get('/search', function (req, res) {

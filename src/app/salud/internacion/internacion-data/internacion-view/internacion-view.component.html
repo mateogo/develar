@@ -1,0 +1,29 @@
+<ng-container *ngIf="hasInternacion" >
+
+	<p class='text-resaltado'>Estado actual de Internación</p>
+	<p class='text-resaltado'>Asignado al {{ internacion.locSlug }} :: 
+														Servicio: {{internacion.servicio}}</p>
+	<p class='text-normal'>	{{internacion.sector}} ::
+													{{internacion.piso}} ::
+													{{internacion.hab}} ::
+													CAMA{{internacion.camaSlug}}</p>
+	<!--  class='text-normal'>{{internacion.camaCode}}</p  -->
+	<hr>
+
+	<ng-container *ngIf="showTransitos" >
+		<p class='text-resaltado'>Historial de Internación</p>
+		<ng-container *ngFor="let transito of transitos">
+			<p class='text-resaltado'>{{ transito.fecha}} :: {{ transito.transitType}}</p>
+			<p class='text-normal'>{{ transito.slug}}</p>
+			<p class='text-resaltado'>Servicio: {{ transito.target.servicio}} 
+															 Ubicación: {{transito.target.camaSlug}} </p>
+			<p class='text-normal'>{{ transito.fecha_audit }}</p>
+			<hr>
+		</ng-container>
+	</ng-container>
+
+</ng-container>
+
+<ng-container *ngIf="sinInternacionAsignada" >
+	<p class='text-resaltado'>LOCACIÓN DE INTERNACIÓN PENDIENTE DE ASIGNAR</p>
+</ng-container>

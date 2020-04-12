@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
-
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { NotificationsModule }    from '../notifications/notifications.module';
 
@@ -75,6 +74,15 @@ import { SolcovidBrowseComponent } from './covid/sol-covid-data/solcovid-browse/
 import { SolcovidDashboardComponent } from './covid/sol-covid-page/solcovid-dashboard/solcovid-dashboard.component';
 import { SolcovidViewComponent } from './covid/sol-covid-data/solcovid-view/solcovid-view.component';
 import { TestUnoComponent } from './internacion/tests/test-uno/test-uno.component';
+import { AltarapidaPageComponent } from './internacion/alta-rapida/altarapida-page/altarapida-page.component';
+import { AltarapidaPersonComponent } from './internacion/alta-rapida/altarapida-person/altarapida-person.component';
+import { TriageEditComponent } from './internacion/internacion-data/triage-edit/triage-edit.component';
+import { TriageViewComponent } from './internacion/internacion-data/triage-view/triage-view.component';
+import { SolinternacionViewComponent } from './internacion/solicitud/solinternacion-view/solinternacion-view.component';
+import { InternacionViewComponent } from './internacion/internacion-data/internacion-view/internacion-view.component';
+import { InternacionAllocatorComponent } from './internacion/internacion-data/internacion-allocator/internacion-allocator.component';
+import { InternacionEditComponent } from './internacion/internacion-data/internacion-edit/internacion-edit.component';
+import { AltarapidaFetchComponent } from './internacion/alta-rapida/altarapida-fetch/altarapida-fetch.component';
 
 @NgModule({
   imports: [
@@ -149,6 +157,15 @@ import { TestUnoComponent } from './internacion/tests/test-uno/test-uno.componen
     SolcovidDashboardComponent,
     SolcovidViewComponent,
     TestUnoComponent,
+    AltarapidaPageComponent,
+    AltarapidaPersonComponent,
+    TriageEditComponent,
+    TriageViewComponent,
+    SolinternacionViewComponent,
+    InternacionViewComponent,
+    InternacionAllocatorComponent,
+    InternacionEditComponent,
+    AltarapidaFetchComponent,
   ]
 })
 export class SaludModule { }

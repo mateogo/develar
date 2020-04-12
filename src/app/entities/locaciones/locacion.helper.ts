@@ -33,7 +33,7 @@ export class  LocacionHelper {
       srv.srvorder = base.ord;
       srv.srvtype = base.val;
       srv.srvQDisp = 0;
-      srv.srvQMax = 0;
+      srv.srvQAdic = 0;
       return srv;
     })
 

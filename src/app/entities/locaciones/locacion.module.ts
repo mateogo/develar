@@ -41,6 +41,6 @@ import { LocacionTableComponent } from './locacion-data/locacion-table/locacion-
   ],
   exports:[
   ],
-  providers: [LocacionService]
+  providers: []
 })
 export class LocacionHospitalariaModule { }

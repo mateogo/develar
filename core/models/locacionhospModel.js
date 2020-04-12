@@ -16,11 +16,11 @@ const Schema = mongoose.Schema;
 const self = this;
 
 const servicioSch = new Schema({
-    srvtype:  { type: String, required: false},
-    srvcode:  { type: String, required: false},
-    srvorder: { type: String, required: false},
-    srvQDisp: { type: Number, required: false},
-    srvQMax:  { type: Number, required: false},
+    srvtype:   { type: String, required: false},
+    srvcode:   { type: String, required: false},
+    srvorder:  { type: String, required: false},
+    srvQDisp:  { type: Number, required: false},
+    srvQAdic:  { type: Number, required: false},
     srvIsActive:  { type: Boolean, required: false, default: true},
 })
 
@@ -29,25 +29,46 @@ const recursoSh = new Schema({
     rservicio:   { type: String, required: false },
     piso:        { type: String, required: false },
     sector:      { type: String, required: false },
-    habitacion:  { type: String, required: false },
+    hab:         { type: String, required: false },
     code:        { type: String, required: false },
     slug:        { type: String, required: false },
     description: { type: String, required: false },
     estado:      { type: String, required: false },
 })
 
+const addressSch = new Schema({
+    slug:       { type: String,  required: false },
+    estado:     { type: String,  required: false },
+    isDefault:  { type: Boolean, required: false },
+    addType:    { type: String,  required: false },
+    street1:    { type: String,  required: false },
+    street2:    { type: String,  required: false },
+    streetIn:   { type: String,  required: false },
+    streetOut:  { type: String,  required: false },
+    city:       { type: String,  required: false },
+    barrio:     { type: String,  required: false },
+    state:      { type: String,  required: false },
+    statetext:  { type: String,  required: false },
+    zip:        { type: String,  required: false },
+    lat:        { type: String,  required: false },
+    lng:        { type: Number,  required: false },
+    country:    { type: Number,  required: false },
+})
+
 const locacionhospSch = new Schema({
     code:        { type: String,  required: true  },
-    type:        { type: String,  required: true  },
     slug:        { type: String,  required: true  },
+    fecha_tx:    { type: String,  required: true},
+
+    type:        { type: String,  required: true  },
 
     description: { type: String,  required: false  },
 
-    fecha_tx:    { type: String,  required: true},
+    estado:      { type: String,  required: false  },
     ts_alta:     { type: Number,  required: true, default: 0},
     ts_umodif:   { type: Number,  required: true, default: 0},
-    estado:      { type: String,  required: false  },
 
+    ubicacion: [addressSch],
     servicios: [servicioSch],
     recursos:  [recursoSh],
 
@@ -198,7 +219,7 @@ function fetchAvailability(spec, errcb, cb){
         if(entities && entities.length){
           let recursosNominales = entities.map(loc => {
             let token = {
-              id:   loc._id,
+              id:   loc._id.toString(),
               code: loc.code,
               slug: loc.slug,
               direccion: loc.ubicacion ? loc.ubicacion.street1 + ' ' + loc.ubicacion.city : '',

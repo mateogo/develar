@@ -1,0 +1,104 @@
+<ng-container *ngIf="showMasterAllocatorView">
+
+	<ng-container *ngFor="let master of masterList">
+
+	  <div class="row">
+	  	<div class="col">
+				<p class="text-resaltado" >{{ master.id }}::{{ master.slug }}</p>
+			</div>
+		</div>
+
+
+	  <div class="row">
+		  <ng-container *ngFor="let capacidad of capacidades">
+
+	      <div class="col-md-3">
+	        <card [bgColor]="'info'" class="info-card">
+	          <div class="title text-uppercase">{{ capacidad.label }} </div>
+	          <div class="count"> {{ master.disponible[capacidad.val].ocupado }} / 
+	          										{{ master.disponible[capacidad.val].capacidad }}</div>
+	          <badge class="badge-style"  (click)="locationSelected($event, master, capacidad)"
+	                  [customColor]="'rgba(54,78,98,0.6)'" 
+	                  [borderRadius]="false">{{ master.code }}</badge>
+
+	          <mat-icon>donut_large</mat-icon>
+	        </card>
+	      </div>
+
+	  	</ng-container>
+	  </div>
+
+		<ng-container *ngIf="showServicios">
+			<ng-container *ngFor="let servicio of master.servicios">
+		  <div class="row">
+		  	<div class="col">
+					<p class="text-normal"> {{ servicio.type }}:: +[{{ servicio.nominal }}] 
+									| <strong>-[{{ servicio.ocupado }}]</strong></p> 
+				</div>
+			</div>
+			</ng-container>
+		</ng-container>
+
+	</ng-container>
+</ng-container>
+
+<!---
+
+	          <div class="title text-uppercase">{{ capacidad.val }} </div>
+	          <div class="count"> 
+	          					{{ 	master.disponible && 
+	          							master.disponible[capacidad.val] && 
+	          							master.disponible[capacidad.val].ocupado }}</div>
+
+	      <div class="col-md-4">
+	        <card [bgColor]="'info'" class="info-card">
+	          <div class="title text-uppercase">{{ capacidad.label }} </div>
+	          <div class="count"> {{ master.disponible[capacidad.val].ocupado }} / 
+	          										{{ master.disponible[capacidad.val].capacidad }}</div>
+	          <badge class="badge-style"  
+	                  [customColor]="'rgba(150,150,150,0.6)'" 
+	                  [borderRadius]="false">Seleccionar</badge>
+
+	          <mat-icon>donut_large</mat-icon>
+	        </card>
+	      </div>
+
+		<p class="text-resaltado" >Diponible por AREA</p>
+			<p class="text-normal"> 	CUIDADOS INTENSIVOS :: 
+						{{ master.disponible.intensivos.capacidad }}:: 
+						{{ master.disponible.intensivos.ocupado }}</p> 
+
+			<p class="text-normal">  	CUIDADOS INTERMEDIOS :: 
+						{{ master.disponible.intermedios.capacidad }}:: 
+						{{ master.disponible.intermedios.ocupado }}</p> 
+
+			<p class="text-normal"> 	AMBULATORIO
+						{{ master.disponible.ambulatorios.capacidad }}:: 
+						{{ master.disponible.ambulatorios.ocupado }}</p> 
+
+			<p class="text-normal"> 	AISLAMIENTO
+						{{ master.disponible.aislamiento.capacidad }}:: 
+						{{ master.disponible.aislamiento.ocupado }}</p> 
+      <p class="text-normal"> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *</p>
+
+
+<div class="cards" >
+  <div class="row">
+  <ng-container *ngFor="let card of summaryCards">
+
+      <div class="col-md-4">
+        <card [bgColor]="card.label == 'HOY' ? 'danger': 'info'" class="info-card">
+          <div class="title text-uppercase">{{ card.label }} </div>
+          <div class="count">{{ card.cardinal }}</div>
+          <badge class="badge-style"  
+                  [customColor]="card.label == 'HOY'? 'rgba(150,150,150,0.6)': 'rgba(255,255,255,0.3)'" 
+                  [borderRadius]="false">{{ card.slug }}</badge>
+
+          <mat-icon>donut_large</mat-icon>
+        </card>
+      </div>
+
+  </ng-container>
+  </div>
+</div>
+-->

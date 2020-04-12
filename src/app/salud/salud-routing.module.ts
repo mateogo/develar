@@ -9,11 +9,16 @@ import { SolcovidDashboardComponent } from './covid/sol-covid-page/solcovid-dash
 import { TestUnoComponent } from './internacion/tests/test-uno/test-uno.component'
 
 import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashboard-page/sol-dashboard-page.component';
+import { AltarapidaPageComponent } from './internacion/alta-rapida/altarapida-page/altarapida-page.component';
 
 const routes: Routes = [
 	{
 		path:'recepcion',
 		component: RecepcionPageComponent
+	},
+	{
+		path:'altarapida',
+		component: AltarapidaPageComponent
 	},
 	{
 		path:'ayudadirecta',

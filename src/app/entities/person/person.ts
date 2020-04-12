@@ -214,11 +214,11 @@ class PersonTableData implements PersonTable {
 }
 
 export class PersonContactData {
-	tdato: string;
-	data: string;
-	type: string;
-	slug: string;
-	isPrincipal: boolean;
+	tdato: string = 'CEL';
+	data: string = '';
+	type: string = 'PER';
+	slug: string = 'Celular de contacto';
+	isPrincipal: boolean = true;
 }
 
 export class OficiosData {
@@ -322,7 +322,7 @@ export class Person {
 
   nombre: string;
   apellido: string;
-  tdoc: string;
+  tdoc: string = 'DNI';
   ndoc: string;
   cuil: string;// ojo
   alerta: string;

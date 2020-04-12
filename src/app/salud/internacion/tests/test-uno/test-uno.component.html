@@ -1,7 +1,172 @@
-<p>test-uno works!</p>
-<button mat-raised-button
-		(click)="fetchRecursos()">FetchRecursos</button>
+<mat-card >
+  <mat-card-content>
+  <form [formGroup]="form">
+    <!---addType; slug--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['apellido']" placeholder="apellido" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['tdoc']" placeholder="tdoc" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['ndoc']" placeholder="ndoc" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['telefono']" placeholder="telefono" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['hospCode']" placeholder="hospCode" >
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['servicio']" placeholder="servicio" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['estado']" placeholder="estado" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldLocInternacion placeholder="Locación de Internación"
+              [formControl]="form.controls['currentHospital']"
+              (selectionChange)="changeHospitalValue('hospital',fldLocInternacion.value)" >
+            <mat-option *ngFor="let hospital of hospitalesList$|async" 
+              [value]="hospital" >{{ hospital.code }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
 
-<button mat-raised-button
-		(click)="createAsitenciaPool()">Asistencia al Pool</button>
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['sector']" placeholder="sector" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['piso']" placeholder="piso" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['hab']" placeholder="hab" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['camaCode']" placeholder="camaCode" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['camaSlug']" placeholder="camaSlug" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit()"
+          [disabled]="!form.valid" >Colectar</button>
+    </div>
+
+
+  </form>
+</mat-card-content>
+</mat-card>
+
+<hr>
+
+
+<p>
+	<button mat-raised-button
+		(click)="createAsitenciaPool()">Crea Asistencia para DNI. Queda en el POOL</button>
+
+	<button mat-raised-button
+		(click)="createPersonAndSolicitud()">Crea Persona y Solicitud. 	Queda en POOL</button>
+
+</p>
+
+<p>
+	<button mat-raised-button
+		(click)="fetchRecursos()">Aloca ASISTENCIA en TRANSITO al HOSP seleccionado</button>
+
+	<button mat-raised-button
+		(click)="alocInServicio()">Aloca ASISTENCIA en el SERVICIO del HOSP</button>
+</p>
+
+<p>
+	<button mat-raised-button
+		(click)="verDisponible()">Consultar el MasterAllocator</button>
+</p>
+	
+
+
+<ng-container *ngIf="showMasterAllocatorView">
+
+	<ng-container *ngFor="let master of masterList">
+		<p class="text-destacado" >{{ master.id }}::{{ master.code }}::{{ master.slug }}</p>
+
+		<ng-container *ngFor="let servicio of master.servicios">
+			<p class="text-normal"> {{ servicio.type }}:: +[{{ servicio.nominal }}] 
+								| <strong>-[{{ servicio.ocupado }}]</strong></p> 
+
+		</ng-container>
+
+		<p class="text-resaltado" >Diponible por AREA</p>
+			<p class="text-normal"> 	CUIDADOS INTENSIVOS :: 
+						{{ master.disponible.intensivos.capacidad }}:: 
+						{{ master.disponible.intensivos.ocupado }}</p> 
+
+			<p class="text-normal">  	CUIDADOS INTERMEDIOS :: 
+						{{ master.disponible.intermedios.capacidad }}:: 
+						{{ master.disponible.intermedios.ocupado }}</p> 
+
+			<p class="text-normal"> 	AMBULATORIO
+						{{ master.disponible.ambulatorios.capacidad }}:: 
+						{{ master.disponible.ambulatorios.ocupado }}</p> 
+
+			<p class="text-normal"> 	AISLAMIENTO
+						{{ master.disponible.aislamiento.capacidad }}:: 
+						{{ master.disponible.aislamiento.ocupado }}</p> 
+      <p class="text-normal"> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *</p>
+
+
+	</ng-container>
+</ng-container>

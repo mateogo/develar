@@ -39,7 +39,7 @@ export class Servicio {
     srvcode: string = '';
     srvorder: string = ''
     srvQDisp: number = 0;
-    srvQMax: number = 0;
+    srvQAdic: number = 0;
     srvIsActive: boolean = true;
 
 }
@@ -48,7 +48,6 @@ export class Recurso {
     _id?: string;
     rtype: string = 'cama'; // cama; repirador;
     rservicio: string = 'uti'
-
     //ubicacion
     piso: string = "PISO-1"; // piso o nivel
     sector: string = "SEC-1"; // sector / area / sala
@@ -56,7 +55,6 @@ export class Recurso {
     code: string = '';
     slug: string = '';
     description: string = '';
-
 
     estado: string = 'activo';
 }
