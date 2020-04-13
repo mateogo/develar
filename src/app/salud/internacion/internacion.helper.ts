@@ -1,4 +1,4 @@
- import { devutils } from '../../develar-commons/utils';
+import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../salud.model';
 import { User }     from '../../entities/user/user';
 
@@ -8,8 +8,6 @@ import { LocacionHospitalaria, Recurso} from '../../entities/locaciones/locacion
 import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
 					Internacion, SolInternacionBrowse, SolInternacionTable, MasterAllocation,
           MotivoInternacion, InternacionSpec } from './internacion.model';
-
-
 
 export class  InternacionHelper {
 

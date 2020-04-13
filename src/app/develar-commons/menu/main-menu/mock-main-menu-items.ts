@@ -691,106 +691,16 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/altarapida'
       },
       {
-        title: 'Hospitales',
-        routing: '/salud/entidades/locaciones/navegar'
+        title: 'Centro de Internación',
+        routing: '/salud/internacion'
       },
       {
-        title: 'HospitalesAlta',
-        routing: '/salud/entidades/locaciones/alta'
+        title: 'Centro de Coordinación',
+        routing: '/salud/coordinacion'
       },
       {
         title: 'Internacion TestUNO',
         routing: '/salud/gestion/testuno'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-
-  {
-    title: 'Comunidades',
-    icon: '',
-    active: false,
-    groupTitle : true,
-    sub: '',
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-  
-  {
-    title: 'Fichas',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Dashboard',
-        routing: '/develar/fichas'
-      },
-      {
-        title: 'Navegar lista',
-        routing: '/develar/fichas/lista'
-      },
-      {
-        title: 'Navegar grid',
-        routing: '/develar/fichas/grid'
-      },
-      {
-        title: 'Alta nueva ficha',
-        routing: '/develar/fichas/alta'
-      },
-      {
-        title: 'Proyectos',
-        routing: '/develar/proyectos'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-
-  {
-    title: 'Comunidades',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'gestionar comunidades',
-        routing: '/develar/comunidades'
-      },
-      {
-        title: 'vista pública',
-        routing: '/patria'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
-  {
-    title: 'Notificaciones',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'nueva notificación',
-        routing: '/develar/notificaciones/alta'
-      },
-      {
-        title: 'navegar',
-        routing: '/develar/notificaciones/navegar'
-      },
-      {
-        title: 'chat',
-        routing: '/develar/notificaciones/socket'
       },
     ],
     routing: '',
@@ -811,26 +721,14 @@ export const SALUD_ITEMS: MainMenuItem[] = [
   },
 
   {
-    title: 'Usuarios',
+    title: 'Hospitales',
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
     sub: [
       {
-        title: 'Registrar usuario',
-        routing: '/ingresar/registrarse'
-      },
-      {
-        title: 'Olvidaste la clave?',
-        routing: '/ingresar/nuevaclave'
-      },
-      {
-        title: 'Confirmar correo',
-        routing: '/ingresar/confirmar'
-      },
-      {
-        title: 'Navegar',
-        routing: '/develar/entidades/usuarios'
+        title: 'Centros de internación',
+        routing: '/salud/entidades/locaciones/navegar'
       },
     ],
     routing: '',
@@ -889,7 +787,126 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     externalLink: '',
     budge: '',
     budgeColor: ''
-  }
+  },
+
+  {
+    title: 'Usuarios',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Registrar usuario',
+        routing: '/ingresar/registrarse'
+      },
+      {
+        title: 'Olvidaste la clave?',
+        routing: '/ingresar/nuevaclave'
+      },
+      {
+        title: 'Confirmar correo',
+        routing: '/ingresar/confirmar'
+      },
+      {
+        title: 'Navegar',
+        routing: '/develar/entidades/usuarios'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'Comunidades',
+    icon: '',
+    active: false,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title: 'Notificaciones',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'nueva notificación',
+        routing: '/develar/notificaciones/alta'
+      },
+      {
+        title: 'navegar',
+        routing: '/develar/notificaciones/navegar'
+      },
+      {
+        title: 'chat',
+        routing: '/develar/notificaciones/socket'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'Fichas',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Dashboard',
+        routing: '/develar/fichas'
+      },
+      {
+        title: 'Navegar lista',
+        routing: '/develar/fichas/lista'
+      },
+      {
+        title: 'Navegar grid',
+        routing: '/develar/fichas/grid'
+      },
+      {
+        title: 'Alta nueva ficha',
+        routing: '/develar/fichas/alta'
+      },
+      {
+        title: 'Proyectos',
+        routing: '/develar/proyectos'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+    title: 'Comunidades',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'gestionar comunidades',
+        routing: '/develar/comunidades'
+      },
+      {
+        title: 'vista pública',
+        routing: '/patria'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
 
 ];
 export const DSOCIAL_ITEMS: MainMenuItem[] = [

@@ -1,8 +1,5 @@
 import { devutils } from '../../develar-commons/utils';
 
-import { InternacionHelper }  from './internacion.helper';
-
-
 export class Novedad {
 		_id?:        string;
 		tnovedad:    string = 'operadorcom';
@@ -73,7 +70,7 @@ export class MotivoInternacion { // triage
 	constructor(spec){
 		if(spec && spec.servicio){
 				this.servicio = spec.servicio;
-				this.target = InternacionHelper.getTargetFromServicio(this.servicio);
+				//this.target = InternacionHelper.getTargetFromServicio(this.servicio);
 		}
 	}
 

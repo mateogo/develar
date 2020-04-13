@@ -16,3 +16,9 @@ export interface BasicData {
   taglist:     Array<string>;
 }
 
+
+export interface BotonContador {
+    id: string,
+    label: string,
+    contador?: number
+}

@@ -83,6 +83,8 @@ import { InternacionViewComponent } from './internacion/internacion-data/interna
 import { InternacionAllocatorComponent } from './internacion/internacion-data/internacion-allocator/internacion-allocator.component';
 import { InternacionEditComponent } from './internacion/internacion-data/internacion-edit/internacion-edit.component';
 import { AltarapidaFetchComponent } from './internacion/alta-rapida/altarapida-fetch/altarapida-fetch.component';
+import { SolinternacionPanelComponent } from './internacion/solicitud/solinternacion-panel/solinternacion-panel.component';
+import { SolinternacionBaseComponent } from './internacion/solicitud/solinternacion-base/solinternacion-base.component';
 
 @NgModule({
   imports: [
@@ -166,6 +168,8 @@ import { AltarapidaFetchComponent } from './internacion/alta-rapida/altarapida-f
     InternacionAllocatorComponent,
     InternacionEditComponent,
     AltarapidaFetchComponent,
+    SolinternacionPanelComponent,
+    SolinternacionBaseComponent,
   ]
 })
 export class SaludModule { }

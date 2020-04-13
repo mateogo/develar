@@ -1,0 +1,8 @@
+<div class="d-xl-flex flex-row justify-content-between align-items-center p-2">
+	<div *ngFor="let boton of botones">
+	  <app-boton-contador
+	      [boton]="boton"
+	      (onClick)="onClick($event)">
+	  </app-boton-contador>
+	</div>
+</div>

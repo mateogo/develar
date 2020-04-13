@@ -25,10 +25,11 @@ import {	MatButtonModule,
 					MatToolbarModule
        } from '@angular/material';
 
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatTableModule} from '@angular/material/table';
+import {MatBadgeModule}     from '@angular/material/badge';
+import {MatTableModule}     from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
+import {MatSortModule}      from '@angular/material/sort';
+import {MatTooltipModule}   from '@angular/material/tooltip'
 
 @NgModule({
 	imports: [
@@ -57,7 +58,8 @@ import {MatSortModule} from '@angular/material/sort';
 		MatTableModule,
 		MatBadgeModule,
 		MatPaginatorModule,
-		MatSortModule
+		MatSortModule,
+		MatTooltipModule
 	],
 	exports:[
 		MatButtonModule,
@@ -87,7 +89,8 @@ import {MatSortModule} from '@angular/material/sort';
 		MatTableModule,
 		MatBadgeModule,
 		MatPaginatorModule,
-		MatSortModule
+		MatSortModule,
+		MatTooltipModule
 	]
 })
 export class DevelarMaterialModule {}

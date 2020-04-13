@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, Inject, OnInit, Input, Output,EventEmitter,TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { LocacionHospitalaria, LocacionEvent} from '../../locacion.model';
 
@@ -11,6 +12,24 @@ const TOKEN_TYPE = 'locacionhospitalaria';
 const CANCEL = 'cancel';
 const DELETE = 'delete';
 const UPDATE = 'update';
+const CREATE = 'create';
+
+export interface DialogActionData{
+  action: string;
+  label:  string;
+  value?: any;
+}
+
+export interface DialogData {
+  caption:string;
+  title: string;
+  body: string;
+  accept: DialogActionData;
+  cancel:DialogActionData;
+  input: DialogActionData;
+  itemplate?: TemplateRef<any>;
+}
+
 
 @Component({
   selector: 'locacion-create',
@@ -19,7 +38,7 @@ const UPDATE = 'update';
 })
 export class LocacionCreateComponent implements OnInit {
 	@Input() locacion: LocacionHospitalaria = new LocacionHospitalaria();
-	@Output() updateToken  = new EventEmitter<LocacionEvent>();
+	//@Output() updateToken  = new EventEmitter<LocacionEvent>();
 
   public hospitalOL =  LocacionHelper.getOptionlist('hospital')
   public pageTitle = 'Alta rápida de locación de internación'
@@ -29,11 +48,19 @@ export class LocacionCreateComponent implements OnInit {
 	private action: string;
 
   constructor(
+    public dialogRef: MatDialogRef<LocacionCreateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   	private fb: FormBuilder,
     private srv: LocacionService
   	) { 
   		this.form = this.buildForm();
 	}
+
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 
   ngOnInit() {
   	this.initForEdit(this.form, this.locacion);
@@ -59,7 +86,7 @@ export class LocacionCreateComponent implements OnInit {
     this.srv.manageLocacionesRecord(record).subscribe(locacion => {
       if(locacion){
         this.locacion = locacion;
-        this.action = UPDATE;
+        this.action = CREATE;
         this.emitEvent(this.action);
 
       }else{
@@ -71,19 +98,20 @@ export class LocacionCreateComponent implements OnInit {
 
 
   private emitEvent(action:string){
+    this.dialogRef.close(this.action);
 
-  	let updateEvent: LocacionEvent = {
-  		action: action,
-  		type: TOKEN_TYPE,
-  		token: this.locacion
-  	}
+  	// let updateEvent: LocacionEvent = {
+  	// 	action: action,
+  	// 	type: TOKEN_TYPE,
+  	// 	token: this.locacion
+  	// }
 
-  	if(this.action === UPDATE){
-	  	this.updateToken.next(updateEvent);
+  	// if(this.action === UPDATE){
+	  // 	//this.updateToken.next(updateEvent);
 
-  	} else {
+  	// } else {
 
-  	}
+  	// }
   }
 
   changeSelectionValue(type, val){

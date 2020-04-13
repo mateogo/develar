@@ -1,0 +1,10 @@
+<mat-card (click)="onClick()">
+    <mat-card-title style="font-size: medium;">
+        Disponibilidad
+    </mat-card-title>
+    <mat-card-content>
+        <p class="m-0" *ngFor="let item of items">
+            {{ item.nombre }}: {{ item.disponible }} de {{ item.total }}
+        </p>
+    </mat-card-content>
+</mat-card>

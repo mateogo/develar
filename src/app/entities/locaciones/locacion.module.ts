@@ -39,6 +39,7 @@ import { LocacionTableComponent } from './locacion-data/locacion-table/locacion-
       LocacionListComponent,
       LocacionTableComponent
   ],
+  entryComponents: [LocacionCreateComponent],
   exports:[
   ],
   providers: []

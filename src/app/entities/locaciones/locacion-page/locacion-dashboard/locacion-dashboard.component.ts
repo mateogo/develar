@@ -1,9 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Subject } from 'rxjs';
 
 import { LocacionHospitalaria, LocacionHospTable, LocacionHospBrowse, LocacionEvent} from '../../locacion.model';
+
+import { LocacionCreateComponent } from '../../locacion-data/locacion-create/locacion-create.component';
 
 import { LocacionHelper } from '../../locacion.helper';
 import { LocacionService } from '../../locacion.service';
@@ -24,9 +27,6 @@ const SEARCH = 'search';
   styleUrls: ['./locacion-dashboard.component.scss']
 })
 export class LocacionDashboardComponent implements OnInit {
-	@Input() items: Array<LocacionHospitalaria>;
-	@Output() updateItems = new EventEmitter<LocacionEvent>();
-
  public currentLocacion:LocacionHospitalaria;
 
   public searchTitle = "Buacar Locaciones de Internación";
@@ -39,21 +39,17 @@ export class LocacionDashboardComponent implements OnInit {
 
 	public query: LocacionHospBrowse = new LocacionHospBrowse();
 
-	public locacionesList: LocacionHospitalaria[];
+	public locacionesList: LocacionHospitalaria[] = [];
 
   constructor(
       private locSrv: LocacionService,
     	private router: Router,
     	private route: ActivatedRoute,
+      public dialog: MatDialog
 
     ) { }
 
   ngOnInit() {
-
-  	if(this.items && this.items.length){
-  		this.locacionesList = this.items;
-  		this.showData = true;
-  	}
 
 		this.initCurrentPage();
 
@@ -63,6 +59,11 @@ export class LocacionDashboardComponent implements OnInit {
 
     this.query = this.locSrv.locacionesSelector;
     this.fetchLocaciones(this.query);
+
+  }
+
+  altaLocacion(e){
+    this.openDialog(null)
 
   }
 
@@ -120,17 +121,26 @@ export class LocacionDashboardComponent implements OnInit {
     });
   }
 
+  private openDialog(dialog?: any): void {
+
+    const dialogRef = this.dialog.open(LocacionCreateComponent, {
+      width: '450px',
+      data: null
+    });
 
 
-  emitEvent(event:LocacionEvent){
-  
-  	if(event.action === UPDATE){
-  		this.updateItems.next({
-	  		action: UPDATE,
-	  		type: TOKEN_TYPE,
-	  		items: this.items
-  		});
-  	}
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.altaNuevaLocacion(result);
+      }else {
+
+      }
+
+    });
+  }
+
+  private altaNuevaLocacion(result ){
+    if(result !== CANCEL) this.refreshSelectionEvent(this.query);
   }
 
   tableActionEvent(action){

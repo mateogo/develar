@@ -1,0 +1,56 @@
+<mat-card style="background-color: #2266FF;">
+    <mat-card-content>
+        <div class="container-fluid sinpadding">
+            <div class="row">
+                <!-- Filtros -->
+                <div class="col-md-4 col-sm-12 col-12">
+                            <mat-radio-group
+                            (change)="radioChanged($event)">
+                            <span>Ver : &nbsp;</span>
+                            <mat-radio-button
+                            *ngFor="let radioOption of radioOptions"
+                            value={{radioOption.value}}
+                            [checked]="radioOption.value == radioDefault">
+                                {{ radioOption.descripcion }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                </div>
+                <!-- Proyección -->
+                <div class="offset-md-1 offset-sm-0 offset-0 col-md-4 col-sm-10 col-12">
+                    <span class="my-auto" style="font-weight: 800;">Proyectar</span>
+                <mat-slider
+                thumbLabel
+                [min]="slider.min"
+                [max]="slider.max"
+                [step]="slider.step"
+                [value]="currentProyeccion"
+                (input)="sliderChanged($event)"
+                ></mat-slider>
+                <span class="my-auto">
+                    {{
+                        currentProyeccion === 0 ? 'hoy' :
+                        currentProyeccion === 1 ? 'dentro de ' + currentProyeccion + ' día' :
+                        'dentro de ' + currentProyeccion + ' días'
+                    }} ({{ currentProyeccionDate | date:'dd/LL/yyyy' }}{{ slider.daysLeft === slider.max? ' o posterior' : '' }})
+                </span>
+                </div>
+                <div class="col-md-1 col-sm-1 col-1 offset-sm-0 offset-md-2 offset-10">
+                    <button mat-icon-button (click)="altaRapidaPaciente()" matTooltip="Alta rápida de paciente">
+                        <mat-icon>
+                            add_circle_outline
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <mat-checkbox class="margin" *ngFor="let service of groupservices" (click)="selectedCheckBox(service)">
+                        {{service.descripcion}}
+                    </mat-checkbox>
+                </div>
+                
+            </div>
+        </div>
+        
+    </mat-card-content>
+</mat-card>

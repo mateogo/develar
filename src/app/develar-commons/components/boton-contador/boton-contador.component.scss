@@ -1,0 +1,31 @@
+mat-card{
+    background-color: #777;
+    color: white;
+    min-width: 150px;
+}
+
+.contador {
+    height: 40px;
+    width: 65px;
+    margin-right: 5px;
+    background-color: #F44336;
+    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 5%;
+    text-align: center;
+    align-items: center;
+    display: grid;
+    font-size: medium;
+}
+
+.my-auto{
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+
+mat-card:hover {
+    cursor: pointer;
+    //opacity: 0.75;
+    //background-color: rgba($color: #FFF, $alpha: 0.5);
+    background-color: #999;
+}

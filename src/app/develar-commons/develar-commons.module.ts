@@ -73,6 +73,13 @@ import { DaoService }           from './dao.service';
 import { TagService }           from './tag.service';
 import { PrismHighlightService }     from './highlighter.service';
 
+import { ControlesComponent }               from './components/controles/controles.component';
+import { MosaicoComponent }                 from './components/mosaico/mosaico.component';
+import { BotonContadorComponent }           from './components/boton-contador/boton-contador.component';
+import { BotoneraContainerComponent }       from './containers/botonera-container/botonera-container.component';
+import { AltaRapidaPacienteModalComponent } from './alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
+
+
 
 @NgModule({
   imports: [
@@ -142,7 +149,12 @@ import { PrismHighlightService }     from './highlighter.service';
     ObservacionesPanelComponent,
     ObservacionesEditComponent,
     ObservacionesViewComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ControlesComponent,
+    MosaicoComponent,
+    BotonContadorComponent,
+    BotoneraContainerComponent,
+    AltaRapidaPacienteModalComponent, 
   ],
   exports:[
     DevelarMaterialModule,
@@ -198,9 +210,18 @@ import { PrismHighlightService }     from './highlighter.service';
     ObservacionesViewComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ControlesComponent,
+    MosaicoComponent,
+    BotonContadorComponent,
+    BotoneraContainerComponent,
+    AltaRapidaPacienteModalComponent,
+    
   ],
   providers: [AssetService, DaoService, ModelController, TagService, CommunityController, PrismHighlightService],
-  entryComponents: [CrawlerDialogComponent, GenericDialogComponent, ModalDialogComponent]
+  entryComponents: [    CrawlerDialogComponent, 
+                        GenericDialogComponent, 
+                        AltaRapidaPacienteModalComponent,
+                        ModalDialogComponent]
 })
 export class DevelarCommonsModule { }

@@ -1,0 +1,15 @@
+mat-card{
+    width: 200px;
+    height: 80px;
+    color: white;
+    margin-bottom: 1%;
+  	background-color: #2e3d50 ;
+}
+
+mat-card-subtitle{
+    color: white;
+}
+
+mat-card:hover {
+    cursor: default;
+}

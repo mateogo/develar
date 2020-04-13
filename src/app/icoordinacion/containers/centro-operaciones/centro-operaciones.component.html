@@ -1,0 +1,58 @@
+<mat-card>
+    <mat-card-title>
+        Centro de operaciones
+    </mat-card-title>
+
+    <app-controles (radioSelectedOption)="controlesVer($event)"></app-controles>
+        <mat-card-content>
+
+        <!-- Solicitudes de internación -->
+        <app-botonera-container
+          [botones]="botonesServicios$ | async"
+          (onButtonClick)="onBotoneraClick($event)">
+        </app-botonera-container>
+        
+        <!-- Lista de locaciones -->
+        <div class="row" *ngFor="let locacion of locaciones$ | async">
+            
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: 800;">
+                        {{ locacion.name }}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <!-- Mosaico: inyectar ítems -->
+                <app-mosaico>
+                    <!-- TRÁNSITO -->
+                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2">
+                        <app-transito
+                            (onClick)="onTransitoClick(locacion)"
+                            [label]="'Tránsito'"
+                            [servicios]="locacion.admisionServicios"
+                        ></app-transito>
+                    </div>
+
+                    <!-- CAPACIDAD -->
+                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2">
+                        <app-capacidad
+                            [capacidadEfectiva]="capacidadEfectiva$ | async"
+                            [capacidadReal]="capacidadReal$ | async">
+                        </app-capacidad>
+                    </div>
+                    
+                    <!-- SERVICIOS -->
+                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2" *ngFor="let servicio of locacion.servicios">
+                        <app-servicio
+                            [nombre]="servicio.nombre"
+                            [disponibilidadActual]="servicio.disponibilidadActual"
+                            [disponibilidadTotal]="servicio.disponibilidadTotal"
+                        >
+                        </app-servicio>
+                    </div>
+                </app-mosaico>
+
+            </mat-expansion-panel>
+        </div>
+    </mat-card-content>
+</mat-card>

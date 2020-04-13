@@ -1,0 +1,15 @@
+<mat-card (click)="onTransitoClick()">
+    <mat-card-title style="font-size: medium;">
+        {{ label }}
+        <span>
+            <mat-icon>open_in_new</mat-icon>
+        </span>
+    </mat-card-title>
+    <mat-card-content>
+        <ul>
+            <li *ngFor="let servicio of servicios">
+                {{ servicio.nombre }}: {{ servicio.derivados }}
+            </li>
+        </ul>
+    </mat-card-content>
+</mat-card>

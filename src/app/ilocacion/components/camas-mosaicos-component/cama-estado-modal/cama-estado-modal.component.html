@@ -1,0 +1,176 @@
+<div class="container-fluid p-0" *ngIf="cama.estado !== 'LIBRE'">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-12">
+			<h2 style="text-align: center;">
+				{{ cama.paciente.name | uppercase }} ({{ cama.paciente.dni }})
+			</h2>
+			<h4 class="m-0" style="text-align: center;" *ngIf="cama.camaId">
+				Cama/box: {{ cama.camaId }}
+			</h4>
+		</div>
+	</div>
+
+	<!-- Pestañas -->
+	<mat-tab-group>
+		<!-- Datos del paciente -->
+		<mat-tab label="Datos del paciente">
+			<mat-list>
+				<div class="row">
+					<div class="col-12 col-md-12 col-sm-12">
+						<div *ngIf="cama.paciente.diagnostico != ''">
+							<mat-list-item> Diagnostico: {{cama.paciente.diagnostico}} </mat-list-item>
+						</div>
+						<div *ngIf="cama.paciente.diagnostico == ''">
+							<mat-list-item> Esperando diagnostico</mat-list-item>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-12 col-sm-12">
+						<mat-list-item> Fecha de ingreso: {{cama.fecha_in}}</mat-list-item>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-12 col-md-5 sol-sm-6">
+						<div>
+							<mat-list-item>
+								Salida prevista:
+								<mat-slider
+									thumbLabel
+									[min]="slider.min"
+									[max]="slider.max"
+									[step]="slider.step"
+									[value]="slider.daysLeft"
+									(input)="updateDaysLeft($event)"
+								>
+								</mat-slider>
+							</mat-list-item>
+						</div>
+					</div>
+					<div class="offset-3 offset-md-0 offset-sm-3 col-sm-6 col-6 col-md-6">
+						{{
+							slider.daysLeft === slider.min ? 'hoy' :
+							slider.daysLeft === 1 ? 'dentro de ' + slider.daysLeft + ' día' :
+							slider.daysLeft === slider.max ? 'dentro de ' + slider.daysLeft + ' días o más' :
+							'dentro de ' + slider.daysLeft + ' días'
+						}} ({{ fechaPrevistaOut | date:'dd/LL/yyyy' }}{{ slider.daysLeft === slider.max? ' o posterior' : '' }})
+					</div>
+				</div>
+			</mat-list>
+			<div class="row">
+				<div class="offset-md-8 offset-sm-6 offset-1 col-5 col-sm-3 col-md-2">
+					<button type="button" mat-flat-button color="primary" matTooltip="Pasar a extenación"  [matTooltipPosition]="'above'" (click)="altaPaciente()">Dar de alta</button>
+				</div>
+				<div class="col-md-2 col-sm-3 col-3">
+					<button type="button" mat-flat-button color="warn" matTooltip="Liberar ahora" [matTooltipPosition]="'above'" (click)="liberarAhora()">Liberar</button>
+				</div>
+			</div>
+		</mat-tab>
+
+		<!-- Evolución (alta de parte médico) -->
+		<mat-tab label="Evolución">
+			<form [formGroup]="evolucionForm" (ngSubmit)="onEvolucionSubmit()">
+				<div class="container">
+					<!-- Comentario -->
+					<div class="row">
+						<mat-form-field class="col-12">
+							<mat-label>Ingrese el parte médico</mat-label>
+							<textarea matInput type="text"></textarea>
+						</mat-form-field>
+					</div>
+
+					<!-- Doctor/doctora -->
+					<div class="row">
+						<mat-form-field class="col-12">
+							<input type="text"
+								placeholder="Dr./Dra."
+								matInput
+								[formControl]="formControlDr"
+								[matAutocomplete]="auto">
+							<mat-autocomplete #auto="matAutocomplete">
+								<mat-option *ngFor="let opcion of opcionesFiltradas | async" [value]="opcion">
+									{{ opcion }}
+								</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+					</div>
+					<div class="row">
+						<button
+							mat-raised-button
+							color="accent">
+							Enviar parte médico
+						</button>
+					</div>
+				</div>
+			</form>
+		</mat-tab>
+
+		<!-- Historia clínica (comorbilidades) -->
+		<mat-tab label="Historia clínica">
+
+		</mat-tab>
+	</mat-tab-group>
+				
+</div>
+
+<div class="container-fluid p-0" *ngIf="cama.estado === 'LIBRE'">
+	<div class="row">
+		<div class="col-sm-12 col-12 col-md-12">
+			<h3 style="text-align: center;">CAMA DISPONIBLE: {{cama.camaId}}</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-12">
+			<h4>Ingrese los datos del paciente que va a ocupar la cama</h4>
+		</div>
+	</div>
+		<form [formGroup]="pacienteForm" (ngSubmit)="onPacienteSubmit()">
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-12">
+					<mat-form-field>
+						<mat-label>Nombre y apellido</mat-label>
+						<input matInput formControlName="name">
+					</mat-form-field>
+				</div>
+				<div class="col-md-4 col-sm-6 col-12">
+					<mat-form-field>
+						<mat-label>DNI</mat-label>
+						<input matInput formControlName="dni">
+					</mat-form-field>
+				</div>
+				<div class="col-md-4 col-sm-6 col-12">
+					<mat-form-field>
+						<mat-label>Diagnostico</mat-label>
+						<input matInput formControlName="diagnostico">
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-12">
+					<mat-form-field>
+						<mat-label>Fecha ingreso</mat-label>
+						<input matInput  [matDatepicker]="picker1" formControlName="fecha_in">
+									<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+									<mat-datepicker #picker1></mat-datepicker>
+					</mat-form-field>
+				</div>
+				<div class="col-md-4 col-sm-6 col-12">
+					<mat-form-field >
+						<mat-label>Fecha salida (estimada)</mat-label>
+						<input matInput  [matDatepicker]="picker2" formControlName="fecha_out">
+									<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+									<mat-datepicker #picker2></mat-datepicker>
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row">
+				<div class="offset-sm-7 offset-md-8 offset-2 col-md-2 col-5 col-sm-3">
+					<button type="submit" mat-flat-button color="primary">Ingresar</button>
+				</div>
+				<div class="col-sm-2 col-5 col-md-2">
+					<button type="button" mat-flat-button color="warn" (click)="volver()">Volver</button>
+				</div>
+			</div>
+		</form>
+</div>

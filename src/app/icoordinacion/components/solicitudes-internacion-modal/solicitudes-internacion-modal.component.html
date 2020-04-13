@@ -1,0 +1,91 @@
+<mat-card>
+    <mat-card-title>
+        {{ data.titulo }}
+    </mat-card-title>
+
+    <mat-card-content>
+
+        <form [formGroup]="derivacionForm" (ngSubmit)="onDerivacionSubmit()">
+
+            
+            <!-- Centros de salud -->
+            <!-- <div class="row"> -->
+                <mat-form-field class="col-12">
+                    <input type="text"
+                    placeholder="Centro de salud"
+                    matInput
+                    [formControl]="formControlCentroSalud"
+                    [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let opcion of opcionesFiltradas | async" [value]="opcion">
+                        {{ opcion }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <!-- </div> -->
+        
+
+
+            <!-- Solicitudes internación -->
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Checkbox -->
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? onSelect(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Tipo doc -->
+                <ng-container matColumnDef="tDoc">
+                    <mat-header-cell *matHeaderCellDef>Tipo documento</mat-header-cell>
+                    <mat-cell *matCellDef="let el">{{ el.tdoc }}</mat-cell>
+                </ng-container>
+
+                <!-- Nro doc -->
+                <ng-container matColumnDef="nDoc">
+                    <mat-header-cell *matHeaderCellDef>Nro documento</mat-header-cell>
+                    <mat-cell *matCellDef="let el">{{ el.ndoc }}</mat-cell>
+                </ng-container>
+                <!-- Nombre -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                    <mat-cell *matCellDef="let el">{{ el.slug }}</mat-cell>
+                </ng-container>
+                <!-- Diagnóstico -->
+                <ng-container matColumnDef="diagnostico">
+                    <mat-header-cell *matHeaderCellDef>Diagnóstico</mat-header-cell>
+                    <mat-cell *matCellDef="let el"> {{ el.diagnostico }}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="columnasMostradas"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnasMostradas;"
+                (click)="onSelect(row)">
+                </mat-row>
+
+            </mat-table>
+        </form>
+    </mat-card-content>
+
+
+    <mat-card-actions align="end">
+        <button
+          mat-raised-button
+          color="accent"
+          [mat-dialog-close]="selection.selected"
+          (click)="onClickDerivar()"
+          [disabled]="derivarDisabled">
+        {{ derivarLabel }}
+        </button>
+    </mat-card-actions>
+</mat-card>

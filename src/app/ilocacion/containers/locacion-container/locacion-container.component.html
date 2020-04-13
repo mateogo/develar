@@ -1,0 +1,59 @@
+<mat-card>
+
+    <mat-card-title>
+        ESTADO DE OCUPACIÓN: {{ locaciones.name }}
+    </mat-card-title>
+
+    <mat-card-subtitle>
+        Total de camas con las que cuenta el hospital : {{ totalCamas }}
+    </mat-card-subtitle>
+
+    <app-controles (radioSelectedOption) = "radioSelectedOption($event)" (currentProyeccionDateEmit)="currentProyeccionDateEmit($event)"
+    (checkBoxEmit)="checkBoxEmit($event)"></app-controles>
+    
+    <mat-card-content>
+
+      <!-- Buffers -->
+      <app-botonera-container
+        [botones]="botonesBuffers"
+        (onButtonClick)="onBotoneraClick($event)"
+      >
+      </app-botonera-container>
+        <div class="row" *ngFor="let tipo of tipos">
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: 800;">
+                        {{ tipo.descripcion }} ({{ msjSegunRadioButton }})
+                    </mat-panel-title>
+                        
+                </mat-expansion-panel-header>
+                <app-mosaico>
+                    <!-- Disponibilidad de recursos -->
+                    <div class="col-xs-6 col-md-3 col-lg-2">
+                        <app-recursos
+                            [admision]="admision$ | async"
+                            [traslado]="traslado$ | async"
+                        ></app-recursos>
+                    </div>
+
+                    <!-- <div
+                        class="col-xs-6 col-md-3 col-lg-2"
+                        *ngFor="let cama of locaciones.estado_ocupacion">
+                        <app-cama-estado [cama]="cama" ></app-cama-estado>
+                    </div> -->
+
+                    <div
+                        class="col-xs-6 col-md-3 col-lg-2"
+                        *ngFor="let cama of locaciones.estado_ocupacion">
+                        <app-paciente
+                            (onClick)="openPacienteModal($event)"
+                            [nombrePaciente]="cama.paciente.name"
+                            [nombreCama]="cama.camaId"
+                        ></app-paciente>
+                    </div>
+
+                </app-mosaico>
+            </mat-expansion-panel>
+        </div>
+    </mat-card-content>
+</mat-card>

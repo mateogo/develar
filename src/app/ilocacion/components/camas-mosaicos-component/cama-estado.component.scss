@@ -1,0 +1,29 @@
+/* .ocupada{
+    background-color: red;
+}
+.disponible{
+    background-color: greenyellow;
+} */
+
+
+.cama-ocupada {
+    background-color: #2266FF;
+}
+
+.cama-libre {
+    background-color: #119911;
+}
+
+.cama-prontaSalida {
+    background-color: greenyellow;
+}
+
+mat-card:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+mat-card{
+    width: 200px;
+    height: 100px;
+    margin-bottom: 8%;
+}

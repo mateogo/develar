@@ -29,6 +29,11 @@ import {   Asistencia,
           UpdateAsistenciaListEvent,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
+import {   SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion,
+          Internacion, SolInternacionBrowse, SolInternacionTable, InternacionSpec,
+          MasterAllocation,UpdateInternacionEvent } from '../../internacion/internacion.model';
+
+
 
 import { Turno, TurnoAction, TurnosModel }  from '../../turnos/turnos.model';
 import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
@@ -62,6 +67,7 @@ export class TsocialPageComponent implements OnInit {
   public ambientalList: EncuestaAmbiental[];
   public assetList:     CardGraph[] = []
   
+  public solinternacionesList: SolicitudInternacion[];
   public asistenciasList: Asistencia[];
   public showHistorial = false;
 
@@ -72,6 +78,7 @@ export class TsocialPageComponent implements OnInit {
   //public contactData = new PersonContactData();
 
   public hasCurrentPerson = false;
+  public hasInternaciones = false;
   private hasPersonIdOnURL = true;
   public personFound = false;
   public altaPersona = false;
@@ -153,6 +160,7 @@ export class TsocialPageComponent implements OnInit {
       this.assetList = p.assets || [];
       
       this.initAsistenciasList()
+      this.initSolInternaciones();
 
       this.audit = this.dsCtrl.getAuditData();
       this.parentEntity = {
@@ -163,6 +171,18 @@ export class TsocialPageComponent implements OnInit {
     }
  
   }
+
+  initSolInternaciones(){
+    this.solinternacionesList = [];
+    this.dsCtrl.fetchInternacionesByPersonId(this.currentPerson._id).subscribe(list =>{
+
+      this.solinternacionesList = list || [];
+      if(this.solinternacionesList && this.solinternacionesList.length){
+        this.hasInternaciones = true;
+      }
+    })
+  }
+
 
   initAsistenciasList(){
     this.asistenciasList = [];

@@ -136,6 +136,20 @@ const saludModuleRoutes: Routes = [
   }
 ];
 
+const coordinacionModuleRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: () => import('./icoordinacion/centro-operaciones.module').then(m => m.CentroOperacionesInternacionModule)
+  }
+];
+
+const locacionInternacionModuleRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: () => import('./ilocacion/locacion.module').then(m => m.LocacionInternacionModule)
+  }
+];
+
 const cckGestionRoutes: Routes = [
   {
     path: '', 
@@ -165,6 +179,17 @@ const saludRoutes: Routes = [
     component: DefaultLayoutComponent,
     children: saludModuleRoutes
   },
+  {
+    path: 'coordinacion',
+    component: DefaultLayoutComponent,
+    children: coordinacionModuleRoutes
+  },
+  {
+    path: 'internacion',
+    component: DefaultLayoutComponent,
+    children: locacionInternacionModuleRoutes
+  },
+
   {
     path: 'entidades',
     component: DefaultLayoutComponent,

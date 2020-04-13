@@ -29,6 +29,7 @@ import { Asistencia, Alimento, AsistenciaBrowse, Requirente, Locacion,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
+import {   SolicitudInternacion } from './internacion/internacion.model';
 
 const ATTENTION_ROUTE = "atencionsocial";
 const ALIMENTAR_ROUTE = "tarjetaalimentar";
@@ -209,6 +210,18 @@ export class SaludController {
   }
 
 
+  /****************************************/
+  /******* Asistencias INTERNACION ********/
+  /**************************************/
+  fetchInternacionesByPersonId(id: string): Observable<SolicitudInternacion[]>{
+    const RECORD = 'internacion'
+
+    let query = {
+      requirenteId: id
+    }
+
+    return this.daoService.search<SolicitudInternacion>(RECORD, query)
+  }
 
 
   /****************************************/

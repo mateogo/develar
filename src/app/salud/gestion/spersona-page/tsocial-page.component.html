@@ -56,10 +56,15 @@
 		 		<person-assets-panel 	[assetList]='assetList' 
 		 							(updateAssets)='updateAssetList($event)' ></person-assets-panel>
 			</div>
-						
+
 		 	<div 	*ngIf="hasCurrentPerson" >
 		 		<solasis-panel [items]='asistenciasList'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
+			</div>
+
+		 	<div 	*ngIf="hasCurrentPerson && hasInternaciones" >
+		 		<solinternacion-panel [items]='solinternacionesList'
+		 							(updateItems)='updateSolinternacionList($event)' ></solinternacion-panel>
 			</div>
 
 		 	<div 	*ngIf="hasCurrentPerson" >

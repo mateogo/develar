@@ -1,0 +1,8 @@
+<mat-card (click)="onPacienteClick()" style="text-align: center;">
+    <mat-card-title style="font-size: medium;">
+        {{ nombrePaciente | uppercase }}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="nombreCama">
+        Cama/box: {{ nombreCama }}
+    </mat-card-subtitle>
+</mat-card>

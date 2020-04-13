@@ -1,0 +1,16 @@
+<mat-card (click)="showData()"
+  [class.cama-ocupada]="cama.estado == 'ocupada'"
+  [class.cama-libre]="cama.estado == 'LIBRE'"
+  [class.cama-prontaSalida]="cama.estado == 'Pronto a desocuparse'">
+    <mat-card-title style="font-size: medium; text-align: center;">
+        <!-- CAMA: {{cama.camaId}} -->
+        {{ cama.paciente.name | uppercase }}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="cama.camaId" style="text-align: center;">
+        <!-- {{ cama.tipo }} -->
+        Cama/box: {{ cama.camaId }}
+    </mat-card-subtitle>
+    <!-- <mat-card-content>
+        estado : {{cama.estado}}
+    </mat-card-content> -->
+</mat-card>
