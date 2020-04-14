@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -35,6 +36,7 @@ export class TestUnoComponent implements OnInit {
   		private perSrv: PersonService,
   		private intSrv: InternacionService,
   		private fb: FormBuilder,
+			private router: Router
   	) { }
 
   ngOnInit() {
@@ -74,6 +76,13 @@ export class TestUnoComponent implements OnInit {
   onSubmit(){
   	this.collectDataFromForm(this.form, this.testData);
   	console.dir(this.testData);
+  }
+
+  navigateTo(e, id: string ){
+  	e.stopPropagation();
+  	e.preventDefault();
+
+      this.router.navigate(['/salud/internacion/locacion/', id]);
   }
 
 

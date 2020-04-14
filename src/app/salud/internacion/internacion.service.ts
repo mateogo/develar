@@ -1,4 +1,8 @@
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+
 import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
+import { filter, tap, map } from 'rxjs/operators';
+
 import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../salud.model';
 
@@ -21,7 +25,7 @@ import { User }           from '../../entities/user/user';
 
 import { LocacionService } from '../../entities/locaciones/locacion.service';
 
-import { LocacionHospitalaria, LocacionEvent} from '../../entities/locaciones/locacion.model';
+import { LocacionHospitalaria, Servicio, LocacionEvent} from '../../entities/locaciones/locacion.model';
 
 import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion,
 					Internacion, SolInternacionBrowse, InternacionSpec, SolInternacionTable,
@@ -41,6 +45,15 @@ export class InternacionService {
   private _selectionModel: SelectionModel<SolInternacionTable>
   private emitLocHospDataSource = new BehaviorSubject<SolInternacionTable[]>([]);
   private solinternacionList: Array<SolicitudInternacion> = [];
+
+
+  private hasActiveUrlPath = false;
+  private actualUrl = "";
+  private actualUrlSegments: UrlSegment[] = [];
+  private navigationUrl = "";
+
+  /******* LOCATION STATE *******/
+  private pacientes$ = new BehaviorSubject<any[]>(null);
 
 	constructor(
 		private daoService: DaoService,
@@ -181,13 +194,13 @@ export class InternacionService {
       internacion.estado =  'transito';
       transito.estado =     'enejecucion';
 
-    }else if(transition === 'pool:internacion'){ //'Alocar en Admisión'},
+    }else if(transition === 'pool:admision'){ //'Alocar en Admisión'},
       solint.queue =        'alocado';
       solint.avance =       'esperacama';
       internacion.estado =  'admision';
       transito.estado =     'cumplido';
 
-    }else if(transition === 'transito:internacion'){ //'Traslado SAME a Admisión' },
+    }else if(transition === 'transito:admision'){ //'Traslado SAME a Admisión' },
       solint.queue =        'alocado';
       solint.avance =       'esperacama';
       internacion.estado =  'admision';
@@ -196,31 +209,49 @@ export class InternacionService {
     }else if(transition === 'transito:servicio'){ //'Traslado SAME a Servicio'  },
       solint.queue =        'alocado';
       solint.avance =       'entratamiento';
-      internacion.estado =  'alocado';
+      internacion.estado =  'servicio';
       transito.estado =     'cumplido';
 
-    }else if(transition === 'internacion:internacion'){ //'Traslado intra-locación'   },
-      solint.queue =        'traslado';
-      solint.avance =       'entratamiento';
+    }else if(transition === 'servicio:traslado'){ //'Traslado intra-locación'   },
+      solint.queue =        'alocado';
+      solint.avance =       'esperatraslado';
       internacion.estado =  'traslado';
       transito.estado =     'enejecucion';
 
-    }else if(transition === 'internacion:transito'){ //'Tránsito inter-locación. Disponer traslado'},
+    }else if(transition === 'traslado:servicio'){ //'Traslado intra-locación'   },
+      solint.queue =        'alocado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'servicio';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'servicio:externacion'){ //'Salida del servicio. queda en Externación'},
+      solint.queue =        'alocado';
+      solint.avance =       'esperasalida';
+      internacion.estado =  'externacion';
+      transito.estado =     'enejecucion';
+
+    }else if(transition === 'externacion:transito'){ //'Tránsito inter-locación. Disponer traslado'},
       solint.queue =        'transito';
-      solint.avance =       'esperacama';
+      solint.avance =       'esperatraslado';
       internacion.estado =  'transito';
       transito.estado =     'enejecucion';
 
-    }else if(transition === 'internacion:pool'){ //'Externa y espera reasignación de locación' },
+    }else if(transition === 'externacion:salida'){ //'Tránsito inter-locación. Disponer traslado'},
+      solint.queue =        'salida';
+      solint.avance =       'salida';
+      internacion.estado =  'salida';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'externacion:pool'){ //'Externa y espera reasignación de locación' },
       solint.queue =        'pool';
-      solint.avance =       'esperatraslado';
-      internacion.estado =  'externacion';
+      solint.avance =       'esperacama';
+      internacion.estado =  'pool';
       transito.estado =     'programado';
 
     }else if(transition === 'transito:pool'){ // 'Traslada y espera reasignación de locación' },
       solint.queue =        'pool';
-      solint.avance =       'esperatraslado';
-      internacion.estado =  'externacion';
+      solint.avance =       'esperacama';
+      internacion.estado =  'pool';
       transito.estado =     'enejecucion';
 
     }
@@ -254,6 +285,15 @@ export class InternacionService {
 
 		return this.daoService.search<SolicitudInternacion>(RECORD, query)
   }
+
+  fetchInternacionesByLocationId(locId: string): Observable<SolicitudInternacion[]>{
+    let query = {
+      locationId: locId
+    }
+
+    return this.daoService.search<SolicitudInternacion>(RECORD, query)
+  }
+
 
   fetchInternacionesByQuery(query:any): Subject<SolicitudInternacion[]>{
     let listener = new Subject<SolicitudInternacion[]>();
@@ -384,6 +424,23 @@ export class InternacionService {
     return this.locSrv.fetchLocacionById(id);
   }
 
+  buildServiciosList(locacion: LocacionHospitalaria): Servicio[]{
+    let servicios: Servicio[] = [];
+    let losServicios = locacion.servicios;
+    if(losServicios && losServicios.length){
+      servicios = losServicios.filter(srv => srv.srvIsActive ).map(srv => {
+        srv.srvCapacidad = InternacionHelper.getCapacidadFromServicio(srv.srvtype)
+        return srv;
+      })
+
+    }
+
+
+    return servicios;
+  }
+
+
+
   /******************************************/
   /******* Internaciones Hosp Browsing ********/
   /****************************************/
@@ -451,5 +508,244 @@ export class InternacionService {
     return this.daoService.nextSerial<Serial>('serial', serial);
   }
 
+  /***************************/
+  /******* Navigation *******/
+  /***************************/
+  actualRoute(snap: string, mRoute: UrlSegment[]){
+    this.hasActiveUrlPath = false;
+    this.actualUrl = snap;
+    this.actualUrlSegments = mRoute;
+    this.navigationUrl = this.fetchNavigationUrl(snap, mRoute.toString())
+    if(this.navigationUrl) this.hasActiveUrlPath = true;
+    this.dumpActualRoute();
+  }
+
+  private fetchNavigationUrl(snap, urlmodule){
+    let urlpath: string = "";
+    if(urlmodule){
+      urlpath = snap.substr(1, (snap.length - urlmodule.length -2));
+
+    }else{
+      urlpath = snap.substr(1);
+    }
+
+    if(urlpath){
+      let split = urlpath.split('/') 
+      urlpath = split[0];
+    }
+    return urlpath 
+  }
+
+  private dumpActualRoute(){
+    console.log('actualUrl:         (router.routerState.snapshot.url) [%s]', this.actualUrl)
+    console.log('navigationUrl      (method):                         [%s]', this.navigationUrl)
+    console.log('actualUrlSegments: (route.snapshot.url)              [%s]', this.actualUrlSegments)
+    console.log('hasActiveUrlPath:  (this.navigationUrl==true)        [%s]', this.hasActiveUrlPath)
+   }
+
+  /********************************/
+  /******* pacientes STATE *******/
+  /******************************/
+  buildEstadoInternacion(internaciones: SolicitudInternacion[]){
+    let master = {};
+    internaciones.forEach(solicitud => {
+      console.log('sol: [%s] [%s][%s]', solicitud.requeridox.slug, solicitud.internacion.estado, solicitud.internacion.servicio)
+      if(solicitud.internacion.estado === 'servicio'){
+        if(!master[solicitud.internacion.servicio]){
+          master[solicitud.internacion.servicio] = [ solicitud ]
+
+        }else {
+          master[solicitud.internacion.servicio].push(solicitud);
+
+        }
+
+      }
+    })
+    return master;
+  }
+
+  /********************************/
+  /******* pacientes API *******/
+  /******************************/
+  loadPacientesEnTransito$(){
+      return this.getPacientesFromLocacion$('').pipe(
+          tap(pacientes => this.setPacientes(pacientes)),
+          map(pacientes => pacientes.filter(
+              paciente => paciente.internacion.estado === 'transito'
+          ))
+      );
+  }
+
+  loadPacientesEnAdmision$() {
+      return this.getPacientesFromLocacion$('').pipe(
+          tap(pacientes => this.setPacientes(pacientes)),
+          map(pacientes => pacientes.filter(
+              paciente =>paciente.internacion.estado === 'admision'
+          ))
+      );
+  }
+
+  loadPacientesEnTraslado$() {
+      return this.getPacientesFromLocacion$('').pipe(
+          tap(pacientes => this.setPacientes(pacientes)),
+          map(pacientes => pacientes.filter(
+              paciente => paciente.internacion.estado === 'traslado'
+          ))
+      );
+  }
+
+  loadPacientesEnSalida$(){
+      return this.getPacientesFromLocacion$('').pipe(
+          tap(pacientes => this.setPacientes(pacientes)),
+          map(pacientes => pacientes.filter(
+              paciente => paciente.internacion.estado === 'salida'
+          ))
+      );
+  }
+
+  loadPacientesEnExternacion$(){
+      return this.getPacientesFromLocacion$('').pipe(
+          tap(pacientes => this.setPacientes(pacientes)),
+          map(pacientes => pacientes.filter(
+              paciente => paciente.internacion.estado === 'externacion'
+          ))
+      );
+  }
+
+  /********************************/
+  /******* pacientes API *******/
+  /******************************/
+  getPacientesFromLocacion$(locacion){
+      //TODO: llamar a la API
+      return (
+          new BehaviorSubject<SolicitudInternacion[]>(this.internaciones)
+      ).asObservable();
+  }
+
+  /********************************/
+  /******* LOCATION STATE *******/
+  /******************************/
+  getPacientes$(){
+    return this.pacientes$.asObservable();
+  }
+
+  setPacientes(pacientes){
+    this.pacientes$.next(pacientes);
+  }
+
+  /********************************/
+  /******* PACIENTES STATE *******/
+  /*****************************/
+  // las solicitudes de Internación devienen pacientes de cierto hospital
+  private _internaciones: SolicitudInternacion[];
+
+  get internaciones():SolicitudInternacion[]{
+    return this._internaciones;
+  }
+
+  set internaciones(int: SolicitudInternacion[]) {
+    this._internaciones = int;
+  }
+
+
+
+  /********************************/
+  /******* LOCACIÓN STATE *******/
+  /*****************************/
+  private _currentLocation: LocacionHospitalaria = null;
+  private _currentLocation$ = new BehaviorSubject<LocacionHospitalaria>(this._currentLocation);
+  private _errorLocation$ = new BehaviorSubject<ErrorEvent>(null);
+
+  get locacion$(): Observable<LocacionHospitalaria>{
+    return this._currentLocation$.asObservable();
+  }
+
+  emitLocacion(){
+    this._currentLocation$.next(this.locacion);    
+  }
+
+  emitLocationErrorEvent(error: ErrorEvent){
+    this._errorLocation$.next(error);
+  }
+
+  updateLocacionState(loc: LocacionHospitalaria){
+    this.locacion = loc;
+    this.emitLocacion();
+  }
+
+  updateLocacionStateFromId(locId: string){
+    this.fetchLocacionById(locId).then(location => {
+      if(location){
+        this.updateLocacionState(location);
+
+      }else{
+        this.emitLocationErrorEvent({
+          error: 'Locación no encontrada ' + locId,
+          action: 'updateLocacionStateFromID'
+        })
+
+      }
+    })
+    this.emitLocacion();
+  }
+
+  get locacion(): LocacionHospitalaria{
+    return this._currentLocation;
+  }
+
+  set locacion(loc: LocacionHospitalaria){
+    this._currentLocation = loc;
+  }
+
 
 }
+//http://develar-local.co:4200/salud/internacion/locacion/5e90b3b0b001680e2b5ba6c0
+class ErrorEvent {
+  error: string = 'Error event fired';
+  action: string = 'ACTION';
+}
+
+const PACIENTES = [
+    {
+        dni: '11222333',
+        name: 'Jorge López',
+        diagnostico: 'GHI',
+        pool: 'transito'
+    },
+    {
+        dni: '22334455',
+        name: 'Juan Pérez',
+        diagnostico: 'DEF',
+        pool: 'transito'
+    },
+    {
+        dni: '33445566',
+        name: 'Rosa Martínez',
+        diagnostico: 'ABC',
+        pool: 'admision'
+    },
+    {
+        dni: '44556677',
+        name: 'Eduardo Sánchez',
+        diagnostico: 'UVW',
+        pool: 'admision'
+    },
+    {
+        dni: '92334455',
+        name: 'Ana Romero',
+        diagnostico: 'RST',
+        pool: 'admision'
+    },
+    {
+        dni: '93334455',
+        name: 'Ricardo Fernández',
+        diagnostico: 'OPQ',
+        pool: 'traslado'
+    },
+    {
+        dni: '91223344',
+        name: 'Juana Rodríguez',
+        diagnostico: 'XYZ',
+        pool: 'salida'
+    },
+];

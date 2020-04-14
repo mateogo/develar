@@ -692,7 +692,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
       },
       {
         title: 'Centro de Internación',
-        routing: '/salud/internacion'
+        routing: '/salud/internacion/locacion/5e90b3b0b001680e2b5ba6c0'
       },
       {
         title: 'Centro de Coordinación',

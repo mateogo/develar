@@ -106,9 +106,6 @@ export class LocacionEditComponent implements OnInit {
   }
 
   private initForEdit(form: FormGroup, token: LocacionHospitalaria): FormGroup {
-    token.servicios.forEach(t => {
-      t.srvQAdic = 5
-    })
 
 		form.reset({
 			slug:        token.slug,

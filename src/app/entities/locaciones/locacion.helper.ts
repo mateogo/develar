@@ -128,10 +128,11 @@ const areasOptList: Array<any> = [
     {val: 'UTI',           ord: '1.1', label: 'UTI'          },
     {val: 'UTE',           ord: '1.2', label: 'UTE'          },
     {val: 'UCO',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'AISLAMIENTO',   ord: '2.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     ord: '3.1', label: 'CONSULTORIO EXT'},
-    {val: 'GUARDIA',       ord: '3.2', label: 'GUARDIA'      },
+    {val: 'INTERNACION',   ord: '2.1', label: 'INT-GENERAL'  },
+    {val: 'PEDIATRICA',    ord: '3.1', label: 'INT-PEDIÁTRICA' },
+    {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',     ord: '5.1', label: 'CONSULTORIO EXT'},
+    {val: 'GUARDIA',       ord: '5.2', label: 'GUARDIA'      },
 
     {val: 'TRANSITO',      ord: '4.1', label: 'TRANSITO'     },
     {val: 'TRASLADO',      ord: '4.2', label: 'TRASLADO'     },
@@ -141,15 +142,15 @@ const areasOptList: Array<any> = [
 ];
 
 const serviciosOptList: Array<any> = [
-    {val: 'UTI',           target: 'UTI',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           target: 'UTI',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           target: 'UTI',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   target: 'INTERNACION',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'AISLAMIENTO',   target: 'INTERNACION',   ord: '2.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     target: 'GUARDIA',       ord: '3.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       target: 'GUARDIA',       ord: '3.2', label: 'GUARDIA'      },
+    {val: 'UTI',           target: 'intensivos',           ord: '1.1', label: 'UTI'          },
+    {val: 'UTE',           target: 'intensivos',           ord: '1.2', label: 'UTE'          },
+    {val: 'UCO',           target: 'intensivos',           ord: '1.3', label: 'UCO'          },
+    {val: 'INTERNACION',   target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'  },
+    {val: 'PEDIATRICA',    target: 'pediatrica',           ord: '3.1', label: 'INT-PEDIÁTRICA' },
+    {val: 'AISLAMIENTO',   target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',     target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',       target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
-
 
 
 const especialidadesOptList: Array<any> = [

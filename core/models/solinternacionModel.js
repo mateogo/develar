@@ -133,6 +133,8 @@ const solinternacionSch = new Schema({
 
 });
 
+const ACTIVO = 'activo'
+
 
 solinternacionSch.pre('save', function (next) {
     return next();
@@ -189,6 +191,12 @@ function buildQuery(query){
 
   if(query['requirenteId']){
       q["requeridox.id"] = query['requirenteId'];
+  }
+
+  // busco solicitudes alocadas en cierto locationId
+  if(query['locationId']){
+      q["estado"] = ACTIVO;
+      q["internacion.locId"] = query['locationId'];
   }
 
 

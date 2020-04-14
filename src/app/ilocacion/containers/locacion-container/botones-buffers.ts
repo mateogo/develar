@@ -2,23 +2,23 @@ import { BotonContador } from '../../../develar-commons/base.model';
 
 export const BOTONES_BUFFERS: BotonContador[] = [
     {
-      id: 'trn',
+      id: 'transito',
       label: 'Tránsito'
     },
     {
-      id: 'adm',
+      id: 'admision',
       label: 'Admisión'
     },
     {
-      id: 'tra',
+      id: 'traslado',
       label: 'Traslado'
     },
     {
-      id: 'ext',
+      id: 'externacion',
       label: 'Externación'
     },
     {
-      id: 'sal',
+      id: 'salida',
       label: 'Salida'
     }
 ];

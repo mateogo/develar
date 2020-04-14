@@ -4,6 +4,10 @@ import { LocacionContainerComponent } from './containers/locacion-container/loca
 
 const routes: Routes = [
   {
+    path: 'locacion/:id',
+    component: LocacionContainerComponent
+  },
+  {
     path: '',
     component: LocacionContainerComponent
   }

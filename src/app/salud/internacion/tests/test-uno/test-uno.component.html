@@ -141,7 +141,8 @@
 <ng-container *ngIf="showMasterAllocatorView">
 
 	<ng-container *ngFor="let master of masterList">
-		<p class="text-destacado" >{{ master.id }}::{{ master.code }}::{{ master.slug }}</p>
+		<p class="text-destacado" >{{ master.id }}::{{ master.code }}::
+              <a role="button" href="#" (click)="navigateTo($event, master.id)">{{ master.slug }}</a></p>
 
 		<ng-container *ngFor="let servicio of master.servicios">
 			<p class="text-normal"> {{ servicio.type }}:: +[{{ servicio.nominal }}] 

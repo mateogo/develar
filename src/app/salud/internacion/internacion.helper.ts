@@ -3,7 +3,7 @@ import { Serial }   from '../salud.model';
 import { User }     from '../../entities/user/user';
 
 import { Person, Address }     from '../../entities/person/person';
-import { LocacionHospitalaria, Recurso} from '../../entities/locaciones/locacion.model';
+import { LocacionHospitalaria, Servicio, Recurso} from '../../entities/locaciones/locacion.model';
 
 import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
 					Internacion, SolInternacionBrowse, SolInternacionTable, MasterAllocation,
@@ -35,6 +35,19 @@ export class  InternacionHelper {
 
   static getCapacidadFromServicio(servicio: string): string{
     return fetchCapacidadFromSevice(servicio)
+  }
+
+  static capacidadDisponibleToPrint(servicios: Servicio[]): string{
+    let memo = '';
+    if(servicios && servicios.length){
+      memo = servicios.reduce((memo, token)=> {
+
+        return memo + ' | ' + token.srvcode + ': ' + token.srvQDisp + ' ';
+
+      }, memo);
+    }
+
+    return memo;
   }
 
   static filterMasterAllocationList(query, list: MasterAllocation[]): MasterAllocation[]{
@@ -426,14 +439,18 @@ const queueOptList: Array<any> = [
 //'pool:internacion', 'internacion:internacion', 'internacion:pool'
 const tiposTransitosOptList: Array<any> = [
     {val: 'pool:transito',           label: 'Locación de internación asignada',  actionLabel: 'Alocar y disponer traslado'},
-    {val: 'pool:internacion',        label: 'Locación de internación asignada',  actionLabel: 'Alta directa en loc internación'},
-    {val: 'transito:internacion',    label: 'Internación efectivizada',          actionLabel: 'Traslado efectivizado'},
-    {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Traslado al servicio'      },
-    {val: 'internacion:internacion', label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación'       },
-    {val: 'internacion:transito',    label: 'Tránsito inter-locación',           actionLabel: 'Tránsito inter-locación. Disponer traslado'       },
-    {val: 'internacion:pool',        label: 'Espera asignación de locación',     actionLabel: 'Espera re-asignación de locación' },
-    {val: 'transito:pool',           label: 'Espera asignación de locación',     actionLabel: 'Espera re-asignación de locación' },
+    {val: 'pool:admision',           label: 'Locación de internación asignada',  actionLabel: 'Alta: ingresa en Admisión'},
+    {val: 'transito:admision',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Admisión'},
+    {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Servicio'},
+    {val: 'servicio:traslado',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación INICIA'   },
+    {val: 'traslado:servicio',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación CUMPLIDO' },
+    {val: 'servicio:externacion',    label: 'Externación para salida/transito',  actionLabel: 'Externación (salida o tránsito)'  },
+    {val: 'externacion:transito',    label: 'Externación a transito',            actionLabel: 'Externación pasa a tránsito)'  },
+    {val: 'externacion:salida',      label: 'Externación a salida',              actionLabel: 'Externación pasa a salida  )'  },
+    {val: 'externacion:pool',        label: 'Externación a pool',                actionLabel: 'Externación: Espera re-asignación de locación' },
+    {val: 'transito:pool',           label: 'Espera asignación de locación',     actionLabel: 'Tránsito: Espera re-asignación de locación' },
 ];
+
 
 const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },

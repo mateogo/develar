@@ -20,7 +20,7 @@ import { InternacionHelper }  from '../../internacion.helper';
 
 const CREATE =   'create';
 const UPDATE =   'update';
-const CANCEL =   'update';
+const CANCEL =   'cancel';
 const SELECTED = 'selected';
 
 const NAVIGATE = 'navigate';
@@ -102,9 +102,14 @@ export class AltarapidaPageComponent implements OnInit {
 
 
   // STEP-2: CREA /EDITA SOL INTERNACION
-  confirmaActualizarInternacionEvent(e){
+  confirmaActualizarInternacionEvent(action){
     this.confirmaInternacion = false;
-    this.fetchSolInternacion(this.person);
+    if(action === NEXT){
+      this.fetchSolInternacion(this.person);
+
+    }else{
+      this.resetProcess()
+    }
   }
 
 

@@ -1,59 +1,57 @@
+<ng-container *ngIf='showData'>
 <mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            {{ title }} {{ locacionCode }}: {{ locacionName }}
+        </mat-card-title>
 
-    <mat-card-title>
-        ESTADO DE OCUPACIÓN: {{ locaciones.name }}
-    </mat-card-title>
+        <mat-card-subtitle>
+            {{ capacidadTitle }} : {{ capacidadToPrint }}
+        </mat-card-subtitle>
+    </mat-card-header>
 
-    <mat-card-subtitle>
-        Total de camas con las que cuenta el hospital : {{ totalCamas }}
-    </mat-card-subtitle>
-
-    <app-controles (radioSelectedOption) = "radioSelectedOption($event)" (currentProyeccionDateEmit)="currentProyeccionDateEmit($event)"
-    (checkBoxEmit)="checkBoxEmit($event)"></app-controles>
-    
     <mat-card-content>
+    <internacion-controles  (radioSelectedOption) = "radioSelectedOption($event)" 
+                            (currentProyeccionDateEmit)="currentProyeccionDateEmit($event)"
+                            (checkBoxEmit)="checkBoxEmit($event)"></internacion-controles>
 
-      <!-- Buffers -->
-      <app-botonera-container
+    <!-- Buffers -->
+    <app-botonera-container
         [botones]="botonesBuffers"
-        (onButtonClick)="onBotoneraClick($event)"
-      >
-      </app-botonera-container>
-        <div class="row" *ngFor="let tipo of tipos">
+        (onButtonClick)="onBotoneraClick($event)" >
+    </app-botonera-container>
+
+    <ng-container *ngFor="let servicio of serviciosOfrecidos">    
+    <!--div class="row" *ngFor="let servicio of serviciosOfrecidos">
+        <div class="col-md-12"-->
             <mat-expansion-panel [expanded]="true">
+
                 <mat-expansion-panel-header>
-                    <mat-panel-title style="font-weight: 800;">
-                        {{ tipo.descripcion }} ({{ msjSegunRadioButton }})
+                    <mat-panel-title    class="d-md-flex justify-content-between align-items-center"
+                                        style="font-weight: 800;" >
+                            <span>{{ servicio.srvcode }} :: Capacidad: {{ servicio.srvQDisp }}</span>
+                            <app-recursos
+                                [capacidad]='servicio.srvQDisp'
+                                [ocupacion]='(master_internacion[servicio.srvtype] && master_internacion[servicio.srvtype].length) || 0'
+                                [admision]="admision$ | async"
+                                [traslado]="traslado$ | async"></app-recursos>
                     </mat-panel-title>
                         
                 </mat-expansion-panel-header>
-                <app-mosaico>
-                    <!-- Disponibilidad de recursos -->
-                    <div class="col-xs-6 col-md-3 col-lg-2">
-                        <app-recursos
-                            [admision]="admision$ | async"
-                            [traslado]="traslado$ | async"
-                        ></app-recursos>
-                    </div>
-
-                    <!-- <div
-                        class="col-xs-6 col-md-3 col-lg-2"
-                        *ngFor="let cama of locaciones.estado_ocupacion">
-                        <app-cama-estado [cama]="cama" ></app-cama-estado>
-                    </div> -->
-
-                    <div
-                        class="col-xs-6 col-md-3 col-lg-2"
-                        *ngFor="let cama of locaciones.estado_ocupacion">
-                        <app-paciente
-                            (onClick)="openPacienteModal($event)"
-                            [nombrePaciente]="cama.paciente.name"
-                            [nombreCama]="cama.camaId"
-                        ></app-paciente>
-                    </div>
-
-                </app-mosaico>
+                <mat-card style='background-color: white;'>
+                        <div class="d-md-flex justify-content-start align-items-center white-panel">    
+                            <ng-container *ngFor="let cama of master_internacion[servicio.srvtype]">
+                                <app-paciente
+                                    (onClick)="openPacienteModal($event)"
+                                    [nombrePaciente]="cama.requeridox.slug"
+                                    [nombreCama]="cama.internacion.camaSlug || cama.internacion.camaCode"
+                                ></app-paciente></ng-container>
+                        </div>
+                    </mat-card>
             </mat-expansion-panel>
-        </div>
+        <!--/div>
+    </div -->
+    </ng-container>
     </mat-card-content>
 </mat-card>
+</ng-container>

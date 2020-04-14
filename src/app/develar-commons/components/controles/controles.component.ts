@@ -2,15 +2,21 @@ import { Component, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { SelectionModel } from '@angular/cdk/collections';
+
+import { InternacionHelper }  from '../../../salud/internacion/internacion.helper';
+
 import { AltaRapidaPacienteModalComponent } from '../../alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-controles',
+  selector: 'internacion-controles',
   templateUrl: './controles.component.html',
   styleUrls: ['./controles.component.scss']
 })
 export class ControlesComponent implements OnInit {
+  @Output() radioSelectedOption: EventEmitter<any>;
+  @Output() currentProyeccionDateEmit : EventEmitter<any>;
+  @Output() checkBoxEmit : EventEmitter<any>;
 
   radioDefault = 0;
   groupservices = [
@@ -45,11 +51,9 @@ export class ControlesComponent implements OnInit {
   currentProyeccion;
   currentProyeccionDate;
   checkSelected : Array<any> = []
-  @Output() radioSelectedOption: EventEmitter<any>;
-  @Output() currentProyeccionDateEmit : EventEmitter<any>;
-  @Output() checkBoxEmit : EventEmitter<any>;
   slider;
   selection = new SelectionModel<any>(true, []);
+
   constructor(public dialog: MatDialog) {
     this.radioSelectedOption = new EventEmitter<any>();
     this.currentProyeccionDateEmit = new EventEmitter<any>();
@@ -58,6 +62,7 @@ export class ControlesComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSlider();
+    this.groupservices = InternacionHelper.getOptionlist('capacidades')
   }
 
   initSlider(){

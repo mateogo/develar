@@ -8,9 +8,13 @@ import { RecursosModalComponent } from './recursos-modal/recursos-modal.componen
   styleUrls: ['./recursos.component.scss']
 })
 export class RecursosComponent implements OnInit {
+  @Input() capacidad= 0;
+  @Input() ocupacion = 0;
 
   @Input() admision;
   @Input() traslado;
+
+  public disponible;
 
   items = [
     {
@@ -30,6 +34,7 @@ export class RecursosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.disponible = this.capacidad - this.ocupacion;
   }
 
   onClick(){

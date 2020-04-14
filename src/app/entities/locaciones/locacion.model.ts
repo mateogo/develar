@@ -36,6 +36,8 @@ export class Address {
 
 export class Servicio {
     srvtype: string = '';
+    srvCapacidad?: string = '';
+
     srvcode: string = '';
     srvorder: string = ''
     srvQDisp: number = 0;
