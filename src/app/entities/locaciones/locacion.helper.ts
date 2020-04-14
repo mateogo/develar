@@ -67,6 +67,39 @@ export class  LocacionHelper {
     return recursos;
   }
 
+  static updateRecursosInternacion(loc: LocacionHospitalaria): Recurso[]{
+    let recursos: Recurso[] = loc.recursos;
+
+    if(!(recursos && recursos.length)) return [];
+
+    recursos.forEach(rec => {
+      let slug = ''
+      if(rec.sector !== 'SECTOR'){
+
+        slug += rec.sector;
+      }
+
+      if(rec.piso !== 'PISO'){
+
+        slug +=  slug ? ' ' + rec.piso : rec.piso; 
+      }
+
+      if(rec.hab !== 'HAB'){
+
+        slug += slug ? ' H' + rec.hab: 'H' + rec.hab;
+      }
+      
+      if(rec.code){
+
+        slug += slug ? '-' + rec.code : 'CAMA: ' + rec.code;
+      }
+      rec.slug = slug;
+
+    });
+
+    return recursos;
+  }
+
   static buildDataTable(list: LocacionHospitalaria[]){
 
     return list.map(token => {

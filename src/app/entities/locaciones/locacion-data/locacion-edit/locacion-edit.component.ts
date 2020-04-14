@@ -176,6 +176,17 @@ export class LocacionEditComponent implements OnInit {
 
   }
 
+  actualizarRursoEvent(){
+    this.initForSave(this.form, this.locacion)
+
+    let recursos = LocacionHelper.updateRecursosInternacion(this.locacion);
+    this.locacion. recursos = recursos || [];
+
+
+    this.initForEdit(this.form, this.locacion);
+
+  }
+
 
   
   get recursos(): FormArray{

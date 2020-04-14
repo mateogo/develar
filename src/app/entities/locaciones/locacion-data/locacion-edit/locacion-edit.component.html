@@ -102,6 +102,14 @@
               [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
               [borderRadius]="false">Inicializar</badge>
 
+
+            <badge class="badge-style"
+              [size]="'medium'"
+              (click)='actualizarRursoEvent()'
+              [arrow]="'right'"
+              [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
+              [borderRadius]="false">Actualizar denom CAMA</badge>
+
             <div class="panel-header-control" ><span 
               (click)='addNewRecursoEvent()' title="Agregar Item">
               <i [class]="'far fa-plus'" 
@@ -140,17 +148,17 @@
 
         <div class="col-md-2">
           <mat-form-field>
-            <input matInput formControlName="piso" placeholder="Piso/Nivel" >
+            <input matInput formControlName="sector" placeholder="SECTOR/Área/Pabellón" >
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field>
-            <input matInput formControlName="sector" placeholder="Sector/Área/Pabellón" >
+            <input matInput formControlName="piso" placeholder="PISO/Nivel" >
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field>
-            <input matInput formControlName="hab" placeholder="Sala/Habitación" >
+            <input matInput formControlName="hab" placeholder="HAB/Sala/Habitación" >
           </mat-form-field>
         </div>
         <div class="col-md-2">
