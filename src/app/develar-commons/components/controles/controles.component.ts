@@ -40,11 +40,11 @@ export class ControlesComponent implements OnInit {
     },
     {
       value: 1,
-      descripcion: 'Disponible'
+      descripcion: 'Pacientes'
     },
     {
       value: 2,
-      descripcion: 'Ocupado'
+      descripcion: 'Camas'
     },
   ];
 

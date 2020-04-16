@@ -397,15 +397,13 @@ const estadosTransitosOptList: Array<any> = [
     {val: 'baja',            ord: '1.5', label: 'baja'     },
 ];
 
-const estadosInternacionOptList: Array<any> = [
-    {val: 'programado',   ord: '1.1', label: 'programado'     },
-    {val: 'transito',     ord: '1.1', label: 'transito'     },
-    {val: 'admision',     ord: '1.1', label: 'admision'     },
-    {val: 'alocado',      ord: '1.1', label: 'alocado'     },
-    {val: 'traslado',     ord: '1.1', label: 'traslado'     },
-    {val: 'externacion',  ord: '1.1', label: 'externacion'     },
-    {val: 'salid',        ord: '1.1', label: 'salid'     },
-    {val: 'baja',         ord: '1.1', label: 'baja'     },
+// las variantes que puede adoptar solinternacion.internacion.estado, no siendo 'servicio'
+const estadosPeriferiaOptList: Array<any> = [ 
+    {val: 'transito',     ord: '1.1', label: 'Tránsito'    },
+    {val: 'admision',     ord: '1.2', label: 'Admisión'    },
+    {val: 'traslado',     ord: '1.3', label: 'Traslado'    },
+    {val: 'externacion',  ord: '1.4', label: 'Externación' },
+    {val: 'salida',       ord: '1.5', label: 'Salida'      },
 ];
 
 const estadosSolicitudOptList: Array<any> = [
@@ -431,7 +429,7 @@ const queueOptList: Array<any> = [
     {val: 'pool',       ord: '1.1', label: 'pool'     },
     {val: 'transito',   ord: '1.1', label: 'transito' },
     {val: 'alocado',    ord: '1.1', label: 'alocado'  },
-    {val: 'traslado',   ord: '1.1', label: 'traslado' },
+    //{val: 'traslado',   ord: '1.1', label: 'traslado' },
     {val: 'baja',       ord: '1.1', label: 'baja'     },
 ]
 
@@ -469,6 +467,7 @@ const optionsLists = {
    tiposTransitos: tiposTransitosOptList,
    estadosTransitos: estadosTransitosOptList,
    capacidades: capacidadesOptList,
+   estadosPeriferia: estadosPeriferiaOptList,
 
 }
 

@@ -15,6 +15,7 @@ export class BotoneraContainerComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.dir(this.botones)
   }
 
   onClick(idBoton){

@@ -11,6 +11,7 @@ import { CamaEstadoModalComponent } from './cama-estado-modal/cama-estado-modal.
 export class CamaEstadoComponent implements OnInit{
     
     @Input() cama;
+
     constructor(public dialog: MatDialog){
     }
 

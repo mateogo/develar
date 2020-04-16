@@ -6,7 +6,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-12">
-			<h4>Ingrese los datos del paciente que va a ocupar la cama</h4>
+			<h4>Afectado a ingresar a esta locación de internación</h4>
 		</div>
 	</div>
 		<form [formGroup]="pacienteForm" (ngSubmit)="onPacienteSubmit()">
@@ -27,61 +27,48 @@
 						<input matInput formControlName="dni">
 					</mat-form-field>
 				</div>
-				<div class="col-md-4 col-sm-6 col-12">
-					<mat-form-field>
-						<mat-label>Nombre y apellido</mat-label>
-						<input matInput formControlName="name">
-					</mat-form-field>
+                <div class="col-md-4 col-sm-6 col-12">
+                    <mat-form-field>
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput formControlName="telefono">
+                    </mat-form-field>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-4 col-sm-6 col-12">
+                    <mat-form-field>
+                        <mat-label>Nombre y apellido</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 col-sm-6 col-12">
+                    <mat-form-field>
+                        <mat-label>Nombre y apellido</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
 				<div class="col-md-4 col-sm-6 col-12">
 					<mat-form-field>
-						<mat-label>Edad</mat-label>
+						<mat-label>Fecha de nacimiento</mat-label>
 						<input matInput formControlName="edad">
 					</mat-form-field>
                 </div>
-                <div class="col-md-4 col-sm-6 col-12">
-					<mat-form-field>
-						<mat-label>Teléfono</mat-label>
-						<input matInput formControlName="telefono">
-					</mat-form-field>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12">
-					<mat-form-field>
-						<mat-label>Diagnostico</mat-label>
-						<input matInput formControlName="diagnostico">
-					</mat-form-field>
-				</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-12">
-					<mat-form-field>
-						<mat-label>Fecha ingreso</mat-label>
-						<input matInput  [matDatepicker]="picker1" formControlName="fecha_in">
-									<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-									<mat-datepicker #picker1></mat-datepicker>
-					</mat-form-field>
-				</div>
-                <div class="col-md-4 col-sm-6 col-12">
-					<mat-form-field >
-						<mat-label>Fecha salida (estimada)</mat-label>
-						<input matInput  [matDatepicker]="picker2" formControlName="fecha_out">
-									<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-									<mat-datepicker #picker2></mat-datepicker>
-					</mat-form-field>
-				</div>
-                
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-12-col-12">
-                    <h4>Ahora le pediremos que seleccione donde sera derivado</h4>
+                    <h4>Triage de internación</h4>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-4 col-sm-6 col-12">
+                    <mat-form-field>
+                        <mat-label>Diagnostico</mat-label>
+                        <input matInput formControlName="diagnostico">
+                    </mat-form-field>
+                </div>
                 <div class="col-sm-6 col-md-4 col-12">
                     <mat-form-field>
-                        <mat-label>Seleccione destino</mat-label>
+                        <mat-label>Seleccione servcio</mat-label>
                         <mat-select formControlName="destino">
                             <mat-option>
                                 Hospital 1001
@@ -91,7 +78,7 @@
                 </div>
                 <div class="col-sm-6 col-md-4 col-12">
                     <mat-form-field>
-                        <mat-label>En:</mat-label>
+                        <mat-label>Seleccione servcio</mat-label>
                         <mat-select formControlName="en">
                             <mat-option>
                                 Cuidados intensivos
@@ -101,11 +88,11 @@
                 </div>
             </div>
 			<div class="row">
-				<div class="offset-sm-7 offset-md-8 offset-2 col-md-2 col-5 col-sm-3">
-					<button type="button" mat-flat-button color="warn" (click)="volver()">Volver</button>
-				</div>
-				<div class="col-sm-2 col-5 col-md-2">
-					<button type="submit" mat-flat-button color="primary" [disabled]="pacienteForm.invalid" >Ingresar</button>
+                <div class="offset-sm-7 offset-md-8 offset-2 col-sm-2  col-md-2 col-5">
+                    <button type="submit" mat-flat-button color="primary" [disabled]="pacienteForm.invalid" >Ingresar</button>
+                </div>
+				<div class="col-sm-3 col-md-2 col-5 ">
+					<button type="button" mat-flat-button color="warn" (click)="volver()">Cancelar</button>
 				</div>
 			</div>
 		</form>

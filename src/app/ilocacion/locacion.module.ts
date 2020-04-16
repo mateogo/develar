@@ -14,6 +14,7 @@ import { RecursosModalComponent } from './components/recursos/recursos-modal/rec
 import { PacienteComponent } from './components/paciente/paciente.component';
 import { BufferModalComponent } from './components/buffer-modal/buffer-modal.component';
 import { PacientesApi } from './api/pacientes.api';
+import { CamaComponent } from './components/cama/cama.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { PacientesApi } from './api/pacientes.api';
       RecursosModalComponent,
       PacienteComponent,
       BufferModalComponent,
+      CamaComponent,
     ],
     entryComponents : [CamaEstadoModalComponent, RecursosModalComponent, BufferModalComponent],
     imports: [

@@ -21,6 +21,8 @@ import { LocacionHospitalaria, Servicio} from '../../../entities/locaciones/loca
 import { InternacionHelper }  from '../../../salud/internacion/internacion.helper';
 import { InternacionService } from '../../../salud/internacion/internacion.service';
 
+const CAMA_LIBRE = 'libre';
+const CAMA_OCUPADA = 'ocupada';
 
 
 @Component({
@@ -46,6 +48,8 @@ export class LocacionContainerComponent implements OnInit{
     public transito$:    Observable<SolicitudInternacion[]>;
 
     public master_internacion: any;
+    public master_periferia: any;
+    public master_camas: any;
 
 
     //template Helpers
@@ -53,7 +57,10 @@ export class LocacionContainerComponent implements OnInit{
     public title = 'ESTADO DE OCUPACIÓN'
     public capacidadTitle = 'Capacidad nominal: '
 
-    public botonesBuffers: BotonContador[] = BOTONES_BUFFERS;
+    public botonesPeriferia: BotonContador[] = BOTONES_BUFFERS;
+    public showCamasOcupadas = true;
+    public showCamasLibres = true;
+
 
     //ToBeDeprecated
     currentLocation : any = new Object(); //modifacarlo por su tipo (se uso para el object.assign)
@@ -136,31 +143,35 @@ export class LocacionContainerComponent implements OnInit{
         this.internaciones = internaciones;
         this._locacionFacade.internaciones = this.internaciones;
 
-        this.admision$ =    this._locacionFacade.loadPacientesEnAdmision$();
-        this.traslado$ =    this._locacionFacade.loadPacientesEnTraslado$();
-        this.salida$ =      this._locacionFacade.loadPacientesEnSalida$();
-        this.externacion$ = this._locacionFacade.loadPacientesEnExternacion$();
-        this.transito$ =    this._locacionFacade.loadPacientesEnTransito$();
-
-        /* Definir al actualización de los contadores de los botones */
-        this.admision$.subscribe(pacientes =>
-            this.botonesBuffers.find(b => b.id === 'admision').contador = (pacientes && pacientes.length ) || 0
-        );
-        this.traslado$.subscribe(pacientes =>
-            this.botonesBuffers.find(b => b.id === 'traslado').contador = (pacientes && pacientes.length ) || 0
-        )
-        this.salida$.subscribe(pacientes =>
-            this.botonesBuffers.find(b => b.id === 'salida').contador = (pacientes && pacientes.length ) || 0
-        )
-        this.externacion$.subscribe(pacientes =>
-            this.botonesBuffers.find(b => b.id === 'externacion').contador = (pacientes && pacientes.length ) || 0
-        )
-        this.transito$.subscribe(pacientes =>
-            this.botonesBuffers.find(b => b.id === 'transito').contador = (pacientes && pacientes.length ) || 0
-        )
-
         this.master_internacion = this._locacionFacade.buildEstadoInternacion(this.internaciones);
-        console.dir(this.master_internacion)
+        this.master_periferia =   this._locacionFacade.buildEstadoPeriferia(this.internaciones);
+        this.botonesPeriferia =   this._locacionFacade.getBotonesPeriferia(this.master_periferia);
+        this.master_camas =       this._locacionFacade.buildEstadoCamas(this._currentLocation, this.internaciones)
+        console.dir(this.master_camas)
+
+
+        // this.admision$ =    this._locacionFacade.loadPacientesEnAdmision$();
+        // this.traslado$ =    this._locacionFacade.loadPacientesEnTraslado$();
+        // this.salida$ =      this._locacionFacade.loadPacientesEnSalida$();
+        // this.externacion$ = this._locacionFacade.loadPacientesEnExternacion$();
+        // this.transito$ =    this._locacionFacade.loadPacientesEnTransito$();
+
+        // /* Definir al actualización de los contadores de los botones */
+        // this.admision$.subscribe(pacientes =>
+        //     this.botonesPeriferia.find(b => b.id === 'admision').contador = (pacientes && pacientes.length ) || 0
+        // );
+        // this.traslado$.subscribe(pacientes =>
+        //     this.botonesPeriferia.find(b => b.id === 'traslado').contador = (pacientes && pacientes.length ) || 0
+        // )
+        // this.salida$.subscribe(pacientes =>
+        //     this.botonesPeriferia.find(b => b.id === 'salida').contador = (pacientes && pacientes.length ) || 0
+        // )
+        // this.externacion$.subscribe(pacientes =>
+        //     this.botonesPeriferia.find(b => b.id === 'externacion').contador = (pacientes && pacientes.length ) || 0
+        // )
+        // this.transito$.subscribe(pacientes =>
+        //     this.botonesPeriferia.find(b => b.id === 'transito').contador = (pacientes && pacientes.length ) || 0
+        // )
 
         this.initLocacionData();
 
@@ -185,7 +196,58 @@ export class LocacionContainerComponent implements OnInit{
         this.showData = true;
     }
 
-    calcularCamasDisponibles(seleccion : string) : string{
+    /**************************************************************************/
+    /******* Gestión de los radio button que filtran Ocupado / Disponible ****/
+    /************************************************************************/
+    radioSelectedOptionEvent(e){
+        switch(e.value){
+            case 0 : { this.showAllCamas(); break;};
+            case 1 : { this.showDisponiblesOrNotDisponible(CAMA_OCUPADA); break;};
+            case 2: { this.showDisponiblesOrNotDisponible(CAMA_LIBRE); break;}
+        }
+    }
+
+    private showAllCamas(){
+        this.showCamasOcupadas = true;
+        this.showCamasLibres = true;
+
+        // /** Este sería el caso del VER TODO, por lo cual hay que traer las locaciones originales */
+        // this.currentLocation.estado_ocupacion = this.loadedLocationFronDB.estado_ocupacion;
+        // this.msjSegunRadioButton = this.calcularCamasDisponibles('todo');
+    }
+
+    private showDisponiblesOrNotDisponible(selected : string){
+        if(selected === CAMA_LIBRE){
+            this.showCamasOcupadas = false;
+            this.showCamasLibres = true;
+
+        }else if(selected === CAMA_OCUPADA){
+            this.showCamasOcupadas = true;
+            this.showCamasLibres = false;
+
+        }
+
+
+
+        /** Vamos a filtrar segun el parametro recibido */
+
+        // let filtrado = [];
+        // this.loadedLocationFronDB.estado_ocupacion.forEach( cama => {
+        //     if( cama.estado === estado_ocupacion){
+        //         filtrado.push(cama);
+        //     }
+        // })
+        // this.currentLocation.estado_ocupacion = filtrado;
+        // if(estado_ocupacion === 'LIBRE'){
+        //     this.msjSegunRadioButton = 'Disponibles '+filtrado.length;
+        // }else if(estado_ocupacion === 'ocupada'){
+        //     this.msjSegunRadioButton = 'Ocupadas '+filtrado.length;
+        // }
+    }
+
+
+
+    private calcularCamasDisponibles(seleccion : string) : string{
         console.log("ejecutado")
         switch(seleccion){
             case 'todo' : {
@@ -203,38 +265,8 @@ export class LocacionContainerComponent implements OnInit{
 
 
     }
+    /************************************************************************/
     
-    radioSelectedOption(e){
-
-        /**Trabajamos con la selección recibida del component hijo */
-        switch(e.value){
-            case 0 : { this.showAllCamas(); break;};
-            case 1 : { this.showDisponiblesOrNotDisponible('LIBRE'); break;};
-            case 2: { this.showDisponiblesOrNotDisponible('ocupada'); break;}
-        }
-    }
-
-    showAllCamas(){
-        /** Este sería el caso del VER TODO, por lo cual hay que traer las locaciones originales */
-        this.currentLocation.estado_ocupacion = this.loadedLocationFronDB.estado_ocupacion;
-        this.msjSegunRadioButton = this.calcularCamasDisponibles('todo');
-        }
-
-    showDisponiblesOrNotDisponible(estado_ocupacion : string){
-        /** Vamos a filtrar segun el parametro recibido */
-        let filtrado = [];
-        this.loadedLocationFronDB.estado_ocupacion.forEach( cama => {
-            if( cama.estado === estado_ocupacion){
-                filtrado.push(cama);
-            }
-        })
-        this.currentLocation.estado_ocupacion = filtrado;
-        if(estado_ocupacion === 'LIBRE'){
-            this.msjSegunRadioButton = 'Disponibles '+filtrado.length;
-        }else if(estado_ocupacion === 'ocupada'){
-            this.msjSegunRadioButton = 'Ocupadas '+filtrado.length;
-        }
-    }
 
     currentProyeccionDateEmit(fecha : Date){
         
@@ -336,10 +368,19 @@ export class LocacionContainerComponent implements OnInit{
 
         let waitFor;
         switch(botonId){
-            case('adm'):
+            case('admision'):
                 waitFor = this.admision$;
                 break;
-            case('tra'):
+            case('traslado'):
+                waitFor = this.traslado$;
+                break;
+            case('salida'):
+                waitFor = this.salida$;
+                break;
+            case('externacion'):
+                waitFor = this.externacion$;
+                break;
+            case('traslado'):
                 waitFor = this.traslado$;
                 break;
         }

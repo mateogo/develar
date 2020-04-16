@@ -230,7 +230,7 @@ export class InternacionService {
       internacion.estado =  'externacion';
       transito.estado =     'enejecucion';
 
-    }else if(transition === 'externacion:transito'){ //'Tránsito inter-locación. Disponer traslado'},
+    }else if(transition === 'externacion:transito'){ //'Ojo: es tránsito a OTRA locacion. Tránsito inter-locación. Disponer traslado'},
       solint.queue =        'transito';
       solint.avance =       'esperatraslado';
       internacion.estado =  'transito';
@@ -556,12 +556,91 @@ export class InternacionService {
 
         }else {
           master[solicitud.internacion.servicio].push(solicitud);
-
         }
 
       }
     })
     return master;
+  }
+
+  buildEstadoPeriferia(internaciones: SolicitudInternacion[]){
+    let master = {};
+    let estadosPeriferia = InternacionHelper.getOptionlist('estadosPeriferia')
+    estadosPeriferia.forEach(t => {
+      master[t.val] = [];
+    })
+
+    internaciones.forEach(solicitud => {
+      console.log('sol: [%s] [%s][%s]', solicitud.requeridox.slug, solicitud.internacion.estado, solicitud.internacion.servicio)
+      let token = estadosPeriferia.find(t => t.val === solicitud.internacion.estado);
+
+      if(token){
+        master[token.val].push(solicitud);
+      }
+
+    })
+    return master;
+  }
+
+  getBotonesPeriferia(master:any): Array<any> {
+    if(!master) return [];
+    let botonesPeriferia = InternacionHelper.getOptionlist('estadosPeriferia');
+    botonesPeriferia = botonesPeriferia.map(t => {
+        t['id'] = t.val;
+        t['id'] = t.val;
+        t['contador'] = master[t.val].length;
+        return t;
+    })
+
+    return botonesPeriferia;
+  }
+
+  buildEstadoCamas(locacion: LocacionHospitalaria, sinternaciones: SolicitudInternacion[]){
+    console.log('buildEstadoCamas: [%s] [%s]', locacion.recursos.length, sinternaciones.length);
+    let recursos = locacion.recursos;
+    if(!(recursos && recursos.length)) return [];
+
+    let hashRecord = this.buildHashRecordCamasOcupadas(sinternaciones);
+
+    let masterCamas = {};
+
+    console.dir(hashRecord);
+
+    recursos.forEach(recurso => {
+      if(hashRecord && hashRecord[recurso._id]){
+        console.log('ocupada: [%s] [%s] ',recurso.code, recurso.rservicio )
+        recurso.estado = 'ocupada';
+      }else {
+        console.log('libre: [%s] [%s] ',recurso.code, recurso.rservicio )
+        recurso.estado = 'libre';
+      }
+
+      if(masterCamas[recurso.rservicio]){
+        masterCamas[recurso.rservicio].push(recurso);
+
+      }else {
+        masterCamas[recurso.rservicio] = [ recurso ];
+
+      }
+
+    })
+
+
+
+    return masterCamas;
+  } 
+
+  private buildHashRecordCamasOcupadas(sinternaciones: SolicitudInternacion[]){
+    if(!(sinternaciones && sinternaciones.length) ) return {};
+    let hashRecord = {};
+    
+    sinternaciones.forEach(t => {
+      if(t.internacion && t.internacion.estado === 'servicio' && t.internacion.recursoId){
+        hashRecord[t.internacion.recursoId] = t.internacion;
+      }
+    })
+
+    return hashRecord;
   }
 
   /********************************/
