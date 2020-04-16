@@ -23,6 +23,7 @@ export class CamaEstadoComponent implements OnInit{
         
         }
 
+    // deprecated: este componente se solo para camas libres
     showData(){
         const dialogRef = this.dialog.open(CamaEstadoModalComponent, {
             width: '750px',
