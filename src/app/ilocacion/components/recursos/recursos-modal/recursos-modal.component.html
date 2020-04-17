@@ -1,10 +1,10 @@
 <div class="container-fluid p-0">
-    <form [formGroup]="asignacionRecursosForm">
+    <form [formGroup]="form">
         <div class="container">
             <div class="row">
                 <div class="col" style="text-align: center;">
                     <!-- TODO: mostrar dinámicamente el tipo de servicio en el título -->
-                    <h1 class="m-0">Terapia intensiva</h1>
+                    <h1 class="m-0">Servicio</h1>
                 </div>
             </div>
             <div class="row">
@@ -14,51 +14,57 @@
             </div>
             <div class="row">
                 <!-- Paciente -->
-                
+                <div class="col" style="text-align: center;">
                     <mat-form-field>
-                        <mat-label>Paciente</mat-label>
-                        <mat-select>
+                        <mat-label>Pendientes de asignar</mat-label>
+                        <mat-select #fldAsignar 
+                                        formControlName='sinternacion'
+                                        (selectionChange)="changeSelectionValue('sinternacion', fldAsignar.value)">
                             <!-- Admisión -->
-                            <mat-optgroup [disabled]="!data.buffers.admision.pacientes.length" [label]="'Admisión'">
-                                <mat-option *ngFor="let paciente of data.buffers.admision.pacientes" [value]="paciente.dni">
-                                    {{ paciente.name }} ({{ paciente.dni }})
+                            <mat-optgroup [disabled]="!asignarList.length" [label]="'Pacientes para asignar'">
+                                <mat-option *ngFor="let admision of asignarList" [value]="admision">
+                                    {{ admision.requeridox.slug }} ({{ admision.requeridox.ndoc }}): {{ admision.triage.servicio}}
                                 </mat-option>
                             </mat-optgroup>
 
-                            <!-- Traslado -->
-                            <mat-optgroup [disabled]="!data.buffers.traslado.pacientes.length" [label]="'Traslado'">
-                                <mat-option *ngFor="let paciente of data.buffers.traslado.pacientes" [value]="paciente.dni">
-                                    {{ paciente.name }} ({{ paciente.dni }})
-                                </mat-option>
-                            </mat-optgroup>
-                        </mat-select>
-                    </mat-form-field>
-            </div>
-
-                <!-- Recurso -->
-                <div class="row"> <!-- ó col-6? -->
-                    <mat-form-field>
-                        <mat-label>Recurso</mat-label>
-                        <mat-select>
-                            <!-- Camas -->
-                            <mat-optgroup [disabled]="!data.recursos.camas" [label]="'Camas'">
-                                <mat-option *ngFor="let cama of data.recursos.camas" [value]="cama.id">
-                                    Cama/box: {{ cama.id }}
-                                </mat-option>
-                            </mat-optgroup>
-
-                            <!-- Respiradores -->
-                            <mat-optgroup [disabled]="!data.recursos.respiradores" [label]="'Respiradores'">
-                                <mat-option *ngFor="let respirador of data.recursos.respiradores" [value]="respirador.id">
-                                    Respirador: {{ respirador.id }}
-                                </mat-option>
-                            </mat-optgroup>
                         </mat-select>
                     </mat-form-field>
                 </div>
+            </div>
+                <!-- Recurso -->
+            <div class="row" >
+                <div  class="col">
+                    <mat-form-field>
+                      <input  matInput [formControl]="form.controls['servicio']" placeholder="Servicio" >
+                    </mat-form-field>
+                </div>
+            </div>
 
-            <button mat-raised-button color="accent">
+            <div class="row"> <!-- ó col-6? -->
+                <div class="col" style="text-align: center;">
+                    <mat-form-field>
+                        <mat-label>Recurso</mat-label>
+
+                        <mat-select #fldRecurso 
+                                        formControlName='recurso'
+                                        (selectionChange)="changeSelectionValue('recurso', fldRecurso.value)">
+                            <!-- Admisión -->
+                            <mat-optgroup [disabled]="!recursosList.length" [label]="'Camas'">
+                                <mat-option *ngFor="let recurso of recursosList" [value]="recurso">
+                                    {{ recurso.slug }} 
+                                </mat-option>
+                            </mat-optgroup>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <button mat-raised-button color="primary" (click)="onSubmit()">
                 Asignar
+            </button>
+            <button mat-raised-button color="warn"  (click)="onCancel()">
+                Cancelar
             </button>
         </div>
     

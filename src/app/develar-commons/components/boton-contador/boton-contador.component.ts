@@ -17,7 +17,7 @@ export class BotonContadorComponent implements OnInit {
   }
 
   onMatCardClick(){
-    this.onClick.emit(this.boton.id);
+    this.onClick.emit(this.boton.val);
   }
 
 }

@@ -80,7 +80,6 @@ export class AltarapidaPageComponent implements OnInit {
   /**********************************/
   // STEP-1: Persona Creada
   personFetched(person: Person){
-    console.log('personFetched [%s]', person.nombre);
     this.person = person;
     this.hasPerson = true;
     this.showView = true;
@@ -118,19 +117,16 @@ export class AltarapidaPageComponent implements OnInit {
   // STEP-3: TRIAGE ESTABLECIDO
   triageEvent(event: UpdateInternacionEvent){
     if(event.action === SEARCH_LOCACION){
-      console.log('STEP-3: SEARCH LOCACION')
       this.triage = event.token as MotivoInternacion;
       this.handleAllocation();
 
 
     }else if(event.action === NEXT ){
       this.triage = event.token as MotivoInternacion;
-      console.log('STEP-3: NEXT')
       this.handleInternacion();
 
 
     }else if(event.action === CANCEL ){
-      console.log('STEP-3: CANCEL')
       this.resetProcess()
 
     }
@@ -139,7 +135,6 @@ export class AltarapidaPageComponent implements OnInit {
 
   // STEP-4: LOCACION DE INTERNACIÓN ELEGIDA
   masterSelectedEvent(event: MasterSelectedEvent){
-    console.log('masterSelected BUBBLED')
     if(event.action === SELECTED){
       this.masterSelected = event.token;
       this.updateLocacionDeInternacion();
@@ -150,7 +145,6 @@ export class AltarapidaPageComponent implements OnInit {
   }
 
   internacionEvent(event: UpdateInternacionEvent){
-    console.log('Internacion EVENT')
     this.resetProcess()
   }
 
@@ -160,20 +154,16 @@ export class AltarapidaPageComponent implements OnInit {
   /**********************************/
   // private updatePerson(person: Person){
   // 	if(!person._id) return; // ToDo: error
-  //   console.log('Person UPDATE')
 
   //   this.perSrv.partialUpdatePerson(person._id, person).then(per => {
-  //       console.log('Partial Update')
 
   //   	if(per){
-  //       console.log('2')
   //   		this.person = per;
   //   		this.hasPerson = true;
   //   		this.closePersonEditForm()
   //       this.fetchSolInternacion(this.person);
 
   //   	}else{
-  //       console.log('ERROR: updating Person')
   //     	//todo: error
   //   	}
   //   })
@@ -188,7 +178,6 @@ export class AltarapidaPageComponent implements OnInit {
   //   		this.closePersonEditForm()
   //       this.fetchSolInternacion(this.person);
   //   	}else {
-  //       console.log('ERROR: updating Person')
   //   		//todo: error
   //   	}
   //   })
@@ -267,6 +256,7 @@ export class AltarapidaPageComponent implements OnInit {
   /*************************************************/
   private updateLocacionDeInternacion(){
     this.internacion.locId = this.masterSelected.id;
+    this.internacion.locCode = this.masterSelected.code;
     this.internacion.locSlug = this.masterSelected.slug;
 
     this.handleInternacion()

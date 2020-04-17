@@ -87,7 +87,7 @@ export class CentroOperacionesComponent implements OnInit {
           {
             width: '80%',
             data: {
-              titulo: botones.find(b => b.id === botonId).label,
+              titulo: botones.find(b => b.val === botonId).label,
               solicitudes: solicitudesInternacion.map(sol => sol.requeridox) //find usando el botonId
             }
           }

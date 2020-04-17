@@ -101,12 +101,8 @@ export class  InternacionHelper {
   	solinternacion.requeridox = buildRequirente(person);
   	solinternacion.atendidox = atendidoPor(user, spec);
 
-    triage = triage ? triage : new MotivoInternacion(spec);
-
-    console.log('triage [%s] [%s]', spec.servicio, triage.servicio)
-    
+    triage = triage ? triage : new MotivoInternacion(spec);    
     solinternacion.triage = triage;
-
 
   	return solinternacion;
   }
@@ -442,6 +438,7 @@ const tiposTransitosOptList: Array<any> = [
     {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Servicio'},
     {val: 'servicio:traslado',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación INICIA'   },
     {val: 'traslado:servicio',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación CUMPLIDO' },
+    {val: 'admision:servicio',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación CUMPLIDO' },
     {val: 'servicio:externacion',    label: 'Externación para salida/transito',  actionLabel: 'Externación (salida o tránsito)'  },
     {val: 'externacion:transito',    label: 'Externación a transito',            actionLabel: 'Externación pasa a tránsito)'  },
     {val: 'externacion:salida',      label: 'Externación a salida',              actionLabel: 'Externación pasa a salida  )'  },

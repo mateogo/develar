@@ -49,7 +49,7 @@ export class CentroOperacionesFacade {
                 this._state.getSolicitudes$().subscribe(solicitudes => {
                     if(solicitudes){
                         boton.contador = solicitudes.filter(
-                            solicitud => solicitud.triage.servicio == boton.id
+                            solicitud => solicitud.triage.servicio == boton.val
                         ).length
                     }
                 });

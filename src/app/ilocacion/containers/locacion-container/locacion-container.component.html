@@ -18,7 +18,7 @@
     <!-- Buffers -->
     <app-botonera-container
         [botones]="botonesPeriferia"
-        (onButtonClick)="onBotoneraClick($event)" >
+        (onButtonClick)="onAfectadosPeriferiaEvent($event)" >
     </app-botonera-container>
 
     <ng-container *ngFor="let servicio of serviciosOfrecidos">    
@@ -34,8 +34,10 @@
                             [capacidad]='servicio.srvQDisp'
                             [ocupacion]='(master_internacion[servicio.srvtype] && 
                                         master_internacion[servicio.srvtype].length) || 0'
-                            [admision]="admision$ | async"
-                            [traslado]="traslado$ | async"></app-recursos>
+                            [recursos]='master_camas[servicio.srvtype]'
+                            [servicio]='servicio.srvtype'
+                            [sinternaciones]="master_periferia"
+                            (asignarRecursosEvent)='asignarRecursos($event)'></app-recursos>
                     </mat-panel-title>                        
                 </mat-expansion-panel-header>
 

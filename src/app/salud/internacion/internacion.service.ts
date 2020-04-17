@@ -25,7 +25,7 @@ import { User }           from '../../entities/user/user';
 
 import { LocacionService } from '../../entities/locaciones/locacion.service';
 
-import { LocacionHospitalaria, Servicio, LocacionEvent} from '../../entities/locaciones/locacion.model';
+import { LocacionHospitalaria, Servicio, Recurso, LocacionEvent} from '../../entities/locaciones/locacion.model';
 
 import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion,
 					Internacion, SolInternacionBrowse, InternacionSpec, SolInternacionTable,
@@ -107,7 +107,6 @@ export class InternacionService {
   }
 
   private fetchSerialAsistencias(): Observable<Serial> {
-    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = InternacionHelper.asistenciaSerial();
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -224,6 +223,12 @@ export class InternacionService {
       internacion.estado =  'servicio';
       transito.estado =     'cumplido';
 
+    }else if(transition === 'admision:servicio'){ //'Traslado intra-locación'   },
+      solint.queue =        'alocado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'servicio';
+      transito.estado =     'cumplido';
+
     }else if(transition === 'servicio:externacion'){ //'Salida del servicio. queda en Externación'},
       solint.queue =        'alocado';
       solint.avance =       'esperasalida';
@@ -274,6 +279,33 @@ export class InternacionService {
 
 
   }
+
+  asignarRecurso(solinternacion: SolicitudInternacion, locacion: LocacionHospitalaria, servicio: string, recurso: Recurso ): Subject<SolicitudInternacion>{
+    let internacion = solinternacion.internacion;
+    let transition = 'admision:servicio';
+
+    internacion.locId =    locacion._id;
+    internacion.locSlug =  locacion.slug;
+    internacion.locCode =  locacion.code;
+    internacion.servicio = servicio;
+    internacion.sector = recurso.sector;
+    internacion.piso = recurso.piso;
+    internacion.hab = recurso.hab;
+    internacion.camaCode = recurso.code;
+    internacion.camaSlug = recurso.slug;
+    internacion.recursoId = recurso._id;
+
+    // internacion.slug = '';
+    // internacion.description = '';
+    // internacion.transitoId = '';
+    // internacion.estado = '';
+
+    return this.manageInternacionTransition(solinternacion, internacion, transition)
+  }
+
+
+//    
+
 
   /******************************************/
   /******* Internaciones Search   ********/
@@ -361,8 +393,6 @@ export class InternacionService {
   	}
 
   	query = Object.assign(query, spec);
-
-  	console.dir(query)
 
     this.daoService.processCovidWorkflow<SolicitudInternacion>(RECORD, query).subscribe(internacion =>{
       if(internacion){
@@ -493,7 +523,7 @@ export class InternacionService {
     let snck = this.snackBar.open(message, action, {duration: 3000});
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+      //c o n s o le.log('action???? [%s]', e);
     })
   }
 
@@ -537,10 +567,10 @@ export class InternacionService {
   }
 
   private dumpActualRoute(){
-    console.log('actualUrl:         (router.routerState.snapshot.url) [%s]', this.actualUrl)
-    console.log('navigationUrl      (method):                         [%s]', this.navigationUrl)
-    console.log('actualUrlSegments: (route.snapshot.url)              [%s]', this.actualUrlSegments)
-    console.log('hasActiveUrlPath:  (this.navigationUrl==true)        [%s]', this.hasActiveUrlPath)
+    // c onsole.log('actualUrl:         (router.routerState.snapshot.url) [%s]', this.actualUrl)
+    // c onsole.log('navigationUrl      (method):                         [%s]', this.navigationUrl)
+    // c onsole.log('actualUrlSegments: (route.snapshot.url)              [%s]', this.actualUrlSegments)
+    // c onsole.log('hasActiveUrlPath:  (this.navigationUrl==true)        [%s]', this.hasActiveUrlPath)
    }
 
   /********************************/
@@ -549,7 +579,6 @@ export class InternacionService {
   buildEstadoInternacion(internaciones: SolicitudInternacion[]){
     let master = {};
     internaciones.forEach(solicitud => {
-      console.log('sol: [%s] [%s][%s]', solicitud.requeridox.slug, solicitud.internacion.estado, solicitud.internacion.servicio)
       if(solicitud.internacion.estado === 'servicio'){
         if(!master[solicitud.internacion.servicio]){
           master[solicitud.internacion.servicio] = [ solicitud ]
@@ -571,7 +600,6 @@ export class InternacionService {
     })
 
     internaciones.forEach(solicitud => {
-      console.log('sol: [%s] [%s][%s]', solicitud.requeridox.slug, solicitud.internacion.estado, solicitud.internacion.servicio)
       let token = estadosPeriferia.find(t => t.val === solicitud.internacion.estado);
 
       if(token){
@@ -586,8 +614,8 @@ export class InternacionService {
     if(!master) return [];
     let botonesPeriferia = InternacionHelper.getOptionlist('estadosPeriferia');
     botonesPeriferia = botonesPeriferia.map(t => {
-        t['id'] = t.val;
-        t['id'] = t.val;
+        t['id' ] = t.val;
+        t['val'] = t.val;
         t['contador'] = master[t.val].length;
         return t;
     })
@@ -596,7 +624,6 @@ export class InternacionService {
   }
 
   buildEstadoCamas(locacion: LocacionHospitalaria, sinternaciones: SolicitudInternacion[]){
-    console.log('buildEstadoCamas: [%s] [%s]', locacion.recursos.length, sinternaciones.length);
     let recursos = locacion.recursos;
     if(!(recursos && recursos.length)) return [];
 
@@ -604,15 +631,13 @@ export class InternacionService {
 
     let masterCamas = {};
 
-    console.dir(hashRecord);
-
     recursos.forEach(recurso => {
       if(hashRecord && hashRecord[recurso._id]){
-        console.log('ocupada: [%s] [%s] ',recurso.code, recurso.rservicio )
         recurso.estado = 'ocupada';
+
       }else {
-        console.log('libre: [%s] [%s] ',recurso.code, recurso.rservicio )
         recurso.estado = 'libre';
+
       }
 
       if(masterCamas[recurso.rservicio]){

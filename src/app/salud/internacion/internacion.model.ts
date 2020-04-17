@@ -1,4 +1,5 @@
 import { devutils } from '../../develar-commons/utils';
+import { Recurso } from '../../entities/locaciones/locacion.model';
 
 export class Novedad {
 		_id?:        string;
@@ -242,6 +243,12 @@ export interface MasterSelectedEvent {
 	token: MasterAllocation;
 };
 
+export class AsignarRecursoEvent {
+  action: string = 'asignar';
+  sinternacion: SolicitudInternacion;
+  recurso: Recurso;
+  servicio: string;
+}
 
 // servicios: 
 // áreas: internacion 

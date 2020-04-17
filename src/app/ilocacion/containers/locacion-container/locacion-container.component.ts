@@ -14,7 +14,7 @@ import { BufferModalComponent } from '../../components/buffer-modal/buffer-modal
 
 import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
                     Internacion, SolInternacionBrowse, SolInternacionTable, InternacionSpec,
-                    MasterAllocation } from '../../../salud/internacion/internacion.model';
+                    MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 import { LocacionHospitalaria, Servicio} from '../../../entities/locaciones/locacion.model';
 
@@ -23,6 +23,7 @@ import { InternacionService } from '../../../salud/internacion/internacion.servi
 
 const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
+const ASIGNAR = 'asignar';
 
 
 @Component({
@@ -80,12 +81,10 @@ export class LocacionContainerComponent implements OnInit{
         /****/
         this.showData = false;
         this.locacionId = this.route.snapshot.paramMap.get('id');
-        console.log('LocacionContainer BEGINS: [%s]', this.locacionId)
         this._locacionFacade.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
         /****/
 
         if(!this.locacionId){
-            console.log('OOOOOOPPPSS qué hacemos???')
             this._locacionFacade.openSnackBar('Debe tener seleccionado una locación', 'CERRAR')
             this.router.navigate(['/salud/gestion/recepcion']);
             return;
@@ -103,7 +102,6 @@ export class LocacionContainerComponent implements OnInit{
                 this._locacionFacade.locacion = locacion;
                 this.initLocationFacilities(locacion);
             }else {
-                console.log('OOOOOOPPPSS qué hacemos???')
                 this._locacionFacade.openSnackBar('Locación NO ENCONTRADA', 'CERRAR')
                 this.router.navigate(['/salud/gestion/recepcion']);
                 return;
@@ -128,7 +126,6 @@ export class LocacionContainerComponent implements OnInit{
 
     private refreshAfectadosList(locacion: LocacionHospitalaria){
         this._locacionFacade.fetchInternacionesByLocationId(locacion._id).subscribe(internaciones =>{
-            console.log('Internaciones FETCHED', internaciones && internaciones.length);
             if(internaciones && internaciones.length){
                 this.initAfectadosList(internaciones);
             }else {
@@ -147,7 +144,6 @@ export class LocacionContainerComponent implements OnInit{
         this.master_periferia =   this._locacionFacade.buildEstadoPeriferia(this.internaciones);
         this.botonesPeriferia =   this._locacionFacade.getBotonesPeriferia(this.master_periferia);
         this.master_camas =       this._locacionFacade.buildEstadoCamas(this._currentLocation, this.internaciones)
-        console.dir(this.master_camas)
 
 
         // this.admision$ =    this._locacionFacade.loadPacientesEnAdmision$();
@@ -179,9 +175,6 @@ export class LocacionContainerComponent implements OnInit{
 
     private initLocacionData(){
         /****/
-        console.log('Locación Leida: [%s]', this._currentLocation.code)
-
-
         Object.assign(this.loadedLocationFronDB,Locaciones[0]);
         Object.assign(this.currentLocation,this.loadedLocationFronDB); //me guardo un atributo para el filtrado
 
@@ -190,7 +183,6 @@ export class LocacionContainerComponent implements OnInit{
 
         //this.totalCamas = this.loadedLocationFronDB.camas.uti + this.loadedLocationFronDB.camas.ti + this.loadedLocationFronDB.camas.conext + this.loadedLocationFronDB.camas.internacion;
         this.msjSegunRadioButton = this.calcularCamasDisponibles('todo');
-        console.log(this.msjSegunRadioButton)
 
         //and... it's... showTime!!!
         this.showData = true;
@@ -248,7 +240,6 @@ export class LocacionContainerComponent implements OnInit{
 
 
     private calcularCamasDisponibles(seleccion : string) : string{
-        console.log("ejecutado")
         switch(seleccion){
             case 'todo' : {
                 let disponibles : number = 0;
@@ -258,7 +249,6 @@ export class LocacionContainerComponent implements OnInit{
                     }
                 }
                 )
-                console.log(disponibles)
             return 'Disponibles '+disponibles+' de '+this.loadedLocationFronDB.estado_ocupacion.length;
             }
         }
@@ -330,7 +320,6 @@ export class LocacionContainerComponent implements OnInit{
                     filtro.push(cama);
                 }
             })
-            console.log("devuelve --> %o",filtro)
             return filtro;
         }else{
         let filtrado = [];
@@ -339,7 +328,6 @@ export class LocacionContainerComponent implements OnInit{
                 filtrado.push(cama);
             }
         })
-        console.log(filtrado)
         this.currentLocation.estado_ocupacion = filtrado;
         return filtrado;
         }
@@ -363,43 +351,42 @@ export class LocacionContainerComponent implements OnInit{
     }
 
 
-    onBotoneraClick(botonId){
-        //TODO: botonera de buffers
-
-        let waitFor;
-        switch(botonId){
-            case('admision'):
-                waitFor = this.admision$;
-                break;
-            case('traslado'):
-                waitFor = this.traslado$;
-                break;
-            case('salida'):
-                waitFor = this.salida$;
-                break;
-            case('externacion'):
-                waitFor = this.externacion$;
-                break;
-            case('traslado'):
-                waitFor = this.traslado$;
-                break;
-        }
-
-        waitFor.subscribe(pacientes => {
-            const dialogRef = this.dialog.open(
-                BufferModalComponent,
-                {
-                    width: '80%',
-                    data: {
-                        pacientes: pacientes
-                    }
+    /**************************************************************************/
+    /******* Gestión pacientes en botones periferia                       ****/
+    /************************************************************************/
+    onAfectadosPeriferiaEvent(periferia){
+        let pacientes = this.master_periferia[periferia]
+        const dialogRef = this.dialog.open(
+            BufferModalComponent,
+            {
+                width: '80%',
+                data: {
+                    pacientes: pacientes
                 }
-            )
-
-            dialogRef.afterClosed().subscribe(result => {
-                //TODO
-            });
+            }
+        )
+        dialogRef.afterClosed().subscribe(result => {
+            //TODO
         });
     }
+
+    /******************************************************************************/
+    /******* Gestión asignacion recurso->paciente en modal RecursosComponent  ****/
+    /****************************************************************************/
     
+    asignarRecursos(event: AsignarRecursoEvent){
+        if(!event) return;
+        if(event.action === ASIGNAR){
+            this.asignarPacienteARecurso(event);
+        }
+
+    }
+
+    private asignarPacienteARecurso(event: AsignarRecursoEvent){
+        this._locacionFacade.asignarRecurso(event.sinternacion, this._currentLocation, event.servicio, event.recurso).subscribe(sol => {
+            this.refreshAfectadosList(this._currentLocation);
+        })
+
+    }
+
 }

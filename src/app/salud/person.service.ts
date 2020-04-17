@@ -195,7 +195,6 @@ export class PersonService {
   partialUpdatePerson(id:string, p:any): Promise<Person>{
     return this.daoService.partialUpdate<Person>(RECORD, id, p).then(person =>{
       if(person){
-        console.log('en SERVICE')
         this.updateCurrentPerson(person);
         return person;
 

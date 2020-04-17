@@ -44,10 +44,7 @@ export class TestUnoComponent implements OnInit {
   	this.form = this.buildForm(this.testData);
   	this.hospitalesList$ = this.intSrv.fetchLocacionesHospitalarias({});
   	this.hospitalesList$.subscribe(hospitales => {
-  		console.log('Hospitales Fetched: [%s]', hospitales);
   	})
-  	//this.createSolIntervencion()
-  	//this.fetchRecursosDisponibles()
   }
 
 
@@ -75,7 +72,6 @@ export class TestUnoComponent implements OnInit {
 
   onSubmit(){
   	this.collectDataFromForm(this.form, this.testData);
-  	console.dir(this.testData);
   }
 
   navigateTo(e, id: string ){
@@ -95,7 +91,6 @@ export class TestUnoComponent implements OnInit {
   private createPersonAndSolIntervencion(tdoc: string, ndoc:string, servicio:string){
   	this.perSrv.fetchPersonByDNI(tdoc, ndoc).subscribe(person => {
   		if(person){
-  			console.log('person fetched: [%s]', person.displayName);
   			this.perSrv.updateCurrentPerson(person);
   			this.initNewIntervencion(person, servicio)
 
@@ -114,7 +109,6 @@ export class TestUnoComponent implements OnInit {
   private createSolIntervencion(tdoc: string, ndoc:string, servicio:string){
   	this.perSrv.fetchPersonByDNI(tdoc, ndoc).subscribe(person => {
   		if(person){
-  			console.log('person fetched: [%s]', person.displayName);
   			this.perSrv.updateCurrentPerson(person);
   			this.initNewIntervencion(person, servicio)
 
@@ -132,9 +126,9 @@ export class TestUnoComponent implements OnInit {
 
   	this.intSrv.createNewSolicitudInternacion(spec, person).subscribe(sol => {
   		if(sol){
-  			console.log('Sol Created: [%s]', sol.compNum);
+  			//console.log('Sol Created: [%s]', sol.compNum);
   		}else {
-  			console.log('fallo la creación de solicitud')
+  			//console.log('fallo la creación de solicitud')
   		}
   	})
 
@@ -162,7 +156,6 @@ export class TestUnoComponent implements OnInit {
 	private fetchRecursosDisponiblesAndAllocate(){
 		this.intSrv.fetchCapacidadDisponible().subscribe(alocationList =>{
 			let hosp = alocationList[0];
-			console.log('Hospital Selected [%s] [%s]', hosp.code, hosp.id);
 			this.fetchPersonAndAlocateHosp(this.testData.tdoc, this.testData.ndoc, hosp);
 		});
 
@@ -170,7 +163,6 @@ export class TestUnoComponent implements OnInit {
 
 	private fetchPersonAndAlocateHosp(tdoc, ndoc, hosp: MasterAllocation){
 		this.perSrv.fetchPersonByDNI(tdoc, ndoc).subscribe(person => {
-			console.log('PersonFetched: [%s]', person.displayName);
 			this.fetchInternacion(person, hosp);
 		})
 	}
@@ -179,9 +171,7 @@ export class TestUnoComponent implements OnInit {
 		this.intSrv.fetchInternacionesByPersonId(person._id).subscribe(list => {
 			if(list && list.length){
 				let asistencia = list[0];
-				console.log('asistencia RETRIEVE [%s]', asistencia.compNum);
 				this.intSrv.allocateInTransit(asistencia, hosp.id, this.testData.servicio ).subscribe(sol =>{
-					console.dir(sol)
 				})
 			}
 		})
@@ -193,12 +183,10 @@ export class TestUnoComponent implements OnInit {
 	/**********************************************************/
 	private allocateInServiceFromTransito(tdoc, ndoc){
 		this.perSrv.fetchPersonByDNI(tdoc, ndoc).subscribe(person => {
-			console.log('PersonFetched: [%s]', person.displayName);
 
 			this.intSrv.fetchInternacionesByPersonId(person._id).subscribe(list => {
 				if(list && list.length){
 					let asistencia = list[0];
-					console.log('asistencia RETRIEVE [%s]', asistencia.compNum);
 
 					let spec = {
 						hab:      this.testData.hab,
@@ -210,11 +198,9 @@ export class TestUnoComponent implements OnInit {
 					if(asistencia && asistencia.internacion && asistencia.internacion.locId){
 
 						this.intSrv.allocateInServicio(asistencia, this.testData.servicio, spec ).subscribe(sol =>{
-							console.dir(sol)
 						})
 
 					}else {
-						console.log('NOOOO***********')
 					}
 
 				}

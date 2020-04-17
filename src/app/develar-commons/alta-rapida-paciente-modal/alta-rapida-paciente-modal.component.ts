@@ -22,6 +22,7 @@ const UPDATE = 'update';
 const CREATE = 'create';
 const CORE = 'core';
 const SERVICIO_DEFAULT = "INTERNACION"
+const TRANSIT_TYPE = "pool:admision"
 
 
 @Component({
@@ -88,12 +89,12 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   /******* Template Events *******/
   /**********************************/
   onSubmit() {
-      //this.person = this.initForSave(this.form, this.person);
+    console.log('SUBMIT')
+    this.person = this.initForSave(this.form, this.person);
 
-      // if(this.person._id) this.emitEvent(UPDATE);
+    if(this.person._id) this.emitEvent(UPDATE);
 
-      // else this.createPerson(this.person);
-    this.emitEvent(CANCEL);
+    else this.createPerson(this.person);
 
   }
 
@@ -112,6 +113,7 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   }
 
   private fetchSolInternacion(person: Person){
+
     this.intSrv.fetchInternacionesByPersonId(person._id).subscribe(list => {
       if(list && list.length){
         this.solInternacion = list[0];
@@ -119,6 +121,7 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
         this.handleSolicitudInternacion()
 
       }else {
+        console.log('alta nueva solicitud de internación')
         this.initNewIntervencion(this.person, this.servicio)
       }
     })
@@ -135,6 +138,7 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
         this.handleSolicitudInternacion()
 
       }else {
+        this.emitEvent(CANCEL);
         //console.log('fallo la creación de solicitud')
       }
     })
@@ -142,12 +146,25 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   }
 
   private handleSolicitudInternacion(){
-    this.servicio = SERVICIO_DEFAULT;
+    console.log('HANDLE SOLICITUD')
 
     this.triage = this.solInternacion.triage || new MotivoInternacion({servicio: this.servicio});
-    this.internacion = this.solInternacion.internacion || new Internacion();
+    this.triage.especialidad = this.especialidad;
+    this.triage.slug = this.slug;
 
-    this.initNewIntervencion(this.person, this.servicio)
+    this.solInternacion.triage = this.triage;
+
+    this.internacion = this.solInternacion.internacion || new Internacion();
+    this.internacion.servicio =  this.servicio;
+    this.internacion.slug = this.slug;
+    this.internacion.description = ''
+
+    this.internacion.locId =   this.intSrv.locacion._id
+    this.internacion.locSlug = this.intSrv.locacion.slug;
+    this.internacion.locCode = this.intSrv.locacion.code;
+
+
+    this.saveSolicitud(this.solInternacion, this.internacion, TRANSIT_TYPE);
 
   }
 
@@ -155,22 +172,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   /***************************************************/
   /******* Internacion STEP *******/
   /*************************************************/
-  private updateLocacionDeInternacion(){
-    this.handleInternacion()
-  }
-
-  private handleInternacion(){
-    this.solInternacion.triage = this.triage;
-    this.internacion.servicio =  this.triage.servicio;
-    this.internacion.slug = this.triage.slug;
-    this.internacion.description = this.triage.description;
-    this.internacion.locId = this.masterSelected.id;
-    this.internacion.locSlug = this.masterSelected.slug;
-
-
-    this.saveSolicitud(this.solInternacion, this.internacion, 'transition');
-  }
-
   private saveSolicitud(solinternacion: SolicitudInternacion, internacion: Internacion, transition: string){
     this.intSrv.manageInternacionTransition(solinternacion, internacion, transition).subscribe(sol =>{
       if(sol){
@@ -400,20 +401,41 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
 
   private initForSave(form: FormGroup, model: Person): Person {
     const fvalue = form.value;
+
+    this.servicio =     fvalue.servicio;
+    this.especialidad = fvalue.especialidad;
+    this.slug =         fvalue.slug;
+
+
+    // let address: Address;
+    // let locaciones = model.locaciones|| [];
+    // if(locaciones && locaciones.length){
+    //   address = locaciones[0];
+    // }else {
+    //   address = new Address();
+    // }
+
+    // address.addType = 'principal' ;
+    // address.slug = 'Asignada en el alta de internación' ;
+    // address.isDefault = true;
+
+    // address.street1 =      fvalue.street1;
+    // address.street2 =      fvalue.street2;
+    // address.city =         fvalue.city;
+    // address.barrio =       fvalue.barrio;
+    // address.zip =          fvalue.zip;
+
+    // address.state =        fvalue.state;
+    // address.statetext =    fvalue.statetext;
+    // address.country =      fvalue.country;
+
+    // if(address.street1 && !locaciones.length){
+    //   model.locaciones = [ address ];
+    // }
+
+
+
     let contactData:  PersonContactData;
-    let address: Address;
-
-    let locaciones = model.locaciones|| [];
-    if(locaciones && locaciones.length){
-      address = locaciones[0];
-    }else {
-      address = new Address();
-    }
-
-    address.addType = 'principal' ;
-    address.slug = 'Asignada en el alta de internación' ;
-    address.isDefault = true;
-
     let contacts = model.contactdata || [];
     if((contacts && contacts.length)){
        contactData = contacts[0]
@@ -422,9 +444,15 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
       contactData = new PersonContactData();
       contacts.push(contactData);
     }
-    
+
+    if(fvalue.telefono){
+      contactData.data = fvalue.telefono;
+      model.contactdata = contacts;
+    }
+
+
     model.nacionalidad = 'AR';
-    model.alerta = 'Alta rápida para internación COVID';
+    model.alerta = 'Alta rápida desde locación de internación';
     model.nombre = fvalue.nombre;
     model.personType = fvalue.personType;
     model.apellido = fvalue.apellido;
@@ -438,25 +466,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
     model.fenac = dateD ? dateD.getTime() : 0;
 
     model.nacionalidad = fvalue.nacionalidad;
-    contactData.data = fvalue.telefono;
-
-    address.street1 =      fvalue.street1;
-    address.street2 =      fvalue.street2;
-    address.city =         fvalue.city;
-    address.barrio =       fvalue.barrio;
-    address.zip =          fvalue.zip;
-
-    address.state =        fvalue.state;
-    address.statetext =    fvalue.statetext;
-    address.country =      fvalue.country;
-
-    if(address.street1 && !locaciones.length){
-      model.locaciones = [ address ];
-    }
-
-    this.servicio =     fvalue.servicio;
-    this.especialidad = fvalue.especialidad;
-    this.slug =         fvalue.slug;
 
     return model;
   }

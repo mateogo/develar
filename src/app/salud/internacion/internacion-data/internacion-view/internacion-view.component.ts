@@ -44,7 +44,6 @@ export class InternacionViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	console.log('INTERNACION VIEW')
   	this.buildSolicitudData(this.token);
   	let internacionSnapShot = this.token.internacion;
   	let transitosList = this.token.transitos;

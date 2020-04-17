@@ -55,7 +55,6 @@ export class InternacionAllocatorComponent implements OnInit {
   }
 
   locationSelected(e, master: MasterAllocation, capacidad:string){
-    console.log('Location SELECTED: [%s]', master.code)
     this.emitEvent(SELECTED, master);
   }
 
@@ -74,7 +73,6 @@ export class InternacionAllocatorComponent implements OnInit {
 
 				this.masterData = alocationList;
         this.masterList = InternacionHelper.filterMasterAllocationList(this.query, this.masterData);
-        console.log('FilteredMasterList: [%s] [%s]', this.masterList.length , this.masterData.length)
         this.hasMasterList = true;
         this.showMasterAllocatorView = true;
 			}

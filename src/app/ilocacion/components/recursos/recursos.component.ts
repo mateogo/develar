@@ -1,6 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RecursosModalComponent } from './recursos-modal/recursos-modal.component';
+
+import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
+                    Internacion, SolInternacionBrowse, SolInternacionTable, InternacionSpec,
+                    MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
+
+import { LocacionHospitalaria, Recurso} from '../../../entities/locaciones/locacion.model';
 
 @Component({
   selector: 'app-recursos',
@@ -8,26 +14,16 @@ import { RecursosModalComponent } from './recursos-modal/recursos-modal.componen
   styleUrls: ['./recursos.component.scss']
 })
 export class RecursosComponent implements OnInit {
-  @Input() capacidad= 0;
+  @Input() capacidad = 0;
   @Input() ocupacion = 0;
-
-  @Input() admision;
-  @Input() traslado;
+  @Input() sinternaciones: SolicitudInternacion[];
+  @Input() recursos: Recurso[] = [];
+  @Input() servicio: string =''
+  @Output() asignarRecursosEvent = new EventEmitter<AsignarRecursoEvent>();
 
   public disponible;
-
-  items = [
-    {
-      nombre: 'Camas',
-      disponible: 10,
-      total: 15
-    },
-    {
-      nombre: 'Respiradores',
-      disponible: 7,
-      total: 9
-    },
-  ];
+  public camasList = [];
+  public recursosList: Recurso[]  = [];
 
   constructor(
     public dialog: MatDialog,
@@ -35,6 +31,9 @@ export class RecursosComponent implements OnInit {
 
   ngOnInit(): void {
     this.disponible = this.capacidad - this.ocupacion;
+
+    this.recursosList = this.recursos.filter(rr => rr.estado === 'libre');
+
   }
 
   onClick(){
@@ -43,49 +42,18 @@ export class RecursosComponent implements OnInit {
       {
         width: '350px',
         data: {
-          //TODO: Enviar lista de buffers (con pacientes) y recursos
-          buffers: {
-            admision: {
-              pacientes: this.admision
-            },
-            traslado: {
-              pacientes: this.traslado
-            },
-            externacion: { //???
-              pacientes: [] //Vacío
-            },
-            salida: { //???
-              pacientes: [] //Vacío
-            }
-          },
 
-          recursos: {
-            camas: [
-              {
-                id: '1.1'
-              },
-              {
-                id: '1.2'
-              }
-            ],
-            respiradores: [
-              {
-                id: '2.1'
-              },
-              {
-                id: '2.2'
-              },
-              {
-                id: '2.3'
-              },
-            ]
-          }
+          masterperiferia: this.sinternaciones,
+
+
+          recursos: this.recursosList,
+          servicio: this.servicio,
         }
       }
     );
 
-    dialogRef.afterClosed().subscribe(res => {
-      //TODO: Recibir datos para el alta, emitir para que el componente padre dé el alta y actualice la vista
+    dialogRef.afterClosed().subscribe((res: AsignarRecursoEvent) => {
+      this.asignarRecursosEvent.emit(res);
     });
   }
 

@@ -121,7 +121,6 @@ export class AltarapidaPersonComponent implements OnInit {
   }
 
   private personAlreadyExists(personRetrieved: Person){
-    console.log('AlreadyExists [%s] [%s]', this.currentNumDoc, personRetrieved.ndoc)
     this.isNewPerson = false;
     if(this.currentNumDoc === personRetrieved.ndoc ) return;
 
@@ -213,7 +212,6 @@ export class AltarapidaPersonComponent implements OnInit {
 	/******* Template Helpers *******/
 	/**********************************/
    documProvisorio(){
-     console.log('documProvisorio')
       this.intSrv.fetchSerialDocumProvisorio().subscribe(serial =>{
           this.person = initForSave(this.form, this.person);
           this.person.tdoc = "PROV"
@@ -254,7 +252,6 @@ export class AltarapidaPersonComponent implements OnInit {
 
   //         return service.testPersonByDNI(tdoc,ndoc).pipe(
   //             map(t => {
-  //               console.log('testPerson [%s]', t && t.length)
   //                 let invalid = false;
   //                 let txt = ''
 
@@ -334,6 +331,21 @@ function initForSave(form: FormGroup, model: Person): Person {
   address.slug = 'Asignada en el alta de internación' ;
   address.isDefault = true;
 
+  address.street1 =      fvalue.street1;
+  address.street2 =      fvalue.street2;
+  address.city =         fvalue.city;
+  address.barrio =       fvalue.barrio;
+  address.zip =          fvalue.zip;
+
+  address.state =        fvalue.state;
+  address.statetext =    fvalue.statetext;
+  address.country =      fvalue.country;
+
+  if(address.street1 && !locaciones.length){
+    model.locaciones = [ address ];
+  }
+
+
   let contacts = model.contactdata || [];
   if((contacts && contacts.length)){
    	contactData = contacts[0]
@@ -341,6 +353,11 @@ function initForSave(form: FormGroup, model: Person): Person {
   }else{
   	contactData = new PersonContactData();
   	contacts.push(contactData);
+  }
+  if(fvalue.telefono){
+    contactData.data = fvalue.telefono;
+    model.contactdata = contacts;
+
   }
   
   model.nacionalidad = 'AR';
@@ -358,21 +375,10 @@ function initForSave(form: FormGroup, model: Person): Person {
   model.fenac = dateD ? dateD.getTime() : 0;
 
   model.nacionalidad = fvalue.nacionalidad;
-  contactData.data = fvalue.telefono;
 
-  address.street1 =      fvalue.street1;
-  address.street2 =      fvalue.street2;
-  address.city =         fvalue.city;
-  address.barrio =       fvalue.barrio;
-  address.zip =          fvalue.zip;
 
-  address.state =        fvalue.state;
-  address.statetext =    fvalue.statetext;
-  address.country =      fvalue.country;
 
-  if(address.street1 && !locaciones.length){
-  	model.locaciones = [ address ];
-  }
 
+ 
   return model;
 };

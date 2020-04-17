@@ -377,6 +377,7 @@ function buildInternacion (solicitud, spec){
 
   internacionToken['locId'] =     spec.hospitalId || internacionToken['locId'] || '';
   internacionToken['locSlug'] =   internacionToken['locSlug']   || spec['locSlug'];
+  internacionToken['locCode'] =   internacionToken['locCode']   || spec['locCode'];
   internacionToken['estado'] =    internacionToken['estado']    || spec['estado'];
   internacionToken['servicio'] =  internacionToken['servicio']  || spec['servicio'];
 
@@ -397,6 +398,7 @@ function updateInternacion (solicitud, spec){
 
   internacionToken['locId'] =     spec.hospitalId   ? spec.hospitalId   : internacionToken['locId']
   internacionToken['locSlug'] =   spec['locSlug']   ? spec['locSlug']   : internacionToken['locSlug']
+  internacionToken['locCode'] =   spec['locCode']   ? spec['locCode']   : internacionToken['locCode']
   internacionToken['estado'] =    spec['estado']    ? spec['estado']    : internacionToken['estado']
   internacionToken['servicio'] =  spec['servicio']  ? spec['servicio']  : internacionToken['servicio']
  

@@ -2,23 +2,23 @@ import { BotonContador } from '../../../develar-commons/base.model';
 
 export const BOTONES_SERVICIOS: BotonContador[] = [
     {
-      id: 'UTI',
-      label: 'Cuidados intensivos'
+      val: 'UTI',
+      label: 'Cuvalados intensivos'
     },
     {
-      id: 'UTE',
-      label: 'Cuidados intermedios'
+      val: 'UTE',
+      label: 'Cuvalados intermedios'
     },
     {
-      id: 'UAM',
+      val: 'UAM',
       label: 'Ambulatorios'
     },
     {
-      id: 'UAI',
+      val: 'UAI',
       label: 'Aislamiento'
     },
     {
-      id: 'UPE',
+      val: 'UPE',
       label: 'Pediátricos'
     }
 ];

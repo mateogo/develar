@@ -744,6 +744,11 @@ const processToken = function(token, master){
   }
 }
 
+// {  "fecomp_txa": { "$exists": true }, "$expr": { "$lt": [ { "$strLenCP": "fecomp_txa" }, 8 ] } }
+// TypeError: Cannot read property 'getDate' of null
+//     at /home/dsapp/repositorios/develar/core/models/asistenciaModel.js:771:19
+//     at Array.forEach (<anonymous>)
+//     at procesTableroAsistencia (/home/dsapp/repositorios/develar/core/models/asistenciaModel.js:753:12)
 /**********************************/
 /*         TABLERO-ASISTENCIA    */
 /********************************/
@@ -752,6 +757,16 @@ const procesTableroAsistencia = function(ptree, entities, timeframe, errcb, cb){
 
   entities.forEach(asistencia => {
     let fecomp = utils.parseDateStr(asistencia.fecomp_txa)
+
+    if(!fecomp){ 
+
+      fecomp = new Date();
+      console.log('errror **************************')
+      console.log('asistencia: [%s]', asistencia.compNum)
+      console.log('errror **************************')
+
+    }
+
     let person = ptree[asistencia.idPerson];
     let fenac = 0;
     let sexo = 'X';

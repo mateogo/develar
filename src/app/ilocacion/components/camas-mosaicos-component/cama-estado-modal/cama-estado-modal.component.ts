@@ -113,7 +113,6 @@ export class CamaEstadoModalComponent implements OnInit{
 
       liberarAhora(){
         //Este apartado es para liberación automática
-        console.log(this.cama)
         this.cama.estado = 'LIBRE';
         delete this.cama.paciente;
         this.cama.fecha_in = null;
@@ -122,7 +121,6 @@ export class CamaEstadoModalComponent implements OnInit{
       onPacienteSubmit(){
         let data = this.pacienteForm.getRawValue();
 
-        console.log(data);
         this.cama.paciente = data;
         this.cama.estado = 'ocupada';
       }

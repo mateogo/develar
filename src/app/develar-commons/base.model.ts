@@ -18,7 +18,7 @@ export interface BasicData {
 
 
 export interface BotonContador {
-    id: string,
+    val: string,
     label: string,
     contador?: number
 }
