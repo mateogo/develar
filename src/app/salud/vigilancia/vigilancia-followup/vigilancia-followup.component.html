@@ -1,8 +1,68 @@
 <mat-card >
 <mat-card-content>
-<solcovid-view [token]=token ></solcovid-view>
+  <ng-container *ngIf='showAsistenciaView' >
+    <vigilancia-view [token]='asistencia'  [viewList]='viewList'></vigilancia-view>
+  </ng-container>
 
-<div class="novedades-container">
+<div class="d-md-flex justify-content-between align-items-center panel-header-actions" >
+  <mat-button-toggle-group #fldButtonGrp1  name="actions" 
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="sisa">
+      SISA
+    </mat-button-toggle>
+    <mat-button-toggle value="sisafwup">
+      Novedad
+    </mat-button-toggle>
+    <mat-button-toggle value="historialsisa">
+      Historial
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>      
+
+  <mat-button-toggle-group #fldButtonGrp2  name="actions" 
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="seguimiento">
+      LLAMADOS
+    </mat-button-toggle>
+    <mat-button-toggle value="seguimientofwup">
+      Novedad
+    </mat-button-toggle>
+    <mat-button-toggle value="historialseguimiento">
+      Historial
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>      
+
+  <mat-button-toggle-group #fldButtonGrp2  name="actions" 
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="infection">
+      COVID
+    </mat-button-toggle>
+  </mat-button-toggle-group>      
+
+</div>
+
+<div class="d-md-flex justify-content-between align-items-center panel-header-selectors" >
+
+  <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
+        (change)='viewPanelsSelected($event)'>
+    <mat-button-toggle value="sisa">
+      SISA
+    </mat-button-toggle>
+    <mat-button-toggle value="seguimiento">
+      LLAMADOS
+    </mat-button-toggle>
+    <mat-button-toggle value="infection">
+      COVID
+    </mat-button-toggle>
+    <mat-button-toggle value="core">
+      GENERAL
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+</div>
+
+<div class="novedades-container" *ngIf="showEditor">
   <form [formGroup]="form">
 
     <ng-container *ngIf="isCovid">
@@ -254,7 +314,7 @@
 </div>
 
 
-<div class="novedades-container">
+<div class="novedades-container"    *ngIf="showEditor">
 	<ng-container *ngFor="let step of nextStepOptList" >
 		<button mat-raised-button color="primary" class='button-action'
 						(click)='buttonActionEvent($event, step)' >{{ step.label }}

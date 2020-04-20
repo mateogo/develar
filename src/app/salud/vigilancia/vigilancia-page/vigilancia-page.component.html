@@ -1,0 +1,67 @@
+<!-- mat-card>
+	<mat-card-content>
+		<div class="selector">
+	  	<div class="d-flex align-items-center justify-content-between panel-header">
+				<div class="panel-header-text">{{ searchTitle }}</div>
+				<div class="panel-header-control" ><span 
+					(click)='openSearchForm()' title="Abrir panel de búsqueda avanzada">
+					<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span></div>
+				</div>
+		</div>
+		<ng-container *ngIf="openEditor">
+			<vigilancia-browse [query]="query" 
+											(updateQuery)="refreshSelection($event)"
+											(mapRequest)="mapRequest($event)" ></vigilancia-browse>
+		</ng-container>
+	</mat-card-content>
+</mat-card -->
+
+<vigilancia-browse [query]="query" 
+								(updateQuery)="refreshSelection($event)"
+								(mapRequest)="mapRequest($event)" ></vigilancia-browse>
+
+<mat-card>
+  <mat-card-content>
+	 	<div class="row">
+			<div class="col-sm-12 col-md-12">
+	 	  	<div class="d-flex justify-content-between align-items-center panel-header">
+
+					<div class="panel-header-text">{{ title }}</div>
+
+					<div class="panel-header-control" >
+					  <mat-button-toggle-group #view="matButtonToggleGroup"  >
+					    <mat-button-toggle value="grid">
+					      <mat-icon>view_module</mat-icon>
+					    </mat-button-toggle>
+					  </mat-button-toggle-group>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<ng-container *ngIf='showEditor'>
+				<vigilancia-panel [asistencia]='currentAsistencia'
+										(updateToken)='updateCurrentAsistencia($event)'></vigilancia-panel>
+
+		</ng-container>
+
+		<ng-container *ngIf='showData'>
+      <div *ngIf="renderMap">
+        <agm-map [latitude]="baseLatLng.lat" [longitude]="baseLatLng.lng" [zoom]="zoom">
+        	<ng-container *ngFor="let location of mapData">
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng">
+            <agm-info-window>
+              <strong>{{ location.asistencia.requeridox.slug }}</strong>
+            </agm-info-window>
+          </agm-marker>
+        	</ng-container>
+        </agm-map>
+      </div>
+
+				<vigilancia-list [items]='asistenciasList' [viewList]='viewList'
+		 							(updateItems)='updateAsistenciaList($event)' ></vigilancia-list>
+		</ng-container>
+  </mat-card-content>
+</mat-card>

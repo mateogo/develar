@@ -162,6 +162,144 @@ const contextoCovidSch = new Schema({
 
  
 
+const internacionAsisSch = new Schema({
+    isActive:          { type: Boolean, required: false  },
+    tipoCuidado:       { type: String,  required: false  },
+    tipoLocacion:      { type: String,  required: false  },
+    locacionId:        { type: String,  required: false  },
+    locacionSlug:      { type: String,  required: false  },
+    locacionTxt:       { type: String,  required: false  },
+    fe_internacion:    { type: String,  required: false  },
+    fe_alta:           { type: String,  required: false  },
+    hasSolinternacion: { type: Boolean, required: false  },
+})
+
+const sisaEventSch = new Schema({
+    isActive:     { type: Boolean, required: false },
+    sisaId:       { type: String,  required: false },
+    reportadoPor: { type: String,  required: false },
+    fe_reportado: { type: String,  required: false },
+    fe_baja:      { type: String,  required: false },
+    fe_consulta:  { type: String,  required: false },
+    avance:       { type: String,  required: false },
+    slug:         { type: String,  required: false },
+
+    fets_reportado: { type: Number,  required: false },
+    fets_baja:      { type: Number,  required: false },
+    fets_consulta:  { type: Number,  required: false },
+
+});
+
+const sisaEvolucionSch = new Schema({
+  isActive:      { type: Boolean, required: false },
+  fe_consulta:   { type: String,  required: false },
+  avance:        { type: String,  required: false },
+  slug:          { type: String,  required: false },
+  fets_consulta: { type: Number,  required: false },
+})
+
+const muestraLaboratorioSch = new Schema({
+  isActive:         { type: Boolean, required: false },   
+  muestraId:        { type: String,  required: false },   
+  tipoMuestra:      { type: String,  required: false },   
+  locacionId:       { type: String,  required: false },   
+  locacionSlug:     { type: String,  required: false },   
+  fe_toma:          { type: String,  required: false },   
+  laboratorio:      { type: String,  required: false },   
+  laboratorioTel:   { type: String,  required: false },   
+  metodo:           { type: String,  required: false },   
+  fe_ingestudio:    { type: String,  required: false },   
+  fe_resestudio:    { type: String,  required: false },   
+  fe_notificacion:  { type: String,  required: false },   
+  alerta:           { type: String,  required: false },   
+  estado:           { type: String,  required: false },   
+  resultado:        { type: String,  required: false },   
+  slug:             { type: String,  required: false },   
+});
+
+const contextoAfectadosSch = new Schema({
+    personId:           { type: String,  required: false },
+    slug:               { type: String,  required: false },
+    hasActiveCovid:     { type: Boolean, required: false },
+    hasActiveFollowing: { type: Boolean, required: false },
+})
+
+const infeccionFollowUpSch = new Schema({
+    isActive:     { type: Boolean, required: false },
+    hasCovid:     { type: Boolean, required: false },
+    actualState:  { type: Number,  required: false },
+
+    fe_inicio:    { type: String,  required: false },
+    fe_confirma:  { type: String,  required: false },
+    fe_alta:      { type: String,  required: false },
+
+    avance:       { type: String,  required: false },
+    sintoma:      { type: String,  required: false },
+
+    qcoworkers:   { type: Number,  required: false },
+    qcovivientes: { type: Number,  required: false },
+    qotros:       { type: Number,  required: false },
+
+    slug:         { type: String,  required: false },
+
+    fets_inicio:   { type: Number,  required: false },
+    fets_confirma: { type: Number,  required: false },
+    fets_alta:     { type: Number,  required: false },
+})
+
+const asignadosSeguimientoSch = new Schema({
+    userId:    { type: String, required: false },
+    userSlug:  { type: String, required: false },
+    userArea:  { type: String, required: false },
+
+
+});
+
+
+const afectadoUpdateSch = new Schema({
+    isActive:   { type: Boolean, required: false },
+    fe_llamado: { type: String, required: false },
+    resultado:  { type: String, required: false },
+    vector:     { type: String, required: false },
+    tipo:       { type: String, required: false },
+    slug:       { type: String, required: false },
+    indicacion: { type: String, required: false },
+
+    fets_llamado: { type: Number, required: false },
+
+});
+
+
+const afectadosFollowUpSch = new Schema({
+  isActive:      { type: Boolean, required: false },
+  fe_inicio:     { type: String, required: false },
+  fe_ucontacto:  { type: String, required: false },
+  fe_ullamado:   { type: String, required: false },
+  qllamados:     { type: Number, required: false },
+  qcontactos:    { type: Number, required: false },
+  lastCall:      { type: String, required: false },
+  qIntents:      { type: Number, required: false },
+  tipo:          { type: String, required: false },
+  vector:        { type: String, required: false },
+  asignados:     { type: String, required: false },
+  slug:          { type: String, required: false },
+
+  fets_inicio:   { type: Number, required: false },
+  fets_ucontacto:{ type: Number, required: false },
+  fets_ullamado: { type: Number, required: false },
+
+})
+
+
+const morbilidadSch = new Schema({
+  active:  { type: String,  required: false },
+  tipo:    { type: String,  required: false },
+  hasTipo: { type: Boolean, required: false },
+  qty:     { type: Number,  required: false },
+  slug:    { type: String,  required: false },
+
+
+})
 
 /**
  * Creación de un Schema
@@ -200,6 +338,23 @@ const asisprevencionSch = new Schema({
     requeridox:  { type: requirenteSch, required: false },
     novedades:   [ novedadSch ],
     atendidox:   { type: atendidoSch,   required: false },
+
+    isVigilado:      { type: Boolean, required: false, default: false },
+    hasSeguimiento:  { type: Boolean, required: false, default: false },
+    isCovid:         { type: Boolean, required: false, default: false },
+    isInternado:     { type: Boolean, required: false, default: false },
+
+
+    infeccion:         { type: infeccionFollowUpSch, required: false },
+    internacion:       { type: internacionAsisSch, required: false },
+    sisaevent:         { type: sisaEventSch, required: false },
+    muestralab:        { type: muestraLaboratorioSch, required: false },
+    followUp:          { type: afectadosFollowUpSch, required: false },
+    sisaEvolucion:     [ sisaEvolucionSch ],
+    seguimEvolucion:   [ afectadoUpdateSch ],
+    muestrasEvolucion: [ muestraLaboratorioSch ],
+    contextoAfectados: [ contextoAfectadosSch ],
+    morbilidades:      [ morbilidadSch ],
 });
 
 
@@ -307,6 +462,16 @@ function buildQuery(query){
 
   if(query['requirenteId']){
       q["requeridox.id"] = query['requirenteId'];
+  }
+
+
+  if(query['isVigilado']){
+    q["isVigilado"] = true;
+
+
+
+
+
   }
 
 

@@ -1,0 +1,169 @@
+<mat-card >
+  <mat-card-content>
+  <form [formGroup]="form">
+	<!-- compPrefix; compName; compNum; -->
+	<!-- fecomp_txa; action; slug; -->
+	<!-- description;  -->
+	<!-- sector; estado; avance; ts_alta; ts_fin; ts_prog;  -->
+
+	<mat-expansion-panel [expanded]="true">
+
+	    <mat-expansion-panel-header>
+	        <mat-panel-title>Filtrar registro según...</mat-panel-title>                        
+	    </mat-expansion-panel-header>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput  
+          		[formControl]="form.controls['compPrefix']" placeholder="Prefijo" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput 
+          		[formControl]="form.controls['compName']" placeholder="Comprobante" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['compNum_d']" placeholder="Desde número" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['compNum_h']" placeholder="Hasta número" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class='vigilancia-box'>
+    <div class="row" >
+      <div class="col-md-2 d-flex align-items-center" 
+          title="Sección para filtrar solicitudes bajo vigilancia">
+          <mat-checkbox 
+                [checked]="true"
+                [formControl]="form.controls['isVigilado']" >
+                  bajo vigilancia epidemiológica</mat-checkbox>
+      </div>
+    </div>
+  	</div>
+
+    <div class="row" >
+      <div class="col">
+        <persona-buscar (person$)=personFetched($event)></persona-buscar>
+      </div>
+      <div class="col d-flex align-items-center">
+        <ng-container *ngIf="currentPerson">
+            <mat-checkbox [checked]='true' (change)="deSelectPerson($event)">
+            Selección activa: {{ currentPerson.displayName }}</mat-checkbox>
+        </ng-container>
+      </div>
+    </div>
+
+<!-----
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTipoAccion placeholder="Tipo de Acción"
+              [formControl]="form.controls['action']"
+              (selectionChange)="changeSelectionValue('action',fldTipoAccion.value)" >
+            <mat-option *ngFor="let item of actionOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSector placeholder="Sector"
+              [formControl]="form.controls['sector']"
+              (selectionChange)="changeSelectionValue('sector',fldSector.value)" >
+            <mat-option *ngFor="let item of sectorOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecomp_d']" placeholder="Fecha desde" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha hasta" >
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstado placeholder="Estado"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
+            <mat-option *ngFor="let item of estadoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldAvance placeholder="Avance"
+              [formControl]="form.controls['avance']"
+              (selectionChange)="changeSelectionValue('avance',fldAvance.value)" >
+            <mat-option *ngFor="let item of avanceOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+--->    
+  </mat-expansion-panel>
+
+
+
+
+
+
+
+
+  <div class="d-md-flex justify-content-end align-items-center panel-header" >
+    <span class="mr-3" >SELECCIONAR VISTA  </span>
+    <mat-button-toggle-group #fldButtonGrp multiple name="view" 
+          (change)='viewPanelsSelection($event)'>
+      <mat-button-toggle value="sisa">
+        SISA
+      </mat-button-toggle>
+      <mat-button-toggle value="seguimiento">
+        LLAMADOS
+      </mat-button-toggle>
+      <mat-button-toggle value="core">
+        GENERAL
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+	<div class="d-md-flex justify-content-start align-items-center additional-info">
+	  <button mat-raised-button color="primary" type="submit" 
+	      (click)="onSubmit('search')"
+	      [disabled]="!form.valid" >Buscar</button>
+	  
+	  <!--button mat-raised-button color="warn" 
+	      (click)="onSubmit('search_next')"
+	      [disabled]="!form.valid" >Buscar siguientes</button
+	  
+	  <button mat-button type="button" color="accent"
+	      (click)="onCancel()" >Cancelar</button>
+
+	  <button mat-button type="button" color="accent"
+	      (click)="showMap('map:show')" >Mostrar mapa</button>
+
+	  <button mat-button type="button" color="accent"
+	      (click)="showMap('map:hide')" >Cerrar mapa</button  -->
+	</div>
+
+</form>
+</mat-card-content>
+</mat-card>

@@ -25,7 +25,7 @@ import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
-import { Asistencia, Alimento, AsistenciaBrowse, Requirente, Locacion,
+import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
@@ -47,6 +47,17 @@ const COBERTURA = 'cobertura';
 const ENCUESTA = 'ambiental';
 const ASSETS = 'assets';
 
+const ASIS_PREVENCION_RECORD = 'asisprevencion'
+
+const SISA_ESTADO = 'sisa:estado';
+const SISA_FWUP =   'sisa:followup';
+
+const SEGUIMIENTO_ESTADO = 'seguimiento:estado';
+const SEGUIMIENTO_FWUP =   'seguimiento:fwup';
+
+const INFECTION_ESTADO = 'infection:estado';
+
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -58,6 +69,7 @@ export class SaludController {
   private navigationUrl = "";
 
   private _asistenciasSelector: AsistenciaBrowse;
+  private _vigilanciaSelector: VigilanciaBrowse;
 
   private _encuestadores: User[];
 
@@ -224,12 +236,64 @@ export class SaludController {
   }
 
 
+
+  /****************************************/
+  /******* Asistencias EPIDEMIO   ********/
+  /**************************************/
+
+  manageEpidemioState(event: UpdateAsistenciaEvent): Subject<Asistencia>{
+    let listener = new Subject<Asistencia>();
+    let asistencia = event.token;
+
+    this.transitionOrchestration(event.type, asistencia)
+    this.updateAsistencia(listener, asistencia)
+
+    return listener;
+  }
+
+  private transitionOrchestration(transition: string, asistencia: Asistencia){
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth();
+    let year = today.getFullYear();
+
+    if(transition === SISA_ESTADO){
+      let sisaevent = asistencia && asistencia.sisaevent;
+
+      if(sisaevent){
+        if(sisaevent.isActive){
+          asistencia.isVigilado = true;
+          sisaevent.fe_consulta  = sisaevent.fe_consulta  ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_consulta))  : devutils.txFromDate(today);
+          sisaevent.fe_reportado = sisaevent.fe_reportado ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_reportado)) : devutils.txFromDate(today);
+
+        }else {
+          sisaevent.fe_baja  ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_baja))  : devutils.txFromDate(today);
+        }
+      }
+
+
+    }else if(transition === SISA_FWUP ){
+      
+
+    }else if(transition === SEGUIMIENTO_ESTADO ){
+      
+
+    }else if(transition === SEGUIMIENTO_FWUP ){
+      
+
+    }else if(transition === INFECTION_ESTADO ){
+
+    }
+
+  }
+
+
   /****************************************/
   /******* Asistencias PREVENCIÓN ********/
   /**************************************/
   buildTableroCovid(fecharef: Date): Observable<any> {
 
-    return this.daoService.buildTableroCovid<any>('asisprevencion', 0);
+    return this.daoService.buildTableroCovid<any>(ASIS_PREVENCION_RECORD, 0);
 
 
   }
@@ -240,17 +304,17 @@ export class SaludController {
   manageCovidRecord(asistencia:Asistencia ): Subject<Asistencia>{
     let listener = new Subject<Asistencia>();
     if(this.isNewToken(asistencia)){
-      this.initNewCovidAsistencia(listener, 'asisprevencion', asistencia);
+      this.initNewCovidAsistencia(listener,  asistencia);
 
     }else{
-      this.updateAsistencia(listener, 'asisprevencion', asistencia);
+      this.updateAsistencia(listener, asistencia);
 
     }
     return listener;
   }
 
   /******* CREATE ASISTENCIA ********/
-  private initNewCovidAsistencia(asistencia$:Subject<Asistencia>, type, asistencia:Asistencia){
+  private initNewCovidAsistencia(asistencia$:Subject<Asistencia>,  asistencia:Asistencia){
     let sector = asistencia.sector || 'salud';
     let name = 'solicitud';
     let novedades = asistencia.novedades;
@@ -288,7 +352,7 @@ export class SaludController {
       asistencia.compName = serial.compName;
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
      
-      this.insertAsistencia(asistencia$, type, asistencia);
+      this.insertAsistencia(asistencia$, asistencia);
     });
 
 
@@ -306,10 +370,10 @@ export class SaludController {
   manageAsistenciaRecord(asistencia:Asistencia ): Subject<Asistencia>{
     let listener = new Subject<Asistencia>();
     if(this.isNewToken(asistencia)){
-      this.initNewAsistencia(listener, 'asisprevencion', asistencia);
+      this.initNewAsistencia(listener, asistencia);
 
     }else{
-      this.updateAsistencia(listener, 'asisprevencion', asistencia);
+      this.updateAsistencia(listener, asistencia);
 
     }
     return listener;
@@ -326,11 +390,11 @@ export class SaludController {
 
 
   /******* UPDATE ASISTENCIA ********/
-  private updateAsistencia(asistencia$:Subject<Asistencia>, type, asistencia:Asistencia){
+  private updateAsistencia(asistencia$: Subject<Asistencia>,  asistencia: Asistencia){
  
     this.initAsistenciaForUpdate(asistencia);
 
-    this.upsertAsistencia(asistencia$, type, asistencia);
+    this.upsertAsistencia(asistencia$, asistencia);
 
   }
  
@@ -352,14 +416,14 @@ export class SaludController {
 
   }
 
-  private upsertAsistencia(listener: Subject<Asistencia>, type,  asistencia: Asistencia){
-    this.daoService.update<Asistencia>(type, asistencia._id, asistencia).then(t =>{
+  private upsertAsistencia(listener: Subject<Asistencia>,  asistencia: Asistencia){
+    this.daoService.update<Asistencia>(ASIS_PREVENCION_RECORD, asistencia._id, asistencia).then(t =>{
       listener.next(t);
     })
   }
 
   /******* CREATE ASISTENCIA ********/
-  private initNewAsistencia(asistencia$:Subject<Asistencia>, type, asistencia:Asistencia){
+  private initNewAsistencia(asistencia$:Subject<Asistencia>, asistencia:Asistencia){
     let sector = asistencia.sector || 'salud';
     let name = 'solicitud';
     let novedades = asistencia.novedades;
@@ -394,12 +458,12 @@ export class SaludController {
       asistencia.compName = serial.compName;
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
      
-      this.insertAsistencia(asistencia$, type, asistencia);
+      this.insertAsistencia(asistencia$, asistencia);
     });
   }
 
-  private insertAsistencia(listener: Subject<Asistencia>,type,  token: Asistencia){
-      this.daoService.create<Asistencia>(type, token).then(token =>{
+  private insertAsistencia(listener: Subject<Asistencia>,  token: Asistencia){
+      this.daoService.create<Asistencia>(ASIS_PREVENCION_RECORD, token).then(token =>{
         listener.next(token);
       });
   }
@@ -408,7 +472,7 @@ export class SaludController {
     let query = {
       idPerson: person._id
     }
-    return this.daoService.search<Asistencia>('asisprevencion', query);
+    return this.daoService.search<Asistencia>(ASIS_PREVENCION_RECORD, query);
   }
 
   fetchAsistenciaByDNI(tdoc, ndoc){
@@ -416,7 +480,7 @@ export class SaludController {
       tdoc: tdoc,
       ndoc: ndoc
     }
-    return this.daoService.search<Asistencia>('asisprevencion', query);
+    return this.daoService.search<Asistencia>(ASIS_PREVENCION_RECORD, query);
   }
 
 
@@ -429,7 +493,7 @@ export class SaludController {
 
   private loadAsistenciasByQuery(listener: Subject<Asistencia[]>, query){
 
-    this.daoService.search<Asistencia>('asisprevencion', query).subscribe(list =>{
+    this.daoService.search<Asistencia>(ASIS_PREVENCION_RECORD, query).subscribe(list =>{
       if(list && list.length){
         this.solicitudesList = list;
 
@@ -446,7 +510,7 @@ export class SaludController {
 
   public fetchAsistenciasDashboard(fecharef: Date): Observable<any>{
 
-    return this.daoService.fetchAsistenciaDashboard<any>('asisprevencion', fecharef.getTime());
+    return this.daoService.fetchAsistenciaDashboard<any>(ASIS_PREVENCION_RECORD, fecharef.getTime());
 
   }
 
@@ -479,7 +543,7 @@ export class SaludController {
     let token = {
       avance: avance
     }
-    this.daoService.update('asisprevencion', asistenciaId, token).then(t =>{
+    this.daoService.update(ASIS_PREVENCION_RECORD, asistenciaId, token).then(t =>{
 
     })
   }
@@ -652,7 +716,7 @@ export class SaludController {
   private updatePersonInAsistencia(p:Person, asistencia: Asistencia){
     asistencia.idPerson = p._id
     asistencia.requeridox.id = p._id
-    this.daoService.update<Asistencia>('asisprevencion', asistencia._id, asistencia).then(t =>{
+    this.daoService.update<Asistencia>(ASIS_PREVENCION_RECORD, asistencia._id, asistencia).then(t =>{
     })
 
   }
@@ -1166,6 +1230,18 @@ export class SaludController {
   set asistenciasSelector(e: AsistenciaBrowse){
     this._asistenciasSelector = e;
   }
+
+  // Browse Solicitud que están bajo vigilancia epidemiológica
+  get vigilanciaSelector():VigilanciaBrowse{
+    if(!this._vigilanciaSelector) this._vigilanciaSelector = new VigilanciaBrowse();
+    return this._vigilanciaSelector;
+  }
+  
+  set vigilanciaSelector(e: VigilanciaBrowse){
+    this._vigilanciaSelector = e;
+  }
+
+
 
   getAuditData(){
     if(! this.userx) return null;

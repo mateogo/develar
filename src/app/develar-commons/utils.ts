@@ -273,8 +273,10 @@ const
 
 const parseDateStr = function(str) {
     if(!str) return null;
+    console.log('parseDate [%s]', str);
     let mx = str.match(/(\d+)/g);
     let ty = new Date();
+    console.log('parseDate mx [%s]', mx && mx.length);
     if(mx.length === 0) return ty;
     if(mx.length === 1){
         if(mx[0]<0 || mx[0]>31) return null;

@@ -1,0 +1,6 @@
+<ng-container *ngIf="showFollowUp">
+
+	<vigilancia-followup  [asistencia]='asistencia' [viewList]='viewList'
+								(updateToken)='manageBase($event)'></vigilancia-followup>
+
+</ng-container>

@@ -1,0 +1,51 @@
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Caso reportado en estado activo en SISA </mat-checkbox>
+		</div>
+	</div>
+	<div class="row">
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['fe_consulta']" placeholder="Fecha de consulta" >
+	        </mat-form-field>
+	    </div>
+		<div class="col" style="text-align: center;">
+			<mat-form-field>
+				<mat-label>Nuevo estado del caso</mat-label>
+				<mat-select #fldAsignar  formControlName='avance'
+										(selectionChange)="changeSelectionValue('avance', fldAsignar.value)">
+
+				    <mat-optgroup [disabled]="!avanceOptList.length" [label]="'Seleccione estado del caso'">
+				        <mat-option *ngFor="let admision of avanceOptList" [value]="admision.val">
+				            {{ admision.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div class="row" >
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['slug']" placeholder="Observación" >
+	        </mat-form-field>
+	    </div>
+	</div>
+
+	<div class="additional-info">
+		<button mat-raised-button color="primary" (click)="onSubmit()">
+		    Asignar </button>
+		<button mat-raised-button color="warn"  (click)="onCancel()">
+		    Cancelar </button>
+	</div>
+  
+	</form>
+</div>

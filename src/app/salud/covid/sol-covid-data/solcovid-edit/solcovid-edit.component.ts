@@ -129,7 +129,6 @@ export class SolcovidEditComponent implements OnInit {
     }
   }
 
-
  
   buildForm(): FormGroup{
   	let form: FormGroup;

@@ -8,6 +8,9 @@ export class Requirente {
 		slug: string; 
 		tdoc: string; 
 		ndoc: string;
+		sexo?: string;
+		fenac?: string;
+		edad?: number;
 		nombre?: string;
 		apellido?: string; 
 };
@@ -224,7 +227,297 @@ export class Asistencia {
 		encuesta:    Encuesta;
 		pedido:      Pedido;
 
+		isVigilado:     boolean;
+		hasSeguimiento: boolean;
+		isCovid:        boolean;
+		isInternado:    boolean;
+
+		infeccion:    InfectionFollowUp;
+		internacion:  InternacionAsis;
+		sisaevent:    SisaEvent;
+		muestralab:   MuestraLaboratorio;
+		followUp:     AfectadoFollowUp;
+
+		sisaEvolucion:     Array<SisaEvolucion>;
+		seguimEvolucion:   Array<AfectadoUpdate>;
+		muestrasEvolucion: Array<MuestraLaboratorio>;
+		contextoAfectados: Array<ContextoAfectados>;
+		morbilidades:      Array<Morbilidad>;
 };
+
+const tipoLocacionOptList = [
+	{val: 'HOSP:DIS',    enDistrito: true, tipo: 'HOSP', isPublica: true,   label: 'Hospital (DIS)'},
+	{val: 'AISL:DIS',    enDistrito: true, tipo: 'AISL', isPublica: true,   label: 'Aislam (DIS)'},
+	{val: 'CAPS:DIS',    enDistrito: true, tipo: 'CAPS', isPublica: true,   label: 'CAPS (DIS)'},
+	{val: 'PRIV:DIS',    enDistrito: true, tipo: 'PRIV', isPublica: false,  label: 'Clínica (DIS)'},
+	{val: 'HOGAR:DIS',   enDistrito: true, tipo: 'HOME', isPublica: false,  label: 'En domicilio (DIS)'},
+
+	{val: 'HOSP:XDIS',   enDistrito: true, tipo: 'HOSP', isPublica: true,   label: 'Hospital (X-DIS)'},
+	{val: 'AISL:XDIS',   enDistrito: true, tipo: 'AISL', isPublica: true,   label: 'Aislam (X-DIS)'},
+	{val: 'CAPS:XDIS',   enDistrito: true, tipo: 'CAPS', isPublica: true,   label: 'CAPS (X-DIS)'},
+	{val: 'PRIV:XDIS',   enDistrito: true, tipo: 'PRIV', isPublica: false,  label: 'Clínica (X-DIS)'},
+	{val: 'HOGAR:XDIS',  enDistrito: true, tipo: 'HOME', isPublica: false,  label: 'En domicilio (X-DIS)'},
+];
+
+const tipoCuidadoOptList = [
+    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'     },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'    },
+    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'     },
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO'  },
+    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'    },
+];
+
+
+export class InternacionAsis {
+		isActive: boolean; // si hay internación activa en este momento.
+		tipoCuidado: string; // tipoCuidadoOptList
+		tipoLocacion: string; // tipoInternacionOptList HOS/AIS/HOGAR
+
+		locacionId:         string;
+		locacionSlug:       string;
+		locacionTxt:        string;
+		fe_internacion:     string;
+		fe_alta:            string; 
+		hasSolinternacion:  boolean;
+}
+
+
+const avanceSisaOptList = [
+    {val: 'posible',        label: 'Caso posible'    },
+    {val: 'sospecha',       label: 'Sospecha'        },
+    {val: 'confirmado',     label: 'Confirmado'      },
+    {val: 'descartado',     label: 'Descartado'      },
+    {val: 'enrecuperacion', label: 'En recuperacion' },
+    {val: 'altaobtenida',   label: 'Alta obtenida'    },
+    {val: 'fallecido',      label: 'Fallecido'       },
+];
+
+export class SisaEvent {
+	isActive:     boolean = false; // si hay internación activa en este momento.
+	sisaId:       string = '';
+	reportadoPor: string = 'MAB';
+
+	fe_reportado: string = ''; 
+	fe_baja:      string = ''; 
+	fe_consulta: string = ''; 
+	avance:       string = 'sospecha'; //avanceSisaOptList
+	slug:         string = '';
+
+	fets_reportado: number = 0;
+	fets_baja:      number = 0;
+	fets_consulta:  number = 0;
+}
+
+export class SisaEvolucion {
+	fe_consulta:  string = ''; 
+	isActive:     boolean = true;
+	avance:       string = ''; //avanceSisaOptList
+	slug:         string = '';
+
+	fets_consulta:  number = 0;
+}
+
+
+const estadoMuestraLaboratorioOptList = [
+	{ val: 'presentada', label: 'Presentada' },
+	{ val: 'aceptada',   label: 'Aceptada'   },
+	{ val: 'rechazada',  label: 'Rechazada'  },
+	{ val: 'invalida',   label: 'Invalidada' },
+	{ val: 'analizada',  label: 'Analizada'  },
+];
+
+const resultadoMuestraLaboratorioOptList = [
+	{ val: 'pendiente',   label: 'Pendiente resultado'  },
+	{ val: 'confirmada',  label: 'Confirmada/ Detectable'    },
+	{ val: 'descartada',  label: 'Descartada/ No detectable' },
+	{ val: 'noanalizada', label: 'No analizada'  },
+	{ val: 'invalidada',  label: 'Muestra inválida' },
+];
+
+		// estado: verificado|no_verificado|invalido
+		// resultado: pcr_positivo, pcr_negativo, sisa_descartó, sisa_invalidó
+
+export class MuestraLaboratorio {
+	isActive: boolean;
+	muestraId: string;
+	tipoMuestra: string = 'hisopado';
+	locacionId: string;
+	locacionSlug: string;
+	fe_toma: string;
+
+	laboratorio: string;
+	laboratorioTel: string;
+	metodo: string = 'psr';
+
+	fe_ingestudio: string; 
+	fe_resestudio: string; 
+	fe_notificacion: string; 
+	alerta: string; 
+
+	estado: string;     // estadoMuestraLaboratorioOptList
+	resultado: string; //resultadoMuestraLaboratorioOptList
+	slug: string; 
+}
+
+export class ContextoAfectados {
+	personId: string;
+	slug: string;
+	relacion: string;
+	hasActiveCovid: boolean;
+	hasActiveFollowing: boolean;
+} 
+
+
+const avanceInfectionOptList = [
+	{ val: 'posible',      label: 'Posible'},
+	{ val: 'sospecha',     label: 'Sospecha'},
+	{ val: 'confirmado',   label: 'Confirmado'},
+	{ val: 'enevolucion',  label: 'En evolución'},
+	{ val: 'recuperando',  label: 'Recuperando'},
+	{ val: 'critico',      label: 'Crítico'},
+	{ val: 'fallecido',    label: 'Fallecido'},
+	{ val: 'negativo1',    label: 'Negativo#1'},
+	{ val: 'negativo2',    label: 'Negativo#2'},
+	{ val: 'alta',         label: 'Alta'},
+
+];
+
+const sintomaOptList = [
+	{ val: 'asintomatico',   label: 'Asintomático'},
+	{ val: 'intermedio',     label: 'Intermedio'},
+	{ val: 'critico',        label: 'Crítico'},
+	{ val: 'enrecuperacion', label: 'En recuperación'},
+	{ val: 'aislamdealta',   label: 'Aislamiento de alta'},
+
+];
+
+export class InfectionFollowUp {
+	isActive: boolean = false;
+	hasCovid: boolean = false;
+
+	actualState: number = 0 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
+													//estadoActualAfectadoOptList
+
+	fe_inicio: string = '';  
+	fe_confirma: string = '';
+	fe_alta: string = '';
+
+	avance: string = 'posible'; //avanceInfectionOptList
+	sintoma: string = 'asintomatico'; // sintomaOptList
+
+	qcoworkers:  number = 0;
+	qcovivientes: number = 0 ;
+	qotros: number = 0;
+	slug: string = '';
+
+	fets_inicio: number = 0; 
+	fets_confirma: number = 0;
+	fets_alta: number = 0;
+}
+
+
+const estadoActualAfectadoOptList = [
+	{ val: 0, label: 'Sano'},
+	{ val: 1, label: 'COVID'},
+	{ val: 2, label: 'Recuperado'},
+	{ val: 3, label: 'Descartado'},
+	{ val: 4, label: 'Fallecido'},
+	{ val: 5, label: 'Alta'},
+];
+
+const tipoSeguimientoAfectadoOptList = [
+	{ val: 'sospecha', label: 'Sospecha'},
+	{ val: 'infectado', label: 'Infectado confirmado'},
+];
+
+
+export class AsignadosSeguimiento {
+	userId: string;
+	userSlug: string;
+	userArea: string;
+}
+
+
+export class AfectadoFollowUp {
+	isActive: boolean = false;
+	fe_inicio: string = '';
+	fe_ucontacto: string = '';
+	fe_ullamado: string = '';
+
+	qllamados: number = 0;   // llamados totales
+	qcontactos: number = 0; // llamados con respuesta del afectado
+
+	lastCall: string = 'pendiente';// resultadoSeguimientoOptList 'pendiente|logrado|nocontesta'
+	qIntents: number = 0;
+
+	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
+	vector: string = 'inicia'; //vectorSeguimientoOptList
+
+	asignados: Array<AsignadosSeguimiento> = [];
+	slug: string = 'Inicia seguimiento de afectado/a';
+
+	fets_inicio:    number = 0;
+	fets_ucontacto: number = 0;
+	fets_ullamado:  number = 0;
+
+}
+
+const resultadoSeguimientoOptList = [
+	{ val: 'pendiente',    label: 'Pendiente'},
+	{ val: 'logrado',      label: 'Logrado'},
+	{ val: 'nocontesta',   label: 'No contesta'},
+	{ val: 'noencontrado', label: 'No encontrado/a'},
+];
+
+const vectorSeguimientoOptList = [
+	{ val: 'inicia',     label: 'Inicia seguimiento'},
+	{ val: 'estable',    label: 'Evolución estable'},
+	{ val: 'mejora',     label: 'Mejoría/ Favorable'},
+	{ val: 'desmejora',  label: 'Desmejora/ Desfavorable'},
+	{ val: 'critico',    label: 'Estado crítico'},
+	{ val: 'recuperado', label: 'Recuperado'},
+	{ val: 'alta',       label: 'Dado de alta'},
+	{ val: 'fallecido',  label: 'Fallecido'},
+	{ val: 'sindato',    label: 'Sin dato'},
+];
+
+export class AfectadoUpdate {
+	isActive: boolean = false;
+	fe_llamado: string = '';
+	resultado: string = ''; // resultadoSeguimientoOptList
+
+	vector: string = 'inicia'; //vectorSeguimientoOptList
+	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
+	slug: string = ''; // mensaje
+	indicacion: string = ''; // mensaje
+
+	fets_llamado: number = 0;
+}
+
+
+const activeMorbilidadOptList = [
+	{ val: 'hereditaria',    label: 'Hereditaria'},
+	{ val: 'cronica',    label: 'Crónica'},
+	{ val: 'presente',    label: 'Presente'},
+
+];
+const tipoMorbilidadOptList = [
+	{ val: 'cardíaca',        label: 'Cardíaca'},
+	{ val: 'respiratoria',    label: 'Respiratoria'},
+	{ val: 'infeccion',       label: 'Infección'},
+	{ val: 'fiebre',          label: 'Fiebre'},
+	{ val: 'epoc',            label: 'EPOC'},
+	{ val: 'otra',            label: 'Otra'},
+
+];
+export class Morbilidad {
+	active:  string; //activeMorbilidadOptList
+	tipo:    string; // tipoMorbilidadOptList
+	hasTipo: boolean;
+	qty:     number;
+	slug:    string;
+}
+
 
 export class AsistenciaTable {
 		_id: string;
@@ -248,8 +541,6 @@ export class AsistenciaTable {
 
 		covid: string = '';
 		locacion: string ='';
-
-
 
 		faudit_alta:  string;
 		faudit_um:    string;
@@ -294,6 +585,20 @@ export class AsistenciaBrowse {
 		urgencia:    number;
 		trabajadorId: string;
 		avance_encuesta: string;
+}
+
+export class VigilanciaBrowse {
+		searchAction: string;
+		compPrefix:  string = 'SOL';
+		compName:    string = 'S/Asistencia';
+		compNum_d:   string;
+		requirenteId: string;
+		compNum_h:   string;
+
+		viewList?:   Array<string>;
+
+		isVigilado: boolean = true;
+
 }
 
 export interface AsistenciaSig {
@@ -866,6 +1171,19 @@ const optionsLists = {
    indicaciones: indicacionOptList,
    osocial: obrasSociales,
    prioridad: prioridadOptList,
+
+   //SISA
+   avanceSisa: avanceSisaOptList,
+ 
+   // Seguimiento
+   tipoFollowUp: tipoSeguimientoAfectadoOptList,
+   vectorSeguim: vectorSeguimientoOptList,
+   resultadoSeguim: resultadoSeguimientoOptList,
+
+   //InfectionFollowUp
+   avanceInfection: avanceInfectionOptList,
+   sintomaInfection: sintomaOptList,
+   estadoActualInfection: estadoActualAfectadoOptList,
 }
 
 
@@ -1326,3 +1644,133 @@ export class AsistenciaHelper {
 	}
 
 }
+
+
+
+/***************************************************
+PERSON
+
+
+S/ASISTENCIA
+	tipo:        number = 1; // 1: COVID 2:Denuncia
+	prioridad:   number = 2; // 1:baja 2:media 3: alta
+
+	sintomacovid: ContextoCovid;
+
+	fecomp_tsa:  number;
+	fecomp_txa:  string;
+
+	action:      string = 'covid';
+	sector:      string;
+
+	estado:      string = 'activo';
+	avance:      string = 'emitido';
+
+	novedades:   Array<Novedad>;;
+	requeridox:  Requirente;
+	atendidox:   Atendido;
+
+	isVigilado: boolean TRUE: PERTENECE AL UNIVERSO EPIDEMIIO
+	hasSeguimiento: boolean
+	isCovid:    boolean TRUE: está infectado en este momento
+	isInternado
+
+	INTERNACION
+		isActive
+		tipo: aislamiento:intermedia:intensiva
+		donde: home:exta_distrito:privado:cap:hosp:extra_hosp
+		locacionId
+		locacionSlug
+		locacionTxt
+		hasSolInternacion: boolean
+
+	SISA ACTIVE
+		isActive:
+		fe_reportado
+		fe_baja
+		estado
+		avance
+
+		SISA_CONSULTAS
+			fe_consulta
+			avance: reportado|no_reportado|espera_resultado|resultado_obtendido
+			slug
+
+
+
+
+
+	HISOPADO ACTIVE
+		isActive: boolean // tiene un hisopado en curso
+		fe_toma
+		fe_ingestudio
+		fe_resestudio
+		fe_notificacion
+		alerta: number 1/2/3
+		organismo: SELECT OÑATIVIA|CRUCE|
+		organismo_txt:
+		estado: verificado|no_verificado|invalido
+		resultado: pcr_positivo, pcr_negativo, sisa_descartó, sisa_invalidó
+		slug
+
+
+
+	CONTEXTO
+		qconvivientes: number
+		qcoworkers: number
+		context_list
+			personId
+			slug
+			hasActiveCovid
+			hasActiveFollowing
+
+
+	COVID
+		fe_inicio
+		fe_confirma
+		fe_alta
+		isActive: boolean
+		hasActiveCovid: boolean
+		estado: POSIBLE|PROBABLE|ACTIVA|EN_RECUPERACION|DE_ALTA
+		qconvivientes: number
+		qcoworkers: number
+
+
+
+	SEGUIMIENTO DE AFECTADO
+		isActive
+		fe_inicio
+		fe_ucontacto
+		fe_ullamado
+		qllamados
+		qefectivos
+		tipo: ventana_14: infectado: en_recuperacion
+		evolucion: estable|mejora|desmejora
+		asignados []
+
+	COMORBILIDAD
+		comorbilidades: []
+			tipo
+			hasTipo
+			qty
+			slug
+
+
+
+
+
+
+	VIGILANCIA EPIDEMIOLÓGICA
+
+
+
+EVENTOS Y CAMBIOS DE ESTADO
+
+ALTA 
+
+OJO:
+al crear la S/asistencia
+	sexo, edad, fecha nacim en requeridox
+
+
+**************************************************/

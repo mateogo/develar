@@ -85,6 +85,19 @@ import { InternacionEditComponent } from './internacion/internacion-data/interna
 import { AltarapidaFetchComponent } from './internacion/alta-rapida/altarapida-fetch/altarapida-fetch.component';
 import { SolinternacionPanelComponent } from './internacion/solicitud/solinternacion-panel/solinternacion-panel.component';
 import { SolinternacionBaseComponent } from './internacion/solicitud/solinternacion-base/solinternacion-base.component';
+import { VigilanciaPageComponent } from './vigilancia/vigilancia-page/vigilancia-page.component';
+import { VigilanciaBrowseComponent } from './vigilancia/vigilancia-browse/vigilancia-browse.component';
+import { VigilanciaPanelComponent } from './vigilancia/vigilancia-panel/vigilancia-panel.component';
+import { VigilanciaFollowupComponent } from './vigilancia/vigilancia-followup/vigilancia-followup.component';
+import { VigilanciaViewComponent } from './vigilancia/vigilancia-view/vigilancia-view.component';
+import { VigilanciaListComponent } from './vigilancia/vigilancia-list/vigilancia-list.component';
+import { VigilanciaSisaComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisa/vigilancia-sisa.component';
+import { VigilanciaSisafwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisafwup/vigilancia-sisafwup.component';
+import { VigilanciaSisahistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisahistory/vigilancia-sisahistory.component';
+import { VigilanciaSeguimientoComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
+import { VigilanciaSeguimientofwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
+import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
+import { VigilanciaInfeccionComponent } from './vigilancia/vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 
 @NgModule({
   imports: [
@@ -170,6 +183,26 @@ import { SolinternacionBaseComponent } from './internacion/solicitud/solinternac
     AltarapidaFetchComponent,
     SolinternacionPanelComponent,
     SolinternacionBaseComponent,
-  ]
+    VigilanciaPageComponent,
+    VigilanciaBrowseComponent,
+    VigilanciaPanelComponent,
+    VigilanciaFollowupComponent,
+    VigilanciaViewComponent,
+    VigilanciaListComponent,
+    VigilanciaSisaComponent,
+    VigilanciaSisafwupComponent,
+    VigilanciaSisahistoryComponent,
+    VigilanciaSeguimientoComponent,
+    VigilanciaSeguimientofwupComponent,
+    VigilanciaSeguimientohistoryComponent,
+    VigilanciaInfeccionComponent,
+  ],
+  entryComponents: 
+  [
+    VigilanciaSisaComponent, VigilanciaSisafwupComponent, VigilanciaSisahistoryComponent,
+    VigilanciaSeguimientoComponent, VigilanciaSeguimientofwupComponent, VigilanciaSeguimientohistoryComponent,
+    VigilanciaInfeccionComponent,
+  ],
+
 })
 export class SaludModule { }

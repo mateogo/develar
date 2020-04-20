@@ -1,0 +1,45 @@
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Caso de seguimiento activo vigente </mat-checkbox>
+		</div>
+	</div>
+
+	<div class="row">
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['fe_inicio']" placeholder="Fecha inicio seguimiento" >
+	        </mat-form-field>
+	    </div>
+		<div class="col" style="text-align: center;">
+			<mat-form-field>
+				<mat-label>Tipo de seguimiento</mat-label>
+				<mat-select #fldAsignar  formControlName='tipo'
+										(selectionChange)="changeSelectionValue('tipo', fldAsignar.value)">
+
+				    <mat-optgroup [disabled]="!tipoFollowUpOptList.length" [label]="'Indicá el tipo de seguimiento'">
+				        <mat-option *ngFor="let tipo of tipoFollowUpOptList" [value]="tipo.val">
+				            {{ tipo.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+
+	<h5> proximamente... asignados para el seguimiento</h5>
+
+	<div class="additional-info">
+		<button mat-raised-button color="primary" (click)="onSubmit()">
+		    Confirmar </button>
+		<button mat-raised-button color="warn"  (click)="onCancel()">
+		    Cancelar </button>
+	</div>
+  
+	</form>
+</div>

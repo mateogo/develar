@@ -1,0 +1,148 @@
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Afectado/a por COVID </mat-checkbox>
+		</div>
+	</div>
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['hasCovid'].value===true"
+					[formControl]="form.controls['hasCovid']" >
+					Tiene COVID POSITIVO en este momento? </mat-checkbox>
+		</div>
+	</div>
+
+  <div class="row">
+    <div class="col d-flex align-items-center">
+      <mat-radio-group  formControlName="actualState" aria-label="Estado actual">
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===0" 
+              (change)='changeActualState(0)'
+              [value]="0">Posible / Sospecha</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===1" 
+              (change)='changeActualState(1)'
+              [value]="1">COVID confirmado</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===2" 
+              (change)='changeActualState(2)'
+              [value]="2">Descartado</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===3" 
+              (change)='changeActualState(3)'
+              [value]="3">Recuperado</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===4" 
+              (change)='changeActualState(4)'
+              [value]="4">Fallecido</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['actualState'].value===5" 
+              (change)='changeActualState(5)'
+              [value]="5">Alta</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['fe_inicio']" 
+              placeholder="Fecha inicio síntomas">
+      </mat-form-field>
+    </div>
+
+    <div class="col">
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['fe_confirma']" 
+              placeholder="Fecha confirmación infección">
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['fe_alta']" 
+              placeholder="Fecha alta">
+      </mat-form-field>
+    </div>
+  </div>
+
+
+
+	<div class="row">
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Avance de evolución</mat-label>
+				<mat-select #fldAvance  formControlName='avance'
+										(selectionChange)="changeSelectionValue('avance', fldAvance.value)">
+
+				    <mat-optgroup [disabled]="!avanceOptList.length" [label]="'Evolución del caso'">
+				        <mat-option *ngFor="let item of avanceOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Estado del síntoma</mat-label>
+				<mat-select #fldAvance  formControlName='sintoma'
+										(selectionChange)="changeSelectionValue('sintoma', fldAvance.value)">
+
+				    <mat-optgroup [disabled]="!sintomaOptList.length" [label]="'Síntoma'">
+				        <mat-option *ngFor="let item of sintomaOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+
+	</div>
+
+	<div class="row">
+    <div  class="col">
+        <mat-form-field>
+          <input type="number" matInput [formControl]="form.controls['qcovivientes']" 
+          				placeholder="Cantidad de co-vivientes" >
+        </mat-form-field>
+    </div>
+    <div  class="col">
+        <mat-form-field>
+          <input  type="number" matInput [formControl]="form.controls['qcoworkers']" 
+          				placeholder="Cantidad de contactos laborales" >
+        </mat-form-field>
+    </div>
+    <div  class="col">
+        <mat-form-field>
+          <input  type="number" matInput [formControl]="form.controls['qotros']" 
+          				placeholder="Cantidad de otros contactos próximos" >
+        </mat-form-field>
+    </div>
+
+	</div>
+
+	<div class="row" >
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['slug']" placeholder="Observación" >
+	        </mat-form-field>
+	    </div>
+	</div>
+
+
+	<div class="additional-info">
+		<button mat-raised-button color="primary" (click)="onSubmit()">
+		    ACEPTAR </button>
+		<button mat-raised-button color="warn"  (click)="onCancel()">
+		    Cancelar </button>
+	</div>
+  
+	</form>
+</div>

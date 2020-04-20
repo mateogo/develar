@@ -1,0 +1,22 @@
+<div class='view-port'>
+<ng-container *ngIf="showSisaData">
+    <hr>
+    <p class='text-resaltado'>SISA -   <strong>{{ sisaData.avance }}</strong>  -
+                            (Ref. SISA: {{ sisaData.sisaevent.sisaId }}) </p>
+    <p class='text-normal'> Reportado: {{ sisaData.sisaevent.fe_reportado }} 
+                            Por: {{ sisaData.sisaevent.reportadoPor }}</p>
+
+    <p class='text-normal'>{{ sisaData.sisaevent.slug }}</p>
+    <p class='text-normal'>Última consulta SISA: {{ sisaData.sisaevent.fe_consulta }}</p>
+
+</ng-container>
+
+
+<ng-container *ngFor="let token of sisaHistoryList">
+	<hr>
+  <p class='text-resaltado'>ESTADO: <strong>{{ token.avance }}</strong>  -
+                        {{ token.fe_consulta }} </p>
+  <p class='text-normal'>{{ token.slug }}</p>
+
+</ng-container>
+</div>

@@ -1,0 +1,23 @@
+<div class='view-port'>
+<ng-container *ngIf="showAfectadoFollowUp">
+    <p class='text-resaltado'>SEGUIMIENTO {{ tokenData.tipo }} -  <strong>{{ tokenData.vector }}</strong>  -
+                            (Últ contacto: {{ tokenData.token.fe_ucontacto }}) </p>
+    <p class='text-normal'> {{ tokenData.token.slug }} </p>
+    <p class='text-normal'> Inicio: {{ tokenData.token.fe_inicio }} 
+    												Contactos: {{ tokenData.token.qcontactos }} / {{ tokenData.token.qllamados }} 
+    												Última: {{ tokenData.lastCall }} #{{ tokenData.token.qIntents }} </p>
+
+
+
+</ng-container>
+
+
+<ng-container *ngFor="let token of tokenList">
+	<hr>
+  <p class='text-resaltado'>LLAMADO: <strong>{{ token.resultado }}: {{ token.vector }} </strong>  -
+                        {{ token.fe_llamado }} </p>
+  <p class='text-normal'>{{ token.slug }}</p>
+  <p class='text-normal'>{{ token.indicacion }}</p>
+
+</ng-container>
+</div>

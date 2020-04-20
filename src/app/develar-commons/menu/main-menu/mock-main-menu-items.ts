@@ -699,6 +699,10 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/coordinacion'
       },
       {
+        title: 'Vigilancia epidemiológica',
+        routing: '/salud/gestion/vigilancia'
+      },
+      {
         title: 'Internacion TestUNO',
         routing: '/salud/gestion/testuno'
       },

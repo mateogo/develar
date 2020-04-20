@@ -1,0 +1,81 @@
+<ng-container *ngIf='asistencia.isAsistencia'>
+	<p class='text-resaltado'>{{ asistencia.solicitante }}</p>
+
+	<p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
+
+    <ng-container *ngIf="showSisaData">
+    <hr>
+    <p class='text-resaltado'>SISA -   <strong>{{ sisaData.avance }}</strong>  -
+                            (Ref. SISA: {{ sisaData.sisaevent.sisaId }}) </p>
+    <p class='text-normal'> Reportado: {{ sisaData.sisaevent.fe_reportado }} 
+                            Por: {{ sisaData.sisaevent.reportadoPor }}</p>
+
+    <p class='text-normal'>{{ sisaData.sisaevent.slug }}</p>
+    <p class='text-normal'>Última consulta SISA: {{ sisaData.sisaevent.fe_consulta }}</p>
+    </ng-container>
+
+    <ng-container *ngIf="showSeguimientoData">
+    <hr>
+    <p class='text-resaltado'>SEGUIMIENTO {{ seguimiento.tipo }} -  <strong>
+                            {{ seguimiento.vector }}</strong>  -
+                            (Últ contacto: {{ seguimiento.token.fe_ucontacto }}) </p>
+    <p class='text-normal'> {{ seguimiento.token.slug }} </p>
+    <p class='text-normal'> Inicio: {{ seguimiento.token.fe_inicio }} 
+                                                Contactos: {{ seguimiento.token.qcontactos }} / {{ seguimiento.token.qllamados }} 
+                                                Última: {{ seguimiento.lastCall }} 
+                                            #{{ seguimiento.token.qIntents }} </p>
+    </ng-container>
+
+    <ng-container *ngIf="showInfectionData">
+    <hr>
+    <p class='text-resaltado'>COVID {{ infectionData.avance }} -  
+        <strong>{{ infectionData.sintoma }} </strong></p>
+    <p class='text-normal'> Inicio:{{ infectionData.token.fe_inicio }}  
+                            Confirmación:{{ infectionData.token.fe_confirma }}  
+                            Alta:{{ infectionData.token.fe_alta }} </p>
+
+    <p class='text-normal'> Contactos cercanos: Hogar: {{ infectionData.token.qcovivientes }} 
+        Trabajo: {{ infectionData.token.qcoworkers }} 
+        Otros: {{ infectionData.token.qotros }} </p>
+    <p class='text-normal'>{{ infectionData.token.slug }}</p>
+
+    </ng-container>
+
+    <ng-container *ngIf="showGenericData">
+    <hr>
+	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
+	<p class='text-normal'>{{ asistencia.fiebreTxt }}</p>
+	<p class='text-normal'>{{ asistencia.sintomasTxt }}</p>
+	<p class='text-normal'>{{ asistencia.contagioTxt }}</p>
+	<p class='text-normal'>{{ asistencia.contexto }}</p>
+	<p class='text-normal'>{{ asistencia.indicacion }}</p>
+	<p class='text-normal'>{{ asistencia.description }} </p>
+
+	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
+    </ng-container>
+
+<!-------
+    <badge class="badge-style"  *ngIf="asistencia.isNuevo"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Nuevo</badge>
+
+    <badge class="badge-style"
+    				[size]="'large'"
+            [customColor]="true? 'rgba(84,100,150,0.6)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="true">Intervenciones: {{asistencia.intervenciones}}</badge>
+
+    <badge class="badge-style"
+    				[size]="'large'"
+            [customColor]="asistencia.ponderacionColor" 
+            [borderRadius]="true">Ponderación: {{asistencia.costo}}</badge>
+
+    <badge class="badge-style"
+                    [size]="'large'"
+            [customColor]="asistencia.prioridadColor" 
+            [borderRadius]="true">{{asistencia.prioridad}}</badge>
+
+
+-->
+
+</ng-container>
