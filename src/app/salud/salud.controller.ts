@@ -57,6 +57,8 @@ const SEGUIMIENTO_FWUP =   'seguimiento:fwup';
 
 const INFECTION_ESTADO = 'infection:estado';
 
+const LABORATORIO_ESTADO = 'laboratorio:estado';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -297,7 +299,11 @@ export class SaludController {
 
     }else if(transition === INFECTION_ESTADO ){
 
+
+    }else if(transition === LABORATORIO_ESTADO ){
+
     }
+
 
   }
 

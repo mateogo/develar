@@ -2196,10 +2196,10 @@ const processAlimentarArchive = function(master, req, errcb, cb){
 
 const processSaludArchive = function(master, req, errcb, cb){
     //deploy
-    //const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
+    const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
 
     // local
-    const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();

@@ -99,6 +99,7 @@ import { VigilanciaSeguimientofwupComponent } from './vigilancia/vigilancia-zmod
 import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
 import { VigilanciaInfeccionComponent } from './vigilancia/vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigilancia-alta-panel/vigilancia-alta-panel.component';
+import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
 
 @NgModule({
   imports: [
@@ -198,6 +199,7 @@ import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigil
     VigilanciaSeguimientohistoryComponent,
     VigilanciaInfeccionComponent,
     VigilanciaAltaPanelComponent,
+    VigilanciaLaboratorioComponent,
   ],
   entryComponents: 
   [
