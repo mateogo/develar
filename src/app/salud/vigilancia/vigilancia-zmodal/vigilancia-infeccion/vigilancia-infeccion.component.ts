@@ -68,7 +68,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
   }
 
   changeActualState(estado){
-    console.log('Estado COVID: [%s]', estado);
+    //c onsole.log('Estado COVID: [%s]', estado);
   }
 
 

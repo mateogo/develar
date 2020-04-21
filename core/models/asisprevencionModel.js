@@ -498,6 +498,8 @@ const Record = mongoose.model('Asisprevencion', asisprevencionSch, 'asisprevenci
  * @param cb
  * @param errcb
  */
+
+
 exports.upsertNext = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 

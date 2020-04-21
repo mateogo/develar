@@ -248,8 +248,6 @@ exports.findByQuery = function (rtype, query, errcb, cb) {
     let Record = RecordManager[rtype];
     let regexQuery = buildQuery(query)
 
-    console.dir(regexQuery);
-
     Record.find(regexQuery)
           .limit(100)
           .lean()
@@ -356,8 +354,6 @@ function lookUpAvailability(query, errcb, cb){
 
 function updateInternacionWorkFlow(query, errcb, cb){
     // DISPATCHER
-    console.log('PROCESS COVID TO BEGIN')
-    console.dir(query);
 
     if(query && query.process){
       if(query.process === 'allocate:solicitud'){
@@ -460,19 +456,15 @@ function transitionPoolTransito(solicitud, spec, today){
 }
 
 function transitionTransitoFacility(solicitud, spec, today){
-  console.log('transition-2-facility BEGIN ***********************')
   solicitud.queue = 'alocado';
   solicitud.ts_umodif = today.getTime();
 
   let internacion_from  =  Object.assign({}, solicitud.internacion.toObject());
-  console.dir(internacion_from)
-  console.log('transition-2-facility BEGIN ***********************')
 
 
   solicitud.internacion =  updateInternacion(solicitud, spec);
 
   let internacion_target = Object.assign({}, solicitud.internacion.toObject());
-  console.dir(internacion_target)
 
 
   spec.today = new Date();
@@ -491,7 +483,6 @@ function transitionTransitoFacility(solicitud, spec, today){
 /*****  master allocator ********/
 /********************************/
 function disponibleInternacion(spec, errcb, cb){
-  console.log('disponibleInternacion TO BEGIN')
   let nominalList;
 
   locaciones.fetchAvailability({}, 
@@ -501,7 +492,6 @@ function disponibleInternacion(spec, errcb, cb){
     function(list){
       nominalList = addAcumulators(list);
 
-      console.dir(nominalList)
       consolidarOcupacion(nominalList, errcb, cb)
     })
 }
@@ -557,10 +547,8 @@ function consolidarOcupacion(nominalList, errcb, cb){
 
 function contabilizarOcupacionGeneral(solicitudes, list){
   let master = {};
-  console.log('Contabilizar: oferta:[%s] demanda:[%s]', list && list.length, solicitudes && solicitudes.length);
 
   solicitudes.forEach(solicitud => {
-    console.log('ACUMULAR SOLICITUDES [%S]', solicitud.queue)
     if(solicitud.queue === 'pool'){
       sumarPool(solicitud, list, master)
 
@@ -584,8 +572,6 @@ function sumarPool(solicitud, list, master){
   }else {
     token = master['pool'];
   }
-  console.log('sumar POOL [%s]', solicitud.compNum);
-  console.dir(token);
 
   acumCapacidad(solicitud.triage.servicio, token)
 }

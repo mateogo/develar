@@ -695,6 +695,7 @@ const asisActionOptList: Array<any> = [
         {val: 'covid',       isRemitible: false,  key:'modalidad',  type:'covid',          label: 'COVID' },
         {val: 'prevencion',  isRemitible: false,  key:'modalidad',  type:'prevencion',     label: 'Llamado prevención' },
         {val: 'same',        isRemitible: false,  key:'modalidad',  type:'same',           label: 'Derivar SAME' },
+        {val: 'epidemiologia', isRemitible: false,  key:'modalidad',  type:'epidemio',     label: 'Epidemiología' },
 
 ];
 
@@ -703,6 +704,7 @@ const novedadesTypeOptList: Array<any> = [
         {val: 'solmedicx',    label: 'Médico/a' },
         {val: 'enviarsame',   label: 'SAME' },
         {val: 'recomendacion',label: 'Recomendación' },
+        {val: 'epidemiologia',label: 'Epidemiología' },
         {val: 'evolucion',    label: 'Evolución' },
         {val: 'nocontesta',   label: 'No contesta' },
         {val: 'otros',        label: 'Otros' },
@@ -714,6 +716,7 @@ const pedidosTypeOptList: Array<any> = [
         {val: 'covid',    type:'covid',     label: 'COVID' },
         {val: 'prevencion',    type:'prevencion',     label: 'Prevención' },
         {val: 'same',    type:'same',     label: 'SAME' },
+        {val: 'epidemio',    type:'epidemio',     label: 'Epidemiología' },
         {val: 'no_definido',  type:'Sin selección', label: 'Sin selección' },
 ];
 
@@ -749,6 +752,10 @@ const sector_actionRelation = {
 
   same: [
     {val: 'same',   label: 'Gestionar SAME' },
+  ],
+
+  epidemologia: [
+    {val: 'epidemio',   label: 'Seguimiento epidemiológico' },
   ],
 
   direccion: [
@@ -833,6 +840,7 @@ const avanceOptList = [
       {val: 'esperasame',           tipo:1, order: 14, label: 'Espera SAME',          slug:'Espera SAME' },
       {val: 'hospitalizado',        tipo:1, order: 15, label: 'Hospitalizado',        slug:'Hospitalizado' },
       {val: 'derivado',             tipo:1, order: 16, label: 'Derivado',             slug:'Derivado' },
+      {val: 'epidemio',             tipo:1, order: 16, label: 'Epidemiología',        slug:'Epidemiología' },
       {val: 'dadodealta',           tipo:1, order: 17, label: 'Alta médica',          slug:'Alta médica' },
       {val: 'fallecido',            tipo:1, order: 18, label: 'Fallecido/a',            slug:'Fallecido/a' },
 
@@ -1453,6 +1461,71 @@ export class AsistenciaHelper {
 
 		return token;
 	}
+
+	static initNewAsistenciaEpidemio(action, sector, person?: Person, serial?: Serial, slug?){
+		let ts = Date.now();
+		let requirente: Requirente;
+		let token = new Asistencia();
+		let novedad = new Novedad();
+
+		novedad.tnovedad = "epidemiologia";
+		novedad.novedad  = 'Alta seguimiento epidemiología';
+
+		if(person){
+			
+			requirente = AsistenciaHelper.buildCovidRequirente(person);
+			token.idPerson = person._id;
+
+			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
+			token.telefono = telefono.data
+
+
+			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+			if(address) {
+				let locacion = new Locacion();
+				locacion.street1 = address.street1;
+				locacion.streetIn = address.streetIn;
+				locacion.streetOut = address.streetOut;
+				locacion.city = address.city;
+				locacion.barrio = address.barrio;
+				token.locacion = locacion;
+			}
+
+		}else{
+			requirente = new Requirente();
+			token.idPerson = '';
+		}
+
+		token.fecomp_txa = devutils.txFromDateTime(ts);
+		token.fecomp_tsa = ts;
+
+		token.action = action;
+		token.slug = slug || '';
+		token.sector = sector;
+		token.requeridox = requirente;
+		token.description = '';
+
+		if(serial){
+			token.compPrefix = serial.compPrefix ;
+			token.compName = serial.compName;
+			token.compNum = serial.pnumero + "";
+		}else{
+			token.compPrefix = 'SOL' ;
+			token.compName = 'S/Asistencia';
+			token.compNum = '';
+		}
+
+		token.ts_alta = ts;
+		token.ts_fin = 0
+		token.ts_prog = ts;
+		token.estado = 'activo';
+		token.avance = 'emitido';
+		token.novedades = [ novedad ];
+		token.isVigilado = true;
+
+		return token;
+	}
+
 
 	static initNewAsistenciaCovid(action, sector, person?: Person, serial?: Serial, slug?){
 		let ts = Date.now();

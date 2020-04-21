@@ -143,7 +143,7 @@ const serialTypeConfig = {
     letra: ['X'],
     punto: 0,
     pnumero: 1,
-    offset: 400000,
+    offset: 100000,
     compPrefix: 'SOL',
     compName: 'S/Asistencia',
     showAnio: false,

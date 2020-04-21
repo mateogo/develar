@@ -133,7 +133,6 @@ export class VigilanciaBrowseComponent implements OnInit {
   }
 
   initForEdit(form: FormGroup, query: VigilanciaBrowse): FormGroup {
-    console.log('initfor Edit[%s]', query.isVigilado);
 		form.reset({
         compPrefix:  query.compPrefix,
         compName:    query.compName,

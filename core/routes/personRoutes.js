@@ -56,7 +56,21 @@ router.get('/import', function (req, res) {
  */
 router.get('/alimentar', function (req, res) {
     console.log('import ALIMENTAR ROUTE');
-    service.alimentarImport(req, function(err) {
+    // desactivado
+    res.status(200).json([{error: 'ruta desactivada'}]);
+    // service.alimentarImport(req, function(err) {
+    //     res.status(400).json(err);
+
+    // }, function(entities) {
+    //     res.status(200).json(entities);
+
+    // });
+});
+
+
+router.get('/saludimport', function (req, res) {
+    console.log('import SALUD ROUTE');
+    service.saludImport(req, function(err) {
         res.status(400).json(err);
 
     }, function(entities) {

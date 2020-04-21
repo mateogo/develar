@@ -1912,6 +1912,26 @@ async function saveAlimentarRecord(person, master){
 
 }
 
+function saveSaludRecord(person, master){
+    if(master[person.ndoc]){
+
+        Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).then( person =>  {
+            if(person && person._id){
+                console.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
+            }
+        })
+
+    }else{
+
+        person.save().then(person =>{
+            if(person && person._id){
+                console.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
+            }
+
+        })
+    }
+
+}
 
 const buildAlimentarCoreData = function(person, token){
     person.grupo_familiar = 0;
@@ -1948,6 +1968,78 @@ const buildAlimentarCoreData = function(person, token){
     // person.contactdata = token. ;
     // person.oficios = token. ;
 }
+const buildSaludCoreData = function(person, token){
+    // familyref
+    // dniref
+    // telefono
+
+    person.grupo_familiar = 0;
+    person.apellido = token.apellido
+    person.nombre = token.nombre
+
+    person.displayName = person.apellido + ', ' + person.nombre;
+
+    personType = 'fisica';
+
+    person.isImported = true;
+
+    person.idbrown = "20140421-11:31";
+    person.alerta = token.alerta;
+    person.locacion = token.street1 + ' ' + token.city;
+
+    person.tdoc = 'DNI';
+    person.ndoc = token.ndoc;
+    //person.cuil = token.ncuil;
+
+
+    person.ts_alta = Date.now();
+    person.ts_umodif = person.ts_alta;
+
+    let contactdata = {
+        tdato: 'CEL',
+        data: token.telefono || 'sin dato',
+        type:  'PER',
+        slug: 'dato importado de excel',
+        isPrincipal: true,
+
+    }
+    person.contactdata = [ contactdata]
+
+    // person.locaciones = token. ;
+    // person.familiares = token. ;
+    // person.user = token. ;
+    // person.communitylist = token. ;
+    // person.contactdata = token. ;
+    // person.oficios = token. ;
+}
+//http://localhost:8080/api/persons/saludimport
+const buildSaludLocaciones = function(person, token){
+    let locaciones = [];
+    let city = token.city;
+    let barrio =  '';
+
+    let locacion = {
+        "slug": "domicilio informado",
+        "description": "Importado de excell",
+        "isDefault": true,
+        "addType": "principal",
+        "street1": token.street1 || 'sin dato',
+        "street2": "",
+        "streetIn": "",       
+        "streetOut": "",
+        "city": city || 'extradistrito',
+        "state": "buenosaires",
+        "statetext": "Brown",
+        "zip": '',
+        "country": "AR",
+        "estado": "activo",
+        "barrio": "",
+
+    }
+
+    locaciones.push(locacion);
+    person.locaciones = locaciones;
+}
 
 const buildAlimentarLocaciones = function(person, token){
     let locaciones = [];
@@ -1976,6 +2068,7 @@ const buildAlimentarLocaciones = function(person, token){
     locaciones.push(locacion);
     person.locaciones = locaciones;
 }
+
 
 const buildAlimentarCobertura = function(person, token){
     let ingreso4 = {
@@ -2013,6 +2106,30 @@ const processOneAlimentarPerson = function(token, master){
 }
 
 
+const processOneSaludPerson = function(token, master){
+    // contactref: 1: peron  2: familiares
+    let person = new Person();
+
+    if(master[token.ndoc]){
+        person._id = master[token.ndoc]._id;
+    }
+
+    if(token.familyref === "1" || token.familyref === 1){
+        //con sole.log('Es PERSON FULL [%s] [%s]', token.apellido, token.nombre)
+    }else if(token.familyref === "2" || token.familyref === 2){
+        //co nsole.log('Es FAMILIAR / CONTACTO  [%s] [%s]', token.apellido, token.nombre)
+    }else {
+        //c onsole.log('NO TENGO DATO DE SI ES PERSON [%s]', token.familyref)
+    }
+
+    buildSaludCoreData(person, token);
+    buildSaludLocaciones(person, token);
+
+
+    saveSaludRecord(person, master);
+}
+
+
 const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
 
     let existentes = 0;
@@ -2032,13 +2149,31 @@ const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
 
 }
 
+const processSaludPersons = function(personArray, personMaster, errcb, cb){
+
+    let existentes = 0;
+    personArray.forEach((token, index) => {
+
+        if(personMaster[token.ndoc]){
+
+            existentes += 1;
+
+        }else {
+
+        }   
+        processOneSaludPerson(token, personMaster);
+
+    });
+
+
+}
 
 const processAlimentarArchive = function(master, req, errcb, cb){
     //deploy
-    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
 
     // local
-    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -2059,15 +2194,42 @@ const processAlimentarArchive = function(master, req, errcb, cb){
 }
 
 
+const processSaludArchive = function(master, req, errcb, cb){
+    //deploy
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
+
+    // local
+    const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    csv({delimiter: ','})
+    .fromFile(arch)
+    .then((persons) => {
+
+        processSaludPersons(persons, master, errcb, cb)
+                    
+        //processAlimentarPersons(persons, master, errcb, cb)
+        cb({result: "ok"})
+
+    });
+}
+
 //http://localhost:8080/api/persons/alimentar
 
 /**
- * Proceso de importación de los beneficiarios Plan Alimentar 2020
+ * Proceso de importación PERSONAS de SALDU
  * @param person
  * @param cb
  * @param errcb
  */
-exports.alimentarImport = function (req, errcb, cb) {
+exports.saludImport = function (req, errcb, cb) {
 
     let promise = new Promise((resolve, reject)=> {
         Person.find(null, '_id displayName tdoc ndoc cobertura').lean().then(persons => {
@@ -2089,7 +2251,7 @@ exports.alimentarImport = function (req, errcb, cb) {
 
     promise.then(master => {
 
-        processAlimentarArchive(master, req, errcb, cb);
+        processSaludArchive(master, req, errcb, cb);
 
     })        
 

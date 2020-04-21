@@ -29,6 +29,7 @@ function isInAsistenciaBlackList(token, action){
 export const sectores: SectorAtencion[] = [
 			{val:'com',          serial:'salud',       label: 'COM',               style: {'background-color': "#f2cded"}},
 			{val:'prevencion',   serial:'salud',       label: 'Médico/a prevención', style: {'background-color': "#f2cded"}},
+			{val:'epidemiologia',serial:'salud',       label: 'Epidemiología',     style: {'background-color': "#f2cded"}},
 			{val:'same',         serial:'salud',       label: 'SAME',              style: {'background-color': "#f2aded"}},
 			{val:'direccion',    serial:'salud',       label: 'Dirección Médica' , style: {'background-color': "#f2dded"}},
 	];
@@ -132,7 +133,7 @@ export class SaludModel {
 		serial.estado = 'activo';
 		serial.punto = 0;
 		serial.pnumero = 1;
-		serial.offset = 400000;
+		serial.offset = 100000;
 		serial.slug = 'Solicitudes de asistencia prevención Salud';
 		serial.compPrefix = 'SOL';
 		serial.compName = 'S/Asistencia';

@@ -215,7 +215,7 @@ export class VigilanciaFollowupComponent implements OnInit {
         this.asistencia = res.token;
         this.manageAsistenciaView(this.viewList);
       }
-      console.log('dialog CLOSED')
+      //c onsole.log('dialog CLOSED')
     });    
   }
 
@@ -233,7 +233,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      // c onsole.log('dialog CLOSED')
     });    
   }
 
@@ -251,7 +251,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      //c onsole.log('dialog CLOSED')
     });    
   }
   
@@ -269,7 +269,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      //c onsole.log('dialog CLOSED')
     });    
   }
 
@@ -292,7 +292,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      // c onsole.log('dialog CLOSED')
     });    
   }
 
@@ -310,7 +310,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      //c onsole.log('dialog CLOSED')
     });    
   }
 
@@ -328,7 +328,7 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED')
+      //c onsole.log('dialog CLOSED')
     });    
   }
 

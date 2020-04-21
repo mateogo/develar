@@ -1,0 +1,32 @@
+<ng-container *ngIf="searchPerson">
+	<mat-card>
+  	<mat-card-content>
+      <p class="text-resaltado">Buscar persona afectada</p>
+      <altarapida-fetch (person$)='personFetched($event)'></altarapida-fetch>
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+
+<mat-card>
+	<ng-container *ngIf='showView'>
+		<mat-card-header>
+			<mat-card-title> Alta rápida de Vigilancia Epidemiológica </mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<core-view [person]='person'></core-view>
+
+			<ng-container *ngIf='confirmaInternacion'>
+				<div class="row section-box">
+					<div class='col'>
+						<p class="text-resaltado">Confirme enrolar persona en vigilancia epidemio</p>
+						<button mat-raised-button class="nueva-internacion-button" 
+										(click)='confirmaActualizarInternacionEvent("next")'>ACTUALIZAR</button>			
+						<button mat-flat-button class="nueva-internacion-button" 
+										(click)='confirmaActualizarInternacionEvent("cancelar")'>Cancelar</button>			
+					</div>
+				</div>
+			</ng-container>
+
+		</mat-card-content>
+	</ng-container>
+</mat-card>

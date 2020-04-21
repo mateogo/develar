@@ -212,6 +212,20 @@ export class SaludController {
  /**
   * obtener serial para Asistencias
   */
+  private fetchSerialAsistenciasCovid(type, name, sector): Observable<Serial> {
+    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
+    let serial: Serial = SaludModel.asistenciaSerial(type, name, sector);
+    let fecha = new Date();
+    serial.anio = fecha.getFullYear();
+    serial.mes = fecha.getMonth();
+    serial.dia = fecha.getDate();
+    return this.daoService.nextSerial<Serial>('serial', serial);
+  }
+
+
+ /**
+  * obtener serial para Asistencias
+  */
   fetchSerialRemitoalmacen(type, name, sector): Observable<Serial> {
     let serial: Serial = SaludModel.remitoalmacenSerial(type, name, sector);
     let fecha = new Date();
@@ -467,6 +481,21 @@ export class SaludController {
         listener.next(token);
       });
   }
+
+  /****************************************/
+  /******* Asistencias INTERNACION ********/
+  /**************************************/
+  fetchAsistenciasByPersonId(id: string): Observable<SolicitudInternacion[]>{
+    const RECORD = 'internacion'
+
+    let query = {
+      requirenteId: id
+    }
+
+    return this.daoService.search<SolicitudInternacion>(RECORD, query)
+  }
+
+
 
   fetchAsistenciaByPerson(person:Person){
     let query = {
