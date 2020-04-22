@@ -42,6 +42,26 @@
 
 </div>
 
+<div class="d-md-flex justify-content-start align-items-center panel-header-actions" >
+  <mat-button-toggle-group #fldButtonGrp1  name="actions" 
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="laboratorio">
+      LABORATORIO
+    </mat-button-toggle>
+ 
+  </mat-button-toggle-group>      
+  <mat-button-toggle-group #fldButtonGrp1  name="muestras" 
+        (change)='editLaboratorio($event)'>
+    <ng-container *ngFor='let muestra of muestraslabList'>
+    <mat-button-toggle  [value]="muestra">
+      LAB::{{ muestra.muestraId}}
+    </mat-button-toggle>
+    </ng-container>
+ 
+  </mat-button-toggle-group>      
+
+</div>
+
 <div class="d-md-flex justify-content-between align-items-center panel-header-selectors" >
 
   <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
@@ -51,6 +71,9 @@
     </mat-button-toggle>
     <mat-button-toggle value="seguimiento">
       LLAMADOS
+    </mat-button-toggle>
+    <mat-button-toggle value="muestralab">
+      LABORATORIO
     </mat-button-toggle>
     <mat-button-toggle value="infection">
       COVID

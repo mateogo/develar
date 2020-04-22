@@ -206,6 +206,7 @@ import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/v
     VigilanciaSisaComponent, VigilanciaSisafwupComponent, VigilanciaSisahistoryComponent,
     VigilanciaSeguimientoComponent, VigilanciaSeguimientofwupComponent, VigilanciaSeguimientohistoryComponent,
     VigilanciaInfeccionComponent,
+    VigilanciaLaboratorioComponent,
   ],
 
 })

@@ -10,7 +10,8 @@ import {  Asistencia,
           ContextoDenuncia,
           Locacion,
           Requirente,
-          Novedad, 
+          Novedad,
+          MuestraLaboratorio, 
           UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 import { devutils }from '../../../develar-commons/utils'
@@ -25,6 +26,7 @@ import { VigilanciaSeguimientofwupComponent } from '../vigilancia-zmodal/vigilan
 import { VigilanciaSeguimientohistoryComponent } from '../vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
 
 import { VigilanciaInfeccionComponent } from '../vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
+import { VigilanciaLaboratorioComponent } from '../vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
 
 
 const TOKEN_TYPE = 'asistencia';
@@ -61,7 +63,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   @Input() viewList: Array<String> = [];
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
-
+  public muestraslabList: Array<MuestraLaboratorio> = [];
 	public action;
   public sector;
 	public cPrefix;
@@ -147,14 +149,16 @@ export class VigilanciaFollowupComponent implements OnInit {
   ngOnInit() {
   	this.buildData();
     this.buildCovidData();
-    
+
     // if(this.asistencia.avance === 'autorizado'){
     //   this.avance = 'AUTORIZADO';
     // }else{
 
     //   this.avance = 'Pend Autorización';
     // }
+
     this.buildNovedades_view(this.asistencia);
+    this.buildMuestrasLaboratorio(this.asistencia);
 
     this.audit = this.buildAudit(this.asistencia);
 
@@ -176,6 +180,10 @@ export class VigilanciaFollowupComponent implements OnInit {
   
   }
 
+  editLaboratorio(e){
+    this.openLaboratorioModal(e.value);
+  }
+
   private manageAsistenciaView(viewList){
     this.showAsistenciaView = false;
     this.viewList = viewList;
@@ -187,16 +195,40 @@ export class VigilanciaFollowupComponent implements OnInit {
 
 
   public manageModalEditors(token: string){
-    if(token === 'sisa')     this.openSisaModal()
-    if(token === 'sisafwup') this.openSisaFwUpModal()
+    if(token === 'sisa')          this.openSisaModal()
+    if(token === 'sisafwup')      this.openSisaFwUpModal()
     if(token === 'historialsisa') this.openSisaHistoryModal()
 
-    if(token === 'seguimiento')     this.openSeguimientoModal()
-    if(token === 'seguimientofwup') this.openSeguimientoFwUpModal()
+    if(token === 'seguimiento')          this.openSeguimientoModal()
+    if(token === 'seguimientofwup')      this.openSeguimientoFwUpModal()
     if(token === 'historialseguimiento') this.openSeguimientoHistoryModal()
 
     if(token === 'infection')     this.openInfectionModal()
 
+    if(token === 'laboratorio')   this.openLaboratorioModal(null)
+  }
+
+
+  private openLaboratorioModal(muestralab: MuestraLaboratorio){
+    console.dir(muestralab)
+    const dialogRef = this.dialog.open(
+      VigilanciaLaboratorioComponent,
+      {
+        width: '800px',
+        data: {
+          asistencia: this.asistencia,
+          laboratorio: muestralab
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
+      //c onsole.log('dialog CLOSED')
+    });    
   }
 
   private openInfectionModal(){
@@ -721,6 +753,12 @@ export class VigilanciaFollowupComponent implements OnInit {
   	}
 
   	return wrkflw;
+  }
+
+  private buildMuestrasLaboratorio(token: Asistencia){
+    this.muestraslabList = token.muestraslab || [];
+    console.log('MuestrasLAB [%s]', this.muestraslabList.length);
+
   }
 
 

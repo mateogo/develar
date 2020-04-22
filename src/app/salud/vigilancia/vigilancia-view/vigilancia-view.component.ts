@@ -5,6 +5,7 @@ import {   Asistencia,
           SisaEvent,
           InfectionFollowUp,
           AfectadoFollowUp,
+          MuestraLaboratorio,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
@@ -29,10 +30,13 @@ export class VigilanciaViewComponent implements OnInit {
   public showSisaData = false;
   public showInfectionData = false;
   public showSeguimientoData = false;
+  public showMuestrasData = false;
 
   public sisaData: SisaData;
   public infectionData: InfectionData;
   public seguimiento: SeguimientoData;
+
+  public muestrasList: MuestraslabData[] = [];
 
   constructor() { }
 
@@ -56,7 +60,22 @@ export class VigilanciaViewComponent implements OnInit {
     if(list.indexOf('sisa') !== -1) this.buildSisaData(this.token); else this.showSisaData = false;
     if(list.indexOf('seguimiento') !== -1) this.buildSeguimientoData(this.token); else this.showSeguimientoData = false;
     if(list.indexOf('infection') !== -1) this.buildInfectionData(this.token); else this.showInfectionData = false;
+    if(list.indexOf('muestralab') !== -1) this.buildMuestraLab(this.token); else this.showMuestrasData = false;
 
+  }
+
+  private buildMuestraLab(token: Asistencia){
+    if(!(this.token.muestraslab && this.token.muestraslab.length)){
+      this.showMuestrasData = false;
+      return;
+    }
+
+    this.muestrasList = [];
+    this.token.muestraslab.forEach(t =>{
+      this.muestrasList.push(new MuestraslabData(t))
+
+    })
+    this.showMuestrasData = true;
   }
 
   private buildInfectionData(token: Asistencia){
@@ -68,7 +87,6 @@ export class VigilanciaViewComponent implements OnInit {
     this.infectionData = new InfectionData(token.infeccion);
     this.showInfectionData = true;
   }
-
 
   private buildSeguimientoData(token: Asistencia){
     if(!this.token.followUp){
@@ -222,6 +240,23 @@ class SeguimientoData {
 
 
   }
+}
+
+class MuestraslabData {
+  resultado: string ;
+  tipoMuestra: string ;
+  estado: string;
+
+  token: MuestraLaboratorio;
+
+  constructor(token:MuestraLaboratorio){
+    this.token = token;
+    this.resultado = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', token.resultado);
+    this.tipoMuestra = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', token.tipoMuestra);
+    this.estado = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', token.estado);
+
+  }
+
 }
 
 class InfectionData {

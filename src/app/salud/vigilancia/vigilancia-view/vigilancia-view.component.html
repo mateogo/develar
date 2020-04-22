@@ -41,6 +41,18 @@
 
     </ng-container>
 
+    <ng-container *ngIf="showMuestrasData">
+        <hr>
+        <ng-container *ngFor="let muestra of muestrasList">
+            <p class='text-resaltado'>LAB {{ muestra.token.muestraId }} -  {{ muestra.token.fe_resestudio}} ::
+                    {{ muestra.estado}} - <strong>{{ muestra.resultado }} </strong></p>
+            <p class='text-normal'>LAB: {{ muestra.token.laboratorio }} 
+                                    TOMA: {{  muestra.token.locacionSlug }}</p>
+            <p class='text-normal'>LAB: {{ muestra.token.alert }} TOMA: {{  muestra.token.slug }}</p>
+
+        </ng-container>
+    </ng-container>
+
     <ng-container *ngIf="showGenericData">
     <hr>
 	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>

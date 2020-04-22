@@ -204,25 +204,27 @@ export class Asistencia {
 		osocial:     string;
 		osocialTxt:  string;
 
-		sintomacovid: ContextoCovid;
-		denuncia: ContextoDenuncia;
-
 		idbrown:     string;
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
 		action:      string = 'covid';
 		slug:        string;
 		description: string;
+
 		sector:      string;
 		estado:      string = 'activo';
 		avance:      string = 'emitido';
 		ts_alta:     number;
 		ts_fin:      number;
 		ts_prog:     number;
+
+		sintomacovid: ContextoCovid;
+		denuncia: ContextoDenuncia;
+
 		locacion:    Locacion;
-		novedades:   Array<Novedad>;;
 		requeridox:  Requirente;
 		atendidox:   Atendido;
+
 		modalidad:   Alimento;
 		encuesta:    Encuesta;
 		pedido:      Pedido;
@@ -235,12 +237,12 @@ export class Asistencia {
 		infeccion:    InfectionFollowUp;
 		internacion:  InternacionAsis;
 		sisaevent:    SisaEvent;
-		muestralab:   MuestraLaboratorio;
 		followUp:     AfectadoFollowUp;
 
+		novedades:   Array<Novedad>;
+		muestraslab:       Array<MuestraLaboratorio>;
 		sisaEvolucion:     Array<SisaEvolucion>;
 		seguimEvolucion:   Array<AfectadoUpdate>;
-		muestrasEvolucion: Array<MuestraLaboratorio>;
 		contextoAfectados: Array<ContextoAfectados>;
 		morbilidades:      Array<Morbilidad>;
 };
@@ -317,6 +319,9 @@ export class SisaEvolucion {
 	fets_consulta:  number = 0;
 }
 
+const tipoMuestraLaboratorioOptList = [
+	{ val: 'hisopadopcr', label: 'Hisopado:PCR' },
+];
 
 const estadoMuestraLaboratorioOptList = [
 	{ val: 'presentada', label: 'Presentada' },
@@ -338,25 +343,36 @@ const resultadoMuestraLaboratorioOptList = [
 		// resultado: pcr_positivo, pcr_negativo, sisa_descartó, sisa_invalidó
 
 export class MuestraLaboratorio {
-	isActive: boolean;
-	muestraId: string;
+	_id?: string; 
+	isActive: boolean = true;
+
+	muestraId: string = '';
+	fe_toma: string = '';
 	tipoMuestra: string = 'hisopado';
-	locacionId: string;
-	locacionSlug: string;
-	fe_toma: string;
 
-	laboratorio: string;
-	laboratorioTel: string;
-	metodo: string = 'psr';
+	locacionId: string = '';
+	locacionSlug: string = '';
 
-	fe_ingestudio: string; 
-	fe_resestudio: string; 
-	fe_notificacion: string; 
-	alerta: string; 
+	laboratorio: string = '';
+	laboratorioTel: string = '';
 
-	estado: string;     // estadoMuestraLaboratorioOptList
-	resultado: string; //resultadoMuestraLaboratorioOptList
-	slug: string; 
+	metodo: string = 'pcr';
+
+	fe_ingestudio: string = ''; 
+	fe_resestudio: string = ''; 
+	fe_notificacion: string = ''; 
+
+	alerta: string = ''; 
+
+	estado: string = 'presentada';     // estadoMuestraLaboratorioOptList
+	resultado: string = 'pendiente'; //resultadoMuestraLaboratorioOptList
+	slug: string = ''; 
+
+	fets_toma: number = 0;
+	fets_ingestudio: number = 0; 
+	fets_resestudio: number = 0; 
+	fets_notificacion: number = 0; 
+
 }
 
 export class ContextoAfectados {
@@ -1192,6 +1208,10 @@ const optionsLists = {
    avanceInfection: avanceInfectionOptList,
    sintomaInfection: sintomaOptList,
    estadoActualInfection: estadoActualAfectadoOptList,
+
+   tipoMuestraLab: tipoMuestraLaboratorioOptList,
+   estadoMuestraLab: estadoMuestraLaboratorioOptList,
+   resultadoMuestraLab: resultadoMuestraLaboratorioOptList,
 }
 
 
@@ -1472,7 +1492,7 @@ export class AsistenciaHelper {
 		novedad.novedad  = 'Alta seguimiento epidemiología';
 
 		if(person){
-			
+
 			requirente = AsistenciaHelper.buildCovidRequirente(person);
 			token.idPerson = person._id;
 

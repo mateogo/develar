@@ -200,21 +200,33 @@ const sisaEvolucionSch = new Schema({
 
 const muestraLaboratorioSch = new Schema({
   isActive:         { type: Boolean, required: false },   
+
   muestraId:        { type: String,  required: false },   
+  fe_toma:          { type: String,  required: false },   
   tipoMuestra:      { type: String,  required: false },   
+
   locacionId:       { type: String,  required: false },   
   locacionSlug:     { type: String,  required: false },   
-  fe_toma:          { type: String,  required: false },   
+
   laboratorio:      { type: String,  required: false },   
   laboratorioTel:   { type: String,  required: false },   
+
   metodo:           { type: String,  required: false },   
+
   fe_ingestudio:    { type: String,  required: false },   
   fe_resestudio:    { type: String,  required: false },   
   fe_notificacion:  { type: String,  required: false },   
+
   alerta:           { type: String,  required: false },   
+
   estado:           { type: String,  required: false },   
   resultado:        { type: String,  required: false },   
-  slug:             { type: String,  required: false },   
+  slug:             { type: String,  required: false },
+
+  fets_toma:         { type: Number,  required: false },   
+  fets_ingestudio:   { type: Number,  required: false },   
+  fets_resestudio:   { type: Number,  required: false },   
+  fets_notificacion: { type: Number,  required: false },   
 });
 
 const contextoAfectadosSch = new Schema({
@@ -309,35 +321,39 @@ const asisprevencionSch = new Schema({
     compPrefix:  { type: String, required: true },
     compName:    { type: String, required: true },
     compNum:     { type: String, required: true },
+    tipo:        { type: Number, required: false },
+    prioridad:   { type: Number, required: false },
+
+    idPerson:    { type: String, required: false },
     ndoc:        { type: String, required: false },
     tdoc:        { type: String, required: false },
-    prioridad:   { type: Number, required: false },
-    edad:        { type: String, required: false },
     sexo:        { type: String, required: false },
+    edad:        { type: String, required: false },
     telefono:    { type: String, required: false },
-    tipo:        { type: Number, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },
 
-    idPerson:    { type: String, required: false },
     idbrown:     { type: String, required: false },
     fecomp_tsa:  { type: Number, required: true },
     fecomp_txa:  { type: String, required: true },
     action:      { type: String, required: true },
     slug:        { type: String, required: false },
     description: { type: String, required: false },
+
     sector:      { type: String, required: false },
     estado:      { type: String, required: false },
     avance:      { type: String, required: false },
     ts_alta:     { type: Number, required: false },
     ts_fin:      { type: Number, required: false },
     ts_prog:     { type: Number, required: false },
+
+    sintomacovid: { type: contextoCovidSch, required: false }, 
+    denuncia:     { type: contextoDenunciaSch, required: false }, 
+ 
     locacion:    { type: locacionSch, required: false }, 
-    sintomacovid:{ type: contextoCovidSch, required: false }, 
-    denuncia:    { type: contextoDenunciaSch, required: false }, 
     requeridox:  { type: requirenteSch, required: false },
-    novedades:   [ novedadSch ],
     atendidox:   { type: atendidoSch,   required: false },
+
 
     isVigilado:      { type: Boolean, required: false, default: false },
     hasSeguimiento:  { type: Boolean, required: false, default: false },
@@ -348,11 +364,12 @@ const asisprevencionSch = new Schema({
     infeccion:         { type: infeccionFollowUpSch, required: false },
     internacion:       { type: internacionAsisSch, required: false },
     sisaevent:         { type: sisaEventSch, required: false },
-    muestralab:        { type: muestraLaboratorioSch, required: false },
     followUp:          { type: afectadosFollowUpSch, required: false },
+
+    novedades:         [ novedadSch ],
+    muestraslab:       [ muestraLaboratorioSch ],
     sisaEvolucion:     [ sisaEvolucionSch ],
     seguimEvolucion:   [ afectadoUpdateSch ],
-    muestrasEvolucion: [ muestraLaboratorioSch ],
     contextoAfectados: [ contextoAfectadosSch ],
     morbilidades:      [ morbilidadSch ],
 });

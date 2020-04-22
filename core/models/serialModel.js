@@ -372,7 +372,6 @@ exports.upsertNext = function (query, errcb, cb) {
 
 
           }else if(entities.length !== 1) {
-            console.log('aiuuuuuudaaaaaaaaaa');
             errcb({'error': 'Serial univoco no encontrado'});
 
           } else {
@@ -385,7 +384,6 @@ exports.upsertNext = function (query, errcb, cb) {
 };
 
 function createNewSerial(query, regexQuery, errcb, cb){
-  console.log('[%s] Creando nuevo serial', whoami);
   let serial = initNewSerial(query, regexQuery)
   Record.create(serial, function(err, entity) {
     if (err){
@@ -443,7 +441,6 @@ function isPermitedToCreateNewSerial(query){
 }
 
 function emitNext(serial, cb){
-  console.log('Serial [%s] [%s] [%s]', serial.name, serial.tserial, serial.pnumber);
   if(serial.resetDay){
     verifyIfSameDay(serial);
   }

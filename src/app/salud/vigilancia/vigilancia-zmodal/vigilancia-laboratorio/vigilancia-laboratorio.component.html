@@ -1,1 +1,126 @@
-<p>vigilancia-laboratorio works!</p>
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Práctica activa? </mat-checkbox>
+		</div>
+	</div>
+
+	<div class="row">
+    <div  class="col-md-3">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['muestraId']" placeholder="Identif SISA de la práctica" >
+        </mat-form-field>
+    </div>
+		<div class="col-md-3">
+			<mat-form-field>
+				<mat-label>Tipo de práctica</mat-label>
+				<mat-select #fldTipoMuestra  formControlName='tipoMuestra'
+										(selectionChange)="changeSelectionValue('tipoMuestra', fldTipoMuestra.value)">
+				    <mat-optgroup [disabled]="!tipoOptList.length" [label]="'Selecciona técnica de laboratorio'">
+				        <mat-option *ngFor="let item of tipoOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div  class="col-md-3">
+			<mat-form-field>
+			  <input  matInput [formControl]="form.controls['fe_ingestudio']" placeholder="Fecha ingreso" >
+			</mat-form-field>
+		</div>
+		<div  class="col-md-3">
+			<mat-form-field>
+			  <input  matInput [formControl]="form.controls['fe_notificacion']" placeholder="Fecha notificación" >
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div class="row">
+			<div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['fe_toma']" placeholder="Fecha de toma" >
+				</mat-form-field>
+			</div>
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['laboratorio']" placeholder="Laboratorio" >
+	        </mat-form-field>
+	    </div>
+	    <div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['laboratorioTel']" placeholder="Dato de contacto del lab (tel/ cel)" >
+				</mat-form-field>
+	    </div>
+	</div>
+
+	<div class="row">
+	    <div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['locacionSlug']" placeholder="Muestra tomada por (responsable de extracción)" >
+				</mat-form-field>
+	    </div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Estado de avance</mat-label>
+				<mat-select #fldEstado  formControlName='estado'
+										(selectionChange)="changeSelectionValue('estado', fldEstado.value)">
+				    <mat-optgroup [disabled]="!estadoOptList.length" [label]="'Estado'">
+				        <mat-option *ngFor="let item of estadoOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Resultado análisis</mat-label>
+				<mat-select #fldResultado  formControlName='resultado'
+										(selectionChange)="changeSelectionValue('resultado', fldResultado.value)">
+				    <mat-optgroup [disabled]="!resultadoOptList.length" [label]="'Estado'">
+				        <mat-option *ngFor="let item of resultadoOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div  class="col">
+		    <mat-form-field>
+		      <input  matInput [formControl]="form.controls['fe_resestudio']" placeholder="Fecha resultado" >
+		    </mat-form-field>
+		</div>
+
+	</div>
+
+	<div class="row">
+	    <div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['alerta']" placeholder="Alerta / Atención" >
+				</mat-form-field>
+	    </div>
+	    <div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['slug']" placeholder="Observación" >
+				</mat-form-field>
+	    </div>
+	</div>
+
+
+	<div class="additional-info">
+		<button mat-raised-button color="primary" (click)="onSubmit()">
+		    ACEPTAR </button>
+		<button mat-raised-button color="warn"  (click)="onCancel()">
+		    Cancelar </button>
+	</div>
+  
+	</form>
+</div>
