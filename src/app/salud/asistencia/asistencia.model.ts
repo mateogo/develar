@@ -614,7 +614,10 @@ export class VigilanciaBrowse {
 		viewList?:   Array<string>;
 
 		isVigilado: boolean = true;
-
+		hasCovid:   boolean = true;
+		isSeguimiento: boolean = false;
+		tipoSeguimiento: string;
+		qIntents: number = 0;
 }
 
 export interface AsistenciaSig {

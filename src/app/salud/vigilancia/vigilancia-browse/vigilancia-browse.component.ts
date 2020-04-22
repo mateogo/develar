@@ -34,6 +34,7 @@ export class VigilanciaBrowseComponent implements OnInit {
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
   public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
+  public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -126,7 +127,10 @@ export class VigilanciaBrowseComponent implements OnInit {
       compNum_d:    [null],
       compNum_h:    [null],
       isVigilado:   [null],
-
+      hasCovid:     [null],
+      isSeguimiento: [null],
+      tipoSeguimiento: [null],
+      qIntents:     [null],
     });
 
     return form;
@@ -140,6 +144,10 @@ export class VigilanciaBrowseComponent implements OnInit {
         compNum_h:   query.compNum_h,
 
         isVigilado: query.isVigilado,
+        hasCovid:   query.hasCovid,
+        isSeguimiento:  query.isSeguimiento,
+        tipoSeguimiento:  query.tipoSeguimiento,
+        qIntents:   query.qIntents,
 
 		});
 
@@ -169,6 +177,12 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.compNum_h =   fvalue.compNum_h;
 
     entity.isVigilado =   fvalue.isVigilado;
+    entity.hasCovid =     fvalue.hasCovid;
+
+    entity.isSeguimiento =   fvalue.isSeguimiento;
+    entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
+    entity.qIntents =   fvalue.qIntents;
+
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;
@@ -183,6 +197,20 @@ export class VigilanciaBrowseComponent implements OnInit {
 
     //Save Actual Data in Controller
     this.dsCtrl.vigilanciaSelector = entity;
+
+
+    Object.keys(entity).forEach(key =>{
+      if(entity[key] == null || entity[key] == 'no_definido' ) delete entity[key];
+
+      if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
+      if(key === 'isVigilado'      && !entity[key]) delete entity[key];
+      if(key === 'hasCovid'        && !entity[key]) delete entity[key];
+      if(key === 'isSeguimiento'   && !entity[key]) delete entity[key];
+      if(key === 'qIntents'        && !entity[key]) delete entity[key];
+    })
+
+
+
 		return entity;
 	}
 

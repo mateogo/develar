@@ -484,12 +484,25 @@ function buildQuery(query){
 
   if(query['isVigilado']){
     q["isVigilado"] = true;
+  }
 
+  if(query['hasCovid']){
+    q["infeccion.hasCovid"] = true;
+  }
 
+  if(query['isSeguimiento']){
+    q["followUp.isActive"] = true;
+    q["followUp.tipo"] = query['tipoSeguimiento'];
+
+ 
+    if(query['qIntents']){
+      q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
+    }
 
 
 
   }
+
 
 
 
@@ -555,6 +568,8 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    console.log('find ASISPREVENCION ************')
+    console.dir(regexQuery);
 
     Record.find(regexQuery)
           .limit(100)

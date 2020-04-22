@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 - DGTS@modernización - Secretaría de Salud - Municipalidad de Almte. Brown (v1.0-20.04.22-08:58) ',
+		copyright: '©2020 - DGTS@modernización - Secretaría de Salud - Municipalidad de Almte. Brown (v1.0-20.04.22-11:29) ',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},

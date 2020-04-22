@@ -202,7 +202,7 @@ export class SaludController {
   * obtener serial para Asistencias
   */
   private fetchSerialAsistencias(type, name, sector): Observable<Serial> {
-    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
+    //c onsole.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = SaludModel.asistenciaSerial(type, name, sector);
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -215,7 +215,7 @@ export class SaludController {
   * obtener serial para Asistencias
   */
   private fetchSerialAsistenciasCovid(type, name, sector): Observable<Serial> {
-    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
+    //c onsole.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = SaludModel.asistenciaSerial(type, name, sector);
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -1133,7 +1133,7 @@ export class SaludController {
 
     if(urlmodule){
       urlpath = snap.substr(1, (snap.length - urlmodule.length -2));
-      //console.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
+      //c onsole.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
     }else{
       urlpath = snap.substr(1);
     }
@@ -1153,7 +1153,7 @@ export class SaludController {
     let snck = this.snackBar.open(message, action, {duration: 3000});
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+      //c onsole.log('action???? [%s]', e);
     })
   }
 

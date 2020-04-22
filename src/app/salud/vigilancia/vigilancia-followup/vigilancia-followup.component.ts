@@ -210,7 +210,6 @@ export class VigilanciaFollowupComponent implements OnInit {
 
 
   private openLaboratorioModal(muestralab: MuestraLaboratorio){
-    console.dir(muestralab)
     const dialogRef = this.dialog.open(
       VigilanciaLaboratorioComponent,
       {
@@ -757,7 +756,6 @@ export class VigilanciaFollowupComponent implements OnInit {
 
   private buildMuestrasLaboratorio(token: Asistencia){
     this.muestraslabList = token.muestraslab || [];
-    console.log('MuestrasLAB [%s]', this.muestraslabList.length);
 
   }
 
