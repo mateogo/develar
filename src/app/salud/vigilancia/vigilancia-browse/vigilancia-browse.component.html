@@ -167,17 +167,24 @@
     <span class="mr-3" >SELECCIONAR VISTA  </span>
     <mat-button-toggle-group #fldButtonGrp multiple name="view" 
           (change)='viewPanelsSelection($event)'>
-      <mat-button-toggle value="sisa">
-        SISA
-      </mat-button-toggle>
-      <mat-button-toggle value="seguimiento">
-        LLAMADOS
-      </mat-button-toggle>
-      <mat-button-toggle value="core">
-        GENERAL
-      </mat-button-toggle>
+    <mat-button-toggle value="sisa">
+      SISA
+    </mat-button-toggle>
+    <mat-button-toggle value="seguimiento">
+      LLAMADOS
+    </mat-button-toggle>
+    <mat-button-toggle value="muestralab">
+      LABORATORIO
+    </mat-button-toggle>
+    <mat-button-toggle value="infection">
+      COVID
+    </mat-button-toggle>
+    <mat-button-toggle value="core">
+      GENERAL
+    </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
+
 
 	<div class="d-md-flex justify-content-start align-items-center additional-info">
 	  <button mat-raised-button color="primary" type="submit" 
