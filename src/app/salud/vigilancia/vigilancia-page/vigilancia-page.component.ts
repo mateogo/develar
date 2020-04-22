@@ -189,6 +189,17 @@ export class VigilanciaPageComponent implements OnInit {
     }
   }
 
+  vinculoSelected(personId: string){
+    this.query = new VigilanciaBrowse();
+    this.query.isVigilado = false;
+    this.query.hasCovid = false;
+    this.query.viewList = [];
+
+    this.query.requirenteId = personId;
+
+    this.fetchSolicitudes(this.query, SEARCH);
+  }
+
 
   /************************/
   /*    Sol/Asistencia   */
@@ -207,7 +218,12 @@ export class VigilanciaPageComponent implements OnInit {
     Object.keys(query).forEach(key =>{
       if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
       if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-      if(key === 'isVigilado' && !query[key]) delete query[key];
+      if(key === 'isVigilado'      && !query[key]) delete query[key];
+      if(key === 'isVigilado'      && !query[key]) delete query[key];
+      if(key === 'hasCovid'        && !query[key]) delete query[key];
+      if(key === 'isSeguimiento'   && !query[key]) delete query[key];
+      if(key === 'qIntents'        && !query[key]) delete query[key];
+
     })
 
 

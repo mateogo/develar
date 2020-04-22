@@ -1,4 +1,8 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
+import { Observable, of} from 'rxjs';
+
+import { PersonService } from '../../person.service';
 
 import {   Asistencia, 
           ContextoDenuncia,
@@ -20,6 +24,7 @@ const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
 export class VigilanciaViewComponent implements OnInit {
 	@Input() token: Asistencia;
   @Input() viewList = [];
+  @Output() personSelected = new EventEmitter<string>();
 
 	public asistencia: AsistenciaToPrint;
   private prioridad_colors = ['', 'rgba(0,201,0,0.6)', 'rgba(255,189,0,0.9)', 'rgba(255,36,69,0.8)']
@@ -30,6 +35,7 @@ export class VigilanciaViewComponent implements OnInit {
   public showSisaData = false;
   public showInfectionData = false;
   public showSeguimientoData = false;
+  public showVinculosData = false;
   public showMuestrasData = false;
 
   public sisaData: SisaData;
@@ -37,22 +43,30 @@ export class VigilanciaViewComponent implements OnInit {
   public seguimiento: SeguimientoData;
 
   public muestrasList: MuestraslabData[] = [];
+  public vinculosList$: Observable<VinculosData[]>;
 
-  constructor() { }
+  constructor(
+          private perSrv: PersonService,
+
+    ) { }
 
   ngOnInit() {
-
   	if(this.token){
       this.asistencia = this.buildCovidData(this.token)
     //   this.buildSisaData(this.token);
     //   this.buildSeguimientoData(this.token);
 
       this.openViewPanels(this.viewList);
-
   	}
-
-
   }
+
+  manageVinculo(contacto: VinculosData){
+    if(contacto.token.personId){
+      this.personSelected.next(contacto.token.personId);
+    }
+  }
+
+
 
   private openViewPanels(list){
     if(!(list && list.length)) return;
@@ -61,6 +75,45 @@ export class VigilanciaViewComponent implements OnInit {
     if(list.indexOf('seguimiento') !== -1) this.buildSeguimientoData(this.token); else this.showSeguimientoData = false;
     if(list.indexOf('infection') !== -1) this.buildInfectionData(this.token); else this.showInfectionData = false;
     if(list.indexOf('muestralab') !== -1) this.buildMuestraLab(this.token); else this.showMuestrasData = false;
+    if(list.indexOf('vinculos') !== -1) this.buildVinculosFam(this.token); else this.showVinculosData = false;
+
+
+  }
+
+
+  private buildVinculosFam(token: Asistencia){
+    this.showVinculosData = false;
+    this.vinculosList$ = new Observable<VinculosData[]>()
+    let personId = token.requeridox && token.requeridox.id
+
+    if(!personId){
+      this.showVinculosData = false;
+      return;
+    }
+
+    this.perSrv.fetchPersonById(personId).then(per => {
+      if(per){
+        let vinculos = per.familiares;
+
+        if(vinculos && vinculos.length){
+          let vinculosData = vinculos.map(vin => {
+            return new VinculosData(vin, per);
+          })
+
+          this.vinculosList$ = of(vinculosData);
+          this.showVinculosData = true;
+
+        }else {
+          this.showVinculosData = false;
+          return;
+
+        }
+
+      }else {
+        this.showVinculosData = false;
+        return;
+      }
+    })
 
   }
 
@@ -238,6 +291,23 @@ class SeguimientoData {
     this.tipo = AsistenciaHelper.getOptionLabel('tipoFollowUp', token.tipo);
     this.lastCall = AsistenciaHelper.getOptionLabel('resultadoSeguim', token.lastCall);
 
+
+  }
+}
+
+class VinculosData {
+  vinculo: string ;
+  slug: string; 
+  person: Person;
+
+  token: FamilyData;
+
+  constructor(token:FamilyData, per: Person){
+    this.token = token;
+    this.vinculo = AsistenciaHelper.getPrefixedOptionLabel('vinculosFam', '', token.vinculo);
+    this.person = per;
+
+    this.slug = token.apellido + ', ' + token.nombre + ' DNI:' + token.ndoc + ' - FeNac: ' + token.fenactx;
 
   }
 }

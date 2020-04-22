@@ -325,7 +325,7 @@ const tipoMuestraLaboratorioOptList = [
 
 const estadoMuestraLaboratorioOptList = [
 	{ val: 'presentada', label: 'Presentada' },
-	{ val: 'aceptada',   label: 'Aceptada'   },
+	{ val: 'enestudio',  label: 'En estudio' },
 	{ val: 'rechazada',  label: 'Rechazada'  },
 	{ val: 'invalida',   label: 'Invalidada' },
 	{ val: 'analizada',  label: 'Analizada'  },
@@ -333,8 +333,8 @@ const estadoMuestraLaboratorioOptList = [
 
 const resultadoMuestraLaboratorioOptList = [
 	{ val: 'pendiente',   label: 'Pendiente resultado'  },
-	{ val: 'confirmada',  label: 'Confirmada/ Detectable'    },
-	{ val: 'descartada',  label: 'Descartada/ No detectable' },
+	{ val: 'confirmada',  label: 'Positiva / Detectable'    },
+	{ val: 'descartada',  label: 'Negativa / No detectable' },
 	{ val: 'noanalizada', label: 'No analizada'  },
 	{ val: 'invalidada',  label: 'Muestra inválida' },
 ];
@@ -358,7 +358,6 @@ export class MuestraLaboratorio {
 
 	metodo: string = 'pcr';
 
-	fe_ingestudio: string = ''; 
 	fe_resestudio: string = ''; 
 	fe_notificacion: string = ''; 
 
@@ -369,7 +368,6 @@ export class MuestraLaboratorio {
 	slug: string = ''; 
 
 	fets_toma: number = 0;
-	fets_ingestudio: number = 0; 
 	fets_resestudio: number = 0; 
 	fets_notificacion: number = 0; 
 
@@ -1083,6 +1081,23 @@ const ciudadesBrown: Array<any> = [
     {val: 'extradistrito',       label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 
+const vinculosOptList: Array<any> = [
+        {val: 'no_definido',       label: 'Seleccione opción',slug:'Seleccione opción' },
+        {val: 'pareja',   label: 'Pareja',    slug:'Pareja' },
+        {val: 'esposx',   label: 'Esposo/a',  slug:'Esposo/a' },
+        {val: 'hijx',     label: 'Hijo/a',    slug:'Hijo/a' },
+        {val: 'padre',    label: 'Padre',     slug:'Padre' },
+        {val: 'madre',    label: 'Madre',     slug:'Madre' },
+        {val: 'tix',      label: 'Tío/a',     slug:'Tío/a' },
+        {val: 'hermanx',  label: 'Hermana/o', slug:'Hermana/o' },
+        {val: 'abuelx',   label: 'Abuela/o',  slug:'Abuela/o' },
+        {val: 'nietx',    label: 'Nieto/a',   slug:'Nieto/a' },
+        {val: 'sobrinx',  label: 'Sobrino/a', slug:'Sobrino/a' },
+        {val: 'pariente', label: 'Pariente',  slug:'Pariente' },
+        {val: 'vecinx',   label: 'Vecino/a',  slug:'Vecino/a' },
+        {val: 'otro',     label: 'Otro',      slug:'Otro' },
+];
+
 const MODALIDAD_ALIMENTO =     'alimentos';
 const MODALIDAD_HABITACIONAL = 'habitacional';
 const MODALIDAD_SANITARIA =    'sanitaria';
@@ -1217,6 +1232,9 @@ const optionsLists = {
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
    resultadoMuestraLab: resultadoMuestraLaboratorioOptList,
+
+   // tipo de vinculo familiar
+   vinculosFam: vinculosOptList,
 }
 
 

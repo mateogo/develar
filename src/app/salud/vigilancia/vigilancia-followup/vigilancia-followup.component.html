@@ -1,7 +1,9 @@
 <mat-card >
 <mat-card-content>
   <ng-container *ngIf='showAsistenciaView' >
-    <vigilancia-view [token]='asistencia'  [viewList]='viewList'></vigilancia-view>
+    <vigilancia-view [token]='asistencia'  
+                      [viewList]='viewList'
+                      (personSelected)='vinculoSelected($event)' ></vigilancia-view>
   </ng-container>
 
 <div class="d-md-flex justify-content-between align-items-center panel-header-actions" >
@@ -77,6 +79,9 @@
     </mat-button-toggle>
     <mat-button-toggle value="infection">
       COVID
+    </mat-button-toggle>
+    <mat-button-toggle value="vinculos">
+      CONTACTOS
     </mat-button-toggle>
     <mat-button-toggle value="core">
       GENERAL

@@ -2,7 +2,8 @@
 	<div  *ngFor="let item of items" class="row">
 		<div class="col-sm-12 col-md-12">
 			<vigilancia-panel [asistencia]='item' [viewList]='viewList'
-									(updateToken)='updateItem($event)'></vigilancia-panel>
+									(updateToken)='updateItem($event)'
+									(fetchPerson)='vinculoSelected($event)' ></vigilancia-panel>
 		</div>
 	</div>
 </ng-container>

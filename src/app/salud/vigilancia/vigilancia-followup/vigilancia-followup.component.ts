@@ -62,6 +62,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   @Input() detailView = true;
   @Input() viewList: Array<String> = [];
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
+  @Output() fetchPerson = new EventEmitter<string>();
 
   public muestraslabList: Array<MuestraLaboratorio> = [];
 	public action;
@@ -182,6 +183,10 @@ export class VigilanciaFollowupComponent implements OnInit {
 
   editLaboratorio(e){
     this.openLaboratorioModal(e.value);
+  }
+
+  vinculoSelected(personId: string){
+    this.fetchPerson.next(personId);
   }
 
   private manageAsistenciaView(viewList){

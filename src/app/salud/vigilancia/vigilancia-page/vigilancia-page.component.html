@@ -46,7 +46,8 @@
 
 		<ng-container *ngIf='showEditor'>
 				<vigilancia-panel [asistencia]='currentAsistencia'
-										(updateToken)='updateCurrentAsistencia($event)'></vigilancia-panel>
+										(updateToken)='updateCurrentAsistencia($event)'
+										(fetchPerson)='vinculoSelected($event)' ></vigilancia-panel>
 
 		</ng-container>
 
@@ -64,7 +65,8 @@
       </div>
 
 				<vigilancia-list [items]='asistenciasList' [viewList]='viewList'
-		 							(updateItems)='updateAsistenciaList($event)' ></vigilancia-list>
+		 							(updateItems)='updateAsistenciaList($event)'
+		 							(fetchPerson)='vinculoSelected($event)'  ></vigilancia-list>
 		</ng-container>
   </mat-card-content>
 </mat-card>

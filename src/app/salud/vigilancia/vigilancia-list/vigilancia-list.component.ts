@@ -28,6 +28,7 @@ export class VigilanciaListComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
   @Input() viewList: Array<String> = [];
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
+  @Output() fetchPerson = new EventEmitter<string>();
 
   public title = 'Vigilancia epidemiológica';
 
@@ -54,6 +55,9 @@ export class VigilanciaListComponent implements OnInit {
         this.emitEvent(event);
   }
 
+  vinculoSelected(personId: string){
+    this.fetchPerson.next(personId);
+  }
 
   emitEvent(event:UpdateAsistenciaEvent){
   

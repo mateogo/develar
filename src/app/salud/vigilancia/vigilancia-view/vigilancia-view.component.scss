@@ -85,3 +85,14 @@ $color-button: #3c4e62;
   line-height: $main-lh;
 }
 
+.edit-control{
+		margin: 0 5px 0 5px;
+		font-weight: 400;
+		font-size: 1.2rem;
+}
+
+.edit-control-warning{
+		margin: 0 5px 0 0;
+		font-weight: 400;
+		font-size: 0.8rem;
+}

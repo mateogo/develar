@@ -53,6 +53,21 @@
         </ng-container>
     </ng-container>
 
+    <ng-container *ngIf="showVinculosData">
+        <hr>
+        <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
+        <ng-container *ngFor="let vinculo of vinculosList$ | async">
+                <p class='text-resaltado'>{{ vinculo.slug }}</p>
+
+                <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  <strong>{{ vinculo.vinculo }}</strong>
+                    <span class="edit-control"
+                        (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
+                        <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+                </p>
+
+        </ng-container>
+    </ng-container>
+
     <ng-container *ngIf="showGenericData">
     <hr>
 	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>

@@ -112,12 +112,10 @@ export class VigilanciaLaboratorioComponent implements OnInit {
     this.muestralab = Object.assign(this.muestralab, this.form.value);
 
     this.muestralab.fe_toma =         this.muestralab.fe_toma ?         devutils.txFromDate(devutils.dateFromTx(this.muestralab.fe_toma)) : '';
-    this.muestralab.fe_ingestudio =   this.muestralab.fe_ingestudio ?   devutils.txFromDate(devutils.dateFromTx(this.muestralab.fe_ingestudio)) : '';
     this.muestralab.fe_resestudio =   this.muestralab.fe_resestudio ?   devutils.txFromDate(devutils.dateFromTx(this.muestralab.fe_resestudio)) : '';
     this.muestralab.fe_notificacion = this.muestralab.fe_notificacion ? devutils.txFromDate(devutils.dateFromTx(this.muestralab.fe_notificacion)) : '';
 
     this.muestralab.fets_toma =         this.muestralab.fe_toma ?         devutils.dateFromTx(this.muestralab.fe_toma).getTime() : 0;
-    this.muestralab.fets_ingestudio =   this.muestralab.fe_ingestudio ?   devutils.dateFromTx(this.muestralab.fe_ingestudio).getTime() : 0;
     this.muestralab.fets_resestudio =   this.muestralab.fe_resestudio ?   devutils.dateFromTx(this.muestralab.fe_resestudio).getTime() : 0;
     this.muestralab.fets_notificacion = this.muestralab.fe_notificacion ? devutils.dateFromTx(this.muestralab.fe_notificacion).getTime() : 0;
 

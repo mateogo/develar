@@ -213,7 +213,6 @@ const muestraLaboratorioSch = new Schema({
 
   metodo:           { type: String,  required: false },   
 
-  fe_ingestudio:    { type: String,  required: false },   
   fe_resestudio:    { type: String,  required: false },   
   fe_notificacion:  { type: String,  required: false },   
 
@@ -224,7 +223,6 @@ const muestraLaboratorioSch = new Schema({
   slug:             { type: String,  required: false },
 
   fets_toma:         { type: Number,  required: false },   
-  fets_ingestudio:   { type: Number,  required: false },   
   fets_resestudio:   { type: Number,  required: false },   
   fets_notificacion: { type: Number,  required: false },   
 });

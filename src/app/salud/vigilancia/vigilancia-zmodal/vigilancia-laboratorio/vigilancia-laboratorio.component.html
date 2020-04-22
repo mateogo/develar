@@ -10,12 +10,12 @@
 	</div>
 
 	<div class="row">
-    <div  class="col-md-3">
+    <div  class="col-md-4">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['muestraId']" placeholder="Identif SISA de la práctica" >
         </mat-form-field>
     </div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<mat-form-field>
 				<mat-label>Tipo de práctica</mat-label>
 				<mat-select #fldTipoMuestra  formControlName='tipoMuestra'
@@ -28,12 +28,7 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-		<div  class="col-md-3">
-			<mat-form-field>
-			  <input  matInput [formControl]="form.controls['fe_ingestudio']" placeholder="Fecha ingreso" >
-			</mat-form-field>
-		</div>
-		<div  class="col-md-3">
+		<div  class="col-md-4">
 			<mat-form-field>
 			  <input  matInput [formControl]="form.controls['fe_notificacion']" placeholder="Fecha notificación" >
 			</mat-form-field>

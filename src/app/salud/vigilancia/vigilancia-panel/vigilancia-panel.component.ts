@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { Person } from '../../../entities/person/person';
 
 import { SaludController } from '../../salud.controller';
 import { SaludModel, Ciudadano, SectorAtencion, sectores } from '../../salud.model';
@@ -29,6 +30,7 @@ export class VigilanciaPanelComponent implements OnInit {
   @Input() asistencia: Asistencia;
   @Input() viewList: Array<string> = [];
   @Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
+  @Output() fetchPerson = new EventEmitter<string>();
 
   // template helper
   public title = "Eventos COVID";
@@ -69,6 +71,9 @@ export class VigilanciaPanelComponent implements OnInit {
     }
   }
 
+  vinculoSelected(personId: string){
+    this.fetchPerson.next(personId);
+  }
 
   /*************************/
   /*   process ASISPREV   */
