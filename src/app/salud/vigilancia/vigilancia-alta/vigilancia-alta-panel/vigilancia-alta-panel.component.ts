@@ -29,12 +29,17 @@ const SERVICIO_DEFAULT = "INTERNACION"
 const SEARCH_LOCACION = 'search_locacion';
 const NEXT = 'next';
 
+const TOKEN_TYPE = 'asistencia';
+
+
+
 @Component({
   selector: 'vigilancia-alta-panel',
   templateUrl: './vigilancia-alta-panel.component.html',
   styleUrls: ['./vigilancia-alta-panel.component.scss']
 })
 export class VigilanciaAltaPanelComponent implements OnInit {
+  @Output() vigilanciaEvent = new EventEmitter<UpdateAsistenciaEvent>();
 	public  person: Person;
 	private hasPerson = false;
 
@@ -102,6 +107,23 @@ export class VigilanciaAltaPanelComponent implements OnInit {
   }
 
   private handleAsistencia(){
+
+    if(this.currentAsistencia){
+      this.vigilanciaEvent.next({
+              action: UPDATE,
+              type: TOKEN_TYPE,
+              selected: true,
+              token: this.currentAsistencia
+            });
+
+    }else{
+      this.vigilanciaEvent.next({
+              action: CANCEL,
+              type: TOKEN_TYPE,
+              selected: false,
+              token: null
+            });
+    }
 
     this.resetProcess()
   }

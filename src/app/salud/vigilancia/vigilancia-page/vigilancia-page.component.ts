@@ -176,7 +176,18 @@ export class VigilanciaPageComponent implements OnInit {
 
   }
 
+  vigilanciaAltaEvent(event: UpdateAsistenciaEvent){
 
+    if(event.action === UPDATE){
+      this.query = new VigilanciaBrowse();
+      this.query.isVigilado = false;
+      this.query.hasCovid = false;
+      this.query.viewList = [];
+      this.query.asistenciaId = event.token._id;
+      //this.viewList = this.query.viewList || [];
+      this.fetchSolicitudes(this.query, SEARCH);
+    }
+  }
 
 
   /************************/

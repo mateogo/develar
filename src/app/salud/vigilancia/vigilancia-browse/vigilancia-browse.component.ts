@@ -202,6 +202,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     Object.keys(entity).forEach(key =>{
       if(entity[key] == null || entity[key] == 'no_definido' ) delete entity[key];
 
+      if(key === 'asistenciaId') delete entity[key];
+
       if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
       if(key === 'isVigilado'      && !entity[key]) delete entity[key];
       if(key === 'hasCovid'        && !entity[key]) delete entity[key];

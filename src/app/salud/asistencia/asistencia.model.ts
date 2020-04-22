@@ -611,6 +611,8 @@ export class VigilanciaBrowse {
 		requirenteId: string;
 		compNum_h:   string;
 
+		asistenciaId: string;
+
 		viewList?:   Array<string>;
 
 		isVigilado: boolean = true;

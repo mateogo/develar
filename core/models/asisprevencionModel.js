@@ -383,6 +383,14 @@ asisprevencionSch.pre('save', function (next) {
 function buildQuery(query){
 
   let q = {};
+
+  // busco un registro en particular
+  if(query['asistenciaId']){
+      q["asistenciaId"] = query['asistenciaId'];
+      return q;
+  }
+
+  // busco segun query
   if(query['estado']){
       q["estado"] = query['estado'];
   }
@@ -571,18 +579,35 @@ exports.findByQuery = function (query, errcb, cb) {
     console.log('find ASISPREVENCION ************')
     console.dir(regexQuery);
 
-    Record.find(regexQuery)
-          .limit(100)
-          .lean()
-          .sort( '-fecomp_tsa' )
-          .exec(function(err, entities) {
-              if (err) {
-                  console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
-                  errcb(err);
-              }else{
-                  cb(entities);
-              }
-    });
+    if(regexQuery && regexQuery.asistenciaId){
+      Record.findById(regexQuery.asistenciaId, function(err, entity) {
+          if (err){
+              console.log('[%s] findByID ERROR() argument [%s]', whoami, arguments.length);
+              err.itsme = whoami;
+              errcb(err);
+          
+          }else{
+              cb([ entity ]);
+          }
+      });
+
+
+    }else{
+      Record.find(regexQuery)
+            .limit(100)
+            .lean()
+            .sort( '-fecomp_tsa' )
+            .exec(function(err, entities) {
+                if (err) {
+                    console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                    errcb(err);
+                }else{
+                    cb(entities);
+                }
+      });
+
+    }
+
 };
 
 
