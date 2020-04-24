@@ -504,7 +504,17 @@ function buildQuery(query){
 
   if(query['hasCovid']){
     q["infeccion.hasCovid"] = true;
+
   }
+  
+  if(query['actualState']){
+    q["infeccion.actualState"] = parseInt(query['actualState'], 10);
+  }
+
+  if(query['pendLaboratorio']){
+    q["muestraslab.estado"] = {$in: ['presentada', 'enestudio']};
+  }
+
 
   if(query['isSeguimiento']){
     q["followUp.isActive"] = true;
@@ -514,9 +524,6 @@ function buildQuery(query){
     if(query['qIntents']){
       q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
     }
-
-
-
   }
 
 
@@ -585,7 +592,7 @@ exports.findAll = function (errcb, cb) {
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
     // c onsole.log('find ASISPREVENCION ************')
-    // c onsole.dir(regexQuery);
+    console.dir(regexQuery);
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {

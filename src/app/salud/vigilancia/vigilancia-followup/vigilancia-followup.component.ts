@@ -176,6 +176,8 @@ export class VigilanciaFollowupComponent implements OnInit {
 
 
   viewPanelsSelected(e){
+    e.source._checked = false;
+
     if(!(e && e.value && e.value.length)) return;
 
     this.manageAsistenciaView(e.value)
@@ -188,6 +190,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   editLaboratorio(e){
+    e.source._checked = false;
     this.openLaboratorioModal(e.value);
   }
 
@@ -303,6 +306,11 @@ export class VigilanciaFollowupComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
       // c onsole.log('dialog CLOSED')
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
+
     });    
   }
 
@@ -320,6 +328,11 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
       //c onsole.log('dialog CLOSED')
     });    
   }
@@ -338,6 +351,10 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
       //c onsole.log('dialog CLOSED')
     });    
   }
@@ -361,6 +378,10 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
       // c onsole.log('dialog CLOSED')
     });    
   }
@@ -379,6 +400,10 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
       //c onsole.log('dialog CLOSED')
     });    
   }
@@ -397,6 +422,10 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
       //c onsole.log('dialog CLOSED')
     });    
   }

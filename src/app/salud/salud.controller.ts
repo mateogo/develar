@@ -26,7 +26,7 @@ import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion,
-          AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp,
+          AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp, SisaEvent, MuestraLaboratorio,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
 import {   SolicitudInternacion } from './internacion/internacion.model';
@@ -267,6 +267,52 @@ export class SaludController {
     return listener;
   }
 
+  private initCovidData(sisaevent: SisaEvent, asistencia: Asistencia){
+    let muestralab: MuestraLaboratorio;
+    let infeccion = asistencia.infeccion;
+    let muestraslab = asistencia.muestraslab || [];
+
+    if(!infeccion){
+      infeccion = new InfectionFollowUp();
+      infeccion.isActive = true;
+
+      if(sisaevent.avance === 'sospecha'){
+        infeccion.avance = 'sospecha';
+        infeccion.sintoma = 'sindato';
+        infeccion.hasCovid = false;
+        infeccion.actualState = 0;
+
+      }else if(sisaevent.avance === 'confirmado'){
+        infeccion.avance = 'confirmado';
+        infeccion.sintoma = 'sindato';
+        infeccion.hasCovid = true;
+        infeccion.actualState = 1;
+
+      }else if(sisaevent.avance === 'descartado'){
+        infeccion.avance = 'descartado';
+        infeccion.sintoma = 'sindato';
+        infeccion.hasCovid = false;
+        infeccion.actualState = 2;
+
+      }else if(sisaevent.avance === 'fallecido'){
+        infeccion.avance = 'fallecido';
+        infeccion.sintoma = 'sindato';
+        infeccion.hasCovid = false;
+        infeccion.actualState = 4;
+      }
+      asistencia.infeccion = infeccion;
+    }
+
+    if(!(muestraslab && muestraslab.length)){
+       muestralab = new MuestraLaboratorio();
+       muestralab.fe_notificacion = sisaevent.fe_reportado;
+       muestralab.estado = 'presentada';
+       muestralab.resultado = 'pendiente';
+       asistencia.muestraslab = [ muestralab ]
+    }
+
+  }
+
   private transitionOrchestration(transition: string, asistencia: Asistencia){
     let today = new Date();
     let day = today.getDate();
@@ -281,6 +327,9 @@ export class SaludController {
           asistencia.isVigilado = true;
           sisaevent.fe_consulta  = sisaevent.fe_consulta  ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_consulta))  : devutils.txFromDate(today);
           sisaevent.fe_reportado = sisaevent.fe_reportado ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_reportado)) : devutils.txFromDate(today);
+          this.initCovidData(sisaevent, asistencia)
+
+
 
         }else {
           sisaevent.fe_baja  ? devutils.txFromDate(devutils.dateFromTx(sisaevent.fe_baja))  : devutils.txFromDate(today);

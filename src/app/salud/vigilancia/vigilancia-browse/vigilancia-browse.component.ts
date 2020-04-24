@@ -27,14 +27,15 @@ export class VigilanciaBrowseComponent implements OnInit {
 	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
-  public actionOptList =  AsistenciaHelper.getOptionlist('actions');
-  public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
-  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
-  public avanceOptList = AsistenciaHelper.getOptionlist('avance');
-  public estadoOptList = AsistenciaHelper.getOptionlist('estado');
-  public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
-  public urgenciaOptList =  AsistenciaHelper.getOptionlist('urgencia');
-  public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
+  public actionOptList =       AsistenciaHelper.getOptionlist('actions');
+  public sectorOptList =       AsistenciaHelper.getOptionlist('sectores');
+  public ciudadesOptList =     AsistenciaHelper.getOptionlist('ciudades');
+  public avanceOptList =       AsistenciaHelper.getOptionlist('avance');
+  public estadoOptList =       AsistenciaHelper.getOptionlist('estado');
+  public encuestaOptList =     AsistenciaHelper.getOptionlist('encuesta');
+  public urgenciaOptList =     AsistenciaHelper.getOptionlist('urgencia');
+  public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp');
+  public estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -61,6 +62,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     this.sectorOptList.push(
        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }
      );
+
+    this.addSinSeleccion()
 
     this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
@@ -124,13 +127,15 @@ export class VigilanciaBrowseComponent implements OnInit {
     form = this.fb.group({
       compPrefix:   [{value: "", disabled: true}],
       compName:     [{value: "", disabled: true}],
-      compNum_d:    [null],
-      compNum_h:    [null],
-      isVigilado:   [null],
-      hasCovid:     [null],
-      isSeguimiento: [null],
+      compNum_d:       [null],
+      compNum_h:       [null],
+      isVigilado:      [null],
+      hasCovid:        [null],
+      pendLaboratorio: [null],
+      actualState:     [null],
+      isSeguimiento:   [null],
       tipoSeguimiento: [null],
-      qIntents:     [null],
+      qIntents:        [null],
     });
 
     return form;
@@ -144,6 +149,8 @@ export class VigilanciaBrowseComponent implements OnInit {
         compNum_h:   query.compNum_h,
 
         isVigilado: query.isVigilado,
+        pendLaboratorio: query.pendLaboratorio,
+        actualState: query.actualState,
         hasCovid:   query.hasCovid,
         isSeguimiento:  query.isSeguimiento,
         tipoSeguimiento:  query.tipoSeguimiento,
@@ -177,6 +184,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.compNum_h =   fvalue.compNum_h;
 
     entity.isVigilado =   fvalue.isVigilado;
+    entity.pendLaboratorio =   fvalue.pendLaboratorio;
+    entity.actualState  = fvalue.actualState;
     entity.hasCovid =     fvalue.hasCovid;
 
     entity.isSeguimiento =   fvalue.isSeguimiento;
@@ -208,13 +217,30 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'isVigilado'      && !entity[key]) delete entity[key];
       if(key === 'hasCovid'        && !entity[key]) delete entity[key];
       if(key === 'isSeguimiento'   && !entity[key]) delete entity[key];
+      if(key === 'pendLaboratorio' && !entity[key]) delete entity[key];
       if(key === 'qIntents'        && !entity[key]) delete entity[key];
     })
 
-
-
 		return entity;
 	}
+
+  addSinSeleccion(){
+    let list = [  this.actionOptList, 
+                  this.sectorOptList, 
+                  this.ciudadesOptList, 
+                  this.avanceOptList, 
+                  this.estadoOptList, 
+                  this.encuestaOptList, 
+                  this.urgenciaOptList, 
+                  this.tipoFollowUpOptList,
+                  this.estadoCovidOptList,
+                 ];
+
+    list.forEach(l => {
+      let s = { val: 'no_definido', label: 'Sin selección'};
+      l.unshift(s);
+    });
+  }
 
 }
 

@@ -221,6 +221,7 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'isVigilado'      && !query[key]) delete query[key];
       if(key === 'hasCovid'        && !query[key]) delete query[key];
       if(key === 'isSeguimiento'   && !query[key]) delete query[key];
+      if(key === 'pendLaboratorio' && !query[key]) delete query[key];
       if(key === 'qIntents'        && !query[key]) delete query[key];
     })
 

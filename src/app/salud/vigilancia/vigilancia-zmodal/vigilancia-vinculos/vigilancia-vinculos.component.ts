@@ -196,7 +196,6 @@ export class VigilanciaVinculosComponent implements OnInit {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
           let value = control.value;
           let tdoc = that.form.controls['tdoc'].value || 'DNI';
-          console.log('dniValidator [%s]', tdoc);
 
           return service.testPersonByDNI(tdoc,value).pipe(
               map(t => {

@@ -273,6 +273,7 @@ const sintomaOptList = [
 	{ val: 'negativo2',      label: 'Negativo#2'},
 	{ val: 'alta',           label: 'Alta'},
 	{ val: 'fallecido',      label: 'Fallecido'},
+	{ val: 'sindato',        label: 'Sin dato'},
 	
 ];
 
@@ -283,7 +284,6 @@ export class InfectionFollowUp {
 
 	actualState: number = 0 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
 													//estadoActualAfectadoOptList
-
 	fe_inicio: string = '';  
 	fe_confirma: string = '';
 	fe_alta: string = '';
@@ -307,7 +307,6 @@ const estadoActualAfectadoOptList = [
 	{ val: 0, label: 'Sospecha'},
 	{ val: 1, label: 'COVID'},
 	{ val: 2, label: 'Descartado'},
-	{ val: 3, label: 'Recuperado'},
 	{ val: 4, label: 'Fallecido'},
 	{ val: 5, label: 'Alta'},
 	{ val: 6, label: 'Posible'},
@@ -429,7 +428,7 @@ export class MuestraLaboratorio {
 
 	alerta: string = ''; 
 
-	estado: string = 'presentada';     // estadoMuestraLaboratorioOptList
+	estado: string = 'presentada';   // estadoMuestraLaboratorioOptList
 	resultado: string = 'pendiente'; //resultadoMuestraLaboratorioOptList
 	slug: string = ''; 
 
@@ -621,12 +620,14 @@ export class VigilanciaBrowse {
 		compNum_d:   string;
 		requirenteId: string;
 		compNum_h:   string;
+		actualState: string|number;
 
 		asistenciaId: string;
 
 		viewList?:   Array<string>;
 
 		isVigilado: boolean = true;
+		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
 		hasCovid:   boolean = true;
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;

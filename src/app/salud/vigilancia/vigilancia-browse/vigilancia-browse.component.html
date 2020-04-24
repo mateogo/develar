@@ -48,12 +48,33 @@
         </div>
       </div>
       <div class="row" >
-        <div class="col-md-2 d-flex align-items-center" 
+        <div class="col-md-4" 
             title="Sección para filtrar casos covid">
             <mat-checkbox 
                   [checked]="true"
                   [formControl]="form.controls['hasCovid']" >
                     Caso confirmado activo de COVID-19</mat-checkbox>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select #fldEstadoCovid placeholder="Estado de caso"
+                [formControl]="form.controls['actualState']"
+                (selectionChange)="changeSelectionValue('sector',fldEstadoCovid.value)" >
+              <mat-option *ngFor="let item of estadoCovidOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="row" >
+        <div class="col-md-2 d-flex align-items-center" 
+            title="Filtrar solo casos con muestras de laboratorio pendiente de resultado">
+            <mat-checkbox 
+                  [checked]="true"
+                  [formControl]="form.controls['pendLaboratorio']" >
+                    Casos con LABORATORIO pendiente de resultado</mat-checkbox>
         </div>
       </div>
       <div class="row" >
