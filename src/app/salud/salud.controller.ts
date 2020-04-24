@@ -273,8 +273,6 @@ export class SaludController {
     let month = today.getMonth();
     let year = today.getFullYear();
 
-    console.log('transition Orchestration: [%s]', transition);
-
     if(transition === SISA_ESTADO){
       let sisaevent = asistencia && asistencia.sisaevent;
 

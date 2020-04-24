@@ -114,6 +114,19 @@
 
 </div>
 </div>
+<hr>
+<div class="d-md-flex justify-content-start align-items-center cards" >
+  <ng-container *ngFor='let state of actualState'>
+    <card  [bgColor]="'success'" class="info-card state-card m-2">
+      <div class="title text-uppercase">{{ state.label }} </div>
+      <div class="count">{{ state.cardinal }}</div>
+      <badge  [customColor]="isHoy ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
+              [borderRadius]="false">{{ state.slug }}</badge> 
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </ng-container>
+</div>
+
 
 <div class="cards" >
 <div class="row">

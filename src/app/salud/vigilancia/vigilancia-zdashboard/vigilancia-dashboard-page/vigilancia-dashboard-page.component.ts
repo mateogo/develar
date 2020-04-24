@@ -41,6 +41,8 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   public avanceOptList =   AsistenciaHelper.getOptionlist('avanceInfection');
   public sintomaOptList =   AsistenciaHelper.getOptionlist('sintomaInfection');
 
+  public actualState: Array<DashboardData> = []
+
 
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public encuestaOptList = AsistenciaHelper.getOptionlist('encuesta');
@@ -300,6 +302,18 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     this.sem.cardinal = 0;
   	this.mes.cardinal = 0;
   	this.anio.cardinal = 0;
+
+    this.actualState = []
+
+    for(let i=0; i<7; i +=1 ){
+      let token = {
+        label: this.estadoOptList[i].label,
+        cardinal: 0,
+        slug: ''
+      }
+      this.actualState.push(token);
+
+    }
 
   	this.personHelperByAge = {};
   	this.personByAge.error = "";
@@ -795,6 +809,14 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   	return "S/Dato"
   }
 
+  acumByActualState(t: Tile){
+    let index = parseInt(t.estado, 10);
+    
+    if(index > 6 || index < 0 ) return;
+
+    this.actualState[index].cardinal += t.cardinal;
+  }
+
   acumByPersonAge(t:Tile){
   	if(this.personHelperByAge[t.edadId]){
   		this.personHelperByAge[t.edadId].cardinal += t.cardinal;
@@ -840,6 +862,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   *********************/
  reduceTileData(t: Tile){
   	this.acumByDate(t);
+    this.acumByActualState(t);
   	this.acumByPersonAge(t);
   	this.acumByPersonSex(t);
   	this.acumByPersonCity(t);

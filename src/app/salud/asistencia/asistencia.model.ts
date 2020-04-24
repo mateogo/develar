@@ -304,7 +304,7 @@ export class InfectionFollowUp {
 
 
 const estadoActualAfectadoOptList = [
-	{ val: 0, label: 'Posible / Sospecha'},
+	{ val: 0, label: 'Sospecha'},
 	{ val: 1, label: 'COVID'},
 	{ val: 2, label: 'Descartado'},
 	{ val: 3, label: 'Recuperado'},

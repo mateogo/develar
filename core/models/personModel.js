@@ -334,6 +334,7 @@ const personSch = new mongoose.Schema({
 });
 
 personSch.pre('save', function (next) {
+    console.log('PRE SAVE [%s]', this.displayName);
     return next();
 });
 
@@ -520,6 +521,7 @@ exports.findByQuery = function (query, errcb, cb) {
  * @param errcb
  */
 exports.update = function (id, person, errcb, cb) {
+    validatePersonBeforeUpdate(person)
 
     Person.findByIdAndUpdate(id, person, { new: true }, function(err, entity) {
         if (err){
@@ -534,6 +536,24 @@ exports.update = function (id, person, errcb, cb) {
     });
 
 };
+
+function validatePersonBeforeUpdate(person){
+
+    let familiares = person.familiares;
+    if(familiares && familiares.length){
+        let filtered = familiares.filter(fam => (fam.nombre && fam.apellido && fam.vinculo));
+        person.familiares = filtered
+    }
+
+    let locaciones = person.locaciones;
+    if(locaciones && locaciones.length){
+        let filtered = locaciones.filter(token => (token.street1 && token.city));
+        person.locaciones = filtered
+    }
+
+}
+
+
 
 const createNewRecordcarRelation = function (person, errcb, cb){
     const ficha = person.fichas[0];
@@ -616,7 +636,7 @@ function checkForPersonToPersonRelation(sourcePerson){
 
 function updateSourcePerson(sourcePerson, promiseArray){
     Promise.all(promiseArray).then(values => {
-        console.log('Promise ALL [%s]', values && values.length)
+        //console.log('Promise ALL [%s]', values && values.length)
         if(values && values.length){
             values.forEach(v => {
                 console.log('Value Token: [%s]', v && v.displayName)
@@ -813,6 +833,8 @@ exports.createPersonFromUser = function(user, cb){
  */
 exports.create = function (person, errcb, cb) {
     delete person._id;
+    
+    validatePersonBeforeUpdate(person);
 
     createNewPerson(person, errcb, cb);
 
