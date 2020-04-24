@@ -45,6 +45,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   public personErrorMsg = '';
   public docBelongsTo = {error: ''};
   public tDoc = "DNI";
+  private currentNumDoc = '';
 
   private result: UpdateAsistenciaEvent;
 
@@ -57,10 +58,14 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.initForm();
  
   	this.isNewVinculo = true;
   	this.asistencia = this.data.asistencia
   	this.person = this.data.person;
+    this.currentNumDoc = '';
+
   	this.familyList = this.person.familiares || [];
 
   	this.vinculo = this.data.vinculo ;
@@ -71,6 +76,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   		if(labToken){
   			this.vinculo = labToken;
   			this.tDoc = this.vinculo.tdoc || 'DNI';
+        this.currentNumDoc = this.vinculo.ndoc;
   			this.isNewVinculo = false;
   		}
 
@@ -158,6 +164,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   	let today = new Date();
     //this.vinculo = {...this.vinculo, ...this.form.value} --->OjO... esto clona, no es lo buscado
     this.vinculo = Object.assign(this.vinculo, this.form.value);
+    this.vinculo.hasOwnPerson = personModel.hasMinimumDataToBePerson(this.vinculo);
 
  		if(this.isNewVinculo){
  			this.familyList.push(this.vinculo);
@@ -170,9 +177,9 @@ export class VigilanciaVinculosComponent implements OnInit {
 		//Recibido vía alerta SISA por afectado que vive en Brown
   }
 
-  private initForm(form){
+  private initForm(){
 
-    form = this.fb.group({
+    this.form = this.fb.group({
       nombre:       [null, Validators.compose( [Validators.required])],
       apellido:     [null, Validators.compose( [Validators.required])],
       tdoc:         [null, Validators.compose( [Validators.required])],
@@ -192,30 +199,53 @@ export class VigilanciaVinculosComponent implements OnInit {
     });
 
   }
-  dniExistenteValidator(that:any, service: PersonService, message: object): AsyncValidatorFn {
-      return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-          let value = control.value;
-          let tdoc = that.form.controls['tdoc'].value || 'DNI';
+  // dniExistenteValidator(that:any, service: PersonService, message: object): AsyncValidatorFn {
+  //     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+  //         let value = control.value;
+  //         let tdoc = that.form.controls['tdoc'].value || 'DNI';
 
-          return service.testPersonByDNI(tdoc,value).pipe(
-              map(t => {
-                  let invalid = false;
-                  let txt = ''
+  //         return service.testPersonByDNI(tdoc,value).pipe(
+  //             map(t => {
+  //                 let invalid = false;
+  //                 let txt = ''
 
-                  if(t && t.length){ 
-                      //invalid = true;
-                      //txt = 'Documento existente: ' + t[0].displayName;
-                      that.vinculo.hasOwnPerson = true;
-                      that.vinculo.personId = t[0]._id;
-                  }
+  //                 if(t && t.length){ 
+  //                     invalid = true;
+  //                     txt = 'Documento existente: ' + t[0].displayName;
+  //                 }
 
-                  // message['error'] = txt;
-                  return invalid ? { 'mailerror': txt }: null;
+  //                 message['error'] = txt;
+  //                 return invalid ? { 'mailerror': txt }: null;
 
-              })
-           )
-      }) ;
-  }
+  //             })
+  //          )
+  //     }) ;
+  // }
+
+    dniExistenteValidator(that:any, service: PersonService, message: object): AsyncValidatorFn {
+        return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            let value = control.value;
+            let tdoc = that.form.controls['tdoc'].value || 'DNI';
+
+            return service.testPersonByDNI(tdoc,value).pipe(
+                map(t => {
+                    let invalid = false;
+                    let txt = ''
+
+                    if(t && t.length && value !== that.currentNumDoc){ 
+                        invalid = true;
+                        txt = 'Documento existente: ' + t[0].displayName;
+                    }
+
+                    message['error'] = txt;
+                    return invalid ? { 'mailerror': txt }: null;
+
+                })
+             )
+        }) ;
+     }
+
+
 
   fechaNacimientoValidator(): ValidatorFn {
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
@@ -236,7 +266,7 @@ export class VigilanciaVinculosComponent implements OnInit {
    }
 
   private initForEdit(){
-    this.form = this.fb.group(this.vinculo);
+    this.form.reset(this.vinculo);
   }
 
 

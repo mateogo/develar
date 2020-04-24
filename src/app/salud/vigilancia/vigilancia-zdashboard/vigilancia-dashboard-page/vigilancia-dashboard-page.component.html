@@ -116,7 +116,7 @@
 </div>
 <hr>
 <div class="d-md-flex justify-content-start align-items-center cards" >
-  <ng-container *ngFor='let state of actualState'>
+  <ng-container *ngFor='let state of stateList'>
     <card  [bgColor]="'success'" class="info-card state-card m-2">
       <div class="title text-uppercase">{{ state.label }} </div>
       <div class="count">{{ state.cardinal }}</div>

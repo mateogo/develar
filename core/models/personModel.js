@@ -334,7 +334,6 @@ const personSch = new mongoose.Schema({
 });
 
 personSch.pre('save', function (next) {
-    console.log('PRE SAVE [%s]', this.displayName);
     return next();
 });
 
@@ -642,10 +641,21 @@ function updateSourcePerson(sourcePerson, promiseArray){
                 console.log('Value Token: [%s]', v && v.displayName)
             })
         }
-        sourcePerson.save().then(token =>{
+
+
+        let id = sourcePerson.id;
+        console.log('SOURCE PERSON [%s]', id);
+
+        console.log('SourcePerson READY-TO-BE updated: [%s] [%s]', sourcePerson.displayName, sourcePerson.familiares[0].personId);
+
+        Person.findByIdAndUpdate(id, sourcePerson, { new: true }).then( token =>{
             console.log('SAVE SOURCE PERSON')
-            return null;
+            console.log('SourcePerson UPDATED: [%s] [%s]',token.displayName, token.familiares[0].personId);
         })
+
+        // sourcePerson.save().then(token =>{
+        //     return token;
+        // })
 
     })
 
@@ -703,8 +713,8 @@ async function updateRelatedPersonMember(key, sourcePerson, member, index, promi
         updatePersonFromVinculo(tperson, member, key);
 
         return tperson.save().then(token => {
-            sourcePerson[key][index].personId = tperson._id;
-            console.log('SAVE TOKEN PERSON')
+            sourcePerson[key][index].personId = tperson.id;
+            console.log('SAVE TOKEN PERSON [%s] [%s] [%s] [%s]',sourcePerson[key][index].personId,tperson.id, key, index)
 
             return token;
         }).catch(err => {console.log(err);});

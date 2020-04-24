@@ -41,7 +41,8 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   public avanceOptList =   AsistenciaHelper.getOptionlist('avanceInfection');
   public sintomaOptList =   AsistenciaHelper.getOptionlist('sintomaInfection');
 
-  public actualState: Array<DashboardData> = []
+  public actualState = {};
+  public stateList: DashboardData[] = [];
 
 
   public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
@@ -303,17 +304,16 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   	this.mes.cardinal = 0;
   	this.anio.cardinal = 0;
 
-    this.actualState = []
+    this.actualState = {};
 
-    for(let i=0; i<7; i +=1 ){
-      let token = {
-        label: this.estadoOptList[i].label,
-        cardinal: 0,
-        slug: ''
-      }
-      this.actualState.push(token);
-
-    }
+    this.estadoOptList.forEach(t => {
+        let token = {
+          label: t.label,
+          cardinal: 0,
+          slug: ''
+        }
+        this.actualState[t.val] = token;
+    })
 
   	this.personHelperByAge = {};
   	this.personByAge.error = "";
@@ -812,8 +812,6 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   acumByActualState(t: Tile){
     let index = parseInt(t.estado, 10);
     
-    if(index > 6 || index < 0 ) return;
-
     this.actualState[index].cardinal += t.cardinal;
   }
 
@@ -882,6 +880,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 		  			this.reduceTileData(t)
 		  		}
 		  	});
+        this.buildActualState();
 		  	this.resetPersonByAgeChart();
 		  	this.resetPersonBySexChart();
 		  	this.resetPersonByCityChart();
@@ -891,6 +890,13 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 
   	},200)
 
+  }
+
+  private buildActualState(){
+    this.stateList = [];
+    Object.keys(this.actualState).forEach(key =>{
+      this.stateList.push(this.actualState[key]);
+    })
   }
 
   /************************/
