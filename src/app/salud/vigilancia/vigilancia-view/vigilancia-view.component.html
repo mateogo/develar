@@ -61,6 +61,9 @@
 
                 <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  <strong>{{ vinculo.vinculo }}</strong>
                     <span class="edit-control"
+                        (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
+                        <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
+                    <span class="edit-control"
                         (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
                         <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
                 </p>

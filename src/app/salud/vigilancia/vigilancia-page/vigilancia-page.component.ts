@@ -214,7 +214,6 @@ export class VigilanciaPageComponent implements OnInit {
       this.query = query;
     }
 
-
     Object.keys(query).forEach(key =>{
       if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
       if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
@@ -223,9 +222,7 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'hasCovid'        && !query[key]) delete query[key];
       if(key === 'isSeguimiento'   && !query[key]) delete query[key];
       if(key === 'qIntents'        && !query[key]) delete query[key];
-
     })
-
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
@@ -243,11 +240,9 @@ export class VigilanciaPageComponent implements OnInit {
         this.asistenciasList = [];
 
         this.showData = false;
-
       }
 
     })
-
   }
 
   private sortProperly(records: Asistencia[], ts_now: number){

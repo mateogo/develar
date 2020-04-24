@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
 import { Observable, of} from 'rxjs';
 
 import { PersonService } from '../../person.service';
+
+import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
 
 import {   Asistencia, 
           ContextoDenuncia,
@@ -25,6 +26,7 @@ export class VigilanciaViewComponent implements OnInit {
 	@Input() token: Asistencia;
   @Input() viewList = [];
   @Output() personSelected = new EventEmitter<string>();
+  @Output() familySelected = new EventEmitter<FamilyData>();
 
 	public asistencia: AsistenciaToPrint;
   private prioridad_colors = ['', 'rgba(0,201,0,0.6)', 'rgba(255,189,0,0.9)', 'rgba(255,36,69,0.8)']
@@ -60,6 +62,12 @@ export class VigilanciaViewComponent implements OnInit {
   	}
   }
 
+  editVinculo(contacto: VinculosData){
+    if(contacto.token.personId){
+      this.familySelected.next(contacto.token)
+    }
+  }
+
   manageVinculo(contacto: VinculosData){
     if(contacto.token.personId){
       this.personSelected.next(contacto.token.personId);
@@ -67,16 +75,14 @@ export class VigilanciaViewComponent implements OnInit {
   }
 
 
-
   private openViewPanels(list){
     if(!(list && list.length)) return;
     if(list.indexOf('core') !== -1) this.showGenericData = true; else this.showGenericData = false;
     if(list.indexOf('sisa') !== -1) this.buildSisaData(this.token); else this.showSisaData = false;
     if(list.indexOf('seguimiento') !== -1) this.buildSeguimientoData(this.token); else this.showSeguimientoData = false;
-    if(list.indexOf('infection') !== -1) this.buildInfectionData(this.token); else this.showInfectionData = false;
-    if(list.indexOf('muestralab') !== -1) this.buildMuestraLab(this.token); else this.showMuestrasData = false;
-    if(list.indexOf('vinculos') !== -1) this.buildVinculosFam(this.token); else this.showVinculosData = false;
-
+    if(list.indexOf('infection') !== -1)   this.buildInfectionData(this.token); else this.showInfectionData = false;
+    if(list.indexOf('muestralab') !== -1)  this.buildMuestraLab(this.token); else this.showMuestrasData = false;
+    if(list.indexOf('vinculos') !== -1)    this.buildVinculosFam(this.token); else this.showVinculosData = false;
 
   }
 

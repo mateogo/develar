@@ -90,6 +90,8 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
     this.infection = {...this.infection, ...this.form.value}
 
+    this.infection.hasCovid =   this.infection.actualState === 1 ? true : false;
+
     this.infection.fe_inicio =   this.infection.fe_inicio  ?   devutils.txFromDate(devutils.dateFromTx(this.infection.fe_inicio)) : '';
     this.infection.fe_confirma = this.infection.fe_confirma  ? devutils.txFromDate(devutils.dateFromTx(this.infection.fe_confirma)) : '';
     this.infection.fe_alta =     this.infection.fe_alta  ?     devutils.txFromDate(devutils.dateFromTx(this.infection.fe_alta)) : '';
@@ -106,7 +108,11 @@ export class VigilanciaInfeccionComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.infection.isInternado = this.infection.isInternado || false;
+    this.infection.locacionSlug = this.infection.locacionSlug || '';
+
     this.form = this.fb.group(this.infection);
+    this.form.controls.fe_confirma.disable();
   }
 
 

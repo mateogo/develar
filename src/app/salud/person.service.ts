@@ -202,6 +202,14 @@ export class PersonService {
     })
   }
 
+
+  /******* UPDATE *******/
+  updatePersonPromise(person: Person): Promise<Person>{
+    if(!person._id) return null;
+    return this.daoService.partialUpdate<Person>(RECORD, person._id, person);    
+  }
+
+
   /******* CREATE *******/
   createPerson(person: Person) : Promise<Person> {
     return this.daoService.create<Person>(RECORD, person)

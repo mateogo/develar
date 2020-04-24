@@ -199,32 +199,33 @@ const sisaEvolucionSch = new Schema({
 })
 
 const muestraLaboratorioSch = new Schema({
-  isActive:         { type: Boolean, required: false },   
+  isActive:         { type: Boolean, required: false },
 
-  muestraId:        { type: String,  required: false },   
-  fe_toma:          { type: String,  required: false },   
-  tipoMuestra:      { type: String,  required: false },   
+  secuencia:        { type: String,  required: false },
+  muestraId:        { type: String,  required: false },
+  fe_toma:          { type: String,  required: false },
+  tipoMuestra:      { type: String,  required: false },
 
-  locacionId:       { type: String,  required: false },   
-  locacionSlug:     { type: String,  required: false },   
+  locacionId:       { type: String,  required: false },
+  locacionSlug:     { type: String,  required: false },
 
-  laboratorio:      { type: String,  required: false },   
-  laboratorioTel:   { type: String,  required: false },   
+  laboratorio:      { type: String,  required: false },
+  laboratorioTel:   { type: String,  required: false },
 
-  metodo:           { type: String,  required: false },   
+  metodo:           { type: String,  required: false },
 
-  fe_resestudio:    { type: String,  required: false },   
-  fe_notificacion:  { type: String,  required: false },   
+  fe_resestudio:    { type: String,  required: false },
+  fe_notificacion:  { type: String,  required: false },
 
-  alerta:           { type: String,  required: false },   
+  alerta:           { type: String,  required: false },
 
-  estado:           { type: String,  required: false },   
-  resultado:        { type: String,  required: false },   
+  estado:           { type: String,  required: false },
+  resultado:        { type: String,  required: false },
   slug:             { type: String,  required: false },
 
-  fets_toma:         { type: Number,  required: false },   
-  fets_resestudio:   { type: Number,  required: false },   
-  fets_notificacion: { type: Number,  required: false },   
+  fets_toma:         { type: Number,  required: false },
+  fets_resestudio:   { type: Number,  required: false },
+  fets_notificacion: { type: Number,  required: false },
 });
 
 const contextoAfectadosSch = new Schema({
@@ -236,6 +237,7 @@ const contextoAfectadosSch = new Schema({
 
 const infeccionFollowUpSch = new Schema({
     isActive:     { type: Boolean, required: false },
+    isInternado:  { type: Boolean, required: false },
     hasCovid:     { type: Boolean, required: false },
     actualState:  { type: Number,  required: false },
 
@@ -245,11 +247,11 @@ const infeccionFollowUpSch = new Schema({
 
     avance:       { type: String,  required: false },
     sintoma:      { type: String,  required: false },
+    locacionSlug: { type: String,  required: false },
 
     qcoworkers:   { type: Number,  required: false },
     qcovivientes: { type: Number,  required: false },
     qotros:       { type: Number,  required: false },
-
     slug:         { type: String,  required: false },
 
     fets_inicio:   { type: Number,  required: false },
@@ -285,12 +287,19 @@ const afectadosFollowUpSch = new Schema({
   fe_inicio:     { type: String, required: false },
   fe_ucontacto:  { type: String, required: false },
   fe_ullamado:   { type: String, required: false },
+
+  parentId:      { type: String, required: false },
+  parentSlug:    { type: String, required: false },
+  
   qllamados:     { type: Number, required: false },
   qcontactos:    { type: Number, required: false },
+
   lastCall:      { type: String, required: false },
   qIntents:      { type: Number, required: false },
+
   tipo:          { type: String, required: false },
   vector:        { type: String, required: false },
+
   asignados:     { type: String, required: false },
   slug:          { type: String, required: false },
 
@@ -357,6 +366,7 @@ const asisprevencionSch = new Schema({
     hasSeguimiento:  { type: Boolean, required: false, default: false },
     isCovid:         { type: Boolean, required: false, default: false },
     isInternado:     { type: Boolean, required: false, default: false },
+    hasParent:       { type: Boolean, required: false, default: false },
 
 
     infeccion:         { type: infeccionFollowUpSch, required: false },
@@ -574,8 +584,8 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
-    console.log('find ASISPREVENCION ************')
-    console.dir(regexQuery);
+    // c onsole.log('find ASISPREVENCION ************')
+    // c onsole.dir(regexQuery);
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {
@@ -698,6 +708,210 @@ exports.create = function (record, errcb, cb) {
     encuesta:    { type: encuestaSch,   required: false },
 */
 
+
+exports.tableroepidemio = dashboardEpidemio;
+
+function dashboardEpidemio(datenum, errcb, cb){
+ 
+  let time_frame = utils.buildDateFrameForCurrentWeek(datenum);
+
+  let query = {
+      isVigilado: true,
+      fecomp_ts_d: time_frame.begin.getTime(),
+      fecomp_ts_h: time_frame.semh.getTime()
+    }
+  
+  let regexQuery = buildQuery(query)
+
+    
+  person.buildIdTree().then(pTree =>{
+
+    Record.find(regexQuery).lean().exec(function(err, entities) {
+
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+        }else{
+
+          procesTableroEpidemio(pTree, entities, time_frame, errcb, cb);
+        }
+    });
+  })
+
+}
+/**********************************/
+/*         TABLERO EPIDEMIO HELPERS    */
+/********************************/
+function getReferenceDate(asistencia){
+  if(asistencia && asistencia.infeccion){
+    if(asistencia.infeccion.fe_inicio) return utils.parseDateStr(asistencia.infeccion.fe_inicio);
+    else if(asistencia.infeccion.fe_confirma) return utils.parseDateStr(asistencia.infeccion.fe_confirma);
+  }
+  if(asistencia.sisaevent){
+    if(asistencia.sisaevent.fe_reportado) return utils.parseDateStr(asistencia.sisaevent.fe_reportado);
+  }
+  return utils.parseDateStr(asistencia.fecomp_txa);
+}
+
+function getLabel(list, val){
+    let t = list.find(item => item.val === val)
+    return t ? t.label : val;
+}
+
+
+const estadoActualAfectadoOptList = [
+  { val: 0, label: 'Sospecha'},
+  { val: 1, label: 'COVID'},
+  { val: 2, label: 'Descartado'},
+  { val: 3, label: 'Recuperado'},
+  { val: 4, label: 'Fallecido'},
+  { val: 5, label: 'Alta'},
+  { val: 6, label: 'Posible'},
+];
+
+function getEstado(asistencia){
+  if(asistencia && asistencia.infeccion){
+    return asistencia.infeccion.actualState
+  }
+  return 6
+}
+
+function getAvance(asistencia){
+  if(asistencia && asistencia.infeccion){
+    return asistencia.infeccion.avance
+  }
+  return 'posible';
+}
+
+function getSintoma(asistencia){
+  if(asistencia && asistencia.infeccion){
+    return asistencia.infeccion.sintoma
+  }
+  return 'asintomatico';
+}
+
+
+/**********************************/
+/*         TABLERO EPIDEMIO    */
+/********************************/
+function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
+  let master = {};
+
+  entities.forEach(asistencia => {
+    let fecomp = getReferenceDate(asistencia)
+    //
+
+    if(!fecomp){ 
+
+      fecomp = new Date();
+      console.log('errror **************************')
+      console.log('asistencia: [%s]', asistencia.compNum)
+      console.log('errror **************************')
+
+    }
+
+    let person = ptree[asistencia.idPerson];
+    let fenac = 0;
+    let sexo = 'X';
+    let ciudad = 'ciudad';
+
+    if(person){
+      fenac = person.fenac || 0;
+      sexo = person.sexo || asistencia.sexo || 'X';
+
+      if(person.locaciones && person.locaciones.length){
+        ciudad = person.locaciones[0].city || 'ciudad';
+      }else if(asistencia.locacion){
+        ciudad = asistencia.locacion.city || 'ciudad';
+      }
+
+    }else{
+      console.log('aiuddaaaaaa')
+    }
+
+    let token = {
+      dia: fecomp.getDate(),
+      mes: fecomp.getMonth(),
+      sem: "00",
+      fenac: fenac,
+      ciudad: ciudad,
+      sexo: sexo,
+      edadId: ("00" + Math.floor(utils.calcularEdad(fenac)/10)).substr(-2),
+      estado: getEstado(asistencia),
+      avance: getAvance(asistencia),
+      sintoma: getSintoma(asistencia),
+      sector: asistencia.sector,
+      cardinal: 1
+    };
+
+    token.id = buildId(token,fecomp, timeframe);
+    processToken(token, master);
+
+  })
+  // fin del proceso
+  cb(master);
+
+}
+
+function processToken(token, master){
+  if(master[token.id]){
+    master[token.id].cardinal = master[token.id].cardinal + 1;
+
+  }else{
+    master[token.id] = token;
+  }
+}
+
+
+
+
+function buildId(token, fecomp, timeframe){
+  let fechaId = buildDiaMes(token,fecomp, timeframe);
+  let edadId = token.edadId;
+  let sexoId = token.sexo;
+  let estadoId = "[" + ("            " + token.estado).substr(-4) + "]" 
+  let avanceId = "[" + ("            " + token.avance).substr(-15) + "]" 
+  let sintomaId = "[" + ("           " + token.sintoma).substr(-15) + "]" 
+  let sectorId = "[" + ("            " + token.sector).substr(-15) + "]" 
+  return fechaId + ':' + edadId + ':' + sexoId + ':' + estadoId + avanceId + sintomaId + sectorId;
+}
+
+function buildDiaMes(token, fecomp, timeframe){
+  let fecharef = timeframe.fecharef;
+  let fechasem = timeframe.semd;
+
+  let fechaId = fecharef.getFullYear() + '0000';
+  let diaId = '00' + token.dia;
+  let mesId = '00' + token.mes;
+  
+  if(token.mes === fechasem.getMonth()){
+    if(token.dia === fecharef.getDate()){
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + diaId.substr(-2);
+    } else {
+      fechaId = fecharef.getFullYear() + mesId.substr(-2) + '00';
+    }
+  }
+  if(timeframe.semd <= fecomp && fecomp <= timeframe.semh){
+    fechaId = fechaId + 'SE'
+    token.sem = "SE"
+
+  } else {
+    fechaId = fechaId + '00'
+    token.sem = "00"
+
+  }
+
+  return fechaId;
+}
+
+
+
+
+
+
+/**********************************/
+/*         DASHBOARD 107         */
+/********************************/
 exports.dashboard = function (errcb, cb) {
     dashboardProcess(cb);
 }
@@ -820,7 +1034,7 @@ const acumAvance = function(master, asistencia, today, today_time, semana ){
 const acumBruto = function(master, asistencia, today, today_time, semana ){
   //console.log(semana.semd.getTime(), asistencia.fecomp_txa, asistencia.fecomp_tsa, semana.semh.getTime());
 
-  console.log('tx[%s] asis[%s] today[%s] [%s][%s]',asistencia.fecomp_txa,asistencia.fecomp_txa, today_time, asistencia.fecomp_tsa === today_time,asistencia.fecomp_tsa == today_time);
+  //console.log('tx[%s] asis[%s] today[%s] [%s][%s]',asistencia.fecomp_txa,asistencia.fecomp_txa, today_time, asistencia.fecomp_tsa === today_time,asistencia.fecomp_tsa == today_time);
   if(asistencia.fecomp_tsa === today_time){
     master.hoy.cardinal +=1;
 

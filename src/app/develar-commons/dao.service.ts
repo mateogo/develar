@@ -72,6 +72,7 @@ export class DaoService {
         backendURL:   'api/asisprevencion',
         searchURL:    'api/asisprevencion/search',
         dashboardURL: 'api/asisprevencion/tablero',
+        epidemioURL:  'api/asisprevencion/epidemio',
         nextItemURL:  'api/asisprevencion/nextitem'
       },
       pcultural:{
@@ -381,6 +382,15 @@ export class DaoService {
                  );
   }
 
+  fetchEpidemioDashboard<T>(type: string, fecha: number): Observable<T> {
+    let url = `${this.dao[type].epidemioURL}/${fecha}`;
+    return this.http
+               .get<T>(url)
+               .pipe(
+                   catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+  
   fetchAsistenciaDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}/${fecha}`;
     return this.http

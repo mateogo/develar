@@ -31,7 +31,8 @@ export interface Tile {
 		edadId:   string;
 		estado:   string;
 		avance:   string;
-		action:   string;
+		action?:   string;
+		sintoma?:  string;
 		sector:   string;
 		cardinal: number;
 		id:       string;
@@ -233,19 +234,84 @@ export class Asistencia {
 		hasSeguimiento: boolean;
 		isCovid:        boolean;
 		isInternado:    boolean;
+		hasParent:      boolean;
 
 		infeccion:    InfectionFollowUp;
 		internacion:  InternacionAsis;
 		sisaevent:    SisaEvent;
 		followUp:     AfectadoFollowUp;
 
-		novedades:   Array<Novedad>;
+		novedades:         Array<Novedad>;
 		muestraslab:       Array<MuestraLaboratorio>;
 		sisaEvolucion:     Array<SisaEvolucion>;
 		seguimEvolucion:   Array<AfectadoUpdate>;
 		contextoAfectados: Array<ContextoAfectados>;
 		morbilidades:      Array<Morbilidad>;
 };
+
+
+const avanceInfectionOptList = [
+	{ val: 'posible',      label: 'Posible'},
+	{ val: 'sospecha',     label: 'Sospecha'},
+	{ val: 'descartado',   label: 'Descartado'},
+	{ val: 'confirmado',   label: 'Confirmado'},
+	{ val: 'enevolucion',  label: 'En evolución'},
+	{ val: 'recuperando',  label: 'Recuperando'},
+	{ val: 'alta',         label: 'Alta'},
+	{ val: 'fallecido',    label: 'Fallecido'},
+
+];
+
+const sintomaOptList = [
+	{ val: 'asintomatico',   label: 'Asintomático'},
+	{ val: 'descartado',     label: 'Descartado'},
+	{ val: 'intermedio',     label: 'Intermedio'},
+	{ val: 'critico',        label: 'Crítico'},
+	{ val: 'enrecuperacion', label: 'En recuperación'},
+	{ val: 'aislamdealta',   label: 'Aislamiento'},
+	{ val: 'negativo1',      label: 'Negativo#1'},
+	{ val: 'negativo2',      label: 'Negativo#2'},
+	{ val: 'alta',           label: 'Alta'},
+	{ val: 'fallecido',      label: 'Fallecido'},
+	
+];
+
+export class InfectionFollowUp {
+	isActive: boolean = false;
+	isInternado: boolean = false;
+	hasCovid: boolean = false;
+
+	actualState: number = 0 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
+													//estadoActualAfectadoOptList
+
+	fe_inicio: string = '';  
+	fe_confirma: string = '';
+	fe_alta: string = '';
+
+	avance: string = 'posible'; //avanceInfectionOptList
+	sintoma: string = 'asintomatico'; // sintomaOptList
+	locacionSlug: string = '' // lugar de internación
+
+	qcoworkers:  number = 0;
+	qcovivientes: number = 0 ;
+	qotros: number = 0;
+	slug: string = '';
+
+	fets_inicio: number = 0; 
+	fets_confirma: number = 0;
+	fets_alta: number = 0;
+}
+
+
+const estadoActualAfectadoOptList = [
+	{ val: 0, label: 'Posible / Sospecha'},
+	{ val: 1, label: 'COVID'},
+	{ val: 2, label: 'Descartado'},
+	{ val: 3, label: 'Recuperado'},
+	{ val: 4, label: 'Fallecido'},
+	{ val: 5, label: 'Alta'},
+	{ val: 6, label: 'Posible'},
+];
 
 const tipoLocacionOptList = [
 	{val: 'HOSP:DIS',    enDistrito: true, tipo: 'HOSP', isPublica: true,   label: 'Hospital (DIS)'},
@@ -285,11 +351,9 @@ export class InternacionAsis {
 
 
 const avanceSisaOptList = [
-    {val: 'posible',        label: 'Caso posible'    },
     {val: 'sospecha',       label: 'Sospecha'        },
     {val: 'confirmado',     label: 'Confirmado'      },
     {val: 'descartado',     label: 'Descartado'      },
-    {val: 'enrecuperacion', label: 'En recuperacion' },
     {val: 'altaobtenida',   label: 'Alta obtenida'    },
     {val: 'fallecido',      label: 'Fallecido'       },
 ];
@@ -346,6 +410,8 @@ export class MuestraLaboratorio {
 	_id?: string; 
 	isActive: boolean = true;
 
+	secuencia: string = '1RO'; // labsequenceOptList
+
 	muestraId: string = '';
 	fe_toma: string = '';
 	tipoMuestra: string = 'hisopado';
@@ -382,62 +448,6 @@ export class ContextoAfectados {
 } 
 
 
-const avanceInfectionOptList = [
-	{ val: 'posible',      label: 'Posible'},
-	{ val: 'sospecha',     label: 'Sospecha'},
-	{ val: 'confirmado',   label: 'Confirmado'},
-	{ val: 'enevolucion',  label: 'En evolución'},
-	{ val: 'recuperando',  label: 'Recuperando'},
-	{ val: 'critico',      label: 'Crítico'},
-	{ val: 'fallecido',    label: 'Fallecido'},
-	{ val: 'negativo1',    label: 'Negativo#1'},
-	{ val: 'negativo2',    label: 'Negativo#2'},
-	{ val: 'alta',         label: 'Alta'},
-
-];
-
-const sintomaOptList = [
-	{ val: 'asintomatico',   label: 'Asintomático'},
-	{ val: 'intermedio',     label: 'Intermedio'},
-	{ val: 'critico',        label: 'Crítico'},
-	{ val: 'enrecuperacion', label: 'En recuperación'},
-	{ val: 'aislamdealta',   label: 'Aislamiento de alta'},
-
-];
-
-export class InfectionFollowUp {
-	isActive: boolean = false;
-	hasCovid: boolean = false;
-
-	actualState: number = 0 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
-													//estadoActualAfectadoOptList
-
-	fe_inicio: string = '';  
-	fe_confirma: string = '';
-	fe_alta: string = '';
-
-	avance: string = 'posible'; //avanceInfectionOptList
-	sintoma: string = 'asintomatico'; // sintomaOptList
-
-	qcoworkers:  number = 0;
-	qcovivientes: number = 0 ;
-	qotros: number = 0;
-	slug: string = '';
-
-	fets_inicio: number = 0; 
-	fets_confirma: number = 0;
-	fets_alta: number = 0;
-}
-
-
-const estadoActualAfectadoOptList = [
-	{ val: 0, label: 'Sano'},
-	{ val: 1, label: 'COVID'},
-	{ val: 2, label: 'Recuperado'},
-	{ val: 3, label: 'Descartado'},
-	{ val: 4, label: 'Fallecido'},
-	{ val: 5, label: 'Alta'},
-];
 
 const tipoSeguimientoAfectadoOptList = [
 	{ val: 'sospecha', label: 'Sospecha'},
@@ -457,6 +467,9 @@ export class AfectadoFollowUp {
 	fe_inicio: string = '';
 	fe_ucontacto: string = '';
 	fe_ullamado: string = '';
+
+	parentId: string;   // caso indice: ID de la SOL/Asistencia
+	parentSlug: string; // caso índice
 
 	qllamados: number = 0;   // llamados totales
 	qcontactos: number = 0; // llamados con respuesta del afectado
@@ -569,7 +582,7 @@ export class AsistenciaTable {
 
 
 export class DashboardBrowse {
-		action:      string;
+		sintoma:      string;
 		sector:      string;
 		estado:      string;
 		avance:      string;
@@ -1088,6 +1101,7 @@ const vinculosOptList: Array<any> = [
         {val: 'hijx',     label: 'Hijo/a',    slug:'Hijo/a' },
         {val: 'padre',    label: 'Padre',     slug:'Padre' },
         {val: 'madre',    label: 'Madre',     slug:'Madre' },
+        {val: 'contactx', label: 'Contacto c/riesgo contagio',  slug:'Otro c/riesgo contagio' },
         {val: 'tix',      label: 'Tío/a',     slug:'Tío/a' },
         {val: 'hermanx',  label: 'Hermana/o', slug:'Hermana/o' },
         {val: 'abuelx',   label: 'Abuela/o',  slug:'Abuela/o' },
@@ -1097,6 +1111,41 @@ const vinculosOptList: Array<any> = [
         {val: 'vecinx',   label: 'Vecino/a',  slug:'Vecino/a' },
         {val: 'otro',     label: 'Otro',      slug:'Otro' },
 ];
+const estadoVinculosOptList: Array<any> = [
+        {val: 'no_definido',  label: 'Seleccione opción',slug:'Seleccione opción' },
+        {val: 'activo',       label: 'Activo',         slug:'Activo' },
+        {val: 'fallecido',    label: 'Fallecido/a',    slug:'Fallecido/a' },
+        {val: 'separado',     label: 'Separado/a',     slug:'Separado/a' },
+        {val: 'abandonado',   label: 'Abandonado/a',   slug:'Abandonado/a' },
+        {val: 'otro',         label: 'Otro',           slug:'Otro' },
+];
+
+const sexoOptList: Array<any> = [
+    {val: 'F',        label: 'Femenino',      slug:'Femenino' },
+    {val: 'M',        label: 'Masculino',     slug:'Masculino' },
+    {val: 'GAP',      label: 'Auto percibido',slug:'Auto percibido' },
+];
+
+const tiposCompPersonaFisica: Array<any> = [
+		{val: 'DNI', 	     label: 'DNI',                slug:'DNI' },
+    {val: 'PROV',      label: 'PROVISORIA',         slug:'Identif Provisoria' },
+		{val: 'LE',        label: 'LE',                 slug:'Libreta Enrolam' },
+		{val: 'LC',        label: 'LC',                 slug:'Libreta Cívica' },
+		{val: 'CUIL',      label: 'CUIL',               slug:'CUIL' },
+		{val: 'CUIT',      label: 'CUIT',               slug:'CUIT' },
+		{val: 'PAS',       label: 'PASP',               slug:'Pasaporte' },
+		{val: 'CI',        label: 'CI',                 slug:'Cédula de Identidad' },
+		{val: 'EXT',       label: 'DNI-EXT',            slug:'Extranjeros' },
+];
+
+const labsequenceOptList: Array<any> = [
+    {val: '1ER LAB',      label: '1ER LAB' },
+    {val: '2DO LAB',      label: '2DO LAB' },
+    {val: '3ER LAB',      label: '3ER LAB' },
+    {val: '4TO LAB',      label: '4TO LAB' },
+    {val: '5TO LAB',      label: '5TO LAB' },
+];
+
 
 const MODALIDAD_ALIMENTO =     'alimentos';
 const MODALIDAD_HABITACIONAL = 'habitacional';
@@ -1232,9 +1281,13 @@ const optionsLists = {
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
    resultadoMuestraLab: resultadoMuestraLaboratorioOptList,
+   sequenceMuestraLab: labsequenceOptList,
 
    // tipo de vinculo familiar
    vinculosFam: vinculosOptList,
+   estadoVinculosFam: estadoVinculosOptList,
+   sexo: sexoOptList,
+   tdoc: tiposCompPersonaFisica,
 }
 
 
@@ -1693,7 +1746,7 @@ export class AsistenciaHelper {
 		let q = new DashboardBrowse();
 		q.estado = "no_definido";
 		q.avance = "no_definido";
-		q.action = "no_definido";
+		q.sintoma = "no_definido";
 		q.sector = "no_definido";
 
 		return q;

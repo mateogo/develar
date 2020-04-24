@@ -55,6 +55,7 @@ export interface UpdateFamilyEvent {
       action: string;
       type: string;
       token: FamilyData;
+      person?: Person;
 };
 
 export interface UpdateBusinessMemberEvent {
@@ -237,24 +238,28 @@ export class OficiosData {
 
 
 export class FamilyData {
-    nombre: string;
-    apellido: string;
+    _id?: string; 
+    nombre: string = '';
+    apellido: string = '';
     tdoc: string = 'DNI';
-    ndoc: string;
+    ndoc: string = '';
+    sexo: string = '';
+    telefono: string = '';
     fenac: number = 0;
-    fenactx: string;
+    fenactx: string = '';
+    vinculo: string = 'contactx';
+    estado: string = 'activo';
+    hasOwnPerson: boolean = false;
+    personId: string = '';
+
     ecivil: string;
     nestudios: string;
     tocupacion: string;
     ocupacion: string;
     ingreso: string;
-    hasOwnPerson: boolean;
-    personId: string;
-    vinculo: string;
-    estado: string;
     desde: string;
     hasta: string;
-    comentario: string;
+    comentario: string = '';
 }
 
 export class BusinessMembersData {
@@ -654,6 +659,7 @@ const vinculo_familiar: Array<any> = [
         {val: 'hijx',     label: 'Hijo/a',    slug:'Hijo/a' },
         {val: 'padre',    label: 'Padre',     slug:'Padre' },
         {val: 'madre',    label: 'Madre',     slug:'Madre' },
+        {val: 'contactx', label: 'Contacto c/riesgo contagio',  slug:'Otro c/riesgo contagio' },
         {val: 'tix',      label: 'Tío/a',     slug:'Tío/a' },
         {val: 'hermanx',  label: 'Hermana/o', slug:'Hermana/o' },
         {val: 'abuelx',   label: 'Abuela/o',  slug:'Abuela/o' },
@@ -1650,7 +1656,7 @@ class PersonModel {
         return initNewModel(displayName, email);
     }
 
-    getPersonDocum(p:Person|FamilyData):string{
+    getPersonDocum(p:Person|FamilyData|BusinessMembersData):string{
 
     	let ndoc = (p.ndoc ? p.ndoc : '');
 
@@ -1728,7 +1734,7 @@ class PersonModel {
     	return ptypes;
     }
 
-    getPersonDisplayName(p:Person|FamilyData):string{
+    getPersonDisplayName(p: Person|FamilyData|BusinessMembersData):string{
       let token = (p as Person).displayName;
 
       if((p as Person).personType === 'fisica'){
@@ -1738,7 +1744,7 @@ class PersonModel {
       return token || this.getPersonFamilyName(p) || 'Sin nombre';
     }
 
-    getPersonFamilyName(p:Person|FamilyData):string{
+    getPersonFamilyName(p:Person|FamilyData|BusinessMembersData):string{
       let token = (p as Person).displayName;
 
       if(!token && p.nombre && p.apellido || (p as Person).personType !== "fisica"){
@@ -1861,6 +1867,7 @@ class PersonModel {
       fam.tdoc = p.tdoc;
       fam.ndoc = p.ndoc;
       fam.fenac = p.fenac;
+      fam.sexo = p.sexo;
       fam.fenactx = p.fenactx;
       fam.ecivil = p.ecivil;
       fam.nestudios = p.nestudios;

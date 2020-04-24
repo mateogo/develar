@@ -515,8 +515,6 @@ export class EmpresasController {
   }
 
 
-
-
   setCurrentPersonFromId(id: string){
     if(!id) return;
 

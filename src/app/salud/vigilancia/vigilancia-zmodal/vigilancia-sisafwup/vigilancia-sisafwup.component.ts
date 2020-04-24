@@ -40,6 +40,8 @@ export class VigilanciaSisafwupComponent implements OnInit {
   ngOnInit(): void {
   	this.asistencia = this.data.asistencia
   	this.sisaEvent = new SisaEvolucion();
+    this.sisaEvent.avance = this.asistencia.sisaevent.avance || this.sisaEvent.avance || 'sospecha';
+
 
   	this.result = {
 							  		action: UPDATE,

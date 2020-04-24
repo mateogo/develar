@@ -1,0 +1,132 @@
+<mat-card >
+  <mat-card-content>
+  <div class="row" >
+    <div class="col-sm-12 col-md-6">
+      <span>Consultar DNI de persona:</span>
+      <div *ngIf='personError' class="person-error">
+        <span>{{ personErrorMsg }}</span>
+      </div>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+      <persona-buscar [tdoc]='tDoc'
+                      (person$)=handlePerson($event) ></persona-buscar>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+
+    <!---nombre; apellido--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
+        </mat-form-field>
+      </div>
+    </div>
+    <!--- tdoc, ndoc, vinculo--->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTdoc placeholder="Tipo de documento"
+              [formControl]="form.controls['tdoc']"
+              (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
+            <mat-option *ngFor="let item of tdocOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+          <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTipoVinculo placeholder="Vínculo familiar"
+              [formControl]="form.controls['vinculo']"
+              (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
+            <mat-option *ngFor="let item of vinculosOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!---nestudios; fenac; sexo --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSexo placeholder="Sexo"
+              [formControl]="form.controls['sexo']"
+              (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
+            <mat-option *ngFor="let item of sexoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto" >
+        </mat-form-field>
+      </div>
+
+    </div>
+    <!---nestudios; fenac; sexo --->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstadoVinculo placeholder="Estado del vínculo"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)" >
+            <mat-option *ngFor="let item of estadoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['comentario']" placeholder="Observación / comentario" >
+        </mat-form-field>
+      </div>
+
+    </div>
+
+
+    <hr>
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+      		(click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+      		(click)="onCancel()" >Cancelar</button>
+
+      <button mat-button type="button" color="warning"
+          (click)="deleteToken()" >Borrar</button>          
+    </div>
+
+  </form>
+  </mat-card-content>
+</mat-card>

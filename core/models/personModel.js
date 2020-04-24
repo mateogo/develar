@@ -111,17 +111,22 @@ const familySch = new mongoose.Schema({
     apellido:    {type: String, required: false, default: ""},
     tdoc:        {type: String, required: false, default: ""},
     ndoc:        {type: String, required: false, default: ""},
+    sexo:        {type: String, required: false, default: ""},
+    telefono:    {type: String, required: false, default: ""},
+
     fenac:       {type: Number, required: false, default: 0 },
     fenactx:     {type: String, required: false, default: ""},
+    vinculo:     {type: String, required: true,  default: ""},
+    estado:      {type: String, required: false, default: ""},
+
+    hasOwnPerson:{type: Boolean, required: false, default: false},
+    personId:    {type: String, required: false, default: ""},
+
     ecivil:      {type: String, required: false, default: ""},
     nestudios:   {type: String, required: false, default: ""},
     ocupacion:   {type: String, required: false, default: ""},
     tocupacion:  {type: String, required: false, default: ""},
     ingreso:     {type: String, required: false, default: ""},
-    hasOwnPerson:{type: Boolean, required: false, default: false},
-    personId:    {type: String, required: false, default: ""},
-    vinculo:     {type: String, required: true,  default: ""},
-    estado:      {type: String, required: false, default: ""},
     desde:       {type: String, required: false, default: ""},
     hasta:       {type: String, required: false, default: ""},
     comentario:  {type: String, required: false, default: ""},
@@ -591,38 +596,56 @@ const createNewPerson = function(person, errcb,cb){
 // }
 
 function checkForPersonToPersonRelation(sourcePerson){
+    let promiseArray = [];
+
+    // let fakePromise = new Promise((resolve, reject) => {
+    //                                 setTimeout(resolve, 1000, {displayName: 'foo'});
+    //                             });
+    // promiseArray.push(fakePromise);
+
     if(sourcePerson && sourcePerson.integrantes && sourcePerson.integrantes.length){
-        updateBusinessMembers(sourcePerson);
+        updateBusinessMembers(sourcePerson, promiseArray);
+        updateSourcePerson(sourcePerson, promiseArray);
     }
     if(sourcePerson && sourcePerson.familiares && sourcePerson.familiares.length){
-        updateFamilyMembers(sourcePerson);
+        updateFamilyMembers(sourcePerson, promiseArray);
+        updateSourcePerson(sourcePerson, promiseArray);
     }
-    updateSourcePerson(sourcePerson);
 
 }
 
-function updateSourcePerson(sourcePerson){
-    setTimeout(()=> {
+function updateSourcePerson(sourcePerson, promiseArray){
+    Promise.all(promiseArray).then(values => {
+        console.log('Promise ALL [%s]', values && values.length)
+        if(values && values.length){
+            values.forEach(v => {
+                console.log('Value Token: [%s]', v && v.displayName)
+            })
+        }
         sourcePerson.save().then(token =>{
+            console.log('SAVE SOURCE PERSON')
             return null;
         })
-    }, 500);
+
+    })
+
+
 }
 
-function updateBusinessMembers(sourcePerson){
+function updateBusinessMembers(sourcePerson, promiseArray){
     let businessMembers = sourcePerson.integrantes || [];
     businessMembers.forEach((member, index) => {
         if(member.hasOwnPerson){
-            updateRelatedPersonMember('integrantes', sourcePerson, member, index);
+            updateRelatedPersonMember('integrantes', sourcePerson, member, index, promiseArray);
         }
     })
 }
 
-function updateFamilyMembers(sourcePerson){
+function updateFamilyMembers(sourcePerson, promiseArray){
     let familyMembers = sourcePerson.familiares || [];
     familyMembers.forEach((member, index) => {
         if(member.hasOwnPerson){
-            updateRelatedPersonMember('familiares', sourcePerson, member, index);
+            updateRelatedPersonMember('familiares', sourcePerson, member, index, promiseArray);
         }
     })
 }
@@ -635,9 +658,10 @@ function addFaceta(facetas, token){
     return facetas;
 }
 
-function updateRelatedPersonMember(key, sourcePerson, member, index){
+async function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArray){
     let query;
     let personQuery;
+
 
     if(member.personId){
         personQuery = Person.findById(member.personId);
@@ -650,18 +674,22 @@ function updateRelatedPersonMember(key, sourcePerson, member, index){
         personQuery = Person.findOne(query);
 
     }
+
+    promiseArray.push(personQuery);
     
-    personQuery.then(tperson => {
+    await personQuery.then(tperson => {
         if(!tperson) tperson = initNewPerson(member);
 
         updatePersonFromVinculo(tperson, member, key);
 
-        tperson.save().then(token => {
+        return tperson.save().then(token => {
             sourcePerson[key][index].personId = tperson._id;
-            return null;
+            console.log('SAVE TOKEN PERSON')
+
+            return token;
         }).catch(err => {console.log(err);});
 
-        return null;
+
     }).catch(err => {console.log(err);})
 }
 

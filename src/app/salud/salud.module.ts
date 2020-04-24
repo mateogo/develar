@@ -100,6 +100,8 @@ import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-z
 import { VigilanciaInfeccionComponent } from './vigilancia/vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigilancia-alta-panel/vigilancia-alta-panel.component';
 import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
+import { VigilanciaVinculosComponent } from './vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
+import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 
 @NgModule({
   imports: [
@@ -200,6 +202,8 @@ import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/v
     VigilanciaInfeccionComponent,
     VigilanciaAltaPanelComponent,
     VigilanciaLaboratorioComponent,
+    VigilanciaVinculosComponent,
+    VigilanciaDashboardPageComponent,
   ],
   entryComponents: 
   [
@@ -207,6 +211,7 @@ import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/v
     VigilanciaSeguimientoComponent, VigilanciaSeguimientofwupComponent, VigilanciaSeguimientohistoryComponent,
     VigilanciaInfeccionComponent,
     VigilanciaLaboratorioComponent,
+    VigilanciaVinculosComponent,
   ],
 
 })

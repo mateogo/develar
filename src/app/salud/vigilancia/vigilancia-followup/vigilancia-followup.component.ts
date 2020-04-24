@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractCon
 import { CustomValidators } from 'ng2-validation';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Person, personModel, Address } from '../../../entities/person/person';
+import { PersonService } from '../../person.service';
+
+import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
 
 import {  Asistencia, 
           ContextoCovid,
@@ -25,8 +27,9 @@ import { VigilanciaSeguimientoComponent } from '../vigilancia-zmodal/vigilancia-
 import { VigilanciaSeguimientofwupComponent } from '../vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 import { VigilanciaSeguimientohistoryComponent } from '../vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
 
-import { VigilanciaInfeccionComponent } from '../vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
+import { VigilanciaInfeccionComponent }   from '../vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 import { VigilanciaLaboratorioComponent } from '../vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
+import { VigilanciaVinculosComponent }    from '../vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
 
 
 const TOKEN_TYPE = 'asistencia';
@@ -119,8 +122,9 @@ export class VigilanciaFollowupComponent implements OnInit {
   public showButtons = false;
   public tipoEdit = 1;
 
-
-
+  private person: Person;
+  private familyList: Array<FamilyData> = [];
+  
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
 
@@ -140,6 +144,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   constructor(
   	private fb: FormBuilder,
     public dialog: MatDialog,
+    private perSrv: PersonService,
 
   	) { 
   		this.form = this.buildForm();
@@ -177,6 +182,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   actionTriggered(e){
+    e.source._checked = false;
     this.manageModalEditors(e.value);
   
   }
@@ -185,7 +191,12 @@ export class VigilanciaFollowupComponent implements OnInit {
     this.openLaboratorioModal(e.value);
   }
 
+  editVinculo(vinculo: FamilyData ){
+    this.buildVinculosFam(this.asistencia, vinculo )
+  }
+
   vinculoSelected(personId: string){
+    //TODO
     this.fetchPerson.next(personId);
   }
 
@@ -211,8 +222,30 @@ export class VigilanciaFollowupComponent implements OnInit {
     if(token === 'infection')     this.openInfectionModal()
 
     if(token === 'laboratorio')   this.openLaboratorioModal(null)
+    if(token === 'vinculofam')   this.buildVinculosFam(this.asistencia, null);
   }
 
+  private openVinculofamModal(person: Person, vinculo: FamilyData){
+    const dialogRef = this.dialog.open(
+      VigilanciaVinculosComponent,
+      {
+        width: '800px',
+        data: {
+          asistencia: this.asistencia,
+          person: person,
+          vinculo: vinculo,
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
+      //c onsole.log('dialog CLOSED')
+    });    
+  }
 
   private openLaboratorioModal(muestralab: MuestraLaboratorio){
     const dialogRef = this.dialog.open(
@@ -367,6 +400,31 @@ export class VigilanciaFollowupComponent implements OnInit {
       //c onsole.log('dialog CLOSED')
     });    
   }
+
+  private buildVinculosFam(token: Asistencia, vinculo: FamilyData){
+
+    let personId = token.requeridox && token.requeridox.id
+
+    if(!personId){
+      return;
+    }
+
+    this.perSrv.fetchPersonById(personId).then(per => {
+      if(per){
+        this.person = per;
+        this.familyList = per.familiares || [];
+        this.openVinculofamModal(this.person, vinculo)
+
+      }else {
+
+        return;
+      }
+    })
+
+  }
+
+
+
 
 
 	buttonActionEvent(e, step){

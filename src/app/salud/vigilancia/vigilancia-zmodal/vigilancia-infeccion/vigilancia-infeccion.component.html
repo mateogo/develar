@@ -11,9 +11,9 @@
 	<div class="row">
 	    <div  class="col">
 				<mat-checkbox 
-					[checked]="form.controls['hasCovid'].value===true"
-					[formControl]="form.controls['hasCovid']" >
-					Tiene COVID POSITIVO en este momento? </mat-checkbox>
+					[checked]="form.controls['isInternado'].value===true"
+					[formControl]="form.controls['isInternado']" >
+					Está internado en este momento? </mat-checkbox>
 		</div>
 	</div>
 
@@ -32,10 +32,6 @@
               [checked]="form.controls['actualState'].value===2" 
               (change)='changeActualState(2)'
               [value]="2">Descartado</mat-radio-button>
-        <mat-radio-button 
-              [checked]="form.controls['actualState'].value===3" 
-              (change)='changeActualState(3)'
-              [value]="3">Recuperado</mat-radio-button>
         <mat-radio-button 
               [checked]="form.controls['actualState'].value===4" 
               (change)='changeActualState(4)'
@@ -103,6 +99,12 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
+    <div class="col">
+      <mat-form-field>
+        <input matInput [formControl]="form.controls['locacionSlug']" 
+              placeholder="Internado o aisalmiento en...">
+      </mat-form-field>
+    </div>
 
 	</div>
 

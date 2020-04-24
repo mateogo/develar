@@ -3,7 +3,8 @@
   <ng-container *ngIf='showAsistenciaView' >
     <vigilancia-view [token]='asistencia'  
                       [viewList]='viewList'
-                      (personSelected)='vinculoSelected($event)' ></vigilancia-view>
+                      (personSelected)='vinculoSelected($event)'
+                      (familySelected)='editVinculo($event)' ></vigilancia-view>
   </ng-container>
 
 <div class="d-md-flex justify-content-between align-items-center panel-header-actions" >
@@ -56,9 +57,20 @@
         (change)='editLaboratorio($event)'>
     <ng-container *ngFor='let muestra of muestraslabList'>
     <mat-button-toggle  [value]="muestra">
-      LAB::{{ muestra.muestraId}}
+      {{ muestra.secuencia || '#-LAB'}}
     </mat-button-toggle>
     </ng-container>
+ 
+  </mat-button-toggle-group>      
+
+</div>
+
+<div class="d-md-flex justify-content-start align-items-center panel-header-actions" >
+  <mat-button-toggle-group #fldButtonGrp1  name="actions" 
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="vinculofam">
+      NUEVO CONTACTO
+    </mat-button-toggle>
  
   </mat-button-toggle-group>      
 

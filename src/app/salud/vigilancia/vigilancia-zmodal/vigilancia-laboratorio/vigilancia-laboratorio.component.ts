@@ -32,6 +32,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   public tipoOptList = AsistenciaHelper.getOptionlist('tipoMuestraLab');
   public estadoOptList = AsistenciaHelper.getOptionlist('estadoMuestraLab');
   public resultadoOptList = AsistenciaHelper.getOptionlist('resultadoMuestraLab');
+  public secuenciaOptList = AsistenciaHelper.getOptionlist('sequenceMuestraLab');
 
 
   private result: UpdateAsistenciaEvent;
@@ -131,6 +132,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.muestralab.secuencia = this.muestralab.secuencia || '1ER LAB'
     this.form = this.fb.group(this.muestralab);
   }
 

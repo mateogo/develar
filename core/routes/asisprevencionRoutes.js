@@ -37,6 +37,17 @@ router.get('/tablero', function (req, res) {
     });
 });
 
+router.get('/epidemio/:fecha', function (req, res) {
+    console.log('generacion de tablero de control');
+    let fechanum = parseInt(req.params.fecha, 10);
+    service.tableroepidemio(fechanum, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
 
 
 // /**

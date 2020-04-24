@@ -10,12 +10,25 @@
 	</div>
 
 	<div class="row">
-    <div  class="col-md-4">
+		<div class="col-md-3">
+			<mat-form-field>
+				<mat-label>Secuencia de práctica</mat-label>
+				<mat-select #fldSecuencia  formControlName='secuencia'
+										(selectionChange)="changeSelectionValue('secuencia', fldSecuencia.value)">
+				    <mat-optgroup [disabled]="!secuenciaOptList.length" [label]="'Secuencia de testeo'">
+				        <mat-option *ngFor="let item of secuenciaOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+    <div  class="col-md-3">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['muestraId']" placeholder="Identif SISA de la práctica" >
         </mat-form-field>
     </div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<mat-form-field>
 				<mat-label>Tipo de práctica</mat-label>
 				<mat-select #fldTipoMuestra  formControlName='tipoMuestra'
@@ -28,7 +41,7 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-		<div  class="col-md-4">
+		<div  class="col-md-3">
 			<mat-form-field>
 			  <input  matInput [formControl]="form.controls['fe_notificacion']" placeholder="Fecha notificación" >
 			</mat-form-field>

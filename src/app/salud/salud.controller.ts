@@ -26,7 +26,7 @@ import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion,
-          AsistenciaTable, AsistenciaHelper, AsistenciaSig,
+          AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
 import {   SolicitudInternacion } from './internacion/internacion.model';
@@ -273,6 +273,8 @@ export class SaludController {
     let month = today.getMonth();
     let year = today.getFullYear();
 
+    console.log('transition Orchestration: [%s]', transition);
+
     if(transition === SISA_ESTADO){
       let sisaevent = asistencia && asistencia.sisaevent;
 
@@ -301,6 +303,28 @@ export class SaludController {
 
 
     }else if(transition === LABORATORIO_ESTADO ){
+      let laboratorios = asistencia.muestraslab || [] ;
+      let infection = asistencia.infeccion || new InfectionFollowUp(); 
+
+      if(laboratorios && laboratorios.length){
+        let laboratorio = laboratorios[laboratorios.length - 1];
+        if(laboratorio.estado === 'analizada'){
+          if (laboratorio.resultado === 'confirmada'){
+            infection.hasCovid = true;
+            infection.isActive = true;
+            infection.actualState = 1;
+            infection.avance  = ['posible','sospecha', 'descartado'].indexOf(infection.avance) !== -1 ? 'confirmado' : infection.avance ;
+            infection.fe_confirma = laboratorio.fe_resestudio;
+            infection.fets_confirma = laboratorio.fets_resestudio;
+
+
+          }else if (laboratorio.resultado === 'descartada'){
+            infection.hasCovid = false;
+            infection.actualState = infection.actualState === 0 ? 2 : infection.actualState;
+          }
+        }
+      }
+      asistencia.infeccion = infection;
 
     }
 
@@ -546,6 +570,12 @@ export class SaludController {
   public fetchAsistenciasDashboard(fecharef: Date): Observable<any>{
 
     return this.daoService.fetchAsistenciaDashboard<any>(ASIS_PREVENCION_RECORD, fecharef.getTime());
+
+  }
+
+  public fetchEpidemioDashboard(fecharef: Date): Observable<any>{
+
+    return this.daoService.fetchEpidemioDashboard<any>(ASIS_PREVENCION_RECORD, fecharef.getTime());
 
   }
 
