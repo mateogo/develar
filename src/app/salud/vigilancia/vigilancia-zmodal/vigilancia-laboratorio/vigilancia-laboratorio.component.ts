@@ -21,7 +21,8 @@ const LABORATORIO_ESTADO = 'laboratorio:estado';
 })
 export class VigilanciaLaboratorioComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
   public isNewLab = false;
@@ -75,6 +76,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -132,6 +134,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.formClosed = false;
     this.muestralab.secuencia = this.muestralab.secuencia || '1ER LAB'
     this.form = this.fb.group(this.muestralab);
   }

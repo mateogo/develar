@@ -27,7 +27,8 @@ const VINCULO_ESTADO = 'vinculofam:estado';
 })
 export class VigilanciaVinculosComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
   public person: Person;
@@ -95,6 +96,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -266,6 +268,7 @@ export class VigilanciaVinculosComponent implements OnInit {
    }
 
   private initForEdit(){
+    this.formClosed = true;
     this.form.reset(this.vinculo);
   }
 

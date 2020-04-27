@@ -21,7 +21,8 @@ const INFECTION_ESTADO = 'infection:estado';
 })
 export class VigilanciaInfeccionComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
 
@@ -53,6 +54,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -108,6 +110,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.formClosed = false;
     this.infection.isInternado = this.infection.isInternado || false;
     this.infection.locacionSlug = this.infection.locacionSlug || '';
 

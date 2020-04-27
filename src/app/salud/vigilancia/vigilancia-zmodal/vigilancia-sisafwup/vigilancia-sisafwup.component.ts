@@ -21,7 +21,8 @@ const SISA_FWUP = 'sisa:followup';
 })
 export class VigilanciaSisafwupComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
   public sisaEvent: SisaEvolucion;
@@ -53,6 +54,7 @@ export class VigilanciaSisafwupComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -121,6 +123,7 @@ export class VigilanciaSisafwupComponent implements OnInit {
 
 
   private initForEdit(){
+    this.formClosed = false;
     this.form = this.fb.group(this.sisaEvent);
   }
 

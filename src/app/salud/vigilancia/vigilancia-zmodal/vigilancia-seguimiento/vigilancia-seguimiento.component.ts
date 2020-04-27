@@ -18,7 +18,8 @@ const SEGUIMIENTO_ESTADO = 'seguimiento:estado';
 })
 export class VigilanciaSeguimientoComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
   public seguimientoEvent: AfectadoFollowUp;
@@ -43,6 +44,7 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -101,6 +103,7 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.formClosed = false;
     this.form = this.fb.group(this.seguimientoEvent);
   }
 
