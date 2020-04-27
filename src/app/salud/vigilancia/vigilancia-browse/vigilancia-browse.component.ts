@@ -64,7 +64,7 @@ export class VigilanciaBrowseComponent implements OnInit {
        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }
      );
 
-    this.addSinSeleccion()
+    //this.addSinSeleccion()
 
     this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
