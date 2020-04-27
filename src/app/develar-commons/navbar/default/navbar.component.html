@@ -161,6 +161,13 @@
         <div class="dropdown-menu mini-menu">
           <ul>
             <li>
+              <a href="#public" role="button" (click)='navigatePublic($event)'>
+                  <i class="fa fa-users"></i> Vista pública</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+            <li>
               <a role="button" (click)='editUser($event)' >
                 <i class="fa fa-home"></i> Mi Perfil</a>
             </li>
@@ -173,19 +180,12 @@
                   <i class="fa fa-users"></i> Cambiar Comunidad</a>
             </li>
             <li>
-              <a href="#public" role="button" (click)='navigatePublic($event)'>
-                  <i class="fa fa-users"></i> Vista pública</a>
-            </li>
-            <li>
               <a routerLink="/develar/a2/calendar">
                 <i class="fas fa-calendar-alt"></i> Calendar</a>
             </li>
             <li>
               <a href="#" role="button" (click)='refreshUser($event)' >
                 <i class="fa fa-cogs"></i> Settings</a>
-            </li>
-            <li>
-              <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
             </li>
           </ul>
         </div>

@@ -398,6 +398,20 @@ function buildQuery(query){
       return q;
   }
 
+  if(query['isVigilado']){
+    q["isVigilado"] = true;
+  }
+
+  if(query['requirenteId']){
+
+      q["requeridox.id"] = query['requirenteId'];
+      if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
+
+  }
+
+
+
+
   // busco segun query
   if(query['estado']){
       q["estado"] = query['estado'];
@@ -493,15 +507,6 @@ function buildQuery(query){
     q["$and"] = comp_range;
   }
 
-  if(query['requirenteId']){
-      q["requeridox.id"] = query['requirenteId'];
-  }
-
-
-  if(query['isVigilado']){
-    q["isVigilado"] = true;
-  }
-
   if(query['hasCovid']){
     q["infeccion.hasCovid"] = true;
 
@@ -526,8 +531,28 @@ function buildQuery(query){
     }
   }
 
+  if(query['isActiveSisa']){
+    let today = new Date();
+    
+    q["sisaevent.isActive"] = true;
 
+    if(query['avanceSisa']){
+      q["sisaevent.avance"] = query['avanceSisa'];
 
+    }
+    if(query['qDaysSisa']){
+      let offset = parseInt(query['qDaysSisa'], 10);
+      let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
+      q["sisaevent.fets_consulta"] = { $gte: refDate } ;
+    }
+
+    if(query['qNotConsultaSisa']){
+      let offset = parseInt(query['qNotConsultaSisa'], 10);
+      let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
+      q["sisaevent.fets_consulta"] = { $lte: refDate } ;
+    }
+
+  }
 
   return q;
 }

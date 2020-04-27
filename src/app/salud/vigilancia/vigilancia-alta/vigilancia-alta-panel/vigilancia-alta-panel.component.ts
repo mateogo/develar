@@ -48,6 +48,9 @@ export class VigilanciaAltaPanelComponent implements OnInit {
   public confirmaInternacion = false;
 	public showView = false;
 
+  public title = 'Alta nueva persona a Vigilancia Epidemiológica'
+  public altaRapidaTitle = 'Confirmar ALTA de seguimiento epidemiológico'
+
 
   // asistencia
   public currentAsistencia: Asistencia;

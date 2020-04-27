@@ -115,16 +115,16 @@
 
 
     <hr>
-    <div class="additional-info">
-      <button mat-raised-button color="primary" type="submit" 
-      		(click)="onSubmit()"
-          [disabled]="!form.valid" >Aceptar</button>
-      
-      <button mat-button type="button" color="accent"
-      		(click)="onCancel()" >Cancelar</button>
-
+    <div class="d-md-flex justify-content-start">
+      <button mat-raised-button color="primary" class='m-1'
+          [disabled]="!form.valid || formClosed"
+          (click)="onSubmit()">
+          Aceptar </button>
+      <button mat-raised-button color="warn"   class='m-1'
+          (click)="onCancel()">
+          Cancelar </button>
     </div>
-
+  
   </form>
   </mat-card-content>
 </mat-card>

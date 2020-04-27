@@ -1,10 +1,13 @@
 @import '../../../../assets/sass/variable';
 $color-destacado: #0645f5;
 $color-button: #3c4e62;
+$color-header: #2326ff;
 
 .panel-header{
 		background-color: #f2eded;
 }
+
+
 
 .panel-header-text {
 		margin: 0 0 0 15px;
@@ -40,6 +43,14 @@ $color-button: #3c4e62;
 		font-size: 2rem;
 		font-style: italic;
 
+}
+
+.text-headerblock{
+		margin: 0 0 0 0;
+		color: $color-header;
+		font-weight: 700;
+		font-size: 1.4rem;
+		font-style: italic;
 }
 
 .text-resaltado {

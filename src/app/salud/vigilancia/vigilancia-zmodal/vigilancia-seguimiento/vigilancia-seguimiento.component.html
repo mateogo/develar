@@ -33,13 +33,15 @@
 	</div>
 
 	<h5> proximamente... asignados para el seguimiento</h5>
-
-	<div class="additional-info">
-		<button mat-raised-button color="primary" (click)="onSubmit()">
+	<div class="d-md-flex justify-content-start">
+		<button mat-raised-button color="primary" class='m-1'
+				[disabled]="!form.valid || formClosed"
+				(click)="onSubmit()">
 		    Confirmar </button>
-		<button mat-raised-button color="warn"  (click)="onCancel()">
+		<button mat-raised-button color="warn"   class='m-1'
+				(click)="onCancel()">
 		    Cancelar </button>
 	</div>
-  
+	  
 	</form>
 </div>

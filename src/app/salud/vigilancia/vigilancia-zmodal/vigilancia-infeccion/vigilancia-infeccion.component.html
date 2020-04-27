@@ -1,4 +1,4 @@
-<div class="container-fluid p-0">
+<div class="container-fluid view-port">
 	<form [formGroup]="form">
 	<div class="row">
 	    <div  class="col">
@@ -138,13 +138,15 @@
 	    </div>
 	</div>
 
-
-	<div class="additional-info">
-		<button mat-raised-button color="primary" (click)="onSubmit()">
-		    ACEPTAR </button>
-		<button mat-raised-button color="warn"  (click)="onCancel()">
-		    Cancelar </button>
-	</div>
+  <div class="d-md-flex justify-content-start">
+    <button mat-raised-button color="primary" class='m-1'
+        [disabled]="!form.valid || formClosed"
+        (click)="onSubmit()">
+        Aceptar </button>
+    <button mat-raised-button color="warn"   class='m-1'
+        (click)="onCancel()">
+        Cancelar </button>
+  </div>
   
 	</form>
 </div>

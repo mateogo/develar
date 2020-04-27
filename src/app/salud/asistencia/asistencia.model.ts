@@ -395,9 +395,9 @@ const estadoMuestraLaboratorioOptList = [
 ];
 
 const resultadoMuestraLaboratorioOptList = [
-	{ val: 'pendiente',   label: 'Pendiente resultado'  },
 	{ val: 'confirmada',  label: 'Positiva / Detectable'    },
 	{ val: 'descartada',  label: 'Negativa / No detectable' },
+	{ val: 'pendiente',   label: 'Pendiente resultado'  },
 	{ val: 'noanalizada', label: 'No analizada'  },
 	{ val: 'invalidada',  label: 'Muestra inválida' },
 ];
@@ -409,7 +409,7 @@ export class MuestraLaboratorio {
 	_id?: string; 
 	isActive: boolean = true;
 
-	secuencia: string = '1RO'; // labsequenceOptList
+	secuencia: string = '1ER LAB'; // labsequenceOptList
 
 	muestraId: string = '';
 	fe_toma: string = '';
@@ -626,9 +626,14 @@ export class VigilanciaBrowse {
 
 		viewList?:   Array<string>;
 
+		isActiveSisa: boolean = false;
+		avanceSisa: string = '';
+		qDaysSisa: number = 0;
+		qNotConsultaSisa: number = 0;
+
 		isVigilado: boolean = true;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
-		hasCovid:   boolean = true;
+		hasCovid:   boolean = false;
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
 		qIntents: number = 0;

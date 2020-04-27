@@ -191,6 +191,14 @@
           <ng-container *ngIf="isAdminUser()">
           <ul>
             <li>
+              <a href="#admin" role="button" (click)='navigateAdmin($event)'>
+                  <i class="fa fa-users"></i> Ingresar a Gestión</a>
+            </li>
+            <li>
+              <a href="#" role="button" (click)='logout($event)'  >
+                <i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </li>
+            <li>
               <a role="button" (click)='editUser($event)' >
                 <i class="fa fa-home"></i> Mi Perfil</a>
             </li>
@@ -203,10 +211,6 @@
                   <i class="far fa-user"></i> Cambiar Comunidad</a>
             </li>
             <li>
-              <a href="#admin" role="button" (click)='navigateAdmin($event)'>
-                  <i class="fa fa-users"></i> Navegar admin</a>
-            </li>
-            <li>
               <a routerLink="/develar/a2/calendar">
                 <i class="fas fa-calendar-alt"></i> Calendar</a>
             </li>
@@ -217,10 +221,6 @@
             <li>
               <a href="#" role="button" (click)='changePasswd($event)'  >
                 <i class="far fa-user"></i> Cambiar clave</a>
-            </li>
-            <li>
-              <a href="#" role="button" (click)='logout($event)'  >
-                <i class="fas fa-sign-out-alt"></i> Log Out</a>
             </li>
 
           </ul>

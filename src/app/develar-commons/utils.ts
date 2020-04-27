@@ -349,7 +349,52 @@ function buildFecharefLabel(fecharef: Date): string{
     return `Semana referencia:  Lunes ${devutils.txFromDate(desde)} a Domingo ${devutils.txFromDate(hasta)}   `
 }
 
+function buildEpidemioWeek(fecharef: Date): string{
+    let dayOfWeek = fecharef.getDay(); // 0-6 <==> DOM-SAB
+    let actualDay = fecharef.getDate(); // Día del mes calendario 1-31|30|28|29
 
+    let semana_inicia =  actualDay - dayOfWeek ;
+    let semana_finaliza = actualDay + (6 - dayOfWeek );
+
+    let desde = new Date(fecharef.getTime())
+    desde.setDate(semana_inicia);    // retorna fecha en formato number
+
+    let hasta = new Date(fecharef.getTime())
+    hasta.setDate(semana_finaliza);  // en milisegundos
+
+    let week = getEpidemicWeekOfTheYear(fecharef)
+
+    return `Semana epidemiológica #${week}:  Domingo ${devutils.txFromDate(desde)} a Sábado ${devutils.txFromDate(hasta)} `
+}
+
+function getEpidemicWeekOfTheYear(fecharef:Date ): number{
+    let weeks = 0;
+    let from = fecharef.getTime();
+    let firstOfYear_date = new Date(fecharef.getFullYear(), 0, 1);
+    let dow = firstOfYear_date.getDay();
+    let begin_of_year: number; 
+
+    //c onsole.log('FirstDayOfYear [%s]', firstOfYear_date.toString());
+
+    if(dow < 4) { // esta semana ya pertenece al año Nuevo
+        begin_of_year = firstOfYear_date.setDate(firstOfYear_date.getDate() - dow)
+        //c onsole.log('Semana Incluida: El año empezó el día [%s] [%s]', dow, new Date(begin_of_year).toString() );
+
+
+    }else {
+        begin_of_year = firstOfYear_date.setDate(firstOfYear_date.getDate() + (7 - dow));
+        //c onsole.log('Semana siguiente El año empezó el día [%s] [%s]', dow, new Date(begin_of_year).toString() )
+
+    }
+
+
+
+    weeks = Math.round((from - begin_of_year) / (1000 * 60 * 60 * 24 * 7));
+    //c onsole.log('weeks: [%s]', weeks)
+
+
+    return weeks;
+}
 
 // feriados
 const inactivosList = ["31/03/2020", "10/04/2020"]
@@ -609,6 +654,10 @@ class Devutils {
 
     txForCurrentWeek(date: Date):string {
         return buildFecharefLabel(date);
+    }
+
+    txForEpidemioWeek(date: Date):string {
+        return buildEpidemioWeek(date);
     }
 
     nextLaborDate(date: Date, offset: number){

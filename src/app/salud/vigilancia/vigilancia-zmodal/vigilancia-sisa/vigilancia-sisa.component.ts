@@ -5,6 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { SaludController } from '../../../salud.controller';
 
+import { devutils }from '../../../../develar-commons/utils';
+
 import {   Asistencia, SisaEvent,UpdateAsistenciaEvent,
           AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
@@ -20,7 +22,8 @@ const SISA_ESTADO = 'sisa:estado';
 })
 export class VigilanciaSisaComponent implements OnInit {
 
-  form: FormGroup;
+  public form: FormGroup;
+  public formClosed = false;
 
   public asistencia: Asistencia;
   public sisaEvent: SisaEvent;
@@ -50,6 +53,7 @@ export class VigilanciaSisaComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
@@ -78,6 +82,18 @@ export class VigilanciaSisaComponent implements OnInit {
 
   private initForSave(){
     this.sisaEvent = {...this.sisaEvent, ...this.form.value}
+    let today = new Date();
+
+    this.sisaEvent.fets_consulta =  this.sisaEvent.fe_consulta ?  devutils.dateFromTx(this.sisaEvent.fe_consulta).getTime()  : today.getTime();
+    this.sisaEvent.fe_consulta =  this.sisaEvent.fe_consulta  ? devutils.txFromDate(devutils.dateFromTx(this.sisaEvent.fe_consulta))  : devutils.txFromDate(today);
+
+    this.sisaEvent.fe_reportado = this.sisaEvent.fe_reportado ? devutils.txFromDate(devutils.dateFromTx(this.sisaEvent.fe_reportado)) : '';
+    this.sisaEvent.fe_baja =      this.sisaEvent.fe_baja  ?     devutils.txFromDate(devutils.dateFromTx(this.sisaEvent.fe_baja))      : '';
+
+    this.sisaEvent.fets_reportado = this.sisaEvent.fe_reportado ? devutils.dateFromTx(this.sisaEvent.fe_reportado).getTime() : 0;
+    this.sisaEvent.fets_baja =      this.sisaEvent.fe_baja ?      devutils.dateFromTx(this.sisaEvent.fe_baja).getTime()      : 0;
+
+    if(this.sisaEvent.fets_reportado && !this.sisaEvent.fets_baja) this.sisaEvent.isActive = true;
 
     this.asistencia.sisaevent = this.sisaEvent;
 
@@ -87,6 +103,7 @@ export class VigilanciaSisaComponent implements OnInit {
   }
 
   private initForEdit(){
+    this.formClosed = false;
     this.form = this.fb.group(this.sisaEvent);
   }
 

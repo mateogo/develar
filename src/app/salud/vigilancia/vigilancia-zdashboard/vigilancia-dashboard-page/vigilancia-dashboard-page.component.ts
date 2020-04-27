@@ -80,6 +80,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   private fecharef: string;
   private fecharef_date: Date;
   public fecharef_label: string;
+  public epidemio_week: string; 
 
   public isHoy =  false;
   public isSem =  false;
@@ -138,7 +139,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
     this.fecharef_date = new Date();
     this.fecharef = devutils.txFromDate(this.fecharef_date);
-    this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
+    this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
 
     this.loadDashboardData(this.fecharef_date)
     
@@ -253,7 +254,9 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     let fe = this.form.value.fecharef;
     this.fecharef_date = devutils.dateFromTx(fe);
     this.fecharef = devutils.txFromDate(this.fecharef_date);
-    this.fecharef_label = devutils.txForCurrentWeek(this.fecharef_date);
+    this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
+
+
 
     this.loadDashboardData(this.fecharef_date);
   }

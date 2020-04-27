@@ -1,6 +1,14 @@
 @import '../../../../assets/sass/variable';
 $color-destacado: #0645f5;
 $color-button: #3c4e62;
+$color-togglebutton: #261565;
+
+$bgcolor-sisa: #9298eb;
+$bgcolor-followup: #7e98eb;
+$bgcolor-covid: #6568ff;
+$bgcolor-laboratorio: #7eaceb;
+$bgcolor-vinculofam: #6568ff;
+$bgcolor-selectors: #d79e96;
 
 .panel-header{
 		background-color: #f2eded;
@@ -20,37 +28,121 @@ $color-button: #3c4e62;
 // }
 
 
-
-.panel-header-actions {
-	margin: 15px 0 15px 0;
+.panel-header {
+	margin: 10px 0 0 0;
 	
 	.mat-button-toggle {
 		max-height: 45px;
-		background-color: #f2eded;
-		color: $color-destacado;
+		background-color: rgba(#adadc2, .5);
+		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: #c2adad;
-		color: $color-button;
+		background-color: rgba(#adadc2, .8);
+		color: $color-togglebutton;
 	}
-
-
 }
 
+.panel-header-sisa {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-sisa, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-sisa, .8);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-followup {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-followup, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-followup, .8);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-covid {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-covid, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-covid, .8);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-laboratorio {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-laboratorio, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-laboratorio, .8);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-vinculofam {
+	margin: 10px 0 0 15px;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-vinculofam, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-vinculofam, .8);
+		color: $color-togglebutton;
+	}
+}
+
+
 .panel-header-selectors {
-	margin: 15px 0 15px 0;
+	margin: 10px 0 0 0;
 
 	.mat-button-toggle {
+		margin-right: 1px;
 		max-height: 45px;
-		background-color: #ededf2;
+		background-color:rgba($bgcolor-selectors, .5);
 		color: $color-button;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: #adadc2;
+		background-color: rgba($bgcolor-selectors, .8);
 		color: $color-button;
 	}
 

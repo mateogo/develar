@@ -63,19 +63,11 @@ export class VigilanciaViewComponent implements OnInit {
   }
 
   editVinculo(contacto: VinculosData){
-      console.log('constacto: Inicia Bubbling: [%s]',contacto.token.personId )
       this.familySelected.next(contacto.token)
-
-    // if(contacto.token.personId){
-    // }
   }
 
   manageVinculo(contacto: VinculosData){
-      console.log('constacto: Inicia Bubbling: [%s]',contacto.token.personId )
     if(contacto.token.personId){
-      console.log('constacto: Inicia Bubbling: [%s]',contacto.token.personId )
-
-
       this.personSelected.next(contacto.token.personId);
     }
   }

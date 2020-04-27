@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { MatDialog } from '@angular/material/dialog';
+import { SaludController } from '../../salud.controller';
 
 import { PersonService } from '../../person.service';
 
@@ -145,6 +146,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   	private fb: FormBuilder,
     public dialog: MatDialog,
     private perSrv: PersonService,
+    private dsCtrl: SaludController,
 
   	) { 
   		this.form = this.buildForm();
@@ -205,6 +207,7 @@ export class VigilanciaFollowupComponent implements OnInit {
 
   private manageAsistenciaView(viewList){
     this.showAsistenciaView = false;
+    this.buildMuestrasLaboratorio(this.asistencia);
     this.viewList = viewList;
 
     setTimeout(() => {
@@ -360,10 +363,6 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
 
-
-
-
-
   private openSisaHistoryModal(){
     const dialogRef = this.dialog.open(
       VigilanciaSisahistoryComponent,
@@ -409,6 +408,11 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   private openSisaFwUpModal(){
+
+    if(!this.asistencia.sisaevent){
+      this.dsCtrl.openSnackBar('Primero debes ingresar el caso en SISA', 'Cerrar');
+      return;
+    }
     const dialogRef = this.dialog.open(
       VigilanciaSisafwupComponent,
       {

@@ -36,6 +36,7 @@ export class VigilanciaBrowseComponent implements OnInit {
   public urgenciaOptList =     AsistenciaHelper.getOptionlist('urgencia');
   public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp');
   public estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
+  public avanceSisaOptList =   AsistenciaHelper.getOptionlist('avanceSisa');
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -134,6 +135,12 @@ export class VigilanciaBrowseComponent implements OnInit {
       pendLaboratorio: [null],
       actualState:     [null],
       isSeguimiento:   [null],
+
+      isActiveSisa:    [null],
+      avanceSisa:      [null],
+      qDaysSisa:       [null],
+      qNotConsultaSisa: [null],
+
       tipoSeguimiento: [null],
       qIntents:        [null],
     });
@@ -155,6 +162,11 @@ export class VigilanciaBrowseComponent implements OnInit {
         isSeguimiento:  query.isSeguimiento,
         tipoSeguimiento:  query.tipoSeguimiento,
         qIntents:   query.qIntents,
+
+        isActiveSisa: query.isActiveSisa,
+        avanceSisa: query.avanceSisa,
+        qDaysSisa: query.qDaysSisa,
+        qNotConsultaSisa: query.qNotConsultaSisa,
 
 		});
 
@@ -192,6 +204,10 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
     entity.qIntents =   fvalue.qIntents;
 
+    entity.isActiveSisa = fvalue.isActiveSisa;
+    entity.avanceSisa = fvalue.avanceSisa;
+    entity.qDaysSisa = fvalue.qDaysSisa;
+    entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;
@@ -214,11 +230,14 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'asistenciaId') delete entity[key];
 
       if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
-      if(key === 'isVigilado'      && !entity[key]) delete entity[key];
-      if(key === 'hasCovid'        && !entity[key]) delete entity[key];
-      if(key === 'isSeguimiento'   && !entity[key]) delete entity[key];
-      if(key === 'pendLaboratorio' && !entity[key]) delete entity[key];
-      if(key === 'qIntents'        && !entity[key]) delete entity[key];
+      if(key === 'isVigilado'       && !entity[key]) delete entity[key];
+      if(key === 'hasCovid'         && !entity[key]) delete entity[key];
+      if(key === 'isSeguimiento'    && !entity[key]) delete entity[key];
+      if(key === 'isActiveSisa'     && !entity[key]) delete entity[key];
+      if(key === 'pendLaboratorio'  && !entity[key]) delete entity[key];
+      if(key === 'qIntents'         && !entity[key]) delete entity[key];
+      if(key === 'qDaysSisa'        && !entity[key]) delete entity[key];
+      if(key === 'qNotConsultaSisa' && !entity[key]) delete entity[key];
     })
 
 		return entity;
@@ -234,6 +253,7 @@ export class VigilanciaBrowseComponent implements OnInit {
                   this.urgenciaOptList, 
                   this.tipoFollowUpOptList,
                   this.estadoCovidOptList,
+                  this.avanceSisaOptList,
                  ];
 
     list.forEach(l => {
