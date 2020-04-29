@@ -1414,7 +1414,7 @@ export class AsistenciaHelper {
 		let fe: Date;
 		let epiw = 0;
 		fecha = asis.fenotif_txa ? asis.fenotif_txa : fecha;
-		fecha = (asis.infeccion && asis.sisaevent.fe_reportado )? asis.sisaevent.fe_reportado : fecha;
+		fecha = (asis.sisaevent && asis.sisaevent.fe_reportado )? asis.sisaevent.fe_reportado : fecha;
 		if(fecha){
 			fe = devutils.dateFromTx(fecha);
 			epiw = fe ? devutils.epidemioWeekCount(fe) : 0
