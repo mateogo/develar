@@ -729,7 +729,7 @@ function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArra
     promiseArray.push(personQuery);
     
     personQuery.then(tperson => {
-        console.log('Update Related [%s]:  [%s]', via, (tperson && tperson.id))
+        console.log('Update Related [%s]:  id[%s] _id[%s]', via, (tperson && tperson.id),  (tperson && tperson._id))
         if(!tperson) tperson = initNewPerson(member);
 
         updatePersonFromVinculo(tperson, member, key);
