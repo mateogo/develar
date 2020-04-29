@@ -709,9 +709,12 @@ function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArra
     let query;
     let personQuery;
 
+    let via;
+
 
     if(member.personId){
         personQuery = Person.findById(member.personId);
+        via = 'findById';
 
     }else {
         query = buildQuery({
@@ -719,12 +722,14 @@ function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArra
             ndoc: member.ndoc
         });
         personQuery = Person.findOne(query);
+        via = 'findONE';
 
     }
 
     promiseArray.push(personQuery);
     
     personQuery.then(tperson => {
+        console.log('Update Related [%s]:  [%s]', via, (tperson && tperson.id))
         if(!tperson) tperson = initNewPerson(member);
 
         updatePersonFromVinculo(tperson, member, key);
@@ -745,6 +750,7 @@ function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArra
         promiseArray.push(savePerson);
 
         return savePerson.then(token => {
+            console.log('savePerson [%s]:  [%s]', via, (token && token.id))
             sourcePerson[key][index].personId = tperson.id;
             return token;
 
