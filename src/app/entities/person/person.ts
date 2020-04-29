@@ -6,6 +6,8 @@
  	Address
  	PersonModel
 ****************************/
+import { devutils } from '../../develar-commons/utils';
+
 import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../../develar-commons/asset-helper';
 
 export interface PersonTable {
@@ -1866,9 +1868,9 @@ class PersonModel {
       fam.apellido = p.apellido;
       fam.tdoc = p.tdoc;
       fam.ndoc = p.ndoc;
-      fam.fenac = p.fenac;
       fam.sexo = p.sexo;
       fam.fenactx = p.fenactx;
+      fam.fenac = p.fenac || devutils.dateNumFromTx(p.fenactx);
       fam.ecivil = p.ecivil;
       fam.nestudios = p.nestudios;
       fam.tocupacion = p.tprofesion;
@@ -1887,8 +1889,8 @@ class PersonModel {
       member.apellido = p.apellido;
       member.tdoc = p.tdoc;
       member.ndoc = p.ndoc;
-      member.fenac = p.fenac;
       member.fenactx = p.fenactx;
+      member.fenac = p.fenac || devutils.dateNumFromTx(p.fenactx);
       member.ecivil = p.ecivil;
       member.nestudios = p.nestudios;
       member.tocupacion = p.tprofesion;

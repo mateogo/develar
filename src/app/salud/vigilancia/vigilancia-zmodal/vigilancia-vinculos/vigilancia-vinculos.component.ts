@@ -102,6 +102,13 @@ export class VigilanciaVinculosComponent implements OnInit {
   	this.saveToken();
   }
 
+  onCreateCasoIndice(){
+    this.formClosed = true;
+    this.result.action = UPDATE;
+    this.initForSave()
+    this.updateSeguimientoBajoCasoIndice();
+  }
+
   onCancel(){
     this.result.action = CANCEL;
 		this.dialogRef.close();
@@ -146,7 +153,39 @@ export class VigilanciaVinculosComponent implements OnInit {
   	return ok;
   }
 
+  private updateSeguimientoBajoCasoIndice(){
+    if(!this.asistencia){
+        this.ctrl.openSnackBar('No se estableció el caso índice. No se puede actualizar', 'ATENCIÓN');
+    }
+    if(!this.vinculo.personId){
+        this.ctrl.openSnackBar('No se ha creado un nuevo afectado a partir de este vínculo. No se puede actualizar', 'ATENCIÓN');
+    }
 
+    this.perSrv.fetchPersonById(this.vinculo.personId).then(per => {
+      if(per){
+        this.person = per;
+        this.ctrl.updateCurrentPerson(per);
+        this.ctrl.manageCovidRelation(this.person, this.asistencia).subscribe(sol => {
+          if(sol){
+            this.ctrl.openSnackBar('ACTUALIZACIÓN EXITOSA', 'CERRAR');
+            this.closeDialogSuccess()
+
+          }else{
+            this.ctrl.openSnackBar('No se puedo actualizar correctamente la vinculación del caso índice', 'ATENCIÓN');
+
+          }
+        })
+
+      }else {
+
+        this.ctrl.openSnackBar('No se pudo recuperar el registro de PERSONA. No se puede actualizar', 'ATENCIÓN');
+      }
+    })
+
+
+  }
+
+//        this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
 
 
   private saveToken(){
@@ -233,6 +272,7 @@ export class VigilanciaVinculosComponent implements OnInit {
                 map(t => {
                     let invalid = false;
                     let txt = ''
+                    //c o nsole.log('validator [%s] [%s] [%s]',t && t.length, value, that.currentNumDoc);
 
                     if(t && t.length && value !== that.currentNumDoc){ 
                         invalid = true;
@@ -268,7 +308,7 @@ export class VigilanciaVinculosComponent implements OnInit {
    }
 
   private initForEdit(){
-    this.formClosed = true;
+    this.formClosed = false;
     this.form.reset(this.vinculo);
   }
 

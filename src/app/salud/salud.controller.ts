@@ -25,7 +25,7 @@ import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
-import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion,
+import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion, CasoIndice,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp, SisaEvent, MuestraLaboratorio,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
@@ -319,6 +319,13 @@ export class SaludController {
     let month = today.getMonth();
     let year = today.getFullYear();
 
+    let fecha_caso_notificado = asistencia && asistencia.sisaevent && asistencia.sisaevent.fe_reportado;
+    if(fecha_caso_notificado){
+      let fecha = devutils.dateFromTx(fecha_caso_notificado);
+      asistencia.fenotif_txa = devutils.txFromDate(fecha);
+      asistencia.fenotif_tsa = fecha.getTime();
+    }
+
     if(transition === SISA_ESTADO){
       let sisaevent = asistencia && asistencia.sisaevent;
 
@@ -390,8 +397,80 @@ export class SaludController {
   }
 
 
+  /*******************************************************/
+  /******* INICIALIZAR ASIS COVID C/ CASO INDICE ********/
+  /*****************************************************/
+  manageCovidRelation(person: Person, casoIndice?: Asistencia){
+    let listener = new Subject<Asistencia>();
+    let asistencia: Asistencia;
+
+    this.fetchAsistenciaByPerson(person).subscribe(list => {
+      if(list && list.length){
+        asistencia = list[0];
+        this.updateCovidRelation(asistencia, person, listener, casoIndice);
+
+      }else {
+        this.nuevaCovidRelation(person, listener, casoIndice);
+      }
+
+    })
+
+    return listener;
+  }
+
+  private updateCovidRelation(asistencia: Asistencia, person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia){
+    this.addCasoIndice(asistencia, person, casoIndice)
+
+    this.manageCovidRecord(asistencia).subscribe(sol => {
+      if(sol){
+        listener.next(sol);
+
+      }else {
+        listener.next(null);
+
+      }
+    })
+    //
+
+  }
+
+  private nuevaCovidRelation(person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia){
+    let asistencia = AsistenciaHelper.initNewAsistenciaEpidemio('epidemio', 'epidemiologia', person);
+    this.addCasoIndice(asistencia, person, casoIndice)
+
+    this.manageCovidRecord(asistencia).subscribe(sol => {
+      if(sol){
+        listener.next(sol);
+
+      }else {
+        listener.next(null);
+
+      }
+    })
+
+  }
+
+  private addCasoIndice(base: Asistencia, person: Person, parent: Asistencia){
+    if(!(parent && parent._id)) return;
+
+    base.hasParent = true;
+    base.casoIndice = {
+      parentId: parent._id,
+      slug: parent.requeridox && parent.requeridox.slug,
+      actualState: parent.infeccion && parent.infeccion.actualState
+    } as CasoIndice;
+
+  }
 
 
+
+
+
+
+
+  /****************************************/
+  /******* ASISTENCIA COVID ********/
+  /**************************************/
   manageCovidRecord(asistencia:Asistencia ): Subject<Asistencia>{
     let listener = new Subject<Asistencia>();
     if(this.isNewToken(asistencia)){
@@ -589,6 +668,10 @@ export class SaludController {
     return this.daoService.search<Asistencia>(ASIS_PREVENCION_RECORD, query);
   }
 
+
+  fetchAsistenciaById(id){
+    return this.daoService.findById<Asistencia>(ASIS_PREVENCION_RECORD, id);
+  }
 
 
   fetchAsistenciaByQuery(query:any){

@@ -9,6 +9,7 @@ $bgcolor-covid: #6568ff;
 $bgcolor-laboratorio: #7eaceb;
 $bgcolor-vinculofam: #6568ff;
 $bgcolor-selectors: #d79e96;
+$bgcolor-closepanel: #d76e66;
 
 .panel-header{
 		background-color: #f2eded;
@@ -26,7 +27,13 @@ $bgcolor-selectors: #d79e96;
 // 		font-size: 1.4rem;
 // 		text-align: right;
 // }
+::ng-deep .mat-button-toggle-label-content {
+    line-height: 32px !important;
+}
 
+.mat-button-toggle-appearance-standard {
+    line-height: 32px !important;
+}
 
 .panel-header {
 	margin: 10px 0 0 0;
@@ -42,6 +49,24 @@ $bgcolor-selectors: #d79e96;
 		background-color: rgba(#adadc2, .8);
 		color: $color-togglebutton;
 	}
+}
+
+.panel-header-closepanel{
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-closepanel, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-closepanel, .8);
+		color: $color-togglebutton;
+	}
+
 }
 
 .panel-header-sisa {

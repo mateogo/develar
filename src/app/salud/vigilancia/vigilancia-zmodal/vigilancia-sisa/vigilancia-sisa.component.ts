@@ -25,6 +25,8 @@ export class VigilanciaSisaComponent implements OnInit {
   public form: FormGroup;
   public formClosed = false;
 
+  public displayAs = '';
+
   public asistencia: Asistencia;
   public sisaEvent: SisaEvent;
 
@@ -103,6 +105,8 @@ export class VigilanciaSisaComponent implements OnInit {
   }
 
   private initForEdit(){
+    let requerido = this.asistencia && this.asistencia.requeridox;
+    this.displayAs = requerido ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
     this.formClosed = false;
     this.form = this.fb.group(this.sisaEvent);
   }

@@ -19,6 +19,7 @@ const utils = require('../services/commons.utils');
 
 const xml2js = require('xml2js');
 const csv = require('csvtojson')
+const asisprevencion = require('../models/asisprevencionModel.js');
 
 
 
@@ -529,6 +530,7 @@ exports.update = function (id, person, errcb, cb) {
             errcb(err);
         
         }else{
+            updateRelatedEntities(entity)
             checkForPersonToPersonRelation(entity);
             cb(entity);
         }
@@ -552,6 +554,32 @@ function validatePersonBeforeUpdate(person){
 
 }
 
+function updateRelatedEntities(entity){
+    if(entity){
+        asisprevencion.findAsistenciaFromPerson(entity).then(asis =>{
+            if(asis){
+                asis.ndoc = entity.ndoc;
+                asis.tdoc = entity.tdoc;
+                asis.sexo = entity.sexo
+
+                let requerido = asis.requeridox;
+                if(requerido){
+                    requerido.slug = entity.displayName;
+                    requerido.tdoc = entity.tdoc;
+                    requerido.ndoc = entity.ndoc;
+                    requerido.fenac = entity.fenactx;
+
+                }
+                let contactdata = entity.contactdata;
+                if(contactdata && contactdata.length){
+                    asis.telefono = asis.telefono ? asis.telefono : contactdata[0].data;
+                }
+
+                asisprevencion.updateAsistenciaFromPerson(asis);
+            }
+        })
+    }
+}
 
 
 const createNewRecordcarRelation = function (person, errcb, cb){
@@ -635,22 +663,11 @@ function checkForPersonToPersonRelation(sourcePerson){
 
 function updateSourcePerson(sourcePerson, promiseArray){
     Promise.all(promiseArray).then(values => {
-        //console.log('Promise ALL [%s]', values && values.length)
-        if(values && values.length){
-            values.forEach(v => {
-                console.log('Value Token: [%s]', v && v.displayName)
-            })
-        }
-
 
         let id = sourcePerson.id;
-        console.log('SOURCE PERSON [%s]', id);
-
-        console.log('SourcePerson READY-TO-BE updated: [%s] [%s]', sourcePerson.displayName, sourcePerson.familiares[0].personId);
 
         Person.findByIdAndUpdate(id, sourcePerson, { new: true }).then( token =>{
-            console.log('SAVE SOURCE PERSON')
-            console.log('SourcePerson UPDATED: [%s] [%s]',token.displayName, token.familiares[0].personId);
+            //c onsole.log('SourcePerson UPDATED: [%s] [%s]',token.displayName, token.familiares[0].personId);
         })
 
         // sourcePerson.save().then(token =>{
@@ -688,7 +705,7 @@ function addFaceta(facetas, token){
     return facetas;
 }
 
-async function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArray){
+function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArray){
     let query;
     let personQuery;
 
@@ -707,16 +724,30 @@ async function updateRelatedPersonMember(key, sourcePerson, member, index, promi
 
     promiseArray.push(personQuery);
     
-    await personQuery.then(tperson => {
+    personQuery.then(tperson => {
         if(!tperson) tperson = initNewPerson(member);
 
         updatePersonFromVinculo(tperson, member, key);
+        let savePerson;
 
-        return tperson.save().then(token => {
+        if(tperson.id){
+            savePerson  = Person.findByIdAndUpdate(tperson.id, tperson, { new: true })
+
+        }else{
+            savePerson  = Person.create(tperson)
+
+        }
+
+        
+
+        //let savePerson  = tperson.save();
+        
+        promiseArray.push(savePerson);
+
+        return savePerson.then(token => {
             sourcePerson[key][index].personId = tperson.id;
-            console.log('SAVE TOKEN PERSON [%s] [%s] [%s] [%s]',sourcePerson[key][index].personId,tperson.id, key, index)
-
             return token;
+
         }).catch(err => {console.log(err);});
 
 
@@ -747,7 +778,7 @@ function updatePersonFromVinculo(tperson, member, key){
     tperson.tdoc = member.tdoc;
     tperson.ndoc = member.ndoc;
     tperson.fenactx = member.fenactx || tperson.fenactx;
-    tperson.fenac = member.fenac ||tperson.fenac;
+    tperson.fenac = member.fenac ||tperson.fenac || utils.dateNumFromTx(tperson.fenactx);
     tperson.ecivil = member.ecivil || tperson.ecivil;
     
     tperson.nestudios = member.nestudios || tperson.nestudios;

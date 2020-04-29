@@ -175,6 +175,12 @@ export class ContextoCovid {
 	isCOVID: boolean = false;
 }
 
+export class CasoIndice {
+	parentId: string;
+	slug: string;
+	actualState: number;
+}
+
 export class Locacion {
     _id?: string;
     slug: string = '';
@@ -208,6 +214,9 @@ export class Asistencia {
 		idbrown:     string;
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
+		fenotif_tsa:  number;
+		fenotif_txa:  string;
+
 		action:      string = 'covid';
 		slug:        string;
 		description: string;
@@ -235,6 +244,7 @@ export class Asistencia {
 		isCovid:        boolean;
 		isInternado:    boolean;
 		hasParent:      boolean;
+		casoIndice:   CasoIndice;
 
 		infeccion:    InfectionFollowUp;
 		internacion:  InternacionAsis;
@@ -251,14 +261,14 @@ export class Asistencia {
 
 
 const avanceInfectionOptList = [
-	{ val: 'posible',      label: 'Posible'},
-	{ val: 'sospecha',     label: 'Sospecha'},
-	{ val: 'descartado',   label: 'Descartado'},
-	{ val: 'confirmado',   label: 'Confirmado'},
-	{ val: 'enevolucion',  label: 'En evolución'},
-	{ val: 'recuperando',  label: 'Recuperando'},
-	{ val: 'alta',         label: 'Alta'},
-	{ val: 'fallecido',    label: 'Fallecido'},
+	{ val: 'comunitario', label: 'Comunitario'},
+	{ val: 'contacto',    label: 'Contacto estrecho'},
+	{ val: 'viaje',       label: 'Por viaje'},
+	{ val: 'essalud',     label: 'Es personal de salud'},
+	{ val: 'esesencial',  label: 'Es personal esencial'},
+	{ val: 'internacion', label: 'Estuvo internado'},
+	{ val: 'otro',        label: 'Otro'},
+	{ val: 'sindato',     label: 'Sin dato'},
 
 ];
 
@@ -282,14 +292,14 @@ export class InfectionFollowUp {
 	isInternado: boolean = false;
 	hasCovid: boolean = false;
 
-	actualState: number = 0 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
+	actualState: number = 6 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
 													//estadoActualAfectadoOptList
 	fe_inicio: string = '';  
 	fe_confirma: string = '';
 	fe_alta: string = '';
 
-	avance: string = 'posible'; //avanceInfectionOptList
-	sintoma: string = 'asintomatico'; // sintomaOptList
+	avance: string = 'comunitario'; //avanceInfectionOptList
+	sintoma: string = 'sindato'; // sintomaOptList
 	locacionSlug: string = '' // lugar de internación
 
 	qcoworkers:  number = 0;
@@ -637,6 +647,8 @@ export class VigilanciaBrowse {
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
 		qIntents: number = 0;
+
+		casosIndice: number = 0;
 }
 
 export interface AsistenciaSig {
@@ -1397,6 +1409,19 @@ export class AsistenciaHelper {
 		return req;
 	}
 
+	static getSemanaEpidemiologica(asis: Asistencia){
+		let fecha = asis.fecomp_txa;
+		let fe: Date;
+		let epiw = 0;
+		fecha = asis.fenotif_txa ? asis.fenotif_txa : fecha;
+		fecha = (asis.infeccion && asis.sisaevent.fe_reportado )? asis.sisaevent.fe_reportado : fecha;
+		if(fecha){
+			fe = devutils.dateFromTx(fecha);
+			epiw = fe ? devutils.epidemioWeekCount(fe) : 0
+		}
+		return epiw;
+	}
+
 	static buildCovidRequirente(person: Person): Requirente {
 		let req: Requirente;
 		if(person && person._id){
@@ -1575,11 +1600,15 @@ export class AsistenciaHelper {
 
 		if(person){
 
-			requirente = AsistenciaHelper.buildCovidRequirente(person);
+  		requirente = AsistenciaHelper.buildCovidRequirente(person);
 			token.idPerson = person._id;
+			token.ndoc = person.ndoc;
+			token.tdoc = person.tdoc;
+			token.sexo = person.sexo;
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
 			token.telefono = telefono.data
+
 
 
 			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
@@ -1600,6 +1629,11 @@ export class AsistenciaHelper {
 
 		token.fecomp_txa = devutils.txFromDateTime(ts);
 		token.fecomp_tsa = ts;
+
+		token.fenotif_txa = devutils.txFromDateTime(ts);
+		token.fenotif_tsa = ts;
+
+		token.hasParent = false;
 
 		token.action = action;
 		token.slug = slug || '';

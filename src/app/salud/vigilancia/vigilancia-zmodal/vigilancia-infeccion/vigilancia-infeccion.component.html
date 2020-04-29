@@ -21,9 +21,13 @@
     <div class="col d-flex align-items-center">
       <mat-radio-group  formControlName="actualState" aria-label="Estado actual">
         <mat-radio-button 
+              [checked]="form.controls['actualState'].value===6" 
+              (change)='changeActualState(6)'
+              [value]="6">Posible</mat-radio-button>
+        <mat-radio-button 
               [checked]="form.controls['actualState'].value===0" 
               (change)='changeActualState(0)'
-              [value]="0">Posible / Sospecha</mat-radio-button>
+              [value]="0">Sospecha</mat-radio-button>
         <mat-radio-button 
               [checked]="form.controls['actualState'].value===1" 
               (change)='changeActualState(1)'
@@ -71,11 +75,11 @@
 	<div class="row">
 		<div class="col">
 			<mat-form-field>
-				<mat-label>Avance de evolución</mat-label>
+				<mat-label>Caso epidemiológico</mat-label>
 				<mat-select #fldAvance  formControlName='avance'
 										(selectionChange)="changeSelectionValue('avance', fldAvance.value)">
 
-				    <mat-optgroup [disabled]="!avanceOptList.length" [label]="'Evolución del caso'">
+				    <mat-optgroup [disabled]="!avanceOptList.length" [label]="'Tipificación de casos'">
 				        <mat-option *ngFor="let item of avanceOptList" [value]="item.val">
 				            {{ item.label }} 
 				        </mat-option>

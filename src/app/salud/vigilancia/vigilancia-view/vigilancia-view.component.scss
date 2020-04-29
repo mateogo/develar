@@ -3,11 +3,19 @@ $color-destacado: #0645f5;
 $color-button: #3c4e62;
 $color-header: #2326ff;
 
+.follow-up-container{
+		margin: 15px 0 15px 5px;
+		padding: 5px;
+
+}
+
 .panel-header{
 		background-color: #f2eded;
 }
 
-
+.vinculo-token {
+	margin-bottom: 12px;
+}
 
 .panel-header-text {
 		margin: 0 0 0 15px;
@@ -97,9 +105,9 @@ $color-header: #2326ff;
 }
 
 .edit-control{
-		margin: 0 5px 0 5px;
+		margin: 0 5px 0 10px;
 		font-weight: 400;
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 }
 
 .edit-control-warning{

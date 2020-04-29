@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { Observable, of} from 'rxjs';
 
+import { SaludController } from '../../salud.controller';
+
 import { PersonService } from '../../person.service';
 
 import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
@@ -40,16 +42,20 @@ export class VigilanciaViewComponent implements OnInit {
   public showVinculosData = false;
   public showMuestrasData = false;
 
+  public showFollowUp = false;
+
   public sisaData: SisaData;
   public infectionData: InfectionData;
   public seguimiento: SeguimientoData;
+
+  public manageIndizado: Asistencia;
 
   public muestrasList: MuestraslabData[] = [];
   public vinculosList$: Observable<VinculosData[]>;
 
   constructor(
           private perSrv: PersonService,
-
+          private dsCtrl: SaludController,
     ) { }
 
   ngOnInit() {
@@ -66,10 +72,75 @@ export class VigilanciaViewComponent implements OnInit {
       this.familySelected.next(contacto.token)
   }
 
-  manageVinculo(contacto: VinculosData){
-    if(contacto.token.personId){
-      this.personSelected.next(contacto.token.personId);
+  manageBase(e){
+    //c o nsole.log('TODO');
+  }
+
+  closeFollowUp(e){
+    this.showFollowUp = false
+  }
+
+  manageCasoIndice(casoIndice){
+    if(true){
+      this.followUpCasoIndice(this.token)
     }
+  }
+
+  manageVinculo(contacto: VinculosData){
+    this.showFollowUp = false;
+    if(contacto.token.personId){
+      this.showFollowUpVinculo(contacto.token.personId);
+      //this.personSelected.next(contacto.token.personId);
+    }else{
+      this.dsCtrl.openSnackBar('Contacto no dado de alta como persona', 'Cerrar');
+      //todo
+
+    }
+  }
+
+  private followUpCasoIndice(asistencia: Asistencia){
+    let id = asistencia && asistencia.casoIndice && asistencia.casoIndice.parentId;
+    if(id){
+      this.dsCtrl.fetchAsistenciaById(id).then(asis =>{
+        if(asis){
+            this.manageIndizado = asis;
+            this.showFollowUp = true;
+
+        }else{
+
+          this.dsCtrl.openSnackBar('No se pudo recuperar la solicitud índice', 'Cerrar');
+        }
+      })
+
+    }else{
+      this.dsCtrl.openSnackBar('La solicitud no tiene caso índice', 'Cerrar');
+
+    }
+
+  }
+
+  private showFollowUpVinculo(personId: string){
+    this.perSrv.fetchPersonById(personId).then(per => {
+      if(per){
+        this.dsCtrl.fetchAsistenciaByPerson(per).subscribe(list =>{
+          if(list && list.length){
+            this.manageIndizado = list[0];
+            this.showFollowUp = true;
+            //todo
+
+          }else{
+          this.dsCtrl.openSnackBar('No hay solicitud de seguimiento para este vínculo', 'Cerrar');
+
+          }
+
+
+        })
+      }else {
+        this.dsCtrl.openSnackBar('No fue posible recuperar los datos de la persona', 'Cerrar');
+        //todo
+
+      }
+    });
   }
 
 
@@ -184,6 +255,11 @@ export class VigilanciaViewComponent implements OnInit {
     toPrint.costo = COSTO[this.getPesoAsistencia(token)];
     toPrint.ponderacionColor = `rgba(${250 - (toPrint.costo * 15)} ,${180 - (toPrint.costo * 15)},150,0.6)`
 
+    let epiw = AsistenciaHelper.getSemanaEpidemiologica(token);
+    toPrint.epiw = epiw ? "#" + epiw : '';
+
+
+
  
     if(tipo === 2){
     	toPrint.isDenuncia = true;
@@ -205,7 +281,7 @@ export class VigilanciaViewComponent implements OnInit {
 
     toPrint.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', token.action);
     toPrint.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', token.sector);
-    toPrint.solicitante = token.requeridox.slug + (token.requeridox.edad ? ' ('+ token.requeridox.edad + ')' : ' ')  + (token.requeridox.sexo ? ' ('+ token.requeridox.sexo + ')' : ' ') + ' ::  CEL: ' + token.telefono;
+    toPrint.solicitante = token.requeridox.slug + (token.requeridox.edad ? ' ('+ token.requeridox.edad + ')' : ' ')  + (token.requeridox.sexo ? ' ('+ token.requeridox.sexo + ')' : ' ') + ' ::  Tel: ' + (token.telefono || '');
     toPrint.cPrefix = token.compPrefix;
     toPrint.dni  = 'DNI: ' + token.ndoc; 
     toPrint.cName = token.compName;
@@ -219,7 +295,19 @@ export class VigilanciaViewComponent implements OnInit {
 
     this.buildDenuncia(toPrint, token);
 
+    this.buildCasoIndice(toPrint, token);
+
     return toPrint;
+  }
+
+  private buildCasoIndice(target: AsistenciaToPrint, token: Asistencia){
+    if(token.casoIndice){
+      target.casoIndice = true;
+      target.casoIndiceTxt = 'CASO ÍNDICE: ' + token.casoIndice.slug;
+    }else{
+      target.casoIndice = false;
+    }
+
   }
 
   private countIntervenciones(token: Asistencia):number {
@@ -394,6 +482,10 @@ class AsistenciaToPrint {
     ponderacionColor:string;
     prioridadColor: string;
     prioridad: number = 2;
+    epiw: string = '';
+
+    casoIndiceTxt: string = '';
+    casoIndice: boolean = false;
 
     isNuevo:boolean = false;
 

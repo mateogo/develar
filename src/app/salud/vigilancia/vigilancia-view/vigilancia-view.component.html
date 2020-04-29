@@ -1,7 +1,19 @@
 <ng-container *ngIf='asistencia.isAsistencia'>
 	<p class='text-headerblock'>{{ asistencia.solicitante }}</p>
 
-	<p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}</strong></p>
+	<p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong></p>
+
+    <ng-container *ngIf='asistencia.casoIndice'>
+
+        <p class='text-normal'>{{ asistencia.casoIndiceTxt }}
+            <span class="edit-control"
+                (click)='manageCasoIndice(asistencia.casoIndice)' title="Seguimiento del caso índice">
+                <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+        </p>
+
+
+    </ng-container>
+
 
     <ng-container *ngIf="showSisaData">
     <hr>
@@ -56,10 +68,12 @@
     <ng-container *ngIf="showVinculosData">
         <hr>
         <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
-        <ng-container *ngFor="let vinculo of vinculosList$ | async">
-                <p class='text-resaltado'>{{ vinculo.slug }}</p>
+        <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
+                <p class='text-resaltado'>{{ vinculo.slug }} 
+                                <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
 
-                <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  <strong>{{ vinculo.vinculo }}</strong>
+                <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
+                            <strong>{{ vinculo.vinculo }}</strong>
                     <span class="edit-control"
                         (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
                         <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
@@ -68,8 +82,17 @@
                         <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
                 </p>
 
-        </ng-container>
+
+        </div>
     </ng-container>
+
+    <div *ngIf="showFollowUp" class='follow-up-container'>
+
+        <vigilancia-followup    [asistencia]='manageIndizado' 
+                                [viewList]='viewList'
+                                (closePanel)='closeFollowUp($event)'></vigilancia-followup>
+
+    </div >
 
     <ng-container *ngIf="showGenericData">
     <hr>

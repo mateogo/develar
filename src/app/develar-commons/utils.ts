@@ -640,6 +640,12 @@ class Devutils {
         return parseDateStr(datex);
     }
 
+    dateNumFromTx(datex){
+        let fecha =  parseDateStr(datex);
+        if(fecha) return fecha.getTime();
+        else return 0;
+    }
+
 	txFromDate(date){
 		return dateToStr(date);
 	}
@@ -658,6 +664,10 @@ class Devutils {
 
     txForEpidemioWeek(date: Date):string {
         return buildEpidemioWeek(date);
+    }
+
+    epidemioWeekCount(date: Date):number {
+        return getEpidemicWeekOfTheYear(date);
     }
 
     nextLaborDate(date: Date, offset: number){

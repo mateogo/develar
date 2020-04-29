@@ -56,6 +56,11 @@ export class VigilanciaPanelComponent implements OnInit {
   /*************************/
   /*    template EVENTS   */
   /***********************/
+
+  closeFollowUp(e){
+    this.showFollowUp = false;
+  }
+
   manageBase(event: UpdateAsistenciaEvent){
     if(event.action === UPDATE || event.action === EVOLUCION){
 			this.processRecord(event);

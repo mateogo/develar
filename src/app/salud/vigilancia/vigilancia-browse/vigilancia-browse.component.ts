@@ -143,6 +143,7 @@ export class VigilanciaBrowseComponent implements OnInit {
 
       tipoSeguimiento: [null],
       qIntents:        [null],
+      casosIndice:     [null],
     });
 
     return form;
@@ -162,6 +163,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         isSeguimiento:  query.isSeguimiento,
         tipoSeguimiento:  query.tipoSeguimiento,
         qIntents:   query.qIntents,
+        casosIndice:  query.casosIndice ? true: false,
 
         isActiveSisa: query.isActiveSisa,
         avanceSisa: query.avanceSisa,
@@ -204,6 +206,9 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
     entity.qIntents =   fvalue.qIntents;
 
+    entity.casosIndice =   fvalue.casosIndice ? 1: 0;
+
+
     entity.isActiveSisa = fvalue.isActiveSisa;
     entity.avanceSisa = fvalue.avanceSisa;
     entity.qDaysSisa = fvalue.qDaysSisa;
@@ -238,6 +243,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'qIntents'         && !entity[key]) delete entity[key];
       if(key === 'qDaysSisa'        && !entity[key]) delete entity[key];
       if(key === 'qNotConsultaSisa' && !entity[key]) delete entity[key];
+      if(key === 'casosIndice'      && !entity[key]) delete entity[key];
     })
 
 		return entity;

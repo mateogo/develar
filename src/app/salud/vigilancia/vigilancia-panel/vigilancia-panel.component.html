@@ -2,6 +2,7 @@
 
 	<vigilancia-followup  [asistencia]='asistencia' [viewList]='viewList'
 								(updateToken)='manageBase($event)'
+								(closePanel)='closeFollowUp($event)'
 								(fetchPerson)='vinculoSelected($event)' ></vigilancia-followup>
 
 </ng-container>

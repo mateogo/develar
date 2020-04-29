@@ -320,6 +320,14 @@ const morbilidadSch = new Schema({
 
 })
 
+
+const casoIndiceSch = new Schema({
+  parentId:    { type: String, required: false },
+  slug:        { type: String, required: false },
+  actualState: { type: Number, required: false },
+
+});
+
 /**
  * Creación de un Schema
  * @params
@@ -343,6 +351,8 @@ const asisprevencionSch = new Schema({
     idbrown:     { type: String, required: false },
     fecomp_tsa:  { type: Number, required: true },
     fecomp_txa:  { type: String, required: true },
+    fenotif_tsa: { type: Number, required: false },
+    fenotif_txa: { type: String, required: false },
     action:      { type: String, required: true },
     slug:        { type: String, required: false },
     description: { type: String, required: false },
@@ -360,6 +370,7 @@ const asisprevencionSch = new Schema({
     locacion:    { type: locacionSch, required: false }, 
     requeridox:  { type: requirenteSch, required: false },
     atendidox:   { type: atendidoSch,   required: false },
+    casoIndice:  { type: casoIndiceSch, required: false },
 
 
     isVigilado:      { type: Boolean, required: false, default: false },
@@ -576,6 +587,25 @@ const Record = mongoose.model('Asisprevencion', asisprevencionSch, 'asisprevenci
  * @param cb
  * @param errcb
  */
+
+
+exports.findAsistenciaFromPerson = function(person){
+    console.log('asisprevencion: personid: [%s] [%s] ',person.id, person._id)
+
+    let query = {
+      requirenteId: person.id,
+      isVigilado: true
+    }
+    let regexQuery = buildQuery(query);
+    return Record.findOne(regexQuery);
+}
+
+exports.updateAsistenciaFromPerson = function(asistencia){
+    console.log('asisprevencion UPDATE: [%s] [%s] ',asistencia.id, asistencia._id)
+    Record.findByIdAndUpdate(asistencia.id, asistencia, { new: true }).then(token =>{
+      console.log('UPDATED!!! [%s]', token && token.ndoc);
+    })
+}
 
 
 exports.upsertNext = function (query, errcb, cb) {

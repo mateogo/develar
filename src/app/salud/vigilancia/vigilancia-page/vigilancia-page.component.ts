@@ -226,15 +226,16 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'qIntents'         && !query[key]) delete query[key];
       if(key === 'qDaysSisa'        && !query[key]) delete query[key];
       if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
+      if(key === 'casosIndice'       && !query[key]) delete query[key];
     })
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
-        
-        let ts_now = Date.now();
 
-        this.sortProperly(this.asistenciasList, ts_now);
+        if(query.casosIndice) this.asistenciasList = this.filterCasosIndice(this.asistenciasList);
+
+        this.sortProperly(this.asistenciasList);
 
         this.dsCtrl.updateTableData();
 
@@ -249,30 +250,29 @@ export class VigilanciaPageComponent implements OnInit {
     })
   }
 
-  private sortProperly(records: Asistencia[], ts_now: number){
+  private filterCasosIndice(list: Asistencia[]): Asistencia[]{
+    list = list.filter(token => !token.hasParent);
+    return list;
+  }
+
+  private sortProperly(records: Asistencia[]){
 
     records.sort((fel: Asistencia, sel: Asistencia)=> {
-      let fprio = fel.prioridad || 2;
-      let sprio = sel.prioridad || 2;
+      let fprio = (fel.sisaevent && fel.sisaevent.fets_reportado) || fel.fenotif_tsa || fel.fecomp_tsa;
+      let sprio = (sel.sisaevent && sel.sisaevent.fets_reportado) || sel.fenotif_tsa || sel.fecomp_tsa;
 
-      if(fprio < sprio ) return 1;
+      if(fprio < sprio ) return -1;
 
-      else if(fprio > sprio ) return -1;
+      else if(fprio > sprio ) return 1;
 
       else{
-        let cfel = this.costo(fel, ts_now);
-        let csel = this.costo(sel, ts_now);
-
-        if(cfel < csel ) return 1;
-
-        else if(cfel > csel) return -1;
-
-        else return 0;
+        return 0;
       }
 
 
     });
   }
+
   //const COSTO = [1, 2, 3, 4, 6];
   private  costo (asis: Asistencia, ts:number){
     let peso = this.getPesoAsistencia(asis);

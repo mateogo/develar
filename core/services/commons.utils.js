@@ -260,6 +260,7 @@ exports.calcularEdad = function(dob_number) {
 
 exports.parseDateStr = function(str) {
     //console.log('parseDate BEGIN [%s]',str)
+    if(!str) return null;
 
     var mx = str.match(/(\d+)/g);
     var ty = new Date();
@@ -295,6 +296,14 @@ exports.parseDateStr = function(str) {
         else return new Date(mx[2],mx[1]-1,mx[0],mx[3],mx[4]);
     }
 }
+
+
+exports.dateNumFromTx = function(datex){
+        let fecha =  this.parseDateStr(datex);
+        if(fecha) return fecha.getTime();
+        else return 0;
+}
+
 
 exports.buildDateFrameForCurrentWeek = function(fecha_time){
     let fecharef = new Date(fecha_time);

@@ -1,23 +1,26 @@
 <div class="container-fluid p-0">
 	<form [formGroup]="form">
 	<div class="row">
-	    <div  class="col">
-				<mat-checkbox 
-					[checked]="form.controls['isActive'].value===true"
-					[formControl]="form.controls['isActive']" >
-					Caso reportado en estado activo en SISA </mat-checkbox>
+		<div  class="col">
+			<mat-checkbox 
+				[checked]="form.controls['isActive'].value===true"
+				[formControl]="form.controls['isActive']" >
+				Caso reportado en estado activo en SISA </mat-checkbox>
+		</div>
+		<div  class="col">
+			<p class="text-resaltado" >{{ displayAs }}</p>
 		</div>
 	</div>
 
 	<div class="row">
-	    <div  class="col">
+	  <div  class="col">
 	        <mat-form-field>
 	          <input  matInput [formControl]="form.controls['sisaId']" placeholder="Identificador SISA" >
 	        </mat-form-field>
-	    </div>
+	  </div>
 		<div class="col" style="text-align: center;">
 			<mat-form-field>
-				<mat-label>Estado del caso</mat-label>
+				<mat-label>Estado del caso en SISA</mat-label>
 				<mat-select #fldAsignar  formControlName='avance'
 										(selectionChange)="changeSelectionValue('avance', fldAsignar.value)">
 
@@ -30,30 +33,22 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
+    <div  class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['fe_reportado']" placeholder="Fecha notificación en SISA" >
+        </mat-form-field>
+    </div>
 	</div>
+	
 	<div class="row" >
 	    <div  class="col">
 	        <mat-form-field>
 	          <input  matInput [formControl]="form.controls['reportadoPor']" placeholder="Reportado por..." >
 	        </mat-form-field>
 	    </div>
-	</div>
-	<div class="row" >
 	    <div  class="col">
 	        <mat-form-field>
-	          <input  matInput [formControl]="form.controls['fe_reportado']" placeholder="Fecha alta en SISA" >
-	        </mat-form-field>
-	    </div>
-	    <div  class="col">
-	        <mat-form-field>
-	          <input  matInput [formControl]="form.controls['fe_baja']" placeholder="Fecha cierre del caso en SISA" >
-	        </mat-form-field>
-	    </div>
-	</div>
-	<div class="row" >
-	    <div  class="col">
-	        <mat-form-field>
-	          <input  matInput [formControl]="form.controls['fe_consulta']" placeholder="Fecha última consulta" >
+	          <input  matInput [formControl]="form.controls['fe_consulta']" placeholder="Fecha última consulta a SISA" >
 	        </mat-form-field>
 	    </div>
 	</div>
