@@ -708,56 +708,100 @@ function addFaceta(facetas, token){
 function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArray){
     let query;
     let personQuery;
-
     let via;
 
-
     if(member.personId){
-        personQuery = Person.findById(member.personId);
         via = 'findById';
+        personQuery = Person.findById(member.personId).then(tperson => {
+
+            if(tperson){
+                updatePersonFromVinculo(tperson, member, key);
+                return Person.findByIdAndUpdate(member.personId, tperson, { new: true }).exec();
+
+            }else{
+                let nueva_person = initNewPerson(member);
+                updatePersonFromVinculo(nueva_person, member, key);
+                return Person.create(nueva_person).then(person =>{
+                    sourcePerson[key][index].personId = person.id;
+                })
+            }
+
+        })
+        promiseArray.push(personQuery);
 
     }else {
+        via = 'findONE';
         query = buildQuery({
             tdoc: member.tdoc,
             ndoc: member.ndoc
         });
-        personQuery = Person.findOne(query);
-        via = 'findONE';
+        personQuery = Person.findOne(query).then(tperson =>{
+
+            if(tperson){
+                updatePersonFromVinculo(tperson, member, key);
+                return Person.findByIdAndUpdate(member.personId, tperson, { new: true }).exec();
+
+            }else{
+                let nueva_person = initNewPerson(member);
+                updatePersonFromVinculo(nueva_person, member, key);
+                return Person.create(nueva_person).then(person =>{
+                    sourcePerson[key][index].personId = person.id;
+                })
+            }
+
+        })
+        promiseArray.push(personQuery);
 
     }
 
-    promiseArray.push(personQuery);
+
+
+
+    // if(member.personId){
+    //     personQuery = Person.findById(member.personId);
+    //     via = 'findById';
+
+    // }else {
+    //     query = buildQuery({
+    //         tdoc: member.tdoc,
+    //         ndoc: member.ndoc
+    //     });
+    //     personQuery = Person.findOne(query);
+    //     via = 'findONE';
+
+    // }
+
     
-    personQuery.then(tperson => {
-        console.log('Update Related [%s]:  id[%s] _id[%s]', via, (tperson && tperson.id),  (tperson && tperson._id))
-        if(!tperson) tperson = initNewPerson(member);
+    // personQuery.then(tperson => {
+    //     console.log('Update Related [%s]:  id[%s] _id[%s]', via, (tperson && tperson.id),  (tperson && tperson._id))
+    //     if(!tperson) tperson = initNewPerson(member);
 
-        updatePersonFromVinculo(tperson, member, key);
-        let savePerson;
+    //     updatePersonFromVinculo(tperson, member, key);
+    //     let savePerson;
 
-        if(tperson.id){
-            savePerson  = Person.findByIdAndUpdate(tperson.id, tperson, { new: true })
+    //     if(tperson.id){
+    //         savePerson  = Person.findByIdAndUpdate(tperson.id, tperson, { new: true })
 
-        }else{
-            savePerson  = Person.create(tperson)
+    //     }else{
+    //         savePerson  = Person.create(tperson)
 
-        }
+    //     }
 
         
 
-        //let savePerson  = tperson.save();
+    //     //let savePerson  = tperson.save();
         
-        promiseArray.push(savePerson);
+    //     promiseArray.push(savePerson);
 
-        return savePerson.then(token => {
-            console.log('savePerson [%s]:  [%s]', via, (token && token.id))
-            sourcePerson[key][index].personId = tperson.id;
-            return token;
+    //     return savePerson.then(token => {
+    //         console.log('savePerson [%s]:  [%s]', via, (token && token.id))
+    //         sourcePerson[key][index].personId = tperson.id;
+    //         return token;
 
-        }).catch(err => {console.log(err);});
+    //     }).catch(err => {console.log(err);});
 
 
-    }).catch(err => {console.log(err);})
+    // }).catch(err => {console.log(err);})
 }
 
 
