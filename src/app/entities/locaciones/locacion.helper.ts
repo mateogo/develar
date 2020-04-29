@@ -168,7 +168,8 @@ const areasOptList: Array<any> = [
     {val: 'NEONATOLOGÍA',  ord: '2.3', label: 'INT-NEO'        },
     {val: 'MATERNIDAD',    ord: '2.4', label: 'INT-MATERNIDAD' },
     {val: 'TRAUMATOLOGIA', ord: '2.5', label: 'INT-TRAUMATO'   },
-    {val: 'CLINICA',       ord: '2.6', label: 'INT-CLÍNICA'    },
+    {val: 'TRAUMATOLOGIA', ord: '2.6', label: 'INT-TRAUMATO'   },
+    {val: 'CIRUGIA',       ord: '2.7', label: 'INT-CIRUGÍA'    },
 
     {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'    },
 
@@ -189,11 +190,12 @@ const serviciosOptList: Array<any> = [
     {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
     {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
     {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
-    {val: 'PEDIATRIA',      target: 'intermedios',          ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
     {val: 'NEONATOLOGÍA',   target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
     {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
     {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
-    {val: 'CLINICA',        target: 'pediatrica',           ord: '2.6', label: 'INT-CLÍNICA'   },
+    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
+    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
 
     {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
 
