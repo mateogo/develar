@@ -158,36 +158,57 @@ const default_option_list: Array<any> = [
 ];
 
 const areasOptList: Array<any> = [
-    {val: 'UTI',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   ord: '2.1', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    ord: '3.1', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'UTI',           ord: '1.1', label: 'UTI'            },
+    {val: 'UTIP',          ord: '1.2', label: 'UTI PEDIÁTRICA' },
+    {val: 'UTIN',          ord: '1.3', label: 'UTI NEO'        },
+    {val: 'UTE',           ord: '1.4', label: 'UTE'            },
+    {val: 'UCO',           ord: '1.5', label: 'UCO'            },
+    {val: 'INTERNACION',   ord: '2.1', label: 'INT-GENERAL'    },
+    {val: 'PEDIATRIA',     ord: '2.2', label: 'INT-PEDIATRÍA'  },
+    {val: 'NEONATOLOGÍA',  ord: '2.3', label: 'INT-NEO'        },
+    {val: 'MATERNIDAD',    ord: '2.4', label: 'INT-MATERNIDAD' },
+    {val: 'TRAUMATOLOGIA', ord: '2.5', label: 'INT-TRAUMATO'   },
+    {val: 'CLINICA',       ord: '2.6', label: 'INT-CLÍNICA'    },
+
+    {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'    },
+
     {val: 'CONSULEXT',     ord: '5.1', label: 'CONSULTORIO EXT'},
     {val: 'GUARDIA',       ord: '5.2', label: 'GUARDIA'      },
 
-    {val: 'TRANSITO',      ord: '4.1', label: 'TRANSITO'     },
-    {val: 'TRASLADO',      ord: '4.2', label: 'TRASLADO'     },
-    {val: 'ADMISION',      ord: '5.1', label: 'ADMISIÓN'     },
-    {val: 'EXTERNACION',   ord: '5.2', label: 'EXTERNACIÓN'  },
+    {val: 'TRANSITO',      ord: '9.1', label: 'TRANSITO'     },
+    {val: 'TRASLADO',      ord: '9.2', label: 'TRASLADO'     },
+    {val: 'ADMISION',      ord: '9.3', label: 'ADMISIÓN'     },
+    {val: 'EXTERNACION',   ord: '9.4', label: 'EXTERNACIÓN'  },
 
 ];
 
 const serviciosOptList: Array<any> = [
-    {val: 'UTI',           target: 'intensivos',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           target: 'intensivos',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           target: 'intensivos',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    target: 'pediatrica',           ord: '3.1', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
+    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+    {val: 'PEDIATRIA',      target: 'intermedios',          ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'NEONATOLOGÍA',   target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
+    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
+    {val: 'CLINICA',        target: 'pediatrica',           ord: '2.6', label: 'INT-CLÍNICA'   },
+
+    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+
+    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
 
 
 const especialidadesOptList: Array<any> = [
-    {val: 'PEDIATRIA',         ord: '1.2', label: 'PEDIATRIA'    },
+    {val: 'PEDIATRIA',       ord: '1.2', label: 'PEDIATRÍA'    },
+    {val: 'NEONATOLOGIA',    ord: '1.3', label: 'NEONATOLOGÍA'    },
+    {val: 'MATERNIDAD',      ord: '1.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',   ord: '1.5', label: 'TRAUMATOLOGÍA'    },
+    {val: 'CLINICA',         ord: '1.6', label: 'CLÍNICA'    },
+    {val: 'GUARDIA',         ord: '1.7', label: 'GUARDIA'    },
 
 ];
 
