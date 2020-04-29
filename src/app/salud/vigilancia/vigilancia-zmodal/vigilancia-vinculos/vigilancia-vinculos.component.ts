@@ -156,9 +156,11 @@ export class VigilanciaVinculosComponent implements OnInit {
   private updateSeguimientoBajoCasoIndice(){
     if(!this.asistencia){
         this.ctrl.openSnackBar('No se estableció el caso índice. No se puede actualizar', 'ATENCIÓN');
+        return
     }
     if(!this.vinculo.personId){
         this.ctrl.openSnackBar('No se ha creado un nuevo afectado a partir de este vínculo. No se puede actualizar', 'ATENCIÓN');
+        return
     }
 
     this.perSrv.fetchPersonById(this.vinculo.personId).then(per => {
@@ -234,7 +236,7 @@ export class VigilanciaVinculosComponent implements OnInit {
     	telefono:     [null],
       vinculo:      [null],
     	sexo:         [null],
-      fenactx:      [null, [this.fechaNacimientoValidator()] ],
+      fenactx:      [null],
     	estado:       [null],
     	comentario:   [null],
     });
