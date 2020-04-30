@@ -22,4 +22,15 @@
       width: 100%;
     }
   }
+  .site-sidebar {
+    display: flex;
+    flex-direction: column;
+    @media #{$max991} {
+      position: relative;
+      z-index: 9999;
+    }
+  }
+
+
+
 }

@@ -163,6 +163,11 @@ const webRoutes: Routes = [
     component: PresentacionLayoutComponent,
     children: dsocialModuleRoutes
   },
+  {
+    path: 'salud',
+    component: PresentacionLayoutComponent,
+    children: saludModuleRoutes
+  },
 ];
 
 const dsocialRoutes: Routes = [
