@@ -664,7 +664,7 @@ exports.findByQuery = function (query, errcb, cb) {
 
     }else{
       Record.find(regexQuery)
-            .limit(100)
+            .limit(500)
             .lean()
             .sort( '-fecomp_tsa' )
             .exec(function(err, entities) {
