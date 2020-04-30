@@ -524,7 +524,13 @@ function buildQuery(query){
   }
   
   if(query['actualState']){
-    q["infeccion.actualState"] = parseInt(query['actualState'], 10);
+    let qData =  parseInt(query['actualState'], 10);
+
+    if(qData !== 6){
+      q["infeccion.actualState"] = qData;
+    }else{
+      q["$or"] = [{ "infeccion.actualState": qData }, { "infeccion.actualState": null } ]
+    }
   }
 
   if(query['pendLaboratorio']){
