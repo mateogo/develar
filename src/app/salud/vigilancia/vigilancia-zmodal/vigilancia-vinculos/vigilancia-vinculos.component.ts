@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import { map  }   from 'rxjs/operators';
+import { map, debounceTime  }   from 'rxjs/operators';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -47,7 +47,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   public docBelongsTo = {error: ''};
   public tDoc = "DNI";
   private currentNumDoc = '';
-
+  
   private result: UpdateAsistenciaEvent;
 
   constructor(
@@ -59,38 +59,43 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.initForm();
+
+    this.initOnce();
+
  
-  	this.isNewVinculo = true;
-  	this.asistencia = this.data.asistencia
-  	this.person = this.data.person;
+  }
+
+  private initOnce(){
+    this.isNewVinculo = true;
+    this.asistencia = this.data.asistencia
+    this.person = this.data.person;
     this.currentNumDoc = '';
 
-  	this.familyList = this.person.familiares || [];
+    this.familyList = this.person.familiares || [];
 
-  	this.vinculo = this.data.vinculo ;
+    this.vinculo = this.data.vinculo ;
 
-  	if(this.vinculo){
-  		this.isNewVinculo = false;
-  		let labToken = this.familyList.find(t => t._id === this.vinculo._id)
-  		if(labToken){
-  			this.vinculo = labToken;
-  			this.tDoc = this.vinculo.tdoc || 'DNI';
+    if(this.vinculo){
+      this.isNewVinculo = false;
+      let labToken = this.familyList.find(t => t._id === this.vinculo._id)
+      if(labToken){
+        this.vinculo = labToken;
+        this.tDoc = this.vinculo.tdoc || 'DNI';
         this.currentNumDoc = this.vinculo.ndoc;
-  			this.isNewVinculo = false;
-  		}
+        this.isNewVinculo = false;
+      }
 
-  	}else{
-  		this.isNewVinculo = true;
-  		this.vinculo = new FamilyData();
-  	}
+    }else{
+      this.isNewVinculo = true;
+      this.vinculo = new FamilyData();
+    }
 
-  	this.result = {
-							  		action: UPDATE,
-							  		type: VINCULO_ESTADO,
-							  		token: this.asistencia
-  								} as  UpdateAsistenciaEvent;
+    this.result = {
+                    action: UPDATE,
+                    type: VINCULO_ESTADO,
+                    token: this.asistencia
+                  } as  UpdateAsistenciaEvent;
 
     this.initForEdit();
   }
@@ -311,7 +316,10 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
-    this.form.reset(this.vinculo);
+    setTimeout(()=>{
+       this.form.reset(this.vinculo);
+ 
+    }, 100)
   }
 
 

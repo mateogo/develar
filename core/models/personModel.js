@@ -509,6 +509,7 @@ exports.findByQuery = function (query, errcb, cb) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
         }else{
+
             cb(entities);
         }
     });
@@ -670,10 +671,6 @@ function updateSourcePerson(sourcePerson, promiseArray){
             //c onsole.log('SourcePerson UPDATED: [%s] [%s]',token.displayName, token.familiares[0].personId);
         })
 
-        // sourcePerson.save().then(token =>{
-        //     return token;
-        // })
-
     })
 
 
@@ -681,18 +678,20 @@ function updateSourcePerson(sourcePerson, promiseArray){
 
 function updateBusinessMembers(sourcePerson, promiseArray){
     let businessMembers = sourcePerson.integrantes || [];
+
     businessMembers.forEach((member, index) => {
         if(member.hasOwnPerson){
-            updateRelatedPersonMember('integrantes', sourcePerson, member, index, promiseArray);
+            promiseArray.push(updateRelatedPersonMember('integrantes', sourcePerson, member, index));
         }
     })
 }
 
 function updateFamilyMembers(sourcePerson, promiseArray){
     let familyMembers = sourcePerson.familiares || [];
+
     familyMembers.forEach((member, index) => {
         if(member.hasOwnPerson){
-            updateRelatedPersonMember('familiares', sourcePerson, member, index, promiseArray);
+            promiseArray.push(updateRelatedPersonMember('familiares', sourcePerson, member, index));
         }
     })
 }
@@ -705,103 +704,66 @@ function addFaceta(facetas, token){
     return facetas;
 }
 
-function updateRelatedPersonMember(key, sourcePerson, member, index, promiseArray){
+async function updateVinculoPerson(resolve, person, member, key){
+    updatePersonFromVinculo(person, member, key);
+
+    await Person.findByIdAndUpdate(person.id, person, { new: true }).exec();
+    resolve(true);
+    return null;
+}
+
+async function createVinculoPerson(resolve, key, sourcePerson, member, index){
+    let nueva_person = initNewPerson(member);
+    updatePersonFromVinculo(nueva_person, member, key);
+
+    return await Person.create(nueva_person).then(person =>{
+        if(person){
+            sourcePerson[key][index].personId = person.id;
+        }
+        resolve(true);
+        return person;
+    })
+}
+
+function updateRelatedPersonMember(key, sourcePerson, member, index){
     let query;
     let personQuery;
     let via;
 
-    if(member.personId){
-        via = 'findById';
-        personQuery = Person.findById(member.personId).then(tperson => {
+    let promise = new Promise((resolve, reject)=> {
+        if(member.personId){
 
-            if(tperson){
-                updatePersonFromVinculo(tperson, member, key);
-                return Person.findByIdAndUpdate(member.personId, tperson, { new: true }).exec();
+            personQuery = Person.findById(member.personId).exec();
+            personQuery.then(tperson => {
+                if(tperson){
+                    return updateVinculoPerson(resolve, tperson, member, key)
 
-            }else{
-                let nueva_person = initNewPerson(member);
-                updatePersonFromVinculo(nueva_person, member, key);
-                return Person.create(nueva_person).then(person =>{
-                    sourcePerson[key][index].personId = person.id;
-                })
-            }
+                }else{
+                    return createVinculoPerson(resolve, key, sourcePerson, member, index)
+                }
+            })
+        }else {
+            query = buildQuery({
+                tdoc: member.tdoc,
+                ndoc: member.ndoc
+            });
 
-        })
-        promiseArray.push(personQuery);
+            personQuery = Person.findOne(query).exec()
 
-    }else {
-        via = 'findONE';
-        query = buildQuery({
-            tdoc: member.tdoc,
-            ndoc: member.ndoc
-        });
-        personQuery = Person.findOne(query).then(tperson =>{
+            personQuery.then(tperson =>{
 
-            if(tperson){
-                updatePersonFromVinculo(tperson, member, key);
-                return Person.findByIdAndUpdate(member.personId, tperson, { new: true }).exec();
+                if(tperson){
+                    member.personId = tperson.id;
+                    return updateVinculoPerson(resolve, tperson, member, key)
 
-            }else{
-                let nueva_person = initNewPerson(member);
-                updatePersonFromVinculo(nueva_person, member, key);
-                return Person.create(nueva_person).then(person =>{
-                    sourcePerson[key][index].personId = person.id;
-                })
-            }
+                }else{
+                    return createVinculoPerson(resolve, key, sourcePerson, member, index)
+                }
+            })
+        }
+    })
 
-        })
-        promiseArray.push(personQuery);
-
-    }
-
-
-
-
-    // if(member.personId){
-    //     personQuery = Person.findById(member.personId);
-    //     via = 'findById';
-
-    // }else {
-    //     query = buildQuery({
-    //         tdoc: member.tdoc,
-    //         ndoc: member.ndoc
-    //     });
-    //     personQuery = Person.findOne(query);
-    //     via = 'findONE';
-
-    // }
-
-    
-    // personQuery.then(tperson => {
-    //     console.log('Update Related [%s]:  id[%s] _id[%s]', via, (tperson && tperson.id),  (tperson && tperson._id))
-    //     if(!tperson) tperson = initNewPerson(member);
-
-    //     updatePersonFromVinculo(tperson, member, key);
-    //     let savePerson;
-
-    //     if(tperson.id){
-    //         savePerson  = Person.findByIdAndUpdate(tperson.id, tperson, { new: true })
-
-    //     }else{
-    //         savePerson  = Person.create(tperson)
-
-    //     }
-
-        
-
-    //     //let savePerson  = tperson.save();
-        
-    //     promiseArray.push(savePerson);
-
-    //     return savePerson.then(token => {
-    //         console.log('savePerson [%s]:  [%s]', via, (token && token.id))
-    //         sourcePerson[key][index].personId = tperson.id;
-    //         return token;
-
-    //     }).catch(err => {console.log(err);});
-
-
-    // }).catch(err => {console.log(err);})
+    return promise;
 }
 
 
