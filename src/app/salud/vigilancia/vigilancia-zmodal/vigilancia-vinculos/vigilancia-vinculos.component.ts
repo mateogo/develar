@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidatorFn, FormBuilder,FormControl, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 import { map, debounceTime  }   from 'rxjs/operators';
@@ -44,9 +44,13 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   public personError = false;
   public personErrorMsg = '';
+  public errorMessage = '';
   public docBelongsTo = {error: ''};
   public tDoc = "DNI";
   private currentNumDoc = '';
+  private whiteList: Array<string>;
+  private blackList: Array<string>;
+
   
   private result: UpdateAsistenciaEvent;
 
@@ -87,6 +91,7 @@ export class VigilanciaVinculosComponent implements OnInit {
       }
 
     }else{
+      this.tDoc = 'DNI';
       this.isNewVinculo = true;
       this.vinculo = new FamilyData();
     }
@@ -133,8 +138,12 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   handlePerson(p: Person){
+    this.errorMessage = ''
     if(this.isValidRetrievedPerson(p)) {
     	this.acceptPersonaAsFamilyMember(p);
+    }else {
+      this.ctrl.openSnackBar(this.errorMessage, 'ACEPTAR');
+
     }
 
   }
@@ -143,17 +152,31 @@ export class VigilanciaVinculosComponent implements OnInit {
     // validate
     // caso: OK
 		this.vinculo = personModel.buildFamilyDataFromPerson(p, this.vinculo);
+    this.currentNumDoc = this.vinculo.ndoc
 		this.initForEdit()
   }
 
   private isValidRetrievedPerson(per: Person): boolean{
   	let ok = true;
   	if(per.ndoc === this.vinculo.ndoc ) return ok; // estoy recuperando la misma persona
-  	if(per.ndoc === this.person.ndoc ) return false; // es la parent person, daría vinculo circular;
+  	if(per.ndoc === this.person.ndoc ){
+      this.errorMessage = 'No puedes seleccionar el DNI del caso índice'
+      return false; // es la parent person, daría vinculo circular;
+    }
+
+    if(!this.isNewVinculo){
+      if(per.ndoc !== this.vinculo.ndoc ){
+
+        this.ctrl.openSnackBar('ATENCIÓN: ¡Se reemplazará el vínculo pre-existente por esta nueva persona!', 'ACEPTAR');
+      }
+
+    }
 
   	let check = this.familyList.find(fam => fam.ndoc === per.ndoc);
-  	if(check)  return false; // es de otro integrante
-
+  	if(check){
+      this.errorMessage = 'Este DNI ya pertenece a otro vínculo del caso índice '
+      return false; // es de otro integrante
+    }
 
   	return ok;
   }
@@ -232,11 +255,7 @@ export class VigilanciaVinculosComponent implements OnInit {
       apellido:     [null, Validators.compose( [Validators.required])],
       tdoc:         [null, Validators.compose( [Validators.required])],
 
-      ndoc: [null, [Validators.required, 
-                    Validators.minLength(7),
-                    Validators.maxLength(10),
-                    Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this, this.perSrv, this.docBelongsTo)] ],
+      ndoc: [null],
 
     	telefono:     [null],
       vinculo:      [null],
@@ -246,54 +265,10 @@ export class VigilanciaVinculosComponent implements OnInit {
     	comentario:   [null],
     });
 
+
+
+
   }
-  // dniExistenteValidator(that:any, service: PersonService, message: object): AsyncValidatorFn {
-  //     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-  //         let value = control.value;
-  //         let tdoc = that.form.controls['tdoc'].value || 'DNI';
-
-  //         return service.testPersonByDNI(tdoc,value).pipe(
-  //             map(t => {
-  //                 let invalid = false;
-  //                 let txt = ''
-
-  //                 if(t && t.length){ 
-  //                     invalid = true;
-  //                     txt = 'Documento existente: ' + t[0].displayName;
-  //                 }
-
-  //                 message['error'] = txt;
-  //                 return invalid ? { 'mailerror': txt }: null;
-
-  //             })
-  //          )
-  //     }) ;
-  // }
-
-    dniExistenteValidator(that:any, service: PersonService, message: object): AsyncValidatorFn {
-        return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-            let value = control.value;
-            let tdoc = that.form.controls['tdoc'].value || 'DNI';
-
-            return service.testPersonByDNI(tdoc,value).pipe(
-                map(t => {
-                    let invalid = false;
-                    let txt = ''
-                    //c o nsole.log('validator [%s] [%s] [%s]',t && t.length, value, that.currentNumDoc);
-
-                    if(t && t.length && value !== that.currentNumDoc){ 
-                        invalid = true;
-                        txt = 'Documento existente: ' + t[0].displayName;
-                    }
-
-                    message['error'] = txt;
-                    return invalid ? { 'mailerror': txt }: null;
-
-                })
-             )
-        }) ;
-     }
-
 
 
   fechaNacimientoValidator(): ValidatorFn {
@@ -315,12 +290,69 @@ export class VigilanciaVinculosComponent implements OnInit {
    }
 
   private initForEdit(){
+    this.whiteList = this.currentNumDoc ? [this.currentNumDoc] : [];
+    this.blackList = [ this.person.ndoc ];
+    this.familyList.forEach(t => {
+      if(t.ndoc !== this.currentNumDoc){
+        this.blackList.push(t.ndoc);
+      }
+    })
     this.formClosed = false;
+
+    let syncValidators =
+                [
+                  Validators.required, 
+                  Validators.minLength(7),
+                  Validators.maxLength(10),
+                  Validators.pattern('[0-9]*')
+                ];
+    let asyncValidators = 
+                [ this.dniExistenteValidator(this.form, this.perSrv, this.docBelongsTo, this.whiteList, this.blackList) ];
+
+
+    let ndocControl = this.form.get('ndoc') as FormControl;
+    ndocControl.setValidators(syncValidators);
+    ndocControl.setAsyncValidators(asyncValidators);
+
+
     setTimeout(()=>{
        this.form.reset(this.vinculo);
  
     }, 100)
   }
+
+  private dniExistenteValidator(form:FormGroup, service: PersonService, message: object, whiteList?: Array<string>, blackList?: Array<string>): AsyncValidatorFn {
+        let hasWhiteList = whiteList && whiteList.length;
+        let hasBlackList = blackList && blackList.length;
+
+        return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+            let value = control.value;
+            let tdoc = form.controls['tdoc'].value || 'DNI';
+            message['error'] = '';
+
+            return service.testPersonByDNI(tdoc,value).pipe(
+                map(t => {
+
+                    if(hasBlackList && blackList.indexOf(value) !== -1){
+                      message['error'] = 'Documento pertenece a persona ya relacionada: ';
+                      return message;
+                    }
+
+                    if(hasWhiteList && whiteList.indexOf(value) !== -1){ 
+                      return null;
+                    }
+
+                    if(t && t.length){
+                      message['error'] = 'Ya existe: ' + t[0].displayName; 
+                      return message;
+                    }
+
+                    return null;
+                })
+             )
+        }) ;
+     }
+
 
 
   private closeDialogSuccess(){

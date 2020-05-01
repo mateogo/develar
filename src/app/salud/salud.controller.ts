@@ -873,7 +873,7 @@ export class SaludController {
   }
 
   /***************************/
-  /******* Person *******/
+  /******* PERSON *******/
   /***************************/
   /**
   * Crea una nueva persona
