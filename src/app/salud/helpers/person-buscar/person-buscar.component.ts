@@ -32,7 +32,7 @@ export class PersonBuscarComponent implements OnInit {
   public currentPerson: Person;
   public displayNameFld: string;
   public openEditor = true;
-
+  public tcompPersonaFisica = personModel.tipoDocumPF;
   //private searchTerms = new Subject<string>();
 
   constructor(
@@ -123,6 +123,10 @@ export class PersonBuscarComponent implements OnInit {
     })
   }
 
+  changeSelectionValue(type, val){
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+  }
+ 
 
 
 }/// End Person Buscar COmponent

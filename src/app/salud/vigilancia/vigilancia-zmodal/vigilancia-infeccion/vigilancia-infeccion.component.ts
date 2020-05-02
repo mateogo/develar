@@ -27,6 +27,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
   public asistencia: Asistencia;
 
   public infection: InfectionFollowUp;
+  public displayAs = '';
 
   public avanceOptList = AsistenciaHelper.getOptionlist('avanceInfection')
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
@@ -111,6 +112,8 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+  
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.infection.isInternado = this.infection.isInternado || false;
     this.infection.locacionSlug = this.infection.locacionSlug || '';
 

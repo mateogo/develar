@@ -1,4 +1,5 @@
 <div class='view-port'>
+<p class="text-resaltado" >{{ displayAs }}</p>
 <ng-container *ngIf="showAfectadoFollowUp">
     <p class='text-resaltado'>SEGUIMIENTO {{ tokenData.tipo }} -  <strong>{{ tokenData.vector }}</strong>  -
                             (Últ contacto: {{ tokenData.token.fe_ucontacto }}) </p>
@@ -6,9 +7,6 @@
     <p class='text-normal'> Inicio: {{ tokenData.token.fe_inicio }} 
     												Contactos: {{ tokenData.token.qcontactos }} / {{ tokenData.token.qllamados }} 
     												Última: {{ tokenData.lastCall }} #{{ tokenData.token.qIntents }} </p>
-
-
-
 </ng-container>
 
 

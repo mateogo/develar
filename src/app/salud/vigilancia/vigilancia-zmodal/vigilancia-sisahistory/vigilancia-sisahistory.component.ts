@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { devutils }from '../../../../develar-commons/utils';
@@ -23,8 +22,6 @@ const SISA_VIEW = 'sisa:view';
 })
 export class VigilanciaSisahistoryComponent implements OnInit {
 
-  form: FormGroup;
-
   public asistencia: Asistencia;
   public sisaEvent: SisaEvolucion;
 
@@ -35,11 +32,11 @@ export class VigilanciaSisahistoryComponent implements OnInit {
   public sisaData: SisaData;
   public sisaHistoryList: SisaEvolucion[] = [];
 
+  public displayAs = '';
+
   constructor(
         public dialogRef: MatDialogRef<VigilanciaSisahistoryComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        private ctrl: SaludController,
-        private fb : FormBuilder) {
+        @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {
@@ -56,20 +53,9 @@ export class VigilanciaSisahistoryComponent implements OnInit {
 
   }
 
-  onSubmit(){
-    this.result.action = UPDATE;
-  }
-
-  onCancel(){
-    this.result.action = CANCEL;
-		this.dialogRef.close();
-  }
-
-  changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
-  }
-
   private buildSisaData(token: Asistencia){
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') : '';
+
     if(!token.sisaevent){
       this.showSisaData = false;
       return;

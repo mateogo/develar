@@ -151,7 +151,7 @@ export class EmpresaCoreEditComponent implements OnInit {
       ambito:       [null],
 
       ndoc: [null, [Validators.required, 
-                    Validators.minLength(7),
+                    Validators.minLength(6),
                     Validators.maxLength(11),
                     Validators.pattern('[0-9]*')], 
                     [this.dniExistenteValidator(this, this.minimalCtrl, this.person, this.docBelongsTo)] ],

@@ -25,6 +25,7 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   public seguimientoEvent: AfectadoFollowUp;
 
   public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
+  public displayAs = '';
 
   private result: UpdateAsistenciaEvent;
   private isNewRecord = false;
@@ -94,6 +95,7 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   		this.seguimientoEvent = new AfectadoFollowUp();
   		this.isNewRecord = true;
   	}
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
 
   	this.result = {
 							  		action: UPDATE,

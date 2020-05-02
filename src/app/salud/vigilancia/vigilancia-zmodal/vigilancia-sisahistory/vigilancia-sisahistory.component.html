@@ -1,6 +1,7 @@
 <div class='view-port'>
+<p class="text-resaltado" >{{ displayAs }}</p>
+
 <ng-container *ngIf="showSisaData">
-    <hr>
     <p class='text-resaltado'>SISA -   <strong>{{ sisaData.avance }}</strong>  -
                             (Ref. SISA: {{ sisaData.sisaevent.sisaId }}) </p>
     <p class='text-normal'> Reportado: {{ sisaData.sisaevent.fe_reportado }} 

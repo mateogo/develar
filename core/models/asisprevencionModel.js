@@ -546,7 +546,28 @@ function buildQuery(query){
     if(query['qIntents']){
       q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
     }
+
+    if(query['qNotSeguimiento']){
+      let today = new Date();
+      let offset = parseInt(query['qNotSeguimiento'], 10);
+      let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
+      q["$or"] =[ {'$and': [{ 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}]  ;
+    }
+
+
   }
+
+  if(query['avanceCovid']){
+    q["infeccion.avance"] = query['avanceCovid'];
+
+  }
+
+  if(query['sintomaCovid']){
+    q["infeccion.sintoma"] = query['sintomaCovid'];
+
+  }
+
+
 
   if(query['isActiveSisa']){
     let today = new Date();
@@ -557,6 +578,8 @@ function buildQuery(query){
       q["sisaevent.avance"] = query['avanceSisa'];
 
     }
+
+
     if(query['qDaysSisa']){
       let offset = parseInt(query['qDaysSisa'], 10);
       let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
@@ -596,8 +619,6 @@ const Record = mongoose.model('Asisprevencion', asisprevencionSch, 'asisprevenci
 
 
 exports.findAsistenciaFromPerson = function(person){
-    console.log('asisprevencion: personid: [%s] [%s] ',person.id, person._id)
-
     let query = {
       requirenteId: person.id,
       isVigilado: true
@@ -607,9 +628,8 @@ exports.findAsistenciaFromPerson = function(person){
 }
 
 exports.updateAsistenciaFromPerson = function(asistencia){
-    console.log('asisprevencion UPDATE: [%s] [%s] ',asistencia.id, asistencia._id)
     Record.findByIdAndUpdate(asistencia.id, asistencia, { new: true }).then(token =>{
-      console.log('UPDATED!!! [%s]', token && token.ndoc);
+      //c onsole.log('UPDATED!!! [%s]', token && token.ndoc);
     })
 }
 
@@ -654,6 +674,7 @@ exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
     // c onsole.log('find ASISPREVENCION ************')
     console.dir(regexQuery);
+    //c onsole.dir(regexQuery['$and'][0]['followUp.fets_ucontacto'])
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {

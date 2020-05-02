@@ -314,12 +314,12 @@ export class InfectionFollowUp {
 
 
 const estadoActualAfectadoOptList = [
-	{ val: 0, label: 'Sospecha'},
+	{ val: 0, label: 'SOSPECHA'},
 	{ val: 1, label: 'COVID'},
-	{ val: 2, label: 'Descartado'},
-	{ val: 4, label: 'Fallecido'},
-	{ val: 5, label: 'Alta'},
-	{ val: 6, label: 'Posible'},
+	{ val: 2, label: 'DESCARTADO'},
+	{ val: 4, label: 'FALLECIDO'},
+	{ val: 5, label: 'DE ALTA'},
+	{ val: 6, label: 'POSIBLE'},
 ];
 
 const tipoLocacionOptList = [
@@ -647,8 +647,13 @@ export class VigilanciaBrowse {
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
 		qIntents: number = 0;
+		qNotSeguimiento: number = 0;
 
 		casosIndice: number = 0;
+
+		avanceCovid: string = '';
+
+		sintomaCovid: string = '';
 }
 
 export interface AsistenciaSig {

@@ -30,6 +30,8 @@ export class VigilanciaSisafwupComponent implements OnInit {
   public avanceOptList = AsistenciaHelper.getOptionlist('avanceSisa')
 
   private result: UpdateAsistenciaEvent;
+  public displayAs = '';
+
 
   constructor(
         public dialogRef: MatDialogRef<VigilanciaSisafwupComponent>,
@@ -123,6 +125,7 @@ export class VigilanciaSisafwupComponent implements OnInit {
 
 
   private initForEdit(){
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') : '';
     this.formClosed = false;
     this.form = this.fb.group(this.sisaEvent);
   }

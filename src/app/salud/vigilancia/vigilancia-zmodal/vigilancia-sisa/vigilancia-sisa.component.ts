@@ -105,8 +105,7 @@ export class VigilanciaSisaComponent implements OnInit {
   }
 
   private initForEdit(){
-    let requerido = this.asistencia && this.asistencia.requeridox;
-    this.displayAs = requerido ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') : '';
     this.formClosed = false;
     this.form = this.fb.group(this.sisaEvent);
   }

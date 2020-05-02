@@ -97,7 +97,7 @@ export class RegistroAltapfComponent implements OnInit {
       this.personForm = this.fb.group({
           tdoc: this.fb.control({value: this.model.tdoc}),
           ndoc: [null, [Validators.required, 
-                        Validators.minLength(7),
+                        Validators.minLength(6),
                         Validators.maxLength(11),
                         Validators.pattern('[0-9]*')]  ], 
                         //[this.dniExistenteValidator(this, this.minimalCtrl, this.docBelongsTo)] ],

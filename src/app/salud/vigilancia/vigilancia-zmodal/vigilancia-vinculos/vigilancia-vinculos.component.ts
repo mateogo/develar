@@ -182,6 +182,11 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   private updateSeguimientoBajoCasoIndice(){
+    if(this.isNewVinculo){
+        this.ctrl.openSnackBar('Debe confirmar el alta del vínculo primero. No se puede actualizar', 'ATENCIÓN');
+        return
+    }
+
     if(!this.asistencia){
         this.ctrl.openSnackBar('No se estableció el caso índice. No se puede actualizar', 'ATENCIÓN');
         return
@@ -252,10 +257,10 @@ export class VigilanciaVinculosComponent implements OnInit {
 
     this.form = this.fb.group({
       nombre:       [null, Validators.compose( [Validators.required])],
-      apellido:     [null, Validators.compose( [Validators.required])],
+      apellido:     [null],
       tdoc:         [null, Validators.compose( [Validators.required])],
 
-      ndoc: [null],
+      ndoc:         [null],
 
     	telefono:     [null],
       vinculo:      [null],
@@ -289,6 +294,14 @@ export class VigilanciaVinculosComponent implements OnInit {
        return edad;
    }
 
+  documProvisorio(){
+      this.ctrl.fetchSerialDocumProvisorio().subscribe(serial =>{
+        let prox =  serial.pnumero + serial.offset;
+        this.form.get('tdoc').setValue('PROV');
+        this.form.get('ndoc').setValue(prox);
+      });
+  }
+
   private initForEdit(){
     this.whiteList = this.currentNumDoc ? [this.currentNumDoc] : [];
     this.blackList = [ this.person.ndoc ];
@@ -302,7 +315,7 @@ export class VigilanciaVinculosComponent implements OnInit {
     let syncValidators =
                 [
                   Validators.required, 
-                  Validators.minLength(7),
+                  Validators.minLength(6),
                   Validators.maxLength(10),
                   Validators.pattern('[0-9]*')
                 ];
@@ -330,7 +343,7 @@ export class VigilanciaVinculosComponent implements OnInit {
             let tdoc = form.controls['tdoc'].value || 'DNI';
             message['error'] = '';
 
-            return service.testPersonByDNI(tdoc,value).pipe(
+            return service.testPersonByDNI(tdoc, value).pipe(
                 map(t => {
 
                     if(hasBlackList && blackList.indexOf(value) !== -1){

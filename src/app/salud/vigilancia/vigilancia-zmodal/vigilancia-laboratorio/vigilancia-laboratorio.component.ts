@@ -20,7 +20,6 @@ const LABORATORIO_ESTADO = 'laboratorio:estado';
   styleUrls: ['./vigilancia-laboratorio.component.scss']
 })
 export class VigilanciaLaboratorioComponent implements OnInit {
-
   public form: FormGroup;
   public formClosed = false;
 
@@ -35,6 +34,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   public resultadoOptList = AsistenciaHelper.getOptionlist('resultadoMuestraLab');
   public secuenciaOptList = AsistenciaHelper.getOptionlist('sequenceMuestraLab');
 
+  public displayAs = '';
 
   private result: UpdateAsistenciaEvent;
 
@@ -135,6 +135,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.muestralab.secuencia = this.muestralab.secuencia || '1ER LAB'
     this.form = this.fb.group(this.muestralab);
   }

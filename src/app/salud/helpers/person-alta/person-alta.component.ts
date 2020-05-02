@@ -98,7 +98,7 @@ export class PersonAltaComponent implements OnInit {
             displayName: [null],
             tdoc: [null],
             ndoc: [null, [Validators.required, 
-                          Validators.minLength(7),
+                          Validators.minLength(6),
                           Validators.maxLength(10),
                           Validators.pattern('[0-9]*')], 
                           [this.dniExistenteValidator(this, this.dsCtrl, this.docBelongsTo)] ],

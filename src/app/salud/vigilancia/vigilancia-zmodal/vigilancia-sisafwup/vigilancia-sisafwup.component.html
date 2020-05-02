@@ -8,13 +8,17 @@
 					[formControl]="form.controls['isActive']" >
 					Caso reportado en estado activo en SISA </mat-checkbox>
 		</div>
+		<div  class="col">
+			<p class="text-resaltado" >{{ displayAs }}</p>
+		</div>
 	</div>
+
 	<div class="row">
-	    <div  class="col">
-	        <mat-form-field>
-	          <input  matInput [formControl]="form.controls['fe_consulta']" placeholder="Fecha de consulta" >
-	        </mat-form-field>
-	    </div>
+		<div  class="col">
+		      <mat-form-field>
+		        <input  matInput [formControl]="form.controls['fe_consulta']" placeholder="Fecha de consulta" >
+		      </mat-form-field>
+		  </div>
 		<div class="col" style="text-align: center;">
 			<mat-form-field>
 				<mat-label>Nuevo estado del caso</mat-label>

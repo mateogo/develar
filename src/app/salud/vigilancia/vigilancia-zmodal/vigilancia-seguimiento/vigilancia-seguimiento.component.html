@@ -1,11 +1,15 @@
 <div class="container-fluid p-0">
 	<form [formGroup]="form">
+		
 	<div class="row">
-	    <div  class="col">
+	  <div  class="col">
 				<mat-checkbox 
 					[checked]="form.controls['isActive'].value===true"
 					[formControl]="form.controls['isActive']" >
 					Caso de seguimiento activo vigente </mat-checkbox>
+		</div>
+		<div  class="col">
+				<p class="text-resaltado" >{{ displayAs }}</p>
 		</div>
 	</div>
 

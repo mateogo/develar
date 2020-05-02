@@ -149,7 +149,7 @@ export class FamilyDataEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{
@@ -161,7 +161,7 @@ export class FamilyDataEditComponent implements OnInit {
       tdoc:         [null, Validators.compose( [Validators.required])],
 
       ndoc: [null, [Validators.required, 
-                    Validators.minLength(7),
+                    Validators.minLength(6),
                     Validators.maxLength(10),
                     Validators.pattern('[0-9]*')], 
                     [this.dniExistenteValidator(this, this.dsCtrl, this.docBelongsTo)] ],

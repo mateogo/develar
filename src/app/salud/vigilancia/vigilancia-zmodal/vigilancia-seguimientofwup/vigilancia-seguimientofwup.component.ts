@@ -34,6 +34,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   public vectorSeguimientoOptList = AsistenciaHelper.getOptionlist('vectorSeguim')
   public resultadoSeguimOptList = AsistenciaHelper.getOptionlist('resultadoSeguim')
 
+  public displayAs = '';
+
   private result: UpdateAsistenciaEvent;
   private isNewRecord = false;
 
@@ -132,6 +134,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   	this.seguimientoEvent = new AfectadoUpdate();
   	this.seguimientoEvent.isActive = this.afectadoFollowUp.isActive;
   	this.seguimientoEvent.tipo = this.afectadoFollowUp.tipo;
+
+    this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
 
 		this.isNewRecord = true;
 

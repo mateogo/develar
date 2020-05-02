@@ -244,7 +244,7 @@ export class AltarapidaPageComponent implements OnInit {
         this.handleSolicitudInternacion()
 
       }else {
-        //console.log('fallo la creación de solicitud')
+        //c onsole.log('fallo la creación de solicitud')
       }
     })
 

@@ -403,7 +403,7 @@ export class TsocialPageComponent implements OnInit {
 
   // updateContactData(event:UpdateContactEvent){
   //   if(event.action === UPDATE){
-  //     console.log('tsocial: READY to UpdateContactData')
+  //     c onsole.log('tsocial: READY to UpdateContactData')
   //     this.updateContactToken(event);
   //   }
   // }

@@ -1,13 +1,16 @@
 <div class="container-fluid view-port">
-	<form [formGroup]="form">
-	<div class="row">
-	    <div  class="col">
+  <form [formGroup]="form">
+  <div class="row">
+    <div  class="col-md-4">
 				<mat-checkbox 
 					[checked]="form.controls['isActive'].value===true"
 					[formControl]="form.controls['isActive']" >
 					Afectado/a por COVID </mat-checkbox>
-		</div>
-	</div>
+    </div>
+    <div  class="col-md-8">
+        <p class="text-resaltado" >{{ displayAs }}</p>
+    </div>
+  </div>
 	<div class="row">
 	    <div  class="col">
 				<mat-checkbox 

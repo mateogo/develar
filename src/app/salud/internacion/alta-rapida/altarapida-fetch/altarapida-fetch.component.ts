@@ -97,7 +97,7 @@ export class AltarapidaFetchComponent implements OnInit {
     		this.personFound = true;
 
     	}else{
-        //console.log('ERROR: updating Person')
+        //c onsole.log('ERROR: updating Person')
       	//todo: error
     	}
     })
@@ -112,7 +112,7 @@ export class AltarapidaFetchComponent implements OnInit {
     		this.personFound = true;
 
     	}else {
-        //console.log('ERROR: updating Person')
+        //c onsole.log('ERROR: updating Person')
     		//todo: error
     	}
     })
