@@ -14,55 +14,41 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./controles.component.scss']
 })
 export class ControlesComponent implements OnInit {
+  @Output() checkBoxEmit : EventEmitter<any>;
   @Output() radioSelectedOption: EventEmitter<any>;
   @Output() currentProyeccionDateEmit : EventEmitter<any>;
-  @Output() checkBoxEmit : EventEmitter<any>;
 
   radioDefault = 0;
-  groupservices = [
-    {
-      value : 0,
-      descripcion : 'Cuidados intensivos'
-    },
-    {
-      value : 1,
-      descripcion : 'Cuidados intermedios'
-    },
-    {
-      value : 2,
-      descripcion : 'Guardias y otros'
-    }
-  ];
+  groupservices = [];
+
   radioOptions = [
-    {
-      value: 0,
-      descripcion: 'Todo'
-    },
-    {
-      value: 1,
-      descripcion: 'Pacientes'
-    },
-    {
-      value: 2,
-      descripcion: 'Camas'
-    },
+    { value: 0,  descripcion: 'Todo'       },
+    { value: 1,  descripcion: 'Ocupación'  },
+    { value: 2,  descripcion: 'Disponible' },
   ];
 
-  currentProyeccion;
-  currentProyeccionDate;
-  checkSelected : Array<any> = []
-  slider;
-  selection = new SelectionModel<any>(true, []);
+  public proyeccionOffset = 0;
+  public proyeccionDate;
+  public checkSelected : Array<any> = []
+  public slider;
+  private selection: SelectionModel<any>;
 
   constructor(public dialog: MatDialog) {
     this.radioSelectedOption = new EventEmitter<any>();
     this.currentProyeccionDateEmit = new EventEmitter<any>();
     this.checkBoxEmit = new EventEmitter<any>();
+    
   }
 
   ngOnInit(): void {
     this.initSlider();
     this.groupservices = InternacionHelper.getOptionlist('capacidades')
+    this.selection = new SelectionModel<any>(true, this.groupservices);
+    // this.selection.clear();
+    // this.groupservices.forEach(t=>{
+    //   this.selection.select(t);
+    // })
+
   }
 
   initSlider(){
@@ -72,23 +58,23 @@ export class ControlesComponent implements OnInit {
       step: 1
     };
     
-    this.currentProyeccion = 0;
+    this.proyeccionOffset = 0;
 
     let hoy = new Date();
-    this.currentProyeccionDate = hoy;
+    this.proyeccionDate = hoy;
   }
 
   sliderChanged(e){
-    this.currentProyeccion = e.value;
+    this.proyeccionOffset = e.value;
 
     let hoy = new Date();
     let nuevaFechaProyeccion = new Date(hoy);
     nuevaFechaProyeccion.setDate(
-      nuevaFechaProyeccion.getDate() + this.currentProyeccion
+      nuevaFechaProyeccion.getDate() + this.proyeccionOffset
     );
 
-    this.currentProyeccionDate = nuevaFechaProyeccion;
-    this.currentProyeccionDateEmit.emit(this.currentProyeccionDate)
+    this.proyeccionDate = nuevaFechaProyeccion;
+    this.currentProyeccionDateEmit.emit(this.proyeccionDate)
   }
 
   radioChanged(e){
@@ -97,8 +83,7 @@ export class ControlesComponent implements OnInit {
 
   selectedCheckBox(e){
     this.selection.toggle(e);
-    this.checkBoxEmit.emit(this.selection.selected);
-    
+    this.checkBoxEmit.emit(this.selection.selected);    
   }
 
   altaRapidaPaciente(){

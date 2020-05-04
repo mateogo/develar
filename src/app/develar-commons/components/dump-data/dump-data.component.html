@@ -1,0 +1,6 @@
+<ng-container *ngIf="showTests">
+	<div class='dump-tests'>
+  	<p>{{ title }}</p>
+  	<pre class="dump-tests">{{ data$| async | json }}</pre>
+	</div>
+</ng-container>

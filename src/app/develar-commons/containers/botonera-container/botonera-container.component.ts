@@ -9,13 +9,12 @@ import { BotonContador } from '../../base.model';
 export class BotoneraContainerComponent implements OnInit {
 
   //@Input() botones: BotonContador[];
-  @Input() botones;
+  @Input() botones: BotonContador[];
   @Output() onButtonClick = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
-    console.dir(this.botones)
   }
 
   onClick(idBoton){

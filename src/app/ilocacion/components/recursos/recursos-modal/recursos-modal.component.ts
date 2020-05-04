@@ -43,10 +43,9 @@ export class RecursosModalComponent implements OnInit {
 
   ngOnInit(): void {
     let master = this.data && this.data.masterperiferia;
-    let admision = master[ADMISION] || [];
-    let traslado = master[TRASLADO] || [];
+    this.asignarList = this.data.sinternaciones || [] ;
+    if(! (this.asignarList && this.asignarList.length) ) this.buildSolicitudesList(master);
 
-    this.asignarList = admision.concat(traslado)
     this.recursosList = (this.data && this.data.recursos )|| [];
     this.servicio = this.data.servicio;
 
@@ -54,6 +53,13 @@ export class RecursosModalComponent implements OnInit {
 
 
 
+  }
+
+  buildSolicitudesList(master){
+    let admision = master[ADMISION] || [];
+    let traslado = master[TRASLADO] || [];
+
+    this.asignarList = admision.concat(traslado) || [];
   }
 
   initForEdit(){

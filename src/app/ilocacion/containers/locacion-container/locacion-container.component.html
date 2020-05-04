@@ -4,9 +4,13 @@
         <mat-card-title>
             {{ title }} {{ locacionCode }}: {{ locacionName }}
         </mat-card-title>
+                  
 
-        <mat-card-subtitle>
-            {{ capacidadTitle }} : {{ capacidadToPrint }}
+        <mat-card-subtitle class="d-md-flex justify-content-between align-items-center">
+            <span>{{ capacidadTitle }} : {{ capacidadToPrint }}</span>
+             <a role="button" (click)="navigateTo($event)" 
+                  title="Navegar al Centro de Coordinación de locaciones de Internación">
+                  <span><mat-icon>open_in_new</mat-icon></span></a>
         </mat-card-subtitle>
     </mat-card-header>
 
@@ -21,7 +25,10 @@
         (onButtonClick)="onAfectadosPeriferiaEvent($event)" >
     </app-botonera-container>
 
-    <ng-container *ngFor="let servicio of serviciosOfrecidos">    
+    <ng-container *ngFor="let servicio of serviciosOfrecidos">
+      <ng-container *ngIf="verifyServicio(servicio)">
+
+
     <!--div class="row" *ngFor="let servicio of serviciosOfrecidos">
         <div class="col-md-12"-->
             <mat-expansion-panel [expanded]="true">
@@ -36,7 +43,7 @@
                                         master_internacion[servicio.srvtype].length) || 0'
                             [recursos]='master_camas[servicio.srvtype]'
                             [servicio]='servicio.srvtype'
-                            [sinternaciones]="master_periferia"
+                            [masterperiferia]="master_periferia"
                             (asignarRecursosEvent)='asignarRecursos($event)'></app-recursos>
                     </mat-panel-title>                        
                 </mat-expansion-panel-header>
@@ -64,6 +71,7 @@
             </mat-expansion-panel>
         <!--/div>
     </div -->
+      </ng-container>
     </ng-container>
     </mat-card-content>
 </mat-card>

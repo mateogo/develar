@@ -1,0 +1,47 @@
+mat-card {
+    background-color: #15E;
+    //background-color: #626;
+    color: white;
+    width: 180px;
+    height: 140px;
+}
+
+mat-card:hover {
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+mat-icon{
+    user-select: none;
+    float: right;
+}
+
+.card-title {
+        font-weight: 400;
+        font-size: 1rem;
+        font-style: italic;
+}
+
+.text-normal{
+    font-weight: 400;
+    font-size: .8rem;
+}
+
+.text-destacado {
+    margin: 0 0 0 0;
+    font-weight: 400;
+    font-size: 2rem;
+    font-style: italic;
+
+}

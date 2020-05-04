@@ -140,39 +140,43 @@ solinternacionSch.pre('save', function (next) {
     return next();
 });
 
+// internacionHelper: serviciosOptList
 const capacidades = [
-    {val: 'UTI',           target: 'intensivos',    ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           target: 'intensivos',    ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           target: 'intensivos',    ord: '1.3', label: 'UCO'          },
-    {val: 'INTPREV',       target: 'intermedios',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'INTGRAL',       target: 'intermedios',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'INTERNACION',   target: 'intermedios',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    target: 'pediatrica',    ord: '3.1', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   target: 'aislamiento',   ord: '2.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     target: 'ambulatorios',  ord: '3.1', label: 'CONS-EXT'     },
-    {val: 'CONSULEXT',     target: 'ambulatorios',  ord: '3.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       target: 'ambulatorios',  ord: '3.2', label: 'GUARDIA'      },
+    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'NEONATOLOGIA',   target: 'neonatologia',         ord: '2.3', label: 'INT-NEO'       },
+    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
+    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
+    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
+    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
 
-const serviciosOptList = [
-    {val: 'UTI',           target: 'intensivos',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           target: 'intensivos',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           target: 'intensivos',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    target: 'pediatrica',           ord: '3.1', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
-];
 
+// internacionHelper: capacidadesOptList
 const capacidadesOptList = [
     {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'     },
     {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'    },
     {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'     },
+    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA'  },
     {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO'  },
     {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'    },
 ];
 
+const estadosPeriferiaOptList = [ 
+    {val: 'transito',     ord: '1.1', label: 'Tránsito'    },
+    {val: 'admision',     ord: '1.2', label: 'Admisión'    },
+    {val: 'traslado',     ord: '1.3', label: 'Traslado'    },
+    {val: 'externacion',  ord: '1.4', label: 'Externación' },
+    {val: 'salida',       ord: '1.5', label: 'Salida'      },
+];
 
 function buildQuery(query){
 
@@ -199,6 +203,18 @@ function buildQuery(query){
       q["internacion.locId"] = query['locationId'];
   }
 
+  // busco solicitudes en el pool
+  if(query['queue']){
+      q["queue"] = query['queue'];
+  }
+
+  if(query['triageservicio']){
+      q["triage.servicio"] = query['triageservicio'];
+  }
+
+  if(query['triagetarget']){
+      q["triage.target"] = query['triagetarget'];
+  }
 
   return q;
 }
@@ -247,6 +263,8 @@ exports.findAll = function (rtype, errcb, cb) {
 exports.findByQuery = function (rtype, query, errcb, cb) {
     let Record = RecordManager[rtype];
     let regexQuery = buildQuery(query)
+
+    console.dir(regexQuery);
 
     Record.find(regexQuery)
           .limit(100)
@@ -499,8 +517,6 @@ function disponibleInternacion(spec, errcb, cb){
 function addAcumulators(list){
   let nominalList;
 
-
-
   nominalList = list.map(t => {
     capacidad = sumcapacity(t.servicios);
 
@@ -511,8 +527,24 @@ function addAcumulators(list){
         ocupado: 0
       }
     })
-
     t.disponible = disponible;
+
+    let periferia = {};
+    estadosPeriferiaOptList.forEach(token => {
+      let acumPeriferia = capacidadesOptList.map(t => {
+        
+        let capacidad = {}
+        capacidad['type'] = t.val;
+        capacidad['code'] = t.label;
+        capacidad['ocupado'] = 0;
+        
+        return capacidad;
+      })
+
+      periferia[token.val] = acumPeriferia;
+    })
+    t.periferia = periferia;
+
     return t;
 
   })
@@ -545,6 +577,15 @@ function consolidarOcupacion(nominalList, errcb, cb){
 }
 
 
+
+const queueOptList = [
+    {val: 'pool',       ord: '1.1', label: 'pool'     },
+    {val: 'transito',   ord: '1.2', label: 'transito' },
+    {val: 'alocado',    ord: '1.3', label: 'alocado'  },
+    //{val: 'traslado', ord: '1.1', label: 'traslado' },
+    {val: 'baja',       ord: '1.4', label: 'baja'     },
+]
+
 function contabilizarOcupacionGeneral(solicitudes, list){
   let master = {};
 
@@ -557,7 +598,12 @@ function contabilizarOcupacionGeneral(solicitudes, list){
 
 
     }else if(solicitud.queue === 'alocado') {
-      sumarAlocado(solicitud, list , master)
+      let internacion = solicitud.internacion;
+      if(internacion && internacion.estado === 'servicio'){
+        sumarAlocado(solicitud, list , master)
+      }else {
+        sumarAlocadoPeriferia(solicitud, list, master);
+      }
 
     }
   })
@@ -586,9 +632,25 @@ function sumarTransito(solicitud, list, master){
     }else {
       token = master[internacion.locId];
     }
+    console.log('READY to sumar Transito: [%s] [%s]', internacion.estado, solicitud.compNum)
 
-    acumOcupacion('TRANSITO', token)
+    acumPeriferia(internacion.estado, solicitud, token)
     acumCapacidad(solicitud.triage.servicio, token)
+  }
+}
+
+function sumarAlocadoPeriferia(solicitud, list, master){
+  let internacion = solicitud.internacion;
+  if(internacion){
+    if(!master[internacion.locId]){
+      token = fetchLocacionFromList(internacion.locId, list, master)
+
+    }else {
+      token = master[internacion.locId];
+    }
+ 
+    acumPeriferia(internacion.estado, solicitud, token)
+    acumCapacidad(internacion.servicio, token)
   }
 }
 
@@ -608,6 +670,24 @@ function sumarAlocado(solicitud, list, master){
   }
 }
 
+function acumPeriferia(key, solicitud,  token){
+  let servicio = (solicitud.internacion && solicitud.internacion.servicio) || (solicitud.triage && solicitud.triage.servicio);
+  let tipo = capacidades.find(t => t.val === servicio);
+  let target = (tipo && tipo.target) || 'intermedios'
+  console.log('acumPeriferia: key[%s] servicio[%s]  target[%s] ', key, servicio, target)
+  console.dir(token.periferia)
+
+  let periferia = token.periferia[key];
+
+
+  let periferia_target = periferia.find(t => t['type'] === target)
+  if(periferia_target){
+    periferia_target['ocupado'] += 1;
+  } else {
+    console.log('Error acum Periferia: [%s]', target);
+  }
+
+}
 
 function acumOcupacion(key, token){
   let item = token.servicios.find(t => t.type === key)

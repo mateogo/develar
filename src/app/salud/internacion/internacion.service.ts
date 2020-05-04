@@ -27,11 +27,18 @@ import { LocacionService } from '../../entities/locaciones/locacion.service';
 
 import { LocacionHospitalaria, Servicio, Recurso, LocacionEvent} from '../../entities/locaciones/locacion.model';
 
-import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion,
+import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, MotivoInternacion, LocacionAvailable,
 					Internacion, SolInternacionBrowse, InternacionSpec, SolInternacionTable,
 					MasterAllocation } from './internacion.model';
 
 import { InternacionHelper } from './internacion.helper';
+
+import { CentroOperacionesState } from '../../icoordinacion/state/centro-operaciones.state';
+import { SolicitudesApi } from '../../icoordinacion/api/solicitudes.api';
+import { LocacionesApi } from '../../icoordinacion/api/locaciones.api';
+import { BotonesApi } from '../../icoordinacion/api/botones.api';
+import { BotonContador } from '../../develar-commons/base.model';
+
 
 const RECORD = 'internacion'
 
@@ -60,6 +67,7 @@ export class InternacionService {
 		private locSrv: LocacionService,
 		private userSrv: UserService,
     private snackBar:    MatSnackBar,
+
 		) {
 
 	}
@@ -280,6 +288,55 @@ export class InternacionService {
 
   }
 
+
+/**
+  locId:         string;
+  locSlug:       string = 'HLM';
+  locCode:       string = 'HLM';
+
+  slug:          string = '';
+  description:   string = '';
+
+  transitoId:    string;
+
+  estado:     string = 'programado' // programado|transito|admision|alocado|traslado|externacion|salida|baja
+  servicio:   string;
+  sector:     string;  // sector / area / sala
+  piso:       string; // piso o nivel
+  hab:        string; // sala o hab
+  camaCode:   string; // code de la cama
+  camaSlug:   string; // denominación de la cama en el HOSP
+  recursoId:  string;
+***/
+
+  // transición de pool a tránsito
+  asignarLocacion(solinternacion: SolicitudInternacion, locacion: LocacionAvailable ): Subject<SolicitudInternacion>{
+    let internacion = solinternacion.internacion || new Internacion()
+    let triage =  solinternacion.triage;
+    let transition = 'pool:transito'
+    if(!triage) return null;
+
+    internacion.locId =    locacion.id;
+    internacion.locSlug =  locacion.slug;
+    internacion.locCode =  locacion.code;
+
+    internacion.slug =     triage.slug || 'Asignado desde centro de coordinación';
+    internacion.servicio = triage.servicio;
+
+    internacion.sector =    internacion.sector || '' ;
+    internacion.piso =      internacion.piso || '' ;
+    internacion.hab =       internacion.hab || '' ;
+    internacion.camaCode =  internacion.camaCode || '' ;
+    internacion.camaSlug =  internacion.slug || '' ;
+    internacion.recursoId = internacion.recursoId || '' ;
+
+    internacion.description = 'Asignado desde Centro de Operación'
+
+
+    return this.manageInternacionTransition(solinternacion, internacion, transition)
+  }
+
+
   asignarRecurso(solinternacion: SolicitudInternacion, locacion: LocacionHospitalaria, servicio: string, recurso: Recurso ): Subject<SolicitudInternacion>{
     let internacion = solinternacion.internacion;
     let transition = 'admision:servicio';
@@ -317,6 +374,24 @@ export class InternacionService {
 
 		return this.daoService.search<SolicitudInternacion>(RECORD, query)
   }
+
+  fetchInternacionesInPool(target?: string, servicio?: string): Observable<SolicitudInternacion[]>{
+    let query = {
+      queue: 'pool'
+    }
+    if(servicio){
+      query['triageservicio'] = servicio
+
+    }
+    if(target){
+      query['triagetarget'] = target
+
+    }
+
+    return this.daoService.search<SolicitudInternacion>(RECORD, query)
+  }
+
+
 
   fetchInternacionesByLocationId(locId: string): Observable<SolicitudInternacion[]>{
     let query = {
@@ -617,6 +692,18 @@ export class InternacionService {
         t['id' ] = t.val;
         t['val'] = t.val;
         t['contador'] = master[t.val].length;
+        return t;
+    })
+
+    return botonesPeriferia;
+  }
+
+  getBotonesPool(master:MasterAllocation): Array<any> {
+    let disponible = master && master.disponible;
+    if(!disponible) return [];
+    let botonesPeriferia = InternacionHelper.getOptionlist('capacidades');
+    botonesPeriferia = botonesPeriferia.map(t => {
+        t['contador'] = disponible[t.val].ocupado;
         return t;
     })
 

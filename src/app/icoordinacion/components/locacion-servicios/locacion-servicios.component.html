@@ -1,0 +1,15 @@
+<div class="d-md-flex flex-row justify-content-start align-items-center flex-wrap m-1" >
+
+  <ng-container *ngFor='let servicio of serviciosList'>
+    <mat-card class="m-1" >
+      <mat-card-title class="card-title">{{servicio.code}}</mat-card-title>
+      <mat-card-content>
+        <p class="disponible"><span >Disponible: {{ servicio.disponible }}</span></p>
+        <p class="ocupacion"><span >
+                Ocupación: {{ servicio.ocupado }} /  {{ servicio.nominal }}</span>
+        </p>
+        </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+</div>

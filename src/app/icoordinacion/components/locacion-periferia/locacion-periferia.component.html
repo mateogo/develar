@@ -1,0 +1,22 @@
+<div class="d-md-flex flex-row justify-content-start align-items-center flex-wrap m-1" >
+
+  <ng-container *ngFor='let periferia of periferiaList'>
+    <mat-card (click)="onTransitoClick()" class="m-1">
+        <mat-card-title  class="card-title" >
+            {{ periferia.label }}
+            <span><mat-icon>open_in_new</mat-icon></span>
+        </mat-card-title>
+
+        <mat-card-content>
+          <ul>
+            <ng-container *ngFor="let servicio of periferia.servicios">
+              <li class="text-normal"  *ngIf='servicio.ocupado'>
+                 {{ servicio.code }}: {{ servicio.ocupado }}
+              </li>
+           </ng-container>
+          </ul>
+        </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+</div>

@@ -60,7 +60,9 @@
                 </div>
             </div>
 
-            <button mat-raised-button color="primary" (click)="onSubmit()">
+            <button mat-raised-button color="primary" 
+                    [disabled]="!form.valid" 
+                    (click)="onSubmit()">
                 Asignar
             </button>
             <button mat-raised-button color="warn"  (click)="onCancel()">

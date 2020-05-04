@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 
 import { LocacionContainerComponent } from       './containers/locacion-container/locacion-container.component';
 import { LocacionInternacionRoutingModule } from './locacion-routing.module';

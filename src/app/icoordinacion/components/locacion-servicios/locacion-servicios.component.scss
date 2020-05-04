@@ -1,0 +1,44 @@
+mat-card{
+    width: 180px;
+    height: 100px;
+    color: white;
+  	background-color: #2e3d50 ;
+}
+
+.card-title {
+        font-weight: 400;
+        font-size: 1.2rem;
+}
+
+.disponible {
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin: 0 0 0 15px;
+}
+
+.ocupacion {
+        font-weight: 400;
+        font-size: 1rem;
+        margin: 0 0 0 15px;
+}
+
+
+
+mat-card-subtitle{
+    color: white;
+}
+
+mat-card:hover {
+    cursor: default;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

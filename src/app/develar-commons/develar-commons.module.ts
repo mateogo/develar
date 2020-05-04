@@ -73,13 +73,14 @@ import { DaoService }           from './dao.service';
 import { TagService }           from './tag.service';
 import { PrismHighlightService }     from './highlighter.service';
 
+import { DumpDataComponent }                from './components/dump-data/dump-data.component';
 import { ControlesComponent }               from './components/controles/controles.component';
 import { MosaicoComponent }                 from './components/mosaico/mosaico.component';
 import { BotonContadorComponent }           from './components/boton-contador/boton-contador.component';
 import { BotoneraContainerComponent }       from './containers/botonera-container/botonera-container.component';
 import { AltaRapidaPacienteModalComponent } from './alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
 
-
+DumpDataComponent
 
 @NgModule({
   imports: [
@@ -151,6 +152,7 @@ import { AltaRapidaPacienteModalComponent } from './alta-rapida-paciente-modal/a
     ObservacionesViewComponent,
     BreadcrumbComponent,
     ControlesComponent,
+    DumpDataComponent,
     MosaicoComponent,
     BotonContadorComponent,
     BotoneraContainerComponent,
@@ -212,6 +214,7 @@ import { AltaRapidaPacienteModalComponent } from './alta-rapida-paciente-modal/a
     CommunitySelectorComponent,
     BreadcrumbComponent,
     ControlesComponent,
+    DumpDataComponent,
     MosaicoComponent,
     BotonContadorComponent,
     BotoneraContainerComponent,

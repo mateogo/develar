@@ -1,58 +1,69 @@
-<mat-card>
-    <mat-card-title>
-        Centro de operaciones
-    </mat-card-title>
 
-    <internacion-controles (radioSelectedOption)="controlesVer($event)"></internacion-controles>
-        <mat-card-content>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <internacion-controles  (radioSelectedOption) = "radioSelectedOptionEvent($event)" 
+                            (currentProyeccionDateEmit)="currentProyeccionDateEmit($event)"
+                            (checkBoxEmit)="checkBoxEmit($event)"></internacion-controles>
 
-        <!-- Solicitudes de internación -->
-        <app-botonera-container
-          [botones]="botonesServicios$ | async"
-          (onButtonClick)="onBotoneraClick($event)">
-        </app-botonera-container>
-        
-        <!-- Lista de locaciones -->
-        <div class="row" *ngFor="let locacion of locaciones$ | async">
-            
-            <mat-expansion-panel [expanded]="true">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="font-weight: 800;">
-                        {{ locacion.name }}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
+      <app-botonera-container
+        [botones]="botonesPool"
+        (onButtonClick)="selectPoolMembers($event)">
+      </app-botonera-container>
 
-                <!-- Mosaico: inyectar ítems -->
-                <app-mosaico>
-                    <!-- TRÁNSITO -->
-                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2">
-                        <app-transito
-                            (onClick)="onTransitoClick(locacion)"
-                            [label]="'Tránsito'"
-                            [servicios]="locacion.admisionServicios"
-                        ></app-transito>
-                    </div>
+      <ng-container *ngIf="showData">
+      <ng-container *ngFor="let locacion of masterList" >
+          
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title style="font-weight: 800;">
+              {{ locacion.code }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-                    <!-- CAPACIDAD -->
-                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2">
-                        <app-capacidad
-                            [capacidadEfectiva]="capacidadEfectiva$ | async"
-                            [capacidadReal]="capacidadReal$ | async">
-                        </app-capacidad>
-                    </div>
-                    
-                    <!-- SERVICIOS -->
-                    <div style="margin-bottom: 1%;" class="col-xs-12 col-md-6 col-lg-2" *ngFor="let servicio of locacion.servicios">
-                        <app-servicio
-                            [nombre]="servicio.nombre"
-                            [disponibilidadActual]="servicio.disponibilidadActual"
-                            [disponibilidadTotal]="servicio.disponibilidadTotal"
-                        >
-                        </app-servicio>
-                    </div>
-                </app-mosaico>
 
-            </mat-expansion-panel>
-        </div>
+          <!-- Mosaico: inyectar ítems -->
+            <!-- TRÁNSITO -->
+          <mat-card class="mat-card-expansion">
+            <mat-card-content>
+              <div class="d-md-flex justify-content-end align-items-center m-1">
+                <a role="button" (click)="navigateTo($event, locacion)" 
+                    title="Ver detalle del estado de ocupación de esta locación">
+                  <span class="navigation-control"><mat-icon>open_in_new</mat-icon></span></a>
+              </div>
+
+
+            <ng-container *ngIf='showEstadoDisponibilidad'>
+              <locacion-disponible
+                (onClick)="onTransitoClick(locacion)"
+                [disponible]="locacion.disponible"
+                [capacidades]="capacidadesOptList">
+              </locacion-disponible>
+            </ng-container>
+
+            <ng-container *ngIf="showEstadoOcupacion">
+              <locacion-periferia
+                (onClick)="onTransitoClick(locacion)"
+                [periferiaOptList]="periferiaOptList"
+                [periferiaData]="locacion['periferia']">
+              </locacion-periferia>
+
+              <locacion-servicios
+                  [servicios]="locacion.servicios">
+              </locacion-servicios>
+            </ng-container>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-expansion-panel>
+      </ng-container>
+
+      <dump-data  [title]="'MasterData'"
+                  [data$]='data$'
+                  [showTests]='true'></dump-data>
+      </ng-container>
     </mat-card-content>
-</mat-card>
+  </mat-card>

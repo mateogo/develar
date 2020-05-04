@@ -1,0 +1,15 @@
+<div class="d-md-flex flex-row justify-content-start align-items-center flex-wrap m-1" >
+  <ng-container *ngFor='let disponible of disponibleList'>
+
+  <mat-card class="m-1" >
+    <mat-card-title class="card-title">{{disponible.label}}</mat-card-title>
+    <mat-card-content>
+      <p class="disponible"><span >Disponible: {{ disponible.disponible }}</span></p>
+      <p class="ocupacion"><span >
+          Ocupación: {{ disponible.ocupado }} /  {{ disponible.capacidad }}</span>
+      </p>
+  </mat-card-content>
+  </mat-card>
+
+  </ng-container>
+</div>

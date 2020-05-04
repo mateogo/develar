@@ -327,7 +327,7 @@ const sectoresOptList = [
 
 const afeccionOptList: Array<any> = [
     {val: 'COVID',        ord: '1.1', label: 'COVID'      },
-    {val: 'CIRUJIA',      ord: '1.2', label: 'CIRUJÍA'    },
+    {val: 'CIRUGIA',      ord: '1.2', label: 'CIRUGÍA'    },
     {val: 'CLINICA',      ord: '1.2', label: 'CLÍNICA'    },
     {val: 'EMERGENCIA',   ord: '1.3', label: 'EMERGENCIA' },
     {val: 'OTRO',         ord: '1.4', label: 'OTRO'       },
@@ -339,49 +339,73 @@ const targetInternacionOptList: Array<any> = [
     {val: 'GUARDIA',       ord: '1.3', label: 'GUARDIA' },
 ];
 
-const areasOptList: Array<any> = [
-    {val: 'UTI',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   ord: '1.4', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    ord: '1.5', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   ord: '2.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     ord: '3.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       ord: '3.2', label: 'GUARDIA'      },
 
-    {val: 'TRANSITO',      ord: '4.1', label: 'TRANSITO'     },
-    {val: 'TRASLADO',      ord: '4.2', label: 'TRASLADO'     },
-    {val: 'ADMISION',      ord: '5.1', label: 'ADMISIÓN'     },
-    {val: 'EXTERNACION',   ord: '5.2', label: 'EXTERNACIÓN'  },
+const areasOptList: Array<any> = [
+    {val: 'UTI',           ord: '1.1', label: 'UTI'            },
+    {val: 'UTIP',          ord: '1.2', label: 'UTI PEDIÁTRICA' },
+    {val: 'UTIN',          ord: '1.3', label: 'UTI NEO'        },
+    {val: 'UTE',           ord: '1.4', label: 'UTE'            },
+    {val: 'UCO',           ord: '1.5', label: 'UCO'            },
+    {val: 'INTERNACION',   ord: '2.1', label: 'INT-GENERAL'    },
+    {val: 'PEDIATRIA',     ord: '2.2', label: 'INT-PEDIATRÍA'  },
+    {val: 'NEONATOLOGIA',  ord: '2.3', label: 'INT-NEO'        },
+    {val: 'MATERNIDAD',    ord: '2.4', label: 'INT-MATERNIDAD' },
+    {val: 'TRAUMATOLOGIA', ord: '2.6', label: 'INT-TRAUMATO'   },
+    {val: 'CIRUGIA',       ord: '2.7', label: 'INT-CIRUGÍA'    },
+
+    {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'    },
+
+    {val: 'CONSULEXT',     ord: '5.1', label: 'CONSULTORIO EXT'},
+    {val: 'GUARDIA',       ord: '5.2', label: 'GUARDIA'      },
+
+    {val: 'TRANSITO',      ord: '9.1', label: 'TRANSITO'     },
+    {val: 'TRASLADO',      ord: '9.2', label: 'TRASLADO'     },
+    {val: 'ADMISION',      ord: '9.3', label: 'ADMISIÓN'     },
+    {val: 'EXTERNACION',   ord: '9.4', label: 'EXTERNACIÓN'  },
 
 ];
 
 const serviciosOptList: Array<any> = [
-    {val: 'UTI',           target: 'intensivos',           ord: '1.1', label: 'UTI'          },
-    {val: 'UTE',           target: 'intensivos',           ord: '1.2', label: 'UTE'          },
-    {val: 'UCO',           target: 'intensivos',           ord: '1.3', label: 'UCO'          },
-    {val: 'INTERNACION',   target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'  },
-    {val: 'PEDIATRICA',    target: 'pediatrica',           ord: '3.1', label: 'INT-PEDIÁTRICA' },
-    {val: 'AISLAMIENTO',   target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',     target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',       target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
+    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'NEONATOLOGIA',   target: 'neonatologia',         ord: '2.3', label: 'INT-NEO'       },
+    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
+    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
+    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
+
+    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+
+    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
 
+
 const capacidadesOptList: Array<any> = [
-    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'     },
-    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'    },
-    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'     },
-    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO'  },
-    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'    },
+    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , slug: 'C.INTENSIVOS'  },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , slug: 'C.INTERMEDIOS' },
+    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , slug: 'PEDIATRÍA'     },
+    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', slug: 'NEONATOLOGÍA'  },
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', slug: 'AISLAMIENTO'   },
+    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , slug: 'AMBULATORIO'   },
 ];
 
 const especialidadesOptList: Array<any> = [
     {val: 'clinica',           ord: '1.1', label: 'CLÍNICA'     },
-    {val: 'cirujia',           ord: '1.2', label: 'CIRUJÍA'     },
+    {val: 'cirugia',           ord: '1.2', label: 'CIRUGÍA'     },
     {val: 'ginecoobs',         ord: '1.3', label: 'GINECO-OBST' },
-    {val: 'guardia',           ord: '1.4', label: 'GUARDIA'     },
+    {val: 'traumatologia',     ord: '1.5', label: 'TRAUMATOLOGÍA'    },
+    {val: 'maternidad',        ord: '1.4', label: 'MATERNIDAD'  },
+    {val: 'neonatologia',      ord: '2.1', label: 'NEONATOLOGÍA'},
     {val: 'pediatria',         ord: '2.1', label: 'PEDIATRÍA'   },
+    {val: 'guardia',           ord: '1.4', label: 'GUARDIA'     },
 ];
+
 
 // transitos
 // programado / enejecucion / cumplido / finalizado/ baja
@@ -413,7 +437,7 @@ const avanceSolicitudOptList: Array<any> = [
     {val: 'esperacama',        ord: '1.1', label: 'esperacama'     },
     {val: 'esperarespirador',  ord: '1.1', label: 'esperarespirador'     },
     {val: 'entratamiento',     ord: '1.1', label: 'entratamiento'     },
-    {val: 'encirujia',         ord: '1.1', label: 'encirujia'     },
+    {val: 'encirugia',         ord: '1.1', label: 'encirugia'     },
     {val: 'enrecuperación',    ord: '1.1', label: 'enrecuperación'     },
     {val: 'dealta',            ord: '1.1', label: 'dealta'     },
     {val: 'fallecido',         ord: '1.1', label: 'fallecido'     },
@@ -423,11 +447,12 @@ const avanceSolicitudOptList: Array<any> = [
 
 const queueOptList: Array<any> = [
     {val: 'pool',       ord: '1.1', label: 'pool'     },
-    {val: 'transito',   ord: '1.1', label: 'transito' },
-    {val: 'alocado',    ord: '1.1', label: 'alocado'  },
-    //{val: 'traslado',   ord: '1.1', label: 'traslado' },
-    {val: 'baja',       ord: '1.1', label: 'baja'     },
+    {val: 'transito',   ord: '1.2', label: 'transito' },
+    {val: 'alocado',    ord: '1.3', label: 'alocado'  },
+    //{val: 'traslado', ord: '1.1', label: 'traslado' },
+    {val: 'baja',       ord: '1.4', label: 'baja'     },
 ]
+
 
 
 //'pool:internacion', 'internacion:internacion', 'internacion:pool'
@@ -451,6 +476,9 @@ const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
 ];
 
+export const serviciosInternacion = serviciosOptList;
+export const especialidadesInternacion = especialidadesOptList;
+export const areasInternacion = areasOptList;
 
 const optionsLists = {
    default: default_option_list,

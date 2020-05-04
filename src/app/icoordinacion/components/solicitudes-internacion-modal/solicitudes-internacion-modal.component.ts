@@ -1,9 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+
+import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
+                    Internacion, SolInternacionBrowse, SolInternacionTable, InternacionSpec,
+                    MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 @Component({
   selector: 'app-solicitudes-internacion-modal',
@@ -12,43 +17,51 @@ import { startWith, map } from 'rxjs/operators';
 })
 export class SolicitudesInternacionModalComponent implements OnInit {
 
-  columnasMostradas = ['select', 'tDoc', 'nDoc', 'name', 'diagnostico'];
-  dataSource;
-  derivarDisabled = true;
-  derivarLabel = 'Derivar';
+  //table  
+  public columnasMostradas = ['select', 'tDoc', 'nDoc', 'name', 'diagnostico'];
 
-  formControlCentroSalud = new FormControl();
+  public dataSource: SolicitudInternacion[]; 
+  public locaciones: LocacionAvailable[] = [];
 
-  opciones = ['Hospital 1', 'Hospital 2', 'Club A', 'Club B'];
-  opcionesFiltradas: Observable<string[]>;
+  public derivarDisabled = true;
+  public derivarLabel = 'Asignar';
 
-  derivacionForm: FormGroup;
+  //formulario
+  public form: FormGroup;
+  public locacionesFCtrl = new FormControl();
+  public opcionesFiltradas: Observable<LocacionAvailable[]>;
+  public selection = new SelectionModel<any>(true, []);
+
+
+
+
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
-  ) {
+            public dialogRef: MatDialogRef<SolicitudesInternacionModalComponent>,
+            @Inject(MAT_DIALOG_DATA) public data: any,
+            private fb: FormBuilder,
+            ) {
     this.initDerivacionForm();
   }
 
   ngOnInit(): void {
     this.dataSource = this.data.solicitudes;
+    this.locaciones = this.data.locaciones || [];
 
-    this.opcionesFiltradas = this.formControlCentroSalud.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+    this.opcionesFiltradas = this.locacionesFCtrl.valueChanges
+                                .pipe(
+                                  startWith(''),
+                                  map(value => this._filter(value))
+                                );
   }
 
-  private _filter(value:string): string[]{
-    const filterValue = value.toLowerCase();
-
-    return this.opciones.filter(opcion => opcion.toLowerCase().includes(filterValue));
+  private _filter(value:string): LocacionAvailable[]{
+    let filterValue = value.toLowerCase();
+    return this.locaciones.filter(loc => loc.code.toLowerCase().includes(filterValue))
   }
 
-  initDerivacionForm(){
-    this.derivacionForm = this.fb.group({
+  private initDerivacionForm(){
+    this.form = this.fb.group({
       centroSalud: ['', Validators.required] /* ,
       pacientes: ['', Validators.required] */
     });
@@ -63,14 +76,20 @@ export class SolicitudesInternacionModalComponent implements OnInit {
   }
 
   onClickDerivar(){
-    //TODO: seleccionar la lista para poder derivar
+
+    this.dialogRef.close({
+      locacion: this.locacionesFCtrl.value,
+      solicitudes: this.selection.selected
+    });
     
   }
-
+  onCanel(){
+      this.dialogRef.close();
+  
+  }
   /* ============================================= */
   /* Selector */
 
-  selection = new SelectionModel<any>(true, []);
 
   onSelect(row: any){
     this.selection.toggle(row);
@@ -103,3 +122,16 @@ export class SolicitudesInternacionModalComponent implements OnInit {
 
   }
 }
+
+class LocacionAvailable {
+  target?: string;
+  servicio?: string;
+  id: string;
+  code: string;
+  slug: string;
+  capacidad = 0;
+  ocupado = 0;
+
+
+}
+

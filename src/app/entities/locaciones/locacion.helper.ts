@@ -1,4 +1,6 @@
 import { LocacionHospitalaria, LocacionHospTable, Servicio, Recurso, LocacionEvent} from './locacion.model';
+import { serviciosInternacion, especialidadesInternacion }  from '../../salud/internacion/internacion.helper';
+
 
 
 export class  LocacionHelper {
@@ -157,69 +159,10 @@ const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
 ];
 
-const areasOptList: Array<any> = [
-    {val: 'UTI',           ord: '1.1', label: 'UTI'            },
-    {val: 'UTIP',          ord: '1.2', label: 'UTI PEDIÁTRICA' },
-    {val: 'UTIN',          ord: '1.3', label: 'UTI NEO'        },
-    {val: 'UTE',           ord: '1.4', label: 'UTE'            },
-    {val: 'UCO',           ord: '1.5', label: 'UCO'            },
-    {val: 'INTERNACION',   ord: '2.1', label: 'INT-GENERAL'    },
-    {val: 'PEDIATRIA',     ord: '2.2', label: 'INT-PEDIATRÍA'  },
-    {val: 'NEONATOLOGÍA',  ord: '2.3', label: 'INT-NEO'        },
-    {val: 'MATERNIDAD',    ord: '2.4', label: 'INT-MATERNIDAD' },
-    {val: 'TRAUMATOLOGIA', ord: '2.5', label: 'INT-TRAUMATO'   },
-    {val: 'TRAUMATOLOGIA', ord: '2.6', label: 'INT-TRAUMATO'   },
-    {val: 'CIRUGIA',       ord: '2.7', label: 'INT-CIRUGÍA'    },
-
-    {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'    },
-
-    {val: 'CONSULEXT',     ord: '5.1', label: 'CONSULTORIO EXT'},
-    {val: 'GUARDIA',       ord: '5.2', label: 'GUARDIA'      },
-
-    {val: 'TRANSITO',      ord: '9.1', label: 'TRANSITO'     },
-    {val: 'TRASLADO',      ord: '9.2', label: 'TRASLADO'     },
-    {val: 'ADMISION',      ord: '9.3', label: 'ADMISIÓN'     },
-    {val: 'EXTERNACION',   ord: '9.4', label: 'EXTERNACIÓN'  },
-
-];
-
-const serviciosOptList: Array<any> = [
-    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
-    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
-    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
-    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
-    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
-    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
-    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
-    {val: 'NEONATOLOGÍA',   target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
-    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
-    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
-    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
-    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
-
-    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-
-    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
-];
 
 
-const especialidadesOptList: Array<any> = [
-    {val: 'PEDIATRIA',       ord: '1.2', label: 'PEDIATRÍA'    },
-    {val: 'NEONATOLOGIA',    ord: '1.3', label: 'NEONATOLOGÍA'    },
-    {val: 'MATERNIDAD',      ord: '1.4', label: 'MATERNIDAD'    },
-    {val: 'TRAUMATOLOGIA',   ord: '1.5', label: 'TRAUMATOLOGÍA'    },
-    {val: 'CLINICA',         ord: '1.6', label: 'CLÍNICA'    },
-    {val: 'GUARDIA',         ord: '1.7', label: 'GUARDIA'    },
 
-];
 
-const queueOptList: Array<any> = [
-    {val: 'POOL',          ord: '1.1', label: 'POOL'      },
-    {val: 'TRANSITO',      ord: '1.2', label: 'TRANSITO'  },
-    {val: 'ALOCADO',       ord: '1.3', label: 'ALOCADO'   },
-    {val: 'BAJA',          ord: '1.4', label: 'BAJA'      },
-];
 
 
 const hospitalTypeOptList: Array<any> = [
@@ -227,7 +170,8 @@ const hospitalTypeOptList: Array<any> = [
     {val: 'HOSPPROV',      label: 'HOSP PROV'  },
     {val: 'HOSPNAC',       label: 'HOSP NAC'   },
     {val: 'EXHOSP',        label: 'EXTRA HOSP' },
-    {val: 'CAPS',          label: 'CAPS' },
+    {val: 'PRIVADO',       label: 'PRIVADO'    },
+    {val: 'CAPS',          label: 'CAPS'       },
 ];
 
 const recursosTypeOptList: Array<any> = [
@@ -238,14 +182,14 @@ const recursosTypeOptList: Array<any> = [
 
 const tableActionsOptList = [
       {val: 'no_definido',  label: 'Seleccione opción',   slug:'Seleccione opción' },
-      {val: 'editarencuestas',       label: 'Edición entrevistas SA',        slug:'Edición entrevistas SA' },
-      {val: 'autorizar',    label: 'Autorizar solicitud', slug:'Autorizar solicitud' },
+      {val: 'autorizar',    label: 'Autorizar', slug:'Autorizar' },
 ]
+
 
 const optionsLists = {
    default: default_option_list,
-   servicios: serviciosOptList,
-   especialidades: especialidadesOptList,
+   servicios: serviciosInternacion,
+   especialidades: especialidadesInternacion,
    hospital: hospitalTypeOptList,
    tableactions: tableActionsOptList,
    recursos: recursosTypeOptList,

@@ -171,3 +171,8 @@
 
 	</ng-container>
 </ng-container>
+
+<ng-container *ngIf="showTests">
+  <p>MasterList</p>
+  <pre class="dump-tests">{{ masterList | json }}</pre>
+</ng-container>

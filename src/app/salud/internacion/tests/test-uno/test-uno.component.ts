@@ -29,6 +29,7 @@ export class TestUnoComponent implements OnInit {
 	public masterList: MasterAllocation[] = [];
 
 	public showMasterAllocatorView = false;
+	public showTests = false;
 	public testData;
 	public form: FormGroup;
 	public hospitalesList$: Observable<LocacionHospitalaria[]>;
@@ -217,6 +218,7 @@ export class TestUnoComponent implements OnInit {
 
 		this.masterList = list;
 		this.showMasterAllocatorView = true;
+		this.showTests = true;
 	}
 
 	changeHospitalValue(type, hospital){

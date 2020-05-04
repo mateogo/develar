@@ -250,6 +250,21 @@ export class AsignarRecursoEvent {
   servicio: string;
 }
 
+// helper class que se usa en centro-de-operaciones
+// identifica una locación y su disponibilidad puntual para cierto target busscado
+export class LocacionAvailable {
+  target?: string;
+  servicio?: string;
+  id: string;
+  code: string;
+  slug: string;
+  capacidad = 0;
+  ocupado = 0;
+
+
+}
+
+
 // servicios: 
 // áreas: internacion 
 // cuidados intermedios: internacio
@@ -268,7 +283,7 @@ export class AsignarRecursoEvent {
 // CLINICA MEDICA / QUIRURGICA / CUIDADOS INTEREDIS.
 
 // AREA
-// cirujía
+// cirugía
 // clinica médica
 // clinica quirúrgica
 // gineco-obstétrica
