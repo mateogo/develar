@@ -687,7 +687,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/atencionsocial'
       },
       {
-        title: 'Alta rápida afectado/a',
+        title: 'Nueva internación',
         routing: '/salud/gestion/altarapida'
       },
       {

@@ -274,6 +274,7 @@ const afectadoUpdateSch = new Schema({
     resultado:  { type: String, required: false },
     vector:     { type: String, required: false },
     tipo:       { type: String, required: false },
+    sintoma:    { type: String, required: false },
     slug:       { type: String, required: false },
     indicacion: { type: String, required: false },
 
@@ -298,6 +299,7 @@ const afectadosFollowUpSch = new Schema({
   qIntents:      { type: Number, required: false },
 
   tipo:          { type: String, required: false },
+  sintoma:       { type: String, required: false },
   vector:        { type: String, required: false },
 
   asignados:     { type: String, required: false },

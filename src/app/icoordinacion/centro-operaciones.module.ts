@@ -16,6 +16,7 @@ import { BotonesApi }         from './api/botones.api';
 import { LocacionDisponibleComponent } from './components/locacion-disponible/locacion-disponible.component';
 import { LocacionPeriferiaComponent } from './components/locacion-periferia/locacion-periferia.component';
 import { LocacionServiciosComponent } from './components/locacion-servicios/locacion-servicios.component';
+import { InternacionAltaComponent } from './components/internacion-alta/internacion-alta.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { LocacionServiciosComponent } from './components/locacion-servicios/loca
     LocacionDisponibleComponent,
     LocacionPeriferiaComponent,
     LocacionServiciosComponent,
+    InternacionAltaComponent,
   ],
   imports: [
     CommonModule,

@@ -11,14 +11,7 @@
         <p class="text-resaltado" >{{ displayAs }}</p>
     </div>
   </div>
-	<div class="row">
-	    <div  class="col">
-				<mat-checkbox 
-					[checked]="form.controls['isInternado'].value===true"
-					[formControl]="form.controls['isInternado']" >
-					Está internado en este momento? </mat-checkbox>
-		</div>
-	</div>
+  <hr>
 
   <div class="row">
     <div class="col d-flex align-items-center">
@@ -26,7 +19,7 @@
         <mat-radio-button 
               [checked]="form.controls['actualState'].value===6" 
               (change)='changeActualState(6)'
-              [value]="6">Posible</mat-radio-button>
+              [value]="6">En monitoreo</mat-radio-button>
         <mat-radio-button 
               [checked]="form.controls['actualState'].value===0" 
               (change)='changeActualState(0)'
@@ -106,36 +99,28 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-    <div class="col">
+    <div  class="col">
+        <mat-form-field>
+          <input type="number" matInput [formControl]="form.controls['qcovivientes']" 
+                  placeholder="Cantidad de contactos estrechos" >
+        </mat-form-field>
+    </div>
+	</div>
+
+  <div class="row d-md-flex align-items-center">
+      <div  class="col-md-4">
+        <mat-checkbox 
+          [checked]="form.controls['isInternado'].value===true"
+          [formControl]="form.controls['isInternado']" >
+          Está internado en este momento? </mat-checkbox>
+    </div>
+    <div class="col-md-8">
       <mat-form-field>
         <input matInput [formControl]="form.controls['locacionSlug']" 
               placeholder="Internado o aisalmiento en...">
       </mat-form-field>
     </div>
-
-	</div>
-
-	<div class="row">
-    <div  class="col">
-        <mat-form-field>
-          <input type="number" matInput [formControl]="form.controls['qcovivientes']" 
-          				placeholder="Cantidad de co-vivientes" >
-        </mat-form-field>
-    </div>
-    <div  class="col">
-        <mat-form-field>
-          <input  type="number" matInput [formControl]="form.controls['qcoworkers']" 
-          				placeholder="Cantidad de contactos laborales" >
-        </mat-form-field>
-    </div>
-    <div  class="col">
-        <mat-form-field>
-          <input  type="number" matInput [formControl]="form.controls['qotros']" 
-          				placeholder="Cantidad de otros contactos próximos" >
-        </mat-form-field>
-    </div>
-
-	</div>
+  </div>
 
 	<div class="row" >
 	    <div  class="col">

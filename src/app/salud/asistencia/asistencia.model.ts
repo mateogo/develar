@@ -266,7 +266,8 @@ const avanceInfectionOptList = [
 	{ val: 'viaje',       label: 'Por viaje'},
 	{ val: 'essalud',     label: 'Es personal de salud'},
 	{ val: 'esesencial',  label: 'Es personal esencial'},
-	{ val: 'internacion', label: 'Estuvo internado'},
+	{ val: 'internacion', label: 'Internación previa'},
+	{ val: 'sinnexo',     label: 'Sin nexo epidemiológico'},
 	{ val: 'otro',        label: 'Otro'},
 	{ val: 'sindato',     label: 'Sin dato'},
 
@@ -274,13 +275,9 @@ const avanceInfectionOptList = [
 
 const sintomaOptList = [
 	{ val: 'asintomatico',   label: 'Asintomático'},
-	{ val: 'descartado',     label: 'Descartado'},
-	{ val: 'intermedio',     label: 'Intermedio'},
+	{ val: 'sintomatico',    label: 'Sintomático'},
 	{ val: 'critico',        label: 'Crítico'},
 	{ val: 'enrecuperacion', label: 'En recuperación'},
-	{ val: 'aislamdealta',   label: 'Aislamiento'},
-	{ val: 'negativo1',      label: 'Negativo#1'},
-	{ val: 'negativo2',      label: 'Negativo#2'},
 	{ val: 'alta',           label: 'Alta'},
 	{ val: 'fallecido',      label: 'Fallecido'},
 	{ val: 'sindato',        label: 'Sin dato'},
@@ -298,7 +295,7 @@ export class InfectionFollowUp {
 	fe_confirma: string = '';
 	fe_alta: string = '';
 
-	avance: string = 'comunitario'; //avanceInfectionOptList
+	avance: string = 'sindato'; //avanceInfectionOptList
 	sintoma: string = 'sindato'; // sintomaOptList
 	locacionSlug: string = '' // lugar de internación
 
@@ -319,7 +316,7 @@ const estadoActualAfectadoOptList = [
 	{ val: 2, label: 'DESCARTADO'},
 	{ val: 4, label: 'FALLECIDO'},
 	{ val: 5, label: 'DE ALTA'},
-	{ val: 6, label: 'POSIBLE'},
+	{ val: 6, label: 'EN MONITOREO'},
 ];
 
 const tipoLocacionOptList = [
@@ -363,8 +360,8 @@ const avanceSisaOptList = [
     {val: 'sospecha',       label: 'Sospecha'        },
     {val: 'confirmado',     label: 'Confirmado'      },
     {val: 'descartado',     label: 'Descartado'      },
-    {val: 'altaobtenida',   label: 'Alta obtenida'    },
-    {val: 'fallecido',      label: 'Fallecido'       },
+    {val: 'contacto',       label: 'Contacto de caso COVID'    },
+    {val: 'sindato',        label: 'Sin dato'       },
 ];
 
 export class SisaEvent {
@@ -398,18 +395,16 @@ const tipoMuestraLaboratorioOptList = [
 
 const estadoMuestraLaboratorioOptList = [
 	{ val: 'presentada', label: 'Presentada' },
-	{ val: 'enestudio',  label: 'En estudio' },
-	{ val: 'rechazada',  label: 'Rechazada'  },
-	{ val: 'invalida',   label: 'Invalidada' },
-	{ val: 'analizada',  label: 'Analizada'  },
+	{ val: 'norecibida', label: 'No recibida por el Lab' },
+	{ val: 'nopresentada',  label: 'No figura en SISA'  },
 ];
 
 const resultadoMuestraLaboratorioOptList = [
 	{ val: 'confirmada',  label: 'Positiva / Detectable'    },
 	{ val: 'descartada',  label: 'Negativa / No detectable' },
 	{ val: 'pendiente',   label: 'Pendiente resultado'  },
-	{ val: 'noanalizada', label: 'No analizada'  },
-	{ val: 'invalidada',  label: 'Muestra inválida' },
+	{ val: 'noanalizada', label: 'No apta para análisis'  },
+	{ val: 'invalidada',  label: 'No cumple criterio epidemio' },
 ];
 
 		// estado: verificado|no_verificado|invalido
@@ -487,6 +482,7 @@ export class AfectadoFollowUp {
 	qIntents: number = 0;
 
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
+	sintoma: string = 'sindato'; //sintomaOptList
 	vector: string = 'inicia'; //vectorSeguimientoOptList
 
 	asignados: Array<AsignadosSeguimiento> = [];
@@ -499,10 +495,8 @@ export class AfectadoFollowUp {
 }
 
 const resultadoSeguimientoOptList = [
-	{ val: 'pendiente',    label: 'Pendiente'},
 	{ val: 'logrado',      label: 'Logrado'},
 	{ val: 'nocontesta',   label: 'No contesta'},
-	{ val: 'noencontrado', label: 'No encontrado/a'},
 ];
 
 const vectorSeguimientoOptList = [
@@ -510,10 +504,6 @@ const vectorSeguimientoOptList = [
 	{ val: 'estable',    label: 'Evolución estable'},
 	{ val: 'mejora',     label: 'Mejoría/ Favorable'},
 	{ val: 'desmejora',  label: 'Desmejora/ Desfavorable'},
-	{ val: 'critico',    label: 'Estado crítico'},
-	{ val: 'recuperado', label: 'Recuperado'},
-	{ val: 'alta',       label: 'Dado de alta'},
-	{ val: 'fallecido',  label: 'Fallecido'},
 	{ val: 'sindato',    label: 'Sin dato'},
 ];
 
@@ -523,6 +513,7 @@ export class AfectadoUpdate {
 	resultado: string = ''; // resultadoSeguimientoOptList
 
 	vector: string = 'inicia'; //vectorSeguimientoOptList
+	sintoma: string = 'sindato'; // sintomaOptList
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
 	slug: string = ''; // mensaje
 	indicacion: string = ''; // mensaje
@@ -780,9 +771,9 @@ const entregaDesdeOptList: Array<any> = [
 ];
 
 const causasOptList: Array<any> = [
-        {val: 'emergencia',     type:'Emergencia',  label: 'Emergencia' },
-        {val: 'covid',          type:'COVID',       label: 'Posible COVID' },
-        {val: 'otro',           type:'Otro',     label: 'Otro' },
+        {val: 'emergencia',     type:'Emergencia',    label: 'Emergencia' },
+        {val: 'covid',          type:'COVID',         label: 'Posible COVID' },
+        {val: 'otro',           type:'Otro',          label: 'Otro' },
         {val: 'no_definido',    type:'Sin selección', label: 'Sin selección' },
 ];
 

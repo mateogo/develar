@@ -33,6 +33,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
   public vectorSeguimientoOptList = AsistenciaHelper.getOptionlist('vectorSeguim')
   public resultadoSeguimOptList = AsistenciaHelper.getOptionlist('resultadoSeguim')
+  public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
 
   public displayAs = '';
 
@@ -109,6 +110,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
 		if(token.resultado === LLAMADO_LOGRADO){
 			afectado.fe_ucontacto = token.fe_llamado;
+      afectado.sintoma = token.sintoma;
+
 			afectado.fets_ucontacto = today.getTime();
 			afectado.qcontactos += 1;
       afectado.vector = token.vector;
@@ -134,6 +137,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   	this.seguimientoEvent = new AfectadoUpdate();
   	this.seguimientoEvent.isActive = this.afectadoFollowUp.isActive;
   	this.seguimientoEvent.tipo = this.afectadoFollowUp.tipo;
+    this.seguimientoEvent.sintoma = this.afectadoFollowUp.sintoma;
 
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
 

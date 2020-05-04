@@ -351,7 +351,9 @@ export class SaludController {
       
 
     }else if(transition === SEGUIMIENTO_FWUP ){
-      
+      let infection = asistencia.infeccion || new InfectionFollowUp();
+      infection.sintoma = asistencia.followUp.sintoma || infection.sintoma;     
+      asistencia.infeccion = infection;
 
     }else if(transition === INFECTION_ESTADO ){
 
@@ -1028,7 +1030,7 @@ export class SaludController {
     });
 
     return fetch$
-
+ 
   }
 
   setCurrentPersonFromTurno(turno: Turno){
