@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'salud';
 
 const globals = {
 
@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - FELIZ DÍA DEL TRABAJADOR 20.05.04-19:18',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - FELIZ DÍA DEL TRABAJADOR 20.05.05-17:48',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},

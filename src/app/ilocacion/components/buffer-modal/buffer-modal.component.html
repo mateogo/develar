@@ -1,1 +1,68 @@
-<p>buffer-modal works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+        {{ data.titulo }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? onSelect(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tDoc">
+            <mat-header-cell *matHeaderCellDef>Tipo documento</mat-header-cell>
+            <mat-cell *matCellDef="let el">{{ el.requeridox.tdoc }}</mat-cell>
+        </ng-container>
+
+        <!-- Nro doc -->
+        <ng-container matColumnDef="nDoc">
+            <mat-header-cell *matHeaderCellDef>Nro documento</mat-header-cell>
+            <mat-cell *matCellDef="let el">{{ el.requeridox.ndoc }}</mat-cell>
+        </ng-container>
+        <!-- Nombre -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+            <mat-cell *matCellDef="let el">{{ el.requeridox.slug }}</mat-cell>
+        </ng-container>
+        <!-- Diagnóstico -->
+        <ng-container matColumnDef="diagnostico">
+            <mat-header-cell *matHeaderCellDef>Diagnóstico</mat-header-cell>
+            <mat-cell *matCellDef="let el"> {{ el.triage.slug }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="servicio">
+            <mat-header-cell *matHeaderCellDef>Servicio requerido</mat-header-cell>
+            <mat-cell *matCellDef="let el"> {{ el.triage.servicio }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columnasMostradas"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: columnasMostradas;"
+                  (click)="onSelect(row)">
+        </mat-row>
+
+      </mat-table>
+
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+      <button mat-button color="warn" (click)="onCanel()">Cerrar</button>
+
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,48 @@
+<mat-card style="background-color: #2266FF;">
+  <mat-card-content>
+
+    <div class="d-md-flex justify-content-between align-items-center">
+      <div>
+        <mat-radio-group (change)="radioChanged($event)">
+          <mat-radio-button   *ngFor="let radioOption of radioOptions"
+                              value={{radioOption.value}}
+                              [checked]="radioOption.value == radioDefault">
+              {{ radioOption.descripcion }}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div>
+        <span class="my-auto" style="font-weight: 800;">Proyectar</span>
+        <mat-slider
+                thumbLabel
+                [min]="slider.min"
+                [max]="slider.max"
+                [step]="slider.step"
+                [value]="proyeccionOffset"
+                (input)="sliderChanged($event)">            
+        </mat-slider>
+        <span class="my-auto">
+            {{  proyeccionOffset === 0 ? 'hoy' :
+                proyeccionOffset === 1 ? 'dentro de ' + proyeccionOffset + ' día' :
+                'dentro de ' + proyeccionOffset + ' días'}} 
+            ({{ proyeccionDate | date:'dd/LL/yyyy' }}
+            {{ slider.daysLeft === slider.max? ' o posterior' : '' }})
+        </span>            
+      </div>
+      <div>
+        <button mat-icon-button (click)="altaRapidaPaciente()" matTooltip="Alta rápida de paciente">
+            <mat-icon> add_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="d-md-flex justify-content-between align-items-center">
+      <div  *ngFor="let service of groupservices" >
+        <mat-checkbox   [checked]=true
+                        (click)="selectedCheckBox(service)">
+                        {{service.slug}}
+        </mat-checkbox>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

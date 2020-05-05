@@ -102,6 +102,7 @@ import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigil
 import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
 import { VigilanciaVinculosComponent } from './vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
+import { InternacionHeaderControlComponent } from './internacion/internacion-helpers/internacion-header-control/internacion-header-control.component';
 
 @NgModule({
   imports: [
@@ -204,6 +205,7 @@ import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashb
     VigilanciaLaboratorioComponent,
     VigilanciaVinculosComponent,
     VigilanciaDashboardPageComponent,
+    InternacionHeaderControlComponent,
   ],
   entryComponents: 
   [
@@ -212,7 +214,14 @@ import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashb
     VigilanciaInfeccionComponent,
     VigilanciaLaboratorioComponent,
     VigilanciaVinculosComponent,
+    InternacionHeaderControlComponent,
   ],
+  exports: [
+      InternacionHeaderControlComponent,
+      AltarapidaFetchComponent,
+      SolinternacionViewComponent,
+      TriageEditComponent
+  ]
 
 })
 export class SaludModule { }

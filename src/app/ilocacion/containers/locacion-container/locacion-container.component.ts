@@ -1,29 +1,25 @@
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { LocacionFacade } from '../../locacion.facade';
-import { Observable } from 'rxjs';
-import { BotonContador } from '../../../develar-commons/base.model';
+import { InternacionService } from '../../../salud/internacion/internacion.service';
 
-import { locaciones as Locaciones} from '../../../models/camas';
-
-import { BOTONES_BUFFERS } from './botones-buffers';
-import { MatDialog } from '@angular/material/dialog';
+import { AltaRapidaPacienteModalComponent } from '../../../develar-commons/alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
 import { CamaEstadoModalComponent } from '../../components/camas-mosaicos-component/cama-estado-modal/cama-estado-modal.component';
 import { BufferModalComponent } from '../../components/buffer-modal/buffer-modal.component';
 
-import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transito, 
-                    Internacion, SolInternacionBrowse, SolInternacionTable, InternacionSpec,
-                    MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
+import { BotonContador } from '../../../develar-commons/base.model';
+
+import { SolicitudInternacion, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 import { LocacionHospitalaria, Servicio} from '../../../entities/locaciones/locacion.model';
 
 import { InternacionHelper }  from '../../../salud/internacion/internacion.helper';
-import { InternacionService } from '../../../salud/internacion/internacion.service';
 
 const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
 const ASIGNAR = 'asignar';
+const UPDATE = 'update';
 
 
 @Component({
@@ -43,33 +39,24 @@ export class LocacionContainerComponent implements OnInit{
 
   public internaciones: SolicitudInternacion[] = [];
 
-  private viewList: Array<string> = [];
-
-  // public admision$:    Observable<SolicitudInternacion[]>;
-  // public traslado$:    Observable<SolicitudInternacion[]>;
-  // public salida$:      Observable<SolicitudInternacion[]>;
-  // public externacion$: Observable<SolicitudInternacion[]>;
-  // public transito$:    Observable<SolicitudInternacion[]>;
-
   public master_internacion: any;
   public master_periferia: any;
   public master_camas: any;
+  public botonesPeriferia: BotonContador[] = [];
+ 
+  public locacionName: string;
+  public locacionCode: string;
+  public capacidadToPrint: string;
 
-
+ 
   //template Helpers
-  public showData = false;
   public title = 'ESTADO DE OCUPACIÓN'
   public capacidadTitle = 'Capacidad nominal: '
+  private viewList: Array<string> = [];
 
-  public botonesPeriferia: BotonContador[] = BOTONES_BUFFERS;
+  public showData = false;
   public showCamasOcupadas = true;
   public showCamasLibres = true;
-
-
-  //ToBeDeprecated
-  currentLocation : any = new Object(); //modifacarlo por su tipo (se uso para el object.assign)
-  loadedLocationFronDB : any = new Object(); //modificarlo por su tipo
-  totalCamas: number;
 
   constructor(
       private _locacionFacade: InternacionService,
@@ -104,7 +91,6 @@ export class LocacionContainerComponent implements OnInit{
   private initOnce(id){
       this.refreshViewList(this.capacidadesOptList);
 
-      //this.locacion$ = this._locacionFacade.locacion$;
       this._locacionFacade.fetchLocacionById(id).then(locacion=>{
           if(locacion){
               this._currentLocation = locacion;
@@ -117,10 +103,6 @@ export class LocacionContainerComponent implements OnInit{
           }            
       })
   }
-
-  public locacionName: string;
-  public locacionCode: string;
-  public capacidadToPrint: string;
 
   private initLocationFacilities(locacion: LocacionHospitalaria){
       this.serviciosOfrecidos = this._locacionFacade.buildServiciosList(locacion);
@@ -154,53 +136,37 @@ export class LocacionContainerComponent implements OnInit{
       this.botonesPeriferia =   this._locacionFacade.getBotonesPeriferia(this.master_periferia);
       this.master_camas =       this._locacionFacade.buildEstadoCamas(this._currentLocation, this.internaciones)
 
-
-      // this.admision$ =    this._locacionFacade.loadPacientesEnAdmision$();
-      // this.traslado$ =    this._locacionFacade.loadPacientesEnTraslado$();
-      // this.salida$ =      this._locacionFacade.loadPacientesEnSalida$();
-      // this.externacion$ = this._locacionFacade.loadPacientesEnExternacion$();
-      // this.transito$ =    this._locacionFacade.loadPacientesEnTransito$();
-
-      // /* Definir al actualización de los contadores de los botones */
-      // this.admision$.subscribe(pacientes =>
-      //     this.botonesPeriferia.find(b => b.id === 'admision').contador = (pacientes && pacientes.length ) || 0
-      // );
-      // this.traslado$.subscribe(pacientes =>
-      //     this.botonesPeriferia.find(b => b.id === 'traslado').contador = (pacientes && pacientes.length ) || 0
-      // )
-      // this.salida$.subscribe(pacientes =>
-      //     this.botonesPeriferia.find(b => b.id === 'salida').contador = (pacientes && pacientes.length ) || 0
-      // )
-      // this.externacion$.subscribe(pacientes =>
-      //     this.botonesPeriferia.find(b => b.id === 'externacion').contador = (pacientes && pacientes.length ) || 0
-      // )
-      // this.transito$.subscribe(pacientes =>
-      //     this.botonesPeriferia.find(b => b.id === 'transito').contador = (pacientes && pacientes.length ) || 0
-      // )
-
       this.initLocacionData();
 
   }
 
   private initLocacionData(){
-      /****/
-      Object.assign(this.loadedLocationFronDB,Locaciones[0]);
-      Object.assign(this.currentLocation,this.loadedLocationFronDB); //me guardo un atributo para el filtrado
-
-      this.loadedLocationFronDB.estado_ocupacion = this.currentLocation.estado_ocupacion;
-
-
-      //this.totalCamas = this.loadedLocationFronDB.camas.uti + this.loadedLocationFronDB.camas.ti + this.loadedLocationFronDB.camas.conext + this.loadedLocationFronDB.camas.internacion;
-      //this.msjSegunRadioButton = this.calcularCamasDisponibles('todo');
-
       //and... it's... showTime!!!
       this.showData = true;
+  }
+
+  /******************************************************************************/
+  /******* Alta rapida paciente, eventEmiited By internacion-header-control ****/
+  /****************************************************************************/
+  altaRapidaPaciente(type){
+
+    const dialogRef = this.dialog.open(AltaRapidaPacienteModalComponent, {
+      width: '750px',
+      data: {data : null}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === UPDATE){
+        this.refreshAfectadosList(this._currentLocation);
+      }
+
+    });
+
   }
 
   /**************************************************************************/
   /******* Gestión de los radio button que filtran Ocupado / Disponible ****/
   /************************************************************************/
-
   radioSelectedOptionEvent(e){
       switch(e.value){
           case 0 : { this.showAllCamas(); break;};
@@ -212,10 +178,6 @@ export class LocacionContainerComponent implements OnInit{
   private showAllCamas(){
       this.showCamasOcupadas = true;
       this.showCamasLibres = true;
-
-      // /** Este sería el caso del VER TODO, por lo cual hay que traer las locaciones originales */
-      // this.currentLocation.estado_ocupacion = this.loadedLocationFronDB.estado_ocupacion;
-      // this.msjSegunRadioButton = this.calcularCamasDisponibles('todo');
   }
 
   private showDisponiblesOrNotDisponible(selected : string){
@@ -228,65 +190,32 @@ export class LocacionContainerComponent implements OnInit{
           this.showCamasLibres = false;
 
       }
-
-
-
-      /** Vamos a filtrar segun el parametro recibido */
-
-      // let filtrado = [];
-      // this.loadedLocationFronDB.estado_ocupacion.forEach( cama => {
-      //     if( cama.estado === estado_ocupacion){
-      //         filtrado.push(cama);
-      //     }
-      // })
-      // this.currentLocation.estado_ocupacion = filtrado;
-      // if(estado_ocupacion === 'LIBRE'){
-      //     this.msjSegunRadioButton = 'Disponibles '+filtrado.length;
-      // }else if(estado_ocupacion === 'ocupada'){
-      //     this.msjSegunRadioButton = 'Ocupadas '+filtrado.length;
-      // }
   }
 
-
-
-  // private calcularCamasDisponibles(seleccion : string) : string{
-  //     switch(seleccion){
-  //         case 'todo' : {
-  //             let disponibles : number = 0;
-  //             this.loadedLocationFronDB.estado_ocupacion.forEach(cama => {
-  //                 if(cama.estado === 'LIBRE'){
-  //                     disponibles++;
-  //                 }
-  //             }
-  //             )
-  //         return 'Disponibles '+disponibles+' de '+this.loadedLocationFronDB.estado_ocupacion.length;
-  //         }
-  //     }
-  // }
   
-  /**************************************************************************/
-  /******* Proyección de ocupación ***/
-  /************************************************************************/
+  /**************************************************/
+  /******* Proyección de ocupación PENDING TODO  ***/
+  /************************************************/
   currentProyeccionDateEmit(fecha : Date){
       
       let fechaProyeccion = new Date();
       fechaProyeccion.setDate(fecha.getDate());
       fechaProyeccion.setHours(0,0,0,0);
-      this.currentLocation.estado_ocupacion.forEach( cama => {
-          if(cama.estado !== 'LIBRE'){
-              let date = parseInt(cama.fecha_prev_out.substring(0,2));
-              let month = parseInt(cama.fecha_prev_out.substring(3,5));
-              let year = parseInt(cama.fecha_prev_out.substring(6));
+      // this.currentLocation.estado_ocupacion.forEach( cama => {
+      //     if(cama.estado !== 'LIBRE'){
+      //         let date = parseInt(cama.fecha_prev_out.substring(0,2));
+      //         let month = parseInt(cama.fecha_prev_out.substring(3,5));
+      //         let year = parseInt(cama.fecha_prev_out.substring(6));
 
-              let fecha_prev_out = new Date(year, (month-1), date);
-              fecha_prev_out.setHours(0,0,0,0);
-              if((fechaProyeccion > fecha_prev_out) || (fechaProyeccion.getTime() === fecha_prev_out.getTime())){
-                  cama.estado = 'Pronto a desocuparse'
-              }else if(cama.estado == 'Pronto a desocuparse'){
-                      cama.estado = 'ocupada';   
-              }
-          }
-      })
+      //         let fecha_prev_out = new Date(year, (month-1), date);
+      //         fecha_prev_out.setHours(0,0,0,0);
+      //         if((fechaProyeccion > fecha_prev_out) || (fechaProyeccion.getTime() === fecha_prev_out.getTime())){
+      //             cama.estado = 'Pronto a desocuparse'
+      //         }else if(cama.estado == 'Pronto a desocuparse'){
+      //                 cama.estado = 'ocupada';   
+      //         }
+      //     }
+      // })
       
   }
 
@@ -308,13 +237,16 @@ export class LocacionContainerComponent implements OnInit{
 
 
 
+  /**************************************************************************/
+  /******* ALTA NOVEDADES PACIENTE: PENDIENTE ***/
+  /************************************************************************/
   openPacienteModal(pacienteId){
       const dialogRef = this.dialog.open(
           CamaEstadoModalComponent,
           {
               width: '750px',
               data: {
-                  cama: this.currentLocation.estado_ocupacion[0]
+                  cama: '' //this.currentLocation.estado_ocupacion[0]
               }
           }
       );
@@ -326,28 +258,34 @@ export class LocacionContainerComponent implements OnInit{
 
 
   /**************************************************************************/
-  /******* Gestión pacientes en botones periferia                       ****/
+  /******* muestra pacientes en  periferia  NO altera modelo            ****/
   /************************************************************************/
   onAfectadosPeriferiaEvent(periferia){
       let pacientes = this.master_periferia[periferia]
+      if(!(pacientes && pacientes.length )){
+        this._locacionFacade.openSnackBar('No hay casos pendientes','CERRAR')
+        return;
+      }
+
       const dialogRef = this.dialog.open(
           BufferModalComponent,
           {
               width: '80%',
+
               data: {
-                  pacientes: pacientes
+                titulo: 'Pendientes de alocar',
+                solicitudes: pacientes
               }
           }
       )
       dialogRef.afterClosed().subscribe(result => {
-          //TODO
+          //VENTANA READ ONLY
       });
   }
 
   /******************************************************************************/
   /******* Gestión asignacion recurso->paciente en modal RecursosComponent  ****/
   /****************************************************************************/
-  
   asignarRecursos(event: AsignarRecursoEvent){
       if(!event) return;
       if(event.action === ASIGNAR){

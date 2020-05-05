@@ -89,7 +89,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   /******* Template Events *******/
   /**********************************/
   onSubmit() {
-    console.log('SUBMIT')
     this.person = this.initForSave(this.form, this.person);
 
     if(this.person._id) this.emitEvent(UPDATE);
@@ -121,7 +120,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
         this.handleSolicitudInternacion()
 
       }else {
-        console.log('alta nueva solicitud de internación')
         this.initNewIntervencion(this.person, this.servicio)
       }
     })
@@ -139,15 +137,13 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
 
       }else {
         this.emitEvent(CANCEL);
-        //console.log('fallo la creación de solicitud')
+        //c onsole.log('fallo la creación de solicitud')
       }
     })
 
   }
 
   private handleSolicitudInternacion(){
-    console.log('HANDLE SOLICITUD')
-
     this.triage = this.solInternacion.triage || new MotivoInternacion({servicio: this.servicio});
     this.triage.especialidad = this.especialidad;
     this.triage.slug = this.slug;
@@ -226,7 +222,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   }
 
   private personAlreadyExists(personRetrieved: Person){
-    console.log('AlreadyExists [%s] [%s]', this.currentNumDoc, personRetrieved.ndoc)
     this.isNewPerson = false;
     if(this.currentNumDoc === personRetrieved.ndoc ) return;
 
@@ -323,7 +318,6 @@ export class AltaRapidaPacienteModalComponent implements OnInit {
   /******* Template Helpers *******/
   /**********************************/
    documProvisorio(){
-     console.log('documProvisorio')
       this.intSrv.fetchSerialDocumProvisorio().subscribe(serial =>{
           this.person = this.initForSave(this.form, this.person);
           this.person.tdoc = "PROV"

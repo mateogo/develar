@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
-
+import { SaludModule } from '../salud/salud.module';
 import { LocacionContainerComponent } from       './containers/locacion-container/locacion-container.component';
 import { LocacionInternacionRoutingModule } from './locacion-routing.module';
 
@@ -36,8 +36,9 @@ import { CamaComponent } from './components/cama/cama.component';
         LocacionInternacionRoutingModule,
         CommonModule,
         DevelarCommonsModule,
-        ReactiveFormsModule],
-        
+        ReactiveFormsModule,
+        SaludModule
+    ],        
     providers: [
       LocacionFacade,
       LocacionState,

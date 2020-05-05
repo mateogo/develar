@@ -44,9 +44,11 @@ export class InternacionAltaComponent implements OnInit {
   @Output() vigilanciaEvent = new EventEmitter<UpdateInternacionEvent>();
 	public  person: Person;
 	private hasPerson = false;
+  public title = 'Alta de Solicitud de Internacion';
 
   public solInternacion: SolicitudInternacion;
   public hasSolicitud = false;
+  public actionTxt = 'Se creará una nueva solicitud de internación'
 
   public masterSelected: MasterAllocation;
 
@@ -59,14 +61,12 @@ export class InternacionAltaComponent implements OnInit {
   public confirmaInternacion = false;
 
   public showTriageEditor = false;
-  public showTriageView = false;
   public hasSolInternacion = false;
 
   public showMasterAllocator = false;
   public queryMaster = {};
 
   public finalStep = false;
-  public internacion: Internacion;
 
   public searchPerson = true;
 
@@ -90,9 +90,7 @@ export class InternacionAltaComponent implements OnInit {
   personFetched(person: Person){
     this.person = person;
     this.hasPerson = true;
-    this.showView = true;
-    this.confirmaInternacion = true;
-      //this.initCurrentPerson(persons[0]);
+    this.fetchSolInternacion(this.person, true); // no genera la solinternacion
 
   }
 
@@ -100,11 +98,30 @@ export class InternacionAltaComponent implements OnInit {
   confirmaActualizarInternacionEvent(action){
     this.confirmaInternacion = false;
     if(action === NEXT){
-      this.fetchSolInternacion(this.person);
+      this.fetchSolInternacion(this.person, false);
 
     }else{
-      this.resetProcess()
+      this.resetProcess(null)
     }
+  }
+
+  // STEP-3: TRIAGE ESTABLECIDO
+  triageEvent(event: UpdateInternacionEvent){
+    if(event.action === SEARCH_LOCACION){
+      this.triage = event.token as MotivoInternacion;
+      this.saveSolicitud()
+
+
+    }else if(event.action === NEXT ){
+      this.triage = event.token as MotivoInternacion;
+      this.saveSolicitud()
+
+
+    }else if(event.action === CANCEL ){
+      this.resetProcess(null)
+
+    }
+
   }
 
 
@@ -114,27 +131,51 @@ export class InternacionAltaComponent implements OnInit {
   /***************************************************/
   /******* Solicitud de Intervención  Manager *******/
   /*************************************************/
-  private fetchSolInternacion(person: Person){
+  private fetchSolInternacion(person: Person, dry: boolean){
     this.intSrv.fetchInternacionesByPersonId(person._id).subscribe(list => {
       if(list && list.length){
         this.solInternacion = list[0];
-
-        this.handleSolicitudInternacion()
+        this.hasSolicitud = true;
+        this.handleSolicitudInternacion(dry)
 
       }else {
-        this.initNewIntervencion(this.person, this.servicio)
+        this.hasSolicitud = false;
+        this.solInternacion = null;
+        this.initNewIntervencion(this.person, this.servicio, dry)
       }
     })
   }
 
-  private handleSolicitudInternacion(){
+  private handleSolicitudInternacion(dry: boolean){
+    if(dry){
+      console.log('has Solicitue[%s] [%s]' , this.hasSolicitud, this.solInternacion)
+      if(this.hasSolicitud){
 
-    this.resetProcess()
-    //TODO finish!!
+      }
+      this.actionTxt = this.hasSolicitud ? 
+              'Solicitud existente': 'Se creará una nueva solicitud de internación'
+
+      this.confirmaInternacion = true;
+      this.showView = true;
+
+    }else{
+      this.servicio = SERVICIO_DEFAULT;
+      this.triage = this.solInternacion.triage || new MotivoInternacion({servicio: this.servicio});
+      this.triageStep() // STEP 3
+    }
+  }
+
+  private triageStep(){
+    this.showTriageEditor = true;
   }
 
 
-  private initNewIntervencion(person: Person, servicio: string){
+  private initNewIntervencion(person: Person, servicio: string, dry: boolean){
+    if(dry){
+      this.handleSolicitudInternacion(dry)
+      return
+    }
+
     let spec = new InternacionSpec();
     
     spec.servicio = servicio|| spec.servicio;
@@ -142,7 +183,7 @@ export class InternacionAltaComponent implements OnInit {
     this.intSrv.createNewSolicitudInternacion(spec, person).subscribe(sol => {
       if(sol){
         this.solInternacion = sol;
-        this.handleSolicitudInternacion()
+        this.handleSolicitudInternacion(dry)
 
       }else {
         //c onsole.log('fallo la creación de solicitud')
@@ -152,12 +193,28 @@ export class InternacionAltaComponent implements OnInit {
   }
 
 
+  private saveSolicitud(){
+    if(this.triage){
+      this.intSrv.asignarPool(this.solInternacion, this.triage).subscribe(sol =>{
+        if(sol){
+          this.solInternacion = sol;
+          this.intSrv.openSnackBar('Grabación exitosa', 'CERRAR')
+          this.resetProcess({process: 'ok'})
+          // reset TODO
+        }else{
+          this.intSrv.openSnackBar('Se produjo un error en la actualización del dato', 'CERRAR')
+          // reset TODO CANCEL
+        }
+      }) 
+    }
+  }
+
 
   /************************************/
   /******* Template Helpers *******/
   /**********************************/
 
-  private resetProcess(){
+  private resetProcess(result: any){
     this.showView = false;
 
     this.solInternacion = null;
@@ -166,7 +223,7 @@ export class InternacionAltaComponent implements OnInit {
     this.person = null;
     this.hasPerson = false;
 
-		this.dialogRef.close();
+		this.dialogRef.close(result);
 
   }
 

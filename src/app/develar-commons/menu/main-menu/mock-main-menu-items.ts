@@ -691,10 +691,6 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/altarapida'
       },
       {
-        title: 'Centro de Internación',
-        routing: '/salud/internacion/locacion/5e90b3b0b001680e2b5ba6c0'
-      },
-      {
         title: 'Centro de Coordinación',
         routing: '/salud/coordinacion'
       },

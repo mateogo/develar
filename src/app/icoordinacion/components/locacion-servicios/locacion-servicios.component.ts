@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TransitoModalComponent } from '../transito-modal/transito-modal.component';
 
 
 @Component({

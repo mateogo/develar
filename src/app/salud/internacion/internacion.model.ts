@@ -60,7 +60,7 @@ export class Transito {
 
 
 export class MotivoInternacion { // triage
-	transitType:  string = 'pool:transito';
+	transitType:  string = 'pool:pool';
 	afeccion:     string = 'COVID'; //
 	target:       string = 'intermedios';
 	servicio:     string = 'INTERNACION';

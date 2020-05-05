@@ -1,15 +1,10 @@
 $color-destacado: #0645f5;
 
-.view-port {
-	max-height: 500px;
-	min-height: 450px;
-}
-
 .text-destacado {
 		margin: 0 0 0 0;
 		color: $color-destacado;
 		font-weight: 400;
-		font-size: 1.2rem;
+		font-size: 2rem;
 		font-style: italic;
 
 }
@@ -17,8 +12,8 @@ $color-destacado: #0645f5;
 .text-resaltado {
 		margin: 0 0 0 0;
 		color: $color-destacado;
-		font-weight: 600;
-		font-size: 1.1rem;
+		font-weight: 700;
+		font-size: 1.2rem;
 		font-style: italic;
 
 }
@@ -28,13 +23,3 @@ $color-destacado: #0645f5;
 		font-weight: 400;
 		font-size: 1rem;
 }
-
-.section-box{
-		margin: 5px 0 0 15px;
-}
-.nueva-internacion-button{
-		font-weight: 700;
-		font-size: 1.2rem;
-
-}
-

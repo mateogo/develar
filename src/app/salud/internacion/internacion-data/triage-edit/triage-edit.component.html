@@ -50,7 +50,7 @@
 
     <hr>
 
-      <div class="row">
+      <!--div class="row">
         <div class="col-sm-12 col-md-6">
           <mat-form-field>
             <mat-select #fldTranitType placeholder="Tipo de TRANSITO" 
@@ -61,16 +61,14 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </div>
-
-
+      </div-->
 
     <div class="additional-info">
       <button class="additional-info" mat-raised-button color="primary"
           (click)="onSubmit()"
-          [disabled]="!form.valid">Continuar</button>
+          [disabled]="!form.valid">Confirmar</button>
 
-      <button class="additional-info"  mat-raised-button color="accent"
+      <button  *ngIf='buscarLocacion' class="additional-info"  mat-raised-button color="accent"
           (click)="onLocationSearch()"
           [disabled]="!form.valid">Buscar locación de internación</button>
 

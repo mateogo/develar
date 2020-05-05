@@ -11,12 +11,11 @@ import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Tran
                     MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 @Component({
-  selector: 'app-solicitudes-internacion-modal',
+  selector: 'solicitudes-internacion-modal',
   templateUrl: './solicitudes-internacion-modal.component.html',
   styleUrls: ['./solicitudes-internacion-modal.component.scss']
 })
 export class SolicitudesInternacionModalComponent implements OnInit {
-
   //table  
   public columnasMostradas = ['select', 'tDoc', 'nDoc', 'name', 'diagnostico'];
 
@@ -31,10 +30,6 @@ export class SolicitudesInternacionModalComponent implements OnInit {
   public locacionesFCtrl = new FormControl();
   public opcionesFiltradas: Observable<LocacionAvailable[]>;
   public selection = new SelectionModel<any>(true, []);
-
-
-
-
 
   constructor(
             public dialogRef: MatDialogRef<SolicitudesInternacionModalComponent>,

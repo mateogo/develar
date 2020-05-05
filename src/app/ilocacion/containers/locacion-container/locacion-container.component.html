@@ -15,9 +15,10 @@
     </mat-card-header>
 
     <mat-card-content>
-    <internacion-controles  (radioSelectedOption) = "radioSelectedOptionEvent($event)" 
+    <internacion-header-control  (radioSelectedOption) = "radioSelectedOptionEvent($event)" 
                             (currentProyeccionDateEmit)="currentProyeccionDateEmit($event)"
-                            (checkBoxEmit)="checkBoxEmit($event)"></internacion-controles>
+                            (altaRapidaEvent)="altaRapidaPaciente($event)"
+                            (checkBoxEmit)="checkBoxEmit($event)"></internacion-header-control>
 
     <!-- Buffers -->
     <app-botonera-container
@@ -50,7 +51,7 @@
 
                 <mat-card style='background-color: white;'>
                     <ng-container *ngIf="showCamasOcupadas">
-                    <div class="d-md-flex flex-wrap justify-content-start align-items-center white-panel">    
+                    <div class="d-md-flex flex-wrap justify-content-start align-items-center white-panel m-1">    
                         <ng-container *ngFor="let cama of master_internacion[servicio.srvtype]">
                             <app-paciente
                                 (onClick)="openPacienteModal($event)"

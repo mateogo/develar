@@ -33,12 +33,6 @@ import { 	SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Transit
 
 import { InternacionHelper } from './internacion.helper';
 
-import { CentroOperacionesState } from '../../icoordinacion/state/centro-operaciones.state';
-import { SolicitudesApi } from '../../icoordinacion/api/solicitudes.api';
-import { LocacionesApi } from '../../icoordinacion/api/locaciones.api';
-import { BotonesApi } from '../../icoordinacion/api/botones.api';
-import { BotonContador } from '../../develar-commons/base.model';
-
 
 const RECORD = 'internacion'
 
@@ -201,6 +195,12 @@ export class InternacionService {
       internacion.estado =  'transito';
       transito.estado =     'enejecucion';
 
+    }else if(transition === 'pool:pool'){ //'Alocación pendiente'},
+      solint.queue =        'pool';
+      solint.avance =       'emitido';
+      internacion.estado =  'pool';
+      transito.estado =     'enejecucion';
+
     }else if(transition === 'pool:admision'){ //'Alocar en Admisión'},
       solint.queue =        'alocado';
       solint.avance =       'esperacama';
@@ -308,6 +308,19 @@ export class InternacionService {
   camaSlug:   string; // denominación de la cama en el HOSP
   recursoId:  string;
 ***/
+
+  // Sol de Internación queda en el POOL, indicando un triage
+  asignarPool(solinternacion: SolicitudInternacion, triage: MotivoInternacion ): Subject<SolicitudInternacion>{
+    let listener = new Subject<SolicitudInternacion>();
+    solinternacion.queue = 'pool';
+    solinternacion.triage = triage;
+
+    this.updateSolicitudInternacion(listener, solinternacion);
+
+    return listener;
+  }
+
+
 
   // transición de pool a tránsito
   asignarLocacion(solinternacion: SolicitudInternacion, locacion: LocacionAvailable ): Subject<SolicitudInternacion>{

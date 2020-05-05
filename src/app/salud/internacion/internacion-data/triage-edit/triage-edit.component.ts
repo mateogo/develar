@@ -30,6 +30,7 @@ const SERVICIO_DEFAULT = "INTERNACION"
 export class TriageEditComponent implements OnInit {
 	@Input() triage: MotivoInternacion;
   @Output() updateTriageEvent = new EventEmitter<UpdateInternacionEvent>();
+  @Input() buscarLocacion = true;
 
   pageTitle: string = 'Triage de internación';
   public form: FormGroup;

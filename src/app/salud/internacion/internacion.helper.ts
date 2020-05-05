@@ -457,6 +457,7 @@ const queueOptList: Array<any> = [
 
 //'pool:internacion', 'internacion:internacion', 'internacion:pool'
 const tiposTransitosOptList: Array<any> = [
+    {val: 'pool:pool',               label: 'Pendiente de asignar locación',     actionLabel: 'Alta. Asignación de locación pendiente'},
     {val: 'pool:transito',           label: 'Locación de internación asignada',  actionLabel: 'Alocar y disponer traslado'},
     {val: 'pool:admision',           label: 'Locación de internación asignada',  actionLabel: 'Alta: ingresa en Admisión'},
     {val: 'transito:admision',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Admisión'},
