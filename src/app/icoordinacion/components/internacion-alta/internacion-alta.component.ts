@@ -148,7 +148,6 @@ export class InternacionAltaComponent implements OnInit {
 
   private handleSolicitudInternacion(dry: boolean){
     if(dry){
-      console.log('has Solicitue[%s] [%s]' , this.hasSolicitud, this.solInternacion)
       if(this.hasSolicitud){
 
       }

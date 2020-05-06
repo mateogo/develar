@@ -277,26 +277,26 @@ export class SaludController {
       infeccion.isActive = true;
 
       if(sisaevent.avance === 'sospecha'){
-        infeccion.avance = 'sospecha';
+        infeccion.avance = 'sindato';
         infeccion.sintoma = 'sindato';
         infeccion.hasCovid = false;
         infeccion.actualState = 0;
 
       }else if(sisaevent.avance === 'confirmado'){
-        infeccion.avance = 'confirmado';
+        infeccion.avance = 'sindato';
         infeccion.sintoma = 'sindato';
         infeccion.hasCovid = true;
         infeccion.actualState = 1;
 
       }else if(sisaevent.avance === 'descartado'){
-        infeccion.avance = 'descartado';
+        infeccion.avance = 'sindato';
         infeccion.sintoma = 'sindato';
         infeccion.hasCovid = false;
         infeccion.actualState = 2;
 
       }else if(sisaevent.avance === 'fallecido'){
-        infeccion.avance = 'fallecido';
-        infeccion.sintoma = 'sindato';
+        infeccion.avance = 'sindato';
+        infeccion.sintoma = 'fallecido';
         infeccion.hasCovid = false;
         infeccion.actualState = 4;
       }
@@ -364,18 +364,17 @@ export class SaludController {
 
       if(laboratorios && laboratorios.length){
         let laboratorio = laboratorios[laboratorios.length - 1];
-        if(laboratorio.estado === 'analizada'){
+        if(laboratorio.estado === 'presentada'){
           if (laboratorio.resultado === 'confirmada'){
             infection.hasCovid = true;
             infection.isActive = true;
             infection.actualState = 1;
-            infection.avance  = ['posible','sospecha', 'descartado'].indexOf(infection.avance) !== -1 ? 'confirmado' : infection.avance ;
             infection.fe_confirma = laboratorio.fe_resestudio;
             infection.fets_confirma = laboratorio.fets_resestudio;
 
 
           }else if (laboratorio.resultado === 'descartada'){
-            infection.hasCovid = false;
+            //infection.hasCovid = false;
             infection.actualState = infection.actualState === 0 ? 2 : infection.actualState;
           }
         }

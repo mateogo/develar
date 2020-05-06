@@ -156,7 +156,7 @@ export class InternacionService {
   manageInternacionTransition(solinternacion: SolicitudInternacion, internacion: Internacion, transition: string){
     let listener = new Subject<SolicitudInternacion>();
 
-    this.transitionOrchestration(listener, solinternacion,internacion,transition)
+    this.transitionOrchestration(listener, solinternacion, internacion, transition)
     return listener;
   }
 
@@ -179,7 +179,7 @@ export class InternacionService {
     triage.transitType = transition;
     transito.transitType = transition;
     transito.target = internacion;
-    transito.from = oldInternacion;
+    //transito.from = oldInternacion;
     transito.atendidox = atendidoPor;
 
     transito.fe_prog = devutils.txFromDate(today);
@@ -232,6 +232,12 @@ export class InternacionService {
       transito.estado =     'cumplido';
 
     }else if(transition === 'admision:servicio'){ //'Traslado intra-locación'   },
+      solint.queue =        'alocado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'servicio';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'servicio:servicio'){ //'Cambio recurso intra-locación'   },
       solint.queue =        'alocado';
       solint.avance =       'entratamiento';
       internacion.estado =  'servicio';
@@ -349,10 +355,17 @@ export class InternacionService {
     return this.manageInternacionTransition(solinternacion, internacion, transition)
   }
 
+  evolucionarInternacion(solinternacion: SolicitudInternacion): Subject<SolicitudInternacion>{
+    let internacion = solinternacion.internacion;
+    let transition =  'servicio:servicio';
+
+    return this.manageInternacionTransition(solinternacion, internacion, transition)
+  }
+
 
   asignarRecurso(solinternacion: SolicitudInternacion, locacion: LocacionHospitalaria, servicio: string, recurso: Recurso ): Subject<SolicitudInternacion>{
     let internacion = solinternacion.internacion;
-    let transition = 'admision:servicio';
+    let transition = internacion.estado === 'servicio'? 'servicio:servicio' :  'admision:servicio';
 
     internacion.locId =    locacion._id;
     internacion.locSlug =  locacion.slug;

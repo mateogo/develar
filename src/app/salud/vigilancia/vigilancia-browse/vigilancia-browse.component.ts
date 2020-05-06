@@ -149,6 +149,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       compNum_h:       [null],
       isVigilado:      [null],
       hasCovid:        [null],
+      necesitaLab:     [null],
       pendLaboratorio: [null],
       actualState:     [null],
       isSeguimiento:   [null],
@@ -180,6 +181,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         pendLaboratorio: query.pendLaboratorio,
         actualState: query.actualState,
         hasCovid:   query.hasCovid,
+        necesitaLab:   query.necesitaLab,
         isSeguimiento:  query.isSeguimiento,
         tipoSeguimiento:  query.tipoSeguimiento,
         qIntents:   query.qIntents,
@@ -225,6 +227,7 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.pendLaboratorio =   fvalue.pendLaboratorio;
     entity.actualState  = fvalue.actualState;
     entity.hasCovid =     fvalue.hasCovid;
+    entity.necesitaLab =     fvalue.necesitaLab;
 
     entity.isSeguimiento =   fvalue.isSeguimiento;
     entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
@@ -264,6 +267,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
       if(key === 'isVigilado'       && !entity[key]) delete entity[key];
       if(key === 'hasCovid'         && !entity[key]) delete entity[key];
+      if(key === 'necesitaLab'      && !entity[key]) delete entity[key];
       if(key === 'isSeguimiento'    && !entity[key]) delete entity[key];
       if(key === 'isActiveSisa'     && !entity[key]) delete entity[key];
       if(key === 'pendLaboratorio'  && !entity[key]) delete entity[key];

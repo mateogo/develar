@@ -45,6 +45,7 @@ const internacionSch = new Schema({
 
     slug:           { type: String, required: false },
     description:    { type: String, required: false },
+    profesional:    { type: String, required: false },
 
     transitoId:    { type: String, required: false },
 

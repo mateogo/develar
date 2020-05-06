@@ -674,6 +674,12 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    let necesitaLab = false;
+
+    if(query && query.necesitaLab ){
+      necesitaLab = true;
+    }
+
     // c onsole.log('find ASISPREVENCION ************')
     console.dir(regexQuery);
     //c onsole.dir(regexQuery['$and'][0]['followUp.fets_ucontacto'])
@@ -701,6 +707,10 @@ exports.findByQuery = function (query, errcb, cb) {
                     console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
                     errcb(err);
                 }else{
+
+                    if(entities && entities.length && necesitaLab){
+                      entities = filterNecesidadDeLaboratorio(entities);
+                    }
                     cb(entities);
                 }
       });
@@ -709,6 +719,60 @@ exports.findByQuery = function (query, errcb, cb) {
 
 };
 
+ // ACA
+function filterNecesidadDeLaboratorio(entities){
+  let today = new Date()
+  let today_ts = today.getTime();
+
+  let filteredList = entities.filter(token => {
+    let feReferencia_ts = null;
+    let isCovid = false;
+
+    // caso 1
+    if(!(token.followUp)) return false;
+    feReferencia_ts = token.followUp.fets_inicio;
+
+    if(token.infeccion){
+      if(token.infeccion.actualState === 1){
+        isCovid = true;
+        feReferencia_ts = token.infeccion.fets_confirma
+      }
+
+      // caso 2
+      if(token.infeccion.actualState === 3 || token.infeccion.actualState === 4 || token.infeccion.actualState === 5   ) return false;
+    }
+
+    // caso 3: pasaron menos de 14 días de vigilancia o de confirmación de COVID
+    if((today_ts - feReferencia_ts) / (1000 * 60 * 60 * 24) < 14) return false;
+
+
+    if(token.muestraslab && token.muestraslab.length){
+      let muestras = token.muestraslab;
+      let fechaLab = null
+
+      muestras.forEach(mu => {
+        if(mu.resultado === 'descartada') {
+          fechaLab = mu.fets_resestudio
+        }
+      })
+
+      if(fechaLab){
+          if((today_ts - fechaLab) / (1000 * 60 * 60 * 24) < 2) return false;
+          else return true;
+
+      }else{
+        return true;
+      }
+
+    }else {
+      return true;
+
+    }
+
+  })
+
+  return filteredList;
+}
 
 
 /**

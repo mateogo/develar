@@ -635,6 +635,7 @@ export class VigilanciaBrowse {
 		isVigilado: boolean = true;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
 		hasCovid:   boolean = false;
+		necesitaLab: boolean = false;
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
 		qIntents: number = 0;

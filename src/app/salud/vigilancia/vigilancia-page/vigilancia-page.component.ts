@@ -220,6 +220,7 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
       if(key === 'isVigilado'       && !query[key]) delete query[key];
       if(key === 'hasCovid'         && !query[key]) delete query[key];
+      if(key === 'necesitaLab'      && !query[key]) delete query[key];
       if(key === 'isSeguimiento'    && !query[key]) delete query[key];
       if(key === 'isActiveSisa'     && !query[key]) delete query[key];
       if(key === 'pendLaboratorio'  && !query[key]) delete query[key];
@@ -227,7 +228,7 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'qNotSeguimiento'  && !query[key]) delete query[key];
       if(key === 'qDaysSisa'        && !query[key]) delete query[key];
       if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
-      if(key === 'casosIndice'       && !query[key]) delete query[key];
+      if(key === 'casosIndice'      && !query[key]) delete query[key];
     })
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {

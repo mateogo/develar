@@ -84,6 +84,7 @@ export class Internacion {
 
 	slug:          string = '';
 	description:   string = '';
+	profesional:   string = '';
 
 	transitoId:    string;
 

@@ -55,6 +55,7 @@
                         <ng-container *ngFor="let cama of master_internacion[servicio.srvtype]">
                             <app-paciente
                                 (onClick)="openPacienteModal($event)"
+                                [sinternacion]='cama'
                                 [nombrePaciente]="cama.requeridox.slug"
                                 [nombreCama]="cama.internacion.camaSlug || cama.internacion.camaCode"
                             ></app-paciente></ng-container>

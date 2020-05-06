@@ -60,33 +60,38 @@
 			</mat-list>
 			<div class="row">
 				<div class="offset-md-8 offset-sm-6 offset-1 col-5 col-sm-3 col-md-2">
-					<button type="button" mat-flat-button color="primary" matTooltip="Pasar a extenación"  [matTooltipPosition]="'above'" (click)="altaPaciente()">Dar de alta</button>
+					<button type="button" mat-flat-button color="primary" matTooltip="Pasar a extenación"  [matTooltipPosition]="'above'" (click)="updateInternacion()">Actualizar</button>
 				</div>
 				<div class="col-md-2 col-sm-3 col-3">
-					<button type="button" mat-flat-button color="warn" matTooltip="Liberar ahora" [matTooltipPosition]="'above'" (click)="liberarAhora()">Liberar</button>
+					<button type="button" mat-flat-button color="warn" matTooltip="Cancelar" [matTooltipPosition]="'above'" (click)="onCancel()">Cancelar</button>
 				</div>
 			</div>
 		</mat-tab>
 
 		<!-- Evolución (alta de parte médico) -->
 		<mat-tab label="Evolución">
-			<form [formGroup]="evolucionForm" (ngSubmit)="onEvolucionSubmit()">
+			<form [formGroup]="evolucionForm">
 				<div class="container">
-					<!-- Comentario -->
+
 					<div class="row">
 						<mat-form-field class="col-12">
-							<mat-label>Ingrese el parte médico</mat-label>
-							<textarea matInput type="text"></textarea>
+							<mat-label>Ingrese indicación o problema</mat-label>
+			          <input matInput [formControl]="evolucionForm.controls['slug']" placeholder="Sector/Área">
 						</mat-form-field>
 					</div>
+					<div class="row">
+						<mat-form-field class="col-12">
+							<mat-label>Descripción / observación</mat-label>
+							<textarea matInput [formControl]="evolucionForm.controls['description']" type="text"></textarea>
+						</mat-form-field>
+					</div>
+
 
 					<!-- Doctor/doctora -->
 					<div class="row">
 						<mat-form-field class="col-12">
-							<input type="text"
-								placeholder="Dr./Dra."
-								matInput
-								[formControl]="formControlDr"
+							<input type="text" matInput placeholder="Dr. /Dra."
+								[formControl]="evolucionForm.controls['profesional']"
 								[matAutocomplete]="auto">
 							<mat-autocomplete #auto="matAutocomplete">
 								<mat-option *ngFor="let opcion of opcionesFiltradas | async" [value]="opcion">
@@ -95,19 +100,64 @@
 							</mat-autocomplete>
 						</mat-form-field>
 					</div>
-					<div class="row">
-						<button
-							mat-raised-button
-							color="accent">
-							Enviar parte médico
-						</button>
-					</div>
+
+	          <div class="d-md-flex justify-content-end"> <!-- ó col-6? -->
+	            <button class="m-1" mat-raised-button color="primary" 
+	                    [disabled]="!evolucionForm.valid" 
+	                    (click)="onSubmitEvolucion()">
+	                Enviar parte médico
+	            </button>
+	            <button class="m-1"  mat-raised-button color="warn"  (click)="onCancel()">
+	                Cancelar
+	            </button>
+	        	</div>
+
+
 				</div>
 			</form>
 		</mat-tab>
 
 		<!-- Historia clínica (comorbilidades) -->
-		<mat-tab label="Historia clínica">
+		<mat-tab label="Asignar recurso">
+
+			<div class="container-fluid p-0">
+			    <form [formGroup]="formRecursos">
+			        <div class="container">
+			                <!-- Recurso -->
+			            <div class="row"> <!-- ó col-6? -->
+			                <div class="col" style="text-align: center;">
+			                    <mat-form-field>
+			                        <mat-label>Recurso</mat-label>
+
+			                        <mat-select #fldRecurso 
+			                                        formControlName='recurso'
+			                                        (selectionChange)="changeSelectionValue('recurso', fldRecurso.value)">
+			                            <!-- Admisión -->
+			                            <mat-optgroup [disabled]="!recursosList.length" [label]="'Camas'">
+			                                <mat-option *ngFor="let recurso of recursosList" [value]="recurso">
+			                                    {{ recurso.slug }} 
+			                                </mat-option>
+			                            </mat-optgroup>
+
+			                        </mat-select>
+			                    </mat-form-field>
+			                </div>
+			            </div>
+
+			          <div class="d-md-flex justify-content-end"> <!-- ó col-6? -->
+			            <button class="m-1" mat-raised-button color="primary" 
+			                    [disabled]="!formRecursos.valid" 
+			                    (click)="onSubmitRecursos()">
+			                Asignar
+			            </button>
+			            <button class="m-1"  mat-raised-button color="warn"  (click)="onCancel()">
+			                Cancelar
+			            </button>
+			        	</div>
+			        </div>
+			    
+			    </form>
+			</div>
 
 		</mat-tab>
 	</mat-tab-group>
@@ -169,7 +219,7 @@
 					<button type="submit" mat-flat-button color="primary">Ingresar</button>
 				</div>
 				<div class="col-sm-2 col-5 col-md-2">
-					<button type="button" mat-flat-button color="warn" (click)="volver()">Volver</button>
+					<button type="button" mat-flat-button color="warn" (click)="onCancel()">Cancelar</button>
 				</div>
 			</div>
 		</form>

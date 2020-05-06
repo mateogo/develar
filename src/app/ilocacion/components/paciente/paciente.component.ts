@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SolicitudInternacion, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 @Component({
   selector: 'app-paciente',
@@ -9,7 +10,8 @@ export class PacienteComponent implements OnInit {
 
   @Input() nombrePaciente;
   @Input() nombreCama?;
-  @Output() onClick = new EventEmitter<string>();
+  @Input() sinternacion: SolicitudInternacion;
+  @Output() onClick = new EventEmitter<SolicitudInternacion>();
 
   constructor() { }
 
@@ -18,7 +20,7 @@ export class PacienteComponent implements OnInit {
 
   onPacienteClick(){
     //TODO: emitir id para identificar el botón
-    this.onClick.emit('');
+    this.onClick.emit(this.sinternacion);
   }
 
 }

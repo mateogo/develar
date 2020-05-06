@@ -86,6 +86,16 @@
           </mat-form-field>
         </div>
       </div>
+      <div class="row" >
+        <div class="col-md-6 d-md-flex justify-content-start align-items-center" 
+            title="Busca casos con 14+ días se vigilancia para verificar necesidad de nuevo hisopado">
+          <mat-checkbox  class='mat-check'
+                  [checked]="false"
+                  [formControl]="form.controls['necesitaLab']" ></mat-checkbox>
+                  <span class='mat-data'>Explorar necesidad de nuevo laboratorio (+14 días)</span>
+        </div>
+      </div>
+
       <hr>
  
       <div class="row" >

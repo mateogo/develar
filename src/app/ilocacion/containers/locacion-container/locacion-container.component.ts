@@ -20,6 +20,7 @@ const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
 const ASIGNAR = 'asignar';
 const UPDATE = 'update';
+const EVOLUCIONAR = 'evolucionar';
 
 
 @Component({
@@ -235,25 +236,62 @@ export class LocacionContainerComponent implements OnInit{
     this.viewList = list.map(t => t.val) || [] ;
   }
 
+/********
 
+class PacienteModel {
+  name: string;
+  dni: string;
+  diagnostico: string;
+
+}
+class CamaModel {
+  paciente: PacienteModel;
+  camaId: string;
+  estado: string;
+  fecha_in: Date;
+  fecha_prev_out: string;
+}
+
+
+*****/
 
   /**************************************************************************/
   /******* ALTA NOVEDADES PACIENTE: PENDIENTE ***/
   /************************************************************************/
-  openPacienteModal(pacienteId){
+  openPacienteModal(sinternacion: SolicitudInternacion){
+    let recursos = this.buildDatosForPacienteModal(sinternacion);
+
       const dialogRef = this.dialog.open(
           CamaEstadoModalComponent,
           {
               width: '750px',
               data: {
-                  cama: '' //this.currentLocation.estado_ocupacion[0]
+                  sinternacion: sinternacion,
+                  recursos: recursos
               }
           }
       );
 
       dialogRef.afterClosed().subscribe(result => {
+        if(!result) return;
+
+        if(result.action === ASIGNAR){
+          this.asignarPacienteARecurso(result);
+
+        } else if(result.action === EVOLUCIONAR){
+          this.evolucionarPaciente(result)
+
+        }
+     
           //TODO: hacer lo que corresponda
       });
+  }
+
+  private buildDatosForPacienteModal(sinternacion: SolicitudInternacion){
+    let servicio = sinternacion.internacion.servicio;
+    let recursos = this.master_camas[servicio];
+    let recursosLibres = recursos.filter(rr => rr.estado === 'libre');
+    return recursosLibres;
   }
 
 
@@ -297,9 +335,16 @@ export class LocacionContainerComponent implements OnInit{
   private asignarPacienteARecurso(event: AsignarRecursoEvent){
       this._locacionFacade.asignarRecurso(event.sinternacion, this._currentLocation, event.servicio, event.recurso).subscribe(sol => {
           this.refreshAfectadosList(this._currentLocation);
+          this._locacionFacade.openSnackBar('Actulización exitosa', 'CERRAR');
       })
 
   }
 
+  private evolucionarPaciente(event: AsignarRecursoEvent){
+      this._locacionFacade.evolucionarInternacion(event.sinternacion).subscribe(sol => {
+          this.refreshAfectadosList(this._currentLocation);
+          this._locacionFacade.openSnackBar('Actulización exitosa', 'CERRAR');
+      })
+  }
 
 }
