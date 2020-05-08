@@ -263,6 +263,8 @@ exports.parseDateStr = function(str) {
     if(!str) return null;
 
     var mx = str.match(/(\d+)/g);
+    if(!mx) return null;
+
     var ty = new Date();
     if(mx.length === 0) return ty;
     if(mx.length === 1){

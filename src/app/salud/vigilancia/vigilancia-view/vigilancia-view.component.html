@@ -1,101 +1,85 @@
 <ng-container *ngIf='asistencia.isAsistencia'>
-	<p class='text-headerblock'>{{ asistencia.solicitante }}</p>
+  <ng-container *ngIf="showSisaData">
+  <hr>
+  <p class='text-resaltado'>SISA -   <strong>{{ sisaData.avance }}</strong>  -
+                          (Ref. SISA: {{ sisaData.sisaevent.sisaId }}) </p>
+  <p class='text-normal'> Reportado: {{ sisaData.sisaevent.fe_reportado }} 
+                          Por: {{ sisaData.sisaevent.reportadoPor }}</p>
 
-	<p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong></p>
+  <p class='text-normal'>{{ sisaData.sisaevent.slug }}</p>
+  <p class='text-normal'>Última consulta SISA: {{ sisaData.sisaevent.fe_consulta }}</p>
+  </ng-container>
 
-    <ng-container *ngIf='asistencia.casoIndice'>
+  <ng-container *ngIf="showSeguimientoData">
+  <hr>
+  <p class='text-resaltado'>SEGUIMIENTO {{ seguimiento.tipo }} -  <strong>
+                          {{ seguimiento.vector }}</strong>  -
+                          (Últ contacto: {{ seguimiento.token.fe_ucontacto }}) </p>
+  <p class='text-normal'> {{ seguimiento.token.slug }} </p>
+  <p class='text-normal'> Inicio: {{ seguimiento.token.fe_inicio }} 
+                                              Contactos: {{ seguimiento.token.qcontactos }} / {{ seguimiento.token.qllamados }} 
+                                              Última: {{ seguimiento.lastCall }} 
+                                          #{{ seguimiento.token.qIntents }} </p>
+  </ng-container>
 
-        <p class='text-normal'>{{ asistencia.casoIndiceTxt }}
-            <span class="edit-control"
-                (click)='manageCasoIndice(asistencia.casoIndice)' title="Seguimiento del caso índice">
-                <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
-        </p>
+  <ng-container *ngIf="showInfectionData">
+  <hr>
+  <p class='text-resaltado'>COVID {{ infectionData.avance }} -  
+      <strong>{{ infectionData.sintoma }} </strong></p>
+  <p class='text-normal'> Inicio:{{ infectionData.token.fe_inicio }}  
+                          Confirmación:{{ infectionData.token.fe_confirma }}  
+                          Alta:{{ infectionData.token.fe_alta }} </p>
 
+  <p class='text-normal'> Contactos cercanos: Hogar: {{ infectionData.token.qcovivientes }} 
+      Trabajo: {{ infectionData.token.qcoworkers }} 
+      Otros: {{ infectionData.token.qotros }} </p>
+  <p class='text-normal'>{{ infectionData.token.slug }}</p>
 
-    </ng-container>
+  </ng-container>
 
+  <ng-container *ngIf="showMuestrasData">
+      <hr>
+      <ng-container *ngFor="let muestra of muestrasList">
+          <p class='text-resaltado'>LAB {{ muestra.token.muestraId }} -  {{ muestra.token.fe_resestudio}} ::
+                  {{ muestra.estado}} - <strong>{{ muestra.resultado }} </strong></p>
+          <p class='text-normal'>LAB: {{ muestra.token.laboratorio }} 
+                                  TOMA: {{  muestra.token.locacionSlug }}</p>
+          <p class='text-normal'>LAB: {{ muestra.token.alert }} TOMA: {{  muestra.token.slug }}</p>
 
-    <ng-container *ngIf="showSisaData">
-    <hr>
-    <p class='text-resaltado'>SISA -   <strong>{{ sisaData.avance }}</strong>  -
-                            (Ref. SISA: {{ sisaData.sisaevent.sisaId }}) </p>
-    <p class='text-normal'> Reportado: {{ sisaData.sisaevent.fe_reportado }} 
-                            Por: {{ sisaData.sisaevent.reportadoPor }}</p>
+      </ng-container>
+  </ng-container>
 
-    <p class='text-normal'>{{ sisaData.sisaevent.slug }}</p>
-    <p class='text-normal'>Última consulta SISA: {{ sisaData.sisaevent.fe_consulta }}</p>
-    </ng-container>
+  <ng-container *ngIf="showVinculosData">
+      <hr>
+      <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
+      <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
+              <p class='text-resaltado'>{{ vinculo.slug }} 
+                              <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
 
-    <ng-container *ngIf="showSeguimientoData">
-    <hr>
-    <p class='text-resaltado'>SEGUIMIENTO {{ seguimiento.tipo }} -  <strong>
-                            {{ seguimiento.vector }}</strong>  -
-                            (Últ contacto: {{ seguimiento.token.fe_ucontacto }}) </p>
-    <p class='text-normal'> {{ seguimiento.token.slug }} </p>
-    <p class='text-normal'> Inicio: {{ seguimiento.token.fe_inicio }} 
-                                                Contactos: {{ seguimiento.token.qcontactos }} / {{ seguimiento.token.qllamados }} 
-                                                Última: {{ seguimiento.lastCall }} 
-                                            #{{ seguimiento.token.qIntents }} </p>
-    </ng-container>
-
-    <ng-container *ngIf="showInfectionData">
-    <hr>
-    <p class='text-resaltado'>COVID {{ infectionData.avance }} -  
-        <strong>{{ infectionData.sintoma }} </strong></p>
-    <p class='text-normal'> Inicio:{{ infectionData.token.fe_inicio }}  
-                            Confirmación:{{ infectionData.token.fe_confirma }}  
-                            Alta:{{ infectionData.token.fe_alta }} </p>
-
-    <p class='text-normal'> Contactos cercanos: Hogar: {{ infectionData.token.qcovivientes }} 
-        Trabajo: {{ infectionData.token.qcoworkers }} 
-        Otros: {{ infectionData.token.qotros }} </p>
-    <p class='text-normal'>{{ infectionData.token.slug }}</p>
-
-    </ng-container>
-
-    <ng-container *ngIf="showMuestrasData">
-        <hr>
-        <ng-container *ngFor="let muestra of muestrasList">
-            <p class='text-resaltado'>LAB {{ muestra.token.muestraId }} -  {{ muestra.token.fe_resestudio}} ::
-                    {{ muestra.estado}} - <strong>{{ muestra.resultado }} </strong></p>
-            <p class='text-normal'>LAB: {{ muestra.token.laboratorio }} 
-                                    TOMA: {{  muestra.token.locacionSlug }}</p>
-            <p class='text-normal'>LAB: {{ muestra.token.alert }} TOMA: {{  muestra.token.slug }}</p>
-
-        </ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="showVinculosData">
-        <hr>
-        <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
-        <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
-                <p class='text-resaltado'>{{ vinculo.slug }} 
-                                <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
-
-                <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
-                            <strong>{{ vinculo.vinculo }}</strong>
-                    <span class="edit-control"
-                        (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
-                        <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
-                    <span class="edit-control"
-                        (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
-                        <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
-                </p>
+              <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
+                          <strong>{{ vinculo.vinculo }}</strong>
+                  <span class="edit-control"
+                      (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
+                      <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
+                  <span class="edit-control"
+                      (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
+                      <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+              </p>
 
 
-        </div>
-    </ng-container>
+      </div>
+  </ng-container>
 
-    <div *ngIf="showFollowUp" class='follow-up-container'>
+  <div *ngIf="showFollowUp" class='follow-up-container'>
 
-        <vigilancia-followup    [asistencia]='manageIndizado' 
-                                [viewList]='viewList'
-                                (closePanel)='closeFollowUp($event)'></vigilancia-followup>
+      <vigilancia-followup    [asistencia]='manageIndizado' 
+                              [viewList]='viewList'
+                              (closePanel)='closeFollowUp($event)'></vigilancia-followup>
 
-    </div >
+  </div >
 
-    <ng-container *ngIf="showGenericData">
-    <hr>
+  <ng-container *ngIf="showGenericData">
+  <hr>
 	<p class='text-normal'>{{ asistencia.locacionTxt }}</p>
 	<p class='text-normal'>{{ asistencia.fiebreTxt }}</p>
 	<p class='text-normal'>{{ asistencia.sintomasTxt }}</p>
@@ -107,28 +91,74 @@
 	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
     </ng-container>
 
-<!-------
-    <badge class="badge-style"  *ngIf="asistencia.isNuevo"
-    				[size]="'large'"
-            [customColor]="true? 'rgba(84,74,150,0.6)': 'rgba(255,255,255,0.3)'" 
-            [borderRadius]="true">Nuevo</badge>
 
-    <badge class="badge-style"
-    				[size]="'large'"
-            [customColor]="true? 'rgba(84,100,150,0.6)': 'rgba(255,255,255,0.3)'" 
-            [borderRadius]="true">Intervenciones: {{asistencia.intervenciones}}</badge>
-
-    <badge class="badge-style"
-    				[size]="'large'"
-            [customColor]="asistencia.ponderacionColor" 
-            [borderRadius]="true">Ponderación: {{asistencia.costo}}</badge>
-
-    <badge class="badge-style"
-                    [size]="'large'"
-            [customColor]="asistencia.prioridadColor" 
-            [borderRadius]="true">{{asistencia.prioridad}}</badge>
+  <ng-container *ngIf='showIcons'>
+    <div class='row'>
+      <div class="col-md-6">
+        <p class='text-headerblock'>{{ asistencia.solicitante }}</p>
+        <p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  
+          <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong></p>
+      </div>
+    </div>
 
 
--->
+    <div class='row icons-block'>
+      <div class='col-md-10'>
+        <div class="d-md-flex justify-content-between align-items-center" >
 
-</ng-container>
+          <div *ngIf='sisaBadge.hasData' 
+                matTooltip='{{sisaBadge.toolTip}}'>
+            <badge  [color]="sisaBadge.color" >{{sisaBadge.branding}}</badge>
+            <badge  [color]="sisaBadge.color" 
+                    [arrow]="sisaBadge.arrow" 
+                    [borderRadius]="sisaBadge.border">
+                    {{ sisaBadge.label }}::{{ sisaBadge.fecha }}</badge>
+          </div>
+ 
+          <div *ngIf='covidBadge.hasData' 
+                matTooltip='{{covidBadge.toolTip}}'>
+            <badge  [color]="covidBadge.color" >{{covidBadge.branding}}</badge>
+            <badge  [color]="covidBadge.color" 
+                    [arrow]="covidBadge.arrow" 
+                    [borderRadius]="covidBadge.border">
+                    {{ covidBadge.label }}::{{ covidBadge.fecha }}</badge>
+          </div>
+ 
+          <div *ngIf='labBadge.hasData' >
+            <badge  [color]="labBadge.color" >{{labBadge.branding}}</badge>
+
+            <badge  *ngFor='let lab of labBadge.muestras'
+                    matTooltip='{{lab.toolTip}}'
+                    [color]="lab.color" 
+                    [arrow]="lab.arrow" 
+                    [borderRadius]="lab.border">
+                    {{ lab.fecha }}</badge>
+          </div>
+
+          <div *ngIf='fupBadge.hasData' 
+                matTooltip='{{fupBadge.toolTip}}'>
+            <badge  [color]="'warning'" >{{fupBadge.branding}}</badge>
+            <badge  [color]="'warning'" 
+                    [borderRadius]="fupBadge.border">
+                    {{ fupBadge.label }}</badge>
+            <badge  [color]="fupBadge.color" 
+                    [arrow]="fupBadge.arrow" 
+                    [borderRadius]="fupBadge.border">
+                    {{ fupBadge.fecha }}</badge>
+            <badge  [color]="fupBadge.color">{{fupBadge.qty}}</badge>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf='asistencia.casoIndice'>
+
+      <p class='text-normal'>{{ asistencia.casoIndiceTxt }}
+          <span class="edit-control"
+              (click)='manageCasoIndice(asistencia.casoIndice)' title="Seguimiento del caso índice">
+              <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+      </p>
+  </ng-container>
+

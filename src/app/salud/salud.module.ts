@@ -6,6 +6,7 @@ import { DevelarCommonsModule }    from '../develar-commons/develar-commons.modu
 import { NotificationsModule }    from '../notifications/notifications.module';
 
 import { ChartsModule }                     from 'ng2-charts';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
 
 import { DsocialRoutingModule } from './salud-routing.module';
 import { RecepcionPageComponent } from './recepcion-page/recepcion-page.component';
@@ -103,6 +104,7 @@ import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/v
 import { VigilanciaVinculosComponent } from './vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 import { InternacionHeaderControlComponent } from './internacion/internacion-helpers/internacion-header-control/internacion-header-control.component';
+import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientocalendar/vigilancia-seguimientocalendar.component';
 
 @NgModule({
   imports: [
@@ -113,6 +115,7 @@ import { InternacionHeaderControlComponent } from './internacion/internacion-hel
     DevelarCommonsModule,
     ChartsModule,
     NotificationsModule,
+    FullCalendarModule
   ],
   declarations: [
   	RecepcionPageComponent, 
@@ -206,11 +209,13 @@ import { InternacionHeaderControlComponent } from './internacion/internacion-hel
     VigilanciaVinculosComponent,
     VigilanciaDashboardPageComponent,
     InternacionHeaderControlComponent,
+    VigilanciaSeguimientocalendarComponent,
   ],
   entryComponents: 
   [
     VigilanciaSisaComponent, VigilanciaSisafwupComponent, VigilanciaSisahistoryComponent,
     VigilanciaSeguimientoComponent, VigilanciaSeguimientofwupComponent, VigilanciaSeguimientohistoryComponent,
+    VigilanciaSeguimientocalendarComponent,
     VigilanciaInfeccionComponent,
     VigilanciaLaboratorioComponent,
     VigilanciaVinculosComponent,

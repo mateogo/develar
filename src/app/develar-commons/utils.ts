@@ -26,6 +26,20 @@ const fumeList = [
 ];
 
 const semana_labels = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
+const mes_labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul' , 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']; 
+
+const formatDDMMToStr = function(date_num) {
+    let prefix = '00';
+
+    let date = date_num ? new Date(date_num) : new Date();
+
+    let da = (prefix+date.getDate()).substr(-prefix.length);
+
+    let mo = date.getMonth();
+    
+
+    return  da + '-' + mes_labels[mo];
+};
 
 const formatDateToStr = function(date_num) {
     let prefix = '00';
@@ -51,6 +65,15 @@ const dateToStr = function(date) {
     return da+"/"+mo+"/"+ye;
 };
 
+const dateToInvertedStr = function(date) {
+    let prefix = '00';
+    date = date ? date : new Date();
+
+    let da = (prefix+date.getDate()).substr(-prefix.length);
+    let mo = (prefix+(date.getMonth()+1)).substr(-prefix.length);
+    let ye = date.getFullYear();
+    return ye + '-' + mo + '-' + da;
+};
 
 const rangoFechasDocumento = {
     DNI: [
@@ -650,8 +673,16 @@ class Devutils {
 		return dateToStr(date);
 	}
 
+    txInvertedFromDate(date){
+        return dateToInvertedStr(date);
+    }
+
     txDayFormatFromDate(date_num){
         return formatDateToStr(date_num);
+    }
+
+    txDayMonthFormatFromDateNum(date_num){
+        return formatDDMMToStr(date_num);
     }
 
     txFromDateTime(time: number){

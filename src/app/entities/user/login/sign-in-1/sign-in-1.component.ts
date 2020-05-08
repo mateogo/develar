@@ -74,7 +74,9 @@ export class UserSignIn1Component implements OnInit {
 
   }
 
-  loginGoogle(){
+  loginGoogle(e){
+    e.stopPropagation();
+    e.preventDefault();
     window.location.href = '/api/users/login/google';
   }
 

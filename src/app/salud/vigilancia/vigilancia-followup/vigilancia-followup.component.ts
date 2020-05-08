@@ -27,6 +27,7 @@ import { VigilanciaSisahistoryComponent } from '../vigilancia-zmodal/vigilancia-
 import { VigilanciaSeguimientoComponent } from '../vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
 import { VigilanciaSeguimientofwupComponent } from '../vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 import { VigilanciaSeguimientohistoryComponent } from '../vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
+import { VigilanciaSeguimientocalendarComponent } from '../vigilancia-zmodal/vigilancia-seguimientocalendar/vigilancia-seguimientocalendar.component';
 
 import { VigilanciaInfeccionComponent }   from '../vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 import { VigilanciaLaboratorioComponent } from '../vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
@@ -184,9 +185,8 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   viewPanelsSelected(e){
-    e.source._checked = false;
 
-    if(!(e && e.value && e.value.length)) return;
+    //if(!(e && e.value && e.value.length)) return;
 
     this.manageAsistenciaView(e.value)
   }
@@ -223,18 +223,30 @@ export class VigilanciaFollowupComponent implements OnInit {
 
 
   public manageModalEditors(token: string){
-    if(token === 'sisa')          this.openSisaModal()
-    if(token === 'sisafwup')      this.openSisaFwUpModal()
-    if(token === 'historialsisa') this.openSisaHistoryModal()
 
-    if(token === 'seguimiento')          this.openSeguimientoModal()
-    if(token === 'seguimientofwup')      this.openSeguimientoFwUpModal()
-    if(token === 'historialseguimiento') this.openSeguimientoHistoryModal()
+    this.dsCtrl.fetchAsistenciaById(this.asistencia._id).then(asis =>{
+      if(asis){
+          this.asistencia = asis;
+          if(token === 'sisa')          this.openSisaModal()
+          if(token === 'sisafwup')      this.openSisaFwUpModal()
+          if(token === 'historialsisa') this.openSisaHistoryModal()
 
-    if(token === 'infection')     this.openInfectionModal()
+          if(token === 'seguimiento')          this.openSeguimientoModal()
+          if(token === 'seguimientofwup')      this.openSeguimientoFwUpModal()
+          if(token === 'historialseguimiento') this.openSeguimientoHistoryModal()
 
-    if(token === 'laboratorio')   this.openLaboratorioModal(null)
-    if(token === 'vinculofam')   this.buildVinculosFam(this.asistencia, null);
+          if(token === 'infection')     this.openInfectionModal()
+
+          if(token === 'laboratorio')   this.openLaboratorioModal(null)
+          if(token === 'vinculofam')   this.buildVinculosFam(this.asistencia, null);
+
+      }else{
+
+        this.dsCtrl.openSnackBar('No se pudo recuperar la solicitud requerida', 'Cerrar');
+      }
+    })
+
+
 
 
   }
@@ -351,7 +363,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   
   private openSeguimientoHistoryModal(){
     const dialogRef = this.dialog.open(
-      VigilanciaSeguimientohistoryComponent,
+      VigilanciaSeguimientocalendarComponent,
       {
         width: '800px',
         data: {

@@ -365,7 +365,7 @@ const avanceSisaOptList = [
 ];
 
 export class SisaEvent {
-	isActive:     boolean = false; // si hay internación activa en este momento.
+	isActive:     boolean = false; // si hay registro en sisa en este momento.
 	sisaId:       string = '';
 	reportadoPor: string = 'MAB';
 
@@ -454,8 +454,9 @@ export class ContextoAfectados {
 
 
 const tipoSeguimientoAfectadoOptList = [
-	{ val: 'sospecha', label: 'Sospecha'},
-	{ val: 'infectado', label: 'Infectado confirmado'},
+	{ val: 'sospecha',  label: 'Sospecha'},
+	{ val: 'infectado', label: 'Confirmado'},
+	{ val: 'monitoreo', label: 'Monitoreo'},
 ];
 
 
@@ -478,7 +479,7 @@ export class AfectadoFollowUp {
 	qllamados: number = 0;   // llamados totales
 	qcontactos: number = 0; // llamados con respuesta del afectado
 
-	lastCall: string = 'pendiente';// resultadoSeguimientoOptList 'pendiente|logrado|nocontesta'
+	lastCall: string = 'logrado';// resultadoSeguimientoOptList 'pendiente|logrado|nocontesta'
 	qIntents: number = 0;
 
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList

@@ -11,6 +11,9 @@ $bgcolor-vinculofam: #6568ff;
 $bgcolor-selectors: #d79e96;
 $bgcolor-closepanel: #d76e66;
 
+$bgcolor-action-selectors: #f2eded;
+
+
 .panel-header{
 		background-color: #f2eded;
 }
@@ -75,13 +78,13 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 2px;
 		max-height: 45px;
-		background-color: rgba($bgcolor-sisa, .5);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: rgba($bgcolor-sisa, .8);
+		background-color: rgba($bgcolor-action-selectors, .7);
 		color: $color-togglebutton;
 	}
 }
@@ -92,13 +95,13 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 2px;
 		max-height: 45px;
-		background-color: rgba($bgcolor-followup, .5);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: rgba($bgcolor-followup, .8);
+		background-color: rgba($bgcolor-action-selectors, .7);
 		color: $color-togglebutton;
 	}
 }
@@ -109,13 +112,13 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 2px;
 		max-height: 45px;
-		background-color: rgba($bgcolor-covid, .5);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: rgba($bgcolor-covid, .8);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 }
@@ -126,13 +129,13 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 2px;
 		max-height: 45px;
-		background-color: rgba($bgcolor-laboratorio, .5);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: rgba($bgcolor-laboratorio, .8);
+		background-color: rgba($bgcolor-action-selectors, .3);
 		color: $color-togglebutton;
 	}
 }
@@ -143,13 +146,13 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 2px;
 		max-height: 45px;
-		background-color: rgba($bgcolor-vinculofam, .5);
+		background-color: rgba($bgcolor-action-selectors, .5);
 		color: $color-togglebutton;
 	}
 
 	.mat-button-toggle-checked {
 		max-height: 45px;
-		background-color: rgba($bgcolor-vinculofam, .8);
+		background-color: rgba($bgcolor-action-selectors, .5);
 		color: $color-togglebutton;
 	}
 }
@@ -161,7 +164,7 @@ $bgcolor-closepanel: #d76e66;
 	.mat-button-toggle {
 		margin-right: 1px;
 		max-height: 45px;
-		background-color:rgba($bgcolor-selectors, .5);
+		background-color:rgba($bgcolor-selectors, .3);
 		color: $color-button;
 	}
 

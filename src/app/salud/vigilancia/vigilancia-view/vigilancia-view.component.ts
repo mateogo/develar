@@ -7,6 +7,8 @@ import { PersonService } from '../../person.service';
 
 import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
 
+import { devutils }from '../../../develar-commons/utils'
+
 import {   Asistencia, 
           ContextoDenuncia,
           SisaEvent,
@@ -44,6 +46,12 @@ export class VigilanciaViewComponent implements OnInit {
 
   public showFollowUp = false;
 
+  public showIcons = false;
+  public showIconSisa = true;
+  public showIconFollowUp = true;
+  public showIconLab = true;
+  public showIconCovid = true;
+
   public sisaData: SisaData;
   public infectionData: InfectionData;
   public seguimiento: SeguimientoData;
@@ -52,6 +60,11 @@ export class VigilanciaViewComponent implements OnInit {
 
   public muestrasList: MuestraslabData[] = [];
   public vinculosList$: Observable<VinculosData[]>;
+
+  public sisaBadge: SisaBadge = new SisaBadge();
+  public covidBadge: CovidBadge = new CovidBadge();
+  public fupBadge: FollowUpBadge = new FollowUpBadge();
+  public labBadge: LabBadge = new LabBadge();
 
   constructor(
           private perSrv: PersonService,
@@ -63,7 +76,7 @@ export class VigilanciaViewComponent implements OnInit {
       this.asistencia = this.buildCovidData(this.token)
     //   this.buildSisaData(this.token);
     //   this.buildSeguimientoData(this.token);
-
+      this.showIcons = true;
       this.openViewPanels(this.viewList);
   	}
   }
@@ -227,17 +240,6 @@ export class VigilanciaViewComponent implements OnInit {
   }
 
 
-  private buildSisaData(token: Asistencia){
-    if(!this.token.sisaevent){
-      this.showSisaData = false;
-      return;
-    }
-
-    this.sisaData = new SisaData(token.sisaevent);
-    this.showSisaData = true;
-  }
-
-
   private buildCovidData(token: Asistencia): AsistenciaToPrint{
     let covid = token.sintomacovid;
     let toPrint = new AsistenciaToPrint();
@@ -293,17 +295,193 @@ export class VigilanciaViewComponent implements OnInit {
     toPrint.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', token.estado, token.avance);
     toPrint.locacionTxt = this.buildDireccion(token)
 
+
+    this.buildsisaBadge(toPrint, token);
+    this.builcovidBadge(toPrint, token);
+    this.buillabBadge(toPrint, token);
+    this.builfollowUPdBadge(toPrint, token);
+
     this.buildDenuncia(toPrint, token);
 
     this.buildCasoIndice(toPrint, token);
 
+
     return toPrint;
+  }
+
+
+  private buildSisaData(token: Asistencia){
+    this.sisaData = new SisaData(token.sisaevent);
+    if(!this.token.sisaevent){
+      this.showSisaData = false;
+      return;
+    }
+
+    this.showSisaData = true;
+  }
+
+  //ACA
+   private builfollowUPdBadge(toPrint:AsistenciaToPrint, asistencia: Asistencia){
+    this.fupBadge = new FollowUpBadge()
+    let token = asistencia.followUp;
+
+    if(token){
+      this.fupBadge.hasData = true;
+      let today = new Date();
+      let tipoSeguimiento = AsistenciaHelper.getPrefixedOptionLabel('tipoFollowUp', '', token.tipo) ;
+      let inicioSeguimiento = token.fets_inicio ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): ''
+
+      let contactos = asistencia.seguimEvolucion;
+      let llamadosCount = 0;
+      let diasSeguimiento = Math.floor((today.getTime() - token.fets_inicio) / (1000 * 60 * 60 * 24));
+
+      this.fupBadge.toolTip = `Inicio:[${token.fe_inicio}] últ contacto:[${token.fe_ucontacto}] Contactos logrados:[${token.qcontactos}/${token.qllamados}] No contesta:[${token.qIntents}] ${token.slug} `;
+
+
+      if(contactos && contactos.length){
+        llamadosCount = contactos.length;
+      }
+
+      this.fupBadge.label = tipoSeguimiento + ' ' + inicioSeguimiento + ' #' + diasSeguimiento + ' días';
+      this.fupBadge.qty = token.qcontactos;
+
+      if(!(token.qllamados + token.qcontactos)){
+        this.fupBadge.arrow = 'down'
+        this.fupBadge.fecha = 'sin contacto';
+        this.fupBadge.color = 'danger'
+
+      }else if(     token.lastCall === 'logrado' ){
+        this.fupBadge.arrow = 'top'
+        this.fupBadge.fecha =  token.fets_ullamado ? devutils.txDayMonthFormatFromDateNum(token.fets_ullamado): '';
+        this.fupBadge.color = 'info'
+
+      }else{
+        this.fupBadge.arrow = 'bottom'
+        this.fupBadge.fecha = token.fets_ullamado ? devutils.txDayMonthFormatFromDateNum(token.fets_ullamado): '';
+        this.fupBadge.color = 'success'
+
+      }
+
+    }
+
+  }
+  
+
+
+  private buillabBadge(toPrint:AsistenciaToPrint, asistencia: Asistencia){
+    this.labBadge = new LabBadge()
+    let muestras = asistencia.muestraslab;
+
+    if(muestras && muestras.length){
+      this.labBadge.hasData = true;
+
+      muestras.forEach(muestra => {
+        let token = new LabBadge()
+        token.toolTip = `Estado:[${muestra.estado}] Resul:[${muestra.resultado}] tipo:${muestra.tipoMuestra} FechaToma:[${muestra.fe_toma}] FechaRes:[${muestra.fe_resestudio}] ${muestra.slug}  ${muestra.alerta} `;
+
+        if(muestra.estado === 'presentada'){
+          if(muestra.resultado === 'confirmada'){
+            token.arrow = 'top'
+            token.label = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', muestra.resultado)
+            token.fecha = devutils.txDayMonthFormatFromDateNum(muestra.fets_resestudio);
+            token.color = 'danger'
+
+          } else if(muestra.resultado === 'descartada'){
+            token.arrow = 'bottom'
+            token.label = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', muestra.resultado)
+            token.fecha = devutils.txDayMonthFormatFromDateNum(muestra.fets_resestudio);
+            token.color = 'success'
+
+          }else {
+            token.arrow = 'right'
+            token.label = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', muestra.resultado)
+            token.fecha = devutils.txDayMonthFormatFromDateNum(muestra.fets_toma);
+            token.color = 'info'            
+          }
+
+        }else{
+          token.arrow = 'bottom'
+          token.label = AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '', muestra.resultado)
+          token.fecha = devutils.txDayMonthFormatFromDateNum(muestra.fets_toma);
+          token.color = null;
+        }
+        this.labBadge.muestras.push(token);
+
+
+      })
+    }
+
+  }
+
+  private builcovidBadge(toPrint:AsistenciaToPrint, asistencia: Asistencia){
+    this.covidBadge = new CovidBadge()
+    let token = asistencia.infeccion;
+
+    if(token){
+      this.covidBadge.hasData = true;
+      this.covidBadge.label = AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', token.avance);
+      this.covidBadge.toolTip = `Internado: [${token.locacionSlug}] sintoma:${token.sintoma} ${token.slug}`;
+
+      if(     token.actualState === 0 ){
+        this.covidBadge.arrow = 'left'
+        this.covidBadge.fecha =  token.fets_inicio ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): '';
+        this.covidBadge.color = 'success'
+
+      }else if(token.actualState === 1 ){
+        this.covidBadge.arrow = 'top'
+        this.covidBadge.fecha = token.fets_confirma ? devutils.txDayMonthFormatFromDateNum(token.fets_confirma): '';
+        this.covidBadge.color = 'danger'
+
+      }else if(token.actualState === 2 ){
+        this.covidBadge.arrow = 'left'
+        this.covidBadge.fecha = '';
+        this.covidBadge.color = 'success'
+ 
+      }else if(token.actualState === 4 ){
+        this.covidBadge.arrow = 'right'
+        this.covidBadge.fecha =  token.fets_confirma ? devutils.txDayMonthFormatFromDateNum(token.fets_confirma): '';
+        this.covidBadge.color = 'warning'
+
+      }else if(token.actualState === 5 ){
+        this.covidBadge.arrow = 'bottom'
+        this.covidBadge.fecha =  token.fets_alta ? devutils.txDayMonthFormatFromDateNum(token.fets_alta): '';
+        this.covidBadge.color = 'success'
+
+      }else if(token.actualState === 6 ){
+        this.covidBadge.arrow = 'left'
+        this.covidBadge.fecha =  token.fets_confirma ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): '';
+        this.covidBadge.color = null;
+      }
+    }
+
+  }
+  
+  private buildsisaBadge(toPrint:AsistenciaToPrint, token: Asistencia){
+    this.sisaBadge = new SisaBadge()
+    let sisa = token.sisaevent
+
+    if(sisa){
+      this.sisaBadge.hasData = true;
+      this.sisaBadge.label = AsistenciaHelper.getPrefixedOptionLabel('avanceSisa', '', sisa.avance);
+      this.sisaBadge.toolTip = `Reportado: ${sisa.reportadoPor} Id:${sisa.sisaId} ${sisa.slug}`;
+
+      if(sisa.avance === 'sospecha' ||sisa.avance === 'confirmado'){
+        this.sisaBadge.arrow = 'top'
+        this.sisaBadge.fecha = devutils.txDayMonthFormatFromDateNum(sisa.fets_reportado);
+      }else{
+        this.sisaBadge.arrow = 'bottom'
+        this.sisaBadge.fecha = devutils.txDayMonthFormatFromDateNum(sisa.fets_consulta);
+
+      }
+    }
+
   }
 
   private buildCasoIndice(target: AsistenciaToPrint, token: Asistencia){
     if(token.casoIndice){
       target.casoIndice = true;
       target.casoIndiceTxt = 'CASO ÍNDICE: ' + token.casoIndice.slug;
+
     }else{
       target.casoIndice = false;
     }
@@ -447,6 +625,60 @@ class SisaData {
     this.sisaevent = sisa;
     this.avance = AsistenciaHelper.getPrefixedOptionLabel('avanceSisa', 'calificado como ', sisa.avance);
   }
+}
+
+class SisaBadge {
+  hasData = false;
+  color = 'info';
+  border = false;
+  outline = true;
+  arrow = 'bottom';
+  size = '';
+  branding = 'S';
+  label = '';
+  fecha = '';
+  toolTip = '';
+}
+
+class CovidBadge {
+  hasData = false;
+  color = 'info';
+  border = false;
+  outline = true;
+  arrow = 'bottom';
+  size = '';
+  branding = 'C19';
+  label = '';
+  fecha = '';
+  toolTip = '';
+}
+
+class FollowUpBadge {
+  hasData = false;
+  color = 'info';
+  border = false;
+  outline = true;
+  arrow = 'bottom';
+  size = '';
+  branding = 'LL';
+  label = '';
+  fecha = '';
+  toolTip = '';
+  qty = 0;
+}
+
+class LabBadge {
+  hasData = false;
+  color = 'info';
+  border = false;
+  outline = true;
+  arrow = 'bottom';
+  size = '';
+  branding = 'LAB';
+  label = '';
+  fecha = '';
+  toolTip = '';
+  muestras: Array<LabBadge> = [];
 }
 
 class AsistenciaToPrint {
