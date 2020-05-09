@@ -234,6 +234,7 @@ export class VigilanciaFollowupComponent implements OnInit {
           if(token === 'seguimiento')          this.openSeguimientoModal()
           if(token === 'seguimientofwup')      this.openSeguimientoFwUpModal()
           if(token === 'historialseguimiento') this.openSeguimientoHistoryModal()
+          if(token === 'calendarioseguimiento') this.openCalendarioModal()
 
           if(token === 'infection')     this.openInfectionModal()
 
@@ -360,10 +361,34 @@ export class VigilanciaFollowupComponent implements OnInit {
       //c onsole.log('dialog CLOSED')
     });    
   }
+
+  private openCalendarioModal(){
+    const dialogRef = this.dialog.open(
+      VigilanciaSeguimientocalendarComponent,
+      {
+        width: '800px',
+        data: {
+
+          asistencia: this.asistencia,
+
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
+      //c onsole.log('dialog CLOSED')
+    });    
+  }
+
+
   
   private openSeguimientoHistoryModal(){
     const dialogRef = this.dialog.open(
-      VigilanciaSeguimientocalendarComponent,
+      VigilanciaSeguimientohistoryComponent,
       {
         width: '800px',
         data: {
