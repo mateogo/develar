@@ -1,7 +1,27 @@
-<full-calendar
-  defaultView="dayGridMonth"
-  [plugins]="calendarPlugins"
-  [weekends]="true"
-  [events]="eventList"
-	[eventTextColor]="'white'"
-></full-calendar>
+<div class='app'>
+
+  <div class='app-top'>
+  	<span class="text-resaltado">{{displayAs}}</span>
+    <button mat-flat-button  (click)='toggleWeekends()'>FinDeSemana</button>
+    <button mat-flat-button  (click)='gotoPast()'>INICIO</button>
+  </div>
+
+  <div class='app-calendar' *ngIf="calendarVisible">
+    <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [header]="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+      [plugins]="calendarPlugins"
+      [weekends]="calendarWeekends"
+      (dateClick)="handleDateClick($event)"
+  		[events]="eventList"
+			[eventTextColor]="'white'"
+
+    ></full-calendar>
+  </div>
+
+</div>
