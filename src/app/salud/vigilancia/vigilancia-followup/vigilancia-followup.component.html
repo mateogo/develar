@@ -1,4 +1,4 @@
-<mat-card >
+<mat-card  *ngIf='showPanel'>
 <mat-card-content>
   <ng-container *ngIf='showAsistenciaView' >
     <vigilancia-view [token]='asistencia'  

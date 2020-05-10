@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import { SaludController } from '../../salud.controller';
 
@@ -65,6 +65,9 @@ export class VigilanciaPageComponent implements OnInit {
   public itemsFound = false;
   public currentAsistencia:Asistencia;
 
+  // DataSource
+  public asistenciasListener = new BehaviorSubject<Asistencia[]>([])
+ 
 
 
   constructor(
@@ -239,11 +242,12 @@ export class VigilanciaPageComponent implements OnInit {
 
         this.sortProperly(this.asistenciasList);
 
-        this.dsCtrl.updateTableData();
+        this.dsCtrl.triggerAsistenciaEmitter(this.asistenciasList);
 
         this.showData = true;
 
       }else {
+        this.dsCtrl.triggerAsistenciaEmitter([]);
         this.asistenciasList = [];
 
         this.showData = false;

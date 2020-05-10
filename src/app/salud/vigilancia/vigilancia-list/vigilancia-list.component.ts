@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
 
-import { Observable } from 'rxjs';
+import { ArrayDataSource, CollectionViewer } from '@angular/cdk/collections';
+
+import { BehaviorSubject,  Observable, merge, of }       from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { SaludController } from '../../salud.controller';
 
@@ -17,7 +21,8 @@ const EVOLUCION =  'evolucion';
 const DELETE =     'delete';
 const TOKEN_TYPE = 'asistencia';
 const NAVIGATE =   'navigate';
-
+const CANCEL =   'cancel';
+const CLOSE = 'closepanel';
 
 @Component({
   selector: 'vigilancia-list',
@@ -27,27 +32,67 @@ const NAVIGATE =   'navigate';
 export class VigilanciaListComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
   @Input() viewList: Array<String> = [];
+
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
   @Output() fetchPerson = new EventEmitter<string>();
+  @Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   public title = 'Vigilancia epidemiológica';
 
 	public showList = false;
-  public showActiveList = false;
-  public showFullList = true;
 
-  public openEditor = true;
-  public activeitems: Array<Asistencia> = [];
+  private currentAvance: string;
+
+  private paginator$: Observable<any>;
+  
+  private asistenciaList: BehaviorSubject<Asistencia[]>;
+  private asistenciaDataSource: ArrayDataSource<Asistencia>;
+
+  public itemsLength: number = 0;
+
+  private colViewer: CollectionViewer;
+
+
 
   constructor(
       private dsCtrl: SaludController,
-    ) { }
+    ) {
+      this.asistenciaList = this.dsCtrl.asistenciaListener;
+
+     }
 
   ngOnInit() {
 
-  	if(this.items && this.items.length){
-  		this.showList = true;
-  	}
+  	// if(this.items && this.items.length){
+  	// 	//this.showList = true;
+  	// }
+
+    //this.colViewer = new Subjec
+
+
+    this.asistenciaList.subscribe(l => {
+      this.itemsLength = l && l.length;
+      this.showList = true;
+    })
+
+
+    this.asistenciaDataSource = new AsistenciaDataSource(this.asistenciaList, this.paginator);
+
+    setTimeout(()=> {
+      this.asistenciaDataSource.connect().subscribe(list => {
+
+        // this.items = list;
+        // console.log('list connected: [%s]', list && list.length)
+
+      })
+
+
+    }, 1500);
+
+
+
 
   }
 
@@ -84,4 +129,37 @@ export class VigilanciaListComponent implements OnInit {
     }
   }
 
+
 }
+
+
+class AsistenciaDataSource extends ArrayDataSource<Asistencia> {
+
+  constructor(private sourceData: BehaviorSubject<Asistencia[]>,
+              private _paginator: MatPaginator){
+    super(sourceData);
+  }
+
+  connect(): Observable<Asistencia[]> {
+
+    const displayDataChanges = [
+      this.sourceData,
+      this._paginator.page
+    ];
+
+    return merge(...displayDataChanges).pipe(
+        map(() => {
+          const data = this.sourceData.value.slice()
+
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          return data.splice(startIndex, this._paginator.pageSize);
+        })
+     );
+  }
+
+  disconnect() {}
+
+}
+
+
+

@@ -1,9 +1,17 @@
 <ng-container *ngIf="showList">
-	<div  *ngFor="let item of items" class="row">
-		<div class="col-sm-12 col-md-12">
-			<vigilancia-panel [asistencia]='item' [viewList]='viewList'
-									(updateToken)='updateItem($event)'
-									(fetchPerson)='vinculoSelected($event)' ></vigilancia-panel>
-		</div>
+	<div  *ngFor="let item of asistenciaDataSource.connect()|async">
+
+			<vigilancia-followup  [asistencia]='item' [viewList]='viewList'
+								(fetchPerson)='vinculoSelected($event)' ></vigilancia-followup>
+
 	</div>
+
+
 </ng-container>
+
+	<mat-paginator #paginator
+      [length]="itemsLength"
+      [pageIndex]="0"
+      [pageSize]="25"
+      [pageSizeOptions]="[5, 25, 50, 75, 100]">
+	</mat-paginator>

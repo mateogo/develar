@@ -90,6 +90,8 @@ export class SaludController {
 
   public  onReady = new BehaviorSubject<boolean>(false);
 
+  private _asistenciaListener = new BehaviorSubject<Asistencia[]>([]);
+
   private emitAsistenciaDataSource = new BehaviorSubject<AsistenciaTable[]>([]);
   private _selectionModel: SelectionModel<AsistenciaTable>
   private solicitudesList: Array<Asistencia> = [];
@@ -711,6 +713,11 @@ export class SaludController {
   }
 
 
+  /*****  AsistenciaListener    ****/
+  get asistenciaListener(): BehaviorSubject<Asistencia[]>{
+    return this._asistenciaListener;
+  }
+
 
   /*****  SAsistencia TABLE table Table    ****/
   get asistenciasDataSource(): BehaviorSubject<AsistenciaTable[]>{
@@ -733,6 +740,10 @@ export class SaludController {
   updateTableData(){
     let tableData = AsistenciaHelper.buildDataTable(this.solicitudesList);
     this.emitAsistenciaDataSource.next(tableData);
+  }
+
+  triggerAsistenciaEmitter(list: Asistencia[]){
+    this.asistenciaListener.next(list);
   }
 
   updateAvanceAsistencia(avance,   asistenciaId:string){

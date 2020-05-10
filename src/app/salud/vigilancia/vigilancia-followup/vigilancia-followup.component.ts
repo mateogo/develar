@@ -67,8 +67,6 @@ export class VigilanciaFollowupComponent implements OnInit {
 	@Input() asistencia: Asistencia;
   @Input() detailView = true;
   @Input() viewList: Array<String> = [];
-	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
-  @Output() closePanel = new EventEmitter<string>();
   @Output() fetchPerson = new EventEmitter<string>();
 
   public muestraslabList: Array<MuestraLaboratorio> = [];
@@ -139,6 +137,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   // manageAsistenciaView
   public showAsistenciaView = true;
   public showEditor = false;
+  public showPanel = true;
 
   // asistencia
 
@@ -181,7 +180,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   closeFollowUpPanel(){
-    this.closePanel.next(CLOSE);
+    this.showPanel = false;
   }
 
   viewPanelsSelected(e){
