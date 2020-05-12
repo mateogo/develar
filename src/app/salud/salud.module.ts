@@ -105,6 +105,7 @@ import { VigilanciaVinculosComponent } from './vigilancia/vigilancia-zmodal/vigi
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 import { InternacionHeaderControlComponent } from './internacion/internacion-helpers/internacion-header-control/internacion-header-control.component';
 import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientocalendar/vigilancia-seguimientocalendar.component';
+import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
 
 @NgModule({
   imports: [
@@ -210,6 +211,7 @@ import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-
     VigilanciaDashboardPageComponent,
     InternacionHeaderControlComponent,
     VigilanciaSeguimientocalendarComponent,
+    VigilanciaReportesPageComponent,
   ],
   entryComponents: 
   [
