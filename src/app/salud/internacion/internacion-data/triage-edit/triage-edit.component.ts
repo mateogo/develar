@@ -55,13 +55,13 @@ export class TriageEditComponent implements OnInit {
 	/**********************************/
   onSubmit() {
   	this.triage = Object.assign(this.triage, this.form.value)
-  	this.triage.target = InternacionHelper.getTargetFromServicio(this.triage.servicio);
+  	this.triage.target = InternacionHelper.getCapacidadFromServicio(this.triage.servicio);
 		this.emitEvent(NEXT);
   }
 
   onLocationSearch(){
     this.triage = Object.assign(this.triage, this.form.value)
-    this.triage.target = InternacionHelper.getTargetFromServicio(this.triage.servicio);
+    this.triage.target = InternacionHelper.getCapacidadFromServicio(this.triage.servicio);
     this.emitEvent(SEARCH_LOCACION);
   }
 

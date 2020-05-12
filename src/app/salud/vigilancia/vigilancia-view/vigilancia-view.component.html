@@ -57,13 +57,53 @@
                               <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
 
               <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
-                          <strong>{{ vinculo.vinculo }}</strong>
+                          <strong>{{ vinculo.vinculo }} - {{ vinculo.token.nucleo }}</strong>
                   <span class="edit-control"
                       (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
                       <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
                   <span class="edit-control"
                       (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
                       <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+
+                  <span *ngIf='vinculo.labBadge.hasData' class="badge-vinculo" >
+                    <badge  [color]="vinculo.labBadge.color" >{{vinculo.labBadge.branding}}</badge>
+
+                    <badge  *ngFor='let lab of vinculo.labBadge.muestras'
+                            matTooltip='{{lab.toolTip}}'
+                            [color]="lab.color" 
+                            [arrow]="lab.arrow" 
+                            [borderRadius]="lab.border">
+                            {{ lab.fecha }}</badge>
+                  </span>
+
+                  <span *ngIf='vinculo.hisopadoBadge.hasData' class="badge-vinculo" >
+                    <badge  [color]="vinculo.hisopadoBadge.color" >{{vinculo.hisopadoBadge.branding}}</badge>
+                  </span>
+
+                  <span *ngIf='vinculo.covidBadge.hasData' class="badge-vinculo" 
+                        matTooltip='{{vinculo.covidBadge.toolTip}}'>
+                    <badge  [color]="vinculo.covidBadge.color" >{{vinculo.covidBadge.branding}}</badge>
+                    <badge  [color]="vinculo.covidBadge.color" 
+                            [arrow]="vinculo.covidBadge.arrow" 
+                            [borderRadius]="vinculo.covidBadge.border">
+                            {{ vinculo.covidBadge.label }}::{{ vinculo.covidBadge.fecha }}</badge>
+                  </span>
+
+
+                  <span *ngIf='vinculo.fupBadge.hasData'  class="badge-vinculo" 
+                        matTooltip='{{vinculo.fupBadge.toolTip}}'>
+                    <badge  [color]="'warning'" >{{vinculo.fupBadge.branding}}</badge>
+                    <badge  [color]="'warning'" 
+                            [borderRadius]="vinculo.fupBadge.border">
+                            {{ vinculo.fupBadge.label }}</badge>
+                    <badge  [color]="vinculo.fupBadge.color" 
+                            [arrow]="vinculo.fupBadge.arrow" 
+                            [borderRadius]="vinculo.fupBadge.border">
+                            {{ vinculo.fupBadge.fecha }}</badge>
+                    <badge  [color]="vinculo.fupBadge.color">{{vinculo.fupBadge.qty}}</badge>
+                  </span>
+
+
               </p>
 
 
@@ -133,6 +173,9 @@
                     [arrow]="lab.arrow" 
                     [borderRadius]="lab.border">
                     {{ lab.fecha }}</badge>
+          </div>
+          <div *ngIf='hisopadoBadge.hasData' >
+            <badge  [color]="hisopadoBadge.color" >{{hisopadoBadge.branding}}</badge>
           </div>
 
           <div *ngIf='fupBadge.hasData' 

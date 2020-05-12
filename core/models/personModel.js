@@ -122,6 +122,7 @@ const familySch = new mongoose.Schema({
 
     hasOwnPerson:{type: Boolean, required: false, default: false},
     personId:    {type: String, required: false, default: ""},
+    nucleo:      {type: String, required: false, default: ""},
 
     ecivil:      {type: String, required: false, default: ""},
     nestudios:   {type: String, required: false, default: ""},

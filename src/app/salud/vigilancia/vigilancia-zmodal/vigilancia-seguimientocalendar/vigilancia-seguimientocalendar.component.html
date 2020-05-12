@@ -18,10 +18,22 @@
       [plugins]="calendarPlugins"
       [weekends]="calendarWeekends"
       (dateClick)="handleDateClick($event)"
+      (eventClick)="handleEventClick($event)"
   		[events]="eventList"
 			[eventTextColor]="'white'"
-
     ></full-calendar>
   </div>
 
 </div>
+
+<ng-template #seguimiento >
+  <p class='text-resaltado'>Contacto: <strong>{{ actualFup.resultado }} :: Evolución: {{ actualFup.vector }} </strong>  -
+                        {{ actualFup.fe_llamado }} </p>
+
+  <p class='text-normal'>COMENTARIO:</p>
+  <p class='text-resaltado'>{{ actualFup.slug }}</p>
+
+  <p class='text-normal'>INDICACIONES:</p>
+  <p class='text-resaltado'>{{ actualFup.indicacion }}</p>
+
+</ng-template>

@@ -252,7 +252,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
 
-  private openVinculofamModal(person: Person, vinculo: FamilyData){
+  private openVinculofamModal(person: Person, vinculo: FamilyData, vPerson?: Person, vAsistencia?: Asistencia){
     const dialogRef = this.dialog.open(
       VigilanciaVinculosComponent,
       {
@@ -261,6 +261,8 @@ export class VigilanciaFollowupComponent implements OnInit {
           asistencia: this.asistencia,
           person: person,
           vinculo: vinculo,
+          vPerson: vPerson || null,
+          vAsistencia: vAsistencia || null,
         }
       }
     );
@@ -482,8 +484,10 @@ export class VigilanciaFollowupComponent implements OnInit {
   private buildVinculosFam(token: Asistencia, vinculo: FamilyData){
 
     let personId = token.requeridox && token.requeridox.id
+    let vinculoPerson: Person;
 
     if(!personId){
+      this.dsCtrl.openSnackBar('Error: solicitud de vigilancia sin identificación de Persona', 'ATENCIÓN')
       return;
     }
 
@@ -491,10 +495,38 @@ export class VigilanciaFollowupComponent implements OnInit {
       if(per){
         this.person = per;
         this.familyList = per.familiares || [];
-        this.openVinculofamModal(this.person, vinculo)
+
+        // el vínculo que se quiere editar, si es que existe
+        if(vinculo && vinculo.personId){
+          this.perSrv.fetchPersonById(vinculo.personId).then(vper => {
+            if(vper){
+              this.dsCtrl.fetchAsistenciaByPerson(vper).subscribe(list => {
+                if(list && list.length){
+                  this.openVinculofamModal(this.person, vinculo, vper, list[0]);
+
+                }else {
+                  this.openVinculofamModal(this.person, vinculo, vper, null);
+
+                }
+              })
+
+ 
+            }else{
+              this.dsCtrl.openSnackBar('Error: no se pudo recuperar la Persona perteneciente al vínculo', 'ATENCIÓN')
+              return;
+              //this.openVinculofamModal(this.person, vinculo, null);
+
+            }
+          })
+
+        }else {
+          this.openVinculofamModal(this.person, vinculo, null, null);
+
+        }
+
 
       }else {
-
+        this.dsCtrl.openSnackBar('Error: no se pudo recuperar la Persona afectada', 'ATENCIÓN')
         return;
       }
     })

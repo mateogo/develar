@@ -10,16 +10,39 @@ $color-destacado: #0645f5;
 
 }
 
-.text-resaltado {
-		margin: 0 15px 0 0;
+.app-calendar {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.text-destacado {
+		margin: 0 0 0 0;
 		color: $color-destacado;
 		font-weight: 400;
-		font-size: 1rem;
+		font-size: 2rem;
 		font-style: italic;
 
 }
 
-.app-calendar {
-  margin: 0 auto;
-  max-width: 900px;
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 15px 0 0 0;
+		font-weight: 400;
+		font-size: 1rem;
+		line-height: .8;
+		color: $color-destacado;
+}
+
+.text-audit {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: .8rem;
 }

@@ -26,17 +26,29 @@
   <hr>
   <form [formGroup]="form">
 
+
+    <fieldset formGroupName="vinculoForm">
     <!---nombre; apellido--->
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+          <input  matInput formControlName="nombre" placeholder="Nombre" >
         </mat-form-field>
       </div>
 
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
+          <input  matInput formControlName="apellido" placeholder="Apellido" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldNucleoHabitacional placeholder="Núcleo habitacional"
+              formControlName="nucleo"
+              (selectionChange)="changeSelectionValue('nucleo',fldNucleoHabitacional.value)" >
+            <mat-option *ngFor="let item of nucleoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>
@@ -45,7 +57,7 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldTdoc placeholder="Tipo de documento"
-              [formControl]="form.controls['tdoc']"
+              formControlName="tdoc"
               (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
             <mat-option *ngFor="let item of tdocOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
@@ -56,7 +68,7 @@
       <div class="col-md-5">
         <mat-form-field>
           <mat-placeholder>Número de documento</mat-placeholder>
-          <input  matInput [formControl]="form.controls['ndoc']" >
+          <input  matInput formControlName="ndoc" >
           <button mat-button matSuffix mat-stroked-button
                   title="Asignar número de documento provisorio"
                   (click)="documProvisorio()"
@@ -70,7 +82,7 @@
       <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldTipoVinculo placeholder="Vínculo familiar"
-              [formControl]="form.controls['vinculo']"
+              formControlName="vinculo"
               (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
             <mat-option *ngFor="let item of vinculosOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
@@ -84,7 +96,7 @@
       <div class="col">
         <mat-form-field>
           <mat-select #fldSexo placeholder="Sexo"
-              [formControl]="form.controls['sexo']"
+              formControlName="sexo"
               (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
             <mat-option *ngFor="let item of sexoOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
@@ -95,15 +107,15 @@
 
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
+          <input  matInput formControlName="fenactx" placeholder="Fecha de nacimiento" >
           <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
-          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+          <mat-error *ngIf="hasVinculoError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
         </mat-form-field>
       </div>
 
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto" >
+          <input  matInput formControlName="telefono" placeholder="Teléfono de contacto" >
         </mat-form-field>
       </div>
 
@@ -113,7 +125,7 @@
       <div class="col">
         <mat-form-field>
           <mat-select #fldEstadoVinculo placeholder="Estado del vínculo"
-              [formControl]="form.controls['estado']"
+              formControlName="estado"
               (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)" >
             <mat-option *ngFor="let item of estadoOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
@@ -123,11 +135,71 @@
 
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['comentario']" placeholder="Observación / comentario" >
+          <input  matInput formControlName="comentario" placeholder="Observación / comentario" >
         </mat-form-field>
       </div>
 
     </div>
+    </fieldset>
+      
+    <fieldset formGroupName="addressForm">
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName="street1" placeholder="Calle número" >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName="street2" placeholder="Información adicional" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName="streetIn" placeholder="Entre calle..." >
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName="streetOut" placeholder="y calle..." >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldCiudad placeholder="Ciudad"
+              formControlName='city'
+              (selectionChange)="changeSelectionValue('city', fldCiudad.value)" >
+            <mat-option *ngFor="let item of ciudadesList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldbarrio placeholder="Barrio"
+              formControlName='barrio'
+              (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+            <mat-option *ngFor="let item of barrioList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <div class="col">
+        <mat-form-field>
+          <input matInput formControlName='zip' placeholder="Código Postal" >
+        </mat-form-field>
+      </div>
+    </div>
+
+    </fieldset>
 
 
     <hr>
@@ -143,6 +215,10 @@
           (click)="onCreateCasoIndice()">
           Activar seguimiento bajo caso índice</button>
 
+      <button mat-raised-button color="primary" class='m-1'
+          [disabled]="!form.valid || formClosed"
+          (click)="geoLoopUp()">
+          Obtener coordenadas geográficas </button>
 
       <button mat-raised-button color="warn"   class='m-1'
           (click)="onCancel()">

@@ -71,7 +71,6 @@ export class MotivoInternacion { // triage
 	constructor(spec){
 		if(spec && spec.servicio){
 				this.servicio = spec.servicio;
-				//this.target = InternacionHelper.getTargetFromServicio(this.servicio);
 		}
 	}
 
@@ -218,8 +217,11 @@ export class EstadoAreasInternacion {
 export class DisponiblePorArea {
   intensivos: EstadoAreasInternacion;
   intermedios: EstadoAreasInternacion;
+  pediatrica: EstadoAreasInternacion;
+  neonatologia: EstadoAreasInternacion;
   aislamiento: EstadoAreasInternacion;
   ambulatorio: EstadoAreasInternacion;
+
 }
 
 export class MasterAllocation {

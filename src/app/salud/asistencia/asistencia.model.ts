@@ -183,14 +183,15 @@ export class CasoIndice {
 
 export class Locacion {
     _id?: string;
-    slug: string = '';
     street1: string = '';
+    street2: string = '';
     streetIn: string = '';
     streetOut: string = '';
     city: string = '';
     barrio?: string = '';
     lat: number = 0;
     lng: number = 0;
+    zip: string = '';
 }
 
 
@@ -501,11 +502,11 @@ const resultadoSeguimientoOptList = [
 ];
 
 const vectorSeguimientoOptList = [
-	{ val: 'inicia',     label: 'Inicia seguimiento'},
-	{ val: 'estable',    label: 'Evolución estable'},
-	{ val: 'mejora',     label: 'Mejoría/ Favorable'},
-	{ val: 'desmejora',  label: 'Desmejora/ Desfavorable'},
-	{ val: 'sindato',    label: 'Sin dato'},
+	{ val: 'inicia',    color:'#efefef', background: '#423bff', label: 'Inicia seguimiento'},
+	{ val: 'estable',   color:'#efefef', background: '#807d00', label: 'Evolución estable'},
+	{ val: 'mejora',    color:'#efefef', background: '#008f00', label: 'Mejoría/ Favorable'},
+	{ val: 'desmejora', color:'#efefef', background: '#b51835', label: 'Desmejora/ Desfavorable'},
+	{ val: 'sindato',   color:'#efefef', background: '#5d5d5d', label: 'Sin dato'},
 ];
 
 export class AfectadoUpdate {
@@ -713,6 +714,14 @@ export class AsistenciaslModel {
 
 }
 
+export class HisopadoYa {
+	dias: number = 0;
+	hasFollowUp = false;
+	isCovid = false;
+	needsHisopado = false;	
+}
+
+
 
 const obrasSociales = [
       {val: 'no_definido',  label: 'Seleccioneopción',   slug:'Seleccione opción' },
@@ -735,6 +744,26 @@ const indicacionOptList: Array<any> = [
 
 const default_option_list: Array<any> = [
         {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
+];
+
+
+const nucleoHabitacionalOptList: Array<any> = [
+				{val: 'NUC-HAB-01',   label: 'Núcleo HAB-01' },
+				{val: 'NUC-HAB-02',   label: 'Núcleo HAB-02' },
+				{val: 'NUC-HAB-03',   label: 'Núcleo HAB-03' },
+				{val: 'NUC-HAB-04',   label: 'Núcleo HAB-04' },
+				{val: 'NUC-HAB-05',   label: 'Núcleo HAB-05' },
+				{val: 'NUC-HAB-06',   label: 'Núcleo HAB-06' },
+				{val: 'NUC-HAB-07',   label: 'Núcleo HAB-07' },
+				{val: 'NUC-HAB-08',   label: 'Núcleo HAB-08' },
+				{val: 'NUC-HAB-09',   label: 'Núcleo HAB-09' },
+				{val: 'NUC-HAB-10',   label: 'Núcleo HAB-10' },
+				{val: 'NUC-HAB-11',   label: 'Núcleo HAB-11' },
+				{val: 'NUC-HAB-12',   label: 'Núcleo HAB-12' },
+				{val: 'NUC-HAB-13',   label: 'Núcleo HAB-13' },
+				{val: 'NUC-HAB-14',   label: 'Núcleo HAB-14' },
+				{val: 'NUC-HAB-15',   label: 'Núcleo HAB-15' },
+
 ];
 
 const asisActionOptList: Array<any> = [
@@ -1190,6 +1219,68 @@ function validateAlimentosAsistencia(as: Asistencia, valid: boolean): boolean {
 	return valid;
 }
 
+function filterNecesidadDeLaboratorio(token: Asistencia): HisopadoYa{
+	let response = new HisopadoYa();
+	let today = new Date()
+	let today_ts = today.getTime();
+	let feReferencia_ts = null;
+	let isCovid = false;
+
+	// caso 1
+	if(!(token.followUp)) return response;
+	feReferencia_ts = token.followUp.fets_inicio;
+	response.hasFollowUp = true;
+	let diasSeguimiento = (today_ts - feReferencia_ts) / (1000 * 60 * 60 * 24) ;
+	response.dias = Math.floor(diasSeguimiento);
+
+	if(token.infeccion){
+	  if(token.infeccion.actualState === 1){
+	    isCovid = true;
+	    response.isCovid = true;
+	    feReferencia_ts = token.infeccion.fets_confirma
+			diasSeguimiento = (today_ts - feReferencia_ts) / (1000 * 60 * 60 * 24) ;
+			response.dias = Math.floor(diasSeguimiento);
+
+	  }
+
+	  // caso 2
+	  if(token.infeccion.actualState === 3 || token.infeccion.actualState === 4 || token.infeccion.actualState === 5   ) return response;
+	}
+
+	if(diasSeguimiento< 14) return response;
+
+
+	if(token.muestraslab && token.muestraslab.length){
+	  let muestras = token.muestraslab;
+	  let fechaLab = null
+
+	  muestras.forEach(mu => {
+	    if(mu.resultado === 'descartada') {
+	      fechaLab = mu.fets_resestudio
+	    }
+	  })
+
+	  if(fechaLab){
+	      if((today_ts - fechaLab) / (1000 * 60 * 60 * 24) < 2) return response;
+	      else {
+	      	response.needsHisopado = true;
+	      	return response;
+	      }
+
+	  }else{
+	  	response.needsHisopado = true;
+	    return response;
+	  }
+	  
+	}else{
+		response.needsHisopado = true;
+	  return response;
+	}
+
+}
+
+
+
 function validatePedidosAsistencia(as: Asistencia, valid: boolean): boolean {
 	if(!valid) return valid;
 
@@ -1279,6 +1370,7 @@ const optionsLists = {
    causa: causasOptList,
    indicaciones: indicacionOptList,
    osocial: obrasSociales,
+   nucleoHabitacional: nucleoHabitacionalOptList,
    prioridad: prioridadOptList,
 
    //SISA
@@ -1382,6 +1474,10 @@ export class AsistenciaHelper {
 	static getOptionLabelFromList(list, val){
 		if(!val) return 'no-definido';
 		return getLabel(list, val);
+	}
+
+	static getOptionToken(type, val){
+		return getOptListToken(this.getOptionlist(type), val);
 	}
 
 	static getOptionLabel(type, val){
@@ -1729,6 +1825,10 @@ export class AsistenciaHelper {
 
 
 		return isRemitible;
+	}
+
+	static atencionHisopado(asistencia: Asistencia): HisopadoYa {
+		return filterNecesidadDeLaboratorio(asistencia);
 	}
 
 	static getVoucherType(asistencia: Asistencia): VoucherType{

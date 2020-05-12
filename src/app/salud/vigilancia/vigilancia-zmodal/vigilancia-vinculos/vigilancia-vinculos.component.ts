@@ -10,10 +10,10 @@ import { SaludController } from '../../../salud.controller';
 
 import { devutils }from '../../../../develar-commons/utils';
 
-import {   Asistencia, MuestraLaboratorio, UpdateAsistenciaEvent,
+import {   Asistencia, MuestraLaboratorio, UpdateAsistenciaEvent, Locacion,
            AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
-import { Person, FamilyData, personModel } from '../../../../entities/person/person';
+import { Person, FamilyData, PersonContactData, Address, personModel } from '../../../../entities/person/person';
 import { PersonService } from '../../../person.service';
 
 const UPDATE = 'update';
@@ -28,19 +28,39 @@ const VINCULO_ESTADO = 'vinculofam:estado';
 export class VigilanciaVinculosComponent implements OnInit {
 
   public form: FormGroup;
+  public addressForm: FormGroup;
+  public vinculoForm: FormGroup;
   public formClosed = false;
 
   public asistencia: Asistencia;
   public person: Person;
+
+  public vAsistencia: Asistencia;
+  public vPerson: Person;
+
   public isNewVinculo = false;
+  public isNewLocacion = false;
+  private isLocacionFromAsistencia = false;
+  private isLocacionFromPerson = false;
 
   public vinculo: FamilyData;
+  public locacion: Locacion;
   public familyList: Array<FamilyData> = [];
+  public locaciones: Array<Address> = [];
 
   public estadoOptList =   AsistenciaHelper.getOptionlist('estadoVinculosFam');
   public vinculosOptList = AsistenciaHelper.getOptionlist('vinculosFam');
   public sexoOptList = AsistenciaHelper.getOptionlist('sexo');
   public tdocOptList = AsistenciaHelper.getOptionlist('tdoc');
+  public nucleoOptList = AsistenciaHelper.getOptionlist('nucleoHabitacional');
+
+  public countriesList =  personModel.paises;
+  public provinciasList = personModel.provincias;
+  public addTypeList =    personModel.addressTypes;
+  public ciudadesList =   personModel.ciudades;
+  public paises     = personModel.paises;
+  public barrioList = [];
+
 
   public personError = false;
   public personErrorMsg = '';
@@ -72,16 +92,35 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   private initOnce(){
     this.isNewVinculo = true;
+    this.isNewLocacion = true;
+
     this.asistencia = this.data.asistencia
     this.person = this.data.person;
-    this.currentNumDoc = '';
 
-    this.familyList = this.person.familiares || [];
+    this.vAsistencia = this.data.vAsistencia
+    this.vPerson = this.data.vPerson;
 
     this.vinculo = this.data.vinculo ;
 
+    this.currentNumDoc = '';
+    this.initVinculo();
+    this.initLocacion();
+
+    this.result = {
+                    action: UPDATE,
+                    type: VINCULO_ESTADO,
+                    token: this.asistencia
+                  } as  UpdateAsistenciaEvent;
+
+    this.initForEdit();
+  }
+
+
+  private initVinculo(){
+    this.familyList = this.person.familiares || [];
     if(this.vinculo){
       this.isNewVinculo = false;
+
       let labToken = this.familyList.find(t => t._id === this.vinculo._id)
       if(labToken){
         this.vinculo = labToken;
@@ -96,13 +135,30 @@ export class VigilanciaVinculosComponent implements OnInit {
       this.vinculo = new FamilyData();
     }
 
-    this.result = {
-                    action: UPDATE,
-                    type: VINCULO_ESTADO,
-                    token: this.asistencia
-                  } as  UpdateAsistenciaEvent;
+  }
 
-    this.initForEdit();
+  private initLocacion(){
+
+    if(this.vAsistencia && this.vAsistencia.locacion){
+      this.locacion = this.vAsistencia.locacion;
+      this.isNewLocacion = false;
+      this.isLocacionFromAsistencia = true;
+      this.isLocacionFromPerson = false;
+
+    }else if(this.vPerson && this.vPerson.locaciones && this.vPerson.locaciones.length){
+      this.locacion = this.vPerson.locaciones[0];
+      this.isNewLocacion = false;
+      this.isLocacionFromAsistencia = false;
+      this.isLocacionFromPerson = true;
+
+
+    }else {
+      this.locacion = new Address();
+      this.isNewLocacion = true;
+      this.isLocacionFromAsistencia = false;
+      this.isLocacionFromPerson = false;
+    }
+
   }
 
   onSubmit(){
@@ -110,6 +166,11 @@ export class VigilanciaVinculosComponent implements OnInit {
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
+  }
+
+  geoLoopUp(){
+    this.initForSave()
+    this.lookUpGeoData()
   }
 
   onCreateCasoIndice(){
@@ -126,6 +187,20 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   changeSelectionValue(type, val){
     //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+
+    if(type==='tdoc'){
+      this.vinculoForm.controls['ndoc'].setValue('');
+
+    }
+
+    if(type==='city'){
+      this.barrioList = personModel.getBarrioList(this.addressForm.value.city);
+
+      let zip = personModel.fetchCP(this.addressForm.value.city);
+      this.addressForm.controls['zip'].setValue(zip);
+    }
+
+
   }
 
   changeActualState(estado){
@@ -133,8 +208,8 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   // template Events:
-  hasError = (controlName: string, errorName: string) =>{
-    return this.form.controls[controlName].hasError(errorName);
+  hasVinculoError = (controlName: string, errorName: string) =>{
+    return this.vinculoForm.controls[controlName].hasError(errorName);
   }
 
   handlePerson(p: Person){
@@ -152,6 +227,8 @@ export class VigilanciaVinculosComponent implements OnInit {
     // validate
     // caso: OK
 		this.vinculo = personModel.buildFamilyDataFromPerson(p, this.vinculo);
+    this.vPerson = p;
+    this.initLocacion();
     this.currentNumDoc = this.vinculo.ndoc
 		this.initForEdit()
   }
@@ -217,29 +294,155 @@ export class VigilanciaVinculosComponent implements OnInit {
       }
     })
 
+  }
+
+  private lookUpGeoData(){
+    if(this.locacion.street1 && this.locacion.city){
+      this.ctrl.addressLookUp(this.locacion).then(geo => {
+
+        if(geo && geo.location){
+          this.locacion.lat = geo.location.lat ||this.locacion.lat;
+          this.locacion.lng = geo.location.lng ||this.locacion.lng;
+          this.ctrl.openSnackBar('Búsqueda EXITOSA','CERRAR');
+
+        }else {
+          this.ctrl.openSnackBar('No se pudo recuperar la información geográfica','ATENCIÓN');
+
+        }
+      })
+
+    }else{
+      this.ctrl.openSnackBar('Debe indicar calle y localidad ','ATENCIÓN');
+    }
 
   }
 
-//        this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
-
-
   private saveToken(){
+    // (a) Actualiza los datos del vínculo;
+    // (b) Busca / actualiza la S/Asistencia, si la hay
+    // (c) Actualiza la mainPerson, la que hostea el vinculo
+    this.saveVinculoRelation(); // (a)
+  }
 
-		this.perSrv.updatePersonPromise(this.person).then(per =>{
-			if(per){
-				this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
-				this.closeDialogSuccess()
+ 
+  private saveMainPerson(){ //(c)
+    this.vinculo.personId = this.vPerson._id;
+    this.vinculo.hasOwnPerson = true;
 
-			}else{
-				this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
-			}
-		})    
+    this.perSrv.updatePersonPromise(this.person).then(per =>{
+      if(per){
+        this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
+        this.closeDialogSuccess()
+
+      }else{
+        this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
+      }
+    })
+
+  }
+
+
+  private saveVinculoRelation(){ //(a)
+    if(!this.vPerson){
+      let displayName = this.vinculo.apellido + ', ' + this.vinculo.nombre;
+      this.vPerson = new Person(displayName);      
+    }
+
+    this.updateCoreData();
+    this.updatePersonAddress();
+    this.updateVperson()
+    // this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
+    // this.closeDialogSuccess()
+  }
+
+  private updateVperson(){
+    if(this.vPerson._id){
+      this.perSrv.updatePersonPromise(this.vPerson).then(vinculoPerson => {
+        if(vinculoPerson){
+          this.vPerson = vinculoPerson;
+          this.updateAsistenciaFromVinculo()
+        }
+      })
+
+    }else{
+      this.perSrv.createPerson(this.vPerson).then(vinculoPerson => {
+        if(vinculoPerson){
+          this.vPerson = vinculoPerson;
+          this.updateAsistenciaFromVinculo()
+        }
+      })
+    }
+  }
+
+  private updateAsistenciaFromVinculo(){ // (b)
+    this.ctrl.fetchAsistenciaByPerson(this.vPerson).subscribe(list => {
+      if(list && list.length){
+        let vAsistencia = list[0];
+        vAsistencia.locacion = this.locacion;
+        vAsistencia.ndoc = this.vinculo.ndoc;
+        vAsistencia.tdoc = this.vinculo.tdoc;
+        vAsistencia.telefono = this.vinculo.telefono;
+        vAsistencia.sexo = this.vinculo.sexo;
+
+        vAsistencia.requeridox.ndoc = this.vinculo.ndoc;
+        vAsistencia.requeridox.tdoc = this.vinculo.tdoc;
+        vAsistencia.requeridox.nombre = this.vinculo.nombre;
+        vAsistencia.requeridox.apellido = this.vinculo.apellido;
+
+        this.ctrl.manageCovidRecord(vAsistencia).subscribe(asis => {
+          this.saveMainPerson();
+        })
+
+      }else {
+        this.saveMainPerson();
+      }
+    })
+  }
+
+  private updatePersonAddress(){
+    if(!(this.locacion.street1 && this.locacion.city)) return;
+
+    let personLocation = this.vPerson.locaciones && this.vPerson.locaciones.length && this.vPerson.locaciones[0];
+
+    if(!personLocation){
+      let address = new Address();
+      address = Object.assign(address, this.locacion);
+
+      this.vPerson.locaciones = [ address ]
+
+    }else {
+      personLocation =  Object.assign(personLocation, this.locacion);
+
+    }
+  }
+
+  private updateCoreData(){
+    this.vPerson.tdoc = this.vinculo.tdoc  || this.vPerson.tdoc;
+    this.vPerson.ndoc = this.vinculo.ndoc  || this.vPerson.ndoc;
+    this.vPerson.nombre = this.vinculo.nombre  || this.vPerson.nombre;
+    this.vPerson.apellido = this.vinculo.apellido  || this.vPerson.apellido;
+    this.vPerson.sexo = this.vinculo.sexo  || this.vPerson.sexo;
+    this.vPerson.fenac = this.vinculo.fenac  || this.vPerson.fenac;
+    this.vPerson.tdoc = this.vinculo.tdoc  || this.vPerson.tdoc;
+
+    if(this.vinculo.telefono){
+
+      let contactData = this.vPerson.contactdata && this.vPerson.contactdata.length && this.vPerson.contactdata[0];
+      if(!contactData){
+        contactData = new PersonContactData();
+        this.vPerson.contactdata = [contactData];
+      }
+      contactData.data = this.vinculo.telefono;
+
+    }
   }
 
   private initForSave(){
   	let today = new Date();
     //this.vinculo = {...this.vinculo, ...this.form.value} --->OjO... esto clona, no es lo buscado
-    this.vinculo = Object.assign(this.vinculo, this.form.value);
+    this.vinculo = Object.assign(this.vinculo, this.vinculoForm.value);
+    this.locacion = Object.assign(this.locacion, this.addressForm.value);
+
     this.vinculo.hasOwnPerson = personModel.hasMinimumDataToBePerson(this.vinculo);
 
  		if(this.isNewVinculo){
@@ -250,24 +453,43 @@ export class VigilanciaVinculosComponent implements OnInit {
 
     this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
+
 		//Recibido vía alerta SISA por afectado que vive en Brown
   }
 
   private initForm(){
+    this.addressForm = this.fb.group({
+      street1:     [null],
+      street2:     [null],
+      streetIn:    [null],
+      streetOut:   [null],
+      city:        [null],
+      barrio:      [null],
+      zip:         [null],
 
-    this.form = this.fb.group({
+    })
+
+    this.vinculoForm = this.fb.group({
       nombre:       [null, Validators.compose( [Validators.required])],
       apellido:     [null],
       tdoc:         [null, Validators.compose( [Validators.required])],
 
       ndoc:         [null],
 
-    	telefono:     [null],
+      telefono:     [null],
+      nucleo:       [null],
       vinculo:      [null],
-    	sexo:         [null],
+      sexo:         [null],
       fenactx:      [null],
-    	estado:       [null],
-    	comentario:   [null],
+      estado:       [null],
+      comentario:   [null],
+
+    })
+
+
+    this.form = this.fb.group({
+      vinculoForm: this.vinculoForm,
+      addressForm: this.addressForm,
     });
 
 
@@ -286,7 +508,7 @@ export class VigilanciaVinculosComponent implements OnInit {
  
   currentAge(){
        let edad = '';
-       let value = this.form.value.fenactx
+       let value = this.vinculoForm.value.fenactx
        let validAge = devutils.validAge(value);
        if(validAge){
            edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
@@ -297,19 +519,21 @@ export class VigilanciaVinculosComponent implements OnInit {
   documProvisorio(){
       this.ctrl.fetchSerialDocumProvisorio().subscribe(serial =>{
         let prox =  serial.pnumero + serial.offset;
-        this.form.get('tdoc').setValue('PROV');
-        this.form.get('ndoc').setValue(prox);
+        this.vinculoForm.get('tdoc').setValue('PROV');
+        this.vinculoForm.get('ndoc').setValue(prox);
       });
   }
 
   private initForEdit(){
     this.whiteList = this.currentNumDoc ? [this.currentNumDoc] : [];
     this.blackList = [ this.person.ndoc ];
+
     this.familyList.forEach(t => {
       if(t.ndoc !== this.currentNumDoc){
         this.blackList.push(t.ndoc);
       }
     })
+
     this.formClosed = false;
 
     let syncValidators =
@@ -319,17 +543,23 @@ export class VigilanciaVinculosComponent implements OnInit {
                   Validators.maxLength(10),
                   Validators.pattern('[0-9]*')
                 ];
+   
     let asyncValidators = 
-                [ this.dniExistenteValidator(this.form, this.perSrv, this.docBelongsTo, this.whiteList, this.blackList) ];
+                [ this.dniExistenteValidator(this.vinculoForm, this.perSrv, this.docBelongsTo, this.whiteList, this.blackList) ];
 
 
-    let ndocControl = this.form.get('ndoc') as FormControl;
+    let ndocControl = this.vinculoForm.get('ndoc') as FormControl;
     ndocControl.setValidators(syncValidators);
     ndocControl.setAsyncValidators(asyncValidators);
 
+    this.barrioList = personModel.getBarrioList(this.locacion.city);
+
+
 
     setTimeout(()=>{
-       this.form.reset(this.vinculo);
+       this.vinculoForm.reset(this.vinculo);
+       this.addressForm.reset(this.locacion);
+       //this.form.reset(this.vinculo);
  
     }, 100)
   }

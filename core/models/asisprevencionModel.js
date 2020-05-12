@@ -75,12 +75,13 @@ const novedadSch = new Schema({
 })
 
 const locacionSch = new Schema({
-    slug:      { type: String, required: false},
     street1:   { type: String, required: false},
+    street2:   { type: String, required: false},
     streetIn:  { type: String, required: false},
     streetOut: { type: String, required: false},
     city:      { type: String, required: false},
     barrio:    { type: String, required: false},
+    zip:       { type: String, required: false},
     lat:       { type: Number, required: false},
     lng:       { type: Number, required: false},
 });

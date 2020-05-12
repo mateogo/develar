@@ -1143,7 +1143,7 @@ export class SaludController {
 
   }  
 
-  addressLookUp(address: Address): Promise<any>{
+  addressLookUp(address: Address|Locacion): Promise<any>{
     return this.daoService.geocodeForward(address);
   }
 
@@ -1321,8 +1321,11 @@ export class SaludController {
   /***************************/
   /** Notification HELPER ****/
   /***************************/
-  openSnackBar(message: string, action: string) {
-    let snck = this.snackBar.open(message, action, {duration: 3000});
+  openSnackBar(message: string, action: string, config?: any) {
+    config = config || {}
+    config = Object.assign({duration: 3000}, config)
+
+    let snck = this.snackBar.open(message, action, config);
 
     snck.onAction().subscribe((e)=> {
       //c onsole.log('action???? [%s]', e);

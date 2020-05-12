@@ -110,8 +110,8 @@ export class Address {
     streetOut: string = '';
     city: string = '';
     barrio?: string = '';
-    state: string = '';
-    statetext:string= '';
+    state: string = 'buenosaires';
+    statetext:string= 'Brown';
     zip: string = '';
     lat: number = 0;
     lng: number = 0;
@@ -253,6 +253,7 @@ export class FamilyData {
     estado: string = 'activo';
     hasOwnPerson: boolean = false;
     personId: string = '';
+    nucleo: string = 'nucleo01';
 
     ecivil: string;
     nestudios: string;

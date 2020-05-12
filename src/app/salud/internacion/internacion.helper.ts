@@ -107,33 +107,12 @@ export class  InternacionHelper {
   	return solinternacion;
   }
 
-  static getTargetFromServicio(servicio: string): string{
-    let target = 'intermedios'; // valor default
-
-    if(servicio === 'UTI' || servicio === 'UTE' || servicio === 'UCO'){
-      target = 'intensivos'
-
-    } else if(servicio === 'CONSULEXT' || servicio === 'GUARDIA' ){
-      target = 'guardia'
-
-    } else if(servicio === 'PEDIATRICA' ){
-      target = 'pediatrica'
-
-    } else if(servicio === 'AISLAMIENTO' ){
-      target = 'aislamiento'
-    }
-
-    return target;
-  }
-
 	static asistenciaSerial(){
 		let sector = 'internacion';
 		let type = 'internacion';
 		let name = 'solicitud';
 		return buildSerialAsistencia(type, name, sector);
 	}
-
-
 
 }
 

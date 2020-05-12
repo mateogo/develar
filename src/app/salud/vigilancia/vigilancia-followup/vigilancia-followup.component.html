@@ -54,8 +54,8 @@
     <mat-button-toggle value="laboratorio">
       NUEVO LABORATORIO
     </mat-button-toggle>
- 
-  </mat-button-toggle-group>      
+  </mat-button-toggle-group>
+
   <mat-button-toggle-group #fldButtonGrp1  name="muestras"  class="panel-header-laboratorio"
         (change)='editLaboratorio($event)'>
     <ng-container *ngFor='let muestra of muestraslabList'>
@@ -63,16 +63,14 @@
         {{ muestra.secuencia || '#-LAB'}}
       </mat-button-toggle>
     </ng-container>
- 
-  </mat-button-toggle-group>      
+  </mat-button-toggle-group>
 
   <mat-button-toggle-group #fldButtonGrp1  name="actions" class="panel-header-vinculofam"
         (change)='actionTriggered($event)'>
     <mat-button-toggle value="vinculofam">
       NUEVO CONTACTO
     </mat-button-toggle>
- 
-  </mat-button-toggle-group>      
+  </mat-button-toggle-group>
 
 </div>
 

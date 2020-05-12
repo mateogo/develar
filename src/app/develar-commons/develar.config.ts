@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #20 20.05.10-08:15',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #20 20.05.12-04:23',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},
@@ -230,3 +230,27 @@ const globals = {
 
 
 export const gldef = globals[user];
+
+
+
+
+  // "casoIndice" : {
+  //               "_id" : ObjectId("5eb304f4208ad20eb62cb810"),
+  //               "parentId" : "5eb17cf0c4719067c9e43c2e",
+  //               "slug" : "ROSALES, RUBERN",
+  //               "actualState" : 1
+  //       },
+  // 5eb304f4208ad20eb62cb80c
+
+  // 5eb99279a443df0e04966031
+  //5eb99a35a443df0e049660f2
+		// "barrio" : "adrogue",
+		// 	"state" : "buenosaires",
+		// 	"statetext" : "Brown",
+		// 	"zip" : "1846",
+		// 	"lat" : -34.6403,
+		// 	"lng" : -58.4563,
+
+
+
+  

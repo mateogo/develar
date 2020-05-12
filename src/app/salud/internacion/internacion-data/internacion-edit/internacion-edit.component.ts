@@ -78,8 +78,6 @@ export class InternacionEditComponent implements OnInit {
 	/******* Template Events *******/
 	/**********************************/
   onSubmit() {
-  	// this.triage = Object.assign(thisin.triage, this.form.value)
-  	// this.triage.target = InternacionHelper.getTargetFromServicio(this.triage.servicio);
     this.initForSave()
     this.saveSolicitud()    
   }

@@ -1,13 +1,18 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { devutils }from '../../../../develar-commons/utils';
+
+import { ModalDialogComponent, DialogData } from '../../../../develar-commons/modal-dialog/modal-dialog.component';
+import { GenericDialogComponent } from '../../../../develar-commons/generic-dialog/generic-dialog.component';
 
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { EventInput } from '@fullcalendar/core';
 import timeGrigPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
+
+import { VigilanciaSeguimientofwupComponent } from '../vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 
 import { SaludController } from '../../../salud.controller';
 
@@ -28,6 +33,8 @@ const SISA_VIEW = 'sisa:view';
 })
 export class VigilanciaSeguimientocalendarComponent implements OnInit {
   @ViewChild('calendar', {static: false}) calendarComponent: FullCalendarComponent; // the #calendar in the template
+  @ViewChild('seguimiento', {static: false}) templateRef;
+
 
   public calendarVisible = false;
   public calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
@@ -35,6 +42,7 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
 
 
   public asistencia: Asistencia;
+  public actualFup: AfectadoUpdate;
   public token: AfectadoUpdate; // from DB
   public tokenData: TokenData; // template usage
 
@@ -50,6 +58,9 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
 
  
   constructor(
+        public dialog: MatDialog,
+        private dsCtrl: SaludController,
+
         public dialogRef: MatDialogRef<VigilanciaSeguimientocalendarComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any ) {
   }
@@ -83,14 +94,59 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
     calendarApi.gotoDate(this.inicioDate); // call a method on the Calendar object
   }
 
+
+  handleEventClick(e) {
+    this.actualFup = e.event.extendedProps.token;
+
+    let message = `Evolución: ${this.actualFup.vector} Síntoma: ${this.actualFup.sintoma} Comentario: ${this.actualFup.slug}  Indicaciones: ${this.actualFup.indicacion}`
+    //this.dsCtrl.openSnackBar(message, 'CERRAR',{horizontalPosition: 'center', verticalPosition: 'bottom'})
+
+    let dialog = {
+      caption: 'VIGILANCIA EPIDEMIOLÓGICA',
+      title: 'Contacto con afectado/a',
+      body: message,
+      cancel: {
+        action: 'alta',
+        label: 'CERRAR'        
+      } ,
+      input: {
+        value: '',
+        label: 'Comentario',
+        action: 'novedad'        
+      },
+      itemplate: this.templateRef
+
+    } as DialogData;
+
+    this.openDialog(dialog)
+
+  }
+
+  private openDialog(dialog: DialogData): void {
+
+    const dialogRef = this.dialog.open(GenericDialogComponent, {
+      width: '450px',
+      data: dialog
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //c onsole.log('result')
+      }else {
+        //c onsole.log('null result')
+      }
+
+    });
+  }
+
+
+
+
+
   handleDateClick(arg) {
-    if (confirm('Funcionalidad aún no implementada ' + arg.dateStr + ' ?')) {
-      this.eventList = this.eventList.concat({ // add new event data. must create new array
-        title: 'New Event',
-        start: arg.date,
-        allDay: arg.allDay
-      })
-    }
+    let date = arg.date;
+    this.openVinculofamModal(date);
   }
 
 
@@ -115,9 +171,13 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
   private buildTokenEvents(list: AfectadoUpdate[], followUp: AfectadoFollowUp, sinternacion: Asistencia){
   	this.eventList = list.map(t =>{
   		let dateTx = devutils.txInvertedFromDate(new Date(t.fets_llamado));
+      let data = AsistenciaHelper.getOptionToken('vectorSeguim',( t.resultado === 'nocontesta' ? 'sindato' : t.vector) || 'sindato');
   		return {
-  			title: `LL: ${t.resultado}: ${t.vector}`,
-  			start: dateTx
+  			title: `LL:${t.slug}`,
+  			start: dateTx,
+        textColor: data.color,
+        backgroundColor: data.background,
+        token: t
   		} as EventInput
   	})
 
@@ -130,7 +190,8 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
 	  	this.eventList.push({
 	  			title: `Seguimiento: ${followUp.tipo} Días:#${hisopado.dias}  ${covid}  ${hisopadoYa} `,
 	  			start: devutils.txInvertedFromDate(new Date(followUp.fets_inicio)), 
-	  			end: devutils.txInvertedFromDate(new Date()), 
+	  			end: devutils.txInvertedFromDate(new Date()),
+          token: followUp
 	  		} as EventInput)
   	}
 
@@ -151,6 +212,42 @@ export class VigilanciaSeguimientocalendarComponent implements OnInit {
   private closeDialogSuccess(){
     this.dialogRef.close(this.result);
   }
+
+  private openVinculofamModal(date?: Date){
+    const dialogRef = this.dialog.open(
+      VigilanciaSeguimientofwupComponent,
+      {
+        width: '800px',
+        data: {
+          asistencia: this.asistencia,
+          fupDate: date
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      if(res && res.token){
+        this.asistencia = res.token
+        let seguimiento = this.asistencia.seguimEvolucion[this.asistencia.seguimEvolucion.length-1]
+
+
+        let dateTx = devutils.txInvertedFromDate(new Date(seguimiento.fets_llamado));
+        let event =  {
+          title: `LL: ${seguimiento.resultado}: ${seguimiento.vector}`,
+          start: dateTx,
+          token: seguimiento
+        }as EventInput
+
+        let calendarApi = this.calendarComponent.getApi();
+        calendarApi.addEvent(event);
+        this.closeDialogSuccess()
+
+      }
+      //c onsole.log('dialog CLOSED')
+    });    
+  }
+
+
 
 	private filterNecesidadDeLaboratorio(token: Asistencia): HisopadoYa{
 		let response = new HisopadoYa();

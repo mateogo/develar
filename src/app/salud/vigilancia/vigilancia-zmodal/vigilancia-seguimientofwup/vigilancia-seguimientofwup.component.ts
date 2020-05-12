@@ -36,6 +36,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
 
   public displayAs = '';
+  public fupDate: Date;
 
   private result: UpdateAsistenciaEvent;
   private isNewRecord = false;
@@ -48,7 +49,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  	this.asistencia = this.data.asistencia
+  	this.asistencia = this.data.asistencia;
+    this.fupDate = this.data.fupDate || null;
 
   	this.iniToken();
     this.initForEdit();
@@ -86,9 +88,15 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   	let today = new Date();
 
     this.seguimientoEvent = {...this.seguimientoEvent, ...this.form.value}
-    this.seguimientoEvent.fe_llamado = this.seguimientoEvent.fe_llamado  ? devutils.txFromDate(devutils.dateFromTx(this.seguimientoEvent.fe_llamado))  : devutils.txFromDate(today);
 
-		this.seguimientoEvent.fets_llamado = today.getTime();
+    if(this.fupDate){
+      this.seguimientoEvent.fe_llamado = this.seguimientoEvent.fe_llamado  ? devutils.txFromDate(devutils.dateFromTx(this.seguimientoEvent.fe_llamado))  : devutils.txFromDate(this.fupDate);
+
+    }else {
+      this.seguimientoEvent.fe_llamado = this.seguimientoEvent.fe_llamado  ? devutils.txFromDate(devutils.dateFromTx(this.seguimientoEvent.fe_llamado))  : devutils.txFromDate(today);
+      this.seguimientoEvent.fets_llamado = today.getTime();
+
+    }
 
 		let llamados = this.asistencia.seguimEvolucion || [];
 		llamados.push(this.seguimientoEvent);
@@ -135,6 +143,13 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   	this.afectadoFollowUp = this.asistencia.followUp || new AfectadoFollowUp();
 
   	this.seguimientoEvent = new AfectadoUpdate();
+
+    if(this.fupDate){
+      this.seguimientoEvent.fe_llamado = devutils.txFromDate(this.fupDate);
+      this.seguimientoEvent.fets_llamado = this.fupDate.getTime();
+    }
+
+
   	this.seguimientoEvent.isActive = this.afectadoFollowUp.isActive;
   	this.seguimientoEvent.tipo = this.afectadoFollowUp.tipo;
     this.seguimientoEvent.sintoma = this.afectadoFollowUp.sintoma;
