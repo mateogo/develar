@@ -23,6 +23,13 @@ router.get('/', function (req, res) {
     });
 });
 
+router.get('/exportarmovimientos', function (req, res) {
+    console.log('exportar movimientos ROUTER')
+    service.exportarmovimientos(req.query, req, res);
+});
+
+
+
 /**
  * Retrieve Entity by ID
  */

@@ -12,6 +12,7 @@ import { SolDashboardPageComponent } from './asistencia/sol-dashboard/sol-dashbo
 import { AltarapidaPageComponent } from './internacion/alta-rapida/altarapida-page/altarapida-page.component';
 import { VigilanciaPageComponent } from './vigilancia/vigilancia-page/vigilancia-page.component';
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
+import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
 
 const routes: Routes = [
 	{
@@ -25,6 +26,10 @@ const routes: Routes = [
 	{
 		path:'vigilancia',
 		component: VigilanciaPageComponent
+	},
+	{
+		path:'reportesvigilancia',
+		component: VigilanciaReportesPageComponent
 	},
 	{
 		path:'tableroepidemio',

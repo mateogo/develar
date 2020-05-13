@@ -765,6 +765,16 @@ export class SaludController {
 
 
 
+  exportAsisprevencionByQuery(query:any){
+
+    let params = this.daoService.buildParams(query);
+    const Url = 'api/asisprevencion/exportarmovimientos?' + params.toString();
+
+    const windw = window.open(Url, 'about:blank')
+
+  }
+
+
 
 
   /***************************/

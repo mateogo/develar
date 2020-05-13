@@ -687,7 +687,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/gestion/atencionsocial'
       },
       {
-        title: 'Nueva internación',
+        title: 'Gestión internación',
         routing: '/salud/gestion/altarapida'
       },
       {
@@ -705,6 +705,10 @@ export const SALUD_ITEMS: MainMenuItem[] = [
       {
         title: 'Internacion TestUNO',
         routing: '/salud/gestion/testuno'
+      },
+      {
+        title: 'Reporte Vigilancia',
+        routing: '/salud/gestion/reportesvigilancia'
       },
     ],
     routing: '',

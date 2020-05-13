@@ -548,6 +548,97 @@ export class Morbilidad {
 }
 
 
+
+function buildTableData(list: Asistencia[]): AsistenciaTable[]{
+
+		return list.map(sol => {
+			let td = new AsistenciaTable();
+
+			td.asistenciaId = sol._id;
+
+			let prioridad = sol.prioridad || 2; 
+			td.prioridad = AsistenciaHelper.getOptionLabel('prioridad', prioridad);
+
+			td.compName = sol.compName;
+			td.compNum = sol.compNum;
+			td.fecomp_tsa = sol.fecomp_tsa;
+			td.fecomp_txa = sol.fecomp_txa;
+			td.ts_alta = sol.ts_alta;
+
+			td.personId = sol.idPerson;
+			td.ndoc = sol.requeridox && sol.requeridox.ndoc;
+			td.personSlug = sol.requeridox.nombre ? (sol.requeridox.apellido ? sol.requeridox.apellido + ', ' + sol.requeridox.nombre : sol.requeridox.nombre) : (sol.requeridox.slug ? sol.requeridox.slug: '');
+			td.edad = sol.edad ? sol.edad : '';
+			td.telefono = sol.telefono || '';
+
+			td.action = AsistenciaHelper.getOptionLabel('actions', sol.action);
+			td.slug = sol.slug;
+			td.description = sol.description;;
+			td.sector = sol.sector;
+			td.estado = sol.estado;
+			td.avance = AsistenciaHelper.getOptionLabel('avance', sol.avance);
+
+			td.osocial = sol.osocial + '::' + sol.osocialTxt
+			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
+			td.faudit_alta = ((new Date(sol.ts_alta)).toString()).substr(0,21);
+			td.faudit_um = ((new Date(sol.ts_prog)).toString()).substr(0,21);
+
+
+
+			if(sol.sintomacovid && sol.tipo === 1){
+				td.covid = covidToPrint(sol.sintomacovid);
+			}
+			if(sol.denuncia && sol.tipo === 2){
+				td.covid = denunciaToPrint(sol.denuncia);
+			}
+
+			if(sol.locacion){
+				td.locacion = locacionToPrint(sol.locacion);
+			}
+
+			td.covidTxt = ''
+			if(sol.infeccion){
+				let fecha = sol.infeccion.actualState === 1 ?  devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_inicio): devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_confirma);
+				td.covidTxt =  AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', sol.infeccion.avance) + ' :: ' +fecha;
+			}
+
+			td.lab_laboratorio = '';
+			td.lab_estado = '';
+			td.lab_resultado = '';
+			td.lab_fe_toma = '';
+			td.lab_fets_toma = 0;
+			td.lab_qty = 0;
+			td.labTxt = '';
+			let laboratorios = sol.muestraslab;
+
+			if(laboratorios && laboratorios.length){
+				let lab = laboratorios[laboratorios.length -1]
+				td.lab_estado =  AsistenciaHelper.getPrefixedOptionLabel('estadoMuestraLab', '',lab.estado);
+				td.lab_resultado =  AsistenciaHelper.getPrefixedOptionLabel('resultadoMuestraLab', '',lab.resultado);
+				td.lab_fe_toma = lab.fe_toma;
+				td.lab_fets_toma = lab.fets_toma;
+				td.lab_qty = laboratorios.length -1
+				td.lab_laboratorio = lab.laboratorio;
+				td.labTxt = td.lab_resultado + '' + td.lab_fe_toma ;
+			}
+
+			td.reportadoPor = '';
+			td.fe_reportado = '';
+			if(sol.sisaevent){
+				td.fe_reportado = sol.sisaevent.fe_reportado;
+				td.reportadoPor = sol.sisaevent.reportadoPor;
+			}
+
+	
+			td.fupTxt = '';
+			return td;
+		})
+
+}
+
+
+
+
 export class AsistenciaTable {
 		_id: string;
 		asistenciaId: string;
@@ -555,6 +646,7 @@ export class AsistenciaTable {
 		compNum:     string;
 		personId:    string;
 		personSlug:  string;
+		ndoc:        string;
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
 		action:      string;
@@ -574,11 +666,21 @@ export class AsistenciaTable {
 		faudit_alta:  string;
 		faudit_um:    string;
 
-		fe_visita:   string;
-		fe_visita_ts: number;
-		ruta:         string;
-		trabajador:   string;
-		trabajadorId: string;
+		edad: string;
+		telefono: string;
+		covidTxt: string;
+		reportadoPor: string;
+		fe_reportado: string;
+		labTxt: string;
+		fupTxt: string;
+		
+		lab_laboratorio: string;
+		lab_estado: string;
+		lab_resultado: string;
+		lab_fe_toma: string;
+		lab_fets_toma: number;
+		lab_qty: number;
+
 
 };
 
@@ -624,6 +726,8 @@ export class VigilanciaBrowse {
 		requirenteId: string;
 		compNum_h:   string;
 		actualState: string|number;
+
+		reporte:  string;
 
 		asistenciaId: string;
 
@@ -873,8 +977,6 @@ const frecuenciaOptList: Array<any> = [
 
 const tableActions = [
       {val: 'no_definido',  label: 'Seleccione opción',   slug:'Seleccione opción' },
-      {val: 'editarencuestas',       label: 'Edición entrevistas SA',        slug:'Edición entrevistas SA' },
-      {val: 'autorizar',    label: 'Autorizar solicitud', slug:'Autorizar solicitud' },
 ]
 
 const urgenciaOptList = [
@@ -1191,6 +1293,11 @@ const labsequenceOptList: Array<any> = [
     {val: '5TO LAB',      label: '5TO LAB' },
 ];
 
+const reportesVigilanciaOptList: Array<any> = [
+    {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
+    {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos' },
+];
+
 
 const MODALIDAD_ALIMENTO =     'alimentos';
 const MODALIDAD_HABITACIONAL = 'habitacional';
@@ -1396,6 +1503,9 @@ const optionsLists = {
    estadoVinculosFam: estadoVinculosOptList,
    sexo: sexoOptList,
    tdoc: tiposCompPersonaFisica,
+
+   // reportes
+   reportesVigilancia: reportesVigilanciaOptList,
 }
 
 
@@ -1891,63 +2001,8 @@ export class AsistenciaHelper {
 	}
 
 
-
-
-
-	static buildDataTable(list: Asistencia[]){
-
-		return list.map(sol => {
-			let td = new AsistenciaTable();
-			let prioridad = sol.prioridad || 2; 
-			td.prioridad = this.getOptionLabel('prioridad', prioridad);
-
-			td.asistenciaId = sol._id;
-			td.compName = sol.compName;
-			td.compNum = sol.compNum;
-			td.personId = sol.idPerson;
-			td.personSlug = sol.requeridox.nombre ? (sol.requeridox.apellido ? sol.requeridox.apellido + ', ' + sol.requeridox.nombre : sol.requeridox.nombre) : (sol.requeridox.slug ? sol.requeridox.slug: '');
-			td.fecomp_tsa = sol.fecomp_tsa;
-			td.fecomp_txa = sol.fecomp_txa;
-			td.action = this.getOptionLabel('actions', sol.action);
-			td.slug = sol.slug;
-			td.description = sol.description;;
-			td.sector = sol.sector;
-			td.estado = sol.estado;
-			td.avance = this.getOptionLabel('avance', sol.avance);
-			td.ts_alta = sol.ts_alta;
-			td.osocial = sol.osocial + '::' + sol.osocialTxt
-			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
-			td.faudit_alta = ((new Date(sol.ts_alta)).toString()).substr(0,21);
-			td.faudit_um = ((new Date(sol.ts_prog)).toString()).substr(0,21);
-
-			if(sol.sintomacovid && sol.tipo === 1){
-				td.covid = covidToPrint(sol.sintomacovid);
-			}
-			if(sol.denuncia && sol.tipo === 2){
-				td.covid = denunciaToPrint(sol.denuncia);
-			}
-
-			if(sol.locacion){
-				td.locacion = locacionToPrint(sol.locacion);
-			}
-
-			if(sol.encuesta){
-				td.fe_visita = sol.encuesta.fe_visita;
-				td.fe_visita_ts = sol.encuesta.fe_visita_ts;
-				td.ruta = sol.encuesta.ruta;
-				td.trabajador = sol.encuesta.trabajador;
-				td.trabajadorId = sol.encuesta.trabajadorId;
-			}else{
-				td.fe_visita = sol.fecomp_txa;
-				td.fe_visita_ts = sol.fecomp_tsa;
-				td.ruta = '';
-				td.trabajador = '';
-				td.trabajadorId = '';
-			}
-
-			return td;
-		})
-
+	static buildDataTable(list: Asistencia[]):AsistenciaTable[]{
+		return buildTableData(list);
 	}
 
 }

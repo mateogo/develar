@@ -24,6 +24,7 @@ const SEARCH_NEXT = 'search_next';
 })
 export class VigilanciaBrowseComponent implements OnInit {
 	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
+  @Input() export = true;
 	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
@@ -75,9 +76,15 @@ export class VigilanciaBrowseComponent implements OnInit {
   }
 
   onSubmit(action){
-  	this.initForSave(this.form, this.query);
+  	this.query = this.initForSave(this.form);
   	this.formAction = action;
   	this.emitEvent(this.formAction);
+  }
+
+  onExport(action){
+    this.query = this.initForSave(this.form);
+    this.formAction = action;
+    this.emitEvent(this.formAction);
   }
 
   onCancel(){
@@ -211,9 +218,10 @@ export class VigilanciaBrowseComponent implements OnInit {
       this.barrioList = personModel.getBarrioList(this.form.value.city);
   }
 
-	initForSave(form: FormGroup, query: VigilanciaBrowse): VigilanciaBrowse {
+	initForSave(form: FormGroup): VigilanciaBrowse {
 		const fvalue = form.value;
-		const entity = query;
+		const entity = new VigilanciaBrowse();
+
     let dateD = devutils.dateFromTx(fvalue.fecomp_d);
     let dateH = devutils.dateFromTx(fvalue.fecomp_h);
 
@@ -255,10 +263,6 @@ export class VigilanciaBrowseComponent implements OnInit {
       delete entity.requirenteId;
     }
 
-    //Save Actual Data in Controller
-    this.dsCtrl.vigilanciaSelector = entity;
-
-
     Object.keys(entity).forEach(key =>{
       if(entity[key] == null || entity[key] == 'no_definido' ) delete entity[key];
 
@@ -278,6 +282,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'casosIndice'      && !entity[key]) delete entity[key];
     })
 
+    this.dsCtrl.vigilanciaSelector = entity;
 		return entity;
 	}
 

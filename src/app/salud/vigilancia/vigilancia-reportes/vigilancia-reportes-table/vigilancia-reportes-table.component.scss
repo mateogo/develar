@@ -1,0 +1,138 @@
+.data-table {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  margin: 15px 0 0 0;
+}
+.mat-row, .mat-header-row {
+  min-width: 1900px;
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-weight: 600;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 800px;
+}
+
+.mat-column-ndoc {
+  flex: 0 0 90px;
+}
+
+.mat-column-fume {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-select {
+  overflow: initial;
+  flex: 0 0 55px;
+}
+
+.mat-column-compNum {
+  flex: 0 0 60px;
+}
+
+.mat-column-lab_estado {
+  flex: 0 0 120px;
+}
+
+.mat-column-fe_reportado {
+  flex: 0 0 90px;
+}
+
+.mat-column-edad {
+  flex: 0 0 45px;
+}
+
+
+.mat-column-lab_fe_toma {
+  flex: 0 0 90px;
+}
+
+.mat-column-avance {
+  flex: 0 0 130px;
+}
+
+.mat-column-prioridad {
+  flex: 0 0 80px;
+}
+
+.mat-column-telefono {
+  flex: 0 0 150px;
+}
+
+.mat-column-personSlug {
+  flex: 1 1 120px;
+}
+
+.mat-column-fecomp_txa {
+  flex: 0 0 90px;
+}
+.mat-column-faudit_alta {
+  flex: 0 0 90px;
+}
+
+.mat-column-faudit_um {
+  flex: 0 0 90px;
+}
+
+
+.mat-column-covid {
+  flex: 1 2 300px;
+}
+
+.mat-column-locacion {
+  flex: 1 2 300px;
+}
+
+.mat-column-osocial {
+  flex: 1 2 200px;
+}
+
+
+.mat-column-freq {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-ume {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-qt {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-pu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-total {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-ars {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-usd {
+  display: flex;
+  justify-content: flex-end;
+}

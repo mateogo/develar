@@ -306,6 +306,10 @@
 	  <button mat-raised-button color="primary" type="submit" 
 	      (click)="onSubmit('search')"
 	      [disabled]="!form.valid" >Buscar</button>
+
+     <button *ngIf='export' mat-button type="button" color="warning"
+      (click)="onExport('export')" >Exportar datos</button>
+
 	  
 	  <!--button mat-raised-button color="warn" 
 	      (click)="onSubmit('search_next')"

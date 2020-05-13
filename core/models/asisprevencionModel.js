@@ -14,6 +14,7 @@ const path = require('path');
 const utils = require('../services/commons.utils');
 const person = require('./personModel');
 const product = require('./productModel');
+const Excel =    require('exceljs')
 
 const Schema = mongoose.Schema;
 
@@ -406,6 +407,27 @@ function buildQuery(query){
 
   let q = {};
 
+  if(query['reporte'] && query['reporte']==="LABORATORIO"){
+      q = {
+            '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 1}],
+            isVigilado: true,
+            'muestraslab': {$exists: true, $ne:[]},
+            $expr: {$or: [
+                 {$ne: [{"$arrayElemAt": ["$muestraslab.estado", -1]}, "presentada"] },
+                 {$eq: [{"$arrayElemAt": ["$muestraslab.resultado", -1]}, "noanalizada"] },
+             ]}
+      }
+      return q;
+  }
+
+  if(query['reporte'] && query['reporte']==="COVID"){
+      q = {
+            '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 1}],
+            isVigilado: true,
+          }
+      return q;
+  }
+
   // busco un registro en particular
   if(query['asistenciaId']){
       q["asistenciaId"] = query['asistenciaId'];
@@ -621,10 +643,44 @@ const Record = mongoose.model('Asisprevencion', asisprevencionSch, 'asisprevenci
  */
 
 
+
+/* EJEMPLOS
+db.asisprevenciones.find({$expr: {$eq: [{"$arrayElemAt": ["$muestraslab.resultado", -1]}, "noanalizada"] } }).count()
+
+db.asisprevenciones.find(
+
+   {$expr: {$or: [
+         {$ne: [{"$arrayElemAt": ["$muestraslab.estado", -1]}, "presentada"] },
+         {$eq: [{"$arrayElemAt": ["$muestraslab.resultado", -1]}, "noanalizada"] },
+     ]}  
+}).count()
+
+db.asisprevenciones.find(    
+   {
+    '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 1}],
+    isVigilado: true,
+    'muestraslab': {$exists: true, $ne:[]},
+    $expr: {$or: [
+         {$ne: [{"$arrayElemAt": ["$muestraslab.estado", -1]}, "presentada"] },
+         {$eq: [{"$arrayElemAt": ["$muestraslab.resultado", -1]}, "noanalizada"] },
+     ]}  
+},{muestraslab:1, requeridox:1, infeccion:1}).pretty()
+
+db.asisprevenciones.find(    
+{
+    '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 1}],
+    isVigilado: true
+},{muestraslab:1, requeridox:1, infeccion: 1}).pretty()
+
+
+
+*/
+
 exports.findAsistenciaFromPerson = function(person){
     let query = {
       requirenteId: person.id,
-      isVigilado: true
+      isVigilado: true,
+
     }
     let regexQuery = buildQuery(query);
     return Record.findOne(regexQuery);
@@ -673,6 +729,7 @@ exports.findAll = function (errcb, cb) {
  * @param cb
  * @param errcb
  */
+
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
     let necesitaLab = false;
@@ -840,6 +897,127 @@ exports.create = function (record, errcb, cb) {
     });
 
 };
+
+
+exports.exportarmovimientos = function(query, req, res ){
+    console.log('exportar movimientos')
+    
+    if(!query){
+      query = {estado: 'activo'}
+    }
+
+    console.log('EXPORT BEGIN *********')
+    fetchMovimientos(query, req, res)
+
+}
+
+
+function fetchMovimientos(query, req, res){
+    let regexQuery = buildQuery(query)
+
+
+    Record.find(regexQuery).lean().exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            errcb(err);
+        }else{
+            console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
+            buildExcelStream(entities, query, req, res)
+        }
+    });
+
+
+
+}
+
+const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
+
+
+function buildExcelStream(movimientos, query, req, res){
+
+    let today = Date.now();
+    let filename = 'vigilancia_epidemiologica_'+today+'.xlsx'
+    let content = 
+
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="' + filename + '"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('vigilancia')
+
+    var justCabecera = query.justCabecera === "true"
+
+
+    worksheet.addRow(['Vigilancia epidemilógica']).commit()
+    worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
+
+    worksheet.addRow().commit()
+    worksheet.addRow(['Comprobante','Número','TDOC', 'NumDocumento', 'Nombre', 'Apellido','COVID', 'Fe Inicio Sítoma', 'Fecha Notificacion', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Fe Notificación', 'Estado LAB', 'Resultado LAB']).commit();
+
+    movimientos.forEach(row => {
+ 
+      let laboratorio_token = row.muestraslab && row.muestraslab.length && row.muestraslab[ row.muestraslab.length-1 ];
+      if(!laboratorio_token){
+        laboratorio_token = {
+            secuencia: 's/d',
+            fe_toma: 's/d',
+            laboratorio: 's/d',
+            fe_resestudio: 's/d',
+            fe_notificacion: 's/d',
+            estado: 's/d',
+            resultado: 's/d',
+        }
+      }
+      const { secuencia, fe_toma, laboratorio, fe_resestudio, fe_notificacion, estado, resultado } = laboratorio_token;
+      let laboratorioArr = [ secuencia, fe_toma, laboratorio, fe_resestudio, fe_notificacion, estado, resultado];
+
+
+
+      //
+      let covid_token = row.infeccion;
+      if(!covid_token){
+          covid_token = {
+            covid: 's/d',
+            fe_inicio: 's/d',
+            fe_confirma: 's/d',
+            fe_alta: 's/d',
+            avance: 's/d',
+            sintoma: 's/d',
+            locacionSlug: 's/d',
+          }
+      }else{
+        covid_token.covid = covidOptList[covid_token.actualState || 0];
+      }
+     const { covid, fe_inicio, fe_confirma, fe_alta, avance, sintoma, locacionSlug } = covid_token;
+     let covidArr = [  covid, fe_inicio, fe_confirma, fe_alta, avance, sintoma, locacionSlug  ];
+
+      const requeridox = row.requeridox || {nombre: 'Sin beneficiario', apellido: 's/d', tdoc: 's/d', ndoc: 's/d'};
+      const { tdoc, ndoc, nombre, apellido } = requeridox;
+      let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
+
+
+      const {compName, compNum } = row;
+      let basicArr = [ compName, compNum ];
+      
+      worksheet.addRow([...basicArr, ... requeridoxArr, ...covidArr, ...laboratorioArr ]).commit()
+
+    })
+    worksheet.commit()
+    workbook.commit()
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /**
     compPrefix:  { type: String, required: true },

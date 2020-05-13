@@ -1,0 +1,48 @@
+$bgcolor-selectors: #d79e96;
+$color-button: #3c4e62;
+$color-destacado: #0645f5;
+
+.vigilancia-box {
+	//border: 1px solid black;
+	min-height: 50px;
+}
+
+
+
+// ::ng-deep .mat-checkbox-layout {
+// 		white-space: normal !important;
+// }
+.mat-check {
+	margin: 0 5px 0 0 !important;
+}
+
+.mat-data {
+	margin-left: 5px;
+}
+.panel-header-selectors {
+	margin: 10px 0 0 0;
+
+	.mat-button-toggle {
+		margin-right: 1px;
+		max-height: 45px;
+		background-color:rgba($bgcolor-selectors, .5);
+		color: $color-button;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-selectors, .8);
+		color: $color-button;
+	}
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+

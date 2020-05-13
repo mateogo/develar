@@ -1,1 +1,82 @@
-<p>vigilancia-reportes-page works!</p>
+<mat-card>
+	<mat-card-content>
+		<div class="selector">
+	  	<div class="d-flex align-items-center justify-content-between panel-header">
+				<div class="panel-header-text">{{ searchTitle }}</div>
+				<div class="panel-header-control" ><span 
+					(click)='openSearchForm()' title="Abrir panel de búsqueda avanzada">
+					<i [class]="openBrowseEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span></div>
+				</div>
+		</div>
+
+		<ng-container *ngIf="openBrowseEditor">
+			<mat-tab-group>
+
+				<mat-tab label="Reportes">
+						<vigilancia-reportes-browse
+											[export]='hasExport'
+											[query]="query" 
+											(updateQuery)="refreshSelection($event)">
+						</vigilancia-reportes-browse>
+				</mat-tab>
+
+				<mat-tab label="Consulta general">
+					<vigilancia-browse 
+										[export]='hasExport'
+										[query]="query" 
+										(updateQuery)="refreshSelection($event)"
+										(mapRequest)="mapRequest($event)" ></vigilancia-browse>
+				</mat-tab>
+
+			</mat-tab-group>
+		</ng-container>
+	</mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+	 	<div class="row">
+			<div class="col-sm-12 col-md-12">
+	 	  	<div class="d-flex justify-content-between align-items-center panel-header">
+
+					<div class="panel-header-text">{{ title }}</div>
+
+					<div class="panel-header-control" >
+					  <mat-button-toggle-group #view="matButtonToggleGroup"  >
+					    <mat-button-toggle value="list">
+					      <mat-icon>view_list</mat-icon>
+					    </mat-button-toggle>
+					  </mat-button-toggle-group>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<ng-container *ngIf='showEditor'>
+				<solcovid-panel [asistencia]='currentAsistencia'
+										(updateToken)='updateCurrentAsistencia($event)'></solcovid-panel>
+
+		</ng-container>
+
+		<ng-container *ngIf='showData'>
+      <div *ngIf="renderMap">
+        <agm-map [latitude]="baseLatLng.lat" [longitude]="baseLatLng.lng" [zoom]="zoom">
+        	<ng-container *ngFor="let location of mapData">
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng">
+            <agm-info-window>
+              <strong>{{ location.asistencia.requeridox.slug }}</strong>
+            </agm-info-window>
+          </agm-marker>
+        	</ng-container>
+        </agm-map>
+      </div>
+
+			<ng-container *ngIf='!view.value || view.value=="list"'>
+				<vigilancia-reportes-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
+			</ng-container>
+
+		</ng-container>
+  </mat-card-content>
+</mat-card>

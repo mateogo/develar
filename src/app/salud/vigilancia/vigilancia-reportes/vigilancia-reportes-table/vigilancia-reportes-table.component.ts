@@ -17,11 +17,7 @@ import {  Person } from '../../../../entities/person/person';
 
 import { 	Asistencia,
 					AsistenciaTable, 
-					Alimento, 
-					UpdateAsistenciaEvent, 
-					UpdateAlimentoEvent, 
-					UpdateAsistenciaListEvent,
-					AsistenciaHelper } from '../../asistencia.model';
+					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 
 /**
@@ -71,11 +67,11 @@ const removeRelation = {
  */
 
 @Component({
-  selector: 'sol-table',
-  templateUrl: './sol-list-table.component.html',
-  styleUrls: ['./sol-list-table.component.scss']
+  selector: 'vigilancia-reportes-table',
+  templateUrl: './vigilancia-reportes-table.component.html',
+  styleUrls: ['./vigilancia-reportes-table.component.scss']
 })
-export class SolListTableComponent implements OnInit {
+export class VigilanciaReportesTableComponent implements OnInit {
   @Input() public displayedColumns =  ['select', "compNum", "avance", "prioridad", "personSlug", "faudit_alta", "covid", "locacion", "osocial"];
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
@@ -83,7 +79,7 @@ export class SolListTableComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "personSlug","faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "covid", "action", "slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
+  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "ndoc", "personSlug", "telefono", "edad", "faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "covid", "action","covidTxt", "reportadoPor", "fe_reportado", "lab_laboratorio", "lab_fe_toma", "lab_estado","slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
 
   private table_columns_sel = {
     'select':     false,
@@ -105,16 +101,12 @@ export class SolListTableComponent implements OnInit {
     'ts_alta':    false,
   }
 
+  public itemsLength: number = 0;
 
   private dataRecordsSource: BehaviorSubject<AsistenciaTable[]>;
-  private readonly CERO   = 0;
-  private readonly UNO    = 1;
-  private readonly DOS    = 2;
-  private readonly TRES   = 3;
-  private readonly CUATRO = 4;
-  private readonly CINCO  = 5;
 
   public selectedAction: string = 'no_definido';
+
   public actionList: Array<any> = [];
 
   public dataSource: DataSource<any>;
@@ -125,6 +117,7 @@ export class SolListTableComponent implements OnInit {
 			private dsCtrl: SaludController,
 			public dialogService: MatDialog
     ){
+    this.displayedColumns = LABORATORIO;
     this.dataRecordsSource = this.dsCtrl.asistenciasDataSource;
   }
 
@@ -138,7 +131,7 @@ export class SolListTableComponent implements OnInit {
     })
 
     this.dataRecordsSource.subscribe(token =>{
-      //this.acumCurrencies(token)
+      this.itemsLength = token && token.length;
     })
 
   }
@@ -267,26 +260,6 @@ export class TableDataSource extends DataSource<any> {
         case 'personSlug':    [propertyA, propertyB] = [a.personSlug, b.personSlug]; break;
       }
 
-/*
-
-    'select':     false,
-    'compName':   false,
-    'compNum':    false,
-    'personSlug': false,
-    'fecomp_tsa': false,
-    'fecomp_txa': false,
-    'action':     false,
-    'slug':       false,
-    'description':false,
-    'sector':     false,
-    'estado':     false,
-    'avance':     false,
-    'ts_alta':    false,
-
-
-*/
-
-
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 
@@ -297,3 +270,10 @@ export class TableDataSource extends DataSource<any> {
   disconnect() {}
 
 }
+
+
+const LABORATORIO = [
+          'select',
+          'personSlug',
+
+]

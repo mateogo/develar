@@ -234,6 +234,8 @@ export class VigilanciaPageComponent implements OnInit {
       if(key === 'casosIndice'      && !query[key]) delete query[key];
     })
 
+    console.dir(query)
+
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
