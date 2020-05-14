@@ -45,13 +45,30 @@
       </div>
       <hr>
       <div class="row" >
-        <div class="col-md-6 d-md-flex justify-content-start align-items-center" 
-            title="Sección para filtrar casos covid">
+        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+            title="Sección para filtrar casos con la infección en estado activa">
           <mat-checkbox  class='mat-check'
                   [checked]="false"
                   [formControl]="form.controls['hasCovid']" ></mat-checkbox>
-                  <span class='mat-data'>COVID: Sólo casos confirmados y activos</span>
+                  <span class='mat-data'>COVID ACTIVOS</span>
         </div>
+
+        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+            title="Sección para filtrar total de casos covid">
+          <mat-checkbox  class='mat-check'
+                  [checked]="false"
+                  [formControl]="form.controls['casoCovid']" ></mat-checkbox>
+                  <span class='mat-data'>COVID TOTALES: Activos + Altas + Fallecidos</span>
+        </div>
+
+        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+            title="Casos marcados ">
+          <mat-checkbox  class='mat-check'
+                  [checked]="false"
+                  [formControl]="form.controls['vigiladoCovid']" ></mat-checkbox>
+                  <span class='mat-data'>Afectado COVID: bajo seguimiento</span>
+        </div>
+
       </div>
 
       <div class="row" >

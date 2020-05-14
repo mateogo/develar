@@ -101,6 +101,18 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }
   }
 
+  vinculoSelected(personId: string){
+    this.query = new VigilanciaBrowse();
+    this.query.isVigilado = false;
+    this.query.hasCovid = false;
+    this.query.viewList = [];
+
+    this.query.requirenteId = personId;
+
+    this.fetchSolicitudes(this.query, SEARCH);
+  }
+
+
   /************************/
   /*    Sol/Asistencia   */
   /**********************/
@@ -257,11 +269,13 @@ const LABORATORIO = [
           'personSlug',
           'telefono',
           'edad',
+          'covidActualState',
+          'covidSintoma',
+          'covidAvance',
           'covidTxt',
           'reportadoPor',
           'fe_reportado',
           'lab_laboratorio',
           'lab_fe_toma',
           'lab_estado'
-
 ]

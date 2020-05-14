@@ -202,6 +202,22 @@
       <mat-cell *matCellDef="let element"> {{element.fe_reportado}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="covidSintoma">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Síntoma</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidSintoma}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidActualState">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> EstadoCOVID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidActualState}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidAvance">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> CasoCOVID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidAvance}} </mat-cell>
+    </ng-container>
+
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
     <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>

@@ -117,7 +117,7 @@ const familySch = new mongoose.Schema({
 
     fenac:       {type: Number, required: false, default: 0 },
     fenactx:     {type: String, required: false, default: ""},
-    vinculo:     {type: String, required: true,  default: ""},
+    vinculo:     {type: String, required: false,  default: ""},
     estado:      {type: String, required: false, default: ""},
 
     hasOwnPerson:{type: Boolean, required: false, default: false},
@@ -2463,5 +2463,6 @@ exports.buildInvertedTreeForContactData = function(){
 //!ALT_Covid password en https://comunidad.cuidarnos.com/s/global-search/%20(%20SOMELLERA%201930%20)%20%20OR%20%20(%2033546345659%20)%20
 
 
+//db.personas.updateOne({ndoc: '49740447'}, {$pull:  {familiares: {_id: ObjectId("5ebc7770c4a3e454f4118880")}}   })
 
 

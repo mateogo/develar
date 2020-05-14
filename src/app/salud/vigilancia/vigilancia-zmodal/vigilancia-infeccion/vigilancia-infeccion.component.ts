@@ -118,7 +118,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
     this.infection.locacionSlug = this.infection.locacionSlug || '';
 
     this.form = this.fb.group(this.infection);
-    this.form.controls.fe_confirma.disable();
+    //this.form.controls.fe_confirma.disable();
   }
 
 

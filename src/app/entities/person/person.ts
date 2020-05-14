@@ -253,7 +253,7 @@ export class FamilyData {
     estado: string = 'activo';
     hasOwnPerson: boolean = false;
     personId: string = '';
-    nucleo: string = 'nucleo01';
+    nucleo: string = 'NUC-HAB-01';
 
     ecivil: string;
     nestudios: string;

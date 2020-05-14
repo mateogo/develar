@@ -70,6 +70,10 @@
       background: $warning-color;
       border-color: $warning-color;
     }
+    &.black-badge {
+      background: black;
+      border-color: black;
+    }
     &.danger-badge {
       background: $danger-color;
       border-color: $danger-color;
@@ -86,6 +90,9 @@
       }
       &.warning-badge {
         color: $warning-color;
+      }
+      &.black-badge {
+        color: black;
       }
       &.danger-badge {
         color: $danger-color;

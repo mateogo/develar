@@ -422,7 +422,7 @@ function buildQuery(query){
 
   if(query['reporte'] && query['reporte']==="COVID"){
       q = {
-            '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 1}],
+            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
             isVigilado: true,
           }
       return q;
@@ -547,6 +547,15 @@ function buildQuery(query){
     q["infeccion.hasCovid"] = true;
 
   }
+
+  if(query['vigiladoCovid']){
+    q["infeccion.isActive"] = true;
+  }
+
+  if(query['casoCovid']){
+    q['$or'] = [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}];
+  }
+  
   
   if(query['actualState']){
     let qData =  parseInt(query['actualState'], 10);
@@ -914,6 +923,7 @@ exports.exportarmovimientos = function(query, req, res ){
 
 function fetchMovimientos(query, req, res){
     let regexQuery = buildQuery(query)
+    console.dir(regexQuery);
 
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
@@ -922,15 +932,34 @@ function fetchMovimientos(query, req, res){
             errcb(err);
         }else{
             console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
-            buildExcelStream(entities, query, req, res)
+            if(entities && entities.length){
+
+              sortCovid(entities);
+
+              buildExcelStream(entities, query, req, res)
+
+            }
         }
     });
-
-
-
 }
 
-const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
+function sortCovid(records){
+    records.sort( (fel, sel)=> {
+      let fprio = (fel.infeccion && fel.infeccion.fets_confirma) || (fel.sisaevent && fel.sisaevent.fets_reportado) || fel.fenotif_tsa || fel.fecomp_tsa;
+      let sprio = (sel.infeccion && sel.infeccion.fets_confirma) || (sel.sisaevent && sel.sisaevent.fets_reportado) || sel.fenotif_tsa || sel.fecomp_tsa;
+
+      if(fprio < sprio ) return -1;
+
+      else if(fprio > sprio ) return 1;
+
+      else{
+        return 0;
+      }
+    })
+};
+
+
+const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
 
 
 function buildExcelStream(movimientos, query, req, res){
@@ -954,9 +983,9 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Comprobante','Número','TDOC', 'NumDocumento', 'Nombre', 'Apellido','COVID', 'Fe Inicio Sítoma', 'Fecha Notificacion', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Fe Notificación', 'Estado LAB', 'Resultado LAB']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia','TDOC', 'NumDocumento', 'Nombre', 'Apellido','COVID', 'Fe Inicio Sítoma', 'Fecha Notificacion', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Fe Notificación', 'Estado LAB', 'Resultado LAB']).commit();
 
-    movimientos.forEach(row => {
+    movimientos.forEach((row, index )=> {
  
       let laboratorio_token = row.muestraslab && row.muestraslab.length && row.muestraslab[ row.muestraslab.length-1 ];
       if(!laboratorio_token){
@@ -998,8 +1027,8 @@ function buildExcelStream(movimientos, query, req, res){
       let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
 
 
-      const {compName, compNum } = row;
-      let basicArr = [ compName, compNum ];
+      const {compNum } = row;
+      let basicArr = [ compNum, (index + 1) ];
       
       worksheet.addRow([...basicArr, ... requeridoxArr, ...covidArr, ...laboratorioArr ]).commit()
 
@@ -1452,5 +1481,10 @@ function buildInverteTree(req, errcb, cb){
     processArchive(personTree, req, errcb, cb)
   });
 }
+
+
+
+
+
 
 

@@ -110,7 +110,7 @@ export class PersonAltaComponent implements OnInit {
             street1:     [null, Validators.compose([Validators.required])],
             street2:     [null],
             city:        [null, Validators.compose([Validators.required])],
-            barrio:      [null, Validators.compose([Validators.required])],
+            barrio:      [null],
             zip:         [null],
 
             state:       [null],

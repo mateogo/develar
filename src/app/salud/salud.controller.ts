@@ -372,8 +372,7 @@ export class SaludController {
             infection.isActive = true;
             infection.actualState = 1;
             infection.fe_confirma = laboratorio.fe_resestudio;
-            infection.fets_confirma = laboratorio.fets_resestudio;
-
+            infection.fets_confirma = devutils.dateFromTx(infection.fe_confirma).getTime()
 
           }else if (laboratorio.resultado === 'descartada'){
             //infection.hasCovid = false;

@@ -52,8 +52,6 @@ export class VigilanciaBrowseComponent implements OnInit {
   private fireEvent: VigilanciaBrowse;
   public usersOptList;
 
-  public isEncuesta = false;
-
   constructor(
     private dsCtrl: SaludController,
   	private fb: FormBuilder,
@@ -104,17 +102,8 @@ export class VigilanciaBrowseComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    if(type === 'action' && val !== "encuesta"){
-      this.isEncuesta = false;
-    }
     
-    if(type==="action" && val==="encuesta"){
-      if(!this.usersOptList || !this.usersOptList.length) this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
-      this.isEncuesta = true;
-    }
-
     if(type === 'actualState'){
-      this.isEncuesta = false;
       if(val === 1){
         this.form.get('hasCovid').setValue(true);
 
@@ -122,7 +111,6 @@ export class VigilanciaBrowseComponent implements OnInit {
         this.form.get('hasCovid').setValue(false);
 
       }
- 
     }
     
 
@@ -156,6 +144,8 @@ export class VigilanciaBrowseComponent implements OnInit {
       compNum_h:       [null],
       isVigilado:      [null],
       hasCovid:        [null],
+      casoCovid:       [null],
+      vigiladoCovid:   [null],
       necesitaLab:     [null],
       pendLaboratorio: [null],
       actualState:     [null],
@@ -188,6 +178,8 @@ export class VigilanciaBrowseComponent implements OnInit {
         pendLaboratorio: query.pendLaboratorio,
         actualState: query.actualState,
         hasCovid:   query.hasCovid,
+        casoCovid:   query.casoCovid,
+        vigiladoCovid:   query.vigiladoCovid,
         necesitaLab:   query.necesitaLab,
         isSeguimiento:  query.isSeguimiento,
         tipoSeguimiento:  query.tipoSeguimiento,
@@ -271,6 +263,8 @@ export class VigilanciaBrowseComponent implements OnInit {
       if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
       if(key === 'isVigilado'       && !entity[key]) delete entity[key];
       if(key === 'hasCovid'         && !entity[key]) delete entity[key];
+      if(key === 'casoCovid'        && !entity[key]) delete entity[key];
+      if(key === 'vigiladoCovid'    && !entity[key]) delete entity[key];
       if(key === 'necesitaLab'      && !entity[key]) delete entity[key];
       if(key === 'isSeguimiento'    && !entity[key]) delete entity[key];
       if(key === 'isActiveSisa'     && !entity[key]) delete entity[key];

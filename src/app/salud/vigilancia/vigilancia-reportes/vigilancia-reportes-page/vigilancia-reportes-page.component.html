@@ -55,8 +55,10 @@
 		</div>
 
 		<ng-container *ngIf='showEditor'>
-				<solcovid-panel [asistencia]='currentAsistencia'
-										(updateToken)='updateCurrentAsistencia($event)'></solcovid-panel>
+				<vigilancia-panel [asistencia]='currentAsistencia'
+										(updateToken)='updateCurrentAsistencia($event)'
+										(fetchPerson)='vinculoSelected($event)' ></vigilancia-panel>
+
 
 		</ng-container>
 

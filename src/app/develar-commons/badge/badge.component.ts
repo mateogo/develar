@@ -21,6 +21,7 @@ export class BadgeComponent {
       'info-badge': this.color === 'info',
       'warning-badge': this.color === 'warning',
       'danger-badge': this.color === 'danger',
+      'black-badge': this.color === 'black',
       'custom-badge': this.customColor,
       'outline-badge': this.outline,
       'border-radius-badge': this.borderRadius,

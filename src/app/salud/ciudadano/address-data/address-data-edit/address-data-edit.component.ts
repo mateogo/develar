@@ -155,7 +155,7 @@ export class AddressDataEditComponent implements OnInit {
 			streetIn:    [null],
 			streetOut:   [null],
 			city:        [null, Validators.compose([Validators.required])],
-			barrio:      [null, Validators.compose([Validators.required])],
+			barrio:      [null],
 			state:       [null],
 			statetext:   [null],
 			zip:         [null],

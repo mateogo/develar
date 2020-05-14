@@ -597,9 +597,16 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 			}
 
 			td.covidTxt = ''
+			td.covidActualState= '';
+			td.covidSintoma = '';
+			td.covidAvance = ''
 			if(sol.infeccion){
+
 				let fecha = sol.infeccion.actualState === 1 ?  devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_inicio): devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_confirma);
 				td.covidTxt =  AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', sol.infeccion.avance) + ' :: ' +fecha;
+				td.covidActualState = AsistenciaHelper.getPrefixedOptionLabel('estadoActualInfection', '',sol.infeccion.actualState);
+				td.covidAvance = AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '',sol.infeccion.avance);
+				td.covidSintoma = AsistenciaHelper.getPrefixedOptionLabel('sintomaInfection', '',sol.infeccion.sintoma);
 			}
 
 			td.lab_laboratorio = '';
@@ -669,6 +676,10 @@ export class AsistenciaTable {
 		edad: string;
 		telefono: string;
 		covidTxt: string;
+
+		covidActualState: string;
+		covidSintoma: string;
+		covidAvance: string;
 		reportadoPor: string;
 		fe_reportado: string;
 		labTxt: string;
@@ -741,6 +752,11 @@ export class VigilanciaBrowse {
 		isVigilado: boolean = true;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
 		hasCovid:   boolean = false;
+
+		casoCovid:   boolean = false;
+		vigiladoCovid:   boolean = false;
+
+
 		necesitaLab: boolean = false;
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
@@ -1295,7 +1311,7 @@ const labsequenceOptList: Array<any> = [
 
 const reportesVigilanciaOptList: Array<any> = [
     {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
-    {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos' },
+    {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
 ];
 
 

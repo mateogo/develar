@@ -495,18 +495,22 @@ export class VigilanciaViewComponent implements OnInit {
         covidBadgeToken.color = 'success'
  
       }else if(token.actualState === 4 ){
-        covidBadgeToken.arrow = 'right'
-        covidBadgeToken.fecha =  token.fets_confirma ? devutils.txDayMonthFormatFromDateNum(token.fets_confirma): '';
-        covidBadgeToken.color = 'warning'
+        covidBadgeToken.arrow = 'bottom'
+        covidBadgeToken.label = AsistenciaHelper.getPrefixedOptionLabel('estadoActualInfection', '', token.actualState);
+        covidBadgeToken.toolTip = `Fallecido: ${token.slug}`;
+        covidBadgeToken.fecha =  token.fets_alta ? devutils.txDayMonthFormatFromDateNum(token.fets_alta): '';
+        covidBadgeToken.color = 'black'
 
       }else if(token.actualState === 5 ){
         covidBadgeToken.arrow = 'bottom'
+        covidBadgeToken.toolTip = `Alta: ${token.slug}`;
+        covidBadgeToken.label = AsistenciaHelper.getPrefixedOptionLabel('estadoActualInfection', '', token.actualState);
         covidBadgeToken.fecha =  token.fets_alta ? devutils.txDayMonthFormatFromDateNum(token.fets_alta): '';
         covidBadgeToken.color = 'success'
 
       }else if(token.actualState === 6 ){
         covidBadgeToken.arrow = 'left'
-        covidBadgeToken.fecha =  token.fets_confirma ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): '';
+        covidBadgeToken.fecha =  token.fets_inicio ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): '';
         covidBadgeToken.color = null;
       }
     }
