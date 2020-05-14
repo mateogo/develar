@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #20 20.05.13-18:02',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #20 20.05.14-13:57',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},
