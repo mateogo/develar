@@ -482,7 +482,7 @@ export class VigilanciaViewComponent implements OnInit {
       if(     token.actualState === 0 ){
         covidBadgeToken.arrow = 'left'
         covidBadgeToken.fecha =  token.fets_inicio ? devutils.txDayMonthFormatFromDateNum(token.fets_inicio): '';
-        covidBadgeToken.color = 'success'
+        covidBadgeToken.color = 'warning'
 
       }else if(token.actualState === 1 ){
         covidBadgeToken.arrow = 'top'

@@ -419,7 +419,7 @@ export class MuestraLaboratorio {
 
 	muestraId: string = '';
 	fe_toma: string = '';
-	tipoMuestra: string = 'hisopado';
+	tipoMuestra: string = 'hisopado'; // tipoMuestraLaboratorioOptList
 
 	locacionId: string = '';
 	locacionSlug: string = '';
@@ -1312,6 +1312,7 @@ const labsequenceOptList: Array<any> = [
 const reportesVigilanciaOptList: Array<any> = [
     {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
     {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
+    {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
 ];
 
 

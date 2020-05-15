@@ -403,7 +403,7 @@ asisprevencionSch.pre('save', function (next) {
 });
 
 
-function buildQuery(query){
+function buildQuery(query, today){
 
   let q = {};
 
@@ -424,6 +424,23 @@ function buildQuery(query){
       q = {
             '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
             isVigilado: true,
+          }
+      return q;
+  }
+
+  if(query['reporte'] && query['reporte']==="LABNEGATIVO"){
+
+      let refDate = today.getTime() - (1000 * 60 * 60 * 24 * 7);
+
+      q = {
+            '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 2}],
+            isVigilado: true,
+            'muestraslab': {$exists: true, $ne:[]},
+            $expr: {$and: [
+
+                 {$gte: [{"$arrayElemAt": ["$muestraslab.fets_resestudio", -1]}, refDate] },
+                 {$eq: [{"$arrayElemAt": ["$muestraslab.resultado", -1]}, "descartada"] },
+             ]}
           }
       return q;
   }
@@ -582,7 +599,6 @@ function buildQuery(query){
     }
 
     if(query['qNotSeguimiento']){
-      let today = new Date();
       let offset = parseInt(query['qNotSeguimiento'], 10);
       let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
       q["$or"] =[ {'$and': [{ 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}]  ;
@@ -603,16 +619,12 @@ function buildQuery(query){
 
 
 
-  if(query['isActiveSisa']){
-    let today = new Date();
-    
+  if(query['isActiveSisa']){    
     q["sisaevent.isActive"] = true;
 
     if(query['avanceSisa']){
       q["sisaevent.avance"] = query['avanceSisa'];
-
     }
-
 
     if(query['qDaysSisa']){
       let offset = parseInt(query['qDaysSisa'], 10);
@@ -691,7 +703,7 @@ exports.findAsistenciaFromPerson = function(person){
       isVigilado: true,
 
     }
-    let regexQuery = buildQuery(query);
+    let regexQuery = buildQuery(query, new Date());
     return Record.findOne(regexQuery);
 }
 
@@ -703,7 +715,7 @@ exports.updateAsistenciaFromPerson = function(asistencia){
 
 
 exports.upsertNext = function (query, errcb, cb) {
-    let regexQuery = buildQuery(query);
+    let regexQuery = buildQuery(query, new Date());
 
     Record.find(regexQuery, function(err, entities) {
         if (err) {
@@ -740,7 +752,7 @@ exports.findAll = function (errcb, cb) {
  */
 
 exports.findByQuery = function (query, errcb, cb) {
-    let regexQuery = buildQuery(query)
+    let regexQuery = buildQuery(query, new Date())
     let necesitaLab = false;
 
     if(query && query.necesitaLab ){
@@ -922,7 +934,7 @@ exports.exportarmovimientos = function(query, req, res ){
 
 
 function fetchMovimientos(query, req, res){
-    let regexQuery = buildQuery(query)
+    let regexQuery = buildQuery(query, new Date())
     console.dir(regexQuery);
 
 
@@ -983,7 +995,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia','TDOC', 'NumDocumento', 'Nombre', 'Apellido','COVID', 'Fe Inicio Sítoma', 'Fecha Notificacion', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Fe Notificación', 'Estado LAB', 'Resultado LAB']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -994,14 +1006,37 @@ function buildExcelStream(movimientos, query, req, res){
             fe_toma: 's/d',
             laboratorio: 's/d',
             fe_resestudio: 's/d',
-            fe_notificacion: 's/d',
             estado: 's/d',
             resultado: 's/d',
         }
       }
-      const { secuencia, fe_toma, laboratorio, fe_resestudio, fe_notificacion, estado, resultado } = laboratorio_token;
-      let laboratorioArr = [ secuencia, fe_toma, laboratorio, fe_resestudio, fe_notificacion, estado, resultado];
+      const { secuencia, fe_toma, laboratorio, fe_resestudio, estado, resultado } = laboratorio_token;
+      let laboratorioArr = [ secuencia, fe_toma, laboratorio, fe_resestudio, estado, resultado];
 
+
+      //
+      let locacion_token = row.locacion;
+      if(!locacion_token){
+          locacion_token = {
+            street1: 's/d',
+            city: 's/d',
+            lat: 's/d',
+            lng: 's/d',
+          }
+      }
+     const { street1, city, lat, lng } = locacion_token;
+     let locacionArr = [  street1, city, lat, lng  ];
+
+      //
+      let sisa_token = row.sisaevent;
+      if(!sisa_token){
+          sisa_token = {
+            fe_reportado: 's/d',
+            reportadoPor: 's/d',
+          }
+      }
+     const { fe_reportado, reportadoPor } = sisa_token;
+     let sisaArr = [ fe_reportado, reportadoPor  ];
 
 
       //
@@ -1026,11 +1061,10 @@ function buildExcelStream(movimientos, query, req, res){
       const { tdoc, ndoc, nombre, apellido } = requeridox;
       let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
 
-
-      const {compNum } = row;
-      let basicArr = [ compNum, (index + 1) ];
+      const {compNum, telefono } = row;
+      let basicArr = [ compNum, (index + 1), telefono ];
       
-      worksheet.addRow([...basicArr, ... requeridoxArr, ...covidArr, ...laboratorioArr ]).commit()
+      worksheet.addRow([...basicArr, ... requeridoxArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
 
     })
     worksheet.commit()
@@ -1083,7 +1117,7 @@ function dashboardEpidemio(datenum, errcb, cb){
       fecomp_ts_h: time_frame.semh.getTime()
     }
   
-  let regexQuery = buildQuery(query)
+  let regexQuery = buildQuery(query, new Date())
 
     
   person.buildIdTree().then(pTree =>{
