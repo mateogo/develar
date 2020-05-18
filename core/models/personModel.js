@@ -422,7 +422,7 @@ exports.fetchByAddress = function(id, address){
 
 
 function buildQuery(query){
-    let q = {};
+    let q = {estado: {$not: {$in: [ 'baja', 'bajaxduplice' ]} }  };
 
     if(query.displayName){
         q["displayName"] = {"$regex": query.displayName, "$options": "i"};

@@ -37,6 +37,15 @@ router.get('/fetchduplices', function (req, res) {
     });
 });
 
+router.get('/processduplices', function (req, res) {
+    service.processDuplices(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
 
 
 module.exports = router;

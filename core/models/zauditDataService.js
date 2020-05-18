@@ -70,6 +70,42 @@ exports.findDuplices = function (errcb, cb) {
     });
 };
 
+exports.processDuplices = function (errcb, cb) {
+    Record.find().lean().exec(function(err, entities) {
+        if (err) {
+            errcb(err);
+        }else{
+          processListOfDuplices(entities, errcb, cb)
+            //cb(entities);
+        }
+    });
+};
+
+function processListOfDuplices(entities, errcb, cb){
+  entities.forEach(token => {
+    if(token.duplices < 60){
+      token.list.forEach(item => {
+        if(!item.isMaster){
+          changeEstadoToPerson(item);
+        }
+
+      })
+    }
+
+  })
+  cb({process: 'ok'})
+
+}
+
+async function changeEstadoToPerson(token){
+  // c onsole.log('ready to insert token:')
+  // c onsole.dir(token);
+  let estado = {estado: 'bajaxduplice'};
+  await PersonRecord.findByIdAndUpdate(token.personId, estado, { new: true })
+
+}
+
+
 exports.auditPersonDuplices = function (errcb, cb) {
   console.log('AUDIT PERSON DUPLICES TO-BEGIN');
   auditDuplicesFromPerson(errcb, cb);
@@ -93,8 +129,8 @@ function auditDuplicesFromPerson(errcb, cb ){
       console.log('Master ASIS CREATED')
       buildPersonInvertedTree(masterPerson, masterAsistencias).then(masterp => {
         console.log('Master PERSON CREATED')
-        processDuplices(masterp, errcb, cb);
-        cb(masterp);
+        evaluateDuplices(masterp, errcb, cb);
+        cb({process: 'ok'});
 
       })
     }else {
@@ -139,7 +175,7 @@ function buildAsisInvertedTreeByPerson(master){
 
 function buildPersonInvertedTree(master, masterasis){
     let promise = new Promise((resolve, reject)=> {
-        PersonRecord.find(null, '_id displayName tdoc ndoc idbrown contactdata locaciones cobertura').lean().then(persons => {
+        PersonRecord.find({estado: {$ne: 'bajaxduplice'}}, '_id displayName tdoc ndoc idbrown contactdata locaciones cobertura').lean().then(persons => {
             persons.forEach(p => {
               let key = p.tdoc + ':' + p.ndoc;
               let token = buildPersonToken(p, masterasis);
@@ -182,7 +218,7 @@ function buildPersonToken(person, master){
   return token;
 }
 
-function processDuplices(master, errcb, cb){
+function evaluateDuplices(master, errcb, cb){
   Object.keys(master).forEach( key => {
     if(master[key].duplices > 1) {
       processDuplicatedPerson(master[key], key);
@@ -210,7 +246,7 @@ function evaluateTokenList(token){
     if(t.asisCount){
       asiscases += 1;
     }
-    let value = t.asisCount * 10 + t.contactData + t.addressData + t.coberturaData;
+    let value = t.asisCount * 10 + t.contactData +  t.coberturaData;
     if(value > ponder){
        index = idx;
        ponder = value;
