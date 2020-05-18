@@ -697,6 +697,13 @@ db.asisprevenciones.find(
 
 */
 
+
+exports.getRecord = function(){
+  return Record;
+}
+
+
+
 exports.findAsistenciaFromPerson = function(person){
     let query = {
       requirenteId: person.id,

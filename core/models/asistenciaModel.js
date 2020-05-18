@@ -248,7 +248,9 @@ function buildQuery(query){
  */
 const Record = mongoose.model('Asistencia', asistenciaSch, 'asistencias');
 
-
+exports.getRecord = function(){
+  return Record;
+}
 
 /////////   CAPA DE SERVICIOS /////////////
 

@@ -355,6 +355,11 @@ const Person = mongoose.model('Persona', personSch, 'personas');
 
 
 
+exports.getRecord = function(){
+  return Person;
+}
+
+
 /////////   CAPA DE SERVICIOS /////////////
 /////////     API DEL USUARIO ///////////
 /**
@@ -1798,7 +1803,7 @@ const buildCoreData = function(person, token){
     person.sexo = translate('sexo', token.sexo) ;
 
     person.nestudios = translate('estudios',token.estudios);
-    person.persontags = '';
+    person.persontags = [];
     person.tprofesion = token.profesion;
     person.especialidad = token.ocupacion;
     person.ambito = token.observaciones;
