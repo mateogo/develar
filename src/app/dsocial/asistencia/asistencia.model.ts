@@ -369,7 +369,7 @@ const pedidosTypeOptList: Array<any> = [
 
 const entregaDesdeOptList: Array<any> = [
         {val: 'almacen',      type: 'Galpón',     label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
-				{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco (playón)', locacion:	'Quintana entre 25 de Mayo y Amenedo', telefono: '4299-2273'},
+				{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
 				{val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
 				{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
 				{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
@@ -409,7 +409,7 @@ const causasOptList: Array<any> = [
 
 const delegacionesOptList = [
 
-{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco (playón)', locacion:	'Quintana entre 25 de Mayo y Amenedo', telefono: '4299-2273'},
+{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca',         telefono: '4299-2273'},
 {val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
 {val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
 {val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
@@ -711,19 +711,19 @@ const avanceEncuestaOptList = [
 ]
 
 const ciudadesBrown: Array<any> = [
-    {val: 'no_definido',         label: 'Seleccione opción',slug:'Seleccione opción' },
-    {val: 'adrogue',             label: 'Adrogué ',   slug:'Adrogué' },
-    {val: 'burzaco',             label: 'Burzaco ',   slug:'Burzaco' },
-    {val: 'calzada',             label: 'Rafael Calzada ',   slug:'Rafael Calzada' },
-    {val: 'claypole',            label: 'Claypole',   slug:'Claypole' },
-    {val: 'donorione',           label: 'Don Orione', slug:'Don Orione' },
-    {val: 'glew',                label: 'Glew',       slug:'Glew' },
-    {val: 'longchamps',          label: 'Longchamps', slug:'Longchamps' },
+    {val: 'no_definido',         label: 'Seleccione opción',  slug:'Seleccione opción' },
+    {val: 'adrogue',             label: 'Adrogué',            slug:'Adrogué' },
+    {val: 'burzaco',             label: 'Burzaco',            slug:'Burzaco' },
+    {val: 'calzada',             label: 'Rafael Calzada',     slug:'Rafael Calzada' },
+    {val: 'claypole',            label: 'Claypole',           slug:'Claypole' },
+    {val: 'donorione',           label: 'Don Orione',         slug:'Don Orione' },
+    {val: 'glew',                label: 'Glew',               slug:'Glew' },
+    {val: 'longchamps',          label: 'Longchamps',         slug:'Longchamps' },
     {val: 'malvinasargentinas',  label: 'Malvinas Argentinas',slug:'Malvinas Argentinas' },
-    {val: 'marmol',              label: 'José Mármol',   slug:'José Mármol' },
-    {val: 'ministrorivadavia',   label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
-    {val: 'sanjose',             label: 'San José',   slug:'San José' },
-    {val: 'extradistrito',       label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
+    {val: 'marmol',              label: 'José Mármol',        slug:'José Mármol' },
+    {val: 'ministrorivadavia',   label: 'Ministro Rivadavia', slug:'Ministro Rivadavia' },
+    {val: 'sanjose',             label: 'San José',           slug:'San José' },
+    {val: 'extradistrito',       label: 'Extra distrito',     slug:'Fuera del Municipio de Brown' },
 ];
 
 const MODALIDAD_ALIMENTO =     'alimentos';

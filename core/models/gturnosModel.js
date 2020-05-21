@@ -714,16 +714,16 @@ exports.createInitialData = function (){
       {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
 
       //burzaco
-      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
-      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
-      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
-      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
-      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
-      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
-      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
-      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
-      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:00 hs' },
-      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO (PLAYÓN) 11:30 hs' },
+      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
+      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
 
 
 

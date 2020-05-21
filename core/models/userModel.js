@@ -22,19 +22,25 @@ const DOMAIN = config.serverUrl;
 const Mixed = mongoose.Schema.Types.Mixed;
 
 const crypto = require('crypto'),
-    algorithm = 'aes-256-ctr',
-    password = 'd3v3l4r';
+    algorithm = 'aes-256-ctr';
+
+const key = Buffer.from('5ed90daa50a3d7fd1a1ea7a1d7883fc62ccffc49de570ec37eebf05067aa613a', 'hex');
+const iv  = Buffer.from('a2e50e8df4c5ad20b6af1269ba2552be', 'hex');
+
+
 
 function encrypt(text){
-  let cipher = crypto.createCipher(algorithm,password)
+  //let cipher = crypto.createCipheriv(algorithm,password)
+  let cipher   = crypto.createCipheriv(algorithm, key, iv);
   let crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
   return crypted;
 }
- 
+
+
 function decrypt(text){
-  let decipher = crypto.createDecipher(algorithm,password)
-  let dec = decipher.update(text,'hex','utf8')
+  let decipher = crypto.createDecipheriv(algorithm, key, iv);
+  let dec = decipher.update(text, 'hex', 'utf8')
   dec += decipher.final('utf8');
   return dec;
 }
@@ -843,7 +849,32 @@ function buildEmitterMailContent(data){
 
 //////
 
+/***
+Usage:
+  node bytestokey.js CIPHER PASSPHRASE
 
+Example:
+  node bytestokey.js aes-128-cbc secret
+
+Prints:
+  key: 5ebe2294ecd0e0f08eab7690d2a6ee69
+  iv:  26ae5cc854e36b6bdfca366848dea6bb
+
+Now update your code and replace this:
+
+  const cipher = crypto.createCipher('aes-128-cbc', 'secret');
+
+With this:
+
+  const key = Buffer.from('5ebe2294ecd0e0f08eab7690d2a6ee69', 'hex');
+  const iv  = Buffer.from('26ae5cc854e36b6bdfca366848dea6bb', 'hex');
+  const cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+
+Password utilizado para obtener los HASH
+    password = 'd3v3l4r';
+    node bytestokey.js aes-256-ctr d3v3l4r
+
+**/
 
 
 

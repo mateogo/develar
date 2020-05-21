@@ -22,7 +22,7 @@ const csv = require('csvtojson')
 const asisprevencion = require('../models/asisprevencionModel.js');
 
 
-
+/**
 const crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'd3v3l4r';
@@ -48,7 +48,7 @@ function comparePasswd (passwd, actualpasswd, cb){
         cb({error: 'passwd erronea '}, false);
     }
 }
-
+**/
 
  
 
@@ -2470,4 +2470,12 @@ exports.buildInvertedTreeForContactData = function(){
 
 //db.personas.updateOne({ndoc: '49740447'}, {$pull:  {familiares: {_id: ObjectId("5ebc7770c4a3e454f4118880")}}   })
 
+// https://www.eldestapeweb.com/opinion/amado-boudou/-suenan-los-androides-con-salarios-pequenos--202051621160
+//Good tests kill flawed theories, we remain alive to guess again 
 
+
+// Some philosophers fail to distinguish propositions from judgments; … But in the real world it is more important that a proposition be interesting than that it be true.
+
+// The importance of truth is that it adds to interest.
+
+// ~ Alfred North Whitehead
