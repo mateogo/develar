@@ -78,7 +78,6 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.query = this.repasarQuery(query);
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
-      console.dir(this.query);
       this.fetchSolicitudes(this.query, query.searchAction);
 
     }else if(query.searchAction === EXPORT){
@@ -131,7 +130,6 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
   private fetchSolicitudes(query: VigilanciaBrowse, action: string){
     this.showData = false;
-    console.dir(query)
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){

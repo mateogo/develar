@@ -9,7 +9,21 @@
 					Caso de seguimiento activo vigente </mat-checkbox>
 		</div>
 		<div  class="col">
-				<p class="text-resaltado" >{{ displayAs }}</p>
+			<div class="row">
+				<div  class="col">
+					<p class="text-resaltado" >{{ displayAs }}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div  class="col">
+					<p class="text-resaltado" >Síntoma COVID: {{ estadoSintoma }}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div  class="col">
+					<p class="text-resaltado" >Internado: {{ internacionTxt }}</p>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -36,29 +50,10 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-	</div>
-
-
-	<div class="row">
-		<div class="col" style="text-align: center;">
-			<mat-form-field>
-				<mat-label>Evolución del afectado</mat-label>
-				<mat-select #fldVector  formControlName='vector'
-										(selectionChange)="changeSelectionValue('vector', fldVector.value)">
-
-				    <mat-optgroup [disabled]="!vectorSeguimientoOptList.length" [label]="'Indicá el tipo de seguimiento'">
-				        <mat-option *ngFor="let tipo of vectorSeguimientoOptList" [value]="tipo.val">
-				            {{ tipo.label }} 
-				        </mat-option>
-				    </mat-optgroup>
-
-				</mat-select>
-			</mat-form-field>
-		</div>
 		<div class="col">
 			<mat-form-field>
 				<mat-label>Estado del síntoma</mat-label>
-				<mat-select #fldAvance  formControlName='sintoma'
+				<mat-select #fldAvance  formControlName='sintoma' 
 										(selectionChange)="changeSelectionValue('sintoma', fldAvance.value)">
 
 				    <mat-optgroup [disabled]="!sintomaOptList.length" [label]="'Síntoma'">
@@ -72,10 +67,44 @@
 		</div>
 	</div>
 
+  <div class="row">
+    <div class="col d-flex align-items-center">
+    	<span>ESTADO INTERNACIÓN: </span>
+      <mat-radio-group  formControlName="internadoFup" 
+      									aria-label="Cambio en el estado de internación">
+        <mat-radio-button 
+              [checked]="form.controls['internadoFup'].value===1" 
+              (change)='changeActualState(1)'
+              [value]="1">Mantiene situación actual</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['internadoFup'].value===2" 
+              (change)='changeActualState(2)'
+              [value]="2">Aislamiento en domicilio</mat-radio-button>
+        <mat-radio-button 
+              [checked]="form.controls['internadoFup'].value===3" 
+              (change)='changeActualState(3)'
+              [value]="3">Cambió lugar</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <div class="row">
+		<div  class="col">
+		    <mat-form-field>
+		      <input  matInput [formControl]="form.controls['locacionSlug']" 
+		      				placeholder="Nuevo lugar de internación" >
+					<mat-hint align="end">Lugar internacion: {{ internacionTxt }}</mat-hint>
+					<mat-error *ngIf="hasError('locacionSlug', 'ingreseLocacion')">Ingrese nueva locación de internación</mat-error>
+		    </mat-form-field>
+		</div>
+
+  </div>
+
+
 	<div class="row">
 		<div  class="col">
 		    <mat-form-field>
-		      <input  matInput [formControl]="form.controls['slug']" placeholder="Comentarios del afectado/a" >
+		      <input  matInput [formControl]="form.controls['slug']"  
+		      				 placeholder="Comentarios del afectado/a" >
 		    </mat-form-field>
 		</div>
 	</div>

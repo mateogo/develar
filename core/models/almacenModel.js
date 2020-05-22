@@ -279,6 +279,9 @@ exports.update = function (id, record, errcb, cb) {
 exports.create = function (record, errcb, cb) {
     delete record._id;
 
+    record.fecomp_tsa = utils.parseDateStr(record.fecomp_txa).getTime();
+    record.ts_prog =    Date.now();
+
     Record.create(record, function(err, entity) {
         if (err){
             console.log('[%s] validation error as validate() argument ',whoami);
@@ -317,6 +320,7 @@ exports.exportarmovimientos = function(query, req, res ){
 
 function fetchMovimientos(query, req, res){
     let regexQuery = buildQuery(query)
+    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {

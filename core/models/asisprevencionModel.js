@@ -240,6 +240,7 @@ const contextoAfectadosSch = new Schema({
 const infeccionFollowUpSch = new Schema({
     isActive:     { type: Boolean, required: false },
     isInternado:  { type: Boolean, required: false },
+    isExtradistrito: { type: Boolean, required: false, default: false },
     hasCovid:     { type: Boolean, required: false },
     actualState:  { type: Number,  required: false },
 
@@ -247,9 +248,13 @@ const infeccionFollowUpSch = new Schema({
     fe_confirma:  { type: String,  required: false },
     fe_alta:      { type: String,  required: false },
 
-    avance:       { type: String,  required: false },
-    sintoma:      { type: String,  required: false },
-    locacionSlug: { type: String,  required: false },
+    avance:         { type: String,  required: false },
+    sintoma:        { type: String,  required: false },
+    locacionSlug:   { type: String,  required: false },
+    institucion:    { type: String,  required: false, default: 'noinstitucionalizado' },
+    institucionTxt: { type: String,  required: false },
+    trabajo:        { type: String,  required: false, default: 'sindato'  },
+    trabajoTxt:     { type: String,  required: false },
 
     qcoworkers:   { type: Number,  required: false },
     qcovivientes: { type: Number,  required: false },
@@ -988,6 +993,38 @@ function sortCovid(records){
 };
 
 
+function buildAsisInvertedTreeByPerson(master){
+  return new Promise(function(resolve, reject){
+
+    AsisRecord.find(null, '_id  idPerson compNum fecomp_txa').lean().then(list => {
+
+      if(list && list.length){
+        list.forEach(token => {
+          if(token.idPerson){
+            if(master[token.idPerson]){
+              master[token.idPerson] += 1;
+
+            }else {
+              master[token.idPerson] = 1;
+
+            }
+
+          }else {
+            console.log('idPerson is null: [%s] [%s]', token._id, token.compNum)
+          }
+        })
+        resolve(master);
+
+      }else {
+        reject({error: 'not records found in asistencias'})
+      }
+    }); // end AsisRecord.find
+
+  }); // end Promise
+}
+
+
+
 const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
 
 
@@ -1012,7 +1049,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Estado COVID', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  

@@ -277,7 +277,7 @@ const avanceInfectionOptList = [
 const sintomaOptList = [
 	{ val: 'asintomatico',   label: 'Asintomático'},
 	{ val: 'sintomatico',    label: 'Sintomático leve'},
-	{ val: 'critico',        label: 'Sintomático grave'},
+	{ val: 'grave',          label: 'Sintomático grave'},
 	{ val: 'uti',            label: 'UTI'},
 	{ val: 'arm',            label: 'ARM'},
 	/** { val: 'enrecuperacion', label: 'En recuperación'}, */
@@ -287,9 +287,34 @@ const sintomaOptList = [
 	
 ];
 
+const lugartrabajoOptList = [
+	{ val: 'cuentapropia',    label: 'Cuenta propia'},
+	{ val: 'amadecasa',       label: 'Ama de casa'},
+	{ val: 'industria',       label: 'Industria'},
+	{ val: 'comercio',        label: 'Comercio'},
+	{ val: 'salud',           label: 'Salud'},
+	{ val: 'seguridad',       label: 'Seguridad'},
+	{ val: 'municipal',       label: 'Municipal'},
+	{ val: 'logistica',       label: 'Lógistica/ Distribución'},
+	{ val: 'oficio',          label: 'Oficio independiente'},
+	{ val: 'atiendepúblico',  label: 'Otro atiende público'},
+	{ val: 'otro',            label: 'Otro'},
+	{ val: 'sindato',         label: 'Sin dato'},
+];
+
+const institucionalizadoOptList = [
+	{ val: 'noinstitucionalizado', label: 'No institucionalizado'},
+	{ val: 'geriatrico',  label: 'Geriátrico'},
+	{ val: 'comisaria',   label: 'Comisaría'},
+	{ val: 'hogar',       label: 'Hogar'},
+	{ val: 'otro',        label: 'Otro'},
+	{ val: 'sindato',     label: 'Sin dato'},
+];
+
 export class InfectionFollowUp {
 	isActive: boolean = false;
 	isInternado: boolean = false;
+	isExtradistrito: boolean = false;
 	hasCovid: boolean = false;
 
 	actualState: number = 6 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
@@ -301,6 +326,12 @@ export class InfectionFollowUp {
 	avance: string = 'sindato'; //avanceInfectionOptList
 	sintoma: string = 'sindato'; // sintomaOptList
 	locacionSlug: string = '' // lugar de internación
+
+	institucion: string = 'noinstitucionalizado'; //institucionalizadoOptList
+	institucionTxt: string = 'No institucionalizado';
+
+	trabajo: string = 'sindato'; //lugartrabajoOptList
+	trabajoTxt: string = ''; 
 
 	qcoworkers:  number = 0;
 	qcovivientes: number = 0 ;
@@ -515,9 +546,11 @@ export class AfectadoUpdate {
 	isActive: boolean = false;
 	fe_llamado: string = '';
 	resultado: string = ''; // resultadoSeguimientoOptList
+	internadoFup: number = 0; // helper para edicion
+	locacionSlug: string = '' // helper para edicion
 
 	vector: string = 'inicia'; //vectorSeguimientoOptList
-	sintoma: string = 'sindato'; // sintomaOptList
+	sintoma: string = ''; // sintomaOptList
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
 	slug: string = ''; // mensaje
 	indicacion: string = ''; // mensaje
@@ -1512,7 +1545,8 @@ const optionsLists = {
    avanceInfection: avanceInfectionOptList,
    sintomaInfection: sintomaOptList,
    estadoActualInfection: estadoActualAfectadoOptList,
-
+	 institucionalizado: institucionalizadoOptList,
+	 lugartrabajo: lugartrabajoOptList,
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
    resultadoMuestraLab: resultadoMuestraLaboratorioOptList,

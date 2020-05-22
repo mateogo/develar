@@ -31,6 +31,8 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
   public avanceOptList = AsistenciaHelper.getOptionlist('avanceInfection')
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
+  public institucionOptList = AsistenciaHelper.getOptionlist('institucionalizado')
+  public lugartrabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
 
   private result: UpdateAsistenciaEvent;
 
@@ -112,10 +114,16 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+
   
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.infection.isInternado = this.infection.isInternado || false;
+    this.infection.isExtradistrito = this.infection.isExtradistrito || false;
     this.infection.locacionSlug = this.infection.locacionSlug || '';
+    this.infection.trabajo = this.infection.trabajo || 'sindato';
+    this.infection.institucion = this.infection.institucion || 'noinstitucionalidado';
+    this.infection.trabajoTxt = this.infection.trabajoTxt || '';
+    this.infection.institucionTxt = this.infection.institucionTxt || 'No institucionalizado';
 
     this.form = this.fb.group(this.infection);
     //this.form.controls.fe_confirma.disable();
