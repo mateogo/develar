@@ -404,6 +404,8 @@ asisprevencionSch.pre('save', function (next) {
 
 
 function buildQuery(query, today){
+  console.log('buldQuery: recibodo:')
+  console.dir(query)
 
   let q = {};
 
@@ -421,6 +423,14 @@ function buildQuery(query, today){
   }
 
   if(query['reporte'] && query['reporte']==="COVID"){
+      q = {
+            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            isVigilado: true,
+          }
+      return q;
+  }
+
+  if(query['reporte'] && query['reporte']==="DOMICILIOS"){
       q = {
             '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
             isVigilado: true,

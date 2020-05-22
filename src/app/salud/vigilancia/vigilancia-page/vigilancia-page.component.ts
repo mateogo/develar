@@ -217,24 +217,8 @@ export class VigilanciaPageComponent implements OnInit {
       this.query = query;
     }
 
-    Object.keys(query).forEach(key =>{
-      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+    AsistenciaHelper.cleanQueryToken(this.query, false);
 
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-      if(key === 'isVigilado'       && !query[key]) delete query[key];
-      if(key === 'hasCovid'         && !query[key]) delete query[key];
-      if(key === 'casoCovid'        && !query[key]) delete query[key];
-      if(key === 'vigiladoCovid'    && !query[key]) delete query[key];
-      if(key === 'necesitaLab'      && !query[key]) delete query[key];
-      if(key === 'isSeguimiento'    && !query[key]) delete query[key];
-      if(key === 'isActiveSisa'     && !query[key]) delete query[key];
-      if(key === 'pendLaboratorio'  && !query[key]) delete query[key];
-      if(key === 'qIntents'         && !query[key]) delete query[key];
-      if(key === 'qNotSeguimiento'  && !query[key]) delete query[key];
-      if(key === 'qDaysSisa'        && !query[key]) delete query[key];
-      if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
-      if(key === 'casosIndice'      && !query[key]) delete query[key];
-    })
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){

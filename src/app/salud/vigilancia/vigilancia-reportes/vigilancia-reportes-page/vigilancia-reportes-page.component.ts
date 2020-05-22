@@ -78,6 +78,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.query = this.repasarQuery(query);
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
+      console.dir(this.query);
       this.fetchSolicitudes(this.query, query.searchAction);
 
     }else if(query.searchAction === EXPORT){
@@ -123,31 +124,14 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
       this.query = query;
     }
-
-    Object.keys(query).forEach(key =>{
-      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
-
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-      if(key === 'isVigilado'       && !query[key]) delete query[key];
-      if(key === 'hasCovid'         && !query[key]) delete query[key];
-      if(key === 'necesitaLab'      && !query[key]) delete query[key];
-      if(key === 'isSeguimiento'    && !query[key]) delete query[key];
-      if(key === 'isActiveSisa'     && !query[key]) delete query[key];
-      if(key === 'pendLaboratorio'  && !query[key]) delete query[key];
-      if(key === 'qIntents'         && !query[key]) delete query[key];
-      if(key === 'qNotSeguimiento'  && !query[key]) delete query[key];
-      if(key === 'qDaysSisa'        && !query[key]) delete query[key];
-      if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
-      if(key === 'casosIndice'      && !query[key]) delete query[key];
-
-
-    })
-    return query;
+    
+    return AsistenciaHelper.cleanQueryToken(query, true);
   }
 
 
   private fetchSolicitudes(query: VigilanciaBrowse, action: string){
     this.showData = false;
+    console.dir(query)
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){

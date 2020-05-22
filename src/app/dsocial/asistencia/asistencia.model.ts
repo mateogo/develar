@@ -371,7 +371,7 @@ const entregaDesdeOptList: Array<any> = [
         {val: 'almacen',      type: 'Galpón',     label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
 				{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
 				{val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
-				{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
+				{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'Manuel Araujo y Río Diamante', telefono: '4268-5419'},
 				{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 				{val: 'josemarmol',   type: 'delegacion', label: 'Delegación José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
 				{val: 'longchamps',   type: 'delegacion', label: 'Delegación Longchamps',       locacion:	'Av. Longchamps y vías del FFCC', telefono: '4293-4299'},
@@ -411,7 +411,7 @@ const delegacionesOptList = [
 
 {val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca',         telefono: '4299-2273'},
 {val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
-{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'J. Dufau, entre A. Romero y L. Lopez', telefono: '4268-5419'},
+{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'Manuel Araujo y Río Diamante', telefono: '4268-5419'},
 {val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 {val: 'josemarmol',   type: 'delegacion', label: 'Delegación José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
 {val: 'longchamps',   type: 'delegacion', label: 'Delegación Longchamps',       locacion:	'Av. Longchamps y vías del FFCC', telefono: '4293-4299'},

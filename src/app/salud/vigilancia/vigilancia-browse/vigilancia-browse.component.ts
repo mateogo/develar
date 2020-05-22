@@ -227,6 +227,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.pendLaboratorio =   fvalue.pendLaboratorio;
     entity.actualState  = fvalue.actualState;
     entity.hasCovid =     fvalue.hasCovid;
+    entity.casoCovid =   fvalue.casoCovid,
+
     entity.necesitaLab =     fvalue.necesitaLab;
 
     entity.isSeguimiento =   fvalue.isSeguimiento;
@@ -255,26 +257,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       delete entity.requirenteId;
     }
 
-    Object.keys(entity).forEach(key =>{
-      if(entity[key] == null || entity[key] == 'no_definido' ) delete entity[key];
-
-      if(key === 'asistenciaId') delete entity[key];
-
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete entity[key];
-      if(key === 'isVigilado'       && !entity[key]) delete entity[key];
-      if(key === 'hasCovid'         && !entity[key]) delete entity[key];
-      if(key === 'casoCovid'        && !entity[key]) delete entity[key];
-      if(key === 'vigiladoCovid'    && !entity[key]) delete entity[key];
-      if(key === 'necesitaLab'      && !entity[key]) delete entity[key];
-      if(key === 'isSeguimiento'    && !entity[key]) delete entity[key];
-      if(key === 'isActiveSisa'     && !entity[key]) delete entity[key];
-      if(key === 'pendLaboratorio'  && !entity[key]) delete entity[key];
-      if(key === 'qIntents'         && !entity[key]) delete entity[key];
-      if(key === 'qNotSeguimiento'  && !entity[key]) delete entity[key];
-      if(key === 'qDaysSisa'        && !entity[key]) delete entity[key];
-      if(key === 'qNotConsultaSisa' && !entity[key]) delete entity[key];
-      if(key === 'casosIndice'      && !entity[key]) delete entity[key];
-    })
+    AsistenciaHelper.cleanQueryToken(entity, true);
 
     this.dsCtrl.vigilanciaSelector = entity;
 		return entity;

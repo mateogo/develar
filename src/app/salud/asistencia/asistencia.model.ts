@@ -276,9 +276,11 @@ const avanceInfectionOptList = [
 
 const sintomaOptList = [
 	{ val: 'asintomatico',   label: 'Asintomático'},
-	{ val: 'sintomatico',    label: 'Sintomático'},
-	{ val: 'critico',        label: 'Crítico'},
-	{ val: 'enrecuperacion', label: 'En recuperación'},
+	{ val: 'sintomatico',    label: 'Sintomático leve'},
+	{ val: 'critico',        label: 'Sintomático grave'},
+	{ val: 'uti',            label: 'UTI'},
+	{ val: 'arm',            label: 'ARM'},
+	/** { val: 'enrecuperacion', label: 'En recuperación'}, */
 	{ val: 'alta',           label: 'Alta'},
 	{ val: 'fallecido',      label: 'Fallecido'},
 	{ val: 'sindato',        label: 'Sin dato'},
@@ -310,7 +312,7 @@ export class InfectionFollowUp {
 	fets_alta: number = 0;
 }
 
-
+// extra-distrito: TOTO
 const estadoActualAfectadoOptList = [
 	{ val: 0, label: 'SOSPECHA'},
 	{ val: 1, label: 'COVID'},
@@ -738,7 +740,7 @@ export class VigilanciaBrowse {
 		compNum_h:   string;
 		actualState: string|number;
 
-		reporte:  string;
+		reporte:  string; // reportesVigilanciaOptList
 
 		asistenciaId: string;
 
@@ -1312,6 +1314,7 @@ const labsequenceOptList: Array<any> = [
 const reportesVigilanciaOptList: Array<any> = [
     {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
     {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
+    {val: 'DOMICILIOS',       label: 'Reporte Domicilios de contactos' },
     {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
 ];
 
@@ -1744,6 +1747,33 @@ export class AsistenciaHelper {
 		}
 
 		return token;
+	}
+
+	static cleanQueryToken(query:VigilanciaBrowse, cleanAsistenciaId:boolean = true):VigilanciaBrowse{
+		if(!query) return null;
+
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+
+      if(key === 'asistenciaId' && cleanAsistenciaId) delete query[key];
+
+      if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key];
+      if(key === 'isVigilado'       && !query[key]) delete query[key];
+      if(key === 'hasCovid'         && !query[key]) delete query[key];
+      if(key === 'casoCovid'        && !query[key]) delete query[key];
+      if(key === 'vigiladoCovid'    && !query[key]) delete query[key];
+      if(key === 'necesitaLab'      && !query[key]) delete query[key];
+      if(key === 'isSeguimiento'    && !query[key]) delete query[key];
+      if(key === 'isActiveSisa'     && !query[key]) delete query[key];
+      if(key === 'pendLaboratorio'  && !query[key]) delete query[key];
+      if(key === 'qIntents'         && !query[key]) delete query[key];
+      if(key === 'qNotSeguimiento'  && !query[key]) delete query[key];
+      if(key === 'qDaysSisa'        && !query[key]) delete query[key];
+      if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
+      if(key === 'casosIndice'      && !query[key]) delete query[key];
+    })
+
+    return query;
 	}
 
 	static addNoContesta(token:Asistencia): Asistencia{
