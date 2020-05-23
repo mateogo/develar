@@ -422,6 +422,9 @@ export class SaludController {
 
   private updateCovidRelation(asistencia: Asistencia, person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia){
     this.addCasoIndice(asistencia, person, casoIndice)
+    
+    let edad = AsistenciaHelper.getEdadFromPerson(person)
+    asistencia.edad = edad + '';
 
     this.manageCovidRecord(asistencia).subscribe(sol => {
       if(sol){

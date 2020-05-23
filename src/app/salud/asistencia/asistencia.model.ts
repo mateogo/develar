@@ -1837,6 +1837,9 @@ export class AsistenciaHelper {
 		let novedad = new Novedad();
 
 		if(person){
+			let edad = this.getEdadFromPerson(person)
+			token.edad = edad + '';
+
 			requirente = AsistenciaHelper.buildRequirente(person);
 			token.idPerson = person._id;
 		}else{
@@ -1874,6 +1877,22 @@ export class AsistenciaHelper {
 		return token;
 	}
 
+	static getEdadFromPerson(person){
+		let edad = null
+		if(person && person.fenactx){
+			try {
+				edad = devutils.edadActual(devutils.dateFromTx(person.fenactx));
+				return edad;
+			}
+			catch {
+				return null;
+			}
+
+		}else{
+			return edad;
+		}
+	}
+
 	static initNewAsistenciaEpidemio(action, sector, person?: Person, serial?: Serial, slug?){
 		let ts = Date.now();
 		let requirente: Requirente;
@@ -1885,11 +1904,13 @@ export class AsistenciaHelper {
 
 		if(person){
 
+			let edad = this.getEdadFromPerson(person)
   		requirente = AsistenciaHelper.buildCovidRequirente(person);
 			token.idPerson = person._id;
 			token.ndoc = person.ndoc;
 			token.tdoc = person.tdoc;
 			token.sexo = person.sexo;
+			token.edad = edad + '';
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
 			token.telefono = telefono.data
@@ -1958,8 +1979,10 @@ export class AsistenciaHelper {
 		novedad.novedad  = 'Llamado recibido en el COM';
 
 		if(person){
+			let edad = this.getEdadFromPerson(person)
 			requirente = AsistenciaHelper.buildCovidRequirente(person);
 			token.idPerson = person._id;
+			token.edad = edad + ''
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
 			token.telefono = telefono.data

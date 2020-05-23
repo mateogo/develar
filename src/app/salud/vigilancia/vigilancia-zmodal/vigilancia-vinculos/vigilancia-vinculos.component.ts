@@ -60,6 +60,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   public ciudadesList =   personModel.ciudades;
   public paises     = personModel.paises;
   public barrioList = [];
+  public edadActual = '';
 
 
   public personError = false;
@@ -94,15 +95,14 @@ export class VigilanciaVinculosComponent implements OnInit {
     this.isNewVinculo = true;
     this.isNewLocacion = true;
 
-    this.asistencia = this.data.asistencia
-    this.person = this.data.person;
-
+    this.asistencia =  this.data.asistencia
+    this.person =      this.data.person;
     this.vAsistencia = this.data.vAsistencia
-    this.vPerson = this.data.vPerson;
-
-    this.vinculo = this.data.vinculo ;
+    this.vPerson =     this.data.vPerson;
+    this.vinculo =     this.data.vinculo ;
 
     this.currentNumDoc = '';
+
     this.initVinculo();
     this.initLocacion();
 
@@ -133,6 +133,8 @@ export class VigilanciaVinculosComponent implements OnInit {
       this.tDoc = 'DNI';
       this.isNewVinculo = true;
       this.vinculo = new FamilyData();
+      this.familyList.push(this.vinculo);
+      this.person.familiares = this.familyList;
     }
 
   }
@@ -383,6 +385,7 @@ export class VigilanciaVinculosComponent implements OnInit {
         vAsistencia.tdoc = this.vinculo.tdoc;
         vAsistencia.telefono = this.vinculo.telefono;
         vAsistencia.sexo = this.vinculo.sexo;
+        vAsistencia.edad = this.edadActual;
 
         vAsistencia.requeridox.ndoc = this.vinculo.ndoc;
         vAsistencia.requeridox.tdoc = this.vinculo.tdoc;
@@ -445,16 +448,9 @@ export class VigilanciaVinculosComponent implements OnInit {
 
     this.vinculo.hasOwnPerson = personModel.hasMinimumDataToBePerson(this.vinculo);
 
- 		if(this.isNewVinculo){
- 			this.familyList.push(this.vinculo);
- 		}  
-
- 		this.person.familiares = this.familyList;
-
     this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
 
-		//Recibido vía alerta SISA por afectado que vive en Brown
   }
 
   private initForm(){
@@ -513,6 +509,7 @@ export class VigilanciaVinculosComponent implements OnInit {
        if(validAge){
            edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
        }
+       this.edadActual = edad;
        return edad;
    }
 

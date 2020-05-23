@@ -744,6 +744,7 @@ class Devutils {
     }
 
     edadActual(dob: Date){
+        if(!dob) return null;
         let diff_ms = Date.now() - dob.getTime();
         let age_dt = new Date(diff_ms); 
       
