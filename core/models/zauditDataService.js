@@ -14,7 +14,9 @@ const path = require('path');
 const utils = require('../services/commons.utils');
 
 const person = require('./personModel');
+
 const asistencia = require('./asistenciaModel.js');
+
 const asisprevencion = require('./asisprevencionModel.js');
 
 const Schema = mongoose.Schema;
@@ -59,6 +61,78 @@ function buildQuery(query){
   return q;
 }
 
+exports.publishEdad = function(errcb, cb){
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'}
+  }
+
+  AsisprevencionRecord.find(regexQuery)
+    .lean()
+    .exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+
+        }else{
+          if(entities && entities.length ){
+
+            entities = updateEdadFromPerson(entities, errcb, cb);
+
+          }else{
+            cb({error: 'no entities'})
+          }
+        }
+  });
+}
+
+function updateEdadFromPerson(entities, errcb, cb){
+  console.log('Update Edad From Person to BEGIN: [%s]', entities.length);
+  entities.forEach(asis => {
+    if(asis.idPerson){
+      loadPersonById(asis);
+
+
+    }else {
+      console.log('asis sin idPerson: [%s]', asis.id);
+    }
+  })
+  cb({process: 'ok'});
+}
+
+function loadPersonById(asistencia){
+  PersonRecord.findById(asistencia.idPerson).then(person =>{
+    if(person){
+      updateAsistencia(asistencia, person);
+    }
+  })
+}
+
+function updateAsistencia(asistencia, person){
+  let edad = findEdadFromPerson(person);
+  if(edad){
+      console.log('[%s] Update Asistencia: [%s] [%s] [%s]', asistencia._id, person.displayName, person.edad, edad);
+      updateAsistenciaConEdad(asistencia, edad);
+
+    //update Asistencia
+  }else {
+      console.log('Edad not found: [%s] [%s]', person.displayName, person.edad);
+
+  }
+}
+
+function updateAsistenciaConEdad(asistencia, edad){
+  AsisprevencionRecord.findByIdAndUpdate(asistencia._id, {edad: edad}).exec();
+}
+
+function findEdadFromPerson(person){
+     if(!person.fenactx) return null;
+     let value = utils.parseDateStr(person.fenactx)
+     if(!value) return null;
+
+     let validAge = utils.calcularEdad(value.getTime());
+     return validAge + '';
+}
 
 exports.findDuplices = function (errcb, cb) {
     Record.find().lean().exec(function(err, entities) {

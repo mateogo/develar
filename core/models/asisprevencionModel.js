@@ -1049,7 +1049,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -1115,8 +1115,8 @@ function buildExcelStream(movimientos, query, req, res){
       const { tdoc, ndoc, nombre, apellido } = requeridox;
       let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
 
-      const {compNum, telefono } = row;
-      let basicArr = [ compNum, (index + 1), telefono ];
+      const {compNum, telefono, edad } = row;
+      let basicArr = [ compNum, (index + 1), telefono, edad ];
       
       worksheet.addRow([...basicArr, ... requeridoxArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
 

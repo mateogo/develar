@@ -9,6 +9,19 @@ var service = require('../models/zauditDataService.js');
 const whoami =  "Router:routes/zauditDataRoutes: ";
 
 
+/**
+ * autita personas con TipoNumero de documento Duplicados
+ */
+router.get('/publishedad', function (req, res) {
+    service.publishEdad(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 /**
  * autita personas con TipoNumero de documento Duplicados
