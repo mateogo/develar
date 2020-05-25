@@ -172,9 +172,92 @@ export class SaludController {
   upsertPersonCore(id:string, p:any){
     this.daoService.partialUpdate<Person>('person', id, p).then(person =>{
       this.updateCurrentPerson(person);
+
+      if(person){
+        this.updateAsistenciaData(person);
+      }
+
     })
 
   }
+
+  private updateAsistenciaData(person){
+    let asistencia: Asistencia;
+
+    this.fetchAsistenciaByPerson(person).subscribe(list => {
+      if(list && list.length){
+
+        asistencia = list[0];
+        
+        asistencia.sexo = person.sexo || asistencia.sexo;
+        asistencia.edad = devutils.evaluateEdad(person.fenactx, person.tdoc, person.ndoc);
+
+        this.updateContactDataFromPerson(asistencia, person)
+        this.updateAddressFromPerson(asistencia, person)
+        this.updateObraSocialFromPerson(asistencia, person)
+
+      }
+
+      let updateToken = {
+        sexo: asistencia.sexo,
+        edad: asistencia.edad,
+        telefono: asistencia.telefono,
+        osocialTxt: asistencia.osocialTxt,
+        locacion: asistencia.locacion
+      }
+
+      this.daoService.update(ASIS_PREVENCION_RECORD, asistencia._id, updateToken).then(t =>{
+
+      })
+
+    });
+
+  }
+
+  private updateObraSocialFromPerson(asistencia: Asistencia, person: Person){
+    let coberturas = person.cobertura;
+
+    if(coberturas  && coberturas.length){
+      let osocial = coberturas.find(token => token.type==='cobertura' && token.tingreso==='osocial')
+      if(osocial){
+        asistencia.osocialTxt = osocial.slug || asistencia.osocialTxt || '';
+      }
+    }
+
+  }
+
+  private updateContactDataFromPerson(asistencia: Asistencia, person: Person){
+    let contactdata = person.contactdata && person.contactdata.length && person.contactdata[0];
+    let telefono = asistencia.telefono
+
+    if(contactdata) {
+      asistencia.telefono = contactdata.data || telefono;
+    }
+
+  }
+
+
+  private updateAddressFromPerson(asistencia: Asistencia, person: Person){
+    let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+    let locacion = asistencia.locacion || new Locacion();
+
+    if(address) {
+      locacion.street1 = address.street1;
+      locacion.street2 = address.street2;
+      locacion.streetIn = address.streetIn;
+      locacion.streetOut = address.streetOut;
+
+      locacion.city = address.city;
+      locacion.barrio = address.barrio;
+      locacion.zip = address.zip;
+      locacion.lng = address.lng;
+      locacion.lat = address.lat;
+      
+      asistencia.locacion = locacion;
+    }
+
+  }
+
 
 
   /***************************/
@@ -757,6 +840,12 @@ export class SaludController {
     this.daoService.update(ASIS_PREVENCION_RECORD, asistenciaId, token).then(t =>{
 
     })
+  }
+
+  deleteCasoIndice(asistencia: Asistencia): Promise<Asistencia>{
+    asistencia.casoIndice = null;
+    let token = {casoIndice: null};
+    return this.daoService.update(ASIS_PREVENCION_RECORD, asistencia._id, token);
   }
 
   updateAsistenciaListItem(item ):void{

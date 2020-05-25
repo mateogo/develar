@@ -4,11 +4,13 @@ import { AbstractControl, ValidatorFn, FormBuilder,FormControl, FormGroup, Valid
 import { Observable } from 'rxjs';
 import { map, debounceTime  }   from 'rxjs/operators';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { SaludController } from '../../../salud.controller';
 
 import { devutils }from '../../../../develar-commons/utils';
+
+import { GenericDialogComponent } from '../../../../develar-commons/generic-dialog/generic-dialog.component';
 
 import {   Asistencia, MuestraLaboratorio, UpdateAsistenciaEvent, Locacion,
            AsistenciaHelper } from '../../../asistencia/asistencia.model';
@@ -80,6 +82,7 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   constructor(
         public dialogRef: MatDialogRef<VigilanciaVinculosComponent>,
+        public dialogService: MatDialog ,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private ctrl: SaludController,
 				private perSrv: PersonService,
@@ -217,9 +220,22 @@ export class VigilanciaVinculosComponent implements OnInit {
 		this.dialogRef.close();
   }
 
+  onDeleteContact(){
+    let content = this.buildWarningMessage('<strong>Se desvinculará este CONTACTO del caso índice.</strong> <br>No afecta el estado de seguimiento del propio contacto, sólo su relación con este ancestro.<br> Debe confirmar la operación ');
+    this.openDialog(content).subscribe(result => {
+      if(result === 'accept'){
+        this.processBajaDeVinculo();
+      }else{
+        this.ctrl.openSnackBar('CANCELADO: La operación fue cancelada', 'CERRAR');
+
+      }
+    });
+
+  }
+
+
   changeSelectionValue(type, val){
     //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
-
     if(type==='nucleo'){
       this.reviewAddress(val);
 
@@ -515,6 +531,43 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   }
 
+ private buildWarningMessage(name){
+    warningMessageTpl.data.body = name;
+    return warningMessageTpl;
+  }
+
+  private openDialog(config) {
+    let dialogRef = this.dialogService.open(GenericDialogComponent, config);
+    return dialogRef.afterClosed()
+  }
+
+  private processBajaDeVinculo(){
+    let familyList = this.person.familiares || [];
+
+    familyList = familyList.filter(t => t._id !== this.vinculo._id)
+    this.person.familiares = familyList;
+
+    if(this.vPerson){
+      this.ctrl.fetchAsistenciaByPerson(this.vPerson).subscribe(list => {
+        if(list && list.length){
+          let asistencia = list[0];
+
+          this.ctrl.deleteCasoIndice(asistencia).then(asis => {
+            this.saveMainPerson();
+          })
+
+        }else{
+          this.saveMainPerson();
+        }
+      });
+
+    }else {
+      this.saveMainPerson();
+    }
+  }
+
+
+
   private initForm(){
     this.addressForm = this.fb.group({
       street1:     [null],
@@ -662,3 +715,24 @@ export class VigilanciaVinculosComponent implements OnInit {
 
 
 }
+
+
+const warningMessageTpl = {
+  width:  '350px',
+  height: '300px',
+  hasBackdrop: true,
+  backdropClass: 'yellow-backdrop',
+  data: {
+    caption:'Atención',
+    body: 'La persona seleccionada es: ',
+    accept:{
+      action: 'accept',
+      label: 'Aceptar'
+    },
+    cancel:{
+      action: 'cancel',
+      label: 'Cancelar'
+    }
+  }
+};
+

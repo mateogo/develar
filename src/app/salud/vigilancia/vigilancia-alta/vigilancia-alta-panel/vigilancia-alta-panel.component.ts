@@ -101,7 +101,7 @@ export class VigilanciaAltaPanelComponent implements OnInit {
       if(list && list.length){
         this.currentAsistencia = list[0];
 
-        this.updateAsistencia(this.currentAsistencia);
+        this.updateAsistencia(this.currentAsistencia, person);
 
       }else {
         this.initNewAsistencia(this.person)
@@ -131,8 +131,10 @@ export class VigilanciaAltaPanelComponent implements OnInit {
     this.resetProcess()
   }
 
-  private updateAsistencia(asistencia: Asistencia){
+  private updateAsistencia(asistencia: Asistencia, person: Person){
   	asistencia.isVigilado = true;
+
+    this.updateAddressFromPerson(asistencia, person);
 
 		let novedad = new Novedad();
 		novedad.tnovedad = "epidemiologia";
@@ -151,7 +153,26 @@ export class VigilanciaAltaPanelComponent implements OnInit {
       }
     })
 		//
+  }
 
+  private updateAddressFromPerson(asistencia: Asistencia, person: Person){
+    let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+    let locacion = asistencia.locacion || new Locacion();
+
+    if(address) {
+      locacion.street1 = address.street1;
+      locacion.street2 = address.street2;
+      locacion.streetIn = address.streetIn;
+      locacion.streetOut = address.streetOut;
+
+      locacion.city = address.city;
+      locacion.barrio = address.barrio;
+      locacion.zip = address.zip;
+      locacion.lng = address.lng;
+      locacion.lat = address.lat;
+      
+      asistencia.locacion = locacion;
+    }
 
   }
 
