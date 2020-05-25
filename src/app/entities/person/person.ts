@@ -239,6 +239,16 @@ export class OficiosData {
 }
 
 
+export interface NucleoHabitacionalToken {
+  address: Address;
+  telefono: string;
+  slug: string;
+}
+
+export interface NucleoHabitacional {
+  [key: string]: NucleoHabitacionalToken;
+}
+
 export class FamilyData {
     _id?: string; 
     nombre: string = '';
@@ -281,6 +291,8 @@ export class BusinessMembersData {
     ingreso: string;
     hasOwnPerson: boolean;
     personId: string;
+    hasParentAddress: boolean = false;
+
     vinculo: string = 'seguridad';
     estado: string = 'activo';
     desde: string;

@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #20 20.05.22-13:11',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #22 20.05.25-14:41',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},
@@ -250,6 +250,11 @@ export const gldef = globals[user];
 		// 	"zip" : "1846",
 		// 	"lat" : -34.6403,
 		// 	"lng" : -58.4563,
+
+		//http://localhost:8080/#Tiddly%20Node%203
+		//http://localhost:8080/#Tiddly%20Node%20203
+
+		// http://localhost:8080/#Tiddly%20Node%20203:%5B%5BTiddly%20Node%20203%5D%5D%20GettingStarted
 
 
 

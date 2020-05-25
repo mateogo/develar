@@ -179,6 +179,7 @@ export class CasoIndice {
 	parentId: string;
 	slug: string;
 	actualState: number;
+	nucleo: string;
 }
 
 export class Locacion {

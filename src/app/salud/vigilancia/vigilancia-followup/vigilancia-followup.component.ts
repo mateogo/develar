@@ -6,7 +6,7 @@ import { SaludController } from '../../salud.controller';
 
 import { PersonService } from '../../person.service';
 
-import { Person, FamilyData, personModel, Address } from '../../../entities/person/person';
+import { Person, FamilyData, NucleoHabitacional, personModel, Address } from '../../../entities/person/person';
 
 import {  Asistencia, 
           ContextoCovid,
@@ -40,6 +40,8 @@ const UPDATE = 'update';
 const DELETE = 'delete';
 const EVOLUCION = 'evolucion';
 const CLOSE = 'closepanel';
+
+const N_HAB_00 = 'NUC-HAB-00'
 
 const FIEBRE_TXT = [
               'Tuvo 38 o más grados de fiebre en los últimos 14 días',
@@ -252,12 +254,13 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
 
-  private openVinculofamModal(person: Person, vinculo: FamilyData, vPerson?: Person, vAsistencia?: Asistencia){
+  private openVinculofamModal(nucleo: NucleoHabitacional, person: Person, vinculo: FamilyData, vPerson?: Person, vAsistencia?: Asistencia){
     const dialogRef = this.dialog.open(
       VigilanciaVinculosComponent,
       {
         width: '800px',
         data: {
+          nucleoHabitacional: nucleo,
           asistencia: this.asistencia,
           person: person,
           vinculo: vinculo,
@@ -502,10 +505,10 @@ export class VigilanciaFollowupComponent implements OnInit {
             if(vper){
               this.dsCtrl.fetchAsistenciaByPerson(vper).subscribe(list => {
                 if(list && list.length){
-                  this.openVinculofamModal(this.person, vinculo, vper, list[0]);
+                  this.getReadyToOpenFamModal(this.person, vinculo, vper, list[0]);
 
                 }else {
-                  this.openVinculofamModal(this.person, vinculo, vper, null);
+                  this.getReadyToOpenFamModal(this.person, vinculo, vper, null);
 
                 }
               })
@@ -514,13 +517,12 @@ export class VigilanciaFollowupComponent implements OnInit {
             }else{
               this.dsCtrl.openSnackBar('Error: no se pudo recuperar la Persona perteneciente al vínculo', 'ATENCIÓN')
               return;
-              //this.openVinculofamModal(this.person, vinculo, null);
 
             }
           })
 
         }else {
-          this.openVinculofamModal(this.person, vinculo, null, null);
+          this.getReadyToOpenFamModal(this.person, vinculo, null, null);
 
         }
 
@@ -531,6 +533,66 @@ export class VigilanciaFollowupComponent implements OnInit {
       }
     })
 
+  }
+
+  private getReadyToOpenFamModal(person: Person, vinculo: FamilyData, vper?: Person, vasis?: Asistencia){
+    let nucleoHabitacional: NucleoHabitacional = {};
+    let personAddress = person && person.locaciones && person.locaciones.length && person.locaciones[0]
+
+    if(personAddress){
+      this.insertAddressToNucleoList(N_HAB_00, nucleoHabitacional, person, person.locaciones[0]);
+    }
+
+    let promiseArray = this.buildNucleosHabitacionales(nucleoHabitacional, person.familiares);
+    Promise.all(promiseArray).then(data => {
+
+        this.openVinculofamModal(nucleoHabitacional, this.person, vinculo, vper, vasis);
+
+    })
+  }
+
+//NucleoHabitacional
+  private buildNucleosHabitacionales(habNucleoList: NucleoHabitacional, familyList: FamilyData[]){
+    let promiseArray = [];
+
+    if(familyList && familyList.length){
+
+      familyList.forEach(member => {
+        if(member && member.personId && member.nucleo){
+
+            let promiseMember = new Promise((resolve, reject)=>{
+              this.perSrv.fetchPersonById(member.personId).then(pMember => {
+                if(pMember && pMember.locaciones && pMember.locaciones.length){
+                  habNucleoList = this.insertAddressToNucleoList(member.nucleo, habNucleoList, pMember, pMember.locaciones[0]); 
+                }
+                resolve(true);
+              })
+
+            })//end Promise
+            promiseArray.push(promiseMember)
+
+        }// end if member.personId
+      })//end forEach
+    }
+
+    return promiseArray;
+  }
+
+  private insertAddressToNucleoList(nucleo: string, nucleoList: NucleoHabitacional, person:Person, address: Address){
+    let telefono = (person && person.contactdata && person.contactdata.length && person.contactdata[0].data) || '';
+    if(nucleoList[nucleo]){
+      nucleoList[nucleo].telefono = telefono ? (nucleoList[nucleo].telefono + '/ ' + telefono) : (nucleoList[nucleo].telefono || '');
+
+    }else {
+      let slug = nucleo + '::' + address.street1 + ' - ' + address.city;
+      nucleoList[nucleo] = {
+                              address: address,
+                              telefono: telefono,
+                              slug: slug
+                            }
+
+    }
+    return nucleoList;
   }
 
   private buildMuestrasLaboratorio(token: Asistencia){

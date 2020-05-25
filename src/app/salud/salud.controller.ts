@@ -19,7 +19,7 @@ import { GenericDialogComponent } from '../develar-commons/generic-dialog/generi
 import { UserService }   from '../entities/user/user.service';
 import { Product, KitProduct } from '../entities/products/product.model';
 
-import { Person, PersonContactData,Address, BeneficiarioAlimentar, UpdatePersonEvent }        from '../entities/person/person';
+import { Person, PersonContactData,Address, FamilyData, BeneficiarioAlimentar, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
 import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
@@ -402,17 +402,17 @@ export class SaludController {
   /*******************************************************/
   /******* INICIALIZAR ASIS COVID C/ CASO INDICE ********/
   /*****************************************************/
-  manageCovidRelation(person: Person, casoIndice?: Asistencia){
+  manageCovidRelation(person: Person, casoIndice?: Asistencia, vinculo?: FamilyData){
     let listener = new Subject<Asistencia>();
     let asistencia: Asistencia;
 
     this.fetchAsistenciaByPerson(person).subscribe(list => {
       if(list && list.length){
         asistencia = list[0];
-        this.updateCovidRelation(asistencia, person, listener, casoIndice);
+        this.updateCovidRelation(asistencia, person, listener, casoIndice, vinculo);
 
       }else {
-        this.nuevaCovidRelation(person, listener, casoIndice);
+        this.nuevaCovidRelation(person, listener, casoIndice, vinculo);
       }
 
     })
@@ -420,8 +420,8 @@ export class SaludController {
     return listener;
   }
 
-  private updateCovidRelation(asistencia: Asistencia, person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia){
-    this.addCasoIndice(asistencia, person, casoIndice)
+  private updateCovidRelation(asistencia: Asistencia, person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia, vinculo?: FamilyData){
+    this.addCasoIndice(asistencia, person, casoIndice, vinculo)
     
     let edad = AsistenciaHelper.getEdadFromPerson(person)
     asistencia.edad = edad + '';
@@ -439,9 +439,9 @@ export class SaludController {
 
   }
 
-  private nuevaCovidRelation(person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia){
+  private nuevaCovidRelation(person: Person, listener: Subject<Asistencia>, casoIndice?: Asistencia, vinculo?: FamilyData){
     let asistencia = AsistenciaHelper.initNewAsistenciaEpidemio('epidemio', 'epidemiologia', person);
-    this.addCasoIndice(asistencia, person, casoIndice)
+    this.addCasoIndice(asistencia, person, casoIndice, vinculo)
 
     this.manageCovidRecord(asistencia).subscribe(sol => {
       if(sol){
@@ -455,14 +455,16 @@ export class SaludController {
 
   }
 
-  private addCasoIndice(base: Asistencia, person: Person, parent: Asistencia){
+  private addCasoIndice(base: Asistencia, person: Person, parent: Asistencia, vinculo?: FamilyData){
     if(!(parent && parent._id)) return;
+
 
     base.hasParent = true;
     base.casoIndice = {
       parentId: parent._id,
       slug: parent.requeridox && parent.requeridox.slug,
-      actualState: parent.infeccion && parent.infeccion.actualState
+      actualState: parent.infeccion && parent.infeccion.actualState,
+      nucleo: (vinculo && vinculo.nucleo) || ''
     } as CasoIndice;
 
   }

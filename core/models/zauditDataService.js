@@ -61,6 +61,113 @@ function buildQuery(query){
   return q;
 }
 
+
+/*******************************/
+/***** NUCLEO CASO INDICE *****/
+/*****************************/
+exports.nucleoCasoIndice = function(errcb, cb){
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'}
+  }
+
+  AsisprevencionRecord.find(regexQuery)
+    .lean()
+    .exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+
+        }else{
+          if(entities && entities.length ){
+
+            entities = processAsistenciasForCasoIndice(entities, errcb, cb);
+
+          }else{
+            cb({error: 'no entities'})
+          }
+        }
+  });
+}
+
+function processAsistenciasForCasoIndice(entities, errcb, cb){
+  console.log('processAsistencias to BEGIN: [%s]', entities.length);
+  entities.forEach(asis => {
+    if(asis.casoIndice && asis.casoIndice.parentId){
+      loadCasoIndiceById(asis );
+
+    }else {
+      //console.log('asis sin idPerson: [%s]', asis.id);
+    }
+  })
+  cb({process: 'ok'});
+}
+
+function loadCasoIndiceById(asistencia){
+  AsisprevencionRecord.findById(asistencia.casoIndice.parentId).then(parentAsis =>{
+
+    if(parentAsis && parentAsis.idPerson){
+      loadParentPersonById(parentAsis.idPerson, asistencia);
+    }
+
+  })
+}
+
+function loadParentPersonById(parentPersonId, asistencia){
+  PersonRecord.findById(parentPersonId).then(parentPerson =>{
+    if(parentPerson){
+      updateCasoIndiceFromParent(asistencia, parentPerson);
+    }
+  })
+}
+
+
+function updateCasoIndiceFromParent(asistencia, parentPerson){
+  let nucleo = findNucleoFromVinculos(asistencia.idPerson, parentPerson)
+
+  if(nucleo){
+    updateAsistenciaCasoIndice(asistencia, nucleo)
+  }
+}
+
+function findNucleoFromVinculos(idTargetPerson, parentPerson){
+  let nucleo = '';
+  let familiares = parentPerson && parentPerson.familiares
+
+  if(familiares){
+    let vinculo = familiares.find(vin => vin.personId === idTargetPerson);
+    if(vinculo){
+      nucleo = vinculo.nucleo
+    }
+  }
+
+  return nucleo
+}
+
+
+function updateAsistenciaCasoIndice(asistencia, nucleo){
+  let casoindice = asistencia.casoIndice;
+  casoindice.nucleo = nucleo
+  AsisprevencionRecord.findByIdAndUpdate(asistencia._id, {casoIndice: casoindice}).exec();
+}
+
+function findEdadFromPerson(person){
+     if(!person.fenactx) return null;
+     let value = utils.parseDateStr(person.fenactx)
+     if(!value) return null;
+
+     let validAge = utils.calcularEdad(value.getTime());
+     return validAge + '';
+}
+
+
+
+
+/***** END: NUCLEO CASO INDICE *****/
+
+/*******************************/
+/***** PUBLISH EDAD       *****/
+/*****************************/
 exports.publishEdad = function(errcb, cb){
   let regexQuery = {
     isVigilado: true,
@@ -133,6 +240,9 @@ function findEdadFromPerson(person){
      let validAge = utils.calcularEdad(value.getTime());
      return validAge + '';
 }
+
+/***** PUBLISH EDAD       *****/
+
 
 exports.findDuplices = function (errcb, cb) {
     Record.find().lean().exec(function(err, entities) {

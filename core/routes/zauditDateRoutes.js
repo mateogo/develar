@@ -10,7 +10,22 @@ const whoami =  "Router:routes/zauditDataRoutes: ";
 
 
 /**
- * autita personas con TipoNumero de documento Duplicados
+ * Regenera el campo asisprevencion.casoIndice.nucleo
+ */
+router.get('/casoindice', function (req, res) {
+    service.nucleoCasoIndice(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
+/**
+ * Recorre Asistencias, y les actualiza la 'edad' buscando este dato en Person
  */
 router.get('/publishedad', function (req, res) {
     service.publishEdad(function(err) {

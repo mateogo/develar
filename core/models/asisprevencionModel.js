@@ -334,6 +334,7 @@ const casoIndiceSch = new Schema({
   parentId:    { type: String, required: false },
   slug:        { type: String, required: false },
   actualState: { type: Number, required: false },
+  nucleo:      { type: String, required: false },
 
 });
 
@@ -409,8 +410,6 @@ asisprevencionSch.pre('save', function (next) {
 
 
 function buildQuery(query, today){
-  console.log('buldQuery: recibodo:')
-  console.dir(query)
 
   let q = {};
 
@@ -437,7 +436,7 @@ function buildQuery(query, today){
 
   if(query['reporte'] && query['reporte']==="DOMICILIOS"){
       q = {
-            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            avance: {$ne: 'anulado'},
             isVigilado: true,
           }
       return q;
@@ -941,21 +940,22 @@ exports.create = function (record, errcb, cb) {
 
 };
 
-
+/*******************************/
+/***** EXPORT EXCEL       *****/
+/*****************************/
 exports.exportarmovimientos = function(query, req, res ){
-    console.log('exportar movimientos')
-    
     if(!query){
       query = {estado: 'activo'}
     }
 
-    console.log('EXPORT BEGIN *********')
     fetchMovimientos(query, req, res)
-
 }
 
 
 function fetchMovimientos(query, req, res){
+    let reporte = query['reporte'];
+    console.log('EXPORT BEGIN: [%s] *********', reporte)
+ 
     let regexQuery = buildQuery(query, new Date())
     console.dir(regexQuery);
 
@@ -970,64 +970,37 @@ function fetchMovimientos(query, req, res){
 
               sortCovid(entities);
 
-              buildExcelStream(entities, query, req, res)
+              dispatchExcelStream(reporte, entities, query, req, res)
 
             }
         }
     });
 }
 
-function sortCovid(records){
-    records.sort( (fel, sel)=> {
-      let fprio = (fel.infeccion && fel.infeccion.fets_confirma) || (fel.sisaevent && fel.sisaevent.fets_reportado) || fel.fenotif_tsa || fel.fecomp_tsa;
-      let sprio = (sel.infeccion && sel.infeccion.fets_confirma) || (sel.sisaevent && sel.sisaevent.fets_reportado) || sel.fenotif_tsa || sel.fecomp_tsa;
+const reportProcessFunction = {
 
-      if(fprio < sprio ) return -1;
+  'DOMICILIOS' : buildDomiciliosReport
 
-      else if(fprio > sprio ) return 1;
-
-      else{
-        return 0;
-      }
-    })
 };
 
+function dispatchExcelStream(reporte, movimientos, query, req, res){
 
-function buildAsisInvertedTreeByPerson(master){
-  return new Promise(function(resolve, reject){
+  if(!reporte || !reportProcessFunction[reporte]){
+      buildExcelStream(movimientos, query, req, res);
 
-    AsisRecord.find(null, '_id  idPerson compNum fecomp_txa').lean().then(list => {
+  }else {
+    reportProcessFunction[reporte](movimientos, query, req, res);
+  }
 
-      if(list && list.length){
-        list.forEach(token => {
-          if(token.idPerson){
-            if(master[token.idPerson]){
-              master[token.idPerson] += 1;
-
-            }else {
-              master[token.idPerson] = 1;
-
-            }
-
-          }else {
-            console.log('idPerson is null: [%s] [%s]', token._id, token.compNum)
-          }
-        })
-        resolve(master);
-
-      }else {
-        reject({error: 'not records found in asistencias'})
-      }
-    }); // end AsisRecord.find
-
-  }); // end Promise
 }
-
 
 
 const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
 
 
+/**********************************/
+/***** EXCEL GENERIC OUTPUT    ***/
+/********************************/
 function buildExcelStream(movimientos, query, req, res){
 
     let today = Date.now();
@@ -1125,40 +1098,207 @@ function buildExcelStream(movimientos, query, req, res){
     workbook.commit()
 }
 
+/*******************************/
+/***** REPORTE DOMICILIOS *****/
+/*****************************/
+function buildDomiciliosReport(movimientos, query, req, res){
+  let master = {}
+  movimientos.forEach(asis => {
+    if(asis.casoIndice){
+      populateDomiciliosReport(master, asis)
+    }
+
+  })
+  exportDomiciliosReport(master, req, res);
+
+}
+
+function exportDomiciliosReport(master, req, res){
+
+    let today = Date.now();
+    let filename = 'vigilancia_domicilioDeContactos_'+today+'.xlsx'
+    let content = 
+
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="' + filename + '"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('vigilancia')
+
+    worksheet.addRow(['Domicilios de contactos']).commit()
+    worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
+
+    worksheet.addRow().commit()
+
+    worksheet.addRow([ 'Ciudad','Barrio', 'Núcleo habitacional', '#Contactos', 'Teléfono', 'Calle', 'Caso índice' ]).commit();
+
+    console.log('Excel ready to GO: [%s]', Object.keys(master).length);
+    console.dir(master);
+
+
+    Object.keys(master).forEach( key => {
+      let masterData = master[key];
+      console.dir(masterData)
+ 
+      const {city, barrio, nucleo, qty, telefono, address, parentSlug } = masterData;
+
+      let masterArr = [ city, barrio, nucleo, qty, telefono, address, parentSlug ];
+      
+      worksheet.addRow([...masterArr]).commit()
+
+    })
+    worksheet.commit()
+    workbook.commit()
+}
+
+
+const N_HAB_00 = 'NUC-HAB-00'
+
+function populateDomiciliosReport(master, asis){
+  let parentId = asis.casoIndice.parentId;
+  let nucleo =   asis.casoIndice.nucleo || N_HAB_00;
+  let key = parentId + ':' + nucleo;
+
+  if(master[key]){
+    refreshDomicilioToken(master[key], asis);
+
+  }else {
+    master[key] = buildDomiciliosToken(asis);
+
+  }
+
+
+}
+
+function refreshDomicilioToken(token, asistencia){
+  token.qty += 1;
+  if(token.telefono && asistencia.telefono && !token.telefono.includes(asistencia.telefono)){
+    token.telefono = token.telefono === 'sin dato' ? asistencia.telefono : token.telefono + ' / ' + asistencia.telefono; 
+  }
+
+  if((token.city === 'sin dato' || token.address === 'sin dato') && asistencia.locacion){
+    let city = 'sin dato';
+    let barrio = 'sin dato';
+    let address = 'sin dato';
+    let entrecalles = '';
+
+    let locacion = asistencia.locacion;
+
+    if(locacion){
+      city = locacion.city || 'sin dato';
+      barrio = locacion.barrio || 'sin dato';
+
+      if(locacion.streetIn || locacion.streetOut ){
+        entrecalles = (locacion.streetIn && locacion.streetOut) 
+            ? ' - Entre ' + locacion.streetIn + ' y ' +  locacion.streetOut
+            : ' - Esquina ' + locacion.streetIn ;
+      }
+
+      address = (locacion.street1 + entrecalles ) || 'sin dato';
+      
+      token.city = city
+      token.barrio = barrio
+      token.address = address
+    }
+  }
+}
+
+function buildDomiciliosToken(asistencia){
+  let city = 'sin dato';
+  let barrio = 'sin dato';
+
+  let address = 'sin dato';
+  let entrecalles = '';
+  let telefono = asistencia.telefono || 'sin dato';
+
+  let qty = 1;
+
+  let locacion = asistencia.locacion;
+  if(locacion){
+    city = locacion.city || 'sin dato';
+    barrio = locacion.barrio || 'sin dato';
+
+    if(locacion.streetIn || locacion.streetOut ){
+      entrecalles = (locacion.streetIn && locacion.streetOut) 
+          ? ' - Entre ' + locacion.streetIn + ' y ' +  locacion.streetOut
+          : ' - Esquina ' + locacion.streetIn ;
+    }
+
+    address = (locacion.street1 + entrecalles ) || 'sin dato';
+  }
+
+  let token = {
+    parentId: asistencia.casoIndice.parentId,
+    parentSlug: asistencia.casoIndice.slug,
+    nucleo: asistencia.casoIndice.nucleo || N_HAB_00,
+    city: city,
+    barrio: barrio,
+    address: address,
+    telefono: telefono,
+    qty: qty
+  }
+  return token;
+}
+
+/***** END REPORTE DOMICILIOS *****/
+
+// HELPER 
+function sortCovid(records){
+    records.sort( (fel, sel)=> {
+      let fprio = (fel.infeccion && fel.infeccion.fets_confirma) || (fel.sisaevent && fel.sisaevent.fets_reportado) || fel.fenotif_tsa || fel.fecomp_tsa;
+      let sprio = (sel.infeccion && sel.infeccion.fets_confirma) || (sel.sisaevent && sel.sisaevent.fets_reportado) || sel.fenotif_tsa || sel.fecomp_tsa;
+
+      if(fprio < sprio ) return -1;
+
+      else if(fprio > sprio ) return 1;
+
+      else{
+        return 0;
+      }
+    })
+};
 
 
 
 
+function buildAsisInvertedTreeByPerson(master){
+  return new Promise(function(resolve, reject){
+
+    AsisRecord.find(null, '_id  idPerson compNum fecomp_txa').lean().then(list => {
+
+      if(list && list.length){
+        list.forEach(token => {
+          if(token.idPerson){
+            if(master[token.idPerson]){
+              master[token.idPerson] += 1;
+
+            }else {
+              master[token.idPerson] = 1;
+
+            }
+
+          }else {
+            console.log('idPerson is null: [%s] [%s]', token._id, token.compNum)
+          }
+        })
+        resolve(master);
+
+      }else {
+        reject({error: 'not records found in asistencias'})
+      }
+    }); // end AsisRecord.find
+
+  }); // end Promise
+}
 
 
 
-
-
-
-
-/**
-    compPrefix:  { type: String, required: true },
-    compName:    { type: String, required: true },
-    compNum:     { type: String, required: true },
-    idPerson:    { type: String, required: true },
-    fecomp_tsa:  { type: String, required: false },
-    fecomp_txa:  { type: String, required: false },
-    action:      { type: String, required: true },
-    slug:        { type: String, required: false },
-    description: { type: String, required: false },
-    sector:      { type: String, required: false },
-    estado:      { type: String, required: false },
-    avance:      { type: String, required: false },
-    ts_alta:     { type: Number, required: false },
-    ts_fin:      { type: Number, required: false },
-    ts_prog:     { type: Number, required: false },
-    requeridox:  { type: requirenteSch, required: false },
-    atendidox:   { type: atendidoSch,   required: false },
-    modalidad:   { type: alimentoSch,   required: false },
-    encuesta:    { type: encuestaSch,   required: false },
-*/
-
-
+/*******************************/
+/***** TABLERO EPIDEMIO   *****/
+/*****************************/
 exports.tableroepidemio = dashboardEpidemio;
 
 function dashboardEpidemio(datenum, errcb, cb){
@@ -1189,9 +1329,9 @@ function dashboardEpidemio(datenum, errcb, cb){
   })
 
 }
-/**********************************/
+/****************************************/
 /*         TABLERO EPIDEMIO HELPERS    */
-/********************************/
+/**************************************/
 function getReferenceDate(asistencia){
   if(asistencia && asistencia.infeccion){
     if(asistencia.infeccion.fe_inicio) return utils.parseDateStr(asistencia.infeccion.fe_inicio);

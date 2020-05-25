@@ -13,13 +13,13 @@ import { devutils }from '../../../../develar-commons/utils';
 import {   Asistencia, MuestraLaboratorio, UpdateAsistenciaEvent, Locacion,
            AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
-import { Person, FamilyData, PersonContactData, Address, personModel } from '../../../../entities/person/person';
+import { Person, FamilyData, PersonContactData, NucleoHabitacional, Address, personModel } from '../../../../entities/person/person';
 import { PersonService } from '../../../person.service';
 
 const UPDATE = 'update';
 const CANCEL = 'cancel';
 const VINCULO_ESTADO = 'vinculofam:estado';
-
+const N_HAB_00 = 'NUC-HAB-00'
 @Component({
   selector: 'vigilancia-vinculos',
   templateUrl: './vigilancia-vinculos.component.html',
@@ -42,6 +42,8 @@ export class VigilanciaVinculosComponent implements OnInit {
   public isNewLocacion = false;
   private isLocacionFromAsistencia = false;
   private isLocacionFromPerson = false;
+  private isLocacionFromNuHab = false;
+  private locacionSourceTxt = '';
 
   public vinculo: FamilyData;
   public locacion: Locacion;
@@ -61,6 +63,7 @@ export class VigilanciaVinculosComponent implements OnInit {
   public paises     = personModel.paises;
   public barrioList = [];
   public edadActual = '';
+  public nucleoHab: NucleoHabitacional;
 
 
   public personError = false;
@@ -100,6 +103,7 @@ export class VigilanciaVinculosComponent implements OnInit {
     this.vAsistencia = this.data.vAsistencia
     this.vPerson =     this.data.vPerson;
     this.vinculo =     this.data.vinculo ;
+    this.nucleoHab =   this.data.nucleoHabitacional;
 
     this.currentNumDoc = '';
 
@@ -142,20 +146,46 @@ export class VigilanciaVinculosComponent implements OnInit {
   private initLocacion(){
 
     if(this.vAsistencia && this.vAsistencia.locacion){
+
       this.locacion = this.vAsistencia.locacion;
       this.isNewLocacion = false;
       this.isLocacionFromAsistencia = true;
       this.isLocacionFromPerson = false;
+      this.isLocacionFromNuHab = false;
+      this.locacionSourceTxt = 'Locación recuperada de la Sol/Vigilancia'
 
     }else if(this.vPerson && this.vPerson.locaciones && this.vPerson.locaciones.length){
+
       this.locacion = this.vPerson.locaciones[0];
       this.isNewLocacion = false;
       this.isLocacionFromAsistencia = false;
       this.isLocacionFromPerson = true;
+      this.isLocacionFromNuHab = false;
+      this.locacionSourceTxt = 'Locación recuperada del padrón de persona'
 
 
     }else {
-      this.locacion = new Address();
+
+      let nucHab:Address = this.vinculo.nucleo ? (this.nucleoHab && this.nucleoHab[this.vinculo.nucleo] && this.nucleoHab[this.vinculo.nucleo].address) : null;
+      let nucHabCero:Address = this.nucleoHab && this.nucleoHab[N_HAB_00] && this.nucleoHab[N_HAB_00].address;
+
+      if(nucHab){
+        this.locacion = nucHab;
+        this.isLocacionFromNuHab = true;
+        this.locacionSourceTxt = 'Locación recuperada del NUCLEO HABITACIONAL';
+
+      }else if(nucHabCero) {
+        this.locacion = nucHabCero;
+        this.isLocacionFromNuHab = true;
+        this.locacionSourceTxt = 'ATENCIÓN: Locación pertenece al caso índice';
+
+
+      }else {
+        this.isLocacionFromNuHab = false;
+        this.locacion = new Address();
+        this.locacionSourceTxt = 'Ingreso de nueva locación';
+      }
+
       this.isNewLocacion = true;
       this.isLocacionFromAsistencia = false;
       this.isLocacionFromPerson = false;
@@ -190,6 +220,11 @@ export class VigilanciaVinculosComponent implements OnInit {
   changeSelectionValue(type, val){
     //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
 
+    if(type==='nucleo'){
+      this.reviewAddress(val);
+
+    }
+
     if(type==='tdoc'){
       this.vinculoForm.controls['ndoc'].setValue('');
 
@@ -205,8 +240,35 @@ export class VigilanciaVinculosComponent implements OnInit {
 
   }
 
+  private reviewAddress(nucleo: string){
+    let nucleoHab:Address =  this.nucleoHab && this.nucleoHab[nucleo]   && this.nucleoHab[nucleo].address;
+    let nucleoCero:Address = this.nucleoHab && this.nucleoHab[N_HAB_00] && this.nucleoHab[N_HAB_00].address;
+
+    let telefono = this.vinculo.telefono;
+
+    if(this.isNewLocacion){
+      if(nucleoHab){
+        this.resetLocacionData(nucleoHab)
+        this.isLocacionFromNuHab = true;
+        this.locacionSourceTxt = 'Locación recuperada del NUCLEO HABITACIONAL';
+        if(!telefono){
+          this.vinculoForm.get('telefono').setValue(this.nucleoHab[nucleo].telefono);
+        }
+      }
+    }
+  }
+
+  private resetLocacionData(locacion: Address){
+    this.barrioList = personModel.getBarrioList(locacion.city);
+    this.addressForm.reset(locacion);
+  }
+
   changeActualState(estado){
     //c onsole.log('Estado COVID: [%s]', estado);
+  }
+
+  nucleoHabitacionalSelected(){
+    return this.locacionSourceTxt;
   }
 
   // template Events:
@@ -277,9 +339,9 @@ export class VigilanciaVinculosComponent implements OnInit {
 
     this.perSrv.fetchPersonById(this.vinculo.personId).then(per => {
       if(per){
-        this.person = per;
+        this.vPerson = per;
         this.ctrl.updateCurrentPerson(per);
-        this.ctrl.manageCovidRelation(this.person, this.asistencia).subscribe(sol => {
+        this.ctrl.manageCovidRelation(this.vPerson, this.asistencia, this.vinculo).subscribe(sol => {
           if(sol){
             this.ctrl.openSnackBar('ACTUALIZACIÓN EXITOSA', 'CERRAR');
             this.closeDialogSuccess()
@@ -556,7 +618,6 @@ export class VigilanciaVinculosComponent implements OnInit {
     setTimeout(()=>{
        this.vinculoForm.reset(this.vinculo);
        this.addressForm.reset(this.locacion);
-       //this.form.reset(this.vinculo);
  
     }, 100)
   }
