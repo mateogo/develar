@@ -354,8 +354,22 @@ export class VigilanciaFollowupComponent implements OnInit {
 
     });    
   }
+  private checkIfHasFollowUpConfigured(): boolean{
+    let ok = false;
+
+    if(!this.asistencia.followUp) return ok;
+    if(!(this.asistencia.followUp.isActive && this.asistencia.followUp.fe_inicio && this.asistencia.followUp.tipo) ) return ok;
+
+    ok = true;
+    return ok;
+  }
 
   private openSeguimientoFwUpModal(){
+    if(!this.checkIfHasFollowUpConfigured()){
+      this.dsCtrl.openSnackBar('ATENCIÓN: No está definido correctamente el esquema de seguimiento. ', 'ACEPTAR');
+      return;
+    }
+
     const dialogRef = this.dialog.open(
       VigilanciaSeguimientofwupComponent,
       {
@@ -379,6 +393,11 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   private openCalendarioModal(){
+    if(!this.checkIfHasFollowUpConfigured()){
+      this.dsCtrl.openSnackBar('Acceso restringido', 'ACEPTAR');
+      return;
+    }
+
     const dialogRef = this.dialog.open(
       VigilanciaSeguimientocalendarComponent,
       {
