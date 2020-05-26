@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { devutils }from '../../../../develar-commons/utils';
@@ -25,11 +26,16 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   public asistencia: Asistencia;
   public seguimientoEvent: AfectadoFollowUp;
 
+  public asignadoId: string;
+  public asignadoSlug: string;
+
   public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
   public displayAs = '';
 
   private result: UpdateAsistenciaEvent;
   private isNewRecord = false;
+
+  public usersOptList = [];
 
   constructor(
         public dialogRef: MatDialogRef<VigilanciaSeguimientoComponent>,
@@ -58,7 +64,40 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'asignadoId'){
+      this.asignUserToFollowUp(val)
+    }
+  }
+
+  private asignUserToFollowUp(val){
+    this.asignadoId = val;
+    this.asignadoSlug = this.usersOptList.find(t => t.val === val).label;
+    this.form.get('isAsignado').setValue(true);
+ 
+  }
+
+
+  changeAsignado(e: MatCheckboxChange){
+
+    if(e.checked){
+      let userId = this.form.get('asignadoId').value;
+      if(userId){
+        this.asignUserToFollowUp(userId);
+
+      }else {
+        this.asignadoId = null
+        this.asignadoSlug = ''
+        this.form.get('isAsignado').setValue(false);
+       
+      }
+      // this.asignadoId = val;
+      // this.asignadoSlug = this.usersOptList.find(t => t.val === val).label;
+
+    }else {
+      this.asignadoId = null
+      this.asignadoSlug = ''
+
+    }
   }
 
   private saveToken(){
@@ -78,6 +117,15 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
     this.seguimientoEvent = {...this.seguimientoEvent, ...this.form.value}
 
+    if(this.seguimientoEvent.isActive){
+      this.seguimientoEvent.asignadoSlug = this.asignadoSlug
+      this.seguimientoEvent.asignadoId = this.asignadoId
+
+    }else{
+      this.seguimientoEvent.asignadoSlug = ''
+      this.seguimientoEvent.asignadoId = null
+    }
+
     this.seguimientoEvent.fets_inicio = this.seguimientoEvent.fe_inicio ? devutils.dateNumFromTx(this.seguimientoEvent.fe_inicio) :  today.getTime();
 
     this.asistencia.followUp = this.seguimientoEvent;
@@ -87,6 +135,8 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   private iniToken(){
+    this.usersOptList = this.ctrl.buildEncuestadoresOptList();
+
   	if(this.asistencia.followUp){
   		this.seguimientoEvent = this.asistencia.followUp;
   		this.isNewRecord = false;
@@ -106,6 +156,9 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+    this.seguimientoEvent.isAsignado = this.seguimientoEvent.isAsignado || false;
+    this.seguimientoEvent.asignadoId = this.seguimientoEvent.asignadoId || '';
+    this.seguimientoEvent.asignadoSlug = this.seguimientoEvent.asignadoSlug || '';
     this.form = this.fb.group(this.seguimientoEvent);
   }
 

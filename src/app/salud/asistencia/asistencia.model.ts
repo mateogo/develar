@@ -524,6 +524,10 @@ export class AfectadoFollowUp {
 	asignados: Array<AsignadosSeguimiento> = [];
 	slug: string = 'Inicia seguimiento de afectado/a';
 
+	isAsignado: boolean = false;
+	asignadoId: string = '';
+	asignadoSlug: string = '';
+
 	fets_inicio:    number = 0;
 	fets_ucontacto: number = 0;
 	fets_ullamado:  number = 0;
@@ -784,6 +788,8 @@ export class VigilanciaBrowse {
 		avanceSisa: string = '';
 		qDaysSisa: number = 0;
 		qNotConsultaSisa: number = 0;
+
+		userId: string = '';
 
 		isVigilado: boolean = true;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes

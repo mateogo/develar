@@ -17,19 +17,6 @@
     }
     form {
 
-      md-select {
-        margin:  $module  0 $module;
-      }
-
-      .card_estados {
-        display: flex;
-        flex-flow: row wrap;
-
-        .mat-card {
-          margin: $module/2;
-        }
-      }
-
       .additional-info {
         background: rgba(#000,.1);
         margin: $module (-$module) (-$module);

@@ -163,6 +163,10 @@ function buildQuery(query){
         q["email"] = {"$regex": query.email, "$options": "i"};
     }
 
+    if(query['roles']){
+      q['moduleroles'] =  { $in: query['roles'].split(',') };
+    }
+
     if(query['moduleroles']){
         q["moduleroles"] = query['moduleroles'];
 
@@ -184,6 +188,7 @@ function buildQuery(query){
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
+    console.dir(regexQuery)
 
     User.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {

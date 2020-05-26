@@ -35,6 +35,7 @@ const modulos = [
 	{val: 'core', 		    label: 'General'},
 	{val: 'com',      	  label: 'COM'},
 	{val: 'medico',   	  label: 'Médico'},
+	{val: 'vigilancia',   label: 'Epidemio: Seguimiento'},
 	{val: 'same',     	  label: '107Same'},
 	{val: 'webmaster', 	  label: 'Webmaster'},
 	{val: 'marketing', 	  label: 'Marketing'},
@@ -382,6 +383,17 @@ export class UserService {
 			}
 		}
 		return admin;
+	}
+
+	getVigilanciaRole(){
+		let user = this.currentUser;
+		let roles = user.moduleroles;
+		let vigilancia = '';
+		if(roles && roles.length){
+			vigilancia = roles.find(t => t.substr(0,10)=== 'vigilancia');
+
+		}
+		return vigilancia;
 	}
 
 	getModulos(){

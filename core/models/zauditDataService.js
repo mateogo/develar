@@ -23,6 +23,7 @@ const Schema = mongoose.Schema;
 
 const self = this;
 
+const N_HAB_00 = 'NUC-HAB-00'
 
 const PersonRecord = person.getRecord();
 const AsisRecord = asistencia.getRecord();
@@ -131,7 +132,7 @@ function updateCasoIndiceFromParent(asistencia, parentPerson){
 }
 
 function findNucleoFromVinculos(idTargetPerson, parentPerson){
-  let nucleo = '';
+  let nucleo = N_HAB_00;
   let familiares = parentPerson && parentPerson.familiares
 
   if(familiares){

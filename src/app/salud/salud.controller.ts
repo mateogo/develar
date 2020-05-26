@@ -58,6 +58,8 @@ const SEGUIMIENTO_FWUP =   'seguimiento:fwup';
 const INFECTION_ESTADO = 'infection:estado';
 
 const LABORATORIO_ESTADO = 'laboratorio:estado';
+const ROLE_ADMIN =     'vigilancia:admin';
+const ROLE_OPERATOR =  'vigilancia:operator';
 
 
 @Injectable({
@@ -73,7 +75,7 @@ export class SaludController {
   private _asistenciasSelector: AsistenciaBrowse;
   private _vigilanciaSelector: VigilanciaBrowse;
 
-  private _encuestadores: User[];
+  private _trabajadorxs: User[];
 
   private currentTurno: Turno;
   private currentPerson: Person;
@@ -108,8 +110,8 @@ export class SaludController {
 		) {
     this.userListener = this.userService.userEmitter;
 
-    this.fetchUserByRole('encuestador:operator').subscribe(tokens => {
-      this._encuestadores = tokens || [];
+    this.fetchUserByRole(['vigilancia:operator', 'vigilancia:admin','vigilancia:master']).subscribe(tokens => {
+      this._trabajadorxs = tokens || [];
     })
 
     this.userListener.subscribe(user =>{
@@ -765,8 +767,26 @@ export class SaludController {
 
 
   fetchAsistenciaByQuery(query:any){
+
+    /*
+      Si el usuario es vigilancia:operador, se le impone la restricción de
+      acceder sólo a los casos asignados;
+      Si el usuario es vigilancia:xxxxxx && pidió listar seguimientos,
+      entonces, se filtra sus casos para facilitar su trabajo
+    **/
+    delete query.userId;
+
+    if(this.isUserMemberOf(ROLE_OPERATOR)){
+        query.userId = this.userx.id
+    }
+
+    if(query.isSeguimiento && this.isUserMemberOf(ROLE_ADMIN)){
+        query.userId = this.userx.id
+    }
+
     let listener = new Subject<Asistencia[]>();
     this.loadAsistenciasByQuery(listener, query);
+    //todo aca
     return listener;
   }
 
@@ -1496,7 +1516,9 @@ export class SaludController {
     this.userx.username = user.username;
     this.userx.email = user.email;
     this.userx.hasCommunity = false;
+    this.userx.roles = user.moduleroles;
     this.isUserAdmin = this.userService.isAdminUser();
+    this.userx.vigilancia = this.userService.getVigilanciaRole();
 
     if(user.communityId){
       this.userx.communityId = user.communityId
@@ -1507,23 +1529,32 @@ export class SaludController {
     }
   }
 
-  fetchUserByRole(role: string){
+  fetchUserByRole(roles: Array<string>){
     let query = {
-      moduleroles: role
+      roles: roles
     }
     return this.daoService.search<User>('user', query);
 
   }
 
+  isUserMemberOf(targetRole): boolean{
+    let ok = false;
+
+    if(this.userx && this.userx.roles && this.userx.roles.length){
+      ok = this.userx.roles.find(role => role === targetRole) ? true : false;
+    }
+    return ok;
+  }
+
   get encuestadores(): User[]{
-    return this._encuestadores;
+    return this._trabajadorxs;
   }
 
   buildEncuestadoresOptList(){
     let arr = []
-    if(!this._encuestadores) return arr;
+    if(!this._trabajadorxs) return arr;
     
-    this._encuestadores.forEach(x => {
+    this._trabajadorxs.forEach(x => {
       let t = {
         val: x._id,
         label: x.displayName
@@ -1593,6 +1624,8 @@ class UserToken {
   isLogged: boolean = false;
   hasCommunity: boolean = false;
   username: string = "";
+  roles: Array<string> = [];
+  vigilancia: string = ''
   email:string = "";
   id: string = "";
   communityId: string = "";

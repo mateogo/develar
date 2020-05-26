@@ -312,6 +312,10 @@ const afectadosFollowUpSch = new Schema({
   asignados:     { type: String, required: false },
   slug:          { type: String, required: false },
 
+  isAsignado:     { type: Boolean, required: false, default: false },
+  asignadoId:     { type: String, required: false },
+  asignadoSlug:   { type: String, required: false },
+ 
   fets_inicio:   { type: Number, required: false },
   fets_ucontacto:{ type: Number, required: false },
   fets_ullamado: { type: Number, required: false },
@@ -654,6 +658,13 @@ function buildQuery(query, today){
 
   }
 
+  if(query['userId']){
+    q["followUp.asignadoId"] = query['userId'];
+
+  }
+
+
+
   return q;
 }
 //estado avance
@@ -780,9 +791,7 @@ exports.findByQuery = function (query, errcb, cb) {
       necesitaLab = true;
     }
 
-    // c onsole.log('find ASISPREVENCION ************')
     console.dir(regexQuery);
-    //c onsole.dir(regexQuery['$and'][0]['followUp.fets_ucontacto'])
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {
@@ -954,18 +963,17 @@ exports.exportarmovimientos = function(query, req, res ){
 
 function fetchMovimientos(query, req, res){
     let reporte = query['reporte'];
-    console.log('EXPORT BEGIN: [%s] *********', reporte)
  
     let regexQuery = buildQuery(query, new Date())
+    console.log('EXPORT BEGIN: [%s] *********', reporte)
     console.dir(regexQuery);
-
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
+
         }else{
-            console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
             if(entities && entities.length){
 
               sortCovid(entities);
@@ -1135,13 +1143,8 @@ function exportDomiciliosReport(master, req, res){
 
     worksheet.addRow([ 'Ciudad','Barrio', 'Núcleo habitacional', '#Contactos', 'Teléfono', 'Calle', 'Caso índice' ]).commit();
 
-    console.log('Excel ready to GO: [%s]', Object.keys(master).length);
-    console.dir(master);
-
-
     Object.keys(master).forEach( key => {
       let masterData = master[key];
-      console.dir(masterData)
  
       const {city, barrio, nucleo, qty, telefono, address, parentSlug } = masterData;
 
@@ -1622,9 +1625,9 @@ const acumAvance = function(master, asistencia, today, today_time, semana ){
 
 
 const acumBruto = function(master, asistencia, today, today_time, semana ){
-  //console.log(semana.semd.getTime(), asistencia.fecomp_txa, asistencia.fecomp_tsa, semana.semh.getTime());
+  //c onsole.log(semana.semd.getTime(), asistencia.fecomp_txa, asistencia.fecomp_tsa, semana.semh.getTime());
 
-  //console.log('tx[%s] asis[%s] today[%s] [%s][%s]',asistencia.fecomp_txa,asistencia.fecomp_txa, today_time, asistencia.fecomp_tsa === today_time,asistencia.fecomp_tsa == today_time);
+  //c onsole.log('tx[%s] asis[%s] today[%s] [%s][%s]',asistencia.fecomp_txa,asistencia.fecomp_txa, today_time, asistencia.fecomp_tsa === today_time,asistencia.fecomp_tsa == today_time);
   if(asistencia.fecomp_tsa === today_time){
     master.hoy.cardinal +=1;
 
@@ -1703,10 +1706,9 @@ const buildObservacion = function(token){
 
 function buildInverteTree(req, errcb, cb){
   person.buildInvertedTree().then(personTree => {
-    if(personTree){
-      //console.dir(personTree);
-    }
+
     processArchive(personTree, req, errcb, cb)
+
   });
 }
 

@@ -41,6 +41,8 @@ const DELETE = 'delete';
 const EVOLUCION = 'evolucion';
 const CLOSE = 'closepanel';
 
+const ROLE_ADMIN = 'vigilancia:admin';
+
 const N_HAB_00 = 'NUC-HAB-00'
 
 const FIEBRE_TXT = [
@@ -320,7 +322,17 @@ export class VigilanciaFollowupComponent implements OnInit {
     });    
   }
 
+  private checkUserPermission(role: string):boolean{
+    return this.dsCtrl.isUserMemberOf(role);
+
+  }
+
   private openSeguimientoModal(){
+    if(!this.checkUserPermission(ROLE_ADMIN)){
+      this.dsCtrl.openSnackBar('Acceso restringido', 'ACEPTAR');
+      return;
+    }
+
     const dialogRef = this.dialog.open(
       VigilanciaSeguimientoComponent,
       {
