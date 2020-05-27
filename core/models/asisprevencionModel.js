@@ -1111,13 +1111,26 @@ function buildExcelStream(movimientos, query, req, res){
 /*****************************/
 function buildDomiciliosReport(movimientos, query, req, res){
   let master = {}
+  let parent = {}
   movimientos.forEach(asis => {
     if(asis.casoIndice){
-      populateDomiciliosReport(master, asis)
+      populateDomiciliosReport(master, asis, parent)
+    }else {
+      populateParent(parent, asis)
+
     }
 
   })
   exportDomiciliosReport(master, req, res);
+
+}
+
+function populateParent(parent, asistencia){
+  let key = asistencia._id;
+  let fecha = (asistencia && asistencia.infeccion && asistencia.infeccion.fe_confirma) || 'sin dato';
+  let fecha_ts = (asistencia && asistencia.infeccion && asistencia.infeccion.fets_confirma) || 0;
+
+  parent[key] = {fe_confirma: fecha, fets_confirma: fecha_ts};
 
 }
 
@@ -1141,14 +1154,14 @@ function exportDomiciliosReport(master, req, res){
 
     worksheet.addRow().commit()
 
-    worksheet.addRow([ 'Ciudad','Barrio', 'Núcleo habitacional', '#Contactos', 'Teléfono', 'Calle', 'Caso índice' ]).commit();
+    worksheet.addRow([ 'Ciudad','Barrio', 'Núcleo habitacional', '#Contactos', 'Teléfono', 'Calle', 'Observación', 'Fe conf CIndice','Caso índice', 'fechanum' ]).commit();
 
     Object.keys(master).forEach( key => {
       let masterData = master[key];
  
-      const {city, barrio, nucleo, qty, telefono, address, parentSlug } = masterData;
+      const {city, barrio, nucleo, qty, telefono, address, street2, parentSlug, fe_confirma, fets_confirma} = masterData;
 
-      let masterArr = [ city, barrio, nucleo, qty, telefono, address, parentSlug ];
+      let masterArr = [ city, barrio, nucleo, qty, telefono, address, street2, fe_confirma, parentSlug, fets_confirma ];
       
       worksheet.addRow([...masterArr]).commit()
 
@@ -1160,7 +1173,7 @@ function exportDomiciliosReport(master, req, res){
 
 const N_HAB_00 = 'NUC-HAB-00'
 
-function populateDomiciliosReport(master, asis){
+function populateDomiciliosReport(master, asis, parent){
   let parentId = asis.casoIndice.parentId;
   let nucleo =   asis.casoIndice.nucleo || N_HAB_00;
   let key = parentId + ':' + nucleo;
@@ -1169,7 +1182,7 @@ function populateDomiciliosReport(master, asis){
     refreshDomicilioToken(master[key], asis);
 
   }else {
-    master[key] = buildDomiciliosToken(asis);
+    master[key] = buildDomiciliosToken(asis, parent);
 
   }
 
@@ -1209,11 +1222,12 @@ function refreshDomicilioToken(token, asistencia){
   }
 }
 
-function buildDomiciliosToken(asistencia){
+function buildDomiciliosToken(asistencia, parent){
   let city = 'sin dato';
   let barrio = 'sin dato';
 
   let address = 'sin dato';
+  let street2 = 'sin dato';
   let entrecalles = '';
   let telefono = asistencia.telefono || 'sin dato';
 
@@ -1229,17 +1243,24 @@ function buildDomiciliosToken(asistencia){
           ? ' - Entre ' + locacion.streetIn + ' y ' +  locacion.streetOut
           : ' - Esquina ' + locacion.streetIn ;
     }
+    street2 = locacion.street2;
 
     address = (locacion.street1 + entrecalles ) || 'sin dato';
   }
 
+  let fecha =    (parent && parent[asistencia.casoIndice.parentId] && parent[asistencia.casoIndice.parentId].fe_confirma) || 'sin dato';
+  let fecha_ts = (parent && parent[asistencia.casoIndice.parentId] && parent[asistencia.casoIndice.parentId].fets_confirma) || 0;
+
   let token = {
-    parentId: asistencia.casoIndice.parentId,
+    parentId:   asistencia.casoIndice.parentId,
     parentSlug: asistencia.casoIndice.slug,
-    nucleo: asistencia.casoIndice.nucleo || N_HAB_00,
+    nucleo:     asistencia.casoIndice.nucleo || N_HAB_00,
+    fe_confirma: fecha,
+    fets_confirma: fecha_ts + '',
     city: city,
     barrio: barrio,
     address: address,
+    street2: street2,
     telefono: telefono,
     qty: qty
   }
