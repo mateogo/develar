@@ -156,30 +156,50 @@ export class LocacionEditComponent implements OnInit {
   }
 
 
-  addNewRecursoEvent(){
-    let item = new Recurso();
-    let recursoFG = this.fb.group(item);
-    let formArray = this.form.get('recursos') as FormArray;
+  // addNewRecursoEvent(){
+  //   let item = new Recurso();
+  //   let recursoFG = this.fb.group(item);
+  //   let formArray = this.form.get('recursos') as FormArray;
 
-    formArray.push(recursoFG);
-  }
+  //   formArray.push(recursoFG);
+  // }
 
-  initRecursoEvent(){
-    this.initForSave(this.form, this.locacion)
+  // initRecursoEvent(){
+  //   this.initForSave(this.form, this.locacion)
 
-    let recursos = LocacionHelper.initRecursosInternacion(this.locacion);
+  //   let recursos = LocacionHelper.initRecursosInternacion(this.locacion);
+  //   this.locacion. recursos = recursos || [];
 
-    let recursosFG = recursos.map(recurso => this.fb.group(recurso))
-    let recursosFormArray = this.fb.array(recursosFG);
+  //   this.initForEdit(this.form, this.locacion);
 
-    this.form.setControl('recursos', recursosFormArray);
+  //   // let recursosFG = recursos.map(recurso => this.fb.group(recurso))
+  //   // let recursosFormArray = this.fb.array(recursosFG);
 
-  }
+  //   // this.form.setControl('recursos', recursosFormArray);
 
-  actualizarRursoEvent(){
+  // }
+
+  updateRecursoEvent(){
     this.initForSave(this.form, this.locacion)
 
     let recursos = LocacionHelper.updateRecursosInternacion(this.locacion);
+    this.locacion. recursos = recursos || [];
+
+    this.initForEdit(this.form, this.locacion);
+
+    // let recursosFG = recursos.map(recurso => this.fb.group(recurso))
+    // let recursosFormArray = this.fb.array(recursosFG);
+
+    // this.form.setControl('recursos', recursosFormArray);
+
+    //this.initForEdit(this.form, this.locacion);
+
+  }
+
+  actualizarRecursoEvent(){
+    this.initForSave(this.form, this.locacion)
+
+    let recursos = LocacionHelper.rebuildRecursosInternacionLabels(this.locacion);
     this.locacion. recursos = recursos || [];
 
 
@@ -210,7 +230,6 @@ export class LocacionEditComponent implements OnInit {
     const servicios: Servicio[] = fvalue.servicios.map(t => Object.assign({}, t,  {srvIsActive: ((parseInt(t.srvQDisp, 10) + parseInt(t.srvQAdic,10)) > 0 ? true : false)}))
 
     const recursos: Recurso[] = fvalue.recursos.map(t => Object.assign({}, t));
-
 
 		entity.slug =         fvalue.slug;
 		entity.description =  fvalue.description;

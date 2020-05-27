@@ -97,23 +97,18 @@
 
             <badge class="badge-style"
               [size]="'medium'"
-              (click)='initRecursoEvent()'
+              (click)='updateRecursoEvent()'
               [arrow]="'right'"
               [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
-              [borderRadius]="false">Inicializar</badge>
+              [borderRadius]="false">Inicializar RECURSOS</badge>
 
 
             <badge class="badge-style"
               [size]="'medium'"
-              (click)='actualizarRursoEvent()'
+              (click)='actualizarRecursoEvent()'
               [arrow]="'right'"
               [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
-              [borderRadius]="false">Actualizar denom CAMA</badge>
-
-            <div class="panel-header-control" ><span 
-              (click)='addNewRecursoEvent()' title="Agregar Item">
-              <i [class]="'far fa-plus'" 
-                aria-hidden="true"></i></span> </div>
+              [borderRadius]="false">Actualizar esquema de CAMAS</badge>
 
 
         </div>
@@ -126,7 +121,7 @@
       <div class="row d-flex align-items-center">
         <div class="col-md-2">
           <mat-form-field>
-            <mat-select #fldTipoRecurso placeholder="Tipo de Recurso"
+            <mat-select #fldTipoRecurso placeholder="Tipo ({{ locacion.recursos[i]._id }})"
                 formControlName="rtype" 
                 (selectionChange)="changeSelectionValue('rtype',fldTipoRecurso.value)" >
               <mat-option *ngFor="let item of recursosOL" 

@@ -70,6 +70,30 @@ export class  LocacionHelper {
   }
 
   static updateRecursosInternacion(loc: LocacionHospitalaria): Recurso[]{
+    let recursos: Recurso[] = loc.recursos || [];
+    let servicios = loc.servicios;
+    if(servicios && servicios.length){
+      servicios.forEach(servicio => {
+
+        if(servicio.srvIsActive){
+          let actualData = countActualRecursosForServicioType(servicio.srvtype, recursos)
+ 
+          if(actualData < servicio.srvQDisp){
+            addNewRecursosToActualList(actualData, servicio, recursos);
+          }else if(actualData < servicio.srvQDisp) {
+            // delete 
+          }
+
+        }
+
+      });
+    }
+    sortRecursosList(recursos)
+    return recursos;
+  }
+
+
+  static rebuildRecursosInternacionLabels(loc: LocacionHospitalaria): Recurso[]{
     let recursos: Recurso[] = loc.recursos;
 
     if(!(recursos && recursos.length)) return [];
@@ -123,6 +147,55 @@ export class  LocacionHelper {
 
 }
 
+function addNewRecursosToActualList(count, servicio, recursos: Recurso[]){
+
+    for(let i=count; i<servicio.srvQDisp; i +=1){
+      let rec = new Recurso();
+      rec.rtype = 'CAMA';
+      rec.rservicio = servicio.srvtype;
+      rec.piso = 'PISO';
+      rec.sector = 'SECTOR';
+      rec.hab = 'HAB';
+      rec.code = (i + 1) + '';
+      rec.slug = rec.rtype + ':' + rec.code + ' (' + rec.piso + '-' + rec.sector + '-' + rec.hab  + ')';
+      rec.description = '';
+      recursos.push(rec);
+    }
+}
+
+function sortRecursosList(records: Recurso[]){
+    records.sort((fel: Recurso, sel: Recurso)=> {
+      let ftoken = fel.rservicio + fel.rtype + fel.piso + fel.sector + fel.hab + fel.code;
+      let stoken = sel.rservicio + sel.rtype + sel.piso + sel.sector + sel.hab + sel.code;
+
+      if(ftoken < stoken ) return -1;
+
+      else if(ftoken > stoken ) return 1;
+
+      else return 0;
+    });
+
+}
+
+
+function countActualRecursosForServicioType(type:string, list: Recurso[]){
+  let count = 0;
+  if(list && list.length){
+    count = list.reduce((memo, token) => {
+      if (token.rservicio === type) {
+
+        return memo +=1;
+         
+      }else {
+
+        return memo;
+      }
+
+    }, 0)
+
+  }
+  return count;
+}
 
 function getLabel(list, val){
     let t = list.find(item => item.val === val)
