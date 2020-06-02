@@ -849,6 +849,12 @@ export class SaludController {
     this.emitAsistenciaDataSource.next(tableData);
   }
 
+  updateDomiciliosTableData(list: Array<any>){
+    let tableData = AsistenciaHelper.buildDomiciliosDataTable(list);
+    
+    this.emitAsistenciaDataSource.next(tableData);
+  }
+
   triggerAsistenciaEmitter(list: Asistencia[]){
     this.asistenciaListener.next(list);
   }

@@ -1,0 +1,91 @@
+<div class="novedades-container">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldPrioridad placeholder="Prioridad"
+              [formControl]="form.controls['prioridad']"
+              (selectionChange)="changeSelectionValue('prioridad',fldPrioridad.value)" >
+            <mat-option *ngFor="let item of prioridadOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+          <div class="d-flex justify-content-start align-items-center panel-header">
+
+          <div class="panel-header-text">{{ novedadesTitle }} Aregar: </div>
+
+          <badge class="badge-style"
+            [size]="'medium'"
+            (click)='addNovedad()'
+            [arrow]="'right'"
+            [customColor]="true? 'rgba(162,137,137,1)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="false">Nueva evolución</badge>
+
+          <badge class="badge-style"
+            [size]="'medium'"
+            (click)='noContestaEvent()'
+            [arrow]="'right'"
+            [customColor]="true? 'rgba(182,137,137,1)': 'rgba(255,255,255,0.3)'" 
+            [borderRadius]="false">No contesta teléfono</badge>
+
+
+        </div>
+      </div>
+    </div>
+      
+
+		<div class="novedades-container" formArrayName='novedades'>
+		<ng-container *ngFor="let novedad of novedades.controls; let i=index" 
+		              [formGroupName]="i">
+		  <div class="row d-flex align-items-center">
+		    <ng-container *ngIf="novedad.value._id">
+		      <div class="col-md-12">
+		      <p class='text-resaltado'>{{ getNovedadTxt(novedad.value) }}</p>
+		      <p class='text-audit'>{{ getAuditNovedad(novedad.value) }} </p>          
+		      </div>
+		    </ng-container>
+
+
+		    <ng-container *ngIf="!novedad.value._id">
+		    <div class="col-md-3">
+		      <mat-form-field>
+		        <mat-select #fldNovedad placeholder="Tipo de Novedad"
+		            formControlName="tnovedad" 
+		            (selectionChange)="changeSelectionValue('tnovedad',fldNovedad.value)" >
+		          <mat-option *ngFor="let item of novedadOptList" 
+		            [value]="item.val" >{{ item.label }}</mat-option>
+		        </mat-select>
+		      </mat-form-field>
+		    </div>
+		    <div class="col-md-7">
+		      <mat-form-field>
+		        <input matInput formControlName="novedad" placeholder="Novedad - Observación " >
+		      </mat-form-field>
+		    </div>
+		    </ng-container>
+
+		  </div>
+		</ng-container>
+		</div>
+  </form>
+</div>
+
+
+<div class="novedades-container">
+
+    <div class="additional-info">
+  		<button mat-raised-button color="primary" class='button-action'
+						(click)='onSubmit()' >Guardar </button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
+
+    </div>
+
+</div>

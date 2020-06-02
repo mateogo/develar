@@ -29,6 +29,7 @@ const EVOLUCION = 'evolucion';
 export class VigilanciaPanelComponent implements OnInit {
   @Input() asistencia: Asistencia;
   @Input() viewList: Array<string> = [];
+  @Input() showObservacionesPanel = false;
   @Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
   @Output() fetchPerson = new EventEmitter<string>();
 

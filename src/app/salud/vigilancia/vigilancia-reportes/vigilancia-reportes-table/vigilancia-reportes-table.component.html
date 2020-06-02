@@ -95,6 +95,33 @@
       <mat-cell *matCellDef="let element"> {{element.fe_visita}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="nucleo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> NúcleoHab </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nucleo}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Ciudad </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Convivientes </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.qty}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="barrio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Barrio </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.barrio}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="street2">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Inf adicional </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.street2}} </mat-cell>
+    </ng-container>
+
+
+
     <ng-container matColumnDef="sector">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.sector}} </mat-cell>

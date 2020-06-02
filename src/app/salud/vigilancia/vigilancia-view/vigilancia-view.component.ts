@@ -29,6 +29,7 @@ const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
 export class VigilanciaViewComponent implements OnInit {
 	@Input() token: Asistencia;
   @Input() viewList = [];
+  @Input() showObservacionesPanel = false;
   @Output() personSelected = new EventEmitter<string>();
   @Output() familySelected = new EventEmitter<FamilyData>();
 

@@ -588,6 +588,31 @@ export class Morbilidad {
 }
 
 
+function buildDomiciliosData(list: Array<any>): AsistenciaTable[]{
+		return list.map(token => {
+			let td = new AsistenciaTable();
+
+			td.asistenciaId = token.parentId;
+			td.personSlug = token.parentSlug;
+			td.ndoc = token.ndoc;
+			td.fecomp_tsa = token.fets_confirma;
+			td.fecomp_txa = token.fe_confirma;
+
+			td.action = 'apoyoAislamiento';
+
+
+			td.locacion = token.address;
+			td.city = token.city;
+			td.barrio = token.barrio;
+			td.street2 = token.street2;
+			td.nucleo = token.nucleo;
+			td.qty = token.qty;
+
+
+
+			return td;
+		}) as AsistenciaTable[];
+}
 
 function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 
@@ -688,49 +713,54 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 
 export class AsistenciaTable {
 		_id: string;
-		asistenciaId: string;
-		compName:    string;
-		compNum:     string;
-		personId:    string;
-		personSlug:  string;
-		ndoc:        string;
-		fecomp_tsa:  number;
-		fecomp_txa:  string;
-		action:      string;
-		slug:        string;
-		description: string;
-		osocial:  string;
-		sector:      string;
-		estado:      string;
-		avance:      string;
-		ts_alta:     number;
-		prioridad:   string;
-		denuncia:    string;
+		asistenciaId: string = '';
+		compName:    string = 'S/Asistencia';
+		compNum:     string = '';
+		personId:    string = '';
+		personSlug:  string = '';
+		ndoc:        string = '';
+		fecomp_tsa:  number = 0;
+		fecomp_txa:  string = '';
+		action:      string = '';
+		slug:        string = '';
+		description: string = '';
+		osocial:  string = '';
+		sector:      string = '';
+		estado:      string = '';
+		avance:      string = '';
+		ts_alta:     number = 0;
+		prioridad:   string = '';
+		denuncia:    string = '';
 
 		covid: string = '';
 		locacion: string ='';
+		city: string = '';
+		barrio: string = '';
+		street2: string = '';
+		nucleo: string = '';
+		qty: number = 0; 
 
-		faudit_alta:  string;
-		faudit_um:    string;
+		faudit_alta:  string = '';
+		faudit_um:    string = '';
 
-		edad: string;
-		telefono: string;
-		covidTxt: string;
+		edad: string = '';
+		telefono: string = '';
+		covidTxt: string = '';
 
-		covidActualState: string;
-		covidSintoma: string;
-		covidAvance: string;
-		reportadoPor: string;
-		fe_reportado: string;
-		labTxt: string;
-		fupTxt: string;
+		covidActualState: string = '';
+		covidSintoma: string = '';
+		covidAvance: string = '';
+		reportadoPor: string = '';
+		fe_reportado: string = '';
+		labTxt: string = '';
+		fupTxt: string = '';
 		
-		lab_laboratorio: string;
-		lab_estado: string;
-		lab_resultado: string;
-		lab_fe_toma: string;
-		lab_fets_toma: number;
-		lab_qty: number;
+		lab_laboratorio: string = '';
+		lab_estado: string = '';
+		lab_resultado: string = '';
+		lab_fe_toma: string = '';
+		lab_fets_toma: number = 0;
+		lab_qty: number = 0;
 
 
 };
@@ -948,6 +978,13 @@ const novedadesTypeOptList: Array<any> = [
         {val: 'nocontesta',   label: 'No contesta' },
         {val: 'otros',        label: 'Otros' },
         {val: 'no_definido',  label: 'Sin selección' },
+];
+
+const evolucionTypeOptList: Array<any> = [
+        {val: 'alimentos',    label: 'Asis Alimentaria (SDDSS)' },
+        {val: 'tramites',     label: 'Tramitación, compra' },
+        {val: 'medicamento',  label: 'Requiere medicamentos (SS)' },
+        {val: 'vigilancia',   label: 'Reportar a Vigilancia Epidemio' },
 ];
 
 
@@ -1534,6 +1571,7 @@ const optionsLists = {
    periodo: periodoOptList,
    deposito: entregaDesdeOptList,
    novedades: novedadesTypeOptList,
+   novedadesEvolucion: evolucionTypeOptList,
    causa: causasOptList,
    indicaciones: indicacionOptList,
    osocial: obrasSociales,
@@ -2114,6 +2152,10 @@ export class AsistenciaHelper {
 
 	static buildDataTable(list: Asistencia[]):AsistenciaTable[]{
 		return buildTableData(list);
+	}
+
+	static buildDomiciliosDataTable(list: Array<any>):AsistenciaTable[]{
+		return buildDomiciliosData(list);
 	}
 
 }

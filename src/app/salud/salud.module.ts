@@ -108,6 +108,7 @@ import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-
 import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
 import { VigilanciaReportesBrowseComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-browse/vigilancia-reportes-browse.component';
 import { VigilanciaReportesTableComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-table/vigilancia-reportes-table.component';
+import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigilancia-novedad.component';
 
 @NgModule({
   imports: [
@@ -216,6 +217,7 @@ import { VigilanciaReportesTableComponent } from './vigilancia/vigilancia-report
     VigilanciaReportesPageComponent,
     VigilanciaReportesBrowseComponent,
     VigilanciaReportesTableComponent,
+    VigilanciaNovedadComponent,
   ],
   entryComponents: 
   [

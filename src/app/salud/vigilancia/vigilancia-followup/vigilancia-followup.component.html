@@ -3,6 +3,7 @@
   <ng-container *ngIf='showAsistenciaView' >
     <vigilancia-view [token]='asistencia'  
                       [viewList]='viewList'
+                      [showObservacionesPanel]=showObservacionesPanel
                       (personSelected)='vinculoSelected($event)'
                       (familySelected)='editVinculo($event)' ></vigilancia-view>
   </ng-container>
@@ -117,6 +118,19 @@
 
 </div>
 <hr>
+
+<ng-container *ngIf='showObservacionesPanel' >
+  <observaciones-panel 
+          [audit]='auditToken'
+          [title]='"Asistencia y novedades extra-epidemiológica"'
+          [type]='"asisprevencion"'
+          [parent]='parentEntity' ></observaciones-panel>
+</ng-container>
+
+
+
+<!--vigilancia-novedad [asistencia]='asistencia'></vigilancia-novedad -->
+
 
 </mat-card-content>
 </mat-card>

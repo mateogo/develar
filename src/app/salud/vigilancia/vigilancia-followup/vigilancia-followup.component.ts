@@ -18,6 +18,7 @@ import {  Asistencia,
           UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 import { devutils }from '../../../develar-commons/utils'
+import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
 
 //modals
 import { VigilanciaSisaComponent } from '../vigilancia-zmodal/vigilancia-sisa/vigilancia-sisa.component';
@@ -71,6 +72,7 @@ export class VigilanciaFollowupComponent implements OnInit {
 	@Input() asistencia: Asistencia;
   @Input() detailView = true;
   @Input() viewList: Array<String> = [];
+  @Input() showObservacionesPanel = false;
   @Output() fetchPerson = new EventEmitter<string>();
 
   public muestraslabList: Array<MuestraLaboratorio> = [];
@@ -143,6 +145,9 @@ export class VigilanciaFollowupComponent implements OnInit {
   public showEditor = false;
   public showPanel = true;
 
+  public auditToken: Audit;
+  public parentEntity: ParentEntity;
+
   // asistencia
 
 
@@ -176,6 +181,12 @@ export class VigilanciaFollowupComponent implements OnInit {
     this.buildMuestrasLaboratorio(this.asistencia);
 
     this.audit = this.buildAudit(this.asistencia);
+    this.auditToken = this.dsCtrl.getAuditData();
+    this.parentEntity = {
+      entityType: 'person',
+      entityId: this.asistencia.idPerson,
+      entitySlug: this.asistencia.requeridox.slug
+    }
 
     //this.nextStepOptList = this.buildWorkflow(this.asistencia);
 

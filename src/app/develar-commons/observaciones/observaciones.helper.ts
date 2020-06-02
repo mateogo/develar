@@ -42,6 +42,13 @@ const observacionesCCKOptList: Array<any> = [
 
 ];
 
+const observacionesAsisprevencionOptList: Array<any> = [
+        {val: 'alimentos',    label: 'Asis Alimentaria (SDDSS)' },
+        {val: 'tramites',     label: 'Tramitación, compra' },
+        {val: 'medicamento',  label: 'Requiere medicamentos (SS)' },
+        {val: 'vigilancia',   label: 'Reportar a Vigilancia Epidemio' },
+];
+
 const observacionesCensoOptList: Array<any> = [
 		{val: 'consulta',     type: 'consulta',     label: 'Consulta Empresa' },
 		{val: 'observación',  type: 'observacion',  label: 'Observación Empresa' },
@@ -55,7 +62,8 @@ const optionsLists = {
 		default: observacionesTypeOptList,
 		type:    observacionesTypeOptList,
 		cck:     observacionesCCKOptList,
-		censo:   observacionesCensoOptList
+		censo:   observacionesCensoOptList,
+		asisprevencion: observacionesAsisprevencionOptList
 };
 
 function getLabel(list, val){

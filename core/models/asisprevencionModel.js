@@ -777,6 +777,14 @@ exports.findAll = function (errcb, cb) {
     });
 };
 
+
+
+const findByQueryProcessFunction = {
+
+  'DOMICILIOS' : buildDomiciliosTableReport
+
+};
+
 /**
  * Retrieve records from query /search/?name=something
  * @param cb
@@ -784,9 +792,11 @@ exports.findAll = function (errcb, cb) {
  */
 
 exports.findByQuery = function (query, errcb, cb) {
-    let regexQuery = buildQuery(query, new Date())
-    let necesitaLab = false;
+    let reporte = query['reporte'];
 
+    let regexQuery = buildQuery(query, new Date())
+
+    let necesitaLab = false;
     if(query && query.necesitaLab ){
       necesitaLab = true;
     }
@@ -815,17 +825,89 @@ exports.findByQuery = function (query, errcb, cb) {
                     console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
                     errcb(err);
                 }else{
+                    if(entities && entities.length){
 
-                    if(entities && entities.length && necesitaLab){
-                      entities = filterNecesidadDeLaboratorio(entities);
+                      if(necesitaLab){
+                        entities = filterNecesidadDeLaboratorio(entities);
+                      }
+
+                      dispatchQuerySearch(reporte, entities, query, errcb, cb)
+
+
+                    }else {
+                      cb([]);
+
                     }
-                    cb(entities);
                 }
       });
 
     }
 
 };
+
+function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
+
+  if(!reporte || !findByQueryProcessFunction[reporte]){
+      cb(movimientos);
+
+  }else {
+
+    findByQueryProcessFunction[reporte](movimientos, query, errcb, cb);
+  }
+
+}
+
+
+function buildDomiciliosTableReport(movimientos, query, errcb, cb){
+  console.log('DOMICILIOS REPORT toBEGIN!!!')
+  let master = {}
+  let parent = {}
+
+  movimientos.forEach(asis => {
+    if(asis.casoIndice){
+      populateDomiciliosReport(master, asis, parent)
+    }else {
+      populateParent(parent, asis)
+
+    }
+
+  })
+  responseDomiciliosReport(master, errcb, cb);
+
+}
+
+/******
+    parentId:   asistencia.casoIndice.parentId,
+    parentSlug: asistencia.casoIndice.slug,
+    nucleo:     asistencia.casoIndice.nucleo || N_HAB_00,
+    fe_confirma: fecha,
+    fets_confirma: fecha_ts + '',
+    city: city,
+    barrio: barrio,
+    address: address,
+    street2: street2,
+    telefono: telefono,
+    qty: qty
+
+****/
+
+function responseDomiciliosReport(master, errcb, cb){
+    let today = Date.now();
+    let resultData = [];
+
+    //worksheet.addRow([ 'Ciudad','Barrio', 'Núcleo habitacional', '#Contactos', 'Teléfono', 'Calle', 'Observación', 'Fe conf CIndice','Caso índice', 'fechanum' ]).commit();
+
+    Object.keys(master).forEach( key => {
+      let masterData = master[key];
+       
+      resultData.push(masterData)
+
+    })
+
+    cb(resultData);
+}
+
+
 
  // ACA
 function filterNecesidadDeLaboratorio(entities){
@@ -1159,9 +1241,9 @@ function exportDomiciliosReport(master, req, res){
     Object.keys(master).forEach( key => {
       let masterData = master[key];
  
-      const {city, barrio, nucleo, qty, telefono, address, street2, parentSlug, fe_confirma, fets_confirma} = masterData;
+      const {city, barrio, nucleo, qty, telefono, address, street2, parentSlug, fe_confirma, fets_confirma_tx} = masterData;
 
-      let masterArr = [ city, barrio, nucleo, qty, telefono, address, street2, fe_confirma, parentSlug, fets_confirma ];
+      let masterArr = [ city, barrio, nucleo, qty, telefono, address, street2, fe_confirma, parentSlug, fets_confirma_tx ];
       
       worksheet.addRow([...masterArr]).commit()
 
@@ -1256,7 +1338,8 @@ function buildDomiciliosToken(asistencia, parent){
     parentSlug: asistencia.casoIndice.slug,
     nucleo:     asistencia.casoIndice.nucleo || N_HAB_00,
     fe_confirma: fecha,
-    fets_confirma: fecha_ts + '',
+    fets_confirma: fecha_ts,
+    fets_confirma_tx: fecha_ts + '',
     city: city,
     barrio: barrio,
     address: address,

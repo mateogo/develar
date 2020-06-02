@@ -17,6 +17,9 @@ const SEARCH_NEXT = 'search_next';
 const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
 const EXPORT = 'export';
 
+const R_DOMICILIOS = 'DOMICILIOS'
+const R_LABORATORIO = 'LABORATORIO'
+
 @Component({
   selector: 'vigilancia-reportes-page',
   templateUrl: './vigilancia-reportes-page.component.html',
@@ -135,8 +138,6 @@ export class VigilanciaReportesPageComponent implements OnInit {
       if(list && list.length > 0){
         this.asistenciasList = list;
         
-        this.sortProperly(this.asistenciasList);
-
         this.initTableData(this.asistenciasList);
 
       }else {
@@ -149,10 +150,21 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
   private initTableData(list: Asistencia[]){
-    this.dsCtrl.updateTableData();
+    if(this.query && this.query.reporte === R_DOMICILIOS){
+      this.dsCtrl.updateDomiciliosTableData(list);
 
-    if(this.query && this.query.reporte === 'LABORATORIO'){
+    }else {
+
+      this.sortProperly(list);
+      this.dsCtrl.updateTableData();
+
+    }
+
+    if(this.query && this.query.reporte === R_LABORATORIO){
       this.tableActualColumns = LABORATORIO
+
+    }else if(this.query && this.query.reporte === R_DOMICILIOS){
+      this.tableActualColumns = DOMICILIO
 
     }else {
       this.tableActualColumns = LABORATORIO
@@ -196,7 +208,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
       })
     }
     if(action === 'editar'){
+
       let eventToEdit = selected && selected.length && selected[0];
+      //console.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
 
       if(eventToEdit){
         this.editData(eventToEdit.asistenciaId)
@@ -210,18 +224,23 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
   private editData(id: string){
-    let token = this.asistenciasList.find(t => t._id === id);
+    //let token = this.asistenciasList.find(t => t._id === id);
 
-    if(token){
-      this.currentAsistencia = token;
+    this.dsCtrl.fetchAsistenciaById(id).then(asis =>{
+      if(asis){
 
-      setTimeout(() =>{
-        this.showEditor = true;
-      }, 300)
-    }else {
-      this.currentAsistencia = null
-    }
+        if(asis){
+          this.currentAsistencia = asis;
 
+          setTimeout(() =>{
+            this.showEditor = true;
+          }, 300)
+        }else {
+          this.currentAsistencia = null
+        }
+
+      }
+    });
   }
 
   private initMapToRender(){
@@ -244,6 +263,17 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
 }
 
+const DOMICILIO = [
+          'select',
+          'ndoc',
+          'personSlug',
+          'telefono',
+          'nucleo',
+          'qty',
+          'city',
+          'locacion',
+          'street2',
+]
 
 const LABORATORIO = [
           'select',

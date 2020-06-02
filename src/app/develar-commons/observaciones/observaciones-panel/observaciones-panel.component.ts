@@ -24,12 +24,12 @@ export class ObservacionesPanelComponent implements OnInit {
 	@Input() audit: Audit;
 	@Input() parent: ParentEntity;
   @Input() type: string = 'type';
+  @Input() title: string = 'Observaciones'
 
   constructor(
   		private obsCtrl: ObservacionesController
   	) { }
 
-  public title = 'Observaciones';
 	public showList = false;
   public openEditor = true;
 

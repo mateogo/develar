@@ -1,6 +1,7 @@
 <ng-container *ngIf="showFollowUp">
 
 	<vigilancia-followup  [asistencia]='asistencia' [viewList]='viewList'
+								[showObservacionesPanel]=showObservacionesPanel
 								(updateToken)='manageBase($event)'
 								(closePanel)='closeFollowUp($event)'
 								(fetchPerson)='vinculoSelected($event)' ></vigilancia-followup>
