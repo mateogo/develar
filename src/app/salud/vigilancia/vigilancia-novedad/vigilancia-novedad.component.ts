@@ -99,6 +99,10 @@ export class VigilanciaNovedadComponent implements OnInit {
   	this.emitEvent(this.formAction);
   }
 
+  changeSelectionValue(type, val){
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+  }
+
 	getNovedadTxt(novedad: Novedad){
 		let tnovedad = AsistenciaHelper.getPrefixedOptionLabel('novedades', '', novedad.tnovedad);
 		return tnovedad + ' :: ' + novedad.novedad;
