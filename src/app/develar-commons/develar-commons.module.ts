@@ -68,6 +68,11 @@ import { ObservacionesPanelComponent } from './observaciones/observaciones-panel
 import { ObservacionesViewComponent }  from './observaciones/observaciones-view/observaciones-view.component';
 import { ObservacionesEditComponent }  from './observaciones/observaciones-edit/observaciones-edit.component';
 
+import { TasksBaseComponent }  from './tasks/tasks-base/tasks-base.component';
+import { TasksPanelComponent } from './tasks/tasks-panel/tasks-panel.component';
+import { TasksViewComponent }  from './tasks/tasks-view/tasks-view.component';
+import { TasksEditComponent }  from './tasks/tasks-edit/tasks-edit.component';
+
 import { AssetService }         from './asset.service';
 import { DaoService }           from './dao.service';   
 import { TagService }           from './tag.service';
@@ -150,6 +155,10 @@ DumpDataComponent
     ObservacionesPanelComponent,
     ObservacionesEditComponent,
     ObservacionesViewComponent,
+    TasksBaseComponent,
+    TasksPanelComponent,
+    TasksEditComponent,
+    TasksViewComponent,
     BreadcrumbComponent,
     ControlesComponent,
     DumpDataComponent,
