@@ -53,6 +53,11 @@ export class VigilanciaSeguimientohistoryComponent implements OnInit {
   								} as  UpdateAsistenciaEvent;
   }
 
+  // auditData(token:AfectadoUpdate ){
+  //   return token.audit ? token.audit.username : ''
+
+  // }
+
   private buildAfectadoFollowUp(entity: Asistencia){
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
 

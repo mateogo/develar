@@ -53,10 +53,10 @@
       <hr>
       <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
       <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
-              <p class='text-resaltado'>{{ vinculo.slug }} 
+              <p class='text-resaltado-vinculo'>{{ vinculo.slug }} 
                               <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
 
-              <p class='text-normal'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
+              <p class='text-normal-vinculo'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
                           <strong>{{ vinculo.vinculo }} - {{ vinculo.token.nucleo }}</strong>
                   <span class="edit-control"
                       (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
@@ -93,6 +93,8 @@
                   <span *ngIf='vinculo.fupBadge.hasData'  class="badge-vinculo" 
                         matTooltip='{{vinculo.fupBadge.toolTip}}'>
                     <badge  [color]="'warning'" >{{vinculo.fupBadge.branding}}</badge>
+                    <badge  [color]="vinculo.fupBadge.asignado ? 'warning':'info' " >
+                              {{ vinculo.fupBadge.asignado ? ':-)':'o('  }}</badge>
                     <badge  [color]="'warning'" 
                             [borderRadius]="vinculo.fupBadge.border">
                             {{ vinculo.fupBadge.label }}</badge>
@@ -182,6 +184,7 @@
           <div *ngIf='fupBadge.hasData' 
                 matTooltip='{{fupBadge.toolTip}}'>
             <badge  [color]="'warning'" >{{fupBadge.branding}}</badge>
+            <badge  [color]="fupBadge.asignado ? 'warning':'info' " >{{ fupBadge.asignado ? ':-)':'o('  }}</badge>
             <badge  [color]="'warning'" 
                     [borderRadius]="fupBadge.border">
                     {{ fupBadge.label }}</badge>

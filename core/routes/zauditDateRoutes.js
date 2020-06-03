@@ -2,6 +2,13 @@
  * auditoría de datos
  */
 
+
+ /**
+ * Para procesar y limpiar duplicados:
+ * (a) /api/auditodatos/auditpersonduplices
+ * (b) /api/auditodatos/processduplices
+ **/
+
 var express = require('express');
 var router = express.Router();
 var service = require('../models/zauditDataService.js');

@@ -27,7 +27,8 @@
 </div>
 
 <ng-template #seguimiento >
-  <p class='text-resaltado'>Contacto: <strong>{{ actualFup.resultado }} :: Evolución: {{ actualFup.vector }} </strong>  -
+  <p class='text-resaltado'>Contacto: 
+    <strong>{{ actualFup.resultado }} :: Evolución: {{ actualFup.vector }} </strong>  -
                         {{ actualFup.fe_llamado }} </p>
 
   <p class='text-normal'>COMENTARIO:</p>
@@ -35,5 +36,6 @@
 
   <p class='text-normal'>INDICACIONES:</p>
   <p class='text-resaltado'>{{ actualFup.indicacion }}</p>
+  <p class='text-audit'>{{ actualFup.audit ? actualFup.audit.username : '' }}</p>
 
 </ng-template>

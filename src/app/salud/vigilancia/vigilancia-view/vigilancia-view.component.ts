@@ -368,8 +368,8 @@ export class VigilanciaViewComponent implements OnInit {
     this.showSisaData = true;
   }
 
-  //ACA
-   private buildFollowUPdBadge(asistencia: Asistencia):FollowUpBadge{
+
+  private buildFollowUPdBadge(asistencia: Asistencia):FollowUpBadge{
     let followupBadgeToken = new FollowUpBadge()
     let token = asistencia.followUp;
 
@@ -382,8 +382,10 @@ export class VigilanciaViewComponent implements OnInit {
       let contactos = asistencia.seguimEvolucion;
       let llamadosCount = 0;
       let diasSeguimiento = Math.floor((today.getTime() - token.fets_inicio) / (1000 * 60 * 60 * 24));
+      followupBadgeToken.asignado = token.isAsignado;
+      let asignadoTxt = token.isAsignado ? ' - ASIGN: ' + token.asignadoSlug : ''
 
-      followupBadgeToken.toolTip = `Inicio:[${token.fe_inicio}] últ contacto:[${token.fe_ucontacto}] Contactos logrados:[${token.qcontactos}/${token.qllamados}] No contesta:[${token.qIntents}] ${token.slug} `;
+      followupBadgeToken.toolTip = `Inicio:[${token.fe_inicio}] últ contacto:[${token.fe_ucontacto}] Contactos logrados:[${token.qcontactos}/${token.qllamados}] No contesta:[${token.qIntents}] ${token.slug} ${asignadoTxt} `;
 
 
       if(contactos && contactos.length){
@@ -414,6 +416,7 @@ export class VigilanciaViewComponent implements OnInit {
     return followupBadgeToken;
 
   }
+  //qty
   
   private buildHisopadoBadge(asistencia: Asistencia):HisopadoBadge{
     let hisopadoBadgeToken = new HisopadoBadge();
@@ -745,6 +748,7 @@ class FollowUpBadge {
   border = false;
   outline = true;
   arrow = 'bottom';
+  asignado = false;
   size = '';
   branding = 'LL';
   label = '';

@@ -266,27 +266,23 @@ const infeccionFollowUpSch = new Schema({
     fets_alta:     { type: Number,  required: false },
 })
 
-const asignadosSeguimientoSch = new Schema({
-    userId:    { type: String, required: false },
-    userSlug:  { type: String, required: false },
-    userArea:  { type: String, required: false },
-
-
+const auditSch = new Schema({
+  userId:       { type: String, required: false },
+  username:     { type: String, required: false },
+  ts_alta:      { type: Number, required: false },
 });
-
 
 const afectadoUpdateSch = new Schema({
     isActive:   { type: Boolean, required: false },
     fe_llamado: { type: String, required: false },
     resultado:  { type: String, required: false },
-    vector:     { type: String, required: false },
     tipo:       { type: String, required: false },
+    vector:     { type: String, required: false },
     sintoma:    { type: String, required: false },
     slug:       { type: String, required: false },
     indicacion: { type: String, required: false },
-
     fets_llamado: { type: Number, required: false },
-
+    audit: { type: auditSch, required: false }
 });
 
 
@@ -309,7 +305,6 @@ const afectadosFollowUpSch = new Schema({
   sintoma:       { type: String, required: false },
   vector:        { type: String, required: false },
 
-  asignados:     { type: String, required: false },
   slug:          { type: String, required: false },
 
   isAsignado:     { type: Boolean, required: false, default: false },
@@ -859,7 +854,6 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
 
 
 function buildDomiciliosTableReport(movimientos, query, errcb, cb){
-  console.log('DOMICILIOS REPORT toBEGIN!!!')
   let master = {}
   let parent = {}
 

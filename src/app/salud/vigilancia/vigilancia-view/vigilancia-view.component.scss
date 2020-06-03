@@ -1,5 +1,7 @@
 @import '../../../../assets/sass/variable';
 $color-destacado: #0645f5;
+$color-destacado-vinculo: #2413c6;
+
 $color-button: #3c4e62;
 $color-header: #2326ff;
 
@@ -85,6 +87,23 @@ $color-header: #2326ff;
 		font-size: 1.2rem;
 		line-height: .8;
 		color: $color-destacado;
+}
+
+.text-resaltado-vinculo {
+		margin: 0 0 0 0;
+		color: $color-destacado-vinculo;
+		font-weight: 700;
+		font-size: 1.1rem;
+		font-style: italic;
+
+}
+
+.text-normal-vinculo {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.0rem;
+		line-height: .8;
+		color: $color-destacado-vinculo;
 }
 
 .text-audit {

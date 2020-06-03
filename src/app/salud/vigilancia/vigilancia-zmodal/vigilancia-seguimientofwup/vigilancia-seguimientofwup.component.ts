@@ -113,6 +113,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
     }
 
+    this.seguimientoEvent.audit = this.ctrl.getAuditData();
+
 		let llamados = this.asistencia.seguimEvolucion || [];
 		llamados.push(this.seguimientoEvent);
     this.asistencia.seguimEvolucion = llamados;

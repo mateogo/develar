@@ -146,7 +146,8 @@ export class CredentialsComponent implements OnInit {
 
     if(this.model._id){
       this.userService.credentials(this.model).then(user => {
-        this.sendMailTo(user);
+        // ojo email error
+        //this.sendMailTo(user);
         this.router.navigate(['/ingresar/login']);
       });
 

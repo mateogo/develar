@@ -678,6 +678,10 @@ export class SaludController {
 
   }
 
+  upsertAsistenciaToken(asistencia: Asistencia, token: any){
+    return this.daoService.partialUpdate<Asistencia>(ASIS_PREVENCION_RECORD, asistencia._id, token)
+  }
+
   private upsertAsistencia(listener: Subject<Asistencia>,  asistencia: Asistencia){
     this.daoService.update<Asistencia>(ASIS_PREVENCION_RECORD, asistencia._id, asistencia).then(t =>{
       listener.next(t);

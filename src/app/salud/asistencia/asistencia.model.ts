@@ -21,6 +21,12 @@ export class Atendido {
 		sector:  string;
 };
 
+export class Audit {
+	userId:      string;
+	username:    string;
+	ts_alta: number;
+};
+
 export interface Tile {
 		dia:      number;
 		mes:      number;
@@ -521,7 +527,7 @@ export class AfectadoFollowUp {
 	sintoma: string = 'sindato'; //sintomaOptList
 	vector: string = 'inicia'; //vectorSeguimientoOptList
 
-	asignados: Array<AsignadosSeguimiento> = [];
+	// asignados: Array<AsignadosSeguimiento> = [];
 	slug: string = 'Inicia seguimiento de afectado/a';
 
 	isAsignado: boolean = false;
@@ -551,16 +557,18 @@ export class AfectadoUpdate {
 	isActive: boolean = false;
 	fe_llamado: string = '';
 	resultado: string = ''; // resultadoSeguimientoOptList
+	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
+	
 	internadoFup: number = 0; // helper para edicion
 	locacionSlug: string = '' // helper para edicion
 
 	vector: string = 'inicia'; //vectorSeguimientoOptList
 	sintoma: string = ''; // sintomaOptList
-	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
 	slug: string = ''; // mensaje
 	indicacion: string = ''; // mensaje
 
 	fets_llamado: number = 0;
+	audit: Audit;
 }
 
 
@@ -2261,7 +2269,6 @@ S/ASISTENCIA
 		qefectivos
 		tipo: ventana_14: infectado: en_recuperacion
 		evolucion: estable|mejora|desmejora
-		asignados []
 
 	COMORBILIDAD
 		comorbilidades: []
