@@ -433,6 +433,14 @@ function buildQuery(query, today){
       return q;
   }
 
+  if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
+      q = {
+            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            isVigilado: true,
+          }
+      return q;
+  }
+
   if(query['reporte'] && query['reporte']==="DOMICILIOS"){
       q = {
             avance: {$ne: 'anulado'},
@@ -776,7 +784,8 @@ exports.findAll = function (errcb, cb) {
 
 const findByQueryProcessFunction = {
 
-  'DOMICILIOS' : buildDomiciliosTableReport
+  'DOMICILIOS' : buildDomiciliosTableReport,
+  'REDCONTACTOS' : buildRedContactos
 
 };
 
@@ -852,6 +861,72 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
 
 }
 
+function buildRedContactos(movimientos, query, errcb,cb ){
+  let output;
+
+  output = movimientos.map(asis => {
+    let source = _getSource(asis);
+    let target = _getTarget(asis);
+
+    let type = _getType(asis);
+
+    return {
+      source: source.slug,
+      sourceId: source.id,
+      target: target.slug,
+      targetId: target.id,
+      type: type.slug,
+    }
+
+
+  })
+  cb(output);
+
+}
+function _getSource(asis){
+  if(asis.casoIndice){
+    return {
+      slug: asis.casoIndice.slug,
+      id: asis.casoIndice.parentId
+    }
+
+  }else {
+    if(asis.locacion){
+      return {
+        slug: asis.locacion.city,
+        id : asis.locacion.city,
+      }
+
+    }else {
+      return {
+        slug: 'locacion',
+        id: 'locacion'
+      }
+    }
+  }
+}
+
+function _getTarget(asis){
+  return {
+    slug: asis.requeridox.slug,
+    id: asis.idPerson
+  }
+}
+
+function _getType(asis){
+    if(asis.locacion){
+      return {
+        slug: asis.locacion.city,
+        id : asis.locacion.city,
+      }
+
+    }else {
+      return {
+        slug: 'locacion',
+        id: 'locacion'
+      }
+    }
+}
 
 function buildDomiciliosTableReport(movimientos, query, errcb, cb){
   let master = {}

@@ -74,9 +74,13 @@ import { TasksViewComponent }  from './tasks/tasks-view/tasks-view.component';
 import { TasksEditComponent }  from './tasks/tasks-edit/tasks-edit.component';
 
 import { AssetService }         from './asset.service';
+import { D3DataServiceService } from './d3/d3-data-service.service';
 import { DaoService }           from './dao.service';   
 import { TagService }           from './tag.service';
 import { PrismHighlightService }     from './highlighter.service';
+
+import { PieChartComponent } from './d3/pie-chart/pie-chart.component';
+import { ForceDirectedGraphComponent } from './d3/force-directed-graph/force-directed-graph.component';
 
 import { DumpDataComponent }                from './components/dump-data/dump-data.component';
 import { ControlesComponent }               from './components/controles/controles.component';
@@ -165,7 +169,9 @@ DumpDataComponent
     MosaicoComponent,
     BotonContadorComponent,
     BotoneraContainerComponent,
-    AltaRapidaPacienteModalComponent, 
+    AltaRapidaPacienteModalComponent,
+    PieChartComponent,
+    ForceDirectedGraphComponent,
   ],
   exports:[
     DevelarMaterialModule,
@@ -219,6 +225,10 @@ DumpDataComponent
     ObservacionesPanelComponent,
     ObservacionesEditComponent,
     ObservacionesViewComponent,
+    TasksBaseComponent,
+    TasksPanelComponent,
+    TasksEditComponent,
+    TasksViewComponent,
     CommunityTableComponent,
     CommunitySelectorComponent,
     BreadcrumbComponent,
@@ -228,9 +238,11 @@ DumpDataComponent
     BotonContadorComponent,
     BotoneraContainerComponent,
     AltaRapidaPacienteModalComponent,
+    PieChartComponent,
+    ForceDirectedGraphComponent,
     
   ],
-  providers: [AssetService, DaoService, ModelController, TagService, CommunityController, PrismHighlightService],
+  providers: [AssetService, DaoService, ModelController, TagService, CommunityController, D3DataServiceService, PrismHighlightService],
   entryComponents: [    CrawlerDialogComponent, 
                         GenericDialogComponent, 
                         AltaRapidaPacienteModalComponent,

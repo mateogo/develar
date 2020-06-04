@@ -17,17 +17,17 @@ export class TasksController {
   }
 
 
-  manageTaskRecord(observacion:Task ): Subject<Task>{
+  manageTaskRecord(tasks:Task ): Subject<Task>{
     let listener = new Subject<Task>();
-    let type = 'observacion';
+    let type = 'tasks';
 
-    if(this.isNewToken(observacion)){
-      observacion = this.initNewTask(observacion);
-      this.insertTask(listener, type, observacion);
+    if(this.isNewToken(tasks)){
+      tasks = this.initNewTask(tasks);
+      this.insertTask(listener, type, tasks);
 
     }else{
-      observacion = this.initTaskForUpdate(observacion);
-    	this.upsertTask(listener, type, observacion);
+      tasks = this.initTaskForUpdate(tasks);
+    	this.upsertTask(listener, type, tasks);
 
     }
 
@@ -45,27 +45,27 @@ export class TasksController {
 
 
   /******* UPDATE / CREATE ********/ 
-  private upsertTask(listener: Subject<Task>, type,  observacion: Task){
-    this.daoService.update<Task>(type, observacion._id, observacion).then(obs =>{
+  private upsertTask(listener: Subject<Task>, type,  tasks: Task){
+    this.daoService.update<Task>(type, tasks._id, tasks).then(obs =>{
       listener.next(obs);
     })
   }
 
-  private insertTask(listener: Subject<Task>,type,  observacion: Task){
-      this.daoService.create<Task>(type, observacion).then(obs =>{
+  private insertTask(listener: Subject<Task>,type,  tasks: Task){
+      this.daoService.create<Task>(type, tasks).then(obs =>{
         listener.next(obs);
       });
   }
 
   /******* init for create / update ********/
-  private initTaskForUpdate(observacion: Task): Task{
-  	return observacion;
+  private initTaskForUpdate(tasks: Task): Task{
+  	return tasks;
 
   }
 
-  private initNewTask(observacion:Task){
+  private initNewTask(tasks:Task){
   	// ToDo
-  	return observacion;
+  	return tasks;
   }
 
 

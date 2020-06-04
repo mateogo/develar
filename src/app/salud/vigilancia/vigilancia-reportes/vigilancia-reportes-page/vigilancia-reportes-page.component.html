@@ -75,6 +75,11 @@
         	</ng-container>
         </agm-map>
       </div>
+ 
+      <div *ngIf="renderGraph">
+				<force-directed-graph [data]='asistenciasList'></force-directed-graph>
+      </div>
+
 
 			<ng-container *ngIf='!view.value || view.value=="list"'>
 				<vigilancia-reportes-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>

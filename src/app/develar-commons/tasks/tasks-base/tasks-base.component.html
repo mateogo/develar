@@ -1,1 +1,29 @@
-<p>tasks-base works!</p>
+<mat-card class="detail-card">
+  <mat-card-content>
+	 	<div class="row">
+	 		<div class="col-md-1 d-flex justify-content-between align-items-center">
+	 			<div *ngIf="showEditControl">
+					<span class="edit-control"
+						(click)='editToken()' title="Editar observación">
+						<i [class]="showEdit ? 'fas fa-pen-square' : 'far fa-edit'" 
+						aria-hidden="true"></i></span>
+				</div>
+	 		</div>
+
+		 	<div class="col-md-11">
+		  	<ng-container *ngIf="showView">
+					<tasks-view [modulo]="modulo" [token]='task'></tasks-view>
+				</ng-container>
+
+			
+				<ng-container *ngIf="showEditPanel">
+					<tasks-edit [token]='task'
+						              [modulo]="modulo"
+					 								(updateToken)='manageBase($event)' ></tasks-edit>
+				</ng-container>
+			</div>
+
+		</div>
+
+  </mat-card-content>
+</mat-card>

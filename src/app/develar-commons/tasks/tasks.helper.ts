@@ -1,18 +1,18 @@
 /**
-	OBSERVACIONES HELPER
+	TASKS HELPER
 */
 import { Task } from './tasks.model';
 import { devutils }    from '../utils';
 
 
-const observacionesAsisprevencionOptList: Array<any> = [
+const tasksAsisprevencionOptList: Array<any> = [
         {val: 'alimentos',    label: 'Asis Alimentaria (SDDSS)' },
         {val: 'tramites',     label: 'Tramitación, compra' },
         {val: 'medicamento',  label: 'Requiere medicamentos (SS)' },
         {val: 'vigilancia',   label: 'Reportar a Vigilancia Epidemio' },
 ];
 
-const observacionesCensoOptList: Array<any> = [
+const tasksCensoOptList: Array<any> = [
 		{val: 'consulta',     type: 'consulta',     label: 'Consulta Empresa' },
 		{val: 'observación',  type: 'observacion',  label: 'Observación Empresa' },
     {val: 'notificacion', type: 'notificacion', label: 'Notificación MAB' },
@@ -22,8 +22,9 @@ const observacionesCensoOptList: Array<any> = [
 ];
 
 const optionsLists = {
-		default: observacionesAsisprevencionOptList,
-		asisprevencion: observacionesAsisprevencionOptList
+		default: tasksAsisprevencionOptList,
+		asisprevencion: tasksAsisprevencionOptList,
+		salud: tasksAsisprevencionOptList
 };
 
 function getLabel(list, val){

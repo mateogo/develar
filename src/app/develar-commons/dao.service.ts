@@ -118,6 +118,10 @@ export class DaoService {
         backendURL: 'api/observaciones',
         searchURL:  'api/observaciones/search'
       },
+      task:{
+        backendURL: 'api/tasks',
+        searchURL:  'api/tasks/search'
+      },
       tag:{
         backendURL: 'api/tags',
         searchURL:  'api/tags/search'

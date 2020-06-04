@@ -42,7 +42,7 @@ const observacionesCCKOptList: Array<any> = [
 
 ];
 
-const observacionesAsisprevencionOptList: Array<any> = [
+const saludAsisprevencionOptList: Array<any> = [
         {val: 'alimentos',    label: 'Asis Alimentaria (SDDSS)' },
         {val: 'tramites',     label: 'Tramitación, compra' },
         {val: 'medicamento',  label: 'Requiere medicamentos (SS)' },
@@ -63,7 +63,8 @@ const optionsLists = {
 		type:    observacionesTypeOptList,
 		cck:     observacionesCCKOptList,
 		censo:   observacionesCensoOptList,
-		asisprevencion: observacionesAsisprevencionOptList
+		asisprevencion: saludAsisprevencionOptList,
+		salud: saludAsisprevencionOptList
 };
 
 function getLabel(list, val){

@@ -1401,6 +1401,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
     {val: 'DOMICILIOS',       label: 'Reporte Domicilios de contactos' },
     {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
+    {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },
 ];
 
 

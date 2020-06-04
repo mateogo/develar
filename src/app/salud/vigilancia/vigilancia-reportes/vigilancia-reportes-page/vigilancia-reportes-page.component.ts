@@ -19,6 +19,7 @@ const EXPORT = 'export';
 
 const R_DOMICILIOS = 'DOMICILIOS'
 const R_LABORATORIO = 'LABORATORIO'
+const R_CONTACTOS = 'REDCONTACTOS'
 
 @Component({
   selector: 'vigilancia-reportes-page',
@@ -36,6 +37,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
 	public showTable = false;
   public showEditor = false;
   public renderMap = false;
+  public renderGraph = false;
 
   public zoom = 15;
   public baseLatLng = {};
@@ -153,6 +155,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
     if(this.query && this.query.reporte === R_DOMICILIOS){
       this.dsCtrl.updateDomiciliosTableData(list);
 
+    }else if(this.query && this.query.reporte === R_CONTACTOS){
+
     }else {
 
       this.sortProperly(list);
@@ -165,6 +169,10 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     }else if(this.query && this.query.reporte === R_DOMICILIOS){
       this.tableActualColumns = DOMICILIO
+
+    }else if(this.query && this.query.reporte === R_CONTACTOS){
+      this.tableActualColumns = LABORATORIO;
+      this.renderGraph = true;
 
     }else {
       this.tableActualColumns = LABORATORIO

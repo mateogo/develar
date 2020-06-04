@@ -4,6 +4,7 @@ export class Task {
 		type:          string;
 		compNum:       string;
 		compName:      string;
+		modulo:        string = 'salud';
 
 		fe_alta:       string; 
 		fe_alta_ts:    number;
