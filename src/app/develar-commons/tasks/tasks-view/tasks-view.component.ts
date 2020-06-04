@@ -19,6 +19,10 @@ export class TasksViewComponent implements OnInit {
 	public fecha;
   public typeLabel;
   public observacion;
+  public fe_vto = '';
+  public avance = '';
+  public fe_alta = '';
+  public requerimiento = '';
 
   public audit;
 
