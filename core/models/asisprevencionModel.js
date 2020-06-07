@@ -435,7 +435,8 @@ function buildQuery(query, today){
 
   if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
       q = {
-            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            //'$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            avance: {$ne: 'anulado'},
             isVigilado: true,
           }
       return q;
@@ -864,7 +865,7 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
 function buildRedContactos(movimientos, query, errcb,cb ){
   let output;
 
-  output = movimientos.map(asis => {
+  output = movimientos.filter(t => addToGraph(t)).map(asis => {
     let source = _getSource(asis);
     let target = _getTarget(asis);
 
@@ -883,6 +884,21 @@ function buildRedContactos(movimientos, query, errcb,cb ){
   cb(output);
 
 }
+
+function addToGraph(asis){
+  let add = false;
+  if(asis.casoIndice) add = true;
+
+  if(asis.infeccion){
+    if(asis.infeccion.actualState === 1 || asis.infeccion.actualState === 4 || asis.infeccion.actualState === 5 ) add = true;
+
+  }
+
+
+  return add
+
+}
+
 function _getSource(asis){
   if(asis.casoIndice){
     return {

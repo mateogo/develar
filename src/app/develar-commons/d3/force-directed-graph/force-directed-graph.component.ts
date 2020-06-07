@@ -23,8 +23,8 @@ export class ForceDirectedGraphComponent implements OnInit {
 	node: any;
 	svg: any;
 	types = ['licensing', 'suit', 'resolved']
-	height = 800;
-	width = 800;
+	height = 1900;
+	width = 1200;
 	color: any;
 
   constructor() { }
@@ -36,7 +36,7 @@ export class ForceDirectedGraphComponent implements OnInit {
 
   	this.simulation = d3.forceSimulation(this.nodes)
       .force("link", d3.forceLink( this.links).id( d => d['id']) )
-      .force("charge", d3.forceManyBody().strength(-400))
+      .force("charge", d3.forceManyBody().strength(-300))
       //.force("center", d3.forceCenter(this.width/2, this.height/2));
       .force("x", d3.forceX())
       .force("y", d3.forceY());
