@@ -23,8 +23,8 @@ export class ForceDirectedGraphComponent implements OnInit {
 	node: any;
 	svg: any;
 	types = ['licensing', 'suit', 'resolved']
-	height = 1900;
-	width = 1200;
+	height = 3500;
+	width = 2400;
 	color: any;
 
   constructor() { }
