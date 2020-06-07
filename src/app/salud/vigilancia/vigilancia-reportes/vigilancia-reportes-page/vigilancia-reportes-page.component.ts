@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import { SaludController } from '../../../salud.controller';
 
-import {  Person } from '../../../../entities/person/person';
+import {  Person, personModel } from '../../../../entities/person/person';
 
 import { 	Asistencia, 
           AsistenciaTable,
@@ -38,6 +38,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
   public showEditor = false;
   public renderMap = false;
   public renderGraph = false;
+  public showGraph = false;
+  private actualParameter = 'no_definido';
 
   public zoom = 15;
   public baseLatLng = {};
@@ -49,6 +51,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
   // Sol de Asistencia
   public asistenciasList: Asistencia[];
   public currentAsistencia:Asistencia;
+
+  public ciudadesList =   personModel.ciudades;
+  public changeCity$ = new BehaviorSubject<string>('no_definido');
 
   constructor(
       private dsCtrl: SaludController,
@@ -117,6 +122,20 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.fetchSolicitudes(this.query, SEARCH);
   }
 
+  changeCity(type, value) {
+    if(value === this.actualParameter) return;
+    this.showGraph = false;
+    setTimeout(()=> {
+
+      this.actualParameter = value;
+      this.changeCity$.next(value);
+      this.showGraph = true;
+
+    }, 400)
+
+
+  }
+
 
   /************************/
   /*    Sol/Asistencia   */
@@ -172,6 +191,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     }else if(this.query && this.query.reporte === R_CONTACTOS){
       this.tableActualColumns = LABORATORIO;
+      this.showGraph = true;
       this.renderGraph = true;
 
     }else {

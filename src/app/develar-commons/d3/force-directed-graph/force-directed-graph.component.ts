@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import * as d3 from 'd3';
 //import {swatches} from "@d3/color-legend"
@@ -12,8 +13,15 @@ import * as d3 from 'd3';
 })
 export class ForceDirectedGraphComponent implements OnInit {
 	@Input() data:Array<any> = [];
+	@Input() parameter$: Observable<string>;
+
+	public showGraph = true;
+	private defaultView = true;
 
 	public chart: any;
+
+	private actualParam = 'no_definido';
+
 	links: any;
 	nodes: any;
 
@@ -31,8 +39,31 @@ export class ForceDirectedGraphComponent implements OnInit {
 
   ngOnInit() {
   	this.initData();
-
 	  this.color = d3.scaleOrdinal(d3.schemeCategory10)
+
+  	if(this.parameter$){
+  		this.parameter$.subscribe(param => {
+  			this.refreshGraph(param)
+  		})
+  	}
+
+	  //this.resetGraph();
+
+
+
+  }
+
+  private resetGraph(){
+  	if(this.defaultView){
+  		this.height = 2500;
+  		this.width =  1900;
+
+  	}else {
+  		this.height = 1200;
+  		this.width =  1200;
+
+  	}
+
 
   	this.simulation = d3.forceSimulation(this.nodes)
       .force("link", d3.forceLink( this.links).id( d => d['id']) )
@@ -44,8 +75,6 @@ export class ForceDirectedGraphComponent implements OnInit {
     this.svg = d3.select('#graph').select('svg')
     	.attr("viewBox", `${-this.width / 2} ${-this.height / 2} ${ this.width} ${this.height}`)
       .style("font", "12px sans-serif");
-
-
 
   	// Per-type markers, as they don't inherit styles.
   	this.svg.append("defs").selectAll("marker")
@@ -99,16 +128,12 @@ export class ForceDirectedGraphComponent implements OnInit {
     	this.node.attr("transform", d => `translate(${d.x},${d.y})`);
   	});
 
+
   	//this.invalidation.then(() => this.simulation.stop());
-
   	//return this.svg.node();
-
-
   }
 
   drag(simulation){
-
-
 		const dragstarted = function(d) {
 		  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
 		  d.fx = d.x;
@@ -130,8 +155,6 @@ export class ForceDirectedGraphComponent implements OnInit {
       .on("start", dragstarted)
       .on("drag", dragged)
       .on("end", dragended);
-
-
   }
 
   linkArc(d) {
@@ -146,14 +169,38 @@ export class ForceDirectedGraphComponent implements OnInit {
 		// this.links = LINKS.map(d => Object.create(d));
 	 //  this.nodes = NODES.map(d => Object.create(d));
 		// this.types = ['licensing', 'suit', 'resolved']
+	}
+
+	private refreshGraph(param){
+
+		this.showGraph = false;
+
+
 		if(! (this.data && this.data.length)) return;
 
 		this.types = Array.from(new Set( this.data.map(d=> d['type']) ));
 
-		this.links = this.data.map(d => Object.create(d));
+		let _source;
 
-		let _nodes = Array.from(new Set( this.data.flatMap(l => [l.source, l.target])), id =>({ id }) )
+		if(param === 'no_definido'){
+			_source = this.data;
+			this.defaultView = true;
+
+		} else {
+			this.defaultView = false;
+			_source = this.data.filter(token => {
+				return token.type === param;
+			})
+
+		}
+
+		let _nodes = Array.from(new Set( _source.flatMap(l => [l.source, l.target])), id =>({ id }) )
 		this.nodes = _nodes.map(d => Object.create(d));
+
+		this.links = _source.map(d => Object.create(d));
+
+		this.showGraph = true;
+		this.resetGraph()
 
 	}
 

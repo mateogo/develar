@@ -77,7 +77,28 @@
       </div>
  
       <div *ngIf="renderGraph">
-				<force-directed-graph [data]='asistenciasList'></force-directed-graph>
+				<div class="container">
+				    <div class="row" >
+				      <div class="col">
+				        <mat-form-field>
+				          <mat-select #fldCiudad placeholder="Ciudad"
+				              (selectionChange)="changeCity('city', fldCiudad.value)" >
+				            <mat-option *ngFor="let item of ciudadesList" 
+				              [value]="item.val" >{{ item.label }}</mat-option>
+				          </mat-select>
+				        </mat-form-field>
+				      </div>
+				    </div>
+
+				    <div class="row" >
+				      <div class="col">
+				      	<ng-container *ngIf="showGraph">
+									<force-directed-graph 
+										[parameter$]='changeCity$' [data]='asistenciasList'></force-directed-graph>
+								</ng-container>
+							</div>
+						</div>
+				</div>
       </div>
 
 
