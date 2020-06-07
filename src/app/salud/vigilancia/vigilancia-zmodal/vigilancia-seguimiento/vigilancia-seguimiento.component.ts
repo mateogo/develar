@@ -208,6 +208,13 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   private async updateAsistencia(target: Asistencia, source: Asistencia, result: UpdateResult){
     let followUpToken = target.followUp || new AfectadoFollowUp();
+    followUpToken.isActive = true;
+
+    if(!followUpToken.fe_inicio || !followUpToken.fets_inicio ){
+      followUpToken.fe_inicio = source.followUp.fe_inicio;
+      followUpToken.fets_inicio =  followUpToken.fe_inicio ? devutils.dateNumFromTx(this.seguimientoEvent.fe_inicio) :  0;
+    }
+    followUpToken.tipo = followUpToken.tipo ? followUpToken.tipo  : 'sospecha';
 
     if(!followUpToken.isAsignado) {
       followUpToken.isAsignado =   source.followUp.isAsignado;

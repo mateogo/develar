@@ -23,8 +23,8 @@ export class ForceDirectedGraphComponent implements OnInit {
 	node: any;
 	svg: any;
 	types = ['licensing', 'suit', 'resolved']
-	height = 500;
-	width = 700;
+	height = 800;
+	width = 800;
 	color: any;
 
   constructor() { }
@@ -37,6 +37,7 @@ export class ForceDirectedGraphComponent implements OnInit {
   	this.simulation = d3.forceSimulation(this.nodes)
       .force("link", d3.forceLink( this.links).id( d => d['id']) )
       .force("charge", d3.forceManyBody().strength(-400))
+      //.force("center", d3.forceCenter(this.width/2, this.height/2));
       .force("x", d3.forceX())
       .force("y", d3.forceY());
 
@@ -146,7 +147,6 @@ export class ForceDirectedGraphComponent implements OnInit {
 	 //  this.nodes = NODES.map(d => Object.create(d));
 		// this.types = ['licensing', 'suit', 'resolved']
 		if(! (this.data && this.data.length)) return;
-		console.log('Init Data BEGIN: [%s]', this.data.length);
 
 		this.types = Array.from(new Set( this.data.map(d=> d['type']) ));
 
