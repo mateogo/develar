@@ -328,9 +328,9 @@ export class SolcovidFollowupComponent implements OnInit {
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
     this.buildNovedades(token.novedades)
 
-    this.isCovid = token.tipo === 1;
+    this.isCovid = token.tipo === 1 || token.tipo === 3;
     this.isDenuncia = token.tipo === 2;
-    this.tipoEdit = token.tipo;
+    this.tipoEdit = this.isCovid ? 1 : 2;
     this.showButtons = true;
 
 

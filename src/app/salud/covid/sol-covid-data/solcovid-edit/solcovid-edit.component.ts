@@ -161,13 +161,20 @@ export class SolcovidEditComponent implements OnInit {
       hasDifRespiratoria: [null],
       hasDolorGarganta:   [null],
       hasTos:             [null],
+      hasFaltaGusto:           [null],
+      hasFaltaOlfato:           [null],
       sintomas:           [null],
 
       hasViaje:           [null],
       hasContacto:        [null],
       hasEntorno:         [null],
-      contexto:           [null],
 
+      hasTrabajoAdulMayores:  [null],
+      hasTrabajoHogares:      [null],
+      hasTrabajoPolicial:     [null],
+      hasTrabajoHospitales:   [null],
+      hasTrabajoSalud:        [null],
+      contexto:               [null],
 
     });
 
@@ -202,12 +209,21 @@ export class SolcovidEditComponent implements OnInit {
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
+      hasFaltaGusto:      sintomaCovid.hasFaltaGusto,
+      hasFaltaOlfato:     sintomaCovid.hasFaltaOlfato,
       hasTos:             sintomaCovid.hasTos,
       sintomas:           sintomaCovid.sintomas,
 
       hasViaje:           sintomaCovid.hasViaje,
       hasContacto:        sintomaCovid.hasContacto,
       hasEntorno:         sintomaCovid.hasEntorno,
+
+      hasTrabajoAdulMayores:  sintomaCovid.hasTrabajoAdulMayores,
+      hasTrabajoHogares:      sintomaCovid.hasTrabajoHogares,
+      hasTrabajoPolicial:     sintomaCovid.hasTrabajoPolicial,
+      hasTrabajoHospitales:   sintomaCovid.hasTrabajoHospitales,
+      hasTrabajoSalud:        sintomaCovid.hasTrabajoSalud,
+
       contexto:           sintomaCovid.contexto,
 
       fiebre:             sintomaCovid.fiebre,
@@ -227,9 +243,9 @@ export class SolcovidEditComponent implements OnInit {
     this.actionOptList = this.sectorActionRelation[token.sector] || [];
     this.buildNovedades(token.novedades)
 
-    this.isCovid = token.tipo === 1;
+    this.isCovid =  token.tipo === 1 || token.tipo === 3;
     this.isDenuncia = token.tipo === 2;
-    this.tipoEdit = token.tipo;
+    this.tipoEdit = this.isCovid ? 1: 2
     this.showButtons = true;
 
 		return form;
@@ -295,8 +311,8 @@ export class SolcovidEditComponent implements OnInit {
     entity.sintomacovid = this.buildCovid(fvalue, entity);
     entity.denuncia = this.buildDenuncia(fvalue, entity);
 
-    entity.avance = (entity.avance === 'emitido' && entity.tipo == 2) ? 'denuncia' : entity.avance || 'emitido';
-    entity.avance = (entity.avance === 'denuncia' && entity.tipo == 1) ? 'emitido' : entity.avance || 'emitido';
+    entity.avance = (entity.avance === 'emitido'  && entity.tipo == 2) ? 'denuncia' : entity.avance || 'emitido';
+    entity.avance = (entity.avance === 'denuncia' && (entity.tipo == 1 || entity.tipo == 3)) ? 'emitido' : entity.avance || 'emitido';
 
     
 		return entity;
@@ -336,12 +352,20 @@ export class SolcovidEditComponent implements OnInit {
     covid.hasDifRespiratoria = fvalue.hasDifRespiratoria;
     covid.hasDolorGarganta =   fvalue.hasDolorGarganta;
     covid.hasTos =             fvalue.hasTos;
+    covid.hasFaltaGusto =      fvalue.hasFaltaGusto;
+    covid.hasFaltaOlfato =     fvalue.hasFaltaOlfato;
     covid.sintomas =           fvalue.sintomas;
 
     covid.hasViaje =           fvalue.hasViaje;
     covid.hasContacto =        fvalue.hasContacto;
     covid.hasEntorno =         fvalue.hasEntorno;
-    covid.contexto =           fvalue.contexto;
+    covid.hasTrabajoAdulMayores =  fvalue.hasTrabajoAdulMayores;
+    covid.hasTrabajoHogares =      fvalue.hasTrabajoHogares;
+    covid.hasTrabajoPolicial =     fvalue.hasTrabajoPolicial;
+    covid.hasTrabajoHospitales =   fvalue.hasTrabajoHospitales;
+    covid.hasTrabajoSalud =        fvalue.hasTrabajoSalud;
+
+    covid.contexto =               fvalue.contexto;
 
     covid.indicacion = 'Permanecer aislado controlando los síntomas';
 
@@ -368,7 +392,7 @@ export class SolcovidEditComponent implements OnInit {
 
       return ((control: AbstractControl) : {[key: string]: any} | null  => {
 
-          return !control.value && that.form && that.form.controls['tipo'].value == 1  ?  {'invalidTel': true} : null
+          return !control.value && that.form && (that.form.controls['tipo'].value == 1 || that.form.controls['tipo'].value == 3 ) ?  {'invalidTel': true} : null
 
       }) ;
 
@@ -413,7 +437,7 @@ export class SolcovidEditComponent implements OnInit {
     this.initForEdit(this.form, this.token);
 
     setTimeout(()=> {
-      this.tipoEdit = e;
+
       if(this.tipoEdit === 1){
         this.isDenuncia = false
         this.isCovid = true;

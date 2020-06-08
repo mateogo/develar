@@ -61,6 +61,8 @@ const LABORATORIO_ESTADO = 'laboratorio:estado';
 const ROLE_ADMIN =     'vigilancia:admin';
 const ROLE_OPERATOR =  'vigilancia:operator';
 
+const COM_OPERATOR =  'com:operator';
+const IVR_OPERATOR =  'ivr:operator';
 
 @Injectable({
 	providedIn: 'root'

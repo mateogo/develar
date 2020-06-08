@@ -85,6 +85,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
   refreshSelection(query: VigilanciaBrowse){// listener de solcovid-browse
+    this.showData = false;
+    this.showGraph = false;
+
     this.query = this.repasarQuery(query);
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
@@ -154,6 +157,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
   private fetchSolicitudes(query: VigilanciaBrowse, action: string){
     this.showData = false;
+    this.showGraph = false;
+    this.renderGraph = false;
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
@@ -171,6 +176,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
   private initTableData(list: Asistencia[]){
+
     if(this.query && this.query.reporte === R_DOMICILIOS){
       this.dsCtrl.updateDomiciliosTableData(list);
 

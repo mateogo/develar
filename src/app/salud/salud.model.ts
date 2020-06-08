@@ -27,11 +27,12 @@ function isInAsistenciaBlackList(token, action){
 
 
 export const sectores: SectorAtencion[] = [
-			{val:'com',          serial:'salud',       label: 'COM',               style: {'background-color': "#f2cded"}},
-			{val:'prevencion',   serial:'salud',       label: 'Médico/a prevención', style: {'background-color': "#f2cded"}},
-			{val:'epidemiologia',serial:'salud',       label: 'Epidemiología',     style: {'background-color': "#f2cded"}},
-			{val:'same',         serial:'salud',       label: 'SAME',              style: {'background-color': "#f2aded"}},
-			{val:'direccion',    serial:'salud',       label: 'Dirección Médica' , style: {'background-color': "#f2dded"}},
+			{val:'ivr',          serial:'salud',  label: 'Búsqueda activa de sospechosos', style: {'background-color': "#f2cded"}},
+			{val:'com',          serial:'salud',  label: 'COM',                  style: {'background-color': "#f2cded"}},
+			{val:'prevencion',   serial:'salud',  label: 'Médico/a prevención',  style: {'background-color': "#f2cded"}},
+			{val:'epidemiologia',serial:'salud',  label: 'Epidemiología',        style: {'background-color': "#f2cded"}},
+			{val:'same',         serial:'salud',  label: 'SAME',                 style: {'background-color': "#f2aded"}},
+			{val:'direccion',    serial:'salud',  label: 'Dirección Médica' ,    style: {'background-color': "#f2dded"}},
 	];
 
 

@@ -61,8 +61,9 @@ export class SolcovidViewComponent implements OnInit {
     if(covid){
       toPrint.indicacion = covid.indicacion;
       toPrint.fiebreTxt = covid.hasFiebre ? covid.fiebreTxt + ' :: ' + covid.fiebre + 'C' :  covid.fiebreTxt ;
-      toPrint.sintomasTxt = 'Sintomas: ' + (covid.hasDifRespiratoria ? ' + DIF RESPIRATORIA':'') + (covid.hasTos ? ' + TOS':'') + (covid.hasDolorGarganta ? ' + DolorGarganta':'') + (covid.sintomas ? ' = ' + covid.sintomas :'') 
+      toPrint.sintomasTxt = 'Sintomas: ' + (covid.hasDifRespiratoria ? ' + DIF RESPIRATORIA':'') + (covid.hasTos ? ' + TOS':'') + (covid.hasDolorGarganta ? ' + DolorGarganta':'') + (covid.hasFaltaGusto ? ' + FaltaDeGusto':'') + (covid.hasFaltaOlfato ? ' + FaltaDeOlfato':'') + (covid.sintomas ? ' = ' + covid.sintomas :'') 
       toPrint.contagioTxt = 'Contexto: ' + (covid.hasViaje ? ' + VIAJÓ':'') + (covid.hasContacto ? ' + CONTACTO C/COVID':'') + (covid.hasEntorno ? ' + ENTORNO C/COVID':'');
+      toPrint.ambitoTxt = 'Ámbito laboral riesgoso: ' + (covid.hasTrabajoSalud ? ' + ÁREA SALUD':'') + (covid.hasTrabajoAdulMayores ? ' + GERIÁTRICO':'') + (covid.hasTrabajoHogares ? ' + HOGAR NIÑOS/AS':'') + (covid.hasTrabajoPolicial ? ' + COMISARÍA/PENITENCIARÍA':'') + (covid.hasTrabajoHospitales ? ' + NEUROPSIQUIÁTRICO':'')
       toPrint.contexto = covid.contexto;
     }
 
@@ -151,6 +152,7 @@ class AsistenciaToPrint {
     fiebreTxt: string = '' ;
     sintomasTxt: string = '' ;
     contagioTxt: string = '' ;
+    ambitoTxt: string = '';
     contexto: string = '' ;
     action: string = '' ;
     sector: string = '' ;

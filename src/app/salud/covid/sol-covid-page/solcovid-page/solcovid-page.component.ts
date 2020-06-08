@@ -166,7 +166,14 @@ export class SolcovidPageComponent implements OnInit {
   // }
 
   private initNewAsistencia(){
-    this.asistencia = AsistenciaHelper.initNewAsistenciaCovid('covid', 'com', this.currentPerson);
+    let isIVR = this.dsCtrl.isUserMemberOf('ivr:operator');
+
+    if(isIVR){
+      this.asistencia = AsistenciaHelper.initNewAsistenciaCovid('covid', 'ivr', this.currentPerson);
+    }else{
+      this.asistencia = AsistenciaHelper.initNewAsistenciaCovid('covid', 'com', this.currentPerson);
+    }
+
     this.asistencia.tdoc = this.tDoc;
     this.asistencia.ndoc = this.nDoc;
 

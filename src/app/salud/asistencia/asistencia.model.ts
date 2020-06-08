@@ -3,6 +3,11 @@ import { Serial }   from '../salud.model';
 import { Person, Address }   from '../../entities/person/person';
 import { sectores } from '../salud.model';
 
+//Pointers:
+//  fwup AfectadoFollowUp
+//  avigi Asistencia
+// icovid: InfectionFollowUp
+
 export class Requirente {
 		id:   string; 
 		slug: string; 
@@ -160,11 +165,19 @@ export class ContextoCovid {
 	hasDifRespiratoria: boolean = false;
 	hasDolorGarganta: boolean = false;
 	hasTos: boolean = false;
+	hasFaltaGusto: boolean = false;
+	hasFaltaOlfato: boolean = false;
 	sintomas: string;
 
 	hasViaje: boolean = false;
 	hasContacto: boolean = false;
 	hasEntorno: boolean = false;
+
+	hasTrabajoAdulMayores: boolean = false;
+	hasTrabajoHogares: boolean = false;
+	hasTrabajoPolicial: boolean = false;
+	hasTrabajoHospitales: boolean = false;
+	hasTrabajoSalud: boolean = false;
 	contexto: string;
 
 	esperaMedico: boolean = false;
@@ -201,13 +214,13 @@ export class Locacion {
     zip: string = '';
 }
 
-
+// avigi
 export class Asistencia {
 		_id: string;
 		compPrefix:  string = 'SOL';
 		compName:    string = 'S/Asistencia';
 		compNum:     string = '00000';
-		tipo:        number = 1; // 1: COVID 2:Denuncia
+		tipo:        number = 1; // 1: COVID 2:Denuncia  3:IVR
 		prioridad:   number = 2; // 1:baja 2:media 3: alta
 
 		idPerson:    string;
@@ -318,6 +331,7 @@ const institucionalizadoOptList = [
 	{ val: 'sindato',     label: 'Sin dato'},
 ];
 
+// icovid
 export class InfectionFollowUp {
 	isActive: boolean = false;
 	isInternado: boolean = false;
@@ -508,6 +522,7 @@ export class AsignadosSeguimiento {
 }
 
 
+// fwup
 export class AfectadoFollowUp {
 	isActive: boolean = false;
 	fe_inicio: string = '';
@@ -978,6 +993,7 @@ const asisActionOptList: Array<any> = [
 
 const novedadesTypeOptList: Array<any> = [
         {val: 'operadorcom',  label: 'Operador/a COM' },
+        {val: 'operadorivr',  label: 'Operador/a Servicio IVR' },
         {val: 'solmedicx',    label: 'Médico/a' },
         {val: 'enviarsame',   label: 'SAME' },
         {val: 'recomendacion',label: 'Recomendación' },
@@ -1022,6 +1038,12 @@ const causasOptList: Array<any> = [
 
 
 const sector_actionRelation = {
+  ivr: [
+    {val: 'covid',    label: 'Atención telefónica COVID' },
+    {val: 'denuncia', label: 'Denuncia COVID' },
+    {val: 'same',     label: 'Requerir Same' },
+  ],
+
   com: [
     {val: 'covid',    label: 'Atención telefónica COVID' },
     {val: 'denuncia', label: 'Denuncia COVID' },
@@ -2029,8 +2051,16 @@ export class AsistenciaHelper {
 		let token = new Asistencia();
 		let novedad = new Novedad();
 
-		novedad.tnovedad = "operadorcom";
-		novedad.novedad  = 'Llamado recibido en el COM';
+		if(sector === 'ivr'){
+			novedad.tnovedad = "operadorivr";
+			novedad.novedad  = 'Llamado emitido x servicio IVR';
+			token.tipo = 3;
+
+		}else {
+			novedad.tnovedad = "operadorcom";
+			novedad.novedad  = 'Llamado recibido en el COM';
+			token.tipo = 1;
+		}
 
 		if(person){
 			let edad = this.getEdadFromPerson(person)

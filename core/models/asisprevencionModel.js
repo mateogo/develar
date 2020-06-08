@@ -136,15 +136,23 @@ const contextoCovidSch = new Schema({
     fiebre:       { type: Number,  required: false },
     fiebreRB:     { type: Number,  required: false },
 
-
     hasDifRespiratoria: { type: Boolean, required: false },
     hasDolorGarganta:   { type: Boolean, required: false },
-    hasTos:       { type: Boolean, required: false },
-    sintomas:     { type: String,  required: false },
+    hasTos:             { type: Boolean, required: false },
+    hasFaltaGusto:      { type: Boolean, required: false },
+    hasFaltaOlfato:     { type: Boolean, required: false },
+    sintomas:           { type: String,  required: false },
 
     hasViaje:     { type: Boolean, required: false },
     hasContacto:  { type: Boolean, required: false },
     hasEntorno:   { type: Boolean, required: false },
+
+    hasTrabajoAdulMayores: { type: Boolean, required: false },
+    hasTrabajoHogares:     { type: Boolean, required: false },
+    hasTrabajoPolicial:    { type: Boolean, required: false },
+    hasTrabajoHospitales:  { type: Boolean, required: false },
+    hasTrabajoSalud:       { type: Boolean, required: false },
+
     contexto:     { type: String,  required: false },
 
     esperaMedico: { type: Boolean, required: false },

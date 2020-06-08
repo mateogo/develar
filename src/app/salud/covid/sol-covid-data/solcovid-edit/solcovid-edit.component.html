@@ -12,24 +12,28 @@
 		<!-- fecomp_txa; action; slug;  : 'far fa-plus'-->
     <div class="row">
       <div class="col-md-3 d-flex align-items-center">
-        <span class="text-normal">Tipo de llamado</span>
+        <span class="text-normal">Tipo de Acción</span>
       </div>
-      <div class="col-md-8 d-flex align-items-center">
-        <mat-radio-group  formControlName="tipo" aria-label="Tipo de llamado recibido">
+      <div class="col-md-9 d-flex align-items-center">
+        <mat-radio-group  formControlName="tipo" aria-label="Tipo de Acción">
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===1" 
                 (change)='changeTipo(1)'
-                [value]="1">Asistencia/ consulta médica COVID</mat-radio-button>
+                [value]="1">Asistencia/ consulta COVID</mat-radio-button>
           <mat-radio-button 
                 [checked]="form.controls['tipo'].value===2" 
                 (change)='changeTipo(2)'
                 [value]="2">Denuncia violación de aislamiento</mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['tipo'].value===3" 
+                (change)='changeTipo(3)'
+                [value]="3">Búsqueda activa sospechosos</mat-radio-button>
         </mat-radio-group>
       </div>
 
     </div>
     <ng-container *ngIf="isCovid">
-    <h5>Alta evento COVID</h5>
+    <h5>Alta evento COVID del afectado/a o su entorno familiar</h5>
 
     <div class="row">
       <div class="col-sm-12 col-md-3">
@@ -44,13 +48,15 @@
 
       <div class="col-sm-12 col-md-2">
         <mat-form-field>
-          <input matInput (blur)="onBlurDocNum($event)" [formControl]="form.controls['ndoc']" placeholder="Número documento">
+          <input matInput (blur)="onBlurDocNum($event)" [formControl]="form.controls['ndoc']" 
+                  placeholder="Número documento">
         </mat-form-field>
       </div>
 
       <div class="col-sm-12 col-md-2">
         <mat-form-field>
-          <input matInput (blur)="onBlurTel($event)" [formControl]="form.controls['telefono']" placeholder="Teléfono de contacto">
+          <input matInput (blur)="onBlurTel($event)" [formControl]="form.controls['telefono']" 
+                  placeholder="Teléfono de contacto">
         </mat-form-field>
       </div>
         <div class="col-sm-12 col-md-2">
@@ -73,7 +79,7 @@
 
     <div class="row">
       <div class="col-md-3 d-flex align-items-center">
-        <span class="text-normal">¿Tuvo más de 38 grados de fiebre?</span>
+        <span class="text-normal">¿Tuvo 37.5+ de fiebre?</span>
       </div>
       <div class="col-md-5 d-flex align-items-center">
         <mat-radio-group  formControlName="fiebreRB" aria-label="Signo de fiebre en los últimos 14 días">
@@ -125,7 +131,23 @@
                 </mat-checkbox>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-2 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasFaltaGusto'].value===true"
+                [formControl]="form.controls['hasFaltaGusto']" >
+                  Falta de gusto
+                </mat-checkbox>
+      </div>
+      <div class="col-md-2 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasFaltaOlfato'].value===true"
+                [formControl]="form.controls['hasFaltaOlfato']" >
+                  Falta de olfato
+                </mat-checkbox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
         <mat-form-field>
           <input  matInput  
                   formControlName="sintomas" placeholder="Describa síntomas" >
@@ -138,12 +160,6 @@
       <div class="col-md-3 d-flex align-items-center">
         <span class="text-normal">¿Se verifican estas situaciones?</span>
       </div>
-      <div class="col-md-2 d-flex align-items-center" >
-          <mat-checkbox 
-                [checked]="form.controls['hasViaje'].value===true"
-                [formControl]="form.controls['hasViaje']" >
-                  ¿Estuvo de viaje?</mat-checkbox>
-      </div>
       <div class="col-md-3 d-flex align-items-center" >
           <mat-checkbox 
                 [checked]="form.controls['hasContacto'].value===true"
@@ -155,7 +171,48 @@
           <mat-checkbox 
                 [checked]="form.controls['hasEntorno'].value===true"
                 [formControl]="form.controls['hasEntorno']" >
-                  ¿Hay sospechas de COVID en su entorno?
+                  ¿Contacto con sospechoso COVID?
+                </mat-checkbox>
+      </div>
+      <div class="col-md-3 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasTrabajoSalud'].value===true"
+                [formControl]="form.controls['hasTrabajoSalud']" >
+                Es personal del área de salud
+                </mat-checkbox>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 d-flex align-items-center">
+        <span class="text-normal">¿Su ámbito laboral es en...?</span>
+      </div>
+      <div class="col-md-2 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasTrabajoAdulMayores'].value===true"
+                [formControl]="form.controls['hasTrabajoAdulMayores']" >
+                  Residen Adul Mayores
+                </mat-checkbox>
+      </div>
+      <div class="col-md-2 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasTrabajoHogares'].value===true"
+                [formControl]="form.controls['hasTrabajoHogares']" >
+                  Hogar de niños/as
+                </mat-checkbox>
+      </div>
+      <div class="col-md-2 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasTrabajoHospitales'].value===true"
+                [formControl]="form.controls['hasTrabajoHospitales']" >
+                  Neuropsiquiátricos
+                </mat-checkbox>
+      </div>
+      <div class="col-md-3 d-flex align-items-center" >
+          <mat-checkbox 
+                [checked]="form.controls['hasTrabajoPolicial'].value===true"
+                [formControl]="form.controls['hasTrabajoPolicial']" >
+                  Penitenciaría / comisaría
                 </mat-checkbox>
       </div>
     </div>
@@ -176,7 +233,7 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones" >
+          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones de la persona o su contexto familiar" >
           </textarea> 
         </mat-form-field>
       </div>

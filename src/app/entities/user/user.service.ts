@@ -34,6 +34,7 @@ const modulos = [
 	{val: 'no_definido', 	label: 'Seleccione opción'},
 	{val: 'core', 		    label: 'General'},
 	{val: 'com',      	  label: 'COM'},
+	{val: 'ivr',      	  label: 'Servicio IVR'},
 	{val: 'medico',   	  label: 'Médico'},
 	{val: 'vigilancia',   label: 'Epidemio: Seguimiento'},
 	{val: 'same',     	  label: '107Same'},
