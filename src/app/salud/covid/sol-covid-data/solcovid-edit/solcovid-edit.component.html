@@ -174,16 +174,22 @@
                   ¿Contacto con sospechoso COVID?
                 </mat-checkbox>
       </div>
-      <div class="col-md-3 d-flex align-items-center" >
+    </div>
+    <div class="row">
+      <div class="col-md-3 d-flex align-items-center">
+        <span class="text-normal">¿Es trabajador/a esencial?</span>
+      </div>
+      <div class="col-md-9 d-flex align-items-center" >
           <mat-checkbox 
                 [checked]="form.controls['hasTrabajoSalud'].value===true"
+                (change)="changeSalud()"
                 [formControl]="form.controls['hasTrabajoSalud']" >
-                Es personal del área de salud
+                Es personal esencial (médicx, enfermerx, camillerx, fuerzas de seguridad, asistencia a mayores o niños etc.)
                 </mat-checkbox>
       </div>
     </div>
 
-    <div class="row">
+    <div *ngIf="showAmbitoLaboral" class="row">
       <div class="col-md-3 d-flex align-items-center">
         <span class="text-normal">¿Su ámbito laboral es en...?</span>
       </div>
@@ -233,7 +239,7 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones de la persona o su contexto familiar" >
+          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones / Comentario" >
           </textarea> 
         </mat-form-field>
       </div>

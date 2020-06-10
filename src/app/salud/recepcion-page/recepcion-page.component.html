@@ -8,7 +8,8 @@
   	<div class="container-fluid search-panel">
  
   		<h5>Turnos de Atención</h5>
-  		<person-fetch 
+  		<person-fetch
+        [tDoc]="'DNI'" 
         (person$)=personFetched($event)></person-fetch>
 
       <ng-container *ngIf="personFound">

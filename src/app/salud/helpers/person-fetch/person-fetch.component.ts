@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Person, UpdateEventEmitter, personModel } from '../../../entities/person/person';
@@ -11,10 +11,9 @@ import { SaludController } from '../../salud.controller';
   styleUrls: ['./person-fetch.component.scss']
 })
 export class PersonFetchComponent implements OnInit {
+  @Input() tDoc = "PROV";
 	@Output() person$ = new EventEmitter<Person[]>();
   @Output() event$ = new EventEmitter<UpdateEventEmitter>();
-
-  public tDoc = "DNI";
   public nDoc = "";
   public searchToken;
 

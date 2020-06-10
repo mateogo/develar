@@ -1166,8 +1166,8 @@ const workflow = {
   ],
 
   emitido: [
-      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
-      {val: 'esperamedico',   label: 'Espera médico/a', slug:'Espera médico/a' },
+      //{val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
+      {val: 'esperamedico',   label: 'Aceptar', slug:'Aceptar' },
   ],
 
   descartado: [

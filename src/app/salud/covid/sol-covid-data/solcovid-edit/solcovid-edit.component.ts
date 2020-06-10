@@ -48,6 +48,7 @@ export class SolcovidEditComponent implements OnInit {
 
   public showViewAlimento = false;
   public showEditAlimento = false;
+  public showAmbitoLaboral = false;
 
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
@@ -130,6 +131,12 @@ export class SolcovidEditComponent implements OnInit {
   }
 
  
+  changeSalud(){
+    console.log('ChangeSalud')
+    this.showAmbitoLaboral = !this.showAmbitoLaboral
+
+  }
+
   buildForm(): FormGroup{
   	let form: FormGroup;
 
