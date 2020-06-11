@@ -6,7 +6,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: true,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -37,7 +37,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: 'fa fa-th',
     active: false,
     groupTitle : false,
-    sub: '',
+    sub: [],
     routing: '/develar/a2/widgets',
     externalLink: '',
     budge: '',
@@ -48,7 +48,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: 'fas fa-calendar-alt',
     active: false,
     groupTitle : false,
-    sub: '',
+    sub: [],
     routing: '/develar/a2/calendar',
     externalLink: '',
     budge: 'New',
@@ -59,7 +59,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -161,7 +161,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -232,7 +232,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -329,7 +329,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -460,7 +460,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: 'fa fa-font',
     active: false,
     groupTitle : false,
-    sub: '',
+    sub: [],
     routing: '/develar/a2/typography',
     externalLink: '',
     budge: '',
@@ -587,7 +587,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -653,7 +653,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -668,7 +668,9 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Recepción',
-        routing: '/salud/gestion/recepcion'
+        routing: '/salud/gestion/recepcion',
+        rolesOut: ['ivr:operator']
+
       },
       {
         title: 'Alta eventos COVID',
@@ -680,35 +682,43 @@ export const SALUD_ITEMS: MainMenuItem[] = [
       },
       {
         title: 'Tablero COVID',
-        routing: '/salud/gestion/tablerocovid'
+        routing: '/salud/gestion/tablerocovid',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Padrón personas',
-        routing: '/salud/gestion/atencionsocial'
+        routing: '/salud/gestion/atencionsocial',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Gestión internación',
-        routing: '/salud/gestion/altarapida'
+        routing: '/salud/gestion/altarapida',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Centro de Coordinación',
-        routing: '/salud/coordinacion'
+        routing: '/salud/coordinacion',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Vigilancia epidemio',
-        routing: '/salud/gestion/vigilancia'
+        routing: '/salud/gestion/vigilancia',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Tablero epidemio',
-        routing: '/salud/gestion/tableroepidemio'
+        routing: '/salud/gestion/tableroepidemio',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Internacion TestUNO',
-        routing: '/salud/gestion/testuno'
+        routing: '/salud/gestion/testuno',
+        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Reporte Vigilancia',
-        routing: '/salud/gestion/reportesvigilancia'
+        routing:  '/salud/gestion/reportesvigilancia',
+        rolesOut: ['ivr:operator'],
       },
     ],
     routing: '',
@@ -721,7 +731,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -733,6 +743,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'Centros de internación',
@@ -749,6 +760,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'Navegar Personas',
@@ -769,6 +781,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'Kits Productos',
@@ -802,6 +815,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'Registrar usuario',
@@ -823,7 +837,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     routing: '',
     externalLink: '',
     budge: '',
-    budgeColor: ''
+    budgeColor: '',
   },
 
   {
@@ -831,7 +845,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -867,6 +881,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'Dashboard',
@@ -900,6 +915,7 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
+    rolesOut: ['ivr:operator'],
     sub: [
       {
         title: 'gestionar comunidades',
@@ -923,7 +939,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1008,7 +1024,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1097,7 +1113,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1193,7 +1209,7 @@ export const CCK_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1234,7 +1250,7 @@ export const CCK_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1323,7 +1339,7 @@ export const CCK_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1421,7 +1437,7 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1448,7 +1464,7 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1537,7 +1553,7 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1634,7 +1650,7 @@ export const EMPRESAS_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1661,7 +1677,7 @@ export const EMPRESAS_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',
@@ -1750,7 +1766,7 @@ export const EMPRESAS_ITEMS: MainMenuItem[] = [
     icon: '',
     active: false,
     groupTitle : true,
-    sub: '',
+    sub: [],
     routing: '',
     externalLink: '',
     budge: '',

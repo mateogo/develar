@@ -23,8 +23,6 @@ const SEARCH = 'search';
 const NAVIGATE = 'navigate';
 const EVOLUCION = 'evolucion';
 const SEARCH_NEXT = 'search_next';
-const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
-
 
 @Component({
   selector: 'sol-dashboard-page',
@@ -185,8 +183,8 @@ export class SolDashboardPageComponent implements OnInit {
       else if(fprio > sprio ) return -1;
 
       else{
-        let cfel = this.costo(fel, ts_now);
-        let csel = this.costo(sel, ts_now);
+        let cfel = AsistenciaHelper.getCostoEsperaCovid(fel, ts_now);
+        let csel = AsistenciaHelper.getCostoEsperaCovid(sel, ts_now);
 
         if(cfel < csel ) return 1;
 
@@ -198,31 +196,6 @@ export class SolDashboardPageComponent implements OnInit {
 
     });
   }
-
-
-  //const COSTO = [1, 2, 3, 4, 6];
-  private  costo (asis: Asistencia, ts:number){
-    let peso = this.getPesoAsistencia(asis);
-
-    return (ts - asis.fecomp_tsa) * COSTO[peso];
-  }
-
-  private getPesoAsistencia(asis: Asistencia): number{
-    let peso = 0;
-    let covid = asis.sintomacovid;
-
-    if( !covid || asis.tipo === 2) return peso;
-    peso += (covid.hasFiebre ? (covid.fiebre > 38 ? 2: 1) : 0);
-    peso += ( covid.hasDifRespiratoria ? 2: 0);
-    peso += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);
-    peso += ( (covid.hasViaje || covid.hasContacto || covid.hasEntorno) ? 3: 0);
-
-    if(peso>8) peso = 8
-
-    return peso;
-  }
-
-
 
 
   private getLastListed(){

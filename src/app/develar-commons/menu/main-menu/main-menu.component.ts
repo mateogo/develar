@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MainMenuItem } from './main-menu-item';
+import { MainMenuItem, SubMenuItem } from './main-menu-item';
 import { MainMenuService } from './main-menu.observable.service';
 import { gldef } from '../../develar.config';
 
@@ -8,13 +8,18 @@ import { gldef } from '../../develar.config';
   moduleId: module.id,
   selector: 'main-menu',
   templateUrl: './main-menu.component.html',
-  styleUrls: ['./main-menu.component.scss'],
-  providers: [MainMenuService]
+  styleUrls: [ './main-menu.component.scss' ],
+  providers: [ MainMenuService ]
 })
 export class MainMenuComponent {
   mainMenuItems: MainMenuItem[];
 
-  constructor(private mainMenuService: MainMenuService) { 
+
+  constructor(
+        private mainMenuService: MainMenuService
+      ) { 
+
+
     mainMenuService.menuListener$.subscribe(
       items => {
         this.mainMenuItems = items;
@@ -28,6 +33,7 @@ export class MainMenuComponent {
   }
 
   ngOnInit(): void {
+
     //this.mainMenuService.loadDefaultMenuItems()
     this.mainMenuService.loadCompanyMenuItems(gldef.mainmenu);
     //this.getMainMenuItems();
@@ -47,4 +53,8 @@ export class MainMenuComponent {
       item.active = true;
     }
   }
+
+
+
+
 }

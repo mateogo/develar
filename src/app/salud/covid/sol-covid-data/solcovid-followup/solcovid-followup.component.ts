@@ -145,7 +145,7 @@ export class SolcovidFollowupComponent implements OnInit {
 	buttonActionEvent(e, step){
 		this.initForSave(this.form, this.token);
   	this.formAction = EVOLUCION;
-  	this.token = AsistenciaHelper.workfloStep(this.token, step);
+  	this.token = AsistenciaHelper.workflowStep(this.token, step);
   	this.emitEvent(this.formAction);
 	}
 

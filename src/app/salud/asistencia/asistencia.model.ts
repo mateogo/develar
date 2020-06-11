@@ -1514,6 +1514,7 @@ function filterNecesidadDeLaboratorio(token: Asistencia): HisopadoYa{
 
 }
 
+const COSTO = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
 
 
 function validatePedidosAsistencia(as: Asistencia, valid: boolean): boolean {
@@ -1671,6 +1672,7 @@ function denunciaToPrint(denuncia: ContextoDenuncia): string{
 
 	return tx;
 }
+
 function covidToPrint(covid: ContextoCovid): string{
 	let tx = '';
 	if(covid.hasFiebre) tx += ':Fie';
@@ -1692,6 +1694,32 @@ function locacionToPrint(loc: Locacion): string{
 	
 	return tx;
 }
+
+function getPesoCovid(asis: Asistencia): number{
+    let peso = 0;
+    let covid = asis.sintomacovid;
+
+    let hasFiebre = 0;
+    let hasSintomas = 0;
+    let hasPerdidaOlfatoGusto = 0;
+    let hasContexto = 0;
+    let hasEntorno = 0;
+
+    if( !covid || asis.tipo === 2) return peso;
+
+    hasFiebre = (covid.hasFiebre ? (covid.fiebre > 38 ? 3: 2) : 0);
+    hasSintomas += ( covid.hasDifRespiratoria ? 3: 0);
+    hasSintomas += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);
+    hasPerdidaOlfatoGusto += ( (covid.hasFaltaGusto || covid.hasFaltaOlfato )? 5: 0);
+    hasEntorno += ( (covid.hasViaje || covid.hasContacto || covid.hasEntorno) ? 2: 0);
+    peso = hasFiebre + hasSintomas + hasPerdidaOlfatoGusto + hasEntorno;
+    // c onsole.log('Computo: Total:[%s] F:[%s] Sin:[%s] Olf:[%s] Entorno:[%s] ', peso, hasFiebre, hasSintomas, hasPerdidaOlfatoGusto, hasEntorno)
+
+    if(peso>8) peso = 8
+
+    return peso;
+}
+
 
 export class AsistenciaHelper {
 
@@ -1897,11 +1925,30 @@ export class AsistenciaHelper {
 		return token;
 	}
 
-	static workfloStep(token: Asistencia, step: any){
+	static getPesoPonderadoCovid(asistencia: Asistencia): number{
+		return getPesoCovid(asistencia);
+	} 
+
+	static getCostoEsperaCovid(asistencia: Asistencia, ts: number): number{
+    let peso = getPesoCovid(asistencia);
+
+    return (ts - asistencia.fecomp_tsa) * COSTO[peso];
+	} 
+
+	static workflowStep(token: Asistencia, step: any){
+
 		let avance = step.val;
-		let estados = sector_actionRelation[avance] || [];
-		let nuevoEstado = estados.length ? estados[0] : '';	
-		token.estado = nuevoEstado ? nuevoEstado : token.estado;
+
+		if(avance === 'esperamedico' || avance === 'descartado' || avance === 'emitido'){
+
+			avance = getPesoCovid(token) > 5 ? 'esperamedico' : 'descartado';
+
+		}
+
+		let estados = avance_estadoRelation[avance] || [];
+		let nuevoEstado = estados.length ? estados[0].val : token.estado;	
+
+		token.estado = nuevoEstado;
 		token.avance = avance;
 		return token;
 	}
