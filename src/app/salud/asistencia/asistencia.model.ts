@@ -1166,13 +1166,14 @@ const workflow = {
   ],
 
   emitido: [
-      //{val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
-      {val: 'esperamedico',   label: 'Aceptar', slug:'Aceptar' },
+      {val: 'descartado',     label: 'Descartado',      slug:'Descartado' },
+      {val: 'esperamedico',   label: 'Espera médico',   slug:'Espera médico' },
   ],
 
   descartado: [
-      {val: 'descartado',     label: 'Descartado',     slug:'Descartado' },
-    	{val: 'enobservacion',  label: 'En observación', slug:'En observación' },
+      {val: 'descartado',     label: 'Descartado',      slug:'Descartado' },
+    	{val: 'enobservacion',  label: 'En observación',  slug:'En observación' },
+      {val: 'esperamedico',   label: 'Espera médico',   slug:'Espera médico' },
   ],
 
   denuncia: [
@@ -1707,13 +1708,12 @@ function getPesoCovid(asis: Asistencia): number{
 
     if( !covid || asis.tipo === 2) return peso;
 
-    hasFiebre = (covid.hasFiebre ? (covid.fiebre > 38 ? 3: 2) : 0);
-    hasSintomas += ( covid.hasDifRespiratoria ? 3: 0);
-    hasSintomas += ( (covid.hasDolorGarganta || covid.hasTos )? 1: 0);
-    hasPerdidaOlfatoGusto += ( (covid.hasFaltaGusto || covid.hasFaltaOlfato )? 5: 0);
-    hasEntorno += ( (covid.hasViaje || covid.hasContacto || covid.hasEntorno) ? 2: 0);
+    hasFiebre = (covid.hasFiebre ? (covid.fiebre > 37 ? 2: 0) : 0);
+    hasSintomas += ( (covid.hasDifRespiratoria || covid.hasDolorGarganta || covid.hasTos ) ? 4 : 0 );
+    hasPerdidaOlfatoGusto += ( (covid.hasFaltaGusto || covid.hasFaltaOlfato ) ? 6 : 0);
+    hasEntorno += ( (covid.hasViaje || covid.hasContacto || covid.hasEntorno) ? 2 : 0);
     peso = hasFiebre + hasSintomas + hasPerdidaOlfatoGusto + hasEntorno;
-    // c onsole.log('Computo: Total:[%s] F:[%s] Sin:[%s] Olf:[%s] Entorno:[%s] ', peso, hasFiebre, hasSintomas, hasPerdidaOlfatoGusto, hasEntorno)
+    //c onsole.log('Computo: Total:[%s] F:[%s] Sin:[%s] Olf:[%s] Entorno:[%s] ', peso, hasFiebre, hasSintomas, hasPerdidaOlfatoGusto, hasEntorno)
 
     if(peso>8) peso = 8
 
@@ -1939,10 +1939,13 @@ export class AsistenciaHelper {
 
 		let avance = step.val;
 
-		if(avance === 'esperamedico' || avance === 'descartado' || avance === 'emitido'){
 
-			avance = getPesoCovid(token) > 5 ? 'esperamedico' : 'descartado';
+		if(token.sector === 'ivr'){
+			if(avance === 'esperamedico'){
 
+				avance = getPesoCovid(token) > 5 ? 'esperamedico' : 'descartado';
+
+			}
 		}
 
 		let estados = avance_estadoRelation[avance] || [];

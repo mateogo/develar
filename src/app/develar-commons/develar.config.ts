@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'salud';
 
 const globals = {
 
@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '© Copyright 2020 - DGTS@modernización - Secretaría de Desarrollo Social - Municipalidad de Almte. Brown (v1.2-20.06.11-23:35) ',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown (v1.2-20.06.11-23:35) ',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #24 20.06.10-06:39',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #25 20.06.15-07:18',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},
@@ -231,7 +231,7 @@ const globals = {
 
 export const gldef = globals[user];
 
-
+// http://develar-local.co:4200/develar/entidades/usuarios
 
 
   // "casoIndice" : {
