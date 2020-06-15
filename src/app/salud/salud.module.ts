@@ -109,6 +109,7 @@ import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reporte
 import { VigilanciaReportesBrowseComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-browse/vigilancia-reportes-browse.component';
 import { VigilanciaReportesTableComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-table/vigilancia-reportes-table.component';
 import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigilancia-novedad.component';
+import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigilancia-coredata/vigilancia-coredata.component';
 
 @NgModule({
   imports: [
@@ -218,6 +219,7 @@ import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigi
     VigilanciaReportesBrowseComponent,
     VigilanciaReportesTableComponent,
     VigilanciaNovedadComponent,
+    VigilanciaCoredataComponent,
   ],
   entryComponents: 
   [
@@ -228,6 +230,7 @@ import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigi
     VigilanciaLaboratorioComponent,
     VigilanciaVinculosComponent,
     InternacionHeaderControlComponent,
+    VigilanciaCoredataComponent
   ],
   exports: [
       InternacionHeaderControlComponent,

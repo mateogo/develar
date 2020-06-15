@@ -29,6 +29,7 @@ export class VigilanciaViewComponent implements OnInit {
   @Input() showObservacionesPanel = false;
   @Output() personSelected = new EventEmitter<string>();
   @Output() familySelected = new EventEmitter<FamilyData>();
+  @Output() coreDataSelected = new EventEmitter<Asistencia>();
 
 	public asistencia: AsistenciaToPrint;
   private prioridad_colors = ['', 'rgba(0,201,0,0.6)', 'rgba(255,189,0,0.9)', 'rgba(255,36,69,0.8)']
@@ -82,6 +83,10 @@ export class VigilanciaViewComponent implements OnInit {
 
   editVinculo(contacto: VinculosData){
       this.familySelected.next(contacto.token)
+  }
+
+  editCoreData(){
+      this.coreDataSelected.next(this.token)
   }
 
   manageBase(e){
@@ -327,7 +332,7 @@ export class VigilanciaViewComponent implements OnInit {
 
     toPrint.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', token.action);
     toPrint.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', token.sector);
-    toPrint.solicitante = token.requeridox.slug + (token.requeridox.edad ? ' ('+ token.requeridox.edad + ')' : ' ')  + (token.requeridox.sexo ? ' ('+ token.requeridox.sexo + ')' : ' ') + ' ::  Tel: ' + (token.telefono || '');
+    toPrint.solicitante = token.requeridox.slug + (token.fenactx ? ' Fe Nac: '+ token.fenactx + ' ' : ' ')  + (token.edad ? ' ('+ token.edad + ')' : ' ')  + (token.sexo ? ' ('+ token.sexo + ')' : ' ') + ' ::  Tel: ' + (token.telefono || '');
     toPrint.cPrefix = token.compPrefix;
     toPrint.dni  = 'DNI: ' + token.ndoc; 
     toPrint.cName = token.compName;

@@ -227,6 +227,7 @@ export class Asistencia {
 		ndoc:        string;
 		tdoc:        string;
 		sexo:        string;
+		fenactx:     string;
 		edad:        string;
 		telefono:    string;
 		osocial:     string;

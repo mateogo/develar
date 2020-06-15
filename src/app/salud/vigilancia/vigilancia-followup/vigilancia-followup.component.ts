@@ -33,6 +33,7 @@ import { VigilanciaSeguimientocalendarComponent } from '../vigilancia-zmodal/vig
 import { VigilanciaInfeccionComponent }   from '../vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
 import { VigilanciaLaboratorioComponent } from '../vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
 import { VigilanciaVinculosComponent }    from '../vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
+import { VigilanciaCoredataComponent }    from '../vigilancia-zmodal/vigilancia-coredata/vigilancia-coredata.component';
 
 
 const TOKEN_TYPE = 'asistencia';
@@ -225,7 +226,13 @@ export class VigilanciaFollowupComponent implements OnInit {
     this.fetchPerson.next(personId);
   }
 
+  coreDataSelected(asistencia: Asistencia){
+    console.log('coreData to EDIT: [%s]', asistencia.ndoc);
+    this.buildCoreDataEdit(this.asistencia);
+  }
+
   private manageAsistenciaView(viewList){
+    console.log('ManageAsistenciaView [%s]', this.asistencia.telefono);
     this.showAsistenciaView = false;
     this.buildMuestrasLaboratorio(this.asistencia);
     this.viewList = viewList;
@@ -266,6 +273,28 @@ export class VigilanciaFollowupComponent implements OnInit {
 
   }
 
+  private openCoreEditModal(person: Person, asistencia?: Asistencia){
+    const dialogRef = this.dialog.open(
+      VigilanciaCoredataComponent,
+      {
+        width: '800px',
+        data: {
+          asistencia: asistencia,
+          person: person,
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      console.log('dialog CLOSED [%s]', res);
+
+      if(res && res.token){
+        this.asistencia = res.token;
+        this.manageAsistenciaView(this.viewList);
+      }
+    });    
+
+  }
 
   private openVinculofamModal(nucleo: NucleoHabitacional, person: Person, vinculo: FamilyData, vPerson?: Person, vAsistencia?: Asistencia){
     const dialogRef = this.dialog.open(
@@ -525,6 +554,30 @@ export class VigilanciaFollowupComponent implements OnInit {
       //c onsole.log('dialog CLOSED')
     });    
   }
+
+  private buildCoreDataEdit(token: Asistencia){
+    let personId = token.requeridox && token.requeridox.id
+    let vinculoPerson: Person;
+
+    if(!personId){
+      this.dsCtrl.openSnackBar('Error: solicitud de vigilancia sin identificación de Persona', 'ATENCIÓN')
+      return;
+    }
+
+    this.perSrv.fetchPersonById(personId).then(per => {
+      if(per){
+        this.person = per;
+
+          this.openCoreEditModal(this.person, this.asistencia);
+
+      }else {
+        this.dsCtrl.openSnackBar('Error: no se pudo recuperar la Persona afectada', 'ATENCIÓN')
+        return;
+      }
+    })
+
+  }
+
 
   private buildVinculosFam(token: Asistencia, vinculo: FamilyData){
 

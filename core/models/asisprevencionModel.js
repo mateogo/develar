@@ -361,6 +361,7 @@ const asisprevencionSch = new Schema({
     tdoc:        { type: String, required: false },
     sexo:        { type: String, required: false },
     edad:        { type: String, required: false },
+    fenactx:     { type: String, required: false },
     telefono:    { type: String, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },
@@ -621,20 +622,21 @@ function buildQuery(query, today){
 
   if(query['isSeguimiento']){
     q["followUp.isActive"] = true;
+
+  }
+
+  if(query['tipoSeguimiento']){
     q["followUp.tipo"] = query['tipoSeguimiento'];
+  }
 
- 
-    if(query['qIntents']){
-      q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
-    }
+  if(query['qIntents']){
+    q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
+  }
 
-    if(query['qNotSeguimiento']){
-      let offset = parseInt(query['qNotSeguimiento'], 10);
-      let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
-      q["$or"] =[ {'$and': [{ 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}]  ;
-    }
-
-
+  if(query['qNotSeguimiento']){
+    let offset = parseInt(query['qNotSeguimiento'], 10);
+    let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
+    q["$or"] =[ {'$and': [{ 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}]  ;
   }
 
   if(query['avanceCovid']){
@@ -1205,7 +1207,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -1248,7 +1250,18 @@ function buildExcelStream(movimientos, query, req, res){
      const { fe_reportado, reportadoPor } = sisa_token;
      let sisaArr = [ fe_reportado, reportadoPor  ];
 
+     //
+      let followUp = row.followUp;
+      if(!followUp){
+          followUp = {
+            asignadoSlug: 'no asignado',
+          }
+      }
+     const { asignadoSlug } = followUp;
+     let followupArr = [ asignadoSlug ];
 
+
+ 
       //
       let covid_token = row.infeccion;
       if(!covid_token){
@@ -1274,13 +1287,13 @@ function buildExcelStream(movimientos, query, req, res){
       const {compNum, telefono, edad } = row;
       let basicArr = [ compNum, (index + 1), telefono, edad ];
       
-      worksheet.addRow([...basicArr, ... requeridoxArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
+      worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
 
     })
     worksheet.commit()
     workbook.commit()
 }
-
+//followUp
 /*******************************/
 /***** REPORTE DOMICILIOS *****/
 /*****************************/

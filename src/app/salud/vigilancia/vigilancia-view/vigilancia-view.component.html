@@ -132,15 +132,22 @@
 	<p class='text-normal'>{{ asistencia.description }} </p>
 
 	<p class='text-resaltado'>{{ asistencia.sector }} :: {{asistencia.slug}} :: {{ asistencia.avance }}</p>
-    </ng-container>
+  </ng-container>
 
 
   <ng-container *ngIf='showIcons'>
     <div class='row'>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <p class='text-headerblock'>{{ asistencia.solicitante }}</p>
         <p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  
-          <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong></p>
+
+            <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong>
+          
+                  <span class="edit-control"
+                      (click)='editCoreData()' title="Edición de datos maestros">
+                      <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
+        </p>
+
       </div>
     </div>
 
