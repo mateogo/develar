@@ -8,11 +8,21 @@
 			</div>
 		</div>
 			
-		<ng-container *ngIf="showList">
+		<ng-container *ngIf="showONE">
 			<div  *ngFor="let item of items" class="row">
 				<div class="col-sm-12 col-md-12">
 					<solcovid-panel [asistencia]='item'
 											(updateToken)='updateItem($event)'></solcovid-panel>
+					<hr>											
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-container *ngIf="showTWO">
+			<div  *ngFor="let item of items" class="row">
+				<div class="col-sm-12 col-md-12">
+					<solcovid-offline-panel [asistencia]='item'
+											(updateToken)='updateToken($event)'></solcovid-offline-panel>
 					<hr>											
 				</div>
 			</div>

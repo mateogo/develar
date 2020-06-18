@@ -689,42 +689,41 @@ exports.createInitialData = function (){
 
     if(true){
       return  [
-      // malvinas
-      {recurso: 'malvinas', dow: 1, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
-      {recurso: 'malvinas', dow: 1, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
-      {recurso: 'malvinas', dow: 2, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
-      {recurso: 'malvinas', dow: 2, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
-      {recurso: 'malvinas', dow: 3, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
-      {recurso: 'malvinas', dow: 3, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
-      {recurso: 'malvinas', dow: 4, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
-      {recurso: 'malvinas', dow: 4, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
-      {recurso: 'malvinas', dow: 5, hora: 9, slug: 'DEL MALVINAS ARG 09:00 hs' },
-      {recurso: 'malvinas', dow: 5, hora: 9, slug: 'DEL MALVINAS ARG 09:30 hs' },
-
       //cicburzaco
-      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:30 hs' },
+      {recurso: 'cicburzaco', dow: 1, hora: 9, slug: 'CIC BURZACO 09:00 hs' },
+      {recurso: 'cicburzaco', dow: 1, hora: 9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora: 9, slug: 'CIC BURZACO 09:00 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora: 9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora: 9, slug: 'CIC BURZACO 09:00 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora: 9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora: 9, slug: 'CIC BURZACO 09:00 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora: 9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora: 9, slug: 'CIC BURZACO 09:00 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora: 9, slug: 'CIC BURZACO 09:30 hs' },
 
       //burzaco
-      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
-      {recurso: 'burzaco', dow: 1, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
-      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
-      {recurso: 'burzaco', dow: 2, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
-      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
-      {recurso: 'burzaco', dow: 3, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
-      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
-      {recurso: 'burzaco', dow: 4, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
-      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO 11:00 hs' },
-      {recurso: 'burzaco', dow: 5, hora: 11, slug: 'DEL BURZACO 11:30 hs' },
+      {recurso: 'burzaco', dow: 1, hora: 10, slug: 'DEL BURZACO 10:00 hs' },
+      {recurso: 'burzaco', dow: 1, hora: 10, slug: 'DEL BURZACO 10:30 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 10, slug: 'DEL BURZACO 10:00 hs' },
+      {recurso: 'burzaco', dow: 2, hora: 10, slug: 'DEL BURZACO 10:30 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 10, slug: 'DEL BURZACO 10:00 hs' },
+      {recurso: 'burzaco', dow: 3, hora: 10, slug: 'DEL BURZACO 10:30 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 10, slug: 'DEL BURZACO 10:00 hs' },
+      {recurso: 'burzaco', dow: 4, hora: 10, slug: 'DEL BURZACO 10:30 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 10, slug: 'DEL BURZACO 10:00 hs' },
+      {recurso: 'burzaco', dow: 5, hora: 10, slug: 'DEL BURZACO 10:30 hs' },
 
+      // malvinas
+      {recurso: 'malvinas', dow: 1, hora: 11, slug: 'DEL MALVINAS ARG 11:00 hs' },
+      {recurso: 'malvinas', dow: 1, hora: 11, slug: 'DEL MALVINAS ARG 11:30 hs' },
+      {recurso: 'malvinas', dow: 2, hora: 11, slug: 'DEL MALVINAS ARG 11:00 hs' },
+      {recurso: 'malvinas', dow: 2, hora: 11, slug: 'DEL MALVINAS ARG 11:30 hs' },
+      {recurso: 'malvinas', dow: 3, hora: 11, slug: 'DEL MALVINAS ARG 11:00 hs' },
+      {recurso: 'malvinas', dow: 3, hora: 11, slug: 'DEL MALVINAS ARG 11:30 hs' },
+      {recurso: 'malvinas', dow: 4, hora: 11, slug: 'DEL MALVINAS ARG 11:00 hs' },
+      {recurso: 'malvinas', dow: 4, hora: 11, slug: 'DEL MALVINAS ARG 11:30 hs' },
+      {recurso: 'malvinas', dow: 5, hora: 11, slug: 'DEL MALVINAS ARG 11:00 hs' },
+      {recurso: 'malvinas', dow: 5, hora: 11, slug: 'DEL MALVINAS ARG 11:30 hs' },
 
 
       // claypole

@@ -110,6 +110,9 @@ import { VigilanciaReportesBrowseComponent } from './vigilancia/vigilancia-repor
 import { VigilanciaReportesTableComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-table/vigilancia-reportes-table.component';
 import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigilancia-novedad.component';
 import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigilancia-coredata/vigilancia-coredata.component';
+import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
+import { SolcovidOfflineEditComponent } from './covid/sol-covid-data/solcovid-offline-edit/solcovid-offline-edit.component';
+import { SolcovidOfflinePanelComponent } from './covid/sol-covid-page/solcovid-offline-panel/solcovid-offline-panel.component';
 
 @NgModule({
   imports: [
@@ -220,6 +223,9 @@ import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigi
     VigilanciaReportesTableComponent,
     VigilanciaNovedadComponent,
     VigilanciaCoredataComponent,
+    SolcovidOfflinePageComponent,
+    SolcovidOfflineEditComponent,
+    SolcovidOfflinePanelComponent,
   ],
   entryComponents: 
   [

@@ -686,6 +686,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator'],
       },
       {
+        title: 'DeTecTar',
+        routing: '/salud/gestion/detectar',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Padrón personas',
         routing: '/salud/gestion/atencionsocial',
         rolesOut: ['ivr:operator'],

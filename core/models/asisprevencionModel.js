@@ -563,6 +563,10 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['tipo']) {
+    q['tipo'] = parseInt(query['tipo'], 10);
+  }
+
   if(query['sector']){
       q["sector"] = query['sector'];
   }

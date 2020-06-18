@@ -1,0 +1,326 @@
+<mat-card >
+<mat-card-content>
+  <form [formGroup]="form">
+		<mat-tab-group>
+
+			<mat-tab label="Datos generales">
+				<div class="container tab-container">
+
+			    <div class="row">
+			      <div class="col-sm-12 col-md-3">
+			        <mat-form-field>
+			          <mat-select #fldTdoc placeholder="Tipo de documento" 
+			            [formControl]="form.controls['tdoc']"
+			            (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+			            <mat-option *ngFor="let item of tcompPersonaFisica" [value]="item.val">{{ item.label }}</mat-option>
+			          </mat-select>
+			        </mat-form-field>
+			      </div>
+
+			      <div class="col-sm-12 col-md-2">
+			        <mat-form-field>
+			          <input matInput [formControl]="form.controls['ndoc']" 
+			                  placeholder="Número documento">
+			        </mat-form-field>
+			      </div>
+
+			      <div class="col-sm-12 col-md-2">
+			        <mat-form-field>
+			          <input matInput [formControl]="form.controls['telefono']" 
+			                  placeholder="Teléfono de contacto">
+			        </mat-form-field>
+			      </div>
+			        <div class="col-sm-12 col-md-2">
+			          <mat-form-field>
+			            <input  matInput [formControl]="form.controls['edad']" placeholder="Edad" >
+			          </mat-form-field>
+			        </div>
+			        <div class="col-sm-12 col-md-2">
+			          <mat-form-field>
+			            <mat-select #fldSexo placeholder="Sexo"
+			                [formControl]="form.controls['sexo']"
+			                (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
+			              <mat-option *ngFor="let item of sexoOptList" 
+			                [value]="item.val" >{{ item.label }}</mat-option>
+			            </mat-select>
+			          </mat-form-field>
+			        </div>
+			    </div>
+
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
+			        </mat-form-field>
+			      </div>
+
+			      <div class="col">
+			        <mat-form-field>
+			          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+			    <div class="row" >
+			      <div class="col-sm-12 col-md-3">
+			        <mat-form-field>
+			          <mat-select #fldOSocial placeholder="Obra Social" 
+			            [formControl]="form.controls['osocial']"
+			            (selectionChange)="changeSelectionValue('osocial',fldOSocial.value)">
+			            <mat-option *ngFor="let item of osocialOptList" [value]="item.val">{{ item.label }}</mat-option>
+			          </mat-select>
+			        </mat-form-field>
+			      </div>
+			      <div class="col">
+			        <mat-form-field>
+			          <input  matInput [formControl]="form.controls['osocialTxt']" placeholder="Nombre de la O/Social" >
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+			    <hr>
+
+			    <!---street1;  street2; --->
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <input matInput [formControl]="form.controls['street1']" placeholder="Calle número" >
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+			    <!---street1;  street2; --->
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <input matInput [formControl]="form.controls['streetIn']" placeholder="Entre calle (o esquina con...)" >
+			        </mat-form-field>
+			      </div>
+			      <div class="col">
+			        <mat-form-field>
+			          <input matInput [formControl]="form.controls['streetOut']" placeholder="...y calle" >
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+
+			    <!--- city; barrio; zip;--->
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <mat-select #fldCiudad placeholder="Ciudad"
+			              [formControl]="form.controls['city']"
+			              (selectionChange)="changeCity()" >
+			            <mat-option *ngFor="let item of ciudadesList" 
+			              [value]="item.val" >{{ item.label }}</mat-option>
+			          </mat-select>
+			        </mat-form-field>
+			      </div>
+
+			      <div class="col">
+			        <mat-form-field>
+			          <mat-select #fldbarrio placeholder="Barrio"
+			              [formControl]="form.controls['barrio']"
+			              (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+			            <mat-option *ngFor="let item of barrioList" 
+			              [value]="item.val" >{{ item.label }}</mat-option>
+			          </mat-select>
+			        </mat-form-field>
+			      </div>
+			        
+			    </div>
+
+				<!--/div>
+	  	</mat-tab>
+			<mat-tab label="Triage COVID">
+				<div class="container" -->
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Tuvo 37.5+ de fiebre?</span>
+			      </div>
+			      <div class="col-md-5 d-flex align-items-center">
+			        <mat-radio-group  formControlName="fiebreRB" aria-label="Signo de fiebre en los últimos 14 días">
+			          <mat-radio-button 
+			                [checked]="form.controls['fiebreRB'].value===1" 
+			                value="1">Verificó fiebre</mat-radio-button>
+			          <mat-radio-button 
+			                [checked]="form.controls['fiebreRB'].value===2" 
+			                value="2">Cree que tuvo</mat-radio-button>
+			          <mat-radio-button 
+			                [checked]="form.controls['fiebreRB'].value===3" 
+			                value="3" >No tuvo fiebre</mat-radio-button>
+			        </mat-radio-group>
+			      </div>
+
+			      <div class="col-md-1">
+			        <mat-form-field>
+			          <input  matInput type="number" min="35" max="44" 
+			                  formControlName="fiebre" placeholder="Fiebre verificada en grados" >
+			        </mat-form-field>
+			      </div>
+
+			    </div>
+
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Tuvo alguno de estos síntomas?</span>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" 
+			          title="Síntomas vinculados al COVID en los últimos 14 días">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDifRespiratoria'].value===true"
+			                [formControl]="form.controls['hasDifRespiratoria']" >
+			                  Dificultad respiratoria</mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDolorGarganta'].value===true"
+			                [formControl]="form.controls['hasDolorGarganta']" >
+			                  Dolor de garganta
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-1 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTos'].value===true"
+			                [formControl]="form.controls['hasTos']" >
+			                  Tos
+			                </mat-checkbox>
+			      </div>
+
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasFaltaGusto'].value===true"
+			                [formControl]="form.controls['hasFaltaGusto']" >
+			                  Falta de gusto
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasFaltaOlfato'].value===true"
+			                [formControl]="form.controls['hasFaltaOlfato']" >
+			                  Falta de olfato
+			                </mat-checkbox>
+			      </div>
+			    </div>
+			    <div class="row">
+			      <div class="col-md-8">
+			        <mat-form-field>
+			          <input  matInput  
+			                  formControlName="sintomas" placeholder="Describa síntomas" >
+			        </mat-form-field>
+			      </div>
+
+			    </div>
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Se verifican estas situaciones?</span>
+			      </div>
+			      <div class="col-md-4 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasContacto'].value===true"
+			                [formControl]="form.controls['hasContacto']" >
+			                  ¿Tuvo contacto con persona c/COVID?
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-4 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasEntorno'].value===true"
+			                [formControl]="form.controls['hasEntorno']" >
+			                  ¿Contacto con sospechoso COVID?
+			                </mat-checkbox>
+			      </div>
+			    </div>
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Es trabajador/a esencial?</span>
+			      </div>
+			      <div class="col-md-9 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoSalud'].value===true"
+			                (change)="changeSalud()"
+			                [formControl]="form.controls['hasTrabajoSalud']" >
+			                Es personal esencial (médicx, enfermerx, camillerx, fuerzas de seguridad, asistencia a mayores o niños etc.)
+			                </mat-checkbox>
+			      </div>
+			    </div>
+
+			    <div *ngIf="showAmbitoLaboral" class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Su ámbito laboral es en...?</span>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoAdulMayores'].value===true"
+			                [formControl]="form.controls['hasTrabajoAdulMayores']" >
+			                  Residen Adul Mayores
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoHogares'].value===true"
+			                [formControl]="form.controls['hasTrabajoHogares']" >
+			                  Hogar de niños/as
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoHospitales'].value===true"
+			                [formControl]="form.controls['hasTrabajoHospitales']" >
+			                  Neuropsiquiátricos
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-3 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoPolicial'].value===true"
+			                [formControl]="form.controls['hasTrabajoPolicial']" >
+			                  Penitenciaría / comisaría
+			                </mat-checkbox>
+			      </div>
+			    </div>
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Refiere otras situaciones?</span>
+			      </div>
+			      <div class="col-md-8">
+			        <mat-form-field>
+			          <input  matInput  
+			                  formControlName="contexto" placeholder="Describa su contexto" >
+			        </mat-form-field>
+			      </div>
+
+			    </div>
+
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones / Comentario" >
+			          </textarea> 
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+			  </div>
+			</mat-tab>
+
+		</mat-tab-group>
+	</form>
+
+
+	<div class="novedades-container">
+		<div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
+
+		</div>
+	</div>
+
+</mat-card-content>
+</mat-card>

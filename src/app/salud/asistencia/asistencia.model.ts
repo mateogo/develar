@@ -220,7 +220,7 @@ export class Asistencia {
 		compPrefix:  string = 'SOL';
 		compName:    string = 'S/Asistencia';
 		compNum:     string = '00000';
-		tipo:        number = 1; // 1: COVID 2:Denuncia  3:IVR
+		tipo:        number = 1; // 1: COVID 2:Denuncia  3:IVR 4:Detectar
 		prioridad:   number = 2; // 1:baja 2:media 3: alta
 
 		idPerson:    string;
@@ -804,6 +804,7 @@ export class AsistenciaBrowse {
 		compName:    string = 'S/Asistencia';
 		compNum_d:   string;
 		requirenteId: string;
+		tipo: string;
 		compNum_h:   string;
 		idPerson:    string;
 		fecomp_d:    string;

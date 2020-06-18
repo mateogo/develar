@@ -1,0 +1,13 @@
+<ng-container *ngIf="showFollowUp">
+
+	<solcovid-view  [token]='asistencia'></solcovid-view>
+	<div class="novedades-container">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="editTokent()"  >Editar</button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="uploadToken()" >Transferir</button>
+
+	</div>
+
+</ng-container>

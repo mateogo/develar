@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-content>
+		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
+
+		<div class="d-flex justify-content-end align-items-center novedades-container">
+			<button mat-raised-button color="primary" class='button-action'
+									(click)='nuevaEncuesta()' >+ Nueva encuesta </button>
+		</div>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf="showAsistenciaEditor">
+			<solcovid-offline-edit  [token]='asistencia'
+					(updateToken)='saveLocal($event)'></solcovid-offline-edit>
+</ng-container>
+
+<ng-container *ngIf='showLocalData'>
+	<solcovid-list [items]='asistenciasList'
+									[panelType]='offline'
+							(updateAsistencia)='updateAsistenciaToken($event)' ></solcovid-list>
+</ng-container>
+	

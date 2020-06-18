@@ -17,6 +17,7 @@ const EVOLUCION =  'evolucion';
 const DELETE =     'delete';
 const TOKEN_TYPE = 'asistencia';
 const NAVIGATE =   'navigate';
+const PANEL_TYPE = 'solcovid'; // [solcovid|offline]
 
 @Component({
   selector: 'solcovid-list',
@@ -25,16 +26,15 @@ const NAVIGATE =   'navigate';
 })
 export class SolcovidListComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
+  @Input() panelType = PANEL_TYPE;
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
+  @Output() updateAsistencia = new EventEmitter<UpdateAsistenciaEvent>();
 
   public title = 'Solicitudes de ASISTENCIA';
 
-	public showList = false;
-  public showActiveList = false;
-  public showFullList = true;
+	public showONE = false;
+  public showTWO = false;
 
-  public openEditor = true;
-  public activeitems: Array<Asistencia> = [];
 
   constructor(
       private dsCtrl: SaludController,
@@ -43,13 +43,23 @@ export class SolcovidListComponent implements OnInit {
   ngOnInit() {
 
   	if(this.items && this.items.length){
-  		this.showList = true;
+      if(this.panelType === PANEL_TYPE){
+        this.showONE = true;
+
+      }else {
+        this.showTWO = true;
+
+      }
   	}
 
   }
 
   updateItem(event: UpdateAsistenciaEvent){
         this.emitEvent(event);
+  }
+
+  updateToken(event: UpdateAsistenciaEvent){
+    this.updateAsistencia.next(event)
   }
 
 

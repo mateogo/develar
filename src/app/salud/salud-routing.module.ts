@@ -13,6 +13,7 @@ import { AltarapidaPageComponent } from './internacion/alta-rapida/altarapida-pa
 import { VigilanciaPageComponent } from './vigilancia/vigilancia-page/vigilancia-page.component';
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
+import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
 
 const routes: Routes = [
 	{
@@ -30,6 +31,10 @@ const routes: Routes = [
 	{
 		path:'reportesvigilancia',
 		component: VigilanciaReportesPageComponent
+	},
+	{
+		path:'detectar',
+		component: SolcovidOfflinePageComponent
 	},
 	{
 		path:'tableroepidemio',
