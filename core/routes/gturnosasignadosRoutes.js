@@ -45,6 +45,9 @@ router.get('/test', function (req, res) {
     test(req, res);
 });
 
+// para reconfigurar los horarios
+// (a) db.turnosdisponibles.remove({})
+// (b) https://dsocial.brown.gob.ar/api/turnosasignados/initdata
 router.get('/initdata', function (req, res) {
     initData(req, res);
 });

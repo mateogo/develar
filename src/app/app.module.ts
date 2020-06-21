@@ -1,7 +1,7 @@
 import { BrowserModule }                    from '@angular/platform-browser';
 import { NgModule, Directive }              from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule}                  from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS }                  from '@angular/common/http';
 import { BrowserAnimationsModule }          from '@angular/platform-browser/animations';
 import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 
@@ -24,6 +24,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+//import { InterceptHttpService } from './salud/internacion/tests/intercept-http.service';
 
 
 
@@ -49,7 +50,8 @@ import { AppEffects } from './app.effects';
 
   entryComponents: [],
   bootstrap: [ AppComponent ],
-  providers: [ UserService, SharedService]
+  //providers: [ {provide: HTTP_INTERCEPTORS, useClass: InterceptHttpService, multi: true }, UserService, SharedService ]
+  providers: [ UserService, SharedService ]
 
 })
 

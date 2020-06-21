@@ -459,6 +459,15 @@ function buildQuery(query, today){
       return q;
   }
 
+
+  if(query['reporte'] && query['reporte']==="CONTACTOS"){
+      q = {
+            avance: {$ne: 'anulado'},
+            isVigilado: true,
+          }
+      return q;
+  }
+
   if(query['reporte'] && query['reporte']==="LABNEGATIVO"){
 
       let refDate = today.getTime() - (1000 * 60 * 60 * 24 * 7);
@@ -697,7 +706,6 @@ function buildQuery(query, today){
 const Record = mongoose.model('Asisprevencion', asisprevencionSch, 'asisprevenciones');
 
 
-
 /////////   CAPA DE SERVICIOS /////////////
 
 /**
@@ -764,6 +772,197 @@ exports.updateAsistenciaFromPerson = function(asistencia){
 }
 
 
+
+
+/*************************/
+/*** RED DE CONTACTOS ***/
+/***********************/
+const contactosManager = {
+  fets_actualizacion: 0,
+  master: null,
+  masterlist: []
+}
+
+
+const elapsed = 1000 * 60 * 15 // 15 minutos
+
+exports.fetchRedContactos = function (query, errcb, cb){
+ 
+  const entities = getRedContactos(query);
+
+  if( !entities || (query && query['refreshContactos']) ) {
+    buildContactosPromise(query);
+ 
+  }else {
+    cb(entities)
+  }
+
+}
+
+
+function getRedContactos(query){
+  let ts = Date.now()
+  if(!contactowManager.master) return null;
+
+  if((ts - contactosManager.fets_actualizacion) > elapsed){
+    buildContactosPromise()
+    .then(master => {
+      console.log('**** Contactos manager REBUILDED!!');
+    })
+    .catch(error => console.log(error));
+
+  }
+
+  return contactosManager.masterlist;
+}
+
+
+function buildContactosPromise(query){
+  let regexQuery = buildQuery(query, new Date())
+
+  let promise = new Promise((resolve, reject) => {
+
+      Record.find(regexQuery)
+            .lean()
+            .exec(function(err, entities) {
+              if (err) {
+                  reject(error);
+
+              }else{
+                  if(entities && entities.length){
+                    processMasterContactos(entities, query, resolve, reject);
+
+                  }else {
+                    resolve([]);
+                  }
+              }
+      });
+
+
+
+
+
+  })
+  return promise;
+}
+
+function processMasterContactos(movimientos, query, resolve, reject){
+    contactosManager.master = {};
+    contactosManager.masterlist = [];
+    contactosManager.fets_actualizacion = Date.now();
+
+    movimientos.forEach(asis => {
+      if(asis.casoIndice){
+        insertContactNode(contactosManager.master, asis, parent)
+      }else {
+        insertParentNode(parent, asis)
+
+      }
+
+    })
+
+}
+
+function insertContactNode(master, asis, parent){
+  let parentId = asis.casoIndice.parentId;
+  let key = parentId;
+
+  if(master[key]){
+    updateContactNode(master[key], asis);
+
+  }else {
+    master[key] = initContactNode(asis, parent);
+
+  }
+
+}
+
+/**** 
+
+class ContactosVigilados {
+  personSlug: string;
+
+  
+} 
+
+class ContactManager {
+  asis_qty: number = 0; // cantidad de contactos con asistencia vigente
+  asistenciaId: string; // id de la asitencia índice
+  telefonos: string; // telefonos recolectados;
+  city: string; // ciudad del caso índice
+
+  nucleos: Array<string> = []; // nucleos existentes;
+  [key: string]: Array<ContactosVigilados>
+
+}
+
+****/
+
+
+function updateContactNode(token, asistencia){
+  token.asis_qty +=1;
+  let nucleo = asistencia.casoIndice.nucleo || N_HAB_00;
+  let city = asistencia.locacion 
+
+  if(token.nucleos.indexOf(nucleo) === -1) {    
+    token.nucleos.push(nucleo);
+  }
+
+  if(!token.contacts[nucleo]){
+    token.contactos[nucleo] = [];
+  }
+
+  let contactData = {
+    slug: asistencia.requeridox.slug,
+    personId: asistencia.idPerson,
+    asistenciaId: asistencia._id,
+    nucleo: nucleo,
+    telefono: asistencia.telefono,
+    city: asistencia
+  }
+
+  token.contactos.push(contactData);
+
+
+  if(token.telefono && asistencia.telefono && !token.telefono.includes(asistencia.telefono)){
+    token.telefono = token.telefono === 'sin dato' ? asistencia.telefono : token.telefono + ' / ' + asistencia.telefono; 
+  }
+
+  if((token.city === 'sin dato' || token.address === 'sin dato') && asistencia.locacion){
+    let city = 'sin dato';
+    let barrio = 'sin dato';
+    let address = 'sin dato';
+    let entrecalles = '';
+
+    let locacion = asistencia.locacion;
+
+    if(locacion){
+      city = locacion.city || 'sin dato';
+      barrio = locacion.barrio || 'sin dato';
+
+      if(locacion.streetIn || locacion.streetOut ){
+        entrecalles = (locacion.streetIn && locacion.streetOut) 
+            ? ' - Entre ' + locacion.streetIn + ' y ' +  locacion.streetOut
+            : ' - Esquina ' + locacion.streetIn ;
+      }
+
+      address = (locacion.street1 + entrecalles ) || 'sin dato';
+      
+      token.city = city
+      token.barrio = barrio
+      token.address = address
+    }
+  }
+
+
+
+}
+
+function initContactNode(asis, parent){
+
+}
+
+
 exports.upsertNext = function (query, errcb, cb) {
     let regexQuery = buildQuery(query, new Date());
 
@@ -799,8 +998,8 @@ exports.findAll = function (errcb, cb) {
 
 const findByQueryProcessFunction = {
 
-  'DOMICILIOS' : buildDomiciliosTableReport,
-  'REDCONTACTOS' : buildRedContactos
+  //'DOMICILIOS' : buildDomiciliosTableReport,
+  'REDCONTACTOS' : buildRedContactos, // grafo loco
 
 };
 
@@ -956,24 +1155,21 @@ function _getType(asis){
         id: 'locacion'
       }
     }
+
 }
 
-function buildDomiciliosTableReport(movimientos, query, errcb, cb){
-  let master = {}
-  let parent = {}
 
-  movimientos.forEach(asis => {
-    if(asis.casoIndice){
-      populateDomiciliosReport(master, asis, parent)
-    }else {
-      populateParent(parent, asis)
-
-    }
+function loadMasterContctos(){
+  const promise = new Promise((resolve, reject) => {
 
   })
-  responseDomiciliosReport(master, errcb, cb);
 
+  return promise;
 }
+
+
+
+
 
 /******
     parentId:   asistencia.casoIndice.parentId,
@@ -1159,7 +1355,12 @@ function fetchMovimientos(query, req, res){
 
               sortCovid(entities);
 
-              dispatchExcelStream(reporte, entities, query, req, res)
+              getMapDeContactosEstrechos().then((map)=>{
+                identificarContactosEstrechos(entities, map);
+
+                dispatchExcelStream(reporte, entities, query, req, res)
+
+              })
 
             }
         }
@@ -1168,9 +1369,53 @@ function fetchMovimientos(query, req, res){
 
 const reportProcessFunction = {
 
-  'DOMICILIOS' : buildDomiciliosReport
+  'DOMICILIOS' : buildDomiciliosReport,
 
 };
+
+function getMapDeContactosEstrechos(){
+ 
+    let regexQuery = buildQuery({reporte: 'REDCONTACTOS'}, new Date())
+
+    return Record.find(regexQuery).lean().exec().then(list => {
+      let contactosMap = new Map();
+      if(list && list.length){
+
+          list.forEach(asis => {
+
+            if(asis.casoIndice && asis.casoIndice.parentId){
+              let index = JSON.stringify(asis.casoIndice.parentId)
+
+              if(contactosMap.has(index)){
+                contactosMap.set(index, contactosMap.get(index) + 1)
+
+              }else {
+                contactosMap.set(index, 1)
+
+              }
+            }
+          });
+      }
+      return contactosMap;
+    })
+}
+
+function identificarContactosEstrechos(movimientos, casosIndices){
+
+  movimientos.forEach(asis => {
+    let index = JSON.stringify(asis._id);
+
+    //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), casosIndices.get(index), casosIndices.has(index))
+
+    if(casosIndices.has(index)){
+      asis['contactosEstrechos'] = casosIndices.get(index)
+
+    }else {
+      asis['contactosEstrechos'] = 0
+    }
+  })
+
+}
 
 function dispatchExcelStream(reporte, movimientos, query, req, res){
 
@@ -1211,7 +1456,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -1289,7 +1534,7 @@ function buildExcelStream(movimientos, query, req, res){
       let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
 
       const {compNum, telefono, edad } = row;
-      let basicArr = [ compNum, (index + 1), telefono, edad ];
+      let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), telefono, edad ];
       
       worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
 
@@ -1297,10 +1542,11 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.commit()
     workbook.commit()
 }
+
 //followUp
-/*******************************/
-/***** REPORTE DOMICILIOS *****/
-/*****************************/
+/*******************************************/
+/***** REPORTE VIGILANCIA DE CONTACTO *****/
+/*****************************************/
 function buildDomiciliosReport(movimientos, query, req, res){
   let master = {}
   let parent = {}
@@ -1316,6 +1562,7 @@ function buildDomiciliosReport(movimientos, query, req, res){
   exportDomiciliosReport(master, req, res);
 
 }
+
 
 function populateParent(parent, asistencia){
   let key = asistencia._id;
@@ -1380,6 +1627,11 @@ function populateDomiciliosReport(master, asis, parent){
 
 
 }
+
+/*******
+
+
+****/
 
 function refreshDomicilioToken(token, asistencia){
   token.qty += 1;

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, interval, Subject } from 'rxjs';
+import { startWith, switchMap, take, tap } from 'rxjs/operators'
 
 import { Person, PersonContactData, Address, UpdatePersonEvent } from '../../../../entities/person/person';
 
@@ -19,7 +21,7 @@ import { InternacionService } from '../../internacion.service';
 @Component({
   selector: 'app-test-uno',
   templateUrl: './test-uno.component.html',
-  styleUrls: ['./test-uno.component.scss']
+  styleUrls: ['./test-uno.component.scss'],
 })
 export class TestUnoComponent implements OnInit {
 	public tdoc = "DNI";
@@ -37,7 +39,9 @@ export class TestUnoComponent implements OnInit {
   		private perSrv: PersonService,
   		private intSrv: InternacionService,
   		private fb: FormBuilder,
-			private router: Router
+			private router: Router,
+			private http: HttpClient,
+			private _zone: NgZone
   	) { }
 
   ngOnInit() {
@@ -46,7 +50,118 @@ export class TestUnoComponent implements OnInit {
   	this.hospitalesList$ = this.intSrv.fetchLocacionesHospitalarias({});
   	this.hospitalesList$.subscribe(hospitales => {
   	})
+
+
+
   }
+
+  testAPI(){
+  	//this.pruebaWithGet();
+  }
+
+  private pruebaWithGet(){
+  	console.log('pruebaWithGet to BEGIN!!! ')
+  	let observable = this.fetchUsersWithGet();
+
+  	console.log('Ready to subscribe')
+  	observable.subscribe(data =>  {
+      	console.log('Observable SUSB')
+      	console.log(data);
+        //observer.next(event);
+  	})
+  }
+	
+	private fetchUsersWithGet():Observable<any>{
+  	let userUrl ="/api/auditodatos/getusers";
+    let url = `${userUrl}`;
+	  let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+  	let getObs = this.http.get<any>(url, {
+  		headers: headers,
+  		observe: 'body',
+
+  	}).pipe(
+  		tap(
+  				data => this.log(data),
+  				error => this.logError(error)
+  			)
+  	);
+  	console.log('GetUsers to RETURN')
+  	return getObs;
+  }
+
+  private log(data: any){
+  	console.log('Tapped LOG')
+  	console.log(data);
+  }
+
+  private logError(error: any){
+  	console.log(error);
+  }
+
+
+  private prueba(){
+  	console.log('PRueba to BEGIN')
+  	let observable = this.fetchUsers();
+  	observable.subscribe(data =>  {
+  		console.log('Subscribed!')
+  		console.log(data);
+  	})
+  }
+	
+	private pruebaWithSwitch(){
+  	console.log('pruebaWithSwitch to BEGIN!!! ')
+  	let api = this.fetchUsersWithGet();
+
+  	let user$: Observable<any>;
+
+  	console.log('Ready to subscribe')
+  	user$ = interval(1000).pipe(
+  						take(4),
+  						startWith(0),
+
+	  					switchMap( ()=> {
+	  						return api;
+	  					})
+  					)
+
+  	user$.subscribe(x =>{
+  		console.log('subscribed!!!')
+  		console.dir(x);
+  	})
+  }
+
+
+
+  private fetchUsers(): Observable<any>{
+  	let userUrl ="/api/auditodatos/getusers";
+
+
+    let url = `${userUrl}`;
+
+    return Observable.create(observer => {
+        console.log('Observable Create')
+        let eventSource = new EventSource(url);
+        eventSource.onmessage = event => {
+          this._zone.run(()=> {
+          	console.log('event')
+            observer.next(event);        	
+          })
+
+        }
+
+        eventSource.onerror = error => {
+        	console.log('error')
+        	console.dir(error)
+            observer.error(error);
+        }
+ 
+    })
+
+
+  }
+
+
 
 
   verDisponible(){
@@ -265,3 +380,4 @@ class TestData {
 	}
 
 }
+

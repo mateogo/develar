@@ -133,15 +133,41 @@ const mockUsers = [
 
 const delay  = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-router.get('/getusers', async function (req, res) {
+router.get('/getusers', function (req, res) {
+    // res.writeHead(200, {
+    //     'Content-Type': 'test/event-stream',
+    //     'Cache-Control': 'no-cache',
+    //     Connection: 'keep-alive'
+    // })
+    // res.write(JSON.stringify({event: 'messaje', data: 'iajjuuu'}))
 
 
-    for (var i = 0; i < 6; i++) {
+    // for (var i = 0; i < 6; i++) {
+    //     let user = JSON.stringify(mockUsers[i])
+    //     res.write(user);
+    //     await delay(500);
+    // }
+    // setTimeout(() => {
+    //     res.end();
+    // }, 4000)
+
+    for (var i = 0; i < 1; i++) {
         let user = JSON.stringify(mockUsers[i])
+        //res.write('[')
         res.write(user);
-        await delay(1000);
+        //res.writeContinue();
     }
-    res.end()
+
+    setTimeout(() => {
+        //res.write(']');
+        res.end();
+    }, 1000)
+
+
+    //res.end()
+    //res.status(200).json({event: 'messaje', data: 'iajjuuu'});
+    //res.write(JSON.stringify({event: 'messaje', data: 'iajjuuu'}));
+    //res.end();
 
 });
 

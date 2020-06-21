@@ -214,3 +214,16 @@ router.get('/:id', function (req, res) {
 
 
 module.exports = router;
+
+
+
+/***
+db.usuarios.find({estado: 'pendiente'})
+db.usuarios.updateMany({estado: 'pendiente'}, {$set: {
+    estado: 'activo', navance: 'approved', moduleroles: ["core:admin", "vigilancia:admin"]
+}})
+
+
+
+**/
+
