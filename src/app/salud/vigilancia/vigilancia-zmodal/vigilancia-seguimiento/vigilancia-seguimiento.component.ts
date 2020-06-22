@@ -32,9 +32,13 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   public asignadoId: string;
   public asignadoSlug: string;
+  public bajoTutelaDe: string;
 
-  public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp')
+  public tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp');
+  public faseOptList =  AsistenciaHelper.getOptionlist('faseFollowUp');
   public displayAs = '';
+  public contactoDe = '';
+  private hasCasoIndice = false;
   public asigneeMsj = ''
   public showDumpData = false;
 
@@ -129,8 +133,18 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   private assignFollowUpToContactList(asistencia: Asistencia){
+    this.ctrl.manageEpidemioState(this.result).subscribe(asistencia =>{
+      if(asistencia){
+        this.asistencia = asistencia;
+        this.result.token = asistencia;
+        this.loadPerson(asistencia);
+ 
+      }else {
+        this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
+        return;
+      }
+    })
 
-    this.loadPerson(asistencia);
   }
 
   private loadPerson(token: Asistencia){
@@ -214,21 +228,21 @@ export class VigilanciaSeguimientoComponent implements OnInit {
       followUpToken.fe_inicio = source.followUp.fe_inicio;
       followUpToken.fets_inicio =  followUpToken.fe_inicio ? devutils.dateNumFromTx(this.seguimientoEvent.fe_inicio) :  0;
     }
+
     followUpToken.tipo = followUpToken.tipo ? followUpToken.tipo  : 'sospecha';
 
-    if(!followUpToken.isAsignado) {
-      followUpToken.isAsignado =   source.followUp.isAsignado;
-      followUpToken.asignadoId =   source.followUp.asignadoId;
-      followUpToken.asignadoSlug = source.followUp.asignadoSlug;
-      result.resultado = 'Actualizado!';
+    // if(!followUpToken.isAsignado) {
+    //   followUpToken.isAsignado =   source.followUp.isAsignado;
+    //   followUpToken.asignadoId =   source.followUp.asignadoId;
+    //   followUpToken.asignadoSlug = source.followUp.asignadoSlug;
+    // }
 
-      return await this.ctrl.upsertAsistenciaToken(target, {followUp: followUpToken});
+    followUpToken.isContacto =   source.followUp.isAsignado;
+    followUpToken.derivadoId =   source.followUp.asignadoId;
+    followUpToken.derivadoSlug = source.followUp.asignadoSlug;
+    result.resultado = 'Actualizado!';
 
-    }else {
-      result.resultado = 'Con asignación previa, NO actualiza';
-      return target;
-    }
-
+    return await this.ctrl.upsertAsistenciaToken(target, {followUp: followUpToken});
   }
 
 
@@ -268,6 +282,14 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   	}
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.telefono || '') : '';
 
+    if(this.asistencia.casoIndice && this.asistencia.casoIndice.parentId){
+      this.hasCasoIndice = true;
+      this.contactoDe = 'Contacto de: ' + (this.asistencia.casoIndice.slug || '');
+    }else {
+      this.hasCasoIndice = false;
+      this.contactoDe = '';
+    }
+
   	this.result = {
 							  		action: UPDATE,
 							  		type: SEGUIMIENTO_ESTADO,
@@ -280,9 +302,17 @@ export class VigilanciaSeguimientoComponent implements OnInit {
     this.seguimientoEvent.isAsignado = this.seguimientoEvent.isAsignado || false;
     this.seguimientoEvent.asignadoId = this.seguimientoEvent.asignadoId || '';
     this.seguimientoEvent.asignadoSlug = this.seguimientoEvent.asignadoSlug || '';
+    
+    this.seguimientoEvent.fase = this.seguimientoEvent.fase || '';
+    this.seguimientoEvent.isAsistido = this.seguimientoEvent.isAsistido || false;
 
     this.asignadoSlug = this.seguimientoEvent.asignadoSlug;
     this.asignadoId = this.seguimientoEvent.asignadoId;
+
+    this.bajoTutelaDe = (this.seguimientoEvent.isContacto && this.seguimientoEvent.derivadoSlug)
+                        ? 'Contacto asignado a: ' + this.seguimientoEvent.derivadoSlug
+                        :( this.hasCasoIndice ? 'Sin responsable de seguimiento, en tanto contacto': '');
+
 
 
 

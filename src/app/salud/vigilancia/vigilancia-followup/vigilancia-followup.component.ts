@@ -227,12 +227,10 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
   coreDataSelected(asistencia: Asistencia){
-    console.log('coreData to EDIT: [%s]', asistencia.ndoc);
     this.buildCoreDataEdit(this.asistencia);
   }
 
   private manageAsistenciaView(viewList){
-    console.log('ManageAsistenciaView [%s]', this.asistencia.telefono);
     this.showAsistenciaView = false;
     this.buildMuestrasLaboratorio(this.asistencia);
     this.viewList = viewList;
@@ -286,7 +284,6 @@ export class VigilanciaFollowupComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
-      console.log('dialog CLOSED [%s]', res);
 
       if(res && res.token){
         this.asistencia = res.token;

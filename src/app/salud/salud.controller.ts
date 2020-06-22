@@ -1574,6 +1574,13 @@ export class SaludController {
       arr.push(t);
 
     })
+
+    arr.sort((f, s)=>{
+      if(f.label < s.label )return -1;
+      if(f.label > s.label ) return 1;
+      return 0
+    })
+
     return arr;
   }
 

@@ -515,6 +515,15 @@ const tipoSeguimientoAfectadoOptList = [
 	{ val: 'monitoreo', label: 'Monitoreo'},
 ];
 
+const faseAfectadoOptList = [
+
+	{ val: 'fase0',     label: 'Investigación epidemiológica'},
+	{ val: 'fase1',     label: 'Primera fase seguimiento'},
+	{ val: 'fase2',     label: 'Segunda fase seguimiento'},
+
+];
+
+
 
 export class AsignadosSeguimiento {
 	userId: string;
@@ -526,6 +535,8 @@ export class AsignadosSeguimiento {
 // fwup
 export class AfectadoFollowUp {
 	isActive: boolean = false;
+	isAsistido: boolean = false; // se le hace seguimiento asistencial?
+
 	fe_inicio: string = '';
 	fe_ucontacto: string = '';
 	fe_ullamado: string = '';
@@ -542,13 +553,22 @@ export class AfectadoFollowUp {
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
 	sintoma: string = 'sindato'; //sintomaOptList
 	vector: string = 'inicia'; //vectorSeguimientoOptList
+	fase: string = 'fase0' //faseAfectadoOptList
 
 	// asignados: Array<AsignadosSeguimiento> = [];
 	slug: string = 'Inicia seguimiento de afectado/a';
 
+
+	//Caso indice asignado a... 
 	isAsignado: boolean = false;
 	asignadoId: string = '';
 	asignadoSlug: string = '';
+
+	//Es contacto, y por lo tanto es monitoreado por...
+	isContacto: boolean = false;
+	derivadoId: string = '';
+	derivadoSlug: string = '';
+
 
 	fets_inicio:    number = 0;
 	fets_ucontacto: number = 0;
@@ -571,6 +591,8 @@ const vectorSeguimientoOptList = [
 
 export class AfectadoUpdate {
 	isActive: boolean = false;
+	isAsistido: boolean = false;
+
 	fe_llamado: string = '';
 	resultado: string = ''; // resultadoSeguimientoOptList
 	tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
@@ -689,6 +711,10 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 			td.covidActualState= '';
 			td.covidSintoma = '';
 			td.covidAvance = ''
+			if(sol.followUp){
+
+			}
+
 			if(sol.infeccion){
 
 				let fecha = sol.infeccion.actualState === 1 ?  devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_inicio): devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_confirma);
@@ -732,6 +758,41 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 
 }
 
+class ContactosVigilados {
+  personSlug: string;
+  
+  
+}
+
+class Algo {
+	asis_qty: number = 0 ; //
+}
+
+class ContactsByNucleo{
+	[key: string]: Array<ContactByNucleo>
+} 
+
+class ContactByNucleo{
+	slug: string;
+	personId: string;
+	asitenciaId: string;
+	nucleo: string;
+	telefono: string;
+} 
+
+class ContactManager {
+
+  asis_qty: number = 0 ; // cantidad de contactos con asistencia vigente
+
+  asistenciaId: string; // id de la asitencia índice
+  telefono: string; // telefonos recolectados;
+  city: string; // ciudad del caso índice
+
+  nucleos: Array<string> = []; // nucleos existentes;
+  contactos: ContactsByNucleo;
+
+
+}
 
 
 
@@ -778,6 +839,14 @@ export class AsistenciaTable {
 		fe_reportado: string = '';
 		labTxt: string = '';
 		fupTxt: string = '';
+
+		asignadoSlug: string = '';
+		fup_isActive: boolean = false;
+		fup_isAsistido: boolean = false;
+
+		asignadoId: string = '';
+		fe_inicio: string = '';
+		qcontactos: number = 0;
 		
 		lab_laboratorio: string = '';
 		lab_estado: string = '';
@@ -844,7 +913,8 @@ export class VigilanciaBrowse {
 		qDaysSisa: number = 0;
 		qNotConsultaSisa: number = 0;
 
-		userId: string = '';
+		userId: string = ''; // usado para filtrale casos al operador
+		asignadoId: string = ''; // usado para buscar expresamente casos asignados a...
 
 		isVigilado: boolean = true;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
@@ -1427,6 +1497,8 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'DOMICILIOS',       label: 'Reporte Domicilios de contactos' },
     {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
     {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },
+    {val: 'CONTACTOS',        label: 'Vigilancia de contactos' },
+    {val: 'ASIGNACIONCASOS',  label: 'Asignación de casos por usuario' },
 ];
 
 
@@ -1618,6 +1690,7 @@ const optionsLists = {
  
    // Seguimiento
    tipoFollowUp: tipoSeguimientoAfectadoOptList,
+   faseFollowUp: faseAfectadoOptList,
    vectorSeguim: vectorSeguimientoOptList,
    resultadoSeguim: resultadoSeguimientoOptList,
 

@@ -20,6 +20,7 @@ const EXPORT = 'export';
 const R_DOMICILIOS = 'DOMICILIOS'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
+const R_ASIGNACION = 'ASIGNACIONCASOS'
 
 @Component({
   selector: 'vigilancia-reportes-page',
@@ -33,11 +34,13 @@ export class VigilanciaReportesPageComponent implements OnInit {
   public query: VigilanciaBrowse = new VigilanciaBrowse();
 
   public openBrowseEditor = true;
+  public usersMap: Map<any,any>;
   public showData =  false;
 	public showTable = false;
   public showEditor = false;
   public renderMap = false;
   public renderGraph = false;
+  public showAsignacionUsuarios = false;
   public showGraph = false;
   private actualParameter = 'no_definido';
 
@@ -159,6 +162,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.showData = false;
     this.showGraph = false;
     this.renderGraph = false;
+    this.showAsignacionUsuarios = false;
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
@@ -182,6 +186,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     }else if(this.query && this.query.reporte === R_CONTACTOS){
 
+    }else if(this.query && this.query.reporte === R_ASIGNACION){
+      this.usersMap = this.groupByUsers(list);
+
     }else {
 
       this.sortProperly(list);
@@ -194,6 +201,11 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     }else if(this.query && this.query.reporte === R_DOMICILIOS){
       this.tableActualColumns = DOMICILIO
+
+    }else if(this.query && this.query.reporte === R_ASIGNACION){
+      this.showAsignacionUsuarios = true;
+      return;
+
 
     }else if(this.query && this.query.reporte === R_CONTACTOS){
       this.tableActualColumns = LABORATORIO;
@@ -244,7 +256,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
     if(action === 'editar'){
 
       let eventToEdit = selected && selected.length && selected[0];
-      //console.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
+      //c onsole.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
 
       if(eventToEdit){
         this.editData(eventToEdit.asistenciaId)
@@ -255,6 +267,22 @@ export class VigilanciaReportesPageComponent implements OnInit {
     if(action === 'editarencuestas'){
     }
 
+  }
+
+  private groupByUsers(list){
+    let usersMap = new Map();
+    list.forEach(t=> {
+      let index = JSON.stringify(t['asignadoId'])
+      if(usersMap.has(index)){
+        let token = usersMap.get(index);
+        token['contactos'] += t['contactos'];
+
+      }else{
+        usersMap.set(index, t)
+
+      }
+    })
+    return usersMap;
   }
 
   private editData(id: string){

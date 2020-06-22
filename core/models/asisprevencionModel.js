@@ -282,9 +282,11 @@ const auditSch = new Schema({
 
 const afectadoUpdateSch = new Schema({
     isActive:   { type: Boolean, required: false },
+    isAsistido: { type: Boolean, required: false },
     fe_llamado: { type: String, required: false },
     resultado:  { type: String, required: false },
     tipo:       { type: String, required: false },
+
     vector:     { type: String, required: false },
     sintoma:    { type: String, required: false },
     slug:       { type: String, required: false },
@@ -296,6 +298,8 @@ const afectadoUpdateSch = new Schema({
 
 const afectadosFollowUpSch = new Schema({
   isActive:      { type: Boolean, required: false },
+  isAsistido:    { type: Boolean, required: false },
+
   fe_inicio:     { type: String, required: false },
   fe_ucontacto:  { type: String, required: false },
   fe_ullamado:   { type: String, required: false },
@@ -312,6 +316,7 @@ const afectadosFollowUpSch = new Schema({
   tipo:          { type: String, required: false },
   sintoma:       { type: String, required: false },
   vector:        { type: String, required: false },
+  fase:          { type: String, required: false },
 
   slug:          { type: String, required: false },
 
@@ -319,6 +324,12 @@ const afectadosFollowUpSch = new Schema({
   asignadoId:     { type: String, required: false },
   asignadoSlug:   { type: String, required: false },
  
+  isContacto:     { type: Boolean, required: false, default: false },
+  derivadoId:     { type: String, required: false },
+  derivadoSlug:   { type: String, required: false },
+ 
+ 
+
   fets_inicio:   { type: Number, required: false },
   fets_ucontacto:{ type: Number, required: false },
   fets_ullamado: { type: Number, required: false },
@@ -452,6 +463,14 @@ function buildQuery(query, today){
   }
 
   if(query['reporte'] && query['reporte']==="DOMICILIOS"){
+      q = {
+            avance: {$ne: 'anulado'},
+            isVigilado: true,
+          }
+      return q;
+  }
+
+  if(query['reporte'] && query['reporte']==="ASIGNACIONCASOS"){
       q = {
             avance: {$ne: 'anulado'},
             isVigilado: true,
@@ -686,11 +705,14 @@ function buildQuery(query, today){
   }
 
   if(query['userId']){
-    q["followUp.asignadoId"] = query['userId'];
+    q['$or'] = [{'followUp.asignadoId': query['userId']}, {'followUp.derivadoId': query['userId']}, ];
 
   }
 
+  if(query['asignadoId']){
+    q["followUp.asignadoId"] = query['asignadoId'];
 
+  }
 
   return q;
 }
@@ -999,7 +1021,8 @@ exports.findAll = function (errcb, cb) {
 const findByQueryProcessFunction = {
 
   //'DOMICILIOS' : buildDomiciliosTableReport,
-  'REDCONTACTOS' : buildRedContactos, // grafo loco
+  'REDCONTACTOS'    : buildRedContactos, // grafo loco
+  'ASIGNACIONCASOS' : buildCasosPorUsuario, // Cuántos afectados tiene asignado cada usuario
 
 };
 
@@ -1072,6 +1095,91 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
 
     findByQueryProcessFunction[reporte](movimientos, query, errcb, cb);
   }
+
+}
+
+function buildCasosPorUsuario(movimientos, query, errcb, cb){
+  let contactosMap = agruparCasosIndices(movimientos);
+  sumarCasosPorUsuario(movimientos, contactosMap);
+  pushBackCasosPorUsuario(contactosMap, errcb, cb);
+
+
+}
+function pushBackCasosPorUsuario(contactosMap, errcb, cb){
+  let returnArray = [];
+  for(let value of contactosMap.values()){
+    if(value.isAsignado) returnArray.push(value);
+  }
+  cb(returnArray)
+
+}
+
+
+function agruparCasosIndices(movimientos){
+      let contactosMap = new Map();
+      if(movimientos && movimientos.length){
+
+          movimientos.forEach(asis => {
+
+            if(asis.casoIndice && asis.casoIndice.parentId){
+              let index = JSON.stringify(asis.casoIndice.parentId)
+
+              if(contactosMap.has(index)){
+                contactosMap.get(index).contactos  += 1;
+
+              }else {
+                let data = {
+                  contactos: 1
+                }
+                contactosMap.set(index, data)
+
+              }
+            }
+          });
+      }
+      return contactosMap;  
+}
+
+function sumarCasosPorUsuario(movimientos, contactMap){
+    movimientos.forEach(asis => {
+      let isAsignado = asis.followUp && asis.followUp.isAsignado;
+      let hasCasoIndice = asis.casoIndice && asis.casoIndice.parentId;
+
+
+      //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), contactMap.get(index), contactMap.has(index))
+      if(isAsignado){
+        let index = JSON.stringify(asis._id);
+
+        if(contactMap.has(index)){
+
+          let token = contactMap.get(index);
+          token['isAsignado'] = true;
+          token['asignadoId'] = asis.followUp.asignadoId;
+          token['asignadoSlug'] = asis.followUp.asignadoSlug;
+          token['isCasoIndice'] = true;
+          token['isHuerfano'] = false;
+          token['asistenciaId'] = asis._id;
+          token['asistenciaSlug'] = asis.requeridox.slug;
+
+        }else {
+          if(!hasCasoIndice){
+            let token = {};
+
+            token['contactos'] = 1;
+            token['isAsignado'] = true;
+            token['asignadoId'] = asis.followUp.asignadoId;
+            token['asignadoSlug'] = asis.followUp.asignadoSlug;
+            token['isCasoIndice'] = false;
+            token['isHuerfano'] = true;
+            token['asistenciaId'] = asis._id;
+            token['asistenciaSlug'] = asis.requeridox.slug;
+            contactMap.set(index, token)
+
+          }
+
+        }
+      }  
+    })
 
 }
 

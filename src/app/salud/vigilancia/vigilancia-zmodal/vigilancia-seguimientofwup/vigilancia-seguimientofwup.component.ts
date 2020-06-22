@@ -154,6 +154,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
 		afectado.slug = token.slug;
 		afectado.isActive = token.isActive;
+    afectado.isAsistido = token.isAsistido;
 
 		if(token.resultado === LLAMADO_LOGRADO){
 			afectado.fe_ucontacto = token.fe_llamado;
@@ -191,6 +192,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
 
   	this.seguimientoEvent.isActive = this.afectadoFollowUp.isActive;
+    this.seguimientoEvent.isAsistido = this.afectadoFollowUp.isAsistido;
   	this.seguimientoEvent.tipo = this.afectadoFollowUp.tipo;
     //this.seguimientoEvent.sintoma = this.afectadoFollowUp.sintoma;
 
@@ -210,7 +212,9 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   private initForEdit(){
     this.formClosed = false;
     this.form.reset({
-      isActive: this.seguimientoEvent.isActive,
+      isActive:   this.seguimientoEvent.isActive,
+      isAsistido: this.seguimientoEvent.isAsistido,
+
       fe_llamado: this.seguimientoEvent.fe_llamado,
       resultado:  this.seguimientoEvent.resultado,
       internadoFup:  this.seguimientoEvent.internadoFup,
@@ -259,6 +263,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   private initForm(){
     this.form = this.fb.group({
       isActive:       [null],
+      isAsistido:     [null],
+
       internadoFup:   [null,  Validators.compose( [Validators.required])],
       resultado:      [null,  Validators.compose( [Validators.required])],
       sintoma:        [null,  Validators.compose( [Validators.required])],

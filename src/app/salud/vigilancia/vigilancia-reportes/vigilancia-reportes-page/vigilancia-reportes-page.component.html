@@ -63,6 +63,23 @@
 
 		</ng-container>
 
+		<div *ngIf="showAsignacionUsuarios">
+
+			<div class="container">
+					<p class="panel-header-text">Seguimiento de afectados/as por Usuario/a</p>
+			    <div class="row" *ngFor="let token of usersMap.values()">
+			      <div class="col-md-3">
+			      	<span class="">{{ token.asignadoSlug }}</span>
+			      </div>
+			      <div class="col-md-1">
+			      	<span class="">{{ token.contactos }}</span>
+			      </div>
+				</div>
+			</div>
+		</div>
+
+
+
 		<ng-container *ngIf='showData'>
       <div *ngIf="renderMap">
         <agm-map [latitude]="baseLatLng.lat" [longitude]="baseLatLng.lng" [zoom]="zoom">

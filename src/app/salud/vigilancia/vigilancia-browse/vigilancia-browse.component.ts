@@ -159,6 +159,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       tipoSeguimiento: [null],
       qIntents:        [null],
       qNotSeguimiento: [null],
+      asignadoId:      [null],
       casosIndice:     [null],
       avanceCovid:     [null],
       sintomaCovid:    [null],
@@ -188,6 +189,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         casosIndice:  query.casosIndice ? true: false,
 
         sintomaCovid:   query.sintomaCovid,
+        asignadoId:    query.asignadoId,
         avanceCovid:   query.avanceCovid,
 
         isActiveSisa: query.isActiveSisa,
@@ -235,6 +237,7 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
     entity.qIntents =   fvalue.qIntents;
     entity.qNotSeguimiento =   fvalue.qNotSeguimiento;
+    entity.asignadoId = fvalue.asignadoId;
 
     entity.casosIndice =   fvalue.casosIndice ? 1: 0;
 

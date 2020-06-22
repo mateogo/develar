@@ -2,24 +2,40 @@
 	<form [formGroup]="form">
 		
 	<div class="row">
-	  <div  class="col">
+	  <div  class="col-md-6">
 				<mat-checkbox 
 					[checked]="form.controls['isActive'].value===true"
 					[formControl]="form.controls['isActive']" >
-					Caso de seguimiento activo vigente </mat-checkbox>
+					Caso activo de seguimiento epidemiológico</mat-checkbox>
 		</div>
-		<div  class="col">
+		<div  class="col-md-6">
 				<p class="text-resaltado" >{{ displayAs }}</p>
+		</div>
+	</div>
+	<div class="row">
+	  <div  class="col-md-6">
+				<mat-checkbox 
+					[checked]="form.controls['isAsistido'].value===true"
+					[formControl]="form.controls['isAsistido']" >
+					Caso activo de asistencia social directa </mat-checkbox>
+		</div>
+		<div  class="col-md-6">
+				<p class="text-resaltado" >{{ contactoDe }}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div  class="col-md-6 offset-md-6">
+				<p class="text-resaltado" >{{ bajoTutelaDe }}</p>
 		</div>
 	</div>
 
 	<div class="row">
-	    <div  class="col">
+	    <div  class="col-md-6">
 	        <mat-form-field>
 	          <input  matInput [formControl]="form.controls['fe_inicio']" placeholder="Fecha inicio seguimiento" >
 	        </mat-form-field>
 	    </div>
-		<div class="col" style="text-align: center;">
+		<div class="col-md-6" style="text-align: center;">
 			<mat-form-field>
 				<mat-label>Tipo de seguimiento</mat-label>
 				<mat-select #fldAsignar  formControlName='tipo'
@@ -36,7 +52,18 @@
 		</div>
 	</div>
 
+	<p class="text-resaltado">Esquema de seguimiento, en tanto caso índice de un grupo de contactos estrechos</p>
 	<div class="row" >
+	  <div class="col-md-4">
+	    <mat-form-field>
+	      <mat-select #fldFase placeholder="Fase de seguimiento"
+	          [formControl]="form.controls['fase']"
+	          (selectionChange)="changeSelectionValue('fase',fldFase.value)" >
+	        <mat-option *ngFor="let item of faseOptList" 
+	          [value]="item.val" >{{ item.label }}</mat-option>
+	      </mat-select>
+	    </mat-form-field>
+	  </div>
 
 	  <div class="col-md-4">
 	    <mat-form-field>
@@ -49,19 +76,24 @@
 	    </mat-form-field>
 	  </div>
 
-	  <div class="col d-flex align-items-center">
+	  <div class="col-md-4 d-flex align-items-center">
         <mat-checkbox [checked]='false' 
         				[formControl]="form.controls['isAsignado']"
         				(change)="changeAsignado($event)">
         Selección activa: {{ asignadoSlug }}</mat-checkbox>
 	  </div>
-	  <div class="col d-flex align-items-center">
+	</div>
+	<div class="row">
+	  <div class="col-md-8 d-flex align-items-center">
 			<button mat-button color="warn" class='m-1'
 					title='Propaga la selección realizada a la lista de contactos que no tengan una asignación previa.'
 					(click)="propagateAsignee()">
 			    {{ asigneeMsj }} </button>
 	  </div>
+
 	</div>
+
+
 
 	<div class="d-md-flex justify-content-start">
 		<button mat-raised-button color="primary" class='m-1'

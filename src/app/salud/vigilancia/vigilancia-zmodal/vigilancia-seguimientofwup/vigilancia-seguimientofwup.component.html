@@ -7,24 +7,30 @@
 					[checked]="form.controls['isActive'].value===true"
 					[formControl]="form.controls['isActive']" >
 					Caso de seguimiento activo vigente </mat-checkbox>
-		</div>
-		<div  class="col">
-			<div class="row">
-				<div  class="col">
-					<p class="text-resaltado" >{{ displayAs }}</p>
-				</div>
 			</div>
-			<div class="row">
-				<div  class="col">
-					<p class="text-resaltado" >Síntoma COVID: {{ estadoSintoma }}</p>
-				</div>
+			<div  class="col">
+				<p class="text-resaltado" >{{ displayAs }}</p>
 			</div>
-			<div class="row">
-				<div  class="col">
+	</div>
+	
+	<div class="row">
+		  <div  class="col-md-6">
+					<mat-checkbox 
+						[checked]="form.controls['isAsistido'].value===true"
+						[formControl]="form.controls['isAsistido']" >
+						Caso activo de asistencia social directa </mat-checkbox>
+			</div>
+			<div  class="col">
+				<p class="text-resaltado" >Síntoma COVID: {{ estadoSintoma }}</p>
+			</div>
+	</div>
+
+
+	<div class="row">
+				<div  class="col-md-6 offset-md-6">
 					<p class="text-resaltado" >Internado: {{ internacionTxt }}</p>
 				</div>
-			</div>
-		</div>
+
 	</div>
 
 

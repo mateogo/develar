@@ -135,7 +135,7 @@
                     </mat-checkbox>
                   <span class='mat-data'>LLAMADOS: seleccionar casos bajo seguimiento</span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <mat-form-field>
             <mat-select #fldTipoSeguimiento placeholder="Tipo de seguimiento"
                 [formControl]="form.controls['tipoSeguimiento']"
@@ -159,7 +159,19 @@
           </mat-form-field>
         </div>
       </div>
-      <hr>
+      <div class="row" >
+        <div class="col-md-3 offset-md-4">
+          <mat-form-field>
+            <mat-select #fldAsignadoId placeholder="Asignado a..."
+                [formControl]="form.controls['asignadoId']"
+                (selectionChange)="changeSelectionValue('asignadoId',fldAsignadoId.value)" >
+              <mat-option *ngFor="let item of usersOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
 
       <div class="row" >
         <div class="col-md-4 d-flex align-items-center" 
