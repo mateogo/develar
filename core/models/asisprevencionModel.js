@@ -485,7 +485,6 @@ function buildQuery(query, today){
             avance: {$ne: 'anulado'},
             isVigilado: true,
           }
-      return q;
   }
 
   if(query['reporte'] && query['reporte']==="LABNEGATIVO"){

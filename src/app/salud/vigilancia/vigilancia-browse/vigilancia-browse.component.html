@@ -330,6 +330,23 @@
   </div>
 
 
+    <ng-container *ngIf="showReporteBox"  >
+      <div class="row" >
+        <div class="col">
+          <mat-form-field>
+            <mat-select #fldTipoReporte placeholder="Tipo de reporte"
+                [formControl]="form.controls['reporte']"
+                (selectionChange)="changeSelectionValue('reporte',fldTipoReporte.value)" >
+              <mat-option *ngFor="let item of reportesOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+
+
+
 
 	<div class="d-md-flex justify-content-start align-items-center additional-info">
 	  <button mat-raised-button color="primary" type="submit" 

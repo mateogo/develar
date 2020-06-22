@@ -274,20 +274,37 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }
 
     if(action === 'asignar'){
-      let eventToEdit = selected && selected.length && selected[0];
+      //let eventToEdit = selected && selected.length && selected[0];
       //c onsole.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
-      this.dsCtrl.fetchAsistenciaById(eventToEdit.asistenciaId).then(asis =>{
-        //c onsole.log('Fetched: [%s]', asis.ndoc)
-        this.openSeguimientoModal(asis)
+ 
+       let iterator$ = new Subject<boolean>();
+       let index = 0;
 
+       iterator$.subscribe((step: boolean)=>{
+          if(index < selected.length){
+            this.loadAsistenciaToEdit(selected[index].asistenciaId, iterator$)
+            index += 1;
+          }
+       })
 
-      })
-      
+       //showTime!!
+       iterator$.next(true);
     }
 
   }
 
-  private openSeguimientoModal(asistencia: Asistencia){
+
+  private loadAsistenciaToEdit(asistenciaId, iterator$: Subject<boolean>){
+      this.dsCtrl.fetchAsistenciaById(asistenciaId).then(asis =>{
+        //c onsole.log('Fetched: [%s]', asis.ndoc)
+        if(asis){
+          this.openSeguimientoModal(asis, iterator$)
+        }
+
+      })
+  }
+
+  private openSeguimientoModal(asistencia: Asistencia, iterator$: Subject<boolean>){
     if(!this.checkUserPermission(ROLE_ADMIN)){
       this.dsCtrl.openSnackBar('Acceso restringido', 'ACEPTAR');
       return;
@@ -307,16 +324,16 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
       // c onsole.log('dialog CLOSED')
-      if(res && res.token){
+      setTimeout(()=> {
+        iterator$.next(true);
 
-      }
+      },200)
 
     });    
   }
 
   private checkUserPermission(role: string):boolean{
     return this.dsCtrl.isUserMemberOf(role);
-
   }
 
   private groupByUsers(list){

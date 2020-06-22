@@ -25,6 +25,7 @@ const SEARCH_NEXT = 'search_next';
 export class VigilanciaBrowseComponent implements OnInit {
 	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
   @Input() export = true;
+  @Input() showReporteBox = false;
 	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
@@ -40,6 +41,7 @@ export class VigilanciaBrowseComponent implements OnInit {
   public avanceSisaOptList =   [];
   public avanceCovidOptList =  [];
   public sintomaCovidOptList =  [];
+  public reportesOptList =     [];
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -150,6 +152,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       pendLaboratorio: [null],
       actualState:     [null],
       isSeguimiento:   [null],
+      reporte:         [null],   
 
       isActiveSisa:    [null],
       avanceSisa:      [null],
@@ -178,6 +181,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         isVigilado: query.isVigilado,
         pendLaboratorio: query.pendLaboratorio,
         actualState: query.actualState,
+        reporte: query.reporte,
         hasCovid:   query.hasCovid,
         casoCovid:   query.casoCovid,
         vigiladoCovid:   query.vigiladoCovid,
@@ -228,6 +232,7 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.isVigilado =   fvalue.isVigilado;
     entity.pendLaboratorio =   fvalue.pendLaboratorio;
     entity.actualState  = fvalue.actualState;
+    entity.reporte = fvalue.reporte;
     entity.hasCovid =     fvalue.hasCovid;
     entity.casoCovid =   fvalue.casoCovid,
 
@@ -279,8 +284,10 @@ export class VigilanciaBrowseComponent implements OnInit {
                   this.avanceSisaOptList,
                   this.avanceCovidOptList,
                   this.sintomaCovidOptList,
+                  this.reportesOptList
                  ];
 
+    this.reportesOptList =     AsistenciaHelper.getOptionlist('reportesVigilancia');
     this.actionOptList =       AsistenciaHelper.getOptionlist('actions');
     this.sectorOptList =       AsistenciaHelper.getOptionlist('sectores');
     this.ciudadesOptList =     AsistenciaHelper.getOptionlist('ciudades');
