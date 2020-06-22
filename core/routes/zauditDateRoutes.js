@@ -30,6 +30,33 @@ router.get('/casoindice', function (req, res) {
 });
 
 
+/**
+ * Regenera el contador de contactos estrechos
+ */
+router.get('/contactosestrechos', function (req, res) {
+    service.contactsEstrechos(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+/**
+ * Pasa el caso de 'asignado' a 'contacto', es para que las asignaciones sean por nodo raiz
+ */
+router.get('/migrarasignados', function (req, res) {
+    service.migrarAsignados(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
 
 /**
  * Recorre Asistencias, y les actualiza la 'edad' buscando este dato en Person

@@ -233,6 +233,8 @@ export class Asistencia {
 		osocial:     string;
 		osocialTxt:  string;
 
+		contactosEstrechos?:number = 0; // helper de listado
+
 		idbrown:     string;
 		fecomp_tsa:  number;
 		fecomp_txa:  string;
@@ -707,14 +709,22 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 				td.locacion = locacionToPrint(sol.locacion);
 			}
 
+			td.qcontactos = sol.contactosEstrechos;
+			if(sol.followUp){
+				td.asignadoSlug = sol.followUp.asignadoSlug;
+				td.asignadoId = sol.followUp.asignadoId;
+
+				td.fup_isActive = sol.followUp.isActive;
+				td.fup_isAsistido = sol.followUp.isAsistido;
+				td.fup_fe_inicio = sol.followUp.fe_inicio;
+
+			}
+
 			td.covidTxt = ''
 			td.covidActualState= '';
 			td.covidSintoma = '';
 			td.covidAvance = ''
-			if(sol.followUp){
-
-			}
-
+			
 			if(sol.infeccion){
 
 				let fecha = sol.infeccion.actualState === 1 ?  devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_inicio): devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_confirma);
@@ -845,7 +855,7 @@ export class AsistenciaTable {
 		fup_isAsistido: boolean = false;
 
 		asignadoId: string = '';
-		fe_inicio: string = '';
+		fup_fe_inicio: string = '';
 		qcontactos: number = 0;
 		
 		lab_laboratorio: string = '';
@@ -1174,6 +1184,7 @@ const frecuenciaOptList: Array<any> = [
 
 const tableActions = [
       {val: 'no_definido',  label: 'Seleccione opción',   slug:'Seleccione opción' },
+      {val: 'asignar',   label: 'Asignar usuario seguimiento',   slug:'Asignar usuario seguimiento' },
 ]
 
 const urgenciaOptList = [

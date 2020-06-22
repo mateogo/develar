@@ -376,6 +376,7 @@ const asisprevencionSch = new Schema({
     telefono:    { type: String, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },
+    contactosEstrechos: { type: Number, required: false },
 
     idbrown:     { type: String, required: false },
     fecomp_tsa:  { type: Number, required: true },
@@ -1023,6 +1024,7 @@ const findByQueryProcessFunction = {
   //'DOMICILIOS' : buildDomiciliosTableReport,
   'REDCONTACTOS'    : buildRedContactos, // grafo loco
   'ASIGNACIONCASOS' : buildCasosPorUsuario, // Cuántos afectados tiene asignado cada usuario
+  'CONTACTOS': buildContactosMaster // Selecciona los casos índices + huérfanos
 
 };
 
@@ -1087,6 +1089,7 @@ exports.findByQuery = function (query, errcb, cb) {
 };
 
 function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
+  console.log('DispachQuery[%s]', movimientos.length)
 
   if(!reporte || !findByQueryProcessFunction[reporte]){
       cb(movimientos);
@@ -1095,6 +1098,40 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
 
     findByQueryProcessFunction[reporte](movimientos, query, errcb, cb);
   }
+
+}
+
+function buildContactosMaster(movimientos, query, errcb, cb){
+    getMapDeContactosEstrechos().then((map)=>{
+      filterContactosMaster(movimientos, map, errcb, cb)
+
+      //dispatchExcelStream(reporte, entities, query, req, res)
+
+    })
+
+}
+
+function filterContactosMaster(movimientos, contactMap, errcb, cb){
+  let filteredList = movimientos.filter(asis=> {
+    let index = JSON.stringify(asis._id);
+    if(contactMap.has(index)){
+      asis['contactosEstrechos'] = contactMap.get(index).contactos;
+      return true;
+    }
+
+    if(asis.followUp && asis.followUp.isAsignado && asis.followUp.asignadoId){
+      asis['contactosEstrechos'] = 1;
+      return true;
+
+    }
+
+    if(!(asis.casoIndice && asis.casoIndice.parentId)){
+      asis['contactosEstrechos'] = 0;
+      return true;
+    }
+
+  })
+  cb(filteredList);
 
 }
 
@@ -1470,6 +1507,9 @@ function fetchMovimientos(query, req, res){
 
               })
 
+            }else{
+                dispatchExcelStream(reporte, [], query, req, res)
+
             }
         }
     });
@@ -1495,12 +1535,16 @@ function getMapDeContactosEstrechos(){
               let index = JSON.stringify(asis.casoIndice.parentId)
 
               if(contactosMap.has(index)){
-                contactosMap.set(index, contactosMap.get(index) + 1)
+                contactosMap.get(index).contactos  += 1;
 
               }else {
-                contactosMap.set(index, 1)
+                let data = {
+                  contactos: 1
+                }
+                contactosMap.set(index, data)
 
               }
+
             }
           });
       }
@@ -1516,10 +1560,16 @@ function identificarContactosEstrechos(movimientos, casosIndices){
     //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), casosIndices.get(index), casosIndices.has(index))
 
     if(casosIndices.has(index)){
-      asis['contactosEstrechos'] = casosIndices.get(index)
+      asis['contactosEstrechos'] = casosIndices.get(index).contactos
 
     }else {
-      asis['contactosEstrechos'] = 0
+      if(asis.followUp && asis.followUp.isAsignado && asis.followUp.asignadoId){
+        asis['contactosEstrechos'] = 1;
+
+      }else {
+        asis['contactosEstrechos'] = 0;
+
+      }
     }
   })
 

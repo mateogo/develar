@@ -332,7 +332,7 @@ export class VigilanciaViewComponent implements OnInit {
 
     toPrint.action = AsistenciaHelper.getPrefixedOptionLabel('actions', '', token.action);
     toPrint.sector = AsistenciaHelper.getPrefixedOptionLabel('sectores', 'Sector', token.sector);
-    toPrint.solicitante = token.requeridox.slug + (token.fenactx ? ' Fe Nac: '+ token.fenactx + ' ' : ' ')  + (token.edad ? ' ('+ token.edad + ')' : ' ')  + (token.sexo ? ' ('+ token.sexo + ')' : ' ') + ' ::  Tel: ' + (token.telefono || '');
+    toPrint.solicitante = token.requeridox.slug + (token.fenactx ? ' Fe Nac: '+ token.fenactx + ' ' : ' ')  + (token.edad ? ' ('+ token.edad + ')' : ' ')  + (token.sexo ? ' ('+ token.sexo + ')' : ' ') + (token.contactosEstrechos ? ' #'+ token.contactosEstrechos + ' ' : ' ') +' ::  Tel: ' + (token.telefono || '');
     toPrint.cPrefix = token.compPrefix;
     toPrint.dni  = 'DNI: ' + token.ndoc; 
     toPrint.cName = token.compName;

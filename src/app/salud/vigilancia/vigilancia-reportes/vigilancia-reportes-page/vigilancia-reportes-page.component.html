@@ -63,21 +63,20 @@
 
 		</ng-container>
 
-		<div *ngIf="showAsignacionUsuarios">
+		<ng-container *ngIf="showAsignacionUsuarios">
 
 			<div class="container">
-					<p class="panel-header-text">Seguimiento de afectados/as por Usuario/a</p>
-			    <div class="row" *ngFor="let token of usersMap.values()">
-			      <div class="col-md-3">
-			      	<span class="">{{ token.asignadoSlug }}</span>
-			      </div>
-			      <div class="col-md-1">
-			      	<span class="">{{ token.contactos }}</span>
-			      </div>
+				<p class="panel-header-text">Seguimiento de afectados/as por Usuario/a</p>
+		    <div class="row" *ngFor="let token of usersMap|keyvalue">
+		      <div class="col-md-3">
+		      	<span class="">{{ token.value.asignadoSlug }}</span>
+		      </div>
+		      <div class="col-md-1">
+		      	<span class="">{{ token.value.contactos }}</span>
+		      </div>
 				</div>
 			</div>
-		</div>
-
+		</ng-container>
 
 
 		<ng-container *ngIf='showData'>
@@ -120,7 +119,8 @@
 
 
 			<ng-container *ngIf='!view.value || view.value=="list"'>
-				<vigilancia-reportes-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
+				<vigilancia-reportes-table [displayedColumns]='tableActualColumns' 
+							(actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
 			</ng-container>
 
 		</ng-container>

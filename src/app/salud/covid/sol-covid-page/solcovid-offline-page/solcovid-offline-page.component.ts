@@ -79,8 +79,6 @@ export class SolcovidOfflinePageComponent implements OnInit {
     //this.localService.testLocalStorage();
 
     let algo = LocalStorageService.loadInitialState();
-    console.log('localStorage Initial')
-    console.dir(algo);
   }
 
 
@@ -88,7 +86,6 @@ export class SolcovidOfflinePageComponent implements OnInit {
   /*      Events        */
   /**********************/
   nuevaEncuesta(){
-  	console.log('Nueva Encuesta TO BEGIN')
     this.initNewAsistencia();
     this.editForm();
   }
@@ -125,7 +122,6 @@ export class SolcovidOfflinePageComponent implements OnInit {
   }
 
   updateAsistenciaToken(event: UpdateAsistenciaEvent){
-    console.log('Offline PAGE BUBBLED: [%s]', event.action);
     if(event.action === UPDATE){
       this.resetForm();
       this.showLocalData = false;
@@ -137,21 +133,19 @@ export class SolcovidOfflinePageComponent implements OnInit {
       this.editForm();
 
     }else if(event.action === UPLOAD){
-      console.log('UPLOAD TO BEGIN')
+      //c onsole.log('UPLOAD TO BEGIN')
 
     }
   }
 
   private testAsistenciaList(asistencia: Asistencia){
     let bingo = this.asistenciasList.find(t => t=== asistencia);
-    console.log('testAsistencia [%s]', bingo )
 
   }
 
   private saveInLocalStorage(asistencia: Asistencia){
 
     let asis = this.asistenciasList.find(t => t === asistencia);
-    console.log('saveInLocal [%s]', asis);
 
     if(!asis){
       this.asistenciasList.push(asistencia);

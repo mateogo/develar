@@ -398,12 +398,21 @@ export class VigilanciaVinculosComponent implements OnInit {
   }
 
   private saveToken(){
+    // (0) Actualiza el contador de contactos estrechos;
     // (a) Actualiza los datos del vínculo;
     // (b) Busca / actualiza la S/Asistencia, si la hay
     // (c) Actualiza la mainPerson, la que hostea el vinculo
-    this.saveVinculoRelation(); // (a)
+    this.updateContactosEstrechos(); // (a)
   }
 
+  private updateContactosEstrechos(){
+    let count = this.familyList.length || 0;
+    let contactos = { contactosEstrechos: count }; 
+    this.ctrl.upsertAsistenciaToken(this.asistencia, contactos ).then(asis => {
+      this.asistencia = asis;
+      this.saveVinculoRelation(); // (a)
+    })
+  }
  
   private saveMainPerson(){ //(c)
     this.vinculo.personId = this.vPerson._id;

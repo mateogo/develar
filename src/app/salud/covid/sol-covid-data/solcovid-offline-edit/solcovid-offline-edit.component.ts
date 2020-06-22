@@ -141,7 +141,6 @@ export class SolcovidOfflineEditComponent implements OnInit {
 
  
   changeSalud(){
-    console.log('ChangeSalud')
     this.showAmbitoLaboral = !this.showAmbitoLaboral
 
   }

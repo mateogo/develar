@@ -84,7 +84,7 @@ export class VigilanciaListComponent implements OnInit {
       this.asistenciaDataSource.connect().subscribe(list => {
 
         // this.items = list;
-        // console.log('list connected: [%s]', list && list.length)
+        // c onsole.log('list connected: [%s]', list && list.length)
 
       })
 

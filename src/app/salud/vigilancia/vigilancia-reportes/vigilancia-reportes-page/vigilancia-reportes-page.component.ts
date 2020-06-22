@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+
+import { VigilanciaSeguimientoComponent } from '../../vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
 
 import { SaludController } from '../../../salud.controller';
 
@@ -10,6 +13,7 @@ import { 	Asistencia,
           AsistenciaTable,
           VigilanciaBrowse,
           AsistenciaSig, 
+          UpdateAsistenciaEvent,
 					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 const SEARCH = 'search';
@@ -21,6 +25,9 @@ const R_DOMICILIOS = 'DOMICILIOS'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
 const R_ASIGNACION = 'ASIGNACIONCASOS'
+const R_MANAGECONTACTOS = 'CONTACTOS'
+
+const ROLE_ADMIN = 'vigilancia:admin';
 
 @Component({
   selector: 'vigilancia-reportes-page',
@@ -62,6 +69,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
       private dsCtrl: SaludController,
     	private router: Router,
     	private route: ActivatedRoute,
+      public dialog: MatDialog,
 
     ) { }
 
@@ -206,6 +214,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
       this.showAsignacionUsuarios = true;
       return;
 
+    }else if(this.query && this.query.reporte === R_MANAGECONTACTOS){
+      this.tableActualColumns = SEGUIMIENTO
 
     }else if(this.query && this.query.reporte === R_CONTACTOS){
       this.tableActualColumns = LABORATORIO;
@@ -256,7 +266,6 @@ export class VigilanciaReportesPageComponent implements OnInit {
     if(action === 'editar'){
 
       let eventToEdit = selected && selected.length && selected[0];
-      //c onsole.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
 
       if(eventToEdit){
         this.editData(eventToEdit.asistenciaId)
@@ -264,8 +273,49 @@ export class VigilanciaReportesPageComponent implements OnInit {
       }
     }
 
-    if(action === 'editarencuestas'){
+    if(action === 'asignar'){
+      let eventToEdit = selected && selected.length && selected[0];
+      //c onsole.log('Table Action: [%s]', eventToEdit, eventToEdit.asistenciaId)
+      this.dsCtrl.fetchAsistenciaById(eventToEdit.asistenciaId).then(asis =>{
+        //c onsole.log('Fetched: [%s]', asis.ndoc)
+        this.openSeguimientoModal(asis)
+
+
+      })
+      
     }
+
+  }
+
+  private openSeguimientoModal(asistencia: Asistencia){
+    if(!this.checkUserPermission(ROLE_ADMIN)){
+      this.dsCtrl.openSnackBar('Acceso restringido', 'ACEPTAR');
+      return;
+    }
+
+    const dialogRef = this.dialog.open(
+      VigilanciaSeguimientoComponent,
+      {
+        width: '800px',
+        data: {
+
+          asistencia: asistencia,
+
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
+      // c onsole.log('dialog CLOSED')
+      if(res && res.token){
+
+      }
+
+    });    
+  }
+
+  private checkUserPermission(role: string):boolean{
+    return this.dsCtrl.isUserMemberOf(role);
 
   }
 
@@ -335,6 +385,26 @@ const DOMICILIO = [
           'city',
           'locacion',
           'street2',
+]
+
+const SEGUIMIENTO = [
+          'select',
+          'ndoc',
+          'personSlug',
+          'telefono',
+          'edad',
+          "qcontactos",
+          "asignadoSlug",
+          "fup_fe_inicio",
+          'covidActualState',
+          'covidSintoma',
+          'covidAvance',
+          'covidTxt',
+          'reportadoPor',
+          'fe_reportado',
+          'lab_laboratorio',
+          'lab_fe_toma',
+          'lab_estado'
 ]
 
 const LABORATORIO = [

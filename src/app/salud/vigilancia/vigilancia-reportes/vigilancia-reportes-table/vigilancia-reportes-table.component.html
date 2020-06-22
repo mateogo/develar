@@ -244,6 +244,24 @@
       <mat-cell *matCellDef="let element"> {{element.covidAvance}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="qcontactos">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Contactos</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.qcontactos}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="asignadoSlug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Asignado</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asignadoSlug}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="asignadoId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Asignado</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asignadoId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="fup_fe_inicio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> InicioSeguim</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fup_fe_inicio}} </mat-cell>
+    </ng-container>
+
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 

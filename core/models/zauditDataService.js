@@ -63,6 +63,179 @@ function buildQuery(query){
 }
 
 
+/**************************************************************************/
+/***** MIGRAR ASIGNADOS *****/
+/************************************************************************/
+exports.migrarAsignados = function(errcb, cb){
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'}
+  }
+
+  AsisprevencionRecord.find(regexQuery)
+    .lean()
+    .exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+
+        }else{
+          if(entities && entities.length ){
+
+            let count = reviewAsignacion(entities, errcb, cb);
+            cb({actualizados: count});
+
+
+          }else{
+            cb({error: 'no entities'})
+          }
+        }
+  });
+}
+
+function reviewAsignacion(movimientos, errcb, cb){
+    let count = 0;
+    movimientos.forEach(asis => {
+      //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), contactMap.get(index), contactMap.has(index))
+      let fup = asis.followUp;
+      let contactos = asis.contactosEstrechos || 0;
+
+      if(fup && fup.isAsignado && !contactos){
+        if(!fup.isContacto && !fup.derivadoId){
+          fup.isContacto = true;
+          fup.derivadoId = fup.asignadoId;
+          fup.derivadoSlug = fup.asignadoSlug;          
+        }
+
+        fup.isAsignado = false;
+        fup.asignadoId = '';
+        fup.asignadoSlug = '';
+        updateFollowUp(asis, fup )
+        count += 1;
+
+      }
+
+    })
+
+    return count;
+
+
+}
+
+function updateFollowUp(asistencia, fup){
+  let token = {followUp: fup};
+  AsisprevencionRecord.findByIdAndUpdate(asistencia._id, token).exec();
+}
+
+
+/**************************************************************************/
+/***** CONTACTOS ESTRECHOS - REGENERACIÓN DEL DATO EN ASISPREVENCION *****/
+/************************************************************************/
+exports.contactsEstrechos = function(errcb, cb){
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'}
+  }
+
+  AsisprevencionRecord.find(regexQuery)
+    .lean()
+    .exec(function(err, entities) {
+        if (err) {
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+            errcb(err);
+
+        }else{
+          if(entities && entities.length ){
+
+            buildCasosPorUsuario(entities, errcb, cb);
+
+          }else{
+            cb({error: 'no entities'})
+          }
+        }
+  });
+}
+
+function buildCasosPorUsuario(movimientos, errcb, cb){
+  let contactosMap = agruparCasosIndices(movimientos);
+  let count = sumarCasosPorUsuario(movimientos, contactosMap);
+  cb({actualizados: count});
+}
+
+function updateContactosEstrechos(asistencia, contactos){
+  let token = {contactosEstrechos: contactos};
+  AsisprevencionRecord.findByIdAndUpdate(asistencia._id, token).exec();
+}
+
+
+function sumarCasosPorUsuario(movimientos, contactMap){
+    let count = 0;
+    movimientos.forEach(asis => {
+      //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), contactMap.get(index), contactMap.has(index))
+        let index = JSON.stringify(asis._id);
+
+        if(contactMap.has(index)){
+          updateContactosEstrechos(asis, contactMap.get(index).contactos )
+          count += 1;
+
+
+        }
+
+    })
+    return count;
+
+}
+
+
+function agruparCasosIndices(movimientos){
+      let contactosMap = new Map();
+      if(movimientos && movimientos.length){
+
+          movimientos.forEach(asis => {
+
+            if(asis.casoIndice && asis.casoIndice.parentId){
+              let index = JSON.stringify(asis.casoIndice.parentId)
+
+              if(contactosMap.has(index)){
+                contactosMap.get(index).contactos  += 1;
+
+              }else {
+                let data = {
+                  contactos: 1
+                }
+                contactosMap.set(index, data)
+
+              }
+            }
+          });
+      }
+      return contactosMap;  
+}
+
+
+function pushBackCasosPorUsuario(contactosMap, errcb, cb){
+  let returnArray = [];
+  for(let value of contactosMap.values()){
+    if(value.isAsignado) returnArray.push(value);
+  }
+  cb(returnArray)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*******************************/
 /***** NUCLEO CASO INDICE *****/
 /*****************************/
@@ -90,6 +263,9 @@ exports.nucleoCasoIndice = function(errcb, cb){
         }
   });
 }
+
+
+
 
 function processAsistenciasForCasoIndice(entities, errcb, cb){
   console.log('processAsistencias to BEGIN: [%s]', entities.length);

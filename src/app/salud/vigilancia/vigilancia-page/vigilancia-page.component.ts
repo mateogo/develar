@@ -242,7 +242,7 @@ export class VigilanciaPageComponent implements OnInit {
   }
 
   private filterCasosIndice(list: Asistencia[]): Asistencia[]{
-    list = list.filter(token => !token.hasParent);
+    list = list.filter(token => (!token.hasParent || token.contactosEstrechos));
     return list;
   }
 
