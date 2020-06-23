@@ -113,6 +113,11 @@ import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigi
 import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
 import { SolcovidOfflineEditComponent } from './covid/sol-covid-data/solcovid-offline-edit/solcovid-offline-edit.component';
 import { SolcovidOfflinePanelComponent } from './covid/sol-covid-page/solcovid-offline-panel/solcovid-offline-panel.component';
+import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-page/vigil-seguimiento-page.component';
+import { VigilSeguimientoBrowseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-browse/vigil-seguimiento-browse.component';
+import { VigilSeguimientoPanelComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-panel/vigil-seguimiento-panel.component';
+import { VigilSeguimientoBaseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-base/vigil-seguimiento-base.component';
+import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-manage/vigil-seguimiento-manage.component';
 
 @NgModule({
   imports: [
@@ -226,6 +231,11 @@ import { SolcovidOfflinePanelComponent } from './covid/sol-covid-page/solcovid-o
     SolcovidOfflinePageComponent,
     SolcovidOfflineEditComponent,
     SolcovidOfflinePanelComponent,
+    VigilSeguimientoPageComponent,
+    VigilSeguimientoBrowseComponent,
+    VigilSeguimientoPanelComponent,
+    VigilSeguimientoBaseComponent,
+    VigilSeguimientoManageComponent,
   ],
   entryComponents: 
   [

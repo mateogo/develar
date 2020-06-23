@@ -1,3 +1,10 @@
+import { ArrayDataSource, CollectionViewer } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material';
+
+import { BehaviorSubject,  Observable, merge }       from 'rxjs';
+import { map } from 'rxjs/operators';
+
+
 import { devutils } from '../../develar-commons/utils';
 import { Serial }   from '../salud.model';
 import { Person, Address }   from '../../entities/person/person';
@@ -995,6 +1002,36 @@ export interface UpdateAsistenciaListEvent {
       type: string;
       items: Array<Asistencia>;
 };
+
+
+export class AsistenciaDataSource extends ArrayDataSource<Asistencia> {
+
+  constructor(private sourceData: BehaviorSubject<Asistencia[]>,
+              private _paginator: MatPaginator){
+    super(sourceData);
+  }
+
+  connect(): Observable<Asistencia[]> {
+
+    const displayDataChanges = [
+      this.sourceData,
+      this._paginator.page
+    ];
+
+    return merge(...displayDataChanges).pipe(
+        map(() => {
+          const data = this.sourceData.value.slice()
+
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          return data.splice(startIndex, this._paginator.pageSize);
+        })
+     );
+  }
+
+  disconnect() {}
+
+}
+
 
 
 export class AsistenciaslModel {

@@ -1,0 +1,27 @@
+$bgcolor-selectors: #d79e96;
+$color-button: #3c4e62;
+$color-destacado: #0645f5;
+
+.vigilancia-box {
+	min-height: 150px;
+}
+
+.mat-check {
+	margin: 0 5px 0 0 !important;
+}
+
+.mat-data {
+	margin-left: 5px;
+}
+
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+

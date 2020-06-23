@@ -711,6 +711,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator'],
       },
       {
+        title: 'Seguimiento afectado/as',
+        routing: '/salud/gestion/seguimiento',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Tablero epidemio',
         routing: '/salud/gestion/tableroepidemio',
         rolesOut: ['ivr:operator'],

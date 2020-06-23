@@ -3,8 +3,7 @@ import { MatPaginator, MatSort } from '@angular/material';
 
 import { ArrayDataSource, CollectionViewer } from '@angular/cdk/collections';
 
-import { BehaviorSubject,  Observable, merge, of }       from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject }       from 'rxjs';
 
 import { SaludController } from '../../salud.controller';
 
@@ -14,6 +13,7 @@ import { 	Asistencia,
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
+          AsistenciaDataSource,
 					AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 const UPDATE =     'update';
@@ -44,8 +44,6 @@ export class VigilanciaListComponent implements OnInit {
 	public showList = false;
 
   private currentAvance: string;
-
-  private paginator$: Observable<any>;
   
   private asistenciaList: BehaviorSubject<Asistencia[]>;
   private asistenciaDataSource: ArrayDataSource<Asistencia>;
@@ -131,35 +129,3 @@ export class VigilanciaListComponent implements OnInit {
 
 
 }
-
-
-class AsistenciaDataSource extends ArrayDataSource<Asistencia> {
-
-  constructor(private sourceData: BehaviorSubject<Asistencia[]>,
-              private _paginator: MatPaginator){
-    super(sourceData);
-  }
-
-  connect(): Observable<Asistencia[]> {
-
-    const displayDataChanges = [
-      this.sourceData,
-      this._paginator.page
-    ];
-
-    return merge(...displayDataChanges).pipe(
-        map(() => {
-          const data = this.sourceData.value.slice()
-
-          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-          return data.splice(startIndex, this._paginator.pageSize);
-        })
-     );
-  }
-
-  disconnect() {}
-
-}
-
-
-

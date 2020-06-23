@@ -1,0 +1,234 @@
+@import '../../../../../assets/sass/variable';
+$color-destacado: #0645f5;
+$color-button: #3c4e62;
+$color-togglebutton: #261565;
+
+$bgcolor-sisa: #9298eb;
+$bgcolor-followup: #7e98eb;
+$bgcolor-covid: #6568ff;
+$bgcolor-laboratorio: #7eaceb;
+$bgcolor-vinculofam: #6568ff;
+$bgcolor-selectors: #d79e96;
+$bgcolor-closepanel: #d76e66;
+
+$bgcolor-action-selectors: #f2eded;
+
+
+.panel-header{
+		background-color: #f2eded;
+}
+
+.panel-header-text {
+		margin: 0 0 0 15px;
+		font-weight: 700;
+		font-size: 1.4rem;
+}
+
+// .panel-header-control {
+// 		margin: 0 35px 0 15px;
+// 		font-weight: 400;
+// 		font-size: 1.4rem;
+// 		text-align: right;
+// }
+::ng-deep .mat-button-toggle-label-content {
+    line-height: 32px !important;
+}
+
+.mat-button-toggle-appearance-standard {
+    line-height: 32px !important;
+}
+
+.panel-header {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		max-height: 45px;
+		background-color: rgba(#adadc2, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba(#adadc2, .8);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-closepanel{
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-closepanel, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-closepanel, .8);
+		color: $color-togglebutton;
+	}
+
+}
+
+.panel-header-sisa {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .7);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-followup {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .7);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-covid {
+	margin: 10px 15px 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-laboratorio {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+}
+
+.panel-header-vinculofam {
+	margin: 10px 0 0 15px;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .5);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .5);
+		color: $color-togglebutton;
+	}
+}
+
+
+.panel-header-selectors {
+	margin: 10px 0 0 0;
+
+	.mat-button-toggle {
+		margin-right: 1px;
+		max-height: 45px;
+		background-color:rgba($bgcolor-selectors, .3);
+		color: $color-button;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-selectors, .8);
+		color: $color-button;
+	}
+
+
+}
+
+
+
+.novedades-container {
+		margin: 10px 0 15px 15px;
+		padding: 5px;
+
+}
+
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 2rem;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.2rem;
+		line-height: .8;
+		color: $color-destacado;
+}
+
+.text-audit {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: .8rem;
+}
+
+.badge-style {
+	margin: 0 0 0 5px;
+}
+
+.button-action {
+		margin: 0 15px 5px 0;
+		color: #ffffff;
+		width: 250px;
+		height: 50px;
+		background-color: $color-button;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}

@@ -14,6 +14,7 @@ import { VigilanciaPageComponent } from './vigilancia/vigilancia-page/vigilancia
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
 import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
+import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-page/vigil-seguimiento-page.component';
 
 const routes: Routes = [
 	{
@@ -27,6 +28,10 @@ const routes: Routes = [
 	{
 		path:'vigilancia',
 		component: VigilanciaPageComponent
+	},
+	{
+		path:'seguimiento',
+		component: VigilSeguimientoPageComponent
 	},
 	{
 		path:'reportesvigilancia',
