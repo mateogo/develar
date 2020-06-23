@@ -268,7 +268,6 @@ exports.findByQuery = function (rtype, query, errcb, cb) {
     console.dir(regexQuery);
 
     Record.find(regexQuery)
-          .limit(100)
           .lean()
           .sort( '-fe_ts' )
           .exec(function(err, entities) {
@@ -583,8 +582,8 @@ const queueOptList = [
     {val: 'pool',       ord: '1.1', label: 'pool'     },
     {val: 'transito',   ord: '1.2', label: 'transito' },
     {val: 'alocado',    ord: '1.3', label: 'alocado'  },
-    //{val: 'traslado', ord: '1.1', label: 'traslado' },
-    {val: 'baja',       ord: '1.4', label: 'baja'     },
+    {val: 'salida',     ord: '1.4', label: 'salida' },
+    {val: 'baja',       ord: '1.5', label: 'baja'     },
 ]
 
 function contabilizarOcupacionGeneral(solicitudes, list){
@@ -598,7 +597,7 @@ function contabilizarOcupacionGeneral(solicitudes, list){
       sumarTransito(solicitud, list, master)
 
 
-    }else if(solicitud.queue === 'alocado') {
+    }else if(solicitud.queue === 'alocado' || solicitud.queue === 'salida') {
       let internacion = solicitud.internacion;
       if(internacion && internacion.estado === 'servicio'){
         sumarAlocado(solicitud, list , master)
@@ -651,7 +650,9 @@ function sumarAlocadoPeriferia(solicitud, list, master){
     }
  
     acumPeriferia(internacion.estado, solicitud, token)
-    acumCapacidad(internacion.servicio, token)
+    if(['admision', 'servicio', 'traslado'].indexOf(internacion.servicio) !== -1){
+      acumCapacidad(internacion.servicio, token)
+    }
   }
 }
 
@@ -695,6 +696,7 @@ function acumOcupacion(key, token){
   item.ocupado += 1
 
 }
+
 
 function acumCapacidad(key, token){
   let tipo = capacidades.find(t => t.val === key);

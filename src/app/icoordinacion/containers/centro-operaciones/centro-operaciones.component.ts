@@ -67,7 +67,7 @@ export class CentroOperacionesComponent implements OnInit {
 
   public showEstadoOcupacion = true;
   public showEstadoDisponibilidad = true;
-  public data$ = new BehaviorSubject('Helouuuu');
+  public data$ = new BehaviorSubject<any>({});
   
   constructor(
       private _isrv: InternacionService,
@@ -155,6 +155,7 @@ export class CentroOperacionesComponent implements OnInit {
   private buildPoolMembersData(target: string, list: SolicitudInternacion[]){
     let locaciones = this.filterLocacionesWithAvailability(target, this.masterList);
     // debug-only: this.data$.next(locaciones)
+    //this.data$.next(locaciones)
     this.openPooldeInternacionModal(target, locaciones, list)
   }
 
@@ -297,6 +298,8 @@ export class CentroOperacionesComponent implements OnInit {
   }
   private showMasterAllocator(list: MasterAllocation[]){
     let pool = list.find(t => t.code === 'pool');
+      this.data$.next(list);
+
     if(pool){
       this.pool = pool;
       this.botonesPool = this._isrv.getBotonesPool(this.pool);

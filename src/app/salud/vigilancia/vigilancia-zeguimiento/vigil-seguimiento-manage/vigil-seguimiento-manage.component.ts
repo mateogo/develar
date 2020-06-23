@@ -67,6 +67,10 @@ export class VigilSeguimientoManageComponent implements OnInit {
   public hisopadoBadge: HisopadoBadge = new HisopadoBadge();
   public labBadge: LabBadge = new LabBadge();
 
+  public llamdadosColorBadge = "#3c4e62";
+	public covidColorBadge = "#1205a6";
+
+
   constructor(
           private perSrv: PersonService,
           private dsCtrl: SaludController,
@@ -114,6 +118,12 @@ export class VigilSeguimientoManageComponent implements OnInit {
       //todo
 
     }
+  }
+
+  openDialog(e, target){
+  	e.stopPropagation();
+  	e.preventDefault();
+  	console.log('target: [%s]', target)
   }
 
   private followUpCasoIndice(asistencia: Asistencia){
