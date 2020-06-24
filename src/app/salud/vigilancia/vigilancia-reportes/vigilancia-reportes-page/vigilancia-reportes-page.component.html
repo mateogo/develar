@@ -79,7 +79,8 @@
 		      <div class="col-md-1"><strong>Fase-2    </strong></div>
 				</div>
 		    <div class="row" *ngFor="let token of usersMapArray">
-		      <div class="col-md-2"><span class="">{{ token.asignadoSlug }}</span></div>
+		      <div class="col-md-2"><span class=""><a href="#" (click)="dumpUser($event, token)" >
+		      			{{ token.asignadoSlug }}</a></span></div>
 		      <div class="col-md-2"><span class="">{{ token.qasignados }}</span></div>
 		      <div class="col-md-2"><span class="">{{ token.qcontactos }}</span></div>
 		      <div class="col-md-2"><span class="">{{ token.qhuerfanos }}</span></div>
@@ -87,16 +88,17 @@
 		      <div class="col-md-1"><span class="">{{ token.qfase0 }}</span></div>
 		      <div class="col-md-1"><span class="">{{ token.qfase1 }}</span></div>
 		      <div class="col-md-1"><span class="">{{ token.qfase2 }}</span></div>
-
-
 				</div>
 
-		      <!--div class="col-md-1">
-		      	<span class="">{{ token | json }}</span>
-		      </div-->
-
+				<ng-container *ngIf='dumpData'>
+		   			<dump-data  [title]="'MasterData'"
+		                [data$]='data$'
+		                [showTests]='true'></dump-data>
+				</ng-container>
 
 			</div>
+
+
 		</ng-container>
 
 

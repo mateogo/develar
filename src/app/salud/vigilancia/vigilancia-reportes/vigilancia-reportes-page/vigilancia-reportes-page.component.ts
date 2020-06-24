@@ -43,6 +43,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
   public openBrowseEditor = true;
   public usersMap: Map<any,any>;
   public usersMapArray: Array<any> = [];
+  public asignacionReportList: Array<any>;
   public showData =  false;
 	public showTable = false;
   public showEditor = false;
@@ -65,6 +66,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
   public ciudadesList =   personModel.ciudades;
   public changeCity$ = new BehaviorSubject<string>('no_definido');
+
+  public data$ = new BehaviorSubject<any>({});
+  public dumpData = false;
 
   constructor(
       private dsCtrl: SaludController,
@@ -150,7 +154,17 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
 
   }
+  
+  dumpUser(e, token: any){
+    e.stopPropagation();
+    e.preventDefault();
 
+    let dumpList = this.asignacionReportList.filter(t => t.asignadoId === token.asignadoId);
+    this.dumpData = true;
+
+    this.data$.next(dumpList);
+
+  }
 
   /************************/
   /*    Sol/Asistencia   */
@@ -172,7 +186,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.showGraph = false;
     this.renderGraph = false;
     this.showAsignacionUsuarios = false;
-
+    this.dumpData = false;
+    
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
         this.asistenciasList = list;
@@ -196,6 +211,8 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }else if(this.query && this.query.reporte === R_CONTACTOS){
 
     }else if(this.query && this.query.reporte === R_ASIGNACION){
+
+      this.asignacionReportList = list;
       this.usersMapArray = this.groupByUsers(list);
 
     }else {
