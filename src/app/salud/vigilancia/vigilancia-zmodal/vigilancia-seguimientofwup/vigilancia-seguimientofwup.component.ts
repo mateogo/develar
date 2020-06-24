@@ -152,6 +152,9 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   	afectado.fets_ullamado = today.getTime();
   	afectado.qllamados += 1;
 
+    afectado.altaVigilancia = token.altaVigilancia;
+    afectado.altaAsistencia = token.altaAsistencia;
+
 		afectado.slug = token.slug;
 		afectado.isActive = token.isActive;
     afectado.isAsistido = token.isAsistido;
@@ -190,6 +193,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
       this.seguimientoEvent.fets_llamado = this.fupDate.getTime();
     }
 
+    this.seguimientoEvent.altaVigilancia = this.afectadoFollowUp.altaVigilancia || false;
+    this.seguimientoEvent.altaAsistencia = this.afectadoFollowUp.altaAsistencia || false;
 
   	this.seguimientoEvent.isActive = this.afectadoFollowUp.isActive;
     this.seguimientoEvent.isAsistido = this.afectadoFollowUp.isAsistido;
@@ -214,6 +219,9 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
     this.form.reset({
       isActive:   this.seguimientoEvent.isActive,
       isAsistido: this.seguimientoEvent.isAsistido,
+
+      altaVigilancia:   this.seguimientoEvent.altaVigilancia,
+      altaAsistencia: this.seguimientoEvent.altaAsistencia,
 
       fe_llamado: this.seguimientoEvent.fe_llamado,
       resultado:  this.seguimientoEvent.resultado,
@@ -265,6 +273,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
       isActive:       [null],
       isAsistido:     [null],
 
+      altaVigilancia: [null],
+      altaAsistencia: [null],
       internadoFup:   [null,  Validators.compose( [Validators.required])],
       resultado:      [null,  Validators.compose( [Validators.required])],
       sintoma:        [null,  Validators.compose( [Validators.required])],

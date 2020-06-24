@@ -299,6 +299,9 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+    this.seguimientoEvent.altaVigilancia = this.seguimientoEvent.altaVigilancia || false;
+    this.seguimientoEvent.altaAsistencia = this.seguimientoEvent.altaAsistencia || false;
+
     this.seguimientoEvent.isAsignado = this.seguimientoEvent.isAsignado || false;
     this.seguimientoEvent.asignadoId = this.seguimientoEvent.asignadoId || '';
     this.seguimientoEvent.asignadoSlug = this.seguimientoEvent.asignadoSlug || '';

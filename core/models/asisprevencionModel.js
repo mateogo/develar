@@ -283,6 +283,10 @@ const auditSch = new Schema({
 const afectadoUpdateSch = new Schema({
     isActive:   { type: Boolean, required: false },
     isAsistido: { type: Boolean, required: false },
+
+    altaVigilancia:  { type: Boolean, required: false },
+    altaAsistencia:  { type: Boolean, required: false },
+
     fe_llamado: { type: String, required: false },
     resultado:  { type: String, required: false },
     tipo:       { type: String, required: false },
@@ -299,6 +303,9 @@ const afectadoUpdateSch = new Schema({
 const afectadosFollowUpSch = new Schema({
   isActive:      { type: Boolean, required: false },
   isAsistido:    { type: Boolean, required: false },
+
+  altaVigilancia:  { type: Boolean, required: false },
+  altaAsistencia:  { type: Boolean, required: false },
 
   fe_inicio:     { type: String, required: false },
   fe_ucontacto:  { type: String, required: false },
@@ -432,6 +439,28 @@ asisprevencionSch.pre('save', function (next) {
 function buildQuery(query, today){
 
   let q = {};
+  let nestedOrs = [];
+
+  if(query['asistenciaId']){
+      q["asistenciaId"] = query['asistenciaId'];
+      return q;
+  }
+
+
+  if(query['reporte'] && query['reporte']==="CONTACTOS"){
+      q = {
+            avance: {$ne: 'anulado'},
+            isVigilado: true,
+          }
+  }
+
+  if(query['reporte'] && query['reporte']==="SINSEGUIMIENTO"){
+      q = {
+            avance: {$ne: 'anulado'},
+            'followUp.altaVigilancia': {$ne: true},
+            isVigilado: true,
+          }
+  }
 
   if(query['reporte'] && query['reporte']==="LABORATORIO"){
       q = {
@@ -448,7 +477,7 @@ function buildQuery(query, today){
 
   if(query['reporte'] && query['reporte']==="COVID"){
       q = {
-            '$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
+            'infeccion.actualState': {$in: [1, 4, 5]},
             isVigilado: true,
           }
       return q;
@@ -456,7 +485,6 @@ function buildQuery(query, today){
 
   if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
       q = {
-            //'$or': [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}],
             avance: {$ne: 'anulado'},
             isVigilado: true,
           }
@@ -480,19 +508,12 @@ function buildQuery(query, today){
   }
 
 
-  if(query['reporte'] && query['reporte']==="CONTACTOS"){
-      q = {
-            avance: {$ne: 'anulado'},
-            isVigilado: true,
-          }
-  }
-
   if(query['reporte'] && query['reporte']==="LABNEGATIVO"){
 
       let refDate = today.getTime() - (1000 * 60 * 60 * 24 * 7);
 
       q = {
-            '$or': [{'infeccion.actualState': 0}, {'infeccion.actualState': 2}],
+            'infeccion.actualState': {$in: [0, 2]},
             isVigilado: true,
             'muestraslab': {$exists: true, $ne:[]},
             $expr: {$and: [
@@ -505,24 +526,15 @@ function buildQuery(query, today){
   }
 
   // busco un registro en particular
-  if(query['asistenciaId']){
-      q["asistenciaId"] = query['asistenciaId'];
-      return q;
-  }
-
   if(query['isVigilado']){
     q["isVigilado"] = true;
   }
 
   if(query['requirenteId']){
-
       q["requeridox.id"] = query['requirenteId'];
       if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
 
   }
-
-
-
 
   // busco segun query
   if(query['estado']){
@@ -536,7 +548,6 @@ function buildQuery(query, today){
   if(query['ndoc']){
       q["ndoc"] = query['ndoc'];
   }
-
 
   if(query['avance']){
       q["avance"] = query['avance'];
@@ -587,8 +598,11 @@ function buildQuery(query, today){
         if(query['urgencia']) {
           q['encuesta.urgencia'] = parseInt(query['urgencia'], 10);
         }
-
       }
+  }
+
+  if(query['casosIndice']){
+    q['contactosEstrechos'] = {$gt : 1}
   }
 
   if(query['tipo']) {
@@ -633,18 +647,14 @@ function buildQuery(query, today){
   }
 
   if(query['casoCovid']){
-    q['$or'] = [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}];
+    q['infeccion.actualState'] = {$in: [1, 4, 5]}; //  [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}]
   }
   
   
   if(query['actualState']){
     let qData =  parseInt(query['actualState'], 10);
+    q["infeccion.actualState"] = qData;
 
-    if(qData !== 6){
-      q["infeccion.actualState"] = qData;
-    }else{
-      q["$or"] = [{ "infeccion.actualState": qData }, { "infeccion.actualState": null } ]
-    }
   }
 
   if(query['pendLaboratorio']){
@@ -654,7 +664,7 @@ function buildQuery(query, today){
 
   if(query['isSeguimiento']){
     q["followUp.isActive"] = true;
-
+    q['followUp.altaVigilancia'] =  {$ne: true};
   }
 
   if(query['tipoSeguimiento']){
@@ -668,7 +678,7 @@ function buildQuery(query, today){
   if(query['qNotSeguimiento']){
     let offset = parseInt(query['qNotSeguimiento'], 10);
     let refDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset).getTime();
-    q["$or"] =[ {'$and': [{ 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}]  ;
+    nestedOrs.push([ {'$and': [ { 'followUp.fets_ucontacto': {$lte: refDate} }, {'followUp.lastCall': 'logrado'}]}, {'followUp.lastCall': {'$ne':'logrado'}}] )
   }
 
   if(query['avanceCovid']){
@@ -680,8 +690,6 @@ function buildQuery(query, today){
     q["infeccion.sintoma"] = query['sintomaCovid'];
 
   }
-
-
 
   if(query['isActiveSisa']){    
     q["sisaevent.isActive"] = true;
@@ -705,13 +713,29 @@ function buildQuery(query, today){
   }
 
   if(query['userId']){
-    q['$or'] = [{'followUp.asignadoId': query['userId']}, {'followUp.derivadoId': query['userId']}, ];
 
+    if(query['casosIndice']){
+      q['followUp.asignadoId'] = query['userId']
+
+    }else {
+      nestedOrs.push([{'followUp.asignadoId': query['userId']}, {'followUp.derivadoId': query['userId']} ])
+    }
   }
 
   if(query['asignadoId']){
     q["followUp.asignadoId"] = query['asignadoId'];
 
+  }
+  if(nestedOrs.length === 1){
+    q['$or'] = nestedOrs[0]
+  }
+
+  if(nestedOrs.length > 1){
+    let condition = nestedOrs.map(t => {
+      return {'$or': t}
+    })
+
+    q['$and'] = condition;
   }
 
   return q;
@@ -1023,8 +1047,8 @@ const findByQueryProcessFunction = {
   //'DOMICILIOS' : buildDomiciliosTableReport,
   'REDCONTACTOS'    : buildRedContactos, // grafo loco
   'ASIGNACIONCASOS' : buildCasosPorUsuario, // Cuántos afectados tiene asignado cada usuario
-  'CONTACTOS': buildContactosMaster // Selecciona los casos índices + huérfanos
-
+  'CONTACTOS'       : buildContactosMaster, // Selecciona los casos índices + huérfanos
+  'SINSEGUIMIENTO'  : afectadosSinResponsableSeguimiento // Selecciona los casos índices + huérfanos
 };
 
 /**
@@ -1088,7 +1112,6 @@ exports.findByQuery = function (query, errcb, cb) {
 };
 
 function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
-  console.log('DispachQuery[%s]', movimientos.length)
 
   if(!reporte || !findByQueryProcessFunction[reporte]){
       cb(movimientos);
@@ -1118,7 +1141,7 @@ function filterContactosMaster(movimientos, contactMap, errcb, cb){
       return true;
     }
 
-    if(asis.followUp && asis.followUp.isAsignado && asis.followUp.asignadoId){
+    if(asis.followUp && asis.followUp.isAsignado  && !asis.followUp.altaVigilancia && asis.followUp.asignadoId){
       asis['contactosEstrechos'] = 1;
       return true;
 
@@ -1134,6 +1157,28 @@ function filterContactosMaster(movimientos, contactMap, errcb, cb){
 
 }
 
+function afectadosSinResponsableSeguimiento(movimientos, query, errcb, cb){
+
+  getMapDeContactosEstrechos().then((contactosMap)=>{
+    let filteredList = filtrarCasosSinSeguimiento(movimientos, contactosMap);
+    //dispatchExcelStream(reporte, entities, query, req, res)
+    cb(filteredList);
+
+  })
+
+
+
+  // let contactosMap = agruparCasosIndices(movimientos);
+
+  // let filteredList = filtrarCasosSinSeguimiento(movimientos, contactosMap);
+  // console.log('afectados TO BEGIN');
+
+  // cb(filteredList);
+
+
+}
+
+
 function buildCasosPorUsuario(movimientos, query, errcb, cb){
   let contactosMap = agruparCasosIndices(movimientos);
   let targetMap = sumarCasosPorUsuario(movimientos, contactosMap);
@@ -1146,6 +1191,8 @@ function pushBackCasosPorUsuario(targetMap, errcb, cb){
   let returnArray = Array.from(targetMap.values())
   cb(returnArray)
 }
+
+
 
 
 function agruparCasosIndices(movimientos){
@@ -1179,10 +1226,45 @@ function isCovidTotal(asistencia){
   return false;
 }
 
+function filtrarCasosSinSeguimiento(movimientos, contactMap){
+
+    let filteredList = movimientos.filter(asis => {
+      let isAsignado = asis.followUp && asis.followUp.isAsignado;
+      let isAltaVigilancia =  asis.followUp && asis.followUp.altaVigilancia;
+      let hasCasoIndice = asis.casoIndice && asis.casoIndice.parentId;
+      let covid = isCovidTotal(asis);
+      let followUp = (asis.followUp && asis.followUp.derivadoSlug === 'PacientesDeAlta')
+      
+      let index = JSON.stringify(asis._id);
+      let hasContactosEstrechos = contactMap.has(index);
+
+      if(isAltaVigilancia) return false;
+
+      if(!isAsignado && !hasCasoIndice && (covid || hasContactosEstrechos)){
+          return true;
+      }
+
+      if((!isAsignado && followUp) && (covid || hasContactosEstrechos)){
+          return true;
+      }
+      
+      return false;
+
+      //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), contactMap.get(index), contactMap.has(index))
+    })
+
+    return filteredList;
+}
+
+
+
 function sumarCasosPorUsuario(movimientos, contactMap){
     let targetMap = new Map();
 
     movimientos.forEach(asis => {
+      let isAltaVigilancia =  asis.followUp && asis.followUp.altaVigilancia;
+      if(isAltaVigilancia) return;
+
       let isAsignado = asis.followUp && asis.followUp.isAsignado;
       let hasCasoIndice = asis.casoIndice && asis.casoIndice.parentId;
       let covid = isCovidTotal(asis);
@@ -1228,7 +1310,7 @@ function sumarCasosPorUsuario(movimientos, contactMap){
             token['asignadoId'] =   'usuarionoasignado';
             token['asignadoSlug'] = 'Sin asignado';
             token['isHuerfano'] = true;
-            contactMap.set(index, token)
+            //contactMap.set(index, token)
             targetMap.set(index, token)
         }
       }
@@ -1681,7 +1763,11 @@ function buildExcelStream(movimientos, query, req, res){
           followUp = {
             asignadoSlug: 'no asignado',
           }
+      }else {
+        if(!folloUp.isAsignado) followUp.asignadoSlug = 'no asignado';
+        if(followUp.altaVigilancia) followUp.asignadoSlug = 'alta de vigilancia';        
       }
+
      const { asignadoSlug } = followUp;
      let followupArr = [ asignadoSlug ];
 
@@ -2356,7 +2442,10 @@ function buildInverteTree(req, errcb, cb){
 
 
 
+/***
+db.asisprevenciones.find({sector: 'ivr',avance: {$in: ['emitido', 'descartado', 'esperamedico', 'enobservacion', 'nocontesta','enaislamiento', 'esperasame' ]}},{avance:1}).count()
 
+****/
 
 
 

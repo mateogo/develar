@@ -12,7 +12,6 @@
 
 		<ng-container *ngIf="openBrowseEditor">
 			<mat-tab-group>
-
 				<mat-tab label="Reportes">
 						<vigilancia-reportes-browse
 											[export]='hasExport'
@@ -91,7 +90,7 @@
 				</div>
 
 				<ng-container *ngIf='dumpData'>
-		   			<dump-data  [title]="'MasterData'"
+		   			<dump-data  [title]="'Asignación de contactos estrechos'"
 		                [data$]='data$'
 		                [showTests]='true'></dump-data>
 				</ng-container>

@@ -546,6 +546,9 @@ export class AfectadoFollowUp {
 	isActive: boolean = false;
 	isAsistido: boolean = false; // se le hace seguimiento asistencial?
 
+	altaVigilancia: boolean = false; // no se le hace más seguimiento epidemiológico, caso de alta
+	altaAsistencia: boolean = false; // no se le hace más seguimiento asistencial
+
 	fe_inicio: string = '';
 	fe_ucontacto: string = '';
 	fe_ullamado: string = '';
@@ -601,6 +604,9 @@ const vectorSeguimientoOptList = [
 export class AfectadoUpdate {
 	isActive: boolean = false;
 	isAsistido: boolean = false;
+	altaVigilancia: boolean = false; // no se le hace más seguimiento epidemiológico, caso de alta
+	altaAsistencia: boolean = false; // no se le hace más seguimiento asistencial
+
 
 	fe_llamado: string = '';
 	resultado: string = ''; // resultadoSeguimientoOptList
@@ -718,8 +724,15 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 
 			td.qcontactos = sol.contactosEstrechos;
 			if(sol.followUp){
-				td.asignadoSlug = sol.followUp.asignadoSlug;
-				td.asignadoId = sol.followUp.asignadoId;
+				if(sol.followUp.isAsignado){
+					td.asignadoSlug = sol.followUp.asignadoSlug;
+					td.asignadoId = sol.followUp.asignadoId;
+
+				}else {
+					td.asignadoSlug = '';
+					td.asignadoId = null;
+
+				}
 
 				td.fup_isActive = sol.followUp.isActive;
 				td.fup_isAsistido = sol.followUp.isAsistido;
@@ -1547,6 +1560,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },
     {val: 'CONTACTOS',        label: 'Vigilancia de contactos' },
     {val: 'ASIGNACIONCASOS',  label: 'Asignación de casos por usuario' },
+    {val: 'SINSEGUIMIENTO',   label: 'Afectados COVID sin resp seguimiento' },
 ];
 
 

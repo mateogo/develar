@@ -191,7 +191,7 @@ export class VigilSeguimientoPageComponent implements OnInit {
   /**********************/
 	private initCurrentPage(){
     
-    this.query = this.dsCtrl.vigilanciaSelector;
+    this.query = new VigilanciaBrowse();
 
   }
 

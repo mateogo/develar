@@ -52,6 +52,22 @@
 		</div>
 	</div>
 
+	<div class="d-flex justify-content-between check-box-alta">
+	    <div>
+				<mat-checkbox 
+					[checked]="form.controls['altaVigilancia'].value===true"
+					[formControl]="form.controls['altaVigilancia']" >
+					ALTA DEL AFECTADO DE LLAMADOS POR VIGILANCIA</mat-checkbox>
+			</div>
+		  <div>
+					<mat-checkbox 
+						[checked]="form.controls['altaAsistencia'].value===true"
+						[formControl]="form.controls['altaAsistencia']" >
+						ALTA DEL AFECTADO DE ASISTENCIA SOCIAL</mat-checkbox>
+			</div>
+	</div>
+	
+
 	<p class="text-resaltado">Esquema de seguimiento, en tanto caso índice de un grupo de contactos estrechos</p>
 	<div class="row" >
 	  <div class="col-md-4">
@@ -92,8 +108,6 @@
 	  </div>
 
 	</div>
-
-
 
 	<div class="d-md-flex justify-content-start">
 		<button mat-raised-button color="primary" class='m-1'

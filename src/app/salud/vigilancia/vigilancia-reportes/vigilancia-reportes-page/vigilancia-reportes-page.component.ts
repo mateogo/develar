@@ -25,6 +25,7 @@ const R_DOMICILIOS = 'DOMICILIOS'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
 const R_ASIGNACION = 'ASIGNACIONCASOS'
+const R_SINSEGUIMIENTO = 'SINSEGUIMIENTO'
 const R_MANAGECONTACTOS = 'CONTACTOS'
 
 const ROLE_ADMIN = 'vigilancia:admin';
@@ -93,7 +94,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
   private initCurrentPage(){
-    this.query = this.dsCtrl.vigilanciaSelector;
+    this.query = new VigilanciaBrowse();
   }
 
   openSearchForm(){
@@ -211,7 +212,6 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }else if(this.query && this.query.reporte === R_CONTACTOS){
 
     }else if(this.query && this.query.reporte === R_ASIGNACION){
-
       this.asignacionReportList = list;
       this.usersMapArray = this.groupByUsers(list);
 
@@ -233,6 +233,9 @@ export class VigilanciaReportesPageComponent implements OnInit {
       return;
 
     }else if(this.query && this.query.reporte === R_MANAGECONTACTOS){
+      this.tableActualColumns = SEGUIMIENTO
+
+    }else if(this.query && this.query.reporte === R_SINSEGUIMIENTO){
       this.tableActualColumns = SEGUIMIENTO
 
     }else if(this.query && this.query.reporte === R_CONTACTOS){

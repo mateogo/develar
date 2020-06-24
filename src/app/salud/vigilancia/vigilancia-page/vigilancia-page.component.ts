@@ -60,13 +60,10 @@ export class VigilanciaPageComponent implements OnInit {
 
 
   // Sol de Asistencia
-  public asistenciasList: Asistencia[];
+  public asistenciasList: Asistencia[] = [];
   public itemsFound = false;
   public currentAsistencia:Asistencia;
 
-  // DataSource
-  public asistenciasListener = new BehaviorSubject<Asistencia[]>([])
- 
 
 
   constructor(
@@ -78,13 +75,7 @@ export class VigilanciaPageComponent implements OnInit {
 
   ngOnInit() {
 
-  	if(this.items && this.items.length){
-  		this.asistenciasList = this.items;
-  		this.showData = true;
-  	}
-
     let first = true;
-    this.personId = this.route.snapshot.paramMap.get('id')
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     let sscrp2 = this.dsCtrl.onReady.subscribe(readyToGo =>{
@@ -334,7 +325,7 @@ export class VigilanciaPageComponent implements OnInit {
     }
 
     // current selector saved in Controller
-    this.query = this.dsCtrl.vigilanciaSelector;
+    this.query = new VigilanciaBrowse()
     //this.fetchSolicitudes(this.query, SEARCH);
   }
 

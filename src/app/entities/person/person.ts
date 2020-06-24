@@ -1936,6 +1936,8 @@ function mix<T, U extends {[k: string]: {}}>(func: T, properties: U): T & U {
 var foo: Foo;
 foo = mix(() => {}, { bar: 'initialized'});
 
+// actualiza un campo del ítem ièsimo del array
+db.personas.updateOne({"_id" : ObjectId("5ed2b61e6d180d380de635cb")},{$set: {'familiares.0.nombre':'MACARENA ROCIO'}})
 
 ***/
 
