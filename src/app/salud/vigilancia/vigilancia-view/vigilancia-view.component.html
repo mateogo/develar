@@ -53,10 +53,13 @@
       <hr>
       <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
       <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
-              <p class='text-resaltado-vinculo'>{{ vinculo.slug }} 
+              <p class="text-resaltado-vinculo" [ngClass]="vinculo.styleclass" >
+                          <span *ngIf='vinculo.altaSeguimiento'>SEGUIM FINALIZADO - </span>
+                              {{ vinculo.slug }} 
                               <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
 
-              <p class='text-normal-vinculo'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
+              <p class="text-normal-vinculo" [ngClass]="vinculo.styleclass">
+                          {{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
                           <strong>{{ vinculo.vinculo }} - {{ vinculo.token.nucleo }}</strong>
                   <span class="edit-control"
                       (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">

@@ -723,9 +723,15 @@ function buildQuery(query, today){
   }
 
   if(query['asignadoId']){
-    q["followUp.asignadoId"] = query['asignadoId'];
+
+    if(query['casosIndice']){
+      q["followUp.asignadoId"] = query['asignadoId'];
+    }else {
+      nestedOrs.push([{'followUp.asignadoId': query['asignadoId']}, {'followUp.derivadoId': query['asignadoId']} ])
+    }
 
   }
+
   if(nestedOrs.length === 1){
     q['$or'] = nestedOrs[0]
   }

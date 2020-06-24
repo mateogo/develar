@@ -87,6 +87,20 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
     this.resetForm();
   }
 
+  finalizarEpidemio(){
+    this.formClosed = true;
+    this.result.action = UPDATE;
+    this.initForSave()
+    this.saveToken();
+  }
+
+  finalizarAsistencia(){
+    this.formClosed = true;
+    this.result.action = UPDATE;
+    this.initForSave()
+    this.saveToken();
+  }
+
   private saveToken(){
     this.ctrl.manageEpidemioState(this.result).subscribe(asistencia =>{
     	if(asistencia){

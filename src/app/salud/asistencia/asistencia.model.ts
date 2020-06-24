@@ -526,9 +526,10 @@ const tipoSeguimientoAfectadoOptList = [
 
 const faseAfectadoOptList = [
 
-	{ val: 'fase0',     label: 'Investigación epidemiológica'},
-	{ val: 'fase1',     label: 'Primera fase seguimiento'},
-	{ val: 'fase2',     label: 'Segunda fase seguimiento'},
+	{ val: 'fase0',      label: 'Investigación epidemiológica'},
+	{ val: 'fase1',      label: 'Primera fase seguimiento'},
+	{ val: 'fase2',      label: 'Segunda fase seguimiento'},
+	{ val: 'finalizado', label: 'Seguimiento finalizado'},
 
 ];
 

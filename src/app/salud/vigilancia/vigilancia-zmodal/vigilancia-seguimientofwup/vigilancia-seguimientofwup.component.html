@@ -124,21 +124,40 @@
 	</div>
 	<hr>
 
-	<div class="d-flex justify-content-between">
-	    <div>
+	<div class="row">
+	    <div  class="col">
 				<mat-checkbox 
 					[checked]="form.controls['altaVigilancia'].value===true"
 					[formControl]="form.controls['altaVigilancia']" >
-					ALTA DEL AFECTADO DE LLAMADOS POR VIGILANCIA</mat-checkbox>
+					FINALIZAR SEGUIMIENTO EPIDEMIOLÓGICO</mat-checkbox>
 			</div>
-		  <div>
+			<div  class="col">
+					<button mat-raised-button color="accent" 
+							(click)="finalizarEpidemio()"
+							[disabled]="!form.valid || 
+													formClosed ||
+													!form.controls['altaVigilancia'].value !== afectadoFollowUp.altaVigilancia" >
+												CONFIRMAR ACCIÓN</button>
+			</div>
+		</div>
+
+
+	<div class="row">
+	    <div  class="col">
 					<mat-checkbox 
 						[checked]="form.controls['altaAsistencia'].value===true"
 						[formControl]="form.controls['altaAsistencia']" >
-						ALTA DEL AFECTADO DE ASISTENCIA SOCIAL</mat-checkbox>
+						FINALIZAR SEGUIMIENTO POR ASISTENCIA SOCIAL</mat-checkbox>
+			</div>
+			<div  class="col">
+					<button mat-raised-button color="accent" 
+							(click)="finalizarAsistencia()"
+							[disabled]="!form.valid || 
+														formClosed || 
+														!form.controls['altaAsistencia'].value !== afectadoFollowUp.altaAsistencia">
+													CONFIRMAR ACCIÓN</button>
 			</div>
 	</div>
-	
 
 	<div class="d-md-flex justify-content-start">
 		<button mat-raised-button color="primary" class='m-1'

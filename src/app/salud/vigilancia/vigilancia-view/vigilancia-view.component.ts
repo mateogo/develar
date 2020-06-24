@@ -248,6 +248,8 @@ export class VigilanciaViewComponent implements OnInit {
   }
 
   private buildIconografiaVinculo(vinToken: VinculosData, person: Person, vAsistencia: Asistencia){
+    vinToken.altaSeguimiento = vAsistencia.followUp && vAsistencia.followUp.altaVigilancia;
+    vinToken.styleclass = vinToken.altaSeguimiento ? 'desactivado-vinculo' : 'activado-vinculo';
     vinToken.labBadge = this.buildLabBadge(vAsistencia);
     vinToken.fupBadge = this.buildFollowUPdBadge(vAsistencia);
     vinToken.covidBadge = this.buildCovidBadge(vAsistencia);
@@ -628,6 +630,8 @@ class VinculosData {
   fupBadge?: FollowUpBadge;
   covidBadge?: CovidBadge;
   hisopadoBadge?: HisopadoBadge;
+  styleclass: string = 'activado-vinculo';
+  altaSeguimiento: boolean = false;
 
   constructor(token:FamilyData, per: Person){
     this.token = token;
