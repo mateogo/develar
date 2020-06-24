@@ -123,7 +123,6 @@ export class VigilSeguimientoManageComponent implements OnInit {
   openDialog(e, target){
   	e.stopPropagation();
   	e.preventDefault();
-  	console.log('target: [%s]', target)
   }
 
   private followUpCasoIndice(asistencia: Asistencia){

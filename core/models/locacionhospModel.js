@@ -223,7 +223,7 @@ function fetchAvailability(spec, errcb, cb){
               code: loc.code,
               slug: loc.slug,
               direccion: loc.ubicacion ? loc.ubicacion.street1 + ' ' + loc.ubicacion.city : '',
-              servicios: buildServiciosAllocation(loc.servicios),
+              servicios: buildServiciosAllocation(loc),
             }
             return token
           })
@@ -258,8 +258,9 @@ function initAreas(){
   return areas;
 }
 
-function buildServiciosAllocation(servicios){
+function buildServiciosAllocation(locacion){
   let capacity = []
+  let servicios = locacion.servicios
   if(servicios && servicios.length){
     capacity = servicios.map(s =>{
       return {
@@ -282,7 +283,26 @@ function buildServiciosAllocation(servicios){
           ocupado: 0
       })
   })
+
+
+  substractNotAvailable(locacion, capacity);
   return capacity;
+}
+
+function substractNotAvailable(locacion, capacity){
+  let recursos  = locacion.recursos;
+  if(recursos && recursos.length){
+    recursos.forEach(token => {
+      if(token.estado!== 'activo'){
+        let srvCode = token.rservicio;
+        let node = capacity.find(t => t.code === srvCode);
+        if(node) {
+          node.nominal -= 1;
+        }
+
+      }
+    });
+  }
 }
 
 

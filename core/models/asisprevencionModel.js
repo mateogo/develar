@@ -1136,18 +1136,15 @@ function filterContactosMaster(movimientos, contactMap, errcb, cb){
 
 function buildCasosPorUsuario(movimientos, query, errcb, cb){
   let contactosMap = agruparCasosIndices(movimientos);
-  sumarCasosPorUsuario(movimientos, contactosMap);
-  pushBackCasosPorUsuario(contactosMap, errcb, cb);
+  let targetMap = sumarCasosPorUsuario(movimientos, contactosMap);
+  pushBackCasosPorUsuario(targetMap, errcb, cb);
 
 
 }
-function pushBackCasosPorUsuario(contactosMap, errcb, cb){
-  let returnArray = [];
-  for(let value of contactosMap.values()){
-    if(value.isAsignado) returnArray.push(value);
-  }
-  cb(returnArray)
 
+function pushBackCasosPorUsuario(targetMap, errcb, cb){
+  let returnArray = Array.from(targetMap.values())
+  cb(returnArray)
 }
 
 
@@ -1176,48 +1173,70 @@ function agruparCasosIndices(movimientos){
       return contactosMap;  
 }
 
+function isCovidTotal(asistencia){
+  if(asistencia && asistencia.infeccion && 
+    (asistencia.infeccion.actualState === 1 || asistencia.infeccion.actualState === 4 || asistencia.infeccion.actualState === 5)) return true;
+  return false;
+}
+
 function sumarCasosPorUsuario(movimientos, contactMap){
+    let targetMap = new Map();
+
     movimientos.forEach(asis => {
       let isAsignado = asis.followUp && asis.followUp.isAsignado;
       let hasCasoIndice = asis.casoIndice && asis.casoIndice.parentId;
+      let covid = isCovidTotal(asis);
+      
+      let index = JSON.stringify(asis._id);
+      let hasContactosEstrechos = contactMap.has(index);
+      let token = {}; 
+
+      token['contactos'] = 1;
+      token['isAsignado'] = isAsignado;
+      token['asignadoId'] =   (asis.followUp && asis.followUp.asignadoId) || 'errorasignacion';
+      token['asignadoSlug'] = (asis.followUp && asis.followUp.asignadoSlug) || 'Usuario sin nombre';
+      token['fase'] =         (asis.followUp && asis.followUp.fase) || 'fase-xx'
+
+      token['hasEstrechos'] = hasContactosEstrechos;
+      token['isCasoIndice'] = hasCasoIndice;
+      token['isCovid'] = covid;
+
+      token['isHuerfano'] = false;
+
+      token['asistenciaId'] = asis._id;
+      token['asistenciaSlug'] = asis.requeridox.slug;
+      token['asistenciaNdoc'] = asis.ndoc;
 
 
       //c onsole.log('forEach [%s]:[%s] [%s] [%s]', index, (index instanceof String), contactMap.get(index), contactMap.has(index))
       if(isAsignado){
-        let index = JSON.stringify(asis._id);
 
-        if(contactMap.has(index)){
+        if(hasContactosEstrechos){
+          token['contactos'] =contactMap.get(index).contactos;
+          targetMap.set(index, token)
 
-          let token = contactMap.get(index);
-          token['isAsignado'] = true;
-          token['asignadoId'] = asis.followUp.asignadoId;
-          token['asignadoSlug'] = asis.followUp.asignadoSlug;
-          token['isCasoIndice'] = true;
-          token['isHuerfano'] = false;
-          token['asistenciaId'] = asis._id;
-          token['asistenciaSlug'] = asis.requeridox.slug;
-
-        }else {
-          if(!hasCasoIndice){
-            let token = {};
-
-            token['contactos'] = 1;
-            token['isAsignado'] = true;
-            token['asignadoId'] = asis.followUp.asignadoId;
-            token['asignadoSlug'] = asis.followUp.asignadoSlug;
-            token['isCasoIndice'] = false;
+        }else if(!hasCasoIndice){
             token['isHuerfano'] = true;
-            token['asistenciaId'] = asis._id;
-            token['asistenciaSlug'] = asis.requeridox.slug;
-            contactMap.set(index, token)
-
-          }
-
+            targetMap.set(index, token)
         }
-      }  
+
+      // no tiene asignado usuario 
+      }else {
+        if(!hasCasoIndice && (covid || hasContactosEstrechos)){
+
+            token['isAsignado'] = false;
+            token['asignadoId'] =   'usuarionoasignado';
+            token['asignadoSlug'] = 'Sin asignado';
+            token['isHuerfano'] = true;
+            contactMap.set(index, token)
+            targetMap.set(index, token)
+        }
+      }
     })
+    return targetMap;
 
 }
+
 
 function buildRedContactos(movimientos, query, errcb,cb ){
   let output;

@@ -128,9 +128,6 @@ export class VigilSeguimientoBaseComponent implements OnInit {
   }
 
   coreDataSelected(asistencia: Asistencia){
-    //this.buildCoreDataEdit(this.asistencia);
-    console.log('CoreDataSelected')
-
 		this.coreEdit.openDialog(asistencia).subscribe(editEvent =>{
 			if(editEvent.action === UPDATE){
         this.asistencia = editEvent.token;

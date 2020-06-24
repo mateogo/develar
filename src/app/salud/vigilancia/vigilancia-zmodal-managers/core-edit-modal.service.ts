@@ -33,11 +33,10 @@ export class CoreEditModalService {
   	) {}
 
   whoami(){
-  	console.log('CoreEditModal')
+  	//c onsole.log('CoreEditModal')
   }
 
   openDialog(asistencia: Asistencia ): Subject<UpdateAsistenciaEvent>{
-  	console.log('Hey!')
   	this.asistencia = asistencia;
   	this.loadAsistencia(asistencia._id)
 

@@ -42,6 +42,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
   public openBrowseEditor = true;
   public usersMap: Map<any,any>;
+  public usersMapArray: Array<any> = [];
   public showData =  false;
 	public showTable = false;
   public showEditor = false;
@@ -195,7 +196,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }else if(this.query && this.query.reporte === R_CONTACTOS){
 
     }else if(this.query && this.query.reporte === R_ASIGNACION){
-      this.usersMap = this.groupByUsers(list);
+      this.usersMapArray = this.groupByUsers(list);
 
     }else {
 
@@ -341,15 +342,70 @@ export class VigilanciaReportesPageComponent implements OnInit {
     list.forEach(t=> {
       let index = JSON.stringify(t['asignadoId'])
       if(usersMap.has(index)){
-        let token = usersMap.get(index);
-        token['contactos'] += t['contactos'];
+
+        this.acumUserToken(t, usersMap.get(index))
 
       }else{
-        usersMap.set(index, t)
+        usersMap.set(index, this.initUserToken(t))
 
       }
     })
-    return usersMap;
+
+    this.usersMapArray = Array.from(usersMap.values())
+    this.usersMapArray.sort((f, s) => {
+      if(f.asignadoSlug < s.asignadoSlug) return -1;
+      if(f.asignadoSlug > s.asignadoSlug) return 1;
+      return 0;
+    })
+
+    return this.usersMapArray
+  }
+
+  private acumUserToken(data: any, token: any){
+    token['qasignados'] +=     1;
+    token['qcontactos'] +=     data['contactos'];
+
+    if(data['isCovid'])         token['qcovid'] += 1;
+    if(data['isHuerfano'])      token['qhuerfanos'] += 1;
+    if(data['fase']=== 'fase0') token['qfase0'] += 1;
+    if(data['fase']=== 'fase1') token['qfase1'] += 1;
+    if(data['fase']=== 'fase2') token['qfase2'] += 1;
+
+  }
+
+  private initUserToken(data: any){
+    let token = {}
+    token['isAsignado'] =     data['isAsignado']
+    token['asignadoId'] =     data['asignadoId']
+    token['asignadoSlug'] =   data['asignadoSlug']
+
+    token['qasignados'] =     1;
+    token['qcontactos'] =     data['contactos'];
+
+    token['qhuerfanos'] =     0;
+    token['qcovid']     =     0;
+    token['qfase0'] = 0;
+    token['qfase1'] = 0;
+    token['qfase2'] = 0;
+
+    if(data['isCovid'])         token['qcovid'] += 1;
+    if(data['isHuerfano'])      token['qhuerfanos'] += 1;
+    if(data['fase']=== 'fase0') token['qfase0'] += 1;
+    if(data['fase']=== 'fase1') token['qfase1'] += 1;
+    if(data['fase']=== 'fase2') token['qfase2'] += 1;
+
+    // let fase = data['fase'] || 'faseX'
+    // token['fase'] =           data['fase']
+    // token['hasEstrechos'] =   data['hasEstrechos']
+    // token['isCasoIndice'] =   data['isCasoIndice']
+    // token['isCovid'] =        data['isCovid']
+    // token['isHuerfano'] =     data['isHuerfano']
+    // token['contactos'] =      data['contactos']
+    // token['asistenciaId'] =   data['asistenciaId']
+    // token['asistenciaSlug'] = data['asistenciaSlug']
+    // token['asistenciaNdoc'] = data['asistenciaNdoc']
+
+    return token;
   }
 
   private editData(id: string){

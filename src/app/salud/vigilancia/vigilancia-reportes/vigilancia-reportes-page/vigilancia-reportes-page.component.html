@@ -68,14 +68,34 @@
 
 			<div class="container">
 				<p class="panel-header-text">Seguimiento de afectados/as por Usuario/a</p>
-		    <div class="row" *ngFor="let token of usersMap|keyvalue">
-		      <div class="col-md-3">
-		      	<span class="">{{ token.value.asignadoSlug }}</span>
-		      </div>
-		      <div class="col-md-1">
-		      	<span class="">{{ token.value.contactos }}</span>
-		      </div>
+				<div class="row">
+		      <div class="col-md-2"><strong>Usuario   </strong></div>
+		      <div class="col-md-2"><strong>Asignados </strong></div>
+		      <div class="col-md-2"><strong>Contactos </strong></div>
+		      <div class="col-md-2"><strong>S/CasoInd </strong></div>
+		      <div class="col-md-1"><strong>COVID+    </strong></div>
+		      <div class="col-md-1"><strong>Fase-0    </strong></div>
+		      <div class="col-md-1"><strong>Fase-1    </strong></div>
+		      <div class="col-md-1"><strong>Fase-2    </strong></div>
 				</div>
+		    <div class="row" *ngFor="let token of usersMapArray">
+		      <div class="col-md-2"><span class="">{{ token.asignadoSlug }}</span></div>
+		      <div class="col-md-2"><span class="">{{ token.qasignados }}</span></div>
+		      <div class="col-md-2"><span class="">{{ token.qcontactos }}</span></div>
+		      <div class="col-md-2"><span class="">{{ token.qhuerfanos }}</span></div>
+		      <div class="col-md-1"><span class="">{{ token.qcovid }}</span></div>
+		      <div class="col-md-1"><span class="">{{ token.qfase0 }}</span></div>
+		      <div class="col-md-1"><span class="">{{ token.qfase1 }}</span></div>
+		      <div class="col-md-1"><span class="">{{ token.qfase2 }}</span></div>
+
+
+				</div>
+
+		      <!--div class="col-md-1">
+		      	<span class="">{{ token | json }}</span>
+		      </div-->
+
+
 			</div>
 		</ng-container>
 
