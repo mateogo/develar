@@ -721,6 +721,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator'],
       },
       {
+        title: 'Tablero internación',
+        routing: '/salud/gestion/tablerointernacion',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Internacion TestUNO',
         routing: '/salud/gestion/testuno',
         rolesOut: ['ivr:operator'],

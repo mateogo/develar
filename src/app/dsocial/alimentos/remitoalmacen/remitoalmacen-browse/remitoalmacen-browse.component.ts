@@ -121,6 +121,7 @@ export class RemitoalmacenBrowseComponent implements OnInit {
   }
 
   onExport(){
+    this.submitQuery(this.form, this.query);
     this.emitEvent('export');
   }
 

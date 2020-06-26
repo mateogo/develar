@@ -154,6 +154,7 @@ export class EntregasExportComponent implements OnInit {
       this.fetchRemitos(this.query);
 
     }else if(query.searchAction === 'export'){
+
       this.dsCtrl.exportAlmacenByQuery(this.query);
 
     }

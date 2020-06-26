@@ -118,6 +118,7 @@ import { VigilSeguimientoBrowseComponent } from './vigilancia/vigilancia-zeguimi
 import { VigilSeguimientoPanelComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-panel/vigil-seguimiento-panel.component';
 import { VigilSeguimientoBaseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-base/vigil-seguimiento-base.component';
 import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-manage/vigil-seguimiento-manage.component';
+import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/internacion-dashboard-page/internacion-dashboard-page.component';
 
 @NgModule({
   imports: [
@@ -236,6 +237,7 @@ import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimi
     VigilSeguimientoPanelComponent,
     VigilSeguimientoBaseComponent,
     VigilSeguimientoManageComponent,
+    InternacionDashboardPageComponent,
   ],
   entryComponents: 
   [

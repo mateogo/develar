@@ -300,19 +300,27 @@ export class DsocialController {
     })
 
     let params = this.daoService.buildParams(query);
+
     const Url = 'api/remitosalmacen/exportarmovimientos?' + params.toString();
+
+    const windw = window.open(Url, 'about:blank')
+
 
 
     // console.log('export: [%s]', params);
 
-    const windw = window.open(Url, 'about:blank')
     // const xhr = new XMLHttpRequest();
     // xhr.open('GET', Url, true);
     // xhr.send();
 
     //fetch(Url);
 
-    //window.location.href = 'api/remitosalmacen/exportarmovimientos'
+    // setTimeout(()=>{
+
+    //   window.location.href = 'api/remitosalmacen/exportarmovimientos'
+
+    // }, 10000)
+
     
     // this.daoService.exportarMovimientos<RemitoAlmacen>('remitoalmacen', query).subscribe(list =>{
     //   console.log('export cb')

@@ -320,6 +320,8 @@ exports.exportarmovimientos = function(query, req, res ){
 
 function fetchMovimientos(query, req, res){
     let regexQuery = buildQuery(query)
+
+    console.dir('FetchMovimientos: buildQuery')
     console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
@@ -405,7 +407,6 @@ exports.tablero = function(fecha, errcb, cb) {
   console.log('****** Build TABLERO ALMACEN BEGIN [%s] *******', fecha);
 
   let time_frame = utils.buildDateFrameForCurrentWeek(fecha);
-  console.dir(time_frame)
 
   let query = {
       fecomp_ts_d: time_frame.begin.getTime(),
@@ -416,10 +417,8 @@ exports.tablero = function(fecha, errcb, cb) {
 
     
   person.buildIdTree().then(pTree =>{
-    console.log('BuildPeronTree fullFilled');
 
     product.buildIdTree().then(productTree=>{
-      console.log('BuildProductTree fullFilled');
 
         Record.find(regexQuery).lean().exec(function(err, entities) {
 
@@ -427,7 +426,6 @@ exports.tablero = function(fecha, errcb, cb) {
                 console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
                 errcb(err);
             }else{
-              console.log('READY TO PROCESS entities [%s]', entities.length)
               procesTableroRemitoalmacen(pTree, productTree, entities, time_frame, errcb, cb);
             }
         });

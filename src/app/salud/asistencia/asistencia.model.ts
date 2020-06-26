@@ -896,6 +896,7 @@ export class DashboardBrowse {
 		estado:      string;
 		avance:      string;
 		fecharef?:   string;
+		locacionhosp?:   string;
 }
 
 export class AsistenciaBrowse {

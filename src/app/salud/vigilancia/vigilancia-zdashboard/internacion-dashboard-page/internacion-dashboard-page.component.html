@@ -1,0 +1,137 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-subtitle>ESTADO DE RECURSOS DE INTERNACIÓN - ALMIRANTE BROWN</mat-card-subtitle>
+	</mat-card-header>
+  <mat-card-content>
+  <form [formGroup]="form">
+    <div class="row" >
+      <div class="col-md-3 d-flex justifay-content start align-items-center">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecharef']" placeholder="Fecha referencia" > 
+        </mat-form-field>
+        <button mat-icon-button title="Refrescar datos" 
+              (click)="refreshData($event)"><mat-icon>cached</mat-icon>
+        </button>
+
+      </div>
+      <div class="col-md-9 d-flex justifay-content start align-items-center">
+        <span>{{ fecharef_label }}</span>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col-md-8">
+        <mat-form-field>
+          <mat-select #fldEstado placeholder="Locación de internación"
+              [formControl]="form.controls['locacionhosp']"
+              (selectionChange)="changeSelectionValue('locacionhosp',fldEstado.code)" >
+            <mat-option *ngFor="let item of locacionesHospitalarias" 
+              [value]="item.code" >{{ item.code }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="d-md-flex justify-content-between align-items-center">
+      <div  *ngFor="let service of groupservices" >
+        <mat-checkbox   [checked]=true
+                        (click)="selectedCheckBox(service)">
+                        {{service.slug}}
+        </mat-checkbox>
+      </div>
+    </div>
+
+</form>
+</mat-card-content>
+</mat-card>
+
+<div class="cards" >
+<div class="row">
+  <div class="col-md-3 col-xl-3">
+    <card [bgColor]="'danger'" class="info-card">
+      <div class="title text-uppercase">{{ dia.label }} </div>
+      <div class="count">{{ dia.cardinal }}</div>
+      <badge (click)="toggleHoy($event)" 	
+              [customColor]="isHoy ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
+      				[borderRadius]="false">{{ dia.slug }}</badge> 
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-3 col-xl-3">
+    <card [bgColor]="'danger'" class="info-card">
+      <div class="title text-uppercase">{{ sem.label }}</div>
+      <div class="count">{{ sem.cardinal }}</div>
+      <badge (click)="toggleSem($event)"  
+              [customColor]="isSem ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
+              [borderRadius]="false">{{ sem.slug }}</badge> 
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-3 col-xl-3">
+    <card [bgColor]="'warning'" class="info-card">
+      <div class="title text-uppercase">{{ mes.label }}</div>
+      <div class="count">{{ mes.cardinal }}</div>
+      <badge (click)="toggleMes($event)"  
+              [customColor]="isMes ? 'rgba(255,255,255,0.1)': 'rgba(255,255,255,0.3)'" 
+      				[borderRadius]="false">{{ mes.slug }}</badge> 
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </div>
+
+  <div class="col-md-3 col-xl-3">
+    <card [bgColor]="'info'" class="info-card">
+      <div class="title text-uppercase">{{ anio.label }}</div>
+      <div class="count">{{ anio.cardinal }}</div>
+      <badge (click)="toggleAnio($event)"  
+              [customColor]="isAnio ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
+      				[borderRadius]="false">{{ anio.slug }}</badge> 
+      <mat-icon>donut_large</mat-icon>
+    </card>
+  </div>
+
+</div>
+</div>
+<hr>
+
+<mat-card class="chart-card">
+  <mat-card-content>
+    <div class="container" >
+
+      <div *ngFor='let capacidad of capacidadesOptList'>
+      <div class="row">
+        <div  class="col-md-8">
+          <div style="width: 90%;">
+                <canvas
+                  baseChart
+                  [chartType]="'doughnut'"
+                  [datasets]="getDataSet(capacidad)"
+                  [labels]="chartLabels"
+                  [options]="chartOptions"
+                  [legend]="true">
+                </canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div  class="col-md-8">
+          <div class="info">
+            <div class="title">
+                <strong>{{ chartTitle }}</strong>: {{ chartSubTitle }}
+            </div>
+            <div class="small">{{asistenciasByAvance.slug}}</div>
+            <div class="small">{{asistenciasByAvance.error}}</div>
+          </div>
+        </div> 
+      </div>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<dump-data  [title]="'MasterData'"
+            [data$]='data$'
+            [showTests]='true'></dump-data>
+
