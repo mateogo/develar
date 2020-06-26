@@ -45,54 +45,6 @@
 </mat-card-content>
 </mat-card>
 
-<div class="cards" >
-<div class="row">
-  <div class="col-md-3 col-xl-3">
-    <card [bgColor]="'danger'" class="info-card">
-      <div class="title text-uppercase">{{ dia.label }} </div>
-      <div class="count">{{ dia.cardinal }}</div>
-      <badge (click)="toggleHoy($event)" 	
-              [customColor]="isHoy ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
-      				[borderRadius]="false">{{ dia.slug }}</badge> 
-      <mat-icon>donut_large</mat-icon>
-    </card>
-  </div>
-
-  <div class="col-md-3 col-xl-3">
-    <card [bgColor]="'danger'" class="info-card">
-      <div class="title text-uppercase">{{ sem.label }}</div>
-      <div class="count">{{ sem.cardinal }}</div>
-      <badge (click)="toggleSem($event)"  
-              [customColor]="isSem ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
-              [borderRadius]="false">{{ sem.slug }}</badge> 
-      <mat-icon>donut_large</mat-icon>
-    </card>
-  </div>
-
-  <div class="col-md-3 col-xl-3">
-    <card [bgColor]="'warning'" class="info-card">
-      <div class="title text-uppercase">{{ mes.label }}</div>
-      <div class="count">{{ mes.cardinal }}</div>
-      <badge (click)="toggleMes($event)"  
-              [customColor]="isMes ? 'rgba(255,255,255,0.1)': 'rgba(255,255,255,0.3)'" 
-      				[borderRadius]="false">{{ mes.slug }}</badge> 
-      <mat-icon>donut_large</mat-icon>
-    </card>
-  </div>
-
-  <div class="col-md-3 col-xl-3">
-    <card [bgColor]="'info'" class="info-card">
-      <div class="title text-uppercase">{{ anio.label }}</div>
-      <div class="count">{{ anio.cardinal }}</div>
-      <badge (click)="toggleAnio($event)"  
-              [customColor]="isAnio ? 'rgba(255,255,255,0.7)': 'rgba(255,255,255,0.3)'" 
-      				[borderRadius]="false">{{ anio.slug }}</badge> 
-      <mat-icon>donut_large</mat-icon>
-    </card>
-  </div>
-
-</div>
-</div>
 <hr>
 
 <mat-card class="chart-card">
