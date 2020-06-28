@@ -367,10 +367,10 @@ const serviciosOptList: Array<any> = [
 
 const capacidadesOptList: Array<any> = [
     {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , slug: 'C.INTENSIVOS'  },
-    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , slug: 'C.INTERMEDIOS' },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , slug: 'C.INTERMED' },
     {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , slug: 'PEDIATRÍA'     },
-    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', slug: 'NEONATOLOGÍA'  },
-    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', slug: 'AISLAMIENTO'   },
+    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', slug: 'NEO'  },
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', slug: 'C.MÍNIMOS'   },
     {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , slug: 'AMBULATORIO'   },
 ];
 

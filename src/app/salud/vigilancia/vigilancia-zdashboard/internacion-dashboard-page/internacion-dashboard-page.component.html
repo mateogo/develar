@@ -24,9 +24,9 @@
         <mat-form-field>
           <mat-select #fldEstado placeholder="Locación de internación"
               [formControl]="form.controls['locacionhosp']"
-              (selectionChange)="changeSelectionValue('locacionhosp',fldEstado.code)" >
+              (selectionChange)="changeLocacion('locacionhosp',fldEstado.value)" >
             <mat-option *ngFor="let item of locacionesHospitalarias" 
-              [value]="item.code" >{{ item.code }}</mat-option>
+              [value]="item.code" >{{ item.slug }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -45,45 +45,174 @@
 </mat-card-content>
 </mat-card>
 
-<hr>
-
 <mat-card class="chart-card">
   <mat-card-content>
+    <ng-container *ngIf='showChart'>
     <div class="container" >
+      <h3>{{ locacionHospSelected }}</h3>
 
-      <div *ngFor='let capacidad of capacidadesOptList'>
-      <div class="row">
-        <div  class="col-md-8">
-          <div style="width: 90%;">
-                <canvas
-                  baseChart
-                  [chartType]="'doughnut'"
-                  [datasets]="getDataSet(capacidad)"
-                  [labels]="chartLabels"
-                  [options]="chartOptions"
-                  [legend]="true">
-                </canvas>
+      <div *ngFor='let capacidad of capacidadesOptList; let row=index'>           
+        <div class="row doughnut-chart">
+          <div  class="col-md-8 col-sm-12">
+              <canvas
+                baseChart
+                [chartType]="chartType"
+                [datasets]="[ {data: 
+                      [ masterCapacidad[capacidad.val].ocupado, masterCapacidad[capacidad.val].libre ], 
+                        label: capacidad.label} ]"
+                [labels]="chartLabels"
+                [options]="chartOptions[capacidad.val]"
+                [legend]="true">
+              </canvas>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div  class="col-md-8">
-          <div class="info">
-            <div class="title">
-                <strong>{{ chartTitle }}</strong>: {{ chartSubTitle }}
-            </div>
-            <div class="small">{{asistenciasByAvance.slug}}</div>
-            <div class="small">{{asistenciasByAvance.error}}</div>
-          </div>
-        </div> 
-      </div>
-      </div>
 
     </div>
+    </ng-container>
   </mat-card-content>
 </mat-card>
 
+<mat-card class="total-card">
+  <mat-card-content>
+    <ng-container *ngIf='showData'>
+    <div class="container" >
+
+      <h3>{{ totalTitle }}</h3>
+
+      <div class="row total-header">
+        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+          <div  class="col total-header-cell ">
+            <span>{{ capacidad.slug }}</span>
+          </div>
+        </ng-container>
+      </div>
+
+
+      <div class="row total-capacidad">
+        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+          <div  class="col total-cell">
+            <span class="total-label" >CAPACIDAD</span><br>
+            <span class="total-valor" >{{ totalCapacidad[capacidad.val]['capacidad'] }}</span>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row total-ocupacion">
+        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+          <div  class="col total-cell">
+            <span class="total-label" >OCUPACIÓN</span><br>
+            <span class="total-valor" >{{ totalCapacidad[capacidad.val].ocupado }}</span>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row">
+        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+          <div  class="col total-cell">
+            <span class="total-valor" >
+              {{ totalCapacidad[capacidad.val].porcentual }}
+            </span>
+          </div>
+        </ng-container>
+      </div>
+
+
+    </div>
+
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="table-card">
+  <mat-card-content>
+    <ng-container *ngIf='showData'>
+    <div class="container" >
+
+      <div class="row table-header">
+        <div  class="col-md-3 locacion-header-cell">
+          <span> Locacion </span>
+        </div>
+        <div  class="col-md-9">
+          <div class="row">
+            <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+            <div  class="col-md-2 locacion-header-cell">
+              <span>{{ capacidad.slug }}</span>
+            </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+
+      <ng-container *ngFor='let locacion of masterList'>
+        <div class="row table-data">
+          <div  class="col-md-8  locacion-cell">
+            <span>{{ locacion['slug']}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div  class="col-md-3 capacidad-cell">
+            <span>CAPACIDAD TOTAL</span>
+          </div>
+          <div  class="col-md-9">
+            <div class="row">
+              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+              <div  class="col locacion-data-cell">
+                <span>{{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div  class="col-md-3 capacidad-cell">
+            <span>OCUPACIÓN ACTUAL</span>
+          </div>
+          <div  class="col-md-9">
+            <div class="row">
+              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+              <div  class="col-md-2 locacion-data-cell">
+                <span>{{ locacion['disponible'][capacidad.val].ocupado }}</span>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div  class="col-md-3 capacidad-cell">
+            <span>% OCUPACIÓN</span>
+          </div>
+          <div  class="col-md-9">
+            <div class="row">
+              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+              <div  class="col-md-2 locacion-data-cell">
+                <span>
+                  {{ getOcupacionPorcentual(
+                          locacion['disponible'][capacidad.val].ocupado, 
+                          locacion['disponible'][capacidad.val].capacidad) }}
+                </span>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+    </div>
+
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-container *ngIf='false'>
 <dump-data  [title]="'MasterData'"
             [data$]='data$'
             [showTests]='true'></dump-data>
+</ng-container>
 

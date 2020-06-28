@@ -2373,6 +2373,7 @@ export class AsistenciaHelper {
 		q.avance = "no_definido";
 		q.sintoma = "no_definido";
 		q.sector = "no_definido";
+		q.locacionhosp = 'GENERAL'
 
 		return q;
 	}

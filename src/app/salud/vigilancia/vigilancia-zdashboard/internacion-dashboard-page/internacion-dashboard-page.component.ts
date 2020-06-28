@@ -47,6 +47,8 @@ const BORRAR = false;
 export class InternacionDashboardPageComponent implements OnInit {
 
   public title = 'Tablero Ocupación Locaciones de Internación';
+  public tableTitle = 'Capacidad disponible general'
+  public totalTitle = 'Cuadro resúmen'
   public unBindList = [];
   public query: DashboardBrowse = AsistenciaHelper.defaultQueryForTablero();
 
@@ -55,47 +57,32 @@ export class InternacionDashboardPageComponent implements OnInit {
   public serviciosOptList =   InternacionHelper.getOptionlist('servicios');
   public capacidadesOptList = InternacionHelper.getOptionlist('capacidades');
   public periferiaOptList =   InternacionHelper.getOptionlist('estadosPeriferia');
-
-  private viewList: Array<string> = [];
-  public viewList$ = new BehaviorSubject<Array<string>>([]);
-  public showData = false;
-
-  public masterList: MasterAllocation[] = [];
-  public pool: MasterAllocation;
-  public master_internacion: any;
-  public master_periferia: any;
-  public master_camas: any;
-  public locacionesHospitalarias:Array<any> = []
-
   public groupservices = [];
-  private selection: SelectionModel<any>;
+
+  public showData = false;
+  public showChart = false;
+
+  public  totalCapacidad: any = {};
+  public  masterCapacidad: any = {};
+  public  masterList: MasterAllocation[] = [];
+  public  pool: MasterAllocation;
+  public  locacionesHospitalarias:Array<any> = []
+  public  locacionesList: Array<string> = [];
+
+  public  locacionHospSelected: string;
+  private capacidadesSelection: SelectionModel<any>;
+
 
   public data$ = new BehaviorSubject<any>({});
-
 	public form: FormGroup;
-	public showChart = false;
-	//AcumByDate
 
   private fecharef: string;
   private fecharef_date: Date;
   public fecharef_label: string;
-  public epidemio_week: string; 
 
-  private locacionesHelperByOcupation = {};
-  public  locacionesByOcupation: ChartData = new ChartData();
-
-  public chartMasterData: any = {};
-  public chartData: Array<ChartData> = [];
-  public masterCapacidad: any = {};
-  public locacionesSelected: Array<string> = [];
-  public capacidades = [];
-
-  
-  public chartOptions;
-  public chartDataSet;
-  public chartLabels;
-  public chartTitle;
-  public chartSubTitle;
+  public chartOptions: any = {};
+  public chartLabels: any = {};
+  public chartType = 'doughnut';
 
 	
   //Person<
@@ -122,6 +109,46 @@ export class InternacionDashboardPageComponent implements OnInit {
     this.reloadLocacionesData();  
   }
 
+  /************************/
+  /*    Dashboard control   */
+  /**********************/
+  changeSelectionValue(type, val){
+    //c onsole.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
+    this.query[type] = val;    
+    this.refreshView(this.query);
+  }
+
+  changeLocacion(type, val){
+    //c onsole.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
+    this.query[type] = val;
+    this.locacionHospSelected = this.locacionesHospitalarias.find(t => t.code === val).slug;
+    
+    this.refreshView(this.query);
+  }
+
+  selectedCheckBox(e){
+    this.capacidadesSelection.toggle(e);
+    this.refreshView(this.query);
+  }
+
+
+  refreshData(e){
+    let fe = this.form.value.fecharef;
+    this.fecharef_date = devutils.dateFromTx(fe);
+    this.fecharef = devutils.txFromDate(this.fecharef_date);
+    this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
+    this.reloadLocacionesData();
+
+  }
+
+  getOcupacionPorcentual(ocupado, capacidad){
+    if(capacidad === 0 ) return ''
+    return Math.floor( ocupado / capacidad * 100) + "%"
+  }
+
+
+
+
   private initOnce(){
     // debug only: this.data$.next('Hellouuuu!')
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
@@ -131,103 +158,77 @@ export class InternacionDashboardPageComponent implements OnInit {
 
     this.initForm(this.form, this.query);
 
-    this.chartOptions = {
-      responsive: true,
-
-      legend: {
-        position: 'top',
-      },
-
-      title: {
-        display: true,
-        text: 'Ocupación general'
-      },
-
-      animation: {
-        animateScale: true,
-        animateRotate: true
-      },
-
-      tooltips: {
-        callbacks: {
-          label: function(item, data) {
-              console.log(data.labels, item);
-              return data.datasets[item.datasetIndex].label+ ": "+ data.labels[item.index]+ ": "+ data.datasets[item.datasetIndex].data[item.index];
-          }
-
-        }
-      }
-    }
-
-    this.chartDataSet = [
-      {data: [70, 30], label: 'UTI'},
-      {data: [60, 40], label: 'UTE'}
-
-    ]
-    this.chartLabels =[ 'OCUP', 'DISP']
-    this.chartTitle = 'Ocupación general';
-    this.chartSubTitle = 'UTI - UTE';
-
     this._isrv.fetchLocacionesHospitalarias({}).subscribe( list =>{
       this.locacionesHospitalarias = list;
+
+      this.locacionHospSelected = 'Recursos generales del distrito'
+      let generic = {code: 'GENERAL', slug: this.locacionHospSelected } as LocacionHospitalaria;
+
+      this.locacionesHospitalarias.unshift(generic);
     })
 
     this.groupservices = InternacionHelper.getOptionlist('capacidades')
-    this.selection = new SelectionModel<any>(true, this.groupservices);
+    this.capacidadesSelection = new SelectionModel<any>(true, this.groupservices);
 
 
   }
 
-  // borrar
-  private refreshListView(list){
-    this.viewList = list.map(t => t.val) || [] ;
-    this.viewList$.next(this.viewList);
-  }
 
   private reloadLocacionesData(){
-    this.showData = false;
-    this.loadMasterAllocation()
-
-  }
-    
-  private loadMasterAllocation(){
+    this.showChart = false;
     this.masterList = [];
-
-    this._isrv.fetchCapacidadDisponible().subscribe(alocationList =>{
+    this.loadMasterAllocation().subscribe(alocationList =>{
       if(alocationList && alocationList.length){
 
-        this.showMasterAllocator(alocationList)
+        this.masterList = this.initMasterAllocator(alocationList)
+        //todo
+        //this.locacionesList = this.filterActiveLocaciones(this.masterList);
+
+        //this.data$.next(this.masterList);
+        this.totalCapacidad = this.globalResourcesData()
+
+        this.refreshView(this.query)
 
       }else {
         //TODO
       }
 
-    });
-  }
-  private showMasterAllocator(list: MasterAllocation[]){
-    this.data$.next(list);
+    })
 
+  }
+  private filterActiveLocaciones(masterList: MasterAllocation[]){
+
+    return this.groupservices.filter(loc => {
+      let locacion = this.masterList.find(t => t.code === loc.code);
+      if(!locacion || !locacion.disponible) return false;
+      let sum = 0;
+      this.groupservices.forEach(ser => {
+        sum += (locacion.disponible[ser.val] || 0);
+      })
+      return sum;
+    })
+
+  }
+    
+  private loadMasterAllocation(): Observable<MasterAllocation[]>{
+    return this._isrv.fetchCapacidadDisponible()
+  }
+
+  private initMasterAllocator(list: MasterAllocation[]): MasterAllocation[] {
     let pool = list.find(t => t.code === 'pool');
     if(pool){
       this.pool = pool;
-      //this.botonesPool = this._isrv.getBotonesPool(this.pool);
-      // debug only this.data$.next(list);
 
     }else{
       this.pool = null;
     }
 
-    this.masterList = list.filter(t => t.code !== 'pool');
-    this.refreshView(this.query)
-
-
+    return list.filter(t => t.code !== 'pool');
   }
 
 
 
-  // Pie
-
-  initForm(form: FormGroup, query: DashboardBrowse): FormGroup {
+  private initForm(form: FormGroup, query: DashboardBrowse): FormGroup {
 
 		form.reset({
         locacionhosp: query.locacionhosp,
@@ -255,108 +256,77 @@ export class InternacionDashboardPageComponent implements OnInit {
     return form;
   }
 
-  /************************/
-  /*    Dashboard control   */
-  /**********************/
-	changeSelectionValue(type, val){
-		//con sole.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
-		this.query[type] = val;
-		
-		this.refreshView(this.query);
-  }
-
-  selectedCheckBox(e){
-    this.selection.toggle(e);
-    //this.checkBoxEmit.emit(this.selection.selected);    
-  }
 
 
 
+  /***************************
+   Regeneramos los gráficos
+  *************************/
 
-  refreshData(e){
-    let fe = this.form.value.fecharef;
-    this.fecharef_date = devutils.dateFromTx(fe);
-    this.fecharef = devutils.txFromDate(this.fecharef_date);
-    this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
-
-
-
-  }
-
-
-  resetData(){
-
-
-
-  }
-
-
-
-  acumByLocacionesOcupation(list: MasterAllocation[]){
-    //acaestoy
-
-
-
-    // if(this.asistenciasHelperByAvance[t.avance]){
-    //   this.asistenciasHelperByAvance[t.avance].cardinal += t.cardinal;
-
-    // }else {
-    //    this.asistenciasHelperByAvance[t.avance] = {
-    //      cardinal: t.cardinal,
-    //      label: AsistenciaHelper.getOptionLabel('avanceOptList', t.avance)
-    //    }
-    // }
-  }
-
-  resetLocacionesByOcupacionChart(){
-
-  }
-
-
-
-  /******************
-   AsistenciasBySINTOMA
-  *********************/
-
-  refreshView(query: DashboardBrowse){
+  private refreshView(query: DashboardBrowse){
   	this.showChart = false;
-  	this.resetData();
-    this.buildOcupacionGeneral();
+    this.capacidadesOptList = this.selectedCapacidades();
+    this.buildChartData(query);
 
   	setTimeout(()=>{
-
-
+      this.showData = true;
       this.showChart = true;
-
 
   	},200)
 
   }
 
-  getDataSet(capacidad: string){
-    return [[this.masterCapacidad[capacidad].ocupado, this.masterCapacidad[capacidad].libre ]  ];
-  }
-  
 
-  buildOcupacionGeneral(){
+  private selectedCapacidades(): Array<any>{
+    return this.groupservices.filter(t => this.capacidadesSelection.selected.find( s => s.val === t.val))
+  }
+
+
+
+  private buildChartData(query?: DashboardBrowse){
     let chartData = new ChartData();
-    this.masterCapacidad = this.getOcupacionData('general');
+    this.masterCapacidad = this.resourceSelectedData(query['locacionhosp']);
+
+    this.capacidadesOptList = this.capacidadesOptList.filter(t => (this.masterCapacidad[t.val].ocupado + this.masterCapacidad[t.val].libre) > 0 )
+
+    for(let capacidad of this.capacidadesOptList){
+      let dataSet = [ {data: [ this.masterCapacidad[capacidad.val].ocupado, this.masterCapacidad[capacidad.val].libre ], label: capacidad.label} ];
+      //this.chartLabels =[ 'OCUP: ' + this.masterCapacidad[capacidad.val].ocupado, 'DISP: ' + this.masterCapacidad[capacidad.val].libre]
+      this.chartLabels =[ 'OCUP: ', 'DISP: ']
+
+      this.chartOptions[capacidad.val] = {
+        responsive: true,
+        maintainAspectRation: false,
+
+        legend: {
+          position: 'top',
+        },
+
+        title: {
+          display: true,
+          text: capacidad.label + ' - Disponible: ' +  this.masterCapacidad[capacidad.val].libre + ' / ' + ( this.masterCapacidad[capacidad.val].ocupado + this.masterCapacidad[capacidad.val].libre )
+        },
+
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        },
+
+        tooltips: {
+          callbacks: {
+            label: function(item, data) {
+                  return data.datasets[item.datasetIndex].label+ ": "+ data.labels[item.index]+ ": "+ data.datasets[item.datasetIndex].data[item.index];
+            }
+
+          }
+        }
+      }
+    }// end for
 
 
+  } // end method
 
-    this.chartDataSet = [
-      {data: [70, 30], label: 'UTI'},
-      {data: [60, 40], label: 'UTE'}
-
-    ]
-    this.chartLabels =[ 'OCUP', 'DISP']
-    this.chartTitle = 'Ocupación general';
-    this.chartSubTitle = 'UTI - UTE';
-    
-
-  }
-
-  private getOcupacionData(scope){
+  private resourceSelectedData(scope){
     let capacidades = {}
 
     this.capacidadesOptList.forEach(t=>{
@@ -366,20 +336,50 @@ export class InternacionDashboardPageComponent implements OnInit {
 
 
     this.masterList.forEach(t => {
-      let disponible = t.disponible;
-      for(let label of this.capacidades){
-        capacidades[label].ocupado += disponible[label].ocupado;
-        capacidades[label].libre += disponible[label].capacidad - disponible[label].ocupado
+      if(t.code === scope || scope === 'GENERAL'){
+        let disponible = t.disponible;
+        for(let label of this.capacidadesOptList){
+          capacidades[label.val].ocupado += disponible[label.val].ocupado;
+          capacidades[label.val].libre += disponible[label.val].capacidad - disponible[label.val].ocupado
+        }        
       }
 
     })
 
-    console.dir(capacidades)
     return capacidades
-
-
   }
 
+
+
+  private globalResourcesData(){
+    let capacidades = {}
+
+    this.capacidadesOptList.forEach(t=>{
+      capacidades[t.val] =  {capacidad: 0, ocupado: 0, libre: 0, porcentual:""};
+
+    })
+
+
+    this.masterList.forEach(t => {
+        let disponible = t.disponible;
+        for(let label of this.capacidadesOptList){
+          capacidades[label.val].ocupado += disponible[label.val].ocupado;
+          capacidades[label.val].libre += disponible[label.val].capacidad - disponible[label.val].ocupado
+          capacidades[label.val].capacidad += disponible[label.val].capacidad
+
+        }        
+
+    })
+
+    for(let label of this.capacidadesOptList){
+      let porcentual = capacidades[label.val].capacidad 
+                      ? Math.floor( capacidades[label.val].ocupado / capacidades[label.val].capacidad * 100) + "%" 
+                      : '';
+      capacidades[label.val].porcentual = porcentual;
+    }
+
+    return capacidades
+  }
 
 
 
