@@ -45,34 +45,6 @@
 </mat-card-content>
 </mat-card>
 
-<mat-card class="chart-card">
-  <mat-card-content>
-    <ng-container *ngIf='showChart'>
-    <div class="container" >
-      <h3>{{ locacionHospSelected }}</h3>
-
-      <div *ngFor='let capacidad of capacidadesOptList; let row=index'>           
-        <div class="row doughnut-chart">
-          <div  class="col-md-8 col-sm-12">
-              <canvas
-                baseChart
-                [chartType]="chartType"
-                [datasets]="[ {data: 
-                      [ masterCapacidad[capacidad.val].ocupado, masterCapacidad[capacidad.val].libre ], 
-                        label: capacidad.label} ]"
-                [labels]="chartLabels"
-                [options]="chartOptions[capacidad.val]"
-                [legend]="true">
-              </canvas>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    </ng-container>
-  </mat-card-content>
-</mat-card>
-
 <mat-card class="total-card">
   <mat-card-content>
     <ng-container *ngIf='showData'>
@@ -124,6 +96,36 @@
   </mat-card-content>
 </mat-card>
 
+
+
+
+<mat-card class="chart-card">
+  <mat-card-content>
+    <ng-container *ngIf='showChart'>
+    <div class="container" >
+      <h3>{{ locacionHospSelected }}</h3>
+
+      <div *ngFor='let capacidad of capacidadesOptList; let row=index'>           
+        <div class="row doughnut-chart">
+          <div  class="col-md-8 col-sm-12">
+              <canvas
+                baseChart
+                [chartType]="chartType"
+                [datasets]="[ {data: 
+                      [ masterCapacidad[capacidad.val].ocupado, masterCapacidad[capacidad.val].libre ], 
+                        label: capacidad.label} ]"
+                [labels]="chartLabels"
+                [options]="chartOptions[capacidad.val]"
+                [legend]="true">
+              </canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
 
 
 <mat-card class="table-card">

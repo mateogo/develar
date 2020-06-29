@@ -602,7 +602,7 @@ function buildQuery(query, today){
   }
 
   if(query['casosIndice']){
-    q['contactosEstrechos'] = {$gt : 1}
+    nestedOrs.push([{'contactosEstrechos': {$gt: 0}}, {'hasParent': false} ])
   }
 
   if(query['tipo']) {
@@ -1770,7 +1770,7 @@ function buildExcelStream(movimientos, query, req, res){
             asignadoSlug: 'no asignado',
           }
       }else {
-        if(!folloUp.isAsignado) followUp.asignadoSlug = 'no asignado';
+        if(!followUp.isAsignado) followUp.asignadoSlug = 'no asignado';
         if(followUp.altaVigilancia) followUp.asignadoSlug = 'alta de vigilancia';        
       }
 
@@ -2245,7 +2245,8 @@ exports.dashboard = function (errcb, cb) {
 
 const dashboardProcess = function(cb){
 
-    Record.find().lean().exec(function(err, entities) {
+
+    Record.find({estado: 'activo'}).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
