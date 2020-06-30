@@ -18,6 +18,8 @@ import { PacienteComponent } from './components/paciente/paciente.component';
 import { BufferModalComponent } from './components/buffer-modal/buffer-modal.component';
 import { PacientesApi } from './api/pacientes.api';
 import { CamaComponent } from './components/cama/cama.component';
+import { IlocacionAltaComponent } from './components/ilocacion-alta/ilocacion-alta.component';
+import { IlocacionViewComponent } from './components/ilocacion-view/ilocacion-view.component';
 
 
 @NgModule({
@@ -30,8 +32,10 @@ import { CamaComponent } from './components/cama/cama.component';
       PacienteComponent,
       BufferModalComponent,
       CamaComponent,
+      IlocacionAltaComponent,
+      IlocacionViewComponent,
     ],
-    entryComponents : [CamaEstadoModalComponent, RecursosModalComponent, BufferModalComponent],
+    entryComponents : [CamaEstadoModalComponent, RecursosModalComponent, BufferModalComponent, IlocacionAltaComponent],
     imports: [
         LocacionInternacionRoutingModule,
         CommonModule,

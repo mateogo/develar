@@ -4,7 +4,8 @@ import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { InternacionService } from '../../../salud/internacion/internacion.service';
 
-import { AltaRapidaPacienteModalComponent } from '../../../develar-commons/alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
+import { IlocacionAltaComponent } from '../../components/ilocacion-alta/ilocacion-alta.component';
+
 import { CamaEstadoModalComponent } from '../../components/camas-mosaicos-component/cama-estado-modal/cama-estado-modal.component';
 import { BufferModalComponent } from '../../components/buffer-modal/buffer-modal.component';
 
@@ -19,6 +20,7 @@ import { InternacionHelper }  from '../../../salud/internacion/internacion.helpe
 const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
 const ASIGNAR = 'asignar';
+const LIBERAR = 'liberar';
 const UPDATE = 'update';
 const EVOLUCIONAR = 'evolucionar';
 
@@ -151,9 +153,12 @@ export class LocacionContainerComponent implements OnInit{
   /****************************************************************************/
   altaRapidaPaciente(type){
 
-    const dialogRef = this.dialog.open(AltaRapidaPacienteModalComponent, {
+    const dialogRef = this.dialog.open(IlocacionAltaComponent, {
       width: '750px',
-      data: {data : null}
+      data: {
+        locacion: this._currentLocation,
+        data : null
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -276,7 +281,15 @@ class CamaModel {
         if(!result) return;
 
         if(result.action === ASIGNAR){
-          this.asignarPacienteARecurso(result);
+          let transition = result.transition;
+
+          if(transition === 'servicio:servicio'){
+            this.asignarPacienteARecurso(result);
+
+          }else {
+            this.liberarRecurso(result);
+
+          }
 
         } else if(result.action === EVOLUCIONAR){
           this.evolucionarPaciente(result)
@@ -328,8 +341,16 @@ class CamaModel {
       if(!event) return;
       if(event.action === ASIGNAR){
           this.asignarPacienteARecurso(event);
+
       }
 
+  }
+
+  private liberarRecurso(event: AsignarRecursoEvent){
+      this._locacionFacade.liberarRecurso(event.sinternacion, event.transition).subscribe(sol => {
+          this.refreshAfectadosList(this._currentLocation);
+          this._locacionFacade.openSnackBar('Actulización exitosa', 'CERRAR');
+      })
   }
 
   private asignarPacienteARecurso(event: AsignarRecursoEvent){

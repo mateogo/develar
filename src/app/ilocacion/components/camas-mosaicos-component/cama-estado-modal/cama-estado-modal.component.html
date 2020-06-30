@@ -1,4 +1,4 @@
-<div class="container-fluid p-0" *ngIf="cama.estado !== 'LIBRE'">
+<div class="container-fluid p-0 app" *ngIf="cama.estado !== 'LIBRE'">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-12">
 			<h2 style="text-align: center;">
@@ -12,7 +12,76 @@
 
 	<!-- Pestañas -->
 	<mat-tab-group>
-		<!-- Datos del paciente -->
+
+		<mat-tab label="Asignar recurso">
+
+			<div class="container-fluid p-0">
+			    <form [formGroup]="formRecursos">
+			        <div class="container">
+			                <!-- Recurso -->
+									<h5><span>EVOLUCIÓN INTERNACIÓN: </span></h5>
+
+								  <div class="row">
+								    <div class="col d-flex align-items-center">
+								      <mat-radio-group  formControlName="transition" 
+								      									aria-label="Cambio en el estado de internación">
+								        <mat-radio-button 
+								              [checked]="formRecursos.controls['transition'].value===0" 
+								              (change)='changeActualState(0)'
+								              [value]="0">Permanece en este servicio</mat-radio-button>
+								        <mat-radio-button 
+								              [checked]="formRecursos.controls['transition'].value===1" 
+								              (change)='changeActualState(1)'
+								              [value]="1">Traslado intra-locación</mat-radio-button>
+								        <mat-radio-button 
+								              [checked]="formRecursos.controls['transition'].value===2" 
+								              (change)='changeActualState(2)'
+								              [value]="2">Externación</mat-radio-button>
+								        <mat-radio-button 
+								              [checked]="formRecursos.controls['transition'].value===3" 
+								              (change)='changeActualState(3)'
+								              [value]="3">Salida</mat-radio-button>
+								      </mat-radio-group>
+								    </div>
+								  </div>
+
+			            <div class="row"> <!-- ó col-6? -->
+			                <div class="col" style="text-align: center;">
+			                    <mat-form-field>
+			                        <mat-label>Recurso</mat-label>
+
+			                        <mat-select #fldRecurso 
+			                                        formControlName='recurso'
+			                                        (selectionChange)="changeSelectionValue('recurso', fldRecurso.value)">
+			                            <!-- Admisión -->
+			                            <mat-optgroup [disabled]="!recursosList.length" [label]="'Camas'">
+			                                <mat-option *ngFor="let recurso of recursosList" [value]="recurso">
+			                                    {{ recurso.slug }} 
+			                                </mat-option>
+			                            </mat-optgroup>
+
+			                        </mat-select>
+			                    </mat-form-field>
+			                </div>
+			            </div>
+
+			          <div class="d-md-flex justify-content-end"> <!-- ó col-6? -->
+			            <button class="m-1" mat-raised-button color="primary" 
+			                    [disabled]="!formRecursos.valid" 
+			                    (click)="onSubmitRecursos()">
+			                Asignar
+			            </button>
+			            <button class="m-1"  mat-raised-button color="warn"  (click)="onCancel()">
+			                Cancelar
+			            </button>
+			        	</div>
+			        </div>
+			    
+			    </form>
+			</div>
+
+		</mat-tab>
+
 		<mat-tab label="Datos del paciente">
 			<mat-list>
 				<div class="row">
@@ -117,49 +186,7 @@
 			</form>
 		</mat-tab>
 
-		<!-- Historia clínica (comorbilidades) -->
-		<mat-tab label="Asignar recurso">
 
-			<div class="container-fluid p-0">
-			    <form [formGroup]="formRecursos">
-			        <div class="container">
-			                <!-- Recurso -->
-			            <div class="row"> <!-- ó col-6? -->
-			                <div class="col" style="text-align: center;">
-			                    <mat-form-field>
-			                        <mat-label>Recurso</mat-label>
-
-			                        <mat-select #fldRecurso 
-			                                        formControlName='recurso'
-			                                        (selectionChange)="changeSelectionValue('recurso', fldRecurso.value)">
-			                            <!-- Admisión -->
-			                            <mat-optgroup [disabled]="!recursosList.length" [label]="'Camas'">
-			                                <mat-option *ngFor="let recurso of recursosList" [value]="recurso">
-			                                    {{ recurso.slug }} 
-			                                </mat-option>
-			                            </mat-optgroup>
-
-			                        </mat-select>
-			                    </mat-form-field>
-			                </div>
-			            </div>
-
-			          <div class="d-md-flex justify-content-end"> <!-- ó col-6? -->
-			            <button class="m-1" mat-raised-button color="primary" 
-			                    [disabled]="!formRecursos.valid" 
-			                    (click)="onSubmitRecursos()">
-			                Asignar
-			            </button>
-			            <button class="m-1"  mat-raised-button color="warn"  (click)="onCancel()">
-			                Cancelar
-			            </button>
-			        	</div>
-			        </div>
-			    
-			    </form>
-			</div>
-
-		</mat-tab>
 	</mat-tab-group>
 				
 </div>

@@ -8,6 +8,7 @@ import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Tran
                     MasterAllocation, AsignarRecursoEvent } from '../../../../salud/internacion/internacion.model';
 
 import { LocacionHospitalaria, Recurso} from '../../../../entities/locaciones/locacion.model';
+import { InternacionHelper } from '../../../../salud/internacion/internacion.helper';
 
 const ADMISION = 'admision';
 const TRASLADO = 'traslado';
@@ -23,6 +24,10 @@ export class RecursosModalComponent implements OnInit {
   form: FormGroup;
 
   public asignarList: SolicitudInternacion[];
+  private _servicioOptList =  InternacionHelper.getOptionlist('servicios')
+
+  public servicioOptList = [];
+
   public recursosList: Recurso[] = [];
   public servicio: string ;
 
@@ -35,7 +40,7 @@ export class RecursosModalComponent implements OnInit {
 
     this.form = this.fb.group({
       sinternacion: [null, Validators.required],
-      servicio:     [null, Validators.required],
+      servicio:     [null],
       recurso:      [null, Validators.required],
     });
 
@@ -44,6 +49,7 @@ export class RecursosModalComponent implements OnInit {
   ngOnInit(): void {
     let master = this.data && this.data.masterperiferia;
     this.asignarList = this.data.sinternaciones || [] ;
+
     if(! (this.asignarList && this.asignarList.length) ) this.buildSolicitudesList(master);
 
     this.recursosList = (this.data && this.data.recursos )|| [];
@@ -63,6 +69,7 @@ export class RecursosModalComponent implements OnInit {
   }
 
   initForEdit(){
+    this.servicioOptList = this._servicioOptList.filter(t => t.val === this.servicio);
 
     this.form.reset({
       sinternacion:  this.asignarList[0],

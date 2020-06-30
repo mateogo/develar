@@ -30,6 +30,7 @@ const SERVICIO_DEFAULT = "INTERNACION"
 export class InternacionEditComponent implements OnInit {
 	@Input() solicitud: SolicitudInternacion;
   @Input() internacion: Internacion;
+  @Input() showData = true;
   @Output() updateInternacionEvent = new EventEmitter<UpdateInternacionEvent>();
 
   pageTitle: string = 'Selector de recurso de internación';
@@ -45,7 +46,8 @@ export class InternacionEditComponent implements OnInit {
 
   public afeccionOptList =     InternacionHelper.getOptionlist('afecciones')
   public especialidadOptList = InternacionHelper.getOptionlist('epecialidades')
-  public servicioOptList =     InternacionHelper.getOptionlist('servicios');
+  private _servicioOptList =     InternacionHelper.getOptionlist('servicios');
+  public servicioOptList =    [];
 
   public transition: string;
 
@@ -120,6 +122,7 @@ export class InternacionEditComponent implements OnInit {
   	if(recursos && recursos.length){
 			this.recursosOptList = InternacionHelper.buildFilteredRecursosList(this.servicio, recursos);
   	}
+    this.servicioOptList = InternacionHelper.filterServiciosAvailables(locacion);
   }
 
   private initForSave(){
@@ -163,7 +166,7 @@ export class InternacionEditComponent implements OnInit {
   private buildForm(form: FormGroup){
   	this.form = this.fb.group({
 			slug:          [null],
-      recurso:       [null],
+      recursoId:     [null],
 			description:   [null],
 			transitoId:    [null],
 			estado:        [null],
@@ -182,10 +185,19 @@ export class InternacionEditComponent implements OnInit {
 	/******* Template Helpers *******/
 	/**********************************/
    changeSelectionValue(type, val) {
+     if(type === 'servicio'){
+       this.servicio = val;
+       this.initLocacion(this.locacion)
+
+
+     }
   }
 
-  changeRecursoSelection(type: string, recurso: Recurso){
+  changeRecursoSelection(type: string, recursoId: string){
+    let recurso = this.recursosOptList.find(r => r._id == recursoId);
+
     this.internacion.recursoId = recurso._id;
+    this.internacion.camaSlug =  recurso.slug;
     this.form.controls['piso'].setValue(recurso.piso)
     this.form.controls['hab'].setValue(recurso.hab)
     this.form.controls['sector'].setValue(recurso.sector)

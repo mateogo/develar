@@ -48,8 +48,20 @@ export class UsersComponent implements OnInit {
 
 	getUsers(): void{
 		this.userService.getUsers().then(users => {
-			this.users = users;
-			setTimeout(() => { this.loadingIndicator = false; }, 1500);
+			if(users && users.length){
+
+				users.sort((f,s)=> {
+					if(f.username < s.username) return -1;
+					if(f.username > s.username) return 1;
+					return 0;
+				})
+
+				this.users = users;
+				setTimeout(() => { this.loadingIndicator = false; }, 1500);
+
+			}else{
+				this.users = [];
+			}
 		});
 	}
 

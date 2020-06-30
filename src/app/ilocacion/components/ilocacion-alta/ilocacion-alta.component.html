@@ -1,0 +1,41 @@
+<div class="view-port">
+<ng-container *ngIf="searchPerson">
+	<mat-card>
+  	<mat-card-content>
+      <p class="text-resaltado">{{ title }}</p>
+      <altarapida-fetch (person$)='personFetched($event)'></altarapida-fetch>
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+
+<ng-container *ngIf='showView'>
+	<mat-card>
+		<mat-card-title> {{ altaRapidaTitle }} </mat-card-title>
+		<mat-card-content>
+			<ilocacion-view [person]='person' [solinternacion]='solInternacion'></ilocacion-view>
+
+			<ng-container *ngIf='confirmaInternacion'>
+				<div class="row section-box">
+					<div class='col'>
+						<p class="text-resaltado">{{ actionTxt }}</p>
+						<button mat-raised-button *ngIf="!isInvalidForEdit" class="nueva-internacion-button" 
+										(click)='confirmaActualizarInternacionEvent("next")'>CONFIRMAR</button>			
+						<button mat-flat-button class="nueva-internacion-button" 
+										(click)='confirmaActualizarInternacionEvent("cancelar")'>Cerrar</button>			
+					</div>
+				</div>
+			</ng-container>
+
+			<ng-container *ngIf='showTriageEditor'>
+				<solinternacion-view [token]='solInternacion'></solinternacion-view>
+				<p class="text-resaltado">Triage de internación</p>
+
+				<internacion-edit [solicitud]='solInternacion' [internacion]='internacion' [showData]='false'
+																(updateInternacionEvent)='internacionEvent($event)'></internacion-edit>
+
+			</ng-container>
+
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+</div>

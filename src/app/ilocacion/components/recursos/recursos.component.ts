@@ -7,6 +7,7 @@ import {     SolicitudInternacion, Novedad, Locacion, Requirente, Atendido, Tran
                     MasterAllocation, AsignarRecursoEvent } from '../../../salud/internacion/internacion.model';
 
 import { LocacionHospitalaria, Recurso} from '../../../entities/locaciones/locacion.model';
+import { InternacionHelper } from '../../../salud/internacion/internacion.helper';
 
 @Component({
   selector: 'app-recursos',
@@ -22,10 +23,11 @@ export class RecursosComponent implements OnInit {
   @Output() asignarRecursosEvent = new EventEmitter<AsignarRecursoEvent>();
 
   public sinternaciones: SolicitudInternacion[] = [];
-
+  public servicioOptList =     InternacionHelper.getOptionlist('servicios')
   public disponible;
   public camasList = [];
   public recursosList: Recurso[]  = [];
+  private target = '';
 
   constructor(
     public dialog: MatDialog,
@@ -34,19 +36,32 @@ export class RecursosComponent implements OnInit {
   ngOnInit(): void {
     this.disponible = this.capacidad - this.ocupacion;
 
+    this.getServiciosData(this.servicio);
+
     this.recursosList = this.recursos.filter(rr => rr.estado === 'libre');
+
     this.buildSolinternacionesArray(this.masterperiferia);
 
   }
+  
+  private getServiciosData(servicioVal){
+    let servicio = this.servicioOptList.find(t => t.val === servicioVal);
+    this.target = (servicio && servicio.target) || 'no_definido';
+  }
+
   private buildSolinternacionesArray(master){
     this.sinternaciones = [];
 
     Object.keys(master).forEach(key => {
       let solList = master[key] as SolicitudInternacion[];
       solList.forEach(s => {
-        if(s.internacion.servicio === this.servicio){
-          this.sinternaciones.push(s);
+        if(InternacionHelper.validateCandidateToServicio(s, this.servicio, this.target)){
+          this.sinternaciones.push(s);         
         }
+
+        // if(s.internacion.servicio === this.servicio || s.triage.target === this.target){
+        //   this.sinternaciones.push(s);
+        // }
       })
     })
 

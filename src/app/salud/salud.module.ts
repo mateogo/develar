@@ -254,7 +254,8 @@ import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdash
       InternacionHeaderControlComponent,
       AltarapidaFetchComponent,
       SolinternacionViewComponent,
-      TriageEditComponent
+      TriageEditComponent,
+      InternacionEditComponent
   ]
 
 })

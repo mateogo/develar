@@ -248,6 +248,7 @@ export interface MasterSelectedEvent {
 
 export class AsignarRecursoEvent {
   action: string = 'asignar';
+  transition?: string = ''
   sinternacion: SolicitudInternacion;
   recurso: Recurso;
   servicio: string;

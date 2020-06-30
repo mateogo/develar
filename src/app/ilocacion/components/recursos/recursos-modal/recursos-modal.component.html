@@ -34,9 +34,16 @@
                 <!-- Recurso -->
             <div class="row" >
                 <div  class="col">
+
                     <mat-form-field>
-                      <input  matInput [formControl]="form.controls['servicio']" placeholder="Servicio" >
+                      <mat-select #fldAServicio placeholder="Servicio destino" 
+                                    formControlName='servicio'
+                                    (selectionChange)="changeSelectionValue('servicio',fldAServicio.value)">
+                        <mat-option *ngFor="let item of servicioOptList" [value]="item.val">{{ item.label }}</mat-option>
+                      </mat-select>
                     </mat-form-field>
+
+
                 </div>
             </div>
 

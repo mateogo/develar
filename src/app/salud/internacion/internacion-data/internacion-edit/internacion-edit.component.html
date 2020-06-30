@@ -1,19 +1,32 @@
 <ng-container *ngIf="showEditor" >
 
+  <ng-container *ngIf="showData">
 	<p class='text-resaltado'>Actuallización del Estado de Internación</p>
 	<p class='text-resaltado'>Locación: {{ locacion.code }}</p>
 	<p class='text-resaltado'>Afectado/a: {{ personSlug }}</p>
 	<p class='text-resaltado'>Servicio: {{ servicioLabel }} </p>
 	<hr>
 	<p class='text-resaltado'>Indique nuevo estado</p>
+  </ng-container>
 	
   <form [formGroup]="form">
     <div class="row">
       <div class="col-sm-12 col-md-3">
         <mat-form-field>
-          <mat-select #fldRecursoHsp placeholder="Seleccione recurso " [formControl]="form.controls['recurso']"
+          <mat-select #fldServicio placeholder="Servicio de internación buscado" 
+                        [formControl]="form.controls['servicio']"
+                        (selectionChange)="changeSelectionValue('servicio',fldServicio.value)">
+            <mat-option *ngFor="let item of servicioOptList" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldRecursoHsp placeholder="Seleccione recurso " [formControl]="form.controls['recursoId']"
             (selectionChange)="changeRecursoSelection('recurso',fldRecursoHsp.value)">
-            <mat-option *ngFor="let item of recursosOptList" [value]="item">{{ item.slug }}</mat-option>
+            <mat-option *ngFor="let item of recursosOptList" [value]="item._id">{{ item.slug }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

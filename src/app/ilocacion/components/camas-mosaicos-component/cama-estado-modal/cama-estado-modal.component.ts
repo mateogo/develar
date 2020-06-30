@@ -9,6 +9,12 @@ import { LocacionHospitalaria, Recurso} from '../../../../entities/locaciones/lo
 
 const ASIGNAR = 'asignar';
 const EVOLUCIONAR = 'evolucionar';
+const LIBERAR = 'liberar';
+const TRANSITIONS = [   'servicio:servicio',
+                        'servicio:traslado',
+                        'servicio:externacion',
+                        'servicio:salida'
+                    ];
 
 @Component({
     selector:'app-cama-estado-modal',
@@ -35,6 +41,9 @@ export class CamaEstadoModalComponent implements OnInit{
 
   public evolucionForm: FormGroup;
   public opcionesFiltradas: Observable<string[]>;
+
+  private transition: number = 0;
+
 
 
     constructor(
@@ -63,6 +72,10 @@ export class CamaEstadoModalComponent implements OnInit{
           nuevaFecha.getDate() + this.slider.daysLeft
         );
         this.fechaPrevistaOut = nuevaFecha;
+      }
+
+      changeActualState(state){
+        //c onsole.log('Cambio de estado: [%s]', state);
       }
 
       private initOnce(){
@@ -162,6 +175,7 @@ export class CamaEstadoModalComponent implements OnInit{
           this.formRecursos = this.fb.group({
             sinternacion: [null],
             servicio:     [null],
+            transition:   [null],
             recurso:      [null, Validators.required],
           });
 
@@ -169,6 +183,7 @@ export class CamaEstadoModalComponent implements OnInit{
           this.servicio = this.sinternacion.internacion.servicio;
 
           this.formRecursos.reset({
+            transition: this.transition,
             sinternacion:  this.sinternacion,
             recurso: this.recursosList[0],
             servicio:  this.servicio,
@@ -197,7 +212,11 @@ export class CamaEstadoModalComponent implements OnInit{
         this.result = new AsignarRecursoEvent();
         let fvalue = this.formRecursos.value;
 
+        let transition = fvalue.transition;
+
         this.result.action = ASIGNAR;
+
+        this.result.transition =   TRANSITIONS[transition];
         this.result.sinternacion = fvalue.sinternacion;
         this.result.servicio =     fvalue.servicio;
         this.result.recurso =      fvalue.recurso;

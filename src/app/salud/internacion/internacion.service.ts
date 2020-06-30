@@ -177,6 +177,8 @@ export class InternacionService {
     let today = new Date()
 
     triage.transitType = transition;
+    triage.servicio = internacion.servicio || triage.servicio;
+    triage.target = InternacionHelper.getCapacidadFromServicio(triage.servicio); 
     transito.transitType = transition;
     transito.target = internacion;
     //transito.from = oldInternacion;
@@ -205,6 +207,12 @@ export class InternacionService {
       solint.queue =        'alocado';
       solint.avance =       'esperacama';
       internacion.estado =  'admision';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'pool:servicio'){ //'Alocar en servicio'},
+      solint.queue =        'alocado';
+      solint.avance =       'entratamiento';
+      internacion.estado =  'servicio';
       transito.estado =     'cumplido';
 
     }else if(transition === 'transito:admision'){ //'Traslado SAME a Admisión' },
@@ -255,7 +263,13 @@ export class InternacionService {
       internacion.estado =  'transito';
       transito.estado =     'enejecucion';
 
-    }else if(transition === 'externacion:salida'){ //'Tránsito inter-locación. Disponer traslado'},
+    }else if(transition === 'servicio:salida'){ //'Salida directa desde servicio',
+      solint.queue =        'salida';
+      solint.avance =       'salida';
+      internacion.estado =  'salida';
+      transito.estado =     'cumplido';
+
+    }else if(transition === 'externacion:salida'){ //'Confirma salida desde externación',
       solint.queue =        'salida';
       solint.avance =       'salida';
       internacion.estado =  'salida';
@@ -363,7 +377,18 @@ export class InternacionService {
   }
 
 
+  /**
+  * paciente que estaba en servicio, pasa a traslado|externacion|salida 
+  */
+  liberarRecurso(solinternacion: SolicitudInternacion, transition: string ): Subject<SolicitudInternacion>{
+    let internacion = solinternacion.internacion;
+
+    return this.manageInternacionTransition(solinternacion, internacion, transition)
+  }
+
+
   asignarRecurso(solinternacion: SolicitudInternacion, locacion: LocacionHospitalaria, servicio: string, recurso: Recurso ): Subject<SolicitudInternacion>{
+    console.log('asignarRecurso')
     let internacion = solinternacion.internacion;
     let transition = internacion.estado === 'servicio'? 'servicio:servicio' :  'admision:servicio';
 

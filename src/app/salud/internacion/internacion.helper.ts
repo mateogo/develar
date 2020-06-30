@@ -37,6 +37,25 @@ export class  InternacionHelper {
     return fetchCapacidadFromSevice(servicio)
   }
 
+  static filterServiciosAvailables(locacion: LocacionHospitalaria){
+    return this.getOptionlist('servicios').filter(srv => {
+      let serviciosHosp = locacion.servicios || [];
+      let target = serviciosHosp.find(t => t.srvtype === srv.val);
+      if(target && target.srvIsActive)return true;
+      else return false;
+
+    })
+  }
+
+  static validateCandidateToServicio(sinternacion, servicio, target){
+    let internacion = sinternacion.internacion;
+    if(internacion.estado === 'salida' || internacion.estado === 'externacion' ) return false;
+    if(internacion.estado === 'traslado') return true;
+    if(internacion.servicio === servicio) return true;
+    if(sinternacion.triage && sinternacion.triage.target === target) return true;
+    return false;
+  }
+
   static capacidadDisponibleToPrint(servicios: Servicio[]): string{
     let memo = '';
     if(servicios && servicios.length){
@@ -67,6 +86,7 @@ export class  InternacionHelper {
     return buildTransitosToPrint(transitions);
 
   }
+
   static buildFilteredRecursosList(servicio: string, recursos: Recurso[]):Recurso[]{
     let filterList = []
     if(recursos && recursos.length){
@@ -74,8 +94,6 @@ export class  InternacionHelper {
     }
     return filterList;
   }
-
-
 
 
   static buildDataTable(list: SolicitudInternacion[]): SolInternacionTable[]{
@@ -318,7 +336,6 @@ const targetInternacionOptList: Array<any> = [
     {val: 'GUARDIA',       ord: '1.3', label: 'GUARDIA' },
 ];
 
-
 const areasOptList: Array<any> = [
     {val: 'UTI',           ord: '1.1', label: 'UTI'            },
     {val: 'UTIP',          ord: '1.2', label: 'UTI PEDIÁTRICA' },
@@ -428,6 +445,7 @@ const queueOptList: Array<any> = [
     {val: 'pool',       ord: '1.1', label: 'pool'     },
     {val: 'transito',   ord: '1.2', label: 'transito' },
     {val: 'alocado',    ord: '1.3', label: 'alocado'  },
+    {val: 'salida',     ord: '1.4', label: 'salida'  },
     //{val: 'traslado', ord: '1.1', label: 'traslado' },
     {val: 'baja',       ord: '1.4', label: 'baja'     },
 ]
@@ -439,14 +457,15 @@ const tiposTransitosOptList: Array<any> = [
     {val: 'pool:pool',               label: 'Pendiente de asignar locación',     actionLabel: 'Alta. Asignación de locación pendiente'},
     {val: 'pool:transito',           label: 'Locación de internación asignada',  actionLabel: 'Alocar y disponer traslado'},
     {val: 'pool:admision',           label: 'Locación de internación asignada',  actionLabel: 'Alta: ingresa en Admisión'},
-    {val: 'transito:admision',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Admisión'},
-    {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Traslado OK. Alta en Servicio'},
+    {val: 'pool:servicio',           label: 'Locación de internación directa',   actionLabel: 'Alta: ingresa a Servicio'},
+    {val: 'transito:admision',       label: 'Internación efectivizada',          actionLabel: 'Tránsito OK. Alta en Admisión'},
+    {val: 'admision:servicio',       label: 'Recurso-servicio asignado',         actionLabel: 'Traslado de Admisión a Servicio' },
+    {val: 'transito:servicio',       label: 'Internación efectivizada',          actionLabel: 'Tránsito OK. Alta en Servicio'},
     {val: 'servicio:traslado',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación INICIA'   },
     {val: 'traslado:servicio',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación CUMPLIDO' },
-    {val: 'admision:servicio',       label: 'Traslado intra-locación',           actionLabel: 'Traslado intra-locación CUMPLIDO' },
     {val: 'servicio:externacion',    label: 'Externación para salida/transito',  actionLabel: 'Externación (salida o tránsito)'  },
-    {val: 'externacion:transito',    label: 'Externación a transito',            actionLabel: 'Externación pasa a tránsito)'  },
-    {val: 'externacion:salida',      label: 'Externación a salida',              actionLabel: 'Externación pasa a salida  )'  },
+    {val: 'externacion:transito',    label: 'Externación a transito',            actionLabel: 'Externación (pasa a tránsito)'  },
+    {val: 'externacion:salida',      label: 'Externación a salida',              actionLabel: 'Externación (pasa a salida)'  },
     {val: 'externacion:pool',        label: 'Externación a pool',                actionLabel: 'Externación: Espera re-asignación de locación' },
     {val: 'transito:pool',           label: 'Espera asignación de locación',     actionLabel: 'Tránsito: Espera re-asignación de locación' },
 ];
