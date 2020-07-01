@@ -220,10 +220,11 @@ module.exports = router;
 /***
 db.usuarios.find({estado: 'pendiente'})
 db.usuarios.updateMany({estado: 'pendiente'}, {$set: {
-    estado: 'activo', navance: 'approved', moduleroles: ["core:admin", "vigilancia:admin"]
+    description: 'alta-mgo-20200701', estado: 'activo', navance: 'approved', moduleroles: ["core:admin", "vigilancia:operator"]
 }})
 
-
+ALTAS PRODUCIDAS:
+description: 'alta-mgo-20200701' : #7
 
 **/
 

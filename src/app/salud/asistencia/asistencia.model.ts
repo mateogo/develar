@@ -1557,6 +1557,7 @@ const labsequenceOptList: Array<any> = [
 const reportesVigilanciaOptList: Array<any> = [
     {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
     {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
+    {val: 'CONTACTOSESTRECHOS', label: 'Reporte CONTACTOS' },
     {val: 'DOMICILIOS',       label: 'Reporte Domicilios de contactos' },
     {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
     {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },

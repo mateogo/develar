@@ -483,6 +483,13 @@ function buildQuery(query, today){
       return q;
   }
 
+  if(query['reporte'] && query['reporte']==="CONTACTOSESTRECHOS"){
+      q = {
+            avance: {$ne: 'anulado'},
+            isVigilado: true,
+          }
+  }
+
   if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
       q = {
             avance: {$ne: 'anulado'},
@@ -1720,7 +1727,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -1763,6 +1770,23 @@ function buildExcelStream(movimientos, query, req, res){
      const { fe_reportado, reportadoPor } = sisa_token;
      let sisaArr = [ fe_reportado, reportadoPor  ];
 
+      //caso indice
+      let casoindice_token = row.casoIndice;
+      if(!casoindice_token){
+          casoindice_token = {
+            casoindiceSlug: 'Sin antecedente',
+            casoindiceNucleo: 's/d',
+          }
+      }else{
+          casoindice_token = {
+            casoindiceSlug:   casoindice_token.slug,
+            casoindiceNucleo: casoindice_token.nucleo || N_HAB_00,
+          }
+      }
+     const { casoindiceSlug, casoindiceNucleo } = casoindice_token;
+     let casoindiceArr = [ casoindiceSlug, casoindiceNucleo  ];
+
+
      //
       let followUp = row.followUp;
       if(!followUp){
@@ -1804,13 +1828,13 @@ function buildExcelStream(movimientos, query, req, res){
       const {compNum, telefono, edad } = row;
       let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), telefono, edad ];
       
-      worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...laboratorioArr, ...locacionArr ]).commit()
+      worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...casoindiceArr, ...laboratorioArr, ...locacionArr ]).commit()
 
     })
     worksheet.commit()
     workbook.commit()
 }
-
+//casoIndic
 //followUp
 /*******************************************/
 /***** REPORTE VIGILANCIA DE CONTACTO *****/
