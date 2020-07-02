@@ -9,7 +9,7 @@
 		</div>
 			
 		<ng-container *ngIf="showONE">
-			<div  *ngFor="let item of items" class="row">
+			<div  *ngFor="let item of asistenciaDataSource.connect()|async" class="row">
 				<div class="col-sm-12 col-md-12">
 					<solcovid-panel [asistencia]='item'
 											(updateToken)='updateItem($event)'></solcovid-panel>
@@ -17,9 +17,8 @@
 				</div>
 			</div>
 		</ng-container>
-
 		<ng-container *ngIf="showTWO">
-			<div  *ngFor="let item of items" class="row">
+			<div  *ngFor="let item of asistenciaDataSource.connect()|async" class="row">
 				<div class="col-sm-12 col-md-12">
 					<solcovid-offline-panel [asistencia]='item'
 											(updateToken)='updateToken($event)'></solcovid-offline-panel>
@@ -27,6 +26,14 @@
 				</div>
 			</div>
 		</ng-container>
+
+		<mat-paginator #paginator
+	      [length]="itemsLength"
+	      [pageIndex]="0"
+	      [pageSize]="25"
+	      [pageSizeOptions]="[5, 25, 50, 75, 100]">
+		</mat-paginator>
+
 			
   </mat-card-content>
 </mat-card>

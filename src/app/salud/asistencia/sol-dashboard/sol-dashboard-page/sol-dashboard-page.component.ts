@@ -157,6 +157,7 @@ export class SolDashboardPageComponent implements OnInit {
 
         this.sortProperly(this.asistenciasList, ts_now);
 
+        this.dsCtrl.triggerAsistenciaEmitter(this.asistenciasList);
         this.dsCtrl.updateTableData();
 
         this.showData = true;

@@ -1,12 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { ArrayDataSource } from '@angular/cdk/collections';
+import { MatPaginator, MatSort } from '@angular/material';
 
-import { Observable } from 'rxjs';
+import { Observable,BehaviorSubject } from 'rxjs';
 
 import { SaludController } from '../../../salud.controller';
 
 import {  Person } from '../../../../entities/person/person';
 
-import { 	Asistencia, 
+import { 	Asistencia,
+          AsistenciaDataSource,
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
 					UpdateAsistenciaListEvent,
@@ -29,28 +32,56 @@ export class SolcovidListComponent implements OnInit {
   @Input() panelType = PANEL_TYPE;
 	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
   @Output() updateAsistencia = new EventEmitter<UpdateAsistenciaEvent>();
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   public title = 'Solicitudes de ASISTENCIA';
 
 	public showONE = false;
   public showTWO = false;
+  public itemsLength: number = 0;
 
+  private asistenciaList: BehaviorSubject<Asistencia[]>;
+  private asistenciaDataSource: ArrayDataSource<Asistencia>;
 
   constructor(
       private dsCtrl: SaludController,
-    ) { }
+    ) { 
+      this.asistenciaList = this.dsCtrl.asistenciaListener;
+
+
+  }
 
   ngOnInit() {
 
-  	if(this.items && this.items.length){
-      if(this.panelType === PANEL_TYPE){
-        this.showONE = true;
+    this.asistenciaList.subscribe(l => {
+      this.itemsLength = l && l.length;
 
-      }else {
-        this.showTWO = true;
+      if(this.itemsLength){
+        if(this.panelType === PANEL_TYPE){
+          this.showONE = true;
 
+        }else {
+          this.showTWO = true;
+
+        }
       }
-  	}
+    })
+
+
+    this.asistenciaDataSource = new AsistenciaDataSource(this.asistenciaList, this.paginator);
+
+    setTimeout(()=> {
+      this.asistenciaDataSource.connect().subscribe(list => {
+
+      })
+
+
+    }, 1500);
+
+
+
+
+
 
   }
 
