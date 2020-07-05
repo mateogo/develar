@@ -1,11 +1,10 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { 	MatDialog, 
-					MatDialogRef, 
-					MatSelectChange,
-					MatCheckboxChange,
-					MatPaginator,
-					MatSort } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSort } from '@angular/material/sort';
 
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 

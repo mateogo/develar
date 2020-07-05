@@ -4,7 +4,7 @@ import { Observable ,  Subject ,  BehaviorSubject, of }    from 'rxjs';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { SharedService } from '../../develar-commons/shared-service';
 
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Product, KitProduct, KitProductTableData, Productit, Productsn, ProductEvent, ProductitTable, ProductsnTable, ProductBaseData, UpdateProductEvent, KitProductModel, productModel } from './product.model';
 

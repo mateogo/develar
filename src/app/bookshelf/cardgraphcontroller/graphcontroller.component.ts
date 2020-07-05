@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../cardgraph.helper';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GenericDialogComponent } from '../../develar-commons/generic-dialog/generic-dialog.component';
 import { Subject } from 'rxjs';
 

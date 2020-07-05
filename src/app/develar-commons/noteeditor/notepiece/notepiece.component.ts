@@ -1,6 +1,7 @@
 import { Component, OnInit, Input,AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatSelectChange } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 
 import { NotePiece, noteModel } from '../note-model';
 

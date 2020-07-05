@@ -3,12 +3,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable ,  Subject, of}        from 'rxjs';
 import { debounceTime, distinctUntilChanged,filter, switchMap }   from 'rxjs/operators';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DaoService } from '../../dao.service';
 
 import { GenericDialogComponent } from '../../generic-dialog/generic-dialog.component';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Person, personModel } from '../../../entities/person/person';
 

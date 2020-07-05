@@ -3,7 +3,7 @@ import { Injectable }    from '@angular/core';
 import { Observable, Subject, of }    from 'rxjs';
 import { catchError }     from 'rxjs/operators';
 
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Tag } from './develar-entities';
 
 import { DaoService } from './dao.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter,Input, Output, HostListener } from '@angular/core';
 
-import { MatChipInputEvent, MatChipEvent,MatChipSelectionChange, MatChipListChange} from '@angular/material';
+import { MatChipInputEvent, MatChipEvent, MatChipSelectionChange, MatChipListChange } from '@angular/material/chips';
 
 import { Observable ,  Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap }   from 'rxjs/operators';

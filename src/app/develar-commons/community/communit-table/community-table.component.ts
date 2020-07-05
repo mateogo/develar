@@ -1,7 +1,8 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
-import { MatDialog, MatDialogRef, MatSelectChange } from '@angular/material';
-import { MatCheckboxChange } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { BehaviorSubject ,  Subject ,  Observable, merge }       from 'rxjs';
 
@@ -11,7 +12,8 @@ import { map }   from 'rxjs/operators';
 
 
 
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
 

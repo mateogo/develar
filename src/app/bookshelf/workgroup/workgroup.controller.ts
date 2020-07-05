@@ -4,8 +4,8 @@ import { DataSource, SelectionModel } from '@angular/cdk/collections';
 //import { Observable }    from 'rxjs/Observable';
 import { BehaviorSubject ,  Subject ,  Observable }       from 'rxjs';
 
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { RecordCard, cardHelper, SelectData }    from '../recordcard';
 

@@ -8,7 +8,7 @@
 
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import {Component} from '@angular/core';
-import {MatChipInputEvent} from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 export interface Person {
   name: string;

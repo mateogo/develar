@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { MatDialog, MatDialogRef, MatSelectChange } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 
 import { SaludController } from '../salud.controller';
 import { SaludModel, Ciudadano, SectorAtencion } from '../salud.model';

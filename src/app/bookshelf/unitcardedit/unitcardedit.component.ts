@@ -6,7 +6,7 @@ import { map }   from 'rxjs/operators';
 import { CustomValidators }         from 'ng2-validation';
 import { Subject }                  from 'rxjs';
 
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
 import { RecordCard, SubCard, cardHelper, PublicationConfig }    from '../recordcard';
 import { Asset }                              from '../../develar-commons/develar-entities';
@@ -20,7 +20,7 @@ import { DaoService }                     from '../../develar-commons/dao.servic
 import { User }                           from '../../entities/user/user';
 import { Community }                      from '../../develar-commons/community/community.model';
 import { CardGraph, graphUtilities }      from '../cardgraph.helper';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { GenericDialogComponent }  from '../../develar-commons/generic-dialog/generic-dialog.component';
 
 function initForSave(form: FormGroup, model: RecordCard, smodels:SubCard[], persons:CardGraph[], resources:CardGraph[], assets: CardGraph[], images: CardGraph[], tags: Array<string>, publish: PublicationConfig, user: User, communities: Array<Community>): RecordCard {

@@ -1,5 +1,5 @@
 import { ArrayDataSource, CollectionViewer } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { BehaviorSubject,  Observable, merge }       from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -2,7 +2,7 @@ import { Injectable }    from '@angular/core';
 
 import { Observable ,  Subject }    from 'rxjs';
 
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Folder, folderModel } from './folder.model';
 import { BasicData }           from '../base.model';

@@ -6,7 +6,7 @@ import { Observable, Subject, of }    from 'rxjs';
 import { catchError }     from 'rxjs/operators';
 
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 const whoami = "CrawlerComponent & Service";

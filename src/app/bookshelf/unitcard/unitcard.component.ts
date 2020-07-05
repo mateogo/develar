@@ -5,7 +5,7 @@ import { CustomValidators }  from 'ng2-validation';
 import { Subject }      from 'rxjs';
 
 import { Router, ActivatedRoute }            from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { RecordCard, SubCard, cardHelper }    from '../recordcard';
 import { CardGraph, graphUtilities } from '../cardgraph.helper';

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { 	MatDialog, 
-					MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { BehaviorSubject,  Observable, merge }       from 'rxjs';
 import { map }   from 'rxjs/operators';

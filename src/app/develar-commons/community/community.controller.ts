@@ -1,6 +1,6 @@
 import { Injectable }    from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Observable ,  Subject ,  BehaviorSubject, of }      from 'rxjs';
 

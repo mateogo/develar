@@ -7,9 +7,9 @@ import { PersonService } from '../person.service';
 import { Observable ,  Subject, }        from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, filter }   from 'rxjs/operators';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 // Observable class extensions
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { MatSnackBar, MatSnackBarConfig }           from '@angular/material';
-import { MatDialog, MatDialogRef, MatSelectChange } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 

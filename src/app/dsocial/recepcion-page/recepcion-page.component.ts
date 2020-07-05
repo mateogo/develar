@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { MatDialog, MatDialogRef, MatSelectChange } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 
 import { DsocialController } from '../dsocial.controller';
 import { DsocialModel, Ciudadano, SectorAtencion } from '../dsocial.model';
