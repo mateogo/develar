@@ -17,7 +17,7 @@ import { PersonService}  from '../person.service'
 })
 export class PersonComponent implements OnInit {
 	@ViewChild('actionsTmpl', { static: true }) public actionsTmpl: TemplateRef<any>
-  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+  @ViewChild(DatatableComponent) table: DatatableComponent;
 
   person$: Observable<Person[]>;
 

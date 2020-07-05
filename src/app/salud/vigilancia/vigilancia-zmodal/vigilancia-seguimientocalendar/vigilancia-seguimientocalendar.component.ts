@@ -32,8 +32,8 @@ const SISA_VIEW = 'sisa:view';
   styleUrls: ['./vigilancia-seguimientocalendar.component.scss']
 })
 export class VigilanciaSeguimientocalendarComponent implements OnInit {
-  @ViewChild('calendar', {static: false}) calendarComponent: FullCalendarComponent; // the #calendar in the template
-  @ViewChild('seguimiento', {static: false}) templateRef;
+  @ViewChild('calendar') calendarComponent: FullCalendarComponent; // the #calendar in the template
+  @ViewChild('seguimiento') templateRef;
 
 
   public calendarVisible = false;

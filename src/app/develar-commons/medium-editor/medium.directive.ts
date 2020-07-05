@@ -78,7 +78,7 @@ export class MediumEditorDirective implements OnInit, OnChanges, OnDestroy {
 	@Output() modelValueChange = new EventEmitter();
 
 
-	@ViewChild('host', {static: false}) host: any;
+	@ViewChild('host') host: any;
 
 
 	// private options: any = {};
