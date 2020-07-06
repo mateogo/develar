@@ -497,7 +497,7 @@ export class NotificationController {
     return this.userService.currentUser;
   }
 
-  get socket(): SocketIOClient.Socket{
+  get socket(): any{
     return this.userService.socket;
   }
 

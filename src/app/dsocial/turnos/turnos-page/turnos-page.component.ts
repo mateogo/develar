@@ -39,7 +39,7 @@ export class TurnosPageComponent implements OnInit {
 
   public sectoresOptList:SectorAtencion[] = sectores;
 
-  private socket: SocketIOClient.Socket; 
+  private socket: any; 
 
   constructor(
   		private dsCtrl: DsocialController,

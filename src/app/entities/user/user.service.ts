@@ -56,7 +56,7 @@ var nextUser = 40;
 
 @Injectable()
 export class UserService {
-	private _socket: SocketIOClient.Socket;
+	private _socket: any;
 	private usersUrl = 'api/users';  // URL to web api
 	private personUrl = 'api/persons';  // URL to web api
 	private headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -253,7 +253,7 @@ export class UserService {
 		return this._userEmitter;
 	}
 
-	get socket(): SocketIOClient.Socket{
+	get socket(): any{
 		return this._socket;
 	}
 

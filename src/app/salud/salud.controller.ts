@@ -914,7 +914,8 @@ export class SaludController {
     return this._turnoEvent;
   }
 
-  get socket(): SocketIOClient.Socket{
+  //get socket(): any{
+  get socket(): any{
     return this.userService.socket;
   }
 

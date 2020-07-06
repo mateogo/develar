@@ -731,7 +731,7 @@ export class DsocialController {
     return this._turnoEvent;
   }
 
-  get socket(): SocketIOClient.Socket{
+  get socket(): any{
     return this.userService.socket;
   }
 

@@ -51,7 +51,7 @@ export class UtopiasNavbarComponent implements OnInit {
   public mainMenuItems: MainMenuItem[];
   public socialItems: SocialMediaItem[];
 
-  private socket: SocketIOClient.Socket; 
+  private socket: any; 
   private connected = false;
   private username: string = "";
   private messageList: Array<MessageToPrint> = [];

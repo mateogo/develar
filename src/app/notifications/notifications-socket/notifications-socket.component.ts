@@ -18,7 +18,7 @@ export class NotificationsSocketComponent implements OnInit {
 	private username: string = "";
 	private typing = false;
 	private lastTypingTime: number;
-	private socket: SocketIOClient.Socket; 
+	private socket: any; 
 
 
   public content: string = "";

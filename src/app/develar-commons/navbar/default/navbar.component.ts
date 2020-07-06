@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
   loggedIn = false;
   private avatar: string = DEFAULT_AVATAR
 
-  private socket: SocketIOClient.Socket; 
+  private socket: any; 
   private connected = false;
   private username: string = "";
   messageList: Array<MessageToPrint> = [];
