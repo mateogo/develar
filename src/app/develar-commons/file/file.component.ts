@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  moduleId: module.id,
   selector: 'file',
-  templateUrl: 'file.component.html',
-  styleUrls: ['file.component.scss']
+  templateUrl: './file.component.html',
+  styleUrls: ['./file.component.scss']
 })
 export class FileComponent {
   @Input() title: string = 'no-name';

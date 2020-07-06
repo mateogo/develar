@@ -79,7 +79,6 @@ const folders: any[] = [
 ];
 
 @Component({
-  moduleId: module.id,
   selector: 'page-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

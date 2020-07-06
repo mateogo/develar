@@ -3,10 +3,9 @@ import { SharedService } from '../../shared-service';
 import { NavbarComponent } from '../../navbar/default/navbar.component';
 
 @Component({
-  moduleId: module.id,
   selector: 'gestion',
-  templateUrl: 'default.component.html',
-  styleUrls: ['default.component.scss']
+  templateUrl: './default.component.html',
+  styleUrls: ['./default.component.scss']
 })
 export class DefaultLayoutComponent implements OnInit {
   pageTitle: any;

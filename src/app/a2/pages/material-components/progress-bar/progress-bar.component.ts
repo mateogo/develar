@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-progress-bar',
-  templateUrl: 'progress-bar.component.html',
-  styleUrls: ['progress-bar.component.scss']
+  templateUrl: './progress-bar.component.html',
+  styleUrls: ['./progress-bar.component.scss']
 })
 export class PageProgressBarComponent implements OnInit {
   pageTitle: string = 'Progress bar';

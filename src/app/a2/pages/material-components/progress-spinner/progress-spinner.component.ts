@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-progress-spinner',
-  templateUrl: 'progress-spinner.component.html',
-  styleUrls: ['progress-spinner.component.scss']
+  templateUrl: './progress-spinner.component.html',
+  styleUrls: ['./progress-spinner.component.scss']
 })
 export class PageProgressSpinnerComponent implements OnInit {
   pageTitle: string = 'Progress spinner';

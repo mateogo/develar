@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-checkbox',
-  templateUrl: 'checkbox.component.html',
-  styleUrls: ['checkbox.component.scss']
+  templateUrl: './checkbox.component.html',
+  styleUrls: ['./checkbox.component.scss']
 })
 export class PageCheckboxComponent implements OnInit {
   pageTitle: string = 'Checkbox';

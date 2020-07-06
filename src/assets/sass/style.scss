@@ -1,11 +1,11 @@
 @import 'variable';
 
-/deep/ {
+::ng-deep  {
 	@import 'structure';
   @import 'typography';
   @import 'helpers';
   @import 'material-components';
 }
-:host /deep/ {
+::ng-deep  {
   @import 'fonts';
 }

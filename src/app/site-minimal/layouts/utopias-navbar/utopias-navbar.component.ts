@@ -26,7 +26,6 @@ const NAVBAR_ITEM_COLOR_LASARGEN_HOME = "#ffffff"; //75787B //0645f5
 
 
 @Component({
-  moduleId: module.id,
   selector: 'utopias-navbar',
   templateUrl: './utopias-navbar.component.html',
   styleUrls: ['./utopias-navbar.component.scss']

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-button',
-  templateUrl: 'button.component.html',
-  styleUrls: ['button.component.scss']
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.scss']
 })
 export class PageButtonComponent implements OnInit {
   pageTitle: string = 'Buttons';

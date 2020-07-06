@@ -10,14 +10,14 @@ $animation: ease-in-out;
 
 $sidebar-width: 220px;
 
-$max543 : only screen and (max-width: 543px);
-$min544 : only screen and (min-width: 544px);
-$max767 : only screen and (max-width: 767px);
-$min768 : only screen and (min-width: 768px);
-$max991 : only screen and (max-width: 991px);
-$min992 : only screen and (min-width: 992px);
-$max1199 : only screen and (max-width: 1199px);
-$min1200 : only screen and (min-width: 1200px);
+$max543  : "only screen and (max-width:  xd543px)";
+$min544  : "only screen and (min-width:  544px)";
+$max767  : "only screen and (max-width:  767px)";
+$min768  : "only screen and (min-width:  768px)";
+$max991  : "only screen and (max-width:  991px)";
+$min992  : "only screen and (min-width:  992px)";
+$max1199 : "only screen and (max-width: 1199px)";
+$min1200 : "only screen and (min-width: 1200px)";
 
 $headers-ff: $second-ff;
 $headers-fw: 700;

@@ -3,10 +3,9 @@ import { SharedService } from '../../../../develar-commons/shared-service';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-dialog',
-  templateUrl: 'dialog.component.html',
-  styleUrls: ['dialog.component.scss']
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss']
 })
 export class PageDialogComponent implements OnInit {
   pageTitle: string = "Dialog";

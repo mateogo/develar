@@ -4,7 +4,6 @@ import { WorkgroupMenuItem } from './workgroup-menu-item';
 import { WorkgroupMenuService }   from './workgroup-menu.observable.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'workgroup-menu',
   templateUrl: './workgroup-menu.component.html',
   styleUrls: ['./workgroup-menu.component.scss'],

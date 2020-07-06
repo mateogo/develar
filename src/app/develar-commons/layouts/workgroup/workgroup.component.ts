@@ -3,10 +3,9 @@ import { SharedService } from '../../shared-service';
 import { NavbarComponent } from '../../navbar/default/navbar.component';
 
 @Component({
-  moduleId: module.id,
   selector: 'workgroup-layout',
-  templateUrl: 'workgroup.component.html',
-  styleUrls: ['workgroup.component.scss']
+  templateUrl: './workgroup.component.html',
+  styleUrls: ['./workgroup.component.scss']
 })
 export class WorkgroupLayoutComponent implements OnInit {
   pageTitle: any = "default pageTitle";

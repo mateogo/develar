@@ -13,7 +13,6 @@ const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 const DASHBOARD = gldef.dashboard;
 
 @Component({
-  moduleId: module.id,
   selector: 'public-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']

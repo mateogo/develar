@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-card',
-  templateUrl: 'card.component.html',
-  styleUrls: ['card.component.scss']
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss']
 })
 export class PageCardComponent implements OnInit {
   pageTitle: string = 'Cards';

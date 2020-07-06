@@ -13,7 +13,6 @@ import { Actor, Conversation, MessageToPrint, notificationModel } from '../../..
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 
 @Component({
-  moduleId: module.id,
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

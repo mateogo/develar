@@ -27,7 +27,6 @@ const NAVBAR_ITEM_COLOR_LASARGEN_HOME = "#ffffff"; //75787B //0645f5
 
 
 @Component({
-  moduleId: module.id,
   selector: 'lasargen-navbar',
   templateUrl: './lasargen-navbar.component.html',
   styleUrls: ['./lasargen-navbar.component.scss']

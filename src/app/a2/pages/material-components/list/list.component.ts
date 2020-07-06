@@ -50,10 +50,9 @@ const notes = [
 ];
 
 @Component({
-  moduleId: module.id,
   selector: 'page-list',
-  templateUrl: 'list.component.html',
-  styleUrls: ['list.component.scss']
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
 export class PageListComponent implements OnInit {
   pageTitle: string = 'List';

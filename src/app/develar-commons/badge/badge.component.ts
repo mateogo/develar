@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  moduleId: module.id,
   selector: 'badge',
-  templateUrl: 'badge.component.html',
-  styleUrls: ['badge.component.scss']
+  templateUrl: './badge.component.html',
+  styleUrls: ['./badge.component.scss']
 })
 export class BadgeComponent {
   @Input() color: string = '';

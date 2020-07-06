@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserService } from './entities/user/user.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'app',
   template: `<router-outlet></router-outlet>`,
   styleUrls: ['../assets/sass/style.scss']

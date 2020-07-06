@@ -5,7 +5,6 @@ import { MainMenuService } from './main-menu.observable.service';
 import { gldef } from '../../develar.config';
 
 @Component({
-  moduleId: module.id,
   selector: 'main-menu',
   templateUrl: './main-menu.component.html',
   styleUrls: [ './main-menu.component.scss' ],

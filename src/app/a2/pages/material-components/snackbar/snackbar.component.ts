@@ -3,10 +3,9 @@ import { SharedService } from '../../../../develar-commons/shared-service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-snackbar',
-  templateUrl: 'snackbar.component.html',
-  styleUrls: ['snackbar.component.scss']
+  templateUrl: './snackbar.component.html',
+  styleUrls: ['./snackbar.component.scss']
 })
 export class PageSnackbarComponent {
   pageTitle: string = 'Snackbar';

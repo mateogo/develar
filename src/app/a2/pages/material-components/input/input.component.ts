@@ -5,10 +5,9 @@ import { startWith, map }   from 'rxjs/operators';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'page-input',
-  templateUrl: 'input.component.html',
-  styleUrls: ['input.component.scss']
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss']
 })
 export class PageInputComponent implements OnInit {
   pageTitle: string = 'Input';

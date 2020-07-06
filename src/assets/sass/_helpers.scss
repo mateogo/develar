@@ -38,7 +38,7 @@
     top: $module;
     width: auto;
 
-    /deep/ .rtl & {
+    ::ng-deep .rtl & {
       left: $module;
       right: auto;
     }
@@ -61,7 +61,7 @@
   .info {
     padding-left: 1rem;
 
-    /deep/ .rtl & {
+    ::ng-deep .rtl & {
       padding-left: 0;
       padding-right: 1rem;
     }

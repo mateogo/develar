@@ -2,10 +2,9 @@ import { Component, Input } from '@angular/core';
 import { Item } from './item';
 
 @Component({
-  moduleId: module.id,
   selector: 'a2-breadcrumb',
-  templateUrl: 'breadcrumb.component.html',
-  styleUrls: ['breadcrumb.component.scss']
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent {
   @Input() menu: Item[] = [];

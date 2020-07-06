@@ -6,10 +6,9 @@ const COMMA = 188;
 const ENTER = 13;
 
 @Component({
-  moduleId: module.id,
   selector: 'page-chips',
-  templateUrl: 'chips.component.html',
-  styleUrls: ['chips.component.scss']
+  templateUrl: './chips.component.html',
+  styleUrls: ['./chips.component.scss']
 })
 export class PageChipsComponent implements OnInit {
   pageTitle: string = 'Chips';

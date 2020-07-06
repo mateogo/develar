@@ -36,7 +36,6 @@ function initForSave(form: FormGroup, model: SubCard, images: CardGraph[] ): Sub
 };
 
 @Component({
-  moduleId: module.id,
   selector: 'app-subcardedit',
   templateUrl: './subcardedit.component.html',
   styleUrls: ['./subcardedit.component.scss']

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../../develar-commons/shared-service';
 
 @Component({
-  moduleId: module.id,
   selector: 'page-select',
-  templateUrl: 'select.component.html',
-  styleUrls: ['select.component.scss']
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss']
 })
 export class PageSelectComponent implements OnInit {
   pageTitle: string = 'Select';

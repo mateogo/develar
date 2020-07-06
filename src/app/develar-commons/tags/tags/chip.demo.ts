@@ -20,7 +20,6 @@ export interface DemoColor {
 }
 
 @Component({
-  moduleId: module.id,
   selector: 'chips-demo',
   templateUrl: './chip.demo.html',
   styleUrls: ['./chip.demo.scss']

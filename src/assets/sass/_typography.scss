@@ -116,7 +116,7 @@ button {
   position: absolute;
   top: 100%;
 
-  /deep/ .rtl & {
+  ::ng-deep .rtl & {
     left: auto;
     right: 0;
   }

@@ -47,10 +47,9 @@ const breadcrumbIcon: Item[] = [
   }
 ];
 @Component({
-  moduleId: module.id,
   selector: 'page-breadcrumb',
-  templateUrl: 'breadcrumb.component.html',
-  styleUrls: ['breadcrumb.component.scss']
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss']
 })
 export class PageBreadcrumbComponent implements OnInit {
   pageTitle: string = 'Breadcrumb';

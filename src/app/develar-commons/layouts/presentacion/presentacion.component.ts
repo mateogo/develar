@@ -3,10 +3,9 @@ import { SharedService } from '../../shared-service';
 import { NavbarComponent } from '../../navbar/default/navbar.component';
 
 @Component({
-  moduleId: module.id,
   selector: 'presentacion-layout',
-  templateUrl: 'presentacion.component.html',
-  styleUrls: ['presentacion.component.scss']
+  templateUrl: './presentacion.component.html',
+  styleUrls: ['./presentacion.component.scss']
 })
 export class PresentacionLayoutComponent implements OnInit {
   pageTitle: any;
