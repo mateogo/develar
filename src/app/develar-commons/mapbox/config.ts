@@ -8,9 +8,10 @@ export const STYLES = {
 
 export const MARKER_COLORS = [
     { tipo: 'COVID',      color: '#C23838' },
-    { tipo: 'ALTA',       color: '#83C84C' },
+    { tipo: 'DE ALTA',    color: '#83C84C' },
     { tipo: 'DESCARTADO', color: '#385CC2' },
     { tipo: 'SOSPECHA',   color: '#E5E535' },
+    { tipo: 'EN MONITOREO',   color: '#D5D535' },
     { tipo: 'FALLECIDO',  color: '#0E0E0E' }
 ]
 
