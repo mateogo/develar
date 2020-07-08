@@ -198,6 +198,8 @@ function lookUpByLocationIQ(address, errcb, cb){
 	let path = buildLocationIQQueryPath(location);
 	let url = locationIQHost + path;
 
+console.log('LookUp: 1 [%s]', url)
+
 	request(url, {json: true}, (err,res,body) =>{
 
 		if(err) {
@@ -273,6 +275,30 @@ function lookUpByNominatimOld(address, errcb, cb){
 		console.dir(e);
 		console.error(`GOT error: ${e.message}`);
 	});
+}
+
+exports.fetchLatLonByAddress = function (address) {
+	return new Promise((resolve)=> {
+
+		let location = buildNominatimQueryAddress(address);
+		let path = buildLocationIQQueryPath(location);
+		let url = locationIQHost + path;
+console.log('fetchLatLon: 1 [%s]', url)
+		request(url, {json: true}, (err, res, body) =>{
+
+
+			if(err) {
+console.log('fetchLatLon: 2 ERR')
+				resolve(err)
+			}else {
+console.log('fetchLatLon: 2 OK')
+	   		resolve(decodeLocationIQResponse(body));
+
+			}
+		});
+
+	})
+
 }
 
 

@@ -40,7 +40,6 @@ export class VigilanciaCoredataComponent implements OnInit {
   public person: Person;
   private telefono: string;
 
-  public isNewVinculo = false;
   public isNewLocacion = false;
   private isLocacionFromAsistencia = false;
   private isLocacionFromPerson = false;
@@ -91,7 +90,6 @@ export class VigilanciaCoredataComponent implements OnInit {
   }
 
   private initOnce(){
-    this.isNewVinculo = true;
     this.isNewLocacion = true;
 
     this.asistencia =  this.data.asistencia
@@ -113,7 +111,6 @@ export class VigilanciaCoredataComponent implements OnInit {
 
 
   private initPerson(){
-		this.isNewVinculo = false;
     this.tDoc = this.person.tdoc || 'DNI';
     this.currentNumDoc = this.person.ndoc;
 
@@ -139,6 +136,15 @@ export class VigilanciaCoredataComponent implements OnInit {
       this.isLocacionFromPerson = true;
       this.isLocacionFromNuHab = false;
       this.locacionSourceTxt = 'Locación recuperada del padrón de persona'
+
+    }else{
+      this.locacion = new Locacion();
+      this.isNewLocacion = true;
+      this.isLocacionFromAsistencia = false;
+      this.isLocacionFromPerson = false;
+      this.isLocacionFromNuHab = false;
+      this.locacionSourceTxt = 'Locación nueva'
+
     }
 
   }
@@ -152,7 +158,7 @@ export class VigilanciaCoredataComponent implements OnInit {
 
   geoLoopUp(){
     this.initForSave()
-    this.lookUpGeoData()
+    this.lookUpGeoData(false)
   }
 
 
@@ -194,23 +200,35 @@ export class VigilanciaCoredataComponent implements OnInit {
   }
 
  
-  private lookUpGeoData(){
+  private lookUpGeoData(next?: boolean){
     if(this.locacion.street1 && this.locacion.city){
       this.ctrl.addressLookUp(this.locacion).then(geo => {
 
         if(geo && geo.location){
           this.locacion.lat = geo.location.lat ||this.locacion.lat;
           this.locacion.lng = geo.location.lng ||this.locacion.lng;
-          this.ctrl.openSnackBar('Búsqueda EXITOSA','CERRAR');
+          if(next){
+            this.saveCoreRelation(); // (a)
+
+          }else{
+            this.ctrl.openSnackBar('Búsqueda EXITOSA','CERRAR');
+
+          }
 
         }else {
-          this.ctrl.openSnackBar('No se pudo recuperar la información geográfica','ATENCIÓN');
+          if(next){
+            this.saveCoreRelation(); // (a)
 
+          }else{
+            this.ctrl.openSnackBar('No se pudo recuperar la información geográfica','ATENCIÓN');
+
+          }
         }
       })
 
     }else{
       this.ctrl.openSnackBar('Debe indicar calle y localidad ','ATENCIÓN');
+
     }
 
   }
@@ -219,10 +237,16 @@ export class VigilanciaCoredataComponent implements OnInit {
     // (a) Actualiza los datos del vínculo;
     // (b) Busca / actualiza la S/Asistencia, si la hay
     // (c) Actualiza la mainPerson, la que hostea el vinculo
-    this.saveVinculoRelation(); // (a)
+    if(this.locacion.street1 && this.locacion.city){
+      this.lookUpGeoData(true);
+
+    }else{
+      this.saveCoreRelation(); // (a)
+
+    }
   }
 
-  private saveVinculoRelation(){ //(a)
+  private saveCoreRelation(){ //(a)
 
     this.updateCoreData();
     this.updatePersonAddress();
@@ -230,6 +254,7 @@ export class VigilanciaCoredataComponent implements OnInit {
     // this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
     // this.closeDialogSuccess()
   }
+
 
   private updateCoreData(){
 
@@ -401,8 +426,7 @@ export class VigilanciaCoredataComponent implements OnInit {
     setTimeout(()=>{
        this.vinculoForm.reset(this.person);
        this.vinculoForm.get('telefono').setValue(this.asistencia.telefono);
-       this.addressForm.reset(this.locacion);
- 
+       this.addressForm.reset(this.locacion); 
     }, 100)
   }
 
@@ -410,7 +434,6 @@ export class VigilanciaCoredataComponent implements OnInit {
   private closeDialogSuccess(){
     this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
-
 
     this.dialogRef.close(this.result);
   }

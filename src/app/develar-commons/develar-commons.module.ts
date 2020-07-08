@@ -89,7 +89,13 @@ import { BotonContadorComponent }           from './components/boton-contador/bo
 import { BotoneraContainerComponent }       from './containers/botonera-container/botonera-container.component';
 import { AltaRapidaPacienteModalComponent } from './alta-rapida-paciente-modal/alta-rapida-paciente-modal.component';
 
-DumpDataComponent
+import { MapaFacade } from './mapbox/mapa.facade';
+import { DynamicComponentService } from './mapbox/services/dynamic-component.api';
+import { MapService } from './mapbox/services/map.api';
+
+import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.component';
+import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
+
 
 @NgModule({
   imports: [
@@ -172,6 +178,8 @@ DumpDataComponent
     AltaRapidaPacienteModalComponent,
     PieChartComponent,
     ForceDirectedGraphComponent,
+    MapBoxComponent,
+    MapPopupComponent
   ],
   exports:[
     DevelarMaterialModule,
@@ -240,12 +248,25 @@ DumpDataComponent
     AltaRapidaPacienteModalComponent,
     PieChartComponent,
     ForceDirectedGraphComponent,
-    
+    MapBoxComponent,
+    MapPopupComponent
   ],
-  providers: [AssetService, DaoService, ModelController, TagService, CommunityController, D3DataServiceService, PrismHighlightService],
+  providers: [
+    AssetService,
+    DaoService,
+    ModelController,
+    TagService,
+    CommunityController,
+    D3DataServiceService,
+    PrismHighlightService,
+    MapaFacade,
+    DynamicComponentService,
+    MapService
+  ],
   entryComponents: [    CrawlerDialogComponent, 
                         GenericDialogComponent, 
                         AltaRapidaPacienteModalComponent,
+                        MapPopupComponent,
                         ModalDialogComponent]
 })
 export class DevelarCommonsModule { }

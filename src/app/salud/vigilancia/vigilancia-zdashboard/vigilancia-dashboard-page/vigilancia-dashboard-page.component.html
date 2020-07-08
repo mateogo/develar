@@ -52,7 +52,7 @@
       </div>
       <div class="col-md-3">
         <mat-form-field>
-          <mat-select #fldSector placeholder="Estado COVID"
+          <mat-select #fldSector placeholder="Sector/ grupo"
               [formControl]="form.controls['sector']"
               (selectionChange)="changeSelectionValue('sector',fldSector.value)" >
             <mat-option *ngFor="let item of sectorOptList" 

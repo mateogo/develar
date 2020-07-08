@@ -726,6 +726,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator'],
       },
       {
+        title: 'Geolocalización',
+        routing: '/salud/gestion/geolocalizacion',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Internacion TestUNO',
         routing: '/salud/gestion/testuno',
         rolesOut: ['ivr:operator'],

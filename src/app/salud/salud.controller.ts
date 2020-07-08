@@ -826,6 +826,11 @@ export class SaludController {
 
   }
 
+  public fetchGeoDashboard<T>(query: any): Observable<T[]>{
+
+    return this.daoService.search<T>(ASIS_PREVENCION_RECORD, query);
+
+  }
 
   /*****  AsistenciaListener    ****/
   get asistenciaListener(): BehaviorSubject<Asistencia[]>{

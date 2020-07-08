@@ -825,6 +825,33 @@ class ContactManager {
 
 }
 
+export class AsistenciaGeolocalizacion {
+		etiqueta: string = 'Persona'
+		tipo: string = 'SOSPECHA'
+
+		asistenciaId: string = '';
+		link: string = '';
+
+		compNum:     string = '';
+		personId:    string = '';
+		personSlug:  string = '';
+		ndoc:        string = '';
+		fecomp_txa:  string = '';
+
+		covid: string = '';
+		city: string = '';
+		barrio: string = '';
+		street1: string = '';
+		nucleo: string = '';
+		statetext: string = '';
+		locacion?: Locacion;
+
+		edad: string = '';
+		telefono: string = '';
+		lat: number = 0;
+		lon: number = 0;
+
+}
 
 
 export class AsistenciaTable {
@@ -896,7 +923,7 @@ export class DashboardBrowse {
 		estado:      string;
 		avance:      string;
 		fecharef?:   string;
-		locacionhosp?:   string;
+		locacionhosp?:   string = 'no_definido';
 }
 
 export class AsistenciaBrowse {
@@ -933,6 +960,7 @@ export class VigilanciaBrowse {
 		requirenteId: string;
 		compNum_h:   string;
 		actualState: string|number;
+		rebuildLatLon: boolean = false;
 
 		reporte:  string; // reportesVigilanciaOptList
 
@@ -1564,6 +1592,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'CONTACTOS',        label: 'Vigilancia de contactos' },
     {val: 'ASIGNACIONCASOS',  label: 'Asignación de casos por usuario' },
     {val: 'SINSEGUIMIENTO',   label: 'Afectados COVID sin resp seguimiento' },
+    {val: 'GEOLOCALIZACION',  label: 'Geolocalización de contactos' },
 ];
 
 
@@ -2375,6 +2404,17 @@ export class AsistenciaHelper {
 		q.sintoma = "no_definido";
 		q.sector = "no_definido";
 		q.locacionhosp = 'GENERAL'
+
+		return q;
+	}
+
+	static defaultQueryForTableroVigilancia(): DashboardBrowse{
+		let q = new DashboardBrowse();
+		q.estado = "no_definido";
+		q.avance = "no_definido";
+		q.sintoma = "no_definido";
+		q.sector = "no_definido";
+		delete q.locacionhosp;
 
 		return q;
 	}

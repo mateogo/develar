@@ -31,7 +31,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 
   public title = 'Tablero Solicitudes';
   public unBindList = [];
-  public query: DashboardBrowse = AsistenciaHelper.defaultQueryForTablero();
+  public query: DashboardBrowse = AsistenciaHelper.defaultQueryForTableroVigilancia();
 
   public _sectorOptList =   AsistenciaHelper.getOptionlist('sectores');
   public sectorOptList =   [];
@@ -142,7 +142,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
 
     this.loadDashboardData(this.fecharef_date)
-    
+ 
     this.initForm(this.form, this.query);
   }
 
@@ -158,7 +158,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
       this.masterData = master;
 
       Object.keys(this.masterData).forEach(t => {
-        //co nsole.log('Edad [%s] [%s] [%s]', this.masterData[t].edadId, this.masterData[t].sexo, this.masterData[t].cardinal)
+        //c onsole.log('Edad [%s] [%s] [%s]', this.masterData[t].edadId, this.masterData[t].sexo, this.masterData[t].cardinal)
         this.tiles.push(this.masterData[t]);
       })
 
@@ -264,13 +264,15 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 
   isWithinScope(t: Tile, q: DashboardBrowse): boolean {
   	let ok = true;
-  	Object.keys(q).forEach(k => {
+
+    Object.keys(q).forEach(k => {
   		if(q[k]!== "no_definido"){
   			if(q[k] !== t[k]){
   				ok = false;
   			}
   		}
   	})
+    
     if(!ok) return ok;
 
     if(this.isHoy){
@@ -284,7 +286,6 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     if(this.isSem){
       ok = this.selectJusThisWeek(t);
     }
-
 
   	return ok;
   }
@@ -877,7 +878,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   	this.resetData();
 
   	setTimeout(()=>{
-				//this.query = { ...this.form.value };
+
 		  	this.tiles.forEach(t => {
 		  		if(this.isWithinScope(t, query)){
 		  			this.reduceTileData(t)
@@ -889,7 +890,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 		  	this.resetPersonByCityChart();
         this.resetAsistenciasBySintomaChart();
         this.resetAsistenciasByAvanceChart();
-  			this.showChart = true;
+        this.showChart = true;
 
   	},200)
 

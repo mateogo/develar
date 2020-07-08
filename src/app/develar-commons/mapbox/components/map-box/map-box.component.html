@@ -1,0 +1,22 @@
+<div id="mapa" class="map-container"></div>
+
+<ng-container *ngIf="showMap">
+	<div class="d-flex justify-content-start align-items center">
+	<div id="custom-controls" class="m-2">
+	  <mat-button-toggle-group name="mapOptions" multiple="true" [(value)]="selectedLayers">
+	    <mat-button-toggle *ngFor="let layer of mapLayers" value="{{ layer.key }}"
+	      (change)="onLayerSelectionChange($event)">
+	      {{ layer.label }}</mat-button-toggle>
+	  </mat-button-toggle-group>
+	</div>
+
+	<div id="custom-filters" class="m-2">
+	  <mat-button-toggle-group name="mapfiltros" multiple="true" [(value)]="selectedFilters">
+	    <mat-button-toggle *ngFor="let item of mapFilters" 
+	    	value="{{ item }}" (change)="onFilterSelectionChange($event)">
+	      {{ item }}</mat-button-toggle>"
+	  </mat-button-toggle-group>
+	</div>
+	</div>
+
+</ng-container>

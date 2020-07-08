@@ -2027,7 +2027,7 @@ function saveSaludRecord(person, master){
 
         Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).then( person =>  {
             if(person && person._id){
-                console.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
+                //c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
             }
         })
 
@@ -2035,7 +2035,7 @@ function saveSaludRecord(person, master){
 
         person.save().then(person =>{
             if(person && person._id){
-                console.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
+                //c onsole.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
             }
 
         })
@@ -2383,6 +2383,74 @@ exports.import = function (req, errcb, cb) {
     processArchive(req, errcb, cb);
 
 };
+
+
+exports.updateLocacion = function(personId, locacion){
+    updateLocacionToken(personId, locacion);
+
+}
+
+//todoaca
+async function updateLocacionToken(personId, nlocacion){
+    let person = await Person.findById(personId).exec();
+    if(person){
+        let vlocacion = person.locaciones && person.locaciones.length && person.locaciones[0];
+        if(!vlocacion){
+            person.locaciones = [ nuevoRegistroLocacion(nlocacion) ]
+
+        }else {
+            updateRegistroLocacion(vlocacion, nlocacion)
+        }
+
+        await person.save();    
+
+    }
+}
+
+function updateRegistroLocacion(vlocacion, nlocacion){
+    vlocacion.street1  = nlocacion.street1;
+    vlocacion.city  = nlocacion.city;
+    vlocacion.cp  = nlocacion.cp;
+    vlocacion.lat  = nlocacion.lat;
+    vlocacion.lng  = nlocacion.lng;
+  
+}
+
+function nuevoRegistroLocacion(nlocacion){
+    let locacion = Object.assign({}, nlocacion);
+    locacion.desription = 'Alta por Epidemiología';
+    locacion.estado = 'activo';
+    locacion.isDefault = true;
+    locacion.addType = 'principal';
+    locacion.country = 'AR';
+    return locacion;
+}
+
+/****
+
+    slug:        {type: String,  required: false,  defalut: ''},
+    estado:      {type: String,  required: false, defalut: 'activo'},
+    description: {type: String,  required: false, defalut: ''},
+    isDefault:   {type: Boolean, required: false, defalut: false},
+    addType:     {type: String,  required: false, defalut: 'principal'},
+    street1:     {type: String,  required: false, defalut: ''},
+    street2:     {type: String,  required: false, defalut: ''},
+    streetIn:    {type: String,  required: false, defalut: ''},
+    streetOut:   {type: String,  required: false, defalut: ''},
+    city:        {type: String,  required: false, defalut: ''},
+    barrio:      {type: String,  required: false, defalut: ''},
+    state:       {type: String,  required: false, defalut: ''},
+    statetext:   {type: String,  required: false, defalut: ''},
+    zip:         {type: String,  required: false, defalut: ''},
+    estadoviv:   {type: String,  required: false, defalut: 'activa'},
+    cualificacionviv: {type: String,  required: false, defalut: 'buena'},
+    encuesta:    {type: encuestaSch, required: false},
+    country:     {type: String,  required: false, defalut: 'AR'},
+    lat:         {type: Number,  required: false, defalut: -34.59},
+    lng:         {type: Number,  required: false, defalut: -58.41}
+
+***/
+
 
 
 exports.buildIdTree = function(){

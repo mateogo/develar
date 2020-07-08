@@ -1831,6 +1831,8 @@ class PersonModel {
     }
 
     getBarrioList(type): Array<any> {
+      console.log('getBarrioList: [%s]', type)
+      if(!type) return barriosNotDefined
       return barriosOptList[type] || barriosNotDefined;
     }
 

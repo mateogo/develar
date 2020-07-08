@@ -16,6 +16,8 @@ import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reporte
 import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
 import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-page/vigil-seguimiento-page.component';
 import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/internacion-dashboard-page/internacion-dashboard-page.component';
+import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
+import { MapBoxComponent }   from '../develar-commons/mapbox/components/map-box/map-box.component';
 
 const routes: Routes = [
 	{
@@ -49,6 +51,14 @@ const routes: Routes = [
 	{
 		path: 'tablerointernacion',
 		component: InternacionDashboardPageComponent
+	},
+	{
+		path: 'geolocalizacion',
+		component: VigilanciaMappingPageComponent
+	},
+	{
+		path: 'geodev',
+		component: MapBoxComponent
 	},
 	{
 		path:'ayudadirecta',

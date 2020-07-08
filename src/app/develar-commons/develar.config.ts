@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown (v1.2-20.06.26-15:47) ',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 20.07.08-01:28',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #27 20.07.02-10:39',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #27 20.07.08-01:28',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},

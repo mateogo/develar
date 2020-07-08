@@ -15,6 +15,7 @@ const utils = require('../services/commons.utils');
 const person = require('./personModel');
 const product = require('./productModel');
 const Excel =    require('exceljs')
+const mapUtils = require('../services/maputils.js');
 
 const Schema = mongoose.Schema;
 
@@ -430,6 +431,8 @@ const asisprevencionSch = new Schema({
     morbilidades:      [ morbilidadSch ],
 });
 
+const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
+const N_HAB_00 = 'NUC-HAB-00'
 
 asisprevencionSch.pre('save', function (next) {
     return next();
@@ -440,6 +443,18 @@ function buildQuery(query, today){
 
   let q = {};
   let nestedOrs = [];
+
+  // busco un registro en particular
+  if(query['isVigilado']){
+    q["isVigilado"] = true;
+  }
+
+  if(query['requirenteId']){
+      q["requeridox.id"] = query['requirenteId'];
+      if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
+
+  }
+
 
   if(query['asistenciaId']){
       q["asistenciaId"] = query['asistenciaId'];
@@ -490,6 +505,13 @@ function buildQuery(query, today){
           }
   }
 
+  if(query['reporte'] && query['reporte']==="GEOLOCALIZACION"){
+      q = {
+            avance: {$ne: 'anulado'},
+            isVigilado: true,
+          }
+  }
+
   if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
       q = {
             avance: {$ne: 'anulado'},
@@ -530,17 +552,6 @@ function buildQuery(query, today){
              ]}
           }
       return q;
-  }
-
-  // busco un registro en particular
-  if(query['isVigilado']){
-    q["isVigilado"] = true;
-  }
-
-  if(query['requirenteId']){
-      q["requeridox.id"] = query['requirenteId'];
-      if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
-
   }
 
   // busco segun query
@@ -1061,7 +1072,8 @@ const findByQueryProcessFunction = {
   'REDCONTACTOS'    : buildRedContactos, // grafo loco
   'ASIGNACIONCASOS' : buildCasosPorUsuario, // Cuántos afectados tiene asignado cada usuario
   'CONTACTOS'       : buildContactosMaster, // Selecciona los casos índices + huérfanos
-  'SINSEGUIMIENTO'  : afectadosSinResponsableSeguimiento // Selecciona los casos índices + huérfanos
+  'SINSEGUIMIENTO'  : afectadosSinResponsableSeguimiento, // Selecciona los casos índices + huérfanos
+  'GEOLOCALIZACION' : geolocalizacionContactos // Reporte adaptado para renderizar mapa
 };
 
 /**
@@ -1134,6 +1146,107 @@ function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
     findByQueryProcessFunction[reporte](movimientos, query, errcb, cb);
   }
 
+}
+
+
+function geolocalizacionContactos(movimientos, query, errcb, cb){
+  let lon =  -58.3581617661068;
+  let lat =  -34.8112108487836;
+
+
+
+  let geoList = movimientos.map(asis => {
+    let locacion = asis.locacion;
+
+    let token = {
+      etiqueta:     'Persona',
+      tipo:         (asis.infeccion && covidOptList[asis.infeccion.actualState || 0]) || covidOptList[0],
+      asistenciaId: asis._id,
+      link:         asis._id,
+      compNum:      asis.compNum,
+      fecomp_txa:   asis.fecomp_txa,
+
+      personId:     asis.idPerson,
+      personSlug:   asis.requeridox.slug,
+      ndoc:         asis.ndoc,
+      edad:         asis.edad,
+      telefono:     asis.telefono,
+      statetext:    'Provincia de Buenos Aires'
+    }
+
+    if(locacion){
+      token.locacion = locacion;
+      token.lat =     locacion.lat || lat; 
+      token.lon =     locacion.lng || lon; 
+      token.city =    locacion.city;
+      token.barrio =  locacion.barrio;
+      token.street1 = locacion.street1;
+      token.nucleo =  (asis.casoIndice && asis.casoIndice.nucleo) || N_HAB_00;
+
+    }else {
+      token.locacion = null;
+      token.lat =     lat; 
+      token.lon =     lon; 
+      token.city =    'S/D';
+      token.street1 = 'S/D';
+      token.barrio =  'S/D';
+      token.nucleo =  'S/D';
+
+    }
+    //c onsole.log('geoList: [%s] ([%s])[%s]:[%s]', token.personSlug, token.tipo, token.lat, token.lon);
+    return token;
+  })
+
+  if(query.rebuildLatLon){
+    checkForLatLon(geoList);
+  }
+
+  cb(geoList);
+}
+
+function checkForLatLon(list){
+  let start = 0;
+  let end = 50;
+  let once = 0;
+  list.forEach(token => {
+    if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
+      if(once >= start && once < end) fetchLatLon(token);
+      once += 1;
+
+    }
+
+  })
+
+
+}
+
+async function fetchLatLon(token){
+  let response = await mapUtils.fetchLatLonByAddress(token);
+  if(response.status === 'OK'){
+    await updateLatLon(response, token);
+
+  }else {
+    console.log('LatLon: ERROR')
+    console.dir(response);
+
+  }
+
+
+}
+
+async function updateLatLon(response, token){
+  //c onsole.log('Response: [%s] [%s] [%s] [%s]',response.location.lat, response.location.lng, response.formatted_address, token.street1 )
+  let locacion = token.locacion;
+  locacion.lat = response.location.lat;
+  locacion.lng = response.location.lng;
+  locacion.street2 = response.formatted_address;
+
+
+  await Record.findByIdAndUpdate(token.asistenciaId, {locacion: locacion}, { new: true }).then(token =>{
+    return token;
+  })
+
+  person.updateLocacion(token.personId, locacion);
 }
 
 function buildContactosMaster(movimientos, query, errcb, cb){
@@ -1700,8 +1813,6 @@ function dispatchExcelStream(reporte, movimientos, query, req, res){
 }
 
 
-const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
-
 
 /**********************************/
 /***** EXCEL GENERIC OUTPUT    ***/
@@ -1902,7 +2013,6 @@ function exportDomiciliosReport(master, req, res){
 }
 
 
-const N_HAB_00 = 'NUC-HAB-00'
 
 function populateDomiciliosReport(master, asis, parent){
   let parentId = asis.casoIndice.parentId;
@@ -2177,7 +2287,7 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
       }
 
     }else{
-      console.log('aiuddaaaaaa')
+      console.log('AIUUUUDAAAAAAA No encontrado: [%s]', asistencia.requeridox && asistencia.requeridox.slug)
     }
 
     let token = {
@@ -2187,7 +2297,7 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
       fenac: fenac,
       ciudad: ciudad,
       sexo: sexo,
-      edadId: ("00" + Math.floor(utils.calcularEdad(fenac)/10)).substr(-2),
+      edadId: ("000" + Math.floor(utils.calcularEdad(fenac)/10)).substr(-2),
       estado: getEstado(asistencia),
       avance: getAvance(asistencia),
       sintoma: getSintoma(asistencia),
