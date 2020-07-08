@@ -1206,7 +1206,7 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
 
 function checkForLatLon(list){
   let start = 0;
-  let end = 3;
+  let end = 10;
   let once = 0;
   list.forEach(token => {
     if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
