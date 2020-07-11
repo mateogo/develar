@@ -22,6 +22,8 @@ export const MARKER_COLORS = [
 //     { tipo: 'En seguimiento',    color: '#E5E535' },
 //     { tipo: 'Análisis en curso', color: '#E5E535' }
 // ]
+//lat  -34.8546979
+//lng  -58.3834626
 
 export const HEATMAP_PAINT = {
     'heatmap-weight': [

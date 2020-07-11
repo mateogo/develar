@@ -1108,29 +1108,46 @@ exports.findByQuery = function (query, errcb, cb) {
 
 
     }else{
-      Record.find(regexQuery)
-            .lean()
-            .sort( '-fecomp_tsa' )
-            .exec(function(err, entities) {
-                if (err) {
-                    console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
-                    errcb(err);
-                }else{
-                    if(entities && entities.length){
-
-                      if(necesitaLab){
-                        entities = filterNecesidadDeLaboratorio(entities);
+      if(reporte && reporte === 'COVID'){
+        Record.find(regexQuery)
+              .lean()
+              .sort( '-fecomp_tsa' )
+              .exec(function(err, entities) {
+                  if (err) {
+                      console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                      errcb(err);
+                  }else{
+                      if(entities && entities.length){
+                        dispatchQuerySearch(reporte, entities, query, errcb, cb)
+                      }else {
+                        cb([]);
                       }
+                  }
+        });
 
-                      dispatchQuerySearch(reporte, entities, query, errcb, cb)
+      }else {
+        Record.find(regexQuery)
+              .lean()
+              .exec(function(err, entities) {
+                  if (err) {
+                      console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                      errcb(err);
+                  }else{
+                      if(entities && entities.length){
 
+                        if(necesitaLab){
+                          entities = filterNecesidadDeLaboratorio(entities);
+                        }
 
-                    }else {
-                      cb([]);
+                        dispatchQuerySearch(reporte, entities, query, errcb, cb)
 
-                    }
-                }
-      });
+                      }else {
+                        cb([]);
+                      }
+                  }
+        });
+
+      }
 
     }
 
@@ -1153,9 +1170,14 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
   let lon =  -58.3581617661068;
   let lat =  -34.8112108487836;
 
+  let geoList = movimientos.filter(asis => {
+    if(!asis.locacion) return false;
+    if(!asis.locacion.street1 || !asis.locacion.city) return false;
+    return true;
+  })
 
 
-  let geoList = movimientos.map(asis => {
+  geoList = geoList.map(asis => {
     let locacion = asis.locacion;
 
     let token = {
@@ -1204,18 +1226,22 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
   cb(geoList);
 }
 
+var _start = 0;
+var _step = 100;
+var once = 0;
+
 function checkForLatLon(list){
-  let start = 0;
-  let end = 50;
-  let once = 0;
   list.forEach(token => {
     if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
-      if(once >= start && once < end) fetchLatLon(token);
+      if(once >= _start && once < (_start + _step)) fetchLatLon(token);
       once += 1;
 
     }
 
   })
+  _start += _step;
+  once = _start;
+
 
 
 }
@@ -1224,7 +1250,7 @@ async function fetchLatLon(token){
   let response = await mapUtils.fetchLatLonByAddress(token);
   if(response.status === 'OK'){
     await updateLatLon(response, token);
-    console.log('LatLon: ok')
+    console.log('LatLon: ok [%s]', token.personSlug)
 
   }else {
     console.log('LatLon: ERROR')
