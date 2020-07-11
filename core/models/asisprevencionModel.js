@@ -506,10 +506,13 @@ function buildQuery(query, today){
   }
 
   if(query['reporte'] && query['reporte']==="GEOLOCALIZACION"){
+    
       q = {
-            avance: {$ne: 'anulado'},
+            'infeccion.actualState': {$in: [1, 4, 5]},
             isVigilado: true,
+            avance: {$ne: 'anulado'},
           }
+
   }
 
   if(query['reporte'] && query['reporte']==="REDCONTACTOS"){
