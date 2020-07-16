@@ -34,7 +34,7 @@
 
     <div class="d-md-flex justify-content-between align-items-center">
       <div  *ngFor="let service of groupservices" >
-        <mat-checkbox   [checked]="!(service.val==='pediatrica' || service.val==='neonatologia')"
+        <mat-checkbox   [checked]="true"
                         (click)="selectedCheckBox(service)">
                         {{service.slug}}
         </mat-checkbox>
