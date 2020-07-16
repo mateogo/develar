@@ -34,7 +34,7 @@
 
     <div class="d-md-flex justify-content-between align-items-center">
       <div  *ngFor="let service of groupservices" >
-        <mat-checkbox   [checked]=true
+        <mat-checkbox   [checked]="!(service.val==='pediatrica' || service.val==='neonatologia')"
                         (click)="selectedCheckBox(service)">
                         {{service.slug}}
         </mat-checkbox>
@@ -53,16 +53,16 @@
       <h3>{{ totalTitle }}</h3>
 
       <div class="row total-header">
-        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+        <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
           <div  class="col total-header-cell ">
-            <span>{{ capacidad.slug }}</span>
+            <span>{{ capacidad.code }}</span>
           </div>
         </ng-container>
       </div>
 
 
       <div class="row total-capacidad">
-        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+        <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
           <div  class="col total-cell">
             <span class="total-label" >CAPACIDAD</span><br>
             <span class="total-valor" >{{ totalCapacidad[capacidad.val]['capacidad'] }}</span>
@@ -71,7 +71,7 @@
       </div>
 
       <div class="row total-ocupacion">
-        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+        <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
           <div  class="col total-cell">
             <span class="total-label" >OCUPACIÓN</span><br>
             <span class="total-valor" >{{ totalCapacidad[capacidad.val].ocupado }}</span>
@@ -80,7 +80,7 @@
       </div>
 
       <div class="row">
-        <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+        <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
           <div  class="col total-cell">
             <span class="total-valor" >
               {{ totalCapacidad[capacidad.val].porcentual }}
@@ -139,7 +139,7 @@
         </div>
         <div  class="col-md-9">
           <div class="row">
-            <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+            <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
             <div  class="col-md-2 locacion-header-cell">
               <span>{{ capacidad.slug }}</span>
             </div>
@@ -161,9 +161,9 @@
           </div>
           <div  class="col-md-9">
             <div class="row">
-              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
-              <div  class="col locacion-data-cell">
-                <span>{{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
+              <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
+              <div  class="col-md-2 locacion-data-cell">
+                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
               </div>
               </ng-container>
             </div>
@@ -176,9 +176,9 @@
           </div>
           <div  class="col-md-9">
             <div class="row">
-              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+              <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
               <div  class="col-md-2 locacion-data-cell">
-                <span>{{ locacion['disponible'][capacidad.val].ocupado }}</span>
+                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val].ocupado }}</span>
               </div>
               </ng-container>
             </div>
@@ -191,9 +191,9 @@
           </div>
           <div  class="col-md-9">
             <div class="row">
-              <ng-container *ngFor='let capacidad of groupservices; let row=index'>
+              <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
               <div  class="col-md-2 locacion-data-cell">
-                <span>
+                <span>{{capacidad.code}} : 
                   {{ getOcupacionPorcentual(
                           locacion['disponible'][capacidad.val].ocupado, 
                           locacion['disponible'][capacidad.val].capacidad) }}

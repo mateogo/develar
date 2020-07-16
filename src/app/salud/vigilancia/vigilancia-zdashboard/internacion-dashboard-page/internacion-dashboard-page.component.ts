@@ -264,7 +264,8 @@ export class InternacionDashboardPageComponent implements OnInit {
   *************************/
 
   private refreshView(query: DashboardBrowse){
-  	this.showChart = false;
+  	//this.showChart = false;
+    this.showData = false;
     this.capacidadesOptList = this.selectedCapacidades();
     this.buildChartData(query);
 

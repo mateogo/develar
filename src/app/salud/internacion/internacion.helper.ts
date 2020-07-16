@@ -383,12 +383,12 @@ const serviciosOptList: Array<any> = [
 
 
 const capacidadesOptList: Array<any> = [
-    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , slug: 'C.INTENSIVOS'  },
-    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , slug: 'C.INTERMED' },
-    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , slug: 'PEDIATRÍA'     },
-    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', slug: 'NEO'  },
-    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', slug: 'C.MÍNIMOS'   },
-    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , slug: 'AMBULATORIO'   },
+    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'UTE'  , slug: 'C.INTERMED' },
+    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , code: 'PED'  , slug: 'PEDIATRÍA'     },
+    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', code: 'NEO'  , slug: 'NEO'  },
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'C.MÍNIMOS'   },
+    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
 ];
 
 const especialidadesOptList: Array<any> = [
