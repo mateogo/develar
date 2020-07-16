@@ -228,6 +228,7 @@ export class MasterAllocation {
   id: string;    // hospital _id ó 'pool'
   code: string;  // code del hospital
   slug: string;  // denom del hospital
+  type: string; // tipo de hospital (PRIVADO)
   direccion: string; // direccion postal
   servicios: Array<EstadoServicios>;
   disponible: DisponiblePorArea;

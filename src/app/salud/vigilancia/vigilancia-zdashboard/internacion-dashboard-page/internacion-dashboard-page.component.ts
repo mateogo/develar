@@ -38,6 +38,7 @@ const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
 const ASIGNAR = 'asignar';
 const BORRAR = false;
+const PRIVADO = 'PRIVADO';
 
 @Component({
   selector: 'internacion-dashboard-page',
@@ -48,7 +49,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
   public title = 'Tablero Ocupación Locaciones de Internación';
   public tableTitle = 'Capacidad disponible general'
-  public totalTitle = 'Cuadro resúmen'
+  public totalTitle = 'Ocupación locaciones públicas'
   public unBindList = [];
   public query: DashboardBrowse = AsistenciaHelper.defaultQueryForTablero();
 
@@ -362,6 +363,8 @@ export class InternacionDashboardPageComponent implements OnInit {
 
 
     this.masterList.forEach(t => {
+        if(t.type === PRIVADO) return;
+
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
           capacidades[label.val].ocupado += disponible[label.val].ocupado;

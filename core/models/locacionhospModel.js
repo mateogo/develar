@@ -222,6 +222,7 @@ function fetchAvailability(spec, errcb, cb){
               id:   loc._id.toString(),
               code: loc.code,
               slug: loc.slug,
+              type: loc.type,
               direccion: loc.ubicacion ? loc.ubicacion.street1 + ' ' + loc.ubicacion.city : '',
               servicios: buildServiciosAllocation(loc),
             }
