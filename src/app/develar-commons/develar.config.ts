@@ -256,6 +256,6 @@ export const gldef = globals[user];
 
 		// http://localhost:8080/#Tiddly%20Node%20203:%5B%5BTiddly%20Node%20203%5D%5D%20GettingStarted
 
-
-
+ //var validUsersNamedBuzz = R.filter(R.where({name: 'Buzz', errors: R.isEmpty}));
+     
   

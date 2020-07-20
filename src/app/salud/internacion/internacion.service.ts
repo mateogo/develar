@@ -389,7 +389,6 @@ export class InternacionService {
 
 
   asignarRecurso(solinternacion: SolicitudInternacion, locacion: LocacionHospitalaria, servicio: string, recurso: Recurso ): Subject<SolicitudInternacion>{
-    console.log('asignarRecurso')
     let internacion = solinternacion.internacion;
     let transition = internacion.estado === 'servicio'? 'servicio:servicio' :  'admision:servicio';
 

@@ -120,6 +120,8 @@ import { VigilSeguimientoBaseComponent } from './vigilancia/vigilancia-zeguimien
 import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-manage/vigil-seguimiento-manage.component';
 import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/internacion-dashboard-page/internacion-dashboard-page.component';
 import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
+import { LlamadosDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/llamados-dashboard-page/llamados-dashboard-page.component';
+import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llamados-browse/llamados-browse.component';
 
 @NgModule({
   imports: [
@@ -240,6 +242,8 @@ import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboa
     VigilSeguimientoManageComponent,
     InternacionDashboardPageComponent,
     VigilanciaMappingPageComponent,
+    LlamadosDashboardPageComponent,
+    LlamadosBrowseComponent,
   ],
   entryComponents: 
   [

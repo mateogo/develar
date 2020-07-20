@@ -1,0 +1,20 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>CONTROL DE SEGUIMIENTO DE AFECTADOS/AS</mat-card-title>
+	</mat-card-header>
+</mat-card>
+
+<llamados-browse 		[query]="query" 
+										[export]='true'
+										(updateQuery)="refreshSelection($event)"></llamados-browse>
+
+<mat-card>
+	<mat-card-content>								 
+
+	<dump-data  [title]="'MasterData'"
+	            [data$]='data$'
+	            [showTests]='true'></dump-data>
+
+	</mat-card-content>
+</mat-card>
+

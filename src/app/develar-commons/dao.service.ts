@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
 import { Observable, of }    from 'rxjs';
 import { catchError }     from 'rxjs/operators';
 
+import { VigilanciaBrowse } from '../salud/asistencia/asistencia.model';
+
 const whoami = 'DAO.service';
 
 @Injectable()
@@ -69,11 +71,12 @@ export class DaoService {
         nuevoturnoURL:  'api/turnosasignados/nuevoturno'
       },
       asisprevencion:{
-        backendURL:   'api/asisprevencion',
-        searchURL:    'api/asisprevencion/search',
-        dashboardURL: 'api/asisprevencion/tablero',
-        epidemioURL:  'api/asisprevencion/epidemio',
-        nextItemURL:  'api/asisprevencion/nextitem'
+        backendURL:     'api/asisprevencion',
+        searchURL:      'api/asisprevencion/search',
+        dashboardURL:   'api/asisprevencion/tablero',
+        epidemioURL:    'api/asisprevencion/epidemio',
+        seguimientoURL: 'api/asisprevencion/seguimiento',
+        nextItemURL:    'api/asisprevencion/nextitem'
       },
       pcultural:{
         backendURL:   'api/eventosculturales',
@@ -392,6 +395,16 @@ export class DaoService {
                .get<T>(url)
                .pipe(
                    catchError(this.handleObsError<T>('search',null))
+                 );
+  }
+
+  fetchSeguimientoDashboard<T>(type: string, query: VigilanciaBrowse): Observable<T[]> {
+    let searchUrl = `${this.dao[type].seguimientoURL}`;
+    let params = this.buildParams(query);
+    return this.http
+               .get<T[]>(searchUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<T[]>('search',[]))
                  );
   }
   

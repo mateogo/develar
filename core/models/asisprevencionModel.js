@@ -461,6 +461,18 @@ function buildQuery(query, today){
       return q;
   }
 
+  if(query['reporte'] && query['reporte']==="SEGUIMIENTO"){
+      q = {
+            isVigilado: true,
+            avance: {$ne: 'anulado'},
+          }
+
+      if(query['feDesde_ts'] && query['feHasta_ts']){
+        let fedesde = parseInt(query['feDesde_ts'], 10);
+        let fehasta = parseInt(query['feHasta_ts'], 10);
+        q['seguimEvolucion.fets_llamado'] = { $gte: fedesde, $lte: fehasta };
+      }
+  }
 
   if(query['reporte'] && query['reporte']==="CONTACTOS"){
       q = {
@@ -1083,7 +1095,162 @@ const findByQueryProcessFunction = {
  * Retrieve records from query /search/?name=something
  * @param cb
  * @param errcb
+ * reporte SEGUIMIENTO
  */
+
+exports.buildReporteSeguimiento = buildReporteSeguimiento;
+
+exports.exportarseguimientos = exportarSeguimientos;
+
+function exportarSeguimientos(query, req, res){
+
+  buildReporteSeguimiento(query, null, null, req, res); 
+
+}
+
+function buildReporteSeguimiento(query, errcb, cb, req, res){
+
+    let regexQuery = buildQuery(query, new Date())
+    console.dir(regexQuery);
+
+    Record.find(regexQuery)
+          .lean()
+          .exec(function(err, entities) {
+              if (err) {
+                  console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
+                  if(errcb) errcb(err);
+              }else{
+                  if(entities && entities.length){
+                    _buildReporteSeguimiento(entities, query, errcb, cb, req, res)
+
+                  }else {
+                    _buildReporteSeguimiento([], query, errcb, cb, req, res)
+                  }
+              }
+    });
+
+
+}
+
+function _dispatchReporteSeguimientoWorkbook (movimientos, query, req, res){
+    let today = Date.now();
+    let filename = 'reporte_seguimiento_afectados'+today+'.xlsx'
+    let content = 
+
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="' + filename + '"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    const worksheet = workbook.addWorksheet('seguimiento')
+
+    worksheet.addRow(['Seguimiento de afectados COVID']).commit()
+    worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
+
+    worksheet.addRow().commit()
+    worksheet.addRow(['Vigilancia','DNI','Telefono','Paciente', '#contactos', 'Fecha','Resultado', 'Tipo','COVID','Evolución', 'Indicación','Seguido por', 'FechaNum']).commit();
+
+    movimientos.forEach(token => {
+      const { compNum, 
+              ndoc, 
+              telefono, 
+              personSlug, 
+              contactosEstrechos,
+              fe_llamado,
+              fets_llamado,
+              resultado,
+              tipo,
+              covid,
+              vector,
+              indicacion,
+              username } = token;
+
+      worksheet.addRow([
+              compNum, 
+              ndoc, 
+              telefono, 
+              personSlug, 
+              contactosEstrechos,
+              fe_llamado,
+              resultado,
+              tipo,
+              covid,
+              vector,
+              indicacion,
+              username,
+              fets_llamado ]).commit()
+    })
+
+    worksheet.commit()
+    workbook.commit()
+}
+
+
+function _buildReporteSeguimiento(movimientos, query, errcb, cb, req, res){
+  let exportExcel = query.searchAction === 'export';
+
+  let fechaDesde = parseInt(query['feDesde_ts'], 10);
+  let fechaHasta = parseInt(query['feHasta_ts'], 10);
+
+  let seguimientoArray = [];
+
+  movimientos.forEach(asis => {
+    const { 
+      compNum, 
+      idPerson, 
+      ndoc, 
+      telefono, 
+      requeridox: {slug: personSlug}
+      } = asis;
+
+      const covid = isCovidTotal(asis);
+      let contactosEstrechos = asis.contactosEstrechos || 0;
+
+      let llamados = asis.seguimEvolucion||[];
+      llamados.forEach(token => {
+        if(token.fets_llamado >= fechaDesde && token.fets_llamado <= fechaHasta){
+          const {
+            fe_llamado,
+            fets_llamado,
+            resultado,
+            tipo,
+            vector,
+            indicacion
+          } = token;
+
+          let username =  (token.audit && token.audit.username) || 's/d';
+          let userId =    (token.audit && token.audit.userId)   || '';
+ 
+          seguimientoArray.push({ compNum, 
+                                  idPerson, 
+                                  ndoc, 
+                                  telefono, 
+                                  personSlug, 
+                                  contactosEstrechos,
+                                  fe_llamado,
+                                  fets_llamado,
+                                  resultado,
+                                  tipo,
+                                  covid,
+                                  vector,
+                                  indicacion,
+                                  username,
+                                  userId
+                                })
+        }// endif
+
+      })// end llamados.forEach
+
+  });// end movimientos.forEach
+
+  if(exportExcel){
+    _dispatchReporteSeguimientoWorkbook(seguimientoArray, query, req, res);
+
+  }else {
+    cb(seguimientoArray);
+  }
+}
 
 exports.findByQuery = function (query, errcb, cb) {
     let reporte = query['reporte'];

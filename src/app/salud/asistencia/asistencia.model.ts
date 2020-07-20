@@ -995,6 +995,10 @@ export class VigilanciaBrowse {
 		avanceCovid: string = '';
 
 		sintomaCovid: string = '';
+		feDesde?: string = '';
+		feHasta?: string = '';
+		feDesde_ts?: number = 0;
+		feHasta_ts?: number = 0;
 }
 
 export interface AsistenciaSig {
@@ -1098,7 +1102,17 @@ export class HisopadoYa {
 	needsHisopado = false;	
 }
 
-
+export class OptList {
+	val: string;
+	label: string;
+	slug?: string;
+	isRemitible?: boolean = false;
+	key?: string;
+	type?: string;
+	tipo?: string;
+	order?: string;
+	q?: number;
+}
 
 const obrasSociales = [
       {val: 'no_definido',  label: 'Seleccioneopción',   slug:'Seleccione opción' },
@@ -1593,6 +1607,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'ASIGNACIONCASOS',  label: 'Asignación de casos por usuario' },
     {val: 'SINSEGUIMIENTO',   label: 'Afectados COVID sin resp seguimiento' },
     {val: 'GEOLOCALIZACION',  label: 'Geolocalización de contactos' },
+   // {val: 'SEGUIMIENTO',      label: 'Reporte de seguimiento entre fechas' },
 ];
 
 
@@ -2078,6 +2093,18 @@ export class AsistenciaHelper {
       if(key === 'qDaysSisa'        && !query[key]) delete query[key];
       if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
       if(key === 'casosIndice'      && !query[key]) delete query[key];
+
+      if(key === 'asignadoId'      && !query[key]) delete query[key];
+      if(key === 'rebuildLatLon'   && !query[key]) delete query[key];
+      if(key === 'avanceSisa'      && !query[key]) delete query[key];
+      if(key === 'userId'          && !query[key]) delete query[key];
+      if(key === 'avanceCovid'     && !query[key]) delete query[key];
+      if(key === 'sintomaCovid'    && !query[key]) delete query[key];
+      if(key === 'feDesde'         && !query[key]) delete query[key];
+      if(key === 'feDesde_ts'      && !query[key]) delete query[key];
+      if(key === 'feHasta'         && !query[key]) delete query[key];
+      if(key === 'feHasta_ts'      && !query[key]) delete query[key];
+
     })
 
     return query;

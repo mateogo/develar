@@ -773,6 +773,11 @@ export class SaludController {
   }
 
 
+  fetchSeguimientoByQuery(query: VigilanciaBrowse){
+    return this.daoService.fetchSeguimientoDashboard(ASIS_PREVENCION_RECORD, query);
+  }
+
+
   fetchAsistenciaByQuery(query:any){
 
     /*
@@ -905,6 +910,11 @@ export class SaludController {
 
   }
 
+  exportSequimientosByQuery(query:any){
+    let params = this.daoService.buildParams(query);
+    const Url = 'api/asisprevencion/exportarseguimientos?' + params.toString();
+    const windw = window.open(Url, 'about:blank')
+  }
 
 
 

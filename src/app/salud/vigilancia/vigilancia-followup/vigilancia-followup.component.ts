@@ -555,18 +555,14 @@ export class VigilanciaFollowupComponent implements OnInit {
   private buildCoreDataEdit(token: Asistencia){
     let personId = token.requeridox && token.requeridox.id
     let vinculoPerson: Person;
-console.log('1')
     if(!personId){
       this.dsCtrl.openSnackBar('Error: solicitud de vigilancia sin identificación de Persona', 'ATENCIÓN')
       return;
     }
 
-console.log('2')
     this.perSrv.fetchPersonById(personId).then(per => {
       if(per){
         this.person = per;
-
-console.log('3 [%s]', this.person.displayName)
           this.openCoreEditModal(this.person, this.asistencia);
 
       }else {

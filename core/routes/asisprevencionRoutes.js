@@ -28,6 +28,11 @@ router.get('/exportarmovimientos', function (req, res) {
     service.exportarmovimientos(req.query, req, res);
 });
 
+router.get('/exportarseguimientos', function (req, res) {
+    console.log('exportar movimientos ROUTER')
+    service.exportarseguimientos(req.query, req, res);
+});
+
 
 
 /**
@@ -95,6 +100,21 @@ router.get('/search', function (req, res) {
         res.status(200).json(entities);
 
     });
+});
+
+/**
+ * reporte seguimiento
+ */
+router.get('/seguimiento', function (req, res) {
+    service.buildReporteSeguimiento(req.query, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    },
+    req,
+    res);
 });
 
 /**

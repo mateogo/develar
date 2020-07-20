@@ -306,7 +306,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
         title: {
           display: true,
-          text: capacidad.label + ' - Disponible: ' +  this.masterCapacidad[capacidad.val].libre + ' / ' + ( this.masterCapacidad[capacidad.val].ocupado + this.masterCapacidad[capacidad.val].libre )
+          text: capacidad.label + ' - Disponible: ' +  this.masterCapacidad[capacidad.val].libre + ' / ' + ( this.masterCapacidad[capacidad.val].ocupado + this.masterCapacidad[capacidad.val].libre ) + ' - Ocupación: ' + this.getOcupacionPorcentual(this.masterCapacidad[capacidad.val].ocupado, ( this.masterCapacidad[capacidad.val].ocupado + this.masterCapacidad[capacidad.val].libre ))
         },
 
         animation: {

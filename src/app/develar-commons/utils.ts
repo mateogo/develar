@@ -41,6 +41,7 @@ const formatDDMMToStr = function(date_num) {
     return  da + '-' + mes_labels[mo];
 };
 
+
 const formatDateToStr = function(date_num) {
     let prefix = '00';
 
@@ -64,6 +65,11 @@ const dateToStr = function(date) {
     let ye = date.getFullYear();
     return da+"/"+mo+"/"+ye;
 };
+
+const formattedDate = function(datex: string){
+    let date = parseDateStr(datex);
+    return date ? dateToStr(date) : '';
+}
 
 const dateToInvertedStr = function(date) {
     let prefix = '00';
@@ -372,6 +378,21 @@ function buildFecharefLabel(fecharef: Date): string{
     return `Semana referencia:  Lunes ${devutils.txFromDate(desde)} a Domingo ${devutils.txFromDate(hasta)}   `
 }
 
+function buildDateFromTo(fecharef: Date): {feDesde: string, feHasta: string}{
+    let dayOfWeek = fecharef.getDay(); // 0-6 <==> DOM-SAB
+    let actualDay = fecharef.getDate(); // Día del mes calendario 1-31|30|28|29
+
+    let semana_inicia =  actualDay - dayOfWeek ;
+    let semana_finaliza = actualDay + (6 - dayOfWeek );
+
+    let desde = new Date(fecharef.getTime())
+    desde.setDate(semana_inicia);    // retorna fecha en formato number
+
+    let hasta = new Date(fecharef.getTime())
+    hasta.setDate(semana_finaliza);  // en milisegundos
+    return { feDesde: dateToStr(desde), feHasta: dateToStr(hasta) }
+}
+
 function buildEpidemioWeek(fecharef: Date): string{
     let dayOfWeek = fecharef.getDay(); // 0-6 <==> DOM-SAB
     let actualDay = fecharef.getDate(); // Día del mes calendario 1-31|30|28|29
@@ -394,29 +415,40 @@ function getEpidemicWeekOfTheYear(fecharef:Date ): number{
     let weeks = 0;
     let from = fecharef.getTime();
     let firstOfYear_date = new Date(fecharef.getFullYear(), 0, 1);
-    let dow = firstOfYear_date.getDay();
+
+    let begin_of_year = getBeginOfYear(new Date(fecharef.getFullYear()+1, 0, 1));
+    if(begin_of_year <= from){
+        return getEpidemioWeek(begin_of_year, from);
+    }
+
+    begin_of_year = getBeginOfYear(firstOfYear_date);
+
+    if(begin_of_year > from){
+        begin_of_year = getBeginOfYear(new Date(fecharef.getFullYear()-1, 0, 1));
+    }
+
+    return getEpidemioWeek(begin_of_year, from);
+}
+
+function getEpidemioWeek(begin, fecharef){
+    return Math.floor((fecharef - begin) / (1000 * 60 * 60 * 24 * 7)) + 1;
+}
+
+function getBeginOfYear(firstOfYear: Date): number{
+    let dow = firstOfYear.getDay();
     let begin_of_year: number; 
 
-    //c onsole.log('FirstDayOfYear [%s]', firstOfYear_date.toString());
-
+    //c onsole.log('FirstDayOfYear [%s] dow:[%s]', firstOfYear.toString(), dow);
     if(dow < 4) { // esta semana ya pertenece al año Nuevo
-        begin_of_year = firstOfYear_date.setDate(firstOfYear_date.getDate() - dow)
+        begin_of_year = firstOfYear.setDate(firstOfYear.getDate() - dow)
         //c onsole.log('Semana Incluida: El año empezó el día [%s] [%s]', dow, new Date(begin_of_year).toString() );
 
 
     }else {
-        begin_of_year = firstOfYear_date.setDate(firstOfYear_date.getDate() + (7 - dow));
+        begin_of_year = firstOfYear.setDate(firstOfYear.getDate() + (7 - dow));
         //c onsole.log('Semana siguiente El año empezó el día [%s] [%s]', dow, new Date(begin_of_year).toString() )
-
     }
-
-
-
-    weeks = Math.round((from - begin_of_year) / (1000 * 60 * 60 * 24 * 7));
-    //c onsole.log('weeks: [%s]', weeks)
-
-
-    return weeks;
+    return begin_of_year;
 }
 
 // feriados
@@ -677,6 +709,10 @@ class Devutils {
         return dateToInvertedStr(date);
     }
 
+    txFormatted(datex){
+        return formattedDate(datex);
+    }
+
     txDayFormatFromDate(date_num){
         return formatDateToStr(date_num);
     }
@@ -687,6 +723,12 @@ class Devutils {
 
     txFromDateTime(time: number){
         return dateToStr(new Date(time));
+    }
+
+
+
+    dateWeekFromTo(datex ){
+        return buildDateFromTo(datex);
     }
 
     txForCurrentWeek(date: Date):string {

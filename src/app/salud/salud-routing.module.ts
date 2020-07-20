@@ -18,6 +18,7 @@ import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimien
 import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/internacion-dashboard-page/internacion-dashboard-page.component';
 import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
 import { MapBoxComponent }   from '../develar-commons/mapbox/components/map-box/map-box.component';
+import { LlamadosDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/llamados-dashboard-page/llamados-dashboard-page.component';
 
 const routes: Routes = [
 	{
@@ -47,6 +48,10 @@ const routes: Routes = [
 	{
 		path:'tableroepidemio',
 		component: VigilanciaDashboardPageComponent
+	},
+	{
+		path: 'tableroseguimiento',
+		component: LlamadosDashboardPageComponent
 	},
 	{
 		path: 'tablerointernacion',
