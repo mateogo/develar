@@ -470,7 +470,7 @@ function buildQuery(query, today){
       if(query['feDesde_ts'] && query['feHasta_ts']){
         let fedesde = parseInt(query['feDesde_ts'], 10);
         let fehasta = parseInt(query['feHasta_ts'], 10);
-        q['seguimEvolucion.fets_llamado'] = { $gte: fedesde, $lte: fehasta };
+        q['seguimEvolucion.fets_llamado'] = { $gte: fedesde, $lt: fehasta };
       }
   }
 
@@ -1193,6 +1193,7 @@ function _buildReporteSeguimiento(movimientos, query, errcb, cb, req, res){
   let fechaDesde = parseInt(query['feDesde_ts'], 10);
   let fechaHasta = parseInt(query['feHasta_ts'], 10);
 
+
   let seguimientoArray = [];
 
   movimientos.forEach(asis => {
@@ -1209,7 +1210,8 @@ function _buildReporteSeguimiento(movimientos, query, errcb, cb, req, res){
 
       let llamados = asis.seguimEvolucion||[];
       llamados.forEach(token => {
-        if(token.fets_llamado >= fechaDesde && token.fets_llamado <= fechaHasta){
+        //c onsole.log('desde: [%s]>[%s]<[%s]',fechaDesde, token.fets_llamado , fechaHasta)
+        if(token.fets_llamado >= fechaDesde && token.fets_llamado < fechaHasta){
           const {
             fe_llamado,
             fets_llamado,

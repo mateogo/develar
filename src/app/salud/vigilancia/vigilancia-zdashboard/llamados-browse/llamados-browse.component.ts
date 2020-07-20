@@ -287,7 +287,7 @@ export class LlamadosBrowseComponent implements OnInit {
     entity.feHasta = devutils.txFormatted(entity.feHasta);
 
     entity.feDesde_ts = entity.feDesde ? devutils.dateNumFromTx(entity.feDesde) : 0;
-    entity.feHasta_ts = entity.feHasta ? devutils.dateNumFromTx(entity.feHasta) : 0;
+    entity.feHasta_ts = entity.feHasta ? devutils.dateNumPlusOneFromTx(entity.feHasta) : 0;
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;

@@ -701,6 +701,15 @@ class Devutils {
         else return 0;
     }
 
+    dateNumPlusOneFromTx(datex){
+        let fecha =  parseDateStr(datex);
+        if(fecha) {
+            fecha.setDate(fecha.getDate() + 1);
+            return fecha.getTime();
+        }
+        else return 0;
+    }
+
 	txFromDate(date){
 		return dateToStr(date);
 	}
