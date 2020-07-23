@@ -352,6 +352,8 @@ export class InternacionDashboardPageComponent implements OnInit {
 
 
     this.masterList.forEach(t => {
+      if(t.type === PRIVADO) return;
+
       if(t.code === scope || scope === 'GENERAL'){
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
