@@ -143,32 +143,32 @@ solinternacionSch.pre('save', function (next) {
 
 // internacionHelper: serviciosOptList
 const capacidades = [
-    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
-    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
-    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
-    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
-    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
-    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
-    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
-    {val: 'NEONATOLOGIA',   target: 'neonatologia',         ord: '2.3', label: 'INT-NEO'       },
-    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
-    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
-    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
-    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
-    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
+    {val: 'UTI',            etario: 1, target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+    {val: 'UTIP',           etario: 2, target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+    {val: 'UTIN',           etario: 3, target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+    {val: 'UTE',            etario: 1, target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+    {val: 'UCO',            etario: 1, target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+    {val: 'CIRUGIA',        etario: 1, target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
+    {val: 'INTERNACION',    etario: 1, target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+    {val: 'PEDIATRIA',      etario: 2, target: 'intermedios',          ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'NEONATOLOGIA',   etario: 3, target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
+    {val: 'MATERNIDAD',     etario: 1, target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',  etario: 1, target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
+    {val: 'CLINICA',        etario: 1, target: 'minimos',              ord: '2.6', label: 'CLÍNICA MÉDICA'},
+    {val: 'AISLAMIENTO',    etario: 1, target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',      etario: 1, target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',        etario: 1, target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
 
 
 // internacionHelper: capacidadesOptList
 const capacidadesOptList = [
-    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'     },
-    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'    },
-    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'     },
-    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA'  },
-    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO'  },
-    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'    },
+    {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'UTE'  , slug: 'C.INTERMED' },
+    {val: 'minimos',       label: 'CUIDADOS MÍNIMOS'      , code: 'CMÍN' , slug: 'C.MÍNIMOS'},
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'AISLAMIENTO'   },
+    {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
+
 ];
 
 const estadosPeriferiaOptList = [ 
@@ -522,9 +522,17 @@ function addAcumulators(list){
 
     let disponible = {};
     capacidadesOptList.forEach(token => {
+      let ocupado = {
+        total: 0,
+        adu: 0,
+        ped: 0,
+        neo: 0
+      }
+
+
       disponible[token.val] = {
         capacidad: capacidad[token.val],
-        ocupado: 0
+        ocupado: ocupado
       }
     })
     t.disponible = disponible;
@@ -619,7 +627,15 @@ function sumarPool(solicitud, list, master){
     token = master['pool'];
   }
 
-  acumCapacidad(solicitud.triage.servicio, token)
+  acumCapacidadPool(solicitud.triage.servicio, token)
+}
+
+function acumCapacidadPool(key, token){
+  let tipo = capacidades.find(t => t.val === key);
+  if(tipo){
+    token.disponible[tipo.target].ocupado += 1
+
+  }
 }
 
 
@@ -701,7 +717,11 @@ function acumOcupacion(key, token){
 function acumCapacidad(key, token){
   let tipo = capacidades.find(t => t.val === key);
   if(tipo){
-    token.disponible[tipo.target].ocupado += 1
+                          token.disponible[tipo.target].ocupado['total'] += 1
+    if(tipo.etario === 1) token.disponible[tipo.target].ocupado['adu']   += 1;
+    if(tipo.etario === 2) token.disponible[tipo.target].ocupado['ped']   += 1;
+    if(tipo.etario === 3) token.disponible[tipo.target].ocupado['neo']   += 1;
+
   }
 }
 
@@ -744,7 +764,13 @@ function sumcapacity(servicios){
   let capacidad = {};
 
   capacidadesOptList.forEach(token => {
-    capacidad[token.val] = 0;
+    let capa = {
+      total: 0,
+      adu: 0,
+      ped: 0,
+      neo: 0
+    }
+    capacidad[token.val] = capa;
   })
 
   if(servicios && servicios.length){
@@ -752,7 +778,12 @@ function sumcapacity(servicios){
     servicios.reduce((capacidad, token) => {
       let tipo = capacidades.find(t => t.val === token.type);
       if(tipo){
-        capacidad[tipo.target] += token.nominal;
+        capacidad[tipo.target]['total'] += token.nominal;
+
+        if(tipo.etario === 1) capacidad[tipo.target]['adu'] += token.nominal;
+        if(tipo.etario === 2) capacidad[tipo.target]['ped'] += token.nominal;
+        if(tipo.etario === 3) capacidad[tipo.target]['neo'] += token.nominal;
+
       }
       return capacidad;
 

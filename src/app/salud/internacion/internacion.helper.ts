@@ -348,6 +348,7 @@ const areasOptList: Array<any> = [
     {val: 'MATERNIDAD',    ord: '2.4', label: 'INT-MATERNIDAD' },
     {val: 'TRAUMATOLOGIA', ord: '2.6', label: 'INT-TRAUMATO'   },
     {val: 'CIRUGIA',       ord: '2.7', label: 'INT-CIRUGÍA'    },
+    {val: 'CLINICA',       ord: '2.7', label: 'CLÍNICA MÉDICA'    },
 
     {val: 'AISLAMIENTO',   ord: '4.1', label: 'AISLAMIENTO'    },
 
@@ -362,32 +363,31 @@ const areasOptList: Array<any> = [
 ];
 
 const serviciosOptList: Array<any> = [
-    {val: 'UTI',            target: 'intensivos',           ord: '1.1', label: 'UTI'           },
-    {val: 'UTIP',           target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
-    {val: 'UTIN',           target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
-    {val: 'UTE',            target: 'intensivos',           ord: '1.4', label: 'UTE'           },
-    {val: 'UCO',            target: 'intensivos',           ord: '1.5', label: 'UCO'           },
-    {val: 'INTERNACION',    target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
-    {val: 'PEDIATRIA',      target: 'pediatrica',           ord: '2.2', label: 'INT-PEDIATRÍA' },
-    {val: 'NEONATOLOGIA',   target: 'neonatologia',         ord: '2.3', label: 'INT-NEO'       },
-    {val: 'MATERNIDAD',     target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
-    {val: 'TRAUMATOLOGIA',  target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
-    {val: 'CLINICA',        target: 'intermedios',          ord: '2.6', label: 'INT-CLÍNICA'   },
-    {val: 'CIRUGIA',        target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
-
-    {val: 'AISLAMIENTO',    target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
-
-    {val: 'CONSULEXT',      target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
-    {val: 'GUARDIA',        target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
+    {val: 'UTI',            etario: 1, target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+    {val: 'UTIP',           etario: 2, target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+    {val: 'UTIN',           etario: 3, target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+    {val: 'UTE',            etario: 1, target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+    {val: 'UCO',            etario: 1, target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+    {val: 'CIRUGIA',        etario: 1, target: 'intermedios',          ord: '2.7', label: 'INT-CIRUGÍA'   },
+    {val: 'INTERNACION',    etario: 1, target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+    {val: 'PEDIATRIA',      etario: 2, target: 'intermedios',          ord: '2.2', label: 'INT-PEDIATRÍA' },
+    {val: 'NEONATOLOGIA',   etario: 3, target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
+    {val: 'MATERNIDAD',     etario: 1, target: 'intermedios',          ord: '2.4', label: 'MATERNIDAD'    },
+    {val: 'TRAUMATOLOGIA',  etario: 1, target: 'intermedios',          ord: '2.5', label: 'INT-TRAUMATO'  },
+    {val: 'CLINICA',        etario: 1, target: 'minimos',              ord: '2.6', label: 'CLÍNICA MÉDICA'},
+    {val: 'AISLAMIENTO',    etario: 1, target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+    {val: 'CONSULEXT',      etario: 1, target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+    {val: 'GUARDIA',        etario: 1, target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
 ];
 
 
 const capacidadesOptList: Array<any> = [
     {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
-    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'UTE'  , slug: 'C.INTERMED' },
-    {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , code: 'PED'  , slug: 'PEDIATRÍA'     },
-    {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', code: 'NEO'  , slug: 'NEO'  },
-    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'C.MÍNIMOS'   },
+    {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'INTERMED'  , slug: 'C.INTERMED' },
+    // {val: 'pediatrica',    label: 'ATENCIÓN PEDIÁTRICA'   , code: 'PED'  , slug: 'PEDIATRÍA'     },
+    // {val: 'neonatologia',  label: 'ATENCIÓN NEONATOLÓGICA', code: 'NEO'  , slug: 'NEO'  },
+    {val: 'minimos',       label: 'CUIDADOS MÍNIMOS'      , code: 'CMÍN' , slug: 'C.MÍNIMOS'},
+    {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'AISLAMIENTO'   },
     {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
 ];
 

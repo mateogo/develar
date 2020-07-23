@@ -80,10 +80,13 @@ export class InternacionDashboardPageComponent implements OnInit {
   private fecharef: string;
   private fecharef_date: Date;
   public fecharef_label: string;
+  public targetEtario: number = 0;
 
   public chartOptions: any = {};
   public chartLabels: any = {};
   public chartType = 'doughnut';
+  public ets = ['total', 'adu', 'ped', 'neo']
+
 
 	
   //Person<
@@ -117,6 +120,15 @@ export class InternacionDashboardPageComponent implements OnInit {
     //c onsole.log('type: [%s] val:[%s] same:[%s]', type, val, this.query === this.form.value);
     this.query[type] = val;    
     this.refreshView(this.query);
+  }
+
+  radioChanged(e){
+    console.log('radio Changed: [%s]', e.value);
+    this.targetEtario = parseInt(e.value, 10);
+    this.totalCapacidad = this.globalResourcesData()
+
+    this.refreshView(this.query);
+
   }
 
   changeLocacion(type, val){
@@ -185,7 +197,7 @@ export class InternacionDashboardPageComponent implements OnInit {
         //todo
         //this.locacionesList = this.filterActiveLocaciones(this.masterList);
 
-        //this.data$.next(this.masterList);
+        this.data$.next(this.masterList);
         this.totalCapacidad = this.globalResourcesData()
 
         this.refreshView(this.query)
@@ -204,7 +216,7 @@ export class InternacionDashboardPageComponent implements OnInit {
       if(!locacion || !locacion.disponible) return false;
       let sum = 0;
       this.groupservices.forEach(ser => {
-        sum += (locacion.disponible[ser.val] || 0);
+        sum += (locacion.disponible[ser.val]['capaciad']['total'] || 0);
       })
       return sum;
     })
@@ -237,6 +249,7 @@ export class InternacionDashboardPageComponent implements OnInit {
         sector:      query.sector,
         estado:      query.estado,
         avance:      query.avance,
+        targetEtario: this.targetEtario,
         fecharef:    this.fecharef
 		});
 		return form;
@@ -247,6 +260,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
     form = this.fb.group({
       locacionhosp:  [null],
+      targetEtario:  [null],
       sector:       [null],
 			sintoma:      [null],
       avance:       [null],
@@ -341,8 +355,25 @@ export class InternacionDashboardPageComponent implements OnInit {
       if(t.code === scope || scope === 'GENERAL'){
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
-          capacidades[label.val].ocupado += disponible[label.val].ocupado;
-          capacidades[label.val].libre += disponible[label.val].capacidad - disponible[label.val].ocupado
+          let ocupado = 0, capacidad = 0;
+
+          if(this.targetEtario === 0) {
+            ocupado =   disponible[label.val]['ocupado']['total'];
+            capacidad = disponible[label.val]['capacidad']['total'];
+          } else if(this.targetEtario === 1) {
+            ocupado =   disponible[label.val]['ocupado']['adu'];
+            capacidad = disponible[label.val]['capacidad']['adu'];
+          } else if(this.targetEtario === 2) {
+            ocupado =   disponible[label.val]['ocupado']['ped'];
+            capacidad = disponible[label.val]['capacidad']['ped'];
+          } else if(this.targetEtario === 3) {
+            ocupado =   disponible[label.val]['ocupado']['neo'];
+            capacidad = disponible[label.val]['capacidad']['neo'];
+          }
+
+
+          capacidades[label.val].ocupado += ocupado
+          capacidades[label.val].libre += capacidad - ocupado
         }        
       }
 
@@ -354,6 +385,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
 
   private globalResourcesData(){
+    console.log('refresh View')
     let capacidades = {}
 
     this.capacidadesOptList.forEach(t=>{
@@ -367,9 +399,25 @@ export class InternacionDashboardPageComponent implements OnInit {
 
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
-          capacidades[label.val].ocupado += disponible[label.val].ocupado;
-          capacidades[label.val].libre += disponible[label.val].capacidad - disponible[label.val].ocupado
-          capacidades[label.val].capacidad += disponible[label.val].capacidad
+          let ocupado = 0, capacidad = 0;
+          if(this.targetEtario === 0) {
+            ocupado =   disponible[label.val]['ocupado']['total'];
+            capacidad = disponible[label.val]['capacidad']['total'];
+          } else if(this.targetEtario === 1) {
+            ocupado =   disponible[label.val]['ocupado']['adu'];
+            capacidad = disponible[label.val]['capacidad']['adu'];
+          } else if(this.targetEtario === 2) {
+            ocupado =   disponible[label.val]['ocupado']['ped'];
+            capacidad = disponible[label.val]['capacidad']['ped'];
+          } else if(this.targetEtario === 3) {
+            ocupado =   disponible[label.val]['ocupado']['neo'];
+            capacidad = disponible[label.val]['capacidad']['neo'];
+          }
+          console.log('acum globalResources: [%s]:[%s] [%s] [%s]', t.code, label.val, ocupado, capacidad)
+
+          capacidades[label.val].ocupado += ocupado;
+          capacidades[label.val].capacidad += capacidad;
+          capacidades[label.val].libre += capacidad - ocupado;
 
         }        
 

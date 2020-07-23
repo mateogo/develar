@@ -41,6 +41,31 @@
       </div>
     </div>
 
+
+    <div class="row target-group">
+      <div class="col-md-2">
+        <span class="text-normal"><strong>TIPO DE INFORME: </strong></span>
+      </div>
+      <div class="col-md-6 d-flex align-items-center justify-content-between">
+        <mat-radio-group formControlName="targetEtario" 
+                          (change)="radioChanged($event)"
+                          aria-label="Capacidad según rango etario">
+          <mat-radio-button 
+                [checked]="form.controls['targetEtario'].value===0" 
+                value="0">TOTAL</mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['targetEtario'].value===1" 
+                value="1">ADULTOS</mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['targetEtario'].value===2" 
+                value="2">PEDIATRÍA</mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['targetEtario'].value===3" 
+                value="3" >NEONATOLOGÍA</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
 </form>
 </mat-card-content>
 </mat-card>
@@ -163,7 +188,7 @@
             <div class="row">
               <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
               <div  class="col-md-2 locacion-data-cell">
-                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
+                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'][ets[targetEtario]] }}</span>
               </div>
               </ng-container>
             </div>
@@ -178,7 +203,7 @@
             <div class="row">
               <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
               <div  class="col-md-2 locacion-data-cell">
-                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val].ocupado }}</span>
+                <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['ocupado'][ets[targetEtario]] }}</span>
               </div>
               </ng-container>
             </div>
@@ -195,8 +220,8 @@
               <div  class="col-md-2 locacion-data-cell">
                 <span>{{capacidad.code}} : 
                   {{ getOcupacionPorcentual(
-                          locacion['disponible'][capacidad.val].ocupado, 
-                          locacion['disponible'][capacidad.val].capacidad) }}
+                          locacion['disponible'][capacidad.val]['ocupado'][ets[targetEtario]], 
+                          locacion['disponible'][capacidad.val]['capacidad'][ets[targetEtario]]) }}
                 </span>
               </div>
               </ng-container>
@@ -212,7 +237,7 @@
   </mat-card-content>
 </mat-card>
 
-<ng-container *ngIf='false'>
+<ng-container *ngIf='true'>
 <dump-data  [title]="'MasterData'"
             [data$]='data$'
             [showTests]='true'></dump-data>

@@ -38,12 +38,12 @@ export class LocacionDisponibleComponent implements OnInit {
 
       this.capacidades.forEach(t => {
         let token = this.disponible[t.val]
-        if(token && (token.capacidad + token.ocupado >0)  && this.verifyServicio(t.val)){
+        if(token && (token.capacidad.total + token.ocupado.total >0)  && this.verifyServicio(t.val)){
           let data = {
             label:     t.label,
-            capacidad: token.capacidad,
-            ocupado:   token.ocupado,
-            disponible: token.capacidad - token.ocupado
+            capacidad: token.capacidad.total,
+            ocupado:   token.ocupado.total,
+            disponible: token.capacidad.total - token.ocupado.total
           }
           this.disponibleList.push(data);
         }

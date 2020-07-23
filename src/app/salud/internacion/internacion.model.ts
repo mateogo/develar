@@ -208,10 +208,17 @@ export class EstadoServicios {
   ocupado: number;
   // disponible máximo  =  (nominal + adicional) - ocupado
 }
+export class AcumuladoresPorArea {
+	total: number;
+	adu: number;
+	ped: number;
+	neo: number;
+
+}
 
 export class EstadoAreasInternacion {
-  capacidad: number;
-  ocupado: number;
+  capacidad: AcumuladoresPorArea;
+  ocupado: AcumuladoresPorArea;
 }
 
 export class DisponiblePorArea {

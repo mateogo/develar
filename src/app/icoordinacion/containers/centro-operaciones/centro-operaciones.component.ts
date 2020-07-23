@@ -230,7 +230,7 @@ export class CentroOperacionesComponent implements OnInit {
     function availableFor(target, master: MasterAllocation): boolean {
       let ok = true;
       let disponible = master && master.disponible && master.disponible[target];
-      if(disponible && disponible.capacidad>disponible.ocupado) return ok
+      if(disponible && disponible.capacidad.total>disponible.ocupado.total) return ok
       return false;
     }
 
@@ -242,8 +242,8 @@ export class CentroOperacionesComponent implements OnInit {
       loc.id = master.id ;
       loc.code = master.code ;
       loc.slug = master.slug ;
-      loc.capacidad = master.disponible[target].capacidad ;
-      loc.ocupado = master.disponible[target].ocupado ;
+      loc.capacidad = master.disponible[target].capacidad.total ;
+      loc.ocupado = master.disponible[target].ocupado.total ;
       return loc;
     }
 
@@ -298,12 +298,12 @@ export class CentroOperacionesComponent implements OnInit {
   }
   private showMasterAllocator(list: MasterAllocation[]){
     let pool = list.find(t => t.code === 'pool');
-      this.data$.next(list);
+    this.data$.next(list);
 
     if(pool){
       this.pool = pool;
       this.botonesPool = this._isrv.getBotonesPool(this.pool);
-      // debug only this.data$.next(list);
+      //this.data$.next(pool);
 
     }else{
       this.pool = null;

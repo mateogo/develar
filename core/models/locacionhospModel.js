@@ -211,7 +211,7 @@ exports.create = function (rtype, record, errcb, cb) {
 
 function fetchAvailability(spec, errcb, cb){
 
-  Locacion.find().lean().exec(function(err, entities) {
+  Locacion.find().lean().sort({type:-1, code:1}).exec(function(err, entities) {
       if (err) {
           console.log('[%s] fetchAvailability ERROR: [%s]',whoami, err)
           errcb(err);
