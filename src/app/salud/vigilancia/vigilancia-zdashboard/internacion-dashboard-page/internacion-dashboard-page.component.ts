@@ -38,7 +38,7 @@ const CAMA_LIBRE = 'libre';
 const CAMA_OCUPADA = 'ocupada';
 const ASIGNAR = 'asignar';
 const BORRAR = false;
-const PRIVADO = 'PRIVADO';
+const PRIVADO = 'APRIVADO';
 
 @Component({
   selector: 'internacion-dashboard-page',
