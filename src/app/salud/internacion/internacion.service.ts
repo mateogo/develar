@@ -754,8 +754,15 @@ export class InternacionService {
     if(!disponible) return [];
     let botonesPeriferia = InternacionHelper.getOptionlist('capacidades');
     botonesPeriferia = botonesPeriferia.map(t => {
-      console.dir( disponible[t.val].ocupado)
-        t['contador'] = disponible[t.val].ocupado;
+        if(disponible[t.val]){
+          t['contador'] = disponible[t.val].ocupado;
+
+        }else {
+          console.log('error: [%s] [%s]', master.code, t.val);
+          console.dir(disponible)
+          t['contador'] = 0
+
+        }
         return t;
     })
 
