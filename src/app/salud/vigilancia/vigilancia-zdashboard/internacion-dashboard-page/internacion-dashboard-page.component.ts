@@ -197,7 +197,7 @@ export class InternacionDashboardPageComponent implements OnInit {
         //todo
         //this.locacionesList = this.filterActiveLocaciones(this.masterList);
 
-        this.data$.next(this.masterList);
+        //this.data$.next(this.masterList);
         this.totalCapacidad = this.globalResourcesData()
 
         this.refreshView(this.query)

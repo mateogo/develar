@@ -298,7 +298,7 @@ export class CentroOperacionesComponent implements OnInit {
   }
   private showMasterAllocator(list: MasterAllocation[]){
     let pool = list.find(t => t.code === 'pool');
-    this.data$.next(list);
+    //this.data$.next(list);
 
     if(pool){
       this.pool = pool;

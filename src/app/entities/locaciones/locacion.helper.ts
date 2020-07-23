@@ -243,7 +243,7 @@ const hospitalTypeOptList: Array<any> = [
     {val: 'HOSPPROV',      label: 'HOSP PROV'  },
     {val: 'HOSPNAC',       label: 'HOSP NAC'   },
     {val: 'EXHOSP',        label: 'EXTRA HOSP' },
-    {val: 'PRIVADO',       label: 'PRIVADO'    },
+    {val: 'APRIVADO',      label: 'PRIVADO'    },
     {val: 'CAPS',          label: 'CAPS'       },
 ];
 
