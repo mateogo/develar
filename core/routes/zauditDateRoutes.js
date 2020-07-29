@@ -9,9 +9,12 @@
  * (b) /api/auditodatos/processduplices
  **/
 
-var express = require('express');
-var router = express.Router();
-var service = require('../models/zauditDataService.js');
+const express = require('express');
+const router = express.Router();
+const service = require('../models/zauditDataService.js');
+
+const saludimport = require('../models/zimportSalud.js');
+
 
 const whoami =  "Router:routes/zauditDataRoutes: ";
 
@@ -42,6 +45,23 @@ router.get('/contactosestrechos', function (req, res) {
 
     });
 });
+
+
+
+/**
+ *     importa casos con COVID confirmado de un excel obtenido de SISA
+ *     server: http://salud.brown.gob.ar/api/auditodatos/importsisa
+ */
+router.get('/importsisa', function (req, res) {
+    saludimport.importSisaArchive(req, function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 /**
  * Pasa el caso de 'asignado' a 'contacto', es para que las asignaciones sean por nodo raiz

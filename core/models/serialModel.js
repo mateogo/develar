@@ -352,6 +352,13 @@ const Record = mongoose.model('Serial', serialSch, 'seriales');
  * @param cb
  * @param errcb
  */
+
+exports.getRecord = function(){
+  return Record;
+}
+
+
+
 exports.upsertNext = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
 

@@ -1175,6 +1175,7 @@ const novedadesTypeOptList: Array<any> = [
         {val: 'recomendacion',label: 'Recomendación' },
         {val: 'epidemiologia',label: 'Epidemiología' },
         {val: 'evolucion',    label: 'Evolución' },
+        {val: 'sisa',         label: 'Importación SISA' },
         {val: 'nocontesta',   label: 'No contesta' },
         {val: 'otros',        label: 'Otros' },
         {val: 'no_definido',  label: 'Sin selección' },

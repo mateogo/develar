@@ -70,7 +70,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
 
     this.dsCtrl.fetchSeguimientoByQuery(query).subscribe(list => {
       if(list && list.length > 0){
-      	this.data$.next(list);
+      	//this.data$.next(list);
 
       }else {
       	//
