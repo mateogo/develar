@@ -36,7 +36,7 @@ const SerialRecord = serialModule.getRecord();
 	Caso de Uso: (a) Importar COVID confirmados
   arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
   arch = path.join(config.rootPath,  public/migracion/sisa/personasImportCsv.csv');
-
+  header Excel: fealta;fesintoma;apellido;nombre;ndoc;calle;localidad;telefono
 	API:
 	  local:  http://localhost:8080/api/auditodatos/importsisa
 	  server: http://salud.brown.gob.ar/api/auditodatos/importsisa
@@ -81,7 +81,7 @@ function processSisaArchive(req, errcb, cb){
 				    let id = oldSerial._id;
 
 				    SerialRecord.findByIdAndUpdate(id, oldSerial, {new: true }).then(serial =>{
-				  		//console.log('UPDATED ASIS Serial Fetched [%s] [%s] [%s]', serial.compPrefix, serial.compName, serial.pnumero)
+				  		//c onsole.log('UPDATED ASIS Serial Fetched [%s] [%s] [%s]', serial.compPrefix, serial.compName, serial.pnumero)
 						})
 
 				    persons.forEach((token, index) => {
@@ -262,9 +262,10 @@ async function processAsistenciaPrevencion(token, person, compNum){
 	let asis;
 
 	asis = await AsisprevencionRecord.findOne(regexQuery).exec()
+	//c onsole.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
-		await updateAsistenciaRecord(token, person, asis, compNum);
+		await updateAsistenciaRecord(token, person, asis);
 	}else {
 		await createAsistenciaRecord(token, person, compNum);
 	}
@@ -272,13 +273,22 @@ async function processAsistenciaPrevencion(token, person, compNum){
 }
 
 async function updateAsistenciaRecord(token, person, asis){
+		asis.prioridad = 2;
+		asis.idbrown = 'sisa:' + token.fealta;
 
-	token.isCovid = true;
+		asis.isVigilado = true;
+		asis.tipo = 1;
+		asis.isCovid = true;
 
-	buildCovid(asis,token);
-	await AsisprevencionRecord.findByIdAndUpdate(asistencia.id, asistencia, { new: true }).exec();
+		asis.action = 'epidemio';
+		asis.estado = 'activo';
+		asis.avance = 'emitido';
 
+		updateFollowUp(asis, token);
+		buildCovid(asis,token);
 
+		console.log('UPDATE ASIS: [%s] [%s]', asis.ndoc, asis.compNum)
+		await AsisprevencionRecord.findByIdAndUpdate(asis.id, asis, { new: true }).exec();
 }
 
 
@@ -288,11 +298,39 @@ async function createAsistenciaRecord(token, person, compNum){
 				buildCovid(asis, token);
 				buildFollowUp(asis, token);
 				buildSisaEvent(asis, token);
-				createAsis(asis);
+
+				console.log('CREATE ASIS: [%s] [%s]', asis.ndoc, asis.compNum)
+				asis.save();
+
 }
 
-function createAsis(asis){
-	asis.save();
+
+function updateFollowUp(asis, token){
+	let followUp = asis.followUp;
+
+	if(followUp){
+		followUp.isActive = true;
+		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
+		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.parseDateStr(token.fealta);
+		if(!followUp.isAsignado){
+			if(followUp.isContacto){
+				followUp.isAsignado = followUp.isContacto;
+				followUp.asignadoId = followUp.derivadoId;
+				followUp.asignadoSlug = followUp.derivadoSlug;
+
+				followUp.isContacto = false;
+				followUp.derivadoId = "";
+				followUp.derivadoSlug = "";
+			}
+		}
+
+	}else {
+		let followUp = new AfectadoFollowUp();
+		followUp.fe_inicio = token.fealta;
+		followUp.fets_inicio = utils.parseDateStr(token.fealta);
+		asis.followUp = followUp;
+	}
+
 }
 
 function buildCovid(asis, token){
@@ -408,7 +446,7 @@ function buildFollowUp(asis, token){
 
 **/
 
-function buildCoreAsis(token, person, compNum, data){
+function buildCoreAsis(asis, person, compNum, data){
 
 		let ts = Date.now();
 
@@ -434,14 +472,14 @@ function buildCoreAsis(token, person, compNum, data){
 
 			let edad = getEdadFromPerson(person)
   		requirente = buildCovidRequirente(person);
-			token.idPerson = person._id;
-			token.ndoc = person.ndoc;
-			token.tdoc = person.tdoc;
-			token.sexo = person.sexo;
-			token.edad = edad + '';
+			asis.idPerson = person._id;
+			asis.ndoc = person.ndoc;
+			asis.tdoc = person.tdoc;
+			asis.sexo = person.sexo;
+			asis.edad = edad + '';
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
-			token.telefono = telefono ? telefono.data : '';
+			asis.telefono = telefono ? telefono.data : '';
 
 			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
 			if(address) {
@@ -451,46 +489,46 @@ function buildCoreAsis(token, person, compNum, data){
 				locacion.streetOut = address.streetOut;
 				locacion.city = address.city;
 				locacion.barrio = address.barrio;
-				token.locacion = locacion;
+				asis.locacion = locacion;
 			}
 
 		}else{
 			requirente = new Requirente();
-			token.idPerson = null;
+			asis.idPerson = null;
 		}
 
-		token.fecomp_txa = fealta;
-		token.fecomp_tsa = fealta_ts;
+		asis.fecomp_txa = fealta;
+		asis.fecomp_tsa = fealta_ts;
 
-		token.fenotif_txa = fealta;
-		token.fenotif_tsa = fealta_ts;
+		asis.fenotif_txa = fealta;
+		asis.fenotif_tsa = fealta_ts;
 
-		token.hasParent = false;
-		token.contactosEstrechos = 0;
-		token.tipo = 1;
-		token.isCovid = true;
-		token.prioridad = 2;
-    token.idbrown = 'sisa:' + data.fealta;
+		asis.hasParent = false;
+		asis.contactosEstrechos = 0;
+		asis.tipo = 1;
+		asis.isCovid = true;
+		asis.prioridad = 2;
+    asis.idbrown = 'sisa:' + data.fealta;
 
-		token.action = 'epidemio';
-		token.slug = 'Alta importacion SISA: ' + fealta;
-		token.sector = 'epidemiologia';
-		token.requeridox = requirente;
-		token.description = '';
+		asis.action = 'epidemio';
+		asis.slug = 'Alta importacion SISA: ' + fealta;
+		asis.sector = 'epidemiologia';
+		asis.requeridox = requirente;
+		asis.description = '';
 
-		token.compPrefix = 'SOL' ;
-		token.compName = 'S/Asistencia';
-		token.compNum = compNum;
+		asis.compPrefix = 'SOL' ;
+		asis.compName = 'S/Asistencia';
+		asis.compNum = compNum;
 
-		token.ts_alta = ts;
-		token.ts_fin = 0
-		token.ts_prog = ts;
-		token.estado = 'activo';
-		token.avance = 'emitido';
-		token.novedades = [ novedad ];
-		token.isVigilado = true;
+		asis.ts_alta = ts;
+		asis.ts_fin = 0
+		asis.ts_prog = ts;
+		asis.estado = 'activo';
+		asis.avance = 'emitido';
+		asis.novedades = [ novedad ];
+		asis.isVigilado = true;
 
-		return token;
+		return asis;
 
 
 
@@ -508,20 +546,20 @@ function buildCoreAsis(token, person, compNum, data){
 /*   	HELPERS                                   */
 /***********************************************/
 const ciudadesBrown = [
-    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa:'Seleccione opción' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa:'Adrogue' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa:'Adrogué' },
-    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa:'Burzaco' },
-    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    sisa:'Rafael Calzada' },
-    {val: 'claypole',            cp:'1849', label: 'Claypole',           sisa:'Claypole' },
-    {val: 'donorione',           cp:'1850', label: 'Don Orione',         sisa:'Don Orione' },
-    {val: 'glew',                cp:'1856', label: 'Glew',               sisa:'Glew' },
-    {val: 'longchamps',          cp:'1854', label: 'Longchamps',         sisa:'Longchamps' },
-    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',sisa:'Malvinas Argentinas' },
-    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa:'José Mármol' },
-    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', sisa:'Ministro Rivadavia' },
-    {val: 'solano',              cp:'1846', label: 'San Fco Solano',     sisa:'San Francisco Solano' },
-    {val: 'sanjose',             cp:'1846', label: 'San José',           sisa:'San José' },
+    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogue' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
+    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
+    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    sisa: 'Rafael Calzada' },
+    {val: 'claypole',            cp:'1849', label: 'Claypole',           sisa: 'Claypole' },
+    {val: 'donorione',           cp:'1850', label: 'Don Orione',         sisa: 'Don Orione' },
+    {val: 'glew',                cp:'1856', label: 'Glew',               sisa: 'Glew' },
+    {val: 'longchamps',          cp:'1854', label: 'Longchamps',         sisa: 'Longchamps' },
+    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',sisa: 'Malvinas Argentinas' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa: 'José Mármol' },
+    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', sisa: 'Ministro Rivadavia' },
+    {val: 'solano',              cp:'1846', label: 'San Fco Solano',     sisa: 'San Francisco Solano' },
+    {val: 'sanjose',             cp:'1846', label: 'San José',           sisa: 'San José' },
     {val: 'sindato',             cp:'0000', label: 'Sin dato',           sisa: 'En Investigacion', },
     {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',     sisa: '', },
 
@@ -717,7 +755,7 @@ function serialBuildQuery(query){
 //     serial.fe_ult = Date.now();
 //     serial.pnumero +=1;
 //     let id = serial._id;
-//     console.log('getNext:  [%s]', serial.pnumero);
+//     c onsole.log('getNext:  [%s]', serial.pnumero);
 
 //     return SerialRecord.findByIdAndUpdate(id, serial, {new: true });
 
@@ -939,4 +977,57 @@ class SisaEvent {
 }
 
 
+// 30/07 local: 1191 Personas; 983 Asistencias; a importar 191: 29/07 y 41: 28/07
+
+/***
+
+db.usuarios.insertOne({
+	"_id" : ObjectId("5f061507a4554671e53fd098"),
+	"provider" : "local",
+	"moduleroles" : [
+		"vigilancia:operator"
+	],
+	"localProfile" : true,
+	"externalProfile" : false,
+	"language" : "es",
+	"username" : "Guillermo Necco",
+	"email" : "lw3dyl@gmail.com",
+	"termscond" : false,
+	"estado" : "pendiente",
+	"navance" : "webform",
+	"roles" : "operator",
+	"accessToken" : "",
+	"modulos" : "vigilancia",
+	"grupos" : "",
+	"fealta" : ISODate("2020-07-08T18:48:39.289Z"),
+	"avatarUrl" : "",
+	"description" : "",
+	"cellphone" : "",
+	"currentCommunity" : {
+		"id" : null,
+		"name" : "develar",
+		"slug" : "develar",
+		"displayAs" : "develar"
+	},
+	"verificado" : {
+		"mail" : false,
+		"feaprobado" : 1594234086779,
+		"adminuser" : ""
+	},
+	"password" : "f4a2cc2b911009",
+	"displayName" : "Guillermo Necco",
+	"providerId" : "Guillermo Necco",
+	"googleProfile" : {
+		"emails" : [ ],
+		"_id" : ObjectId("5f061507a4554671e53fd099"),
+		"photos" : [ ]
+	},
+	"__v" : 0,
+	"personId" : "5f061507a4554671e53fd09a"
+})
+
+
+
+
+*/
 
