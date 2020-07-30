@@ -166,6 +166,16 @@ export class SolInternacionBrowse {
 		sector:      string;
 		estado:      string;
 		avance:      string;
+		servicio:    string;
+
+		searchAction: string;
+
+		feDesde:    string;
+		feHasta:    string;
+		feDesde_ts?: number = 0;
+		feHasta_ts?: number = 0;
+
+
 		ts_alta:     number;
 		prioridad:   string;
 };

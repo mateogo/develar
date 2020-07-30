@@ -86,6 +86,24 @@ export class  InternacionHelper {
     return buildTransitosToPrint(transitions);
 
   }
+  
+  static cleanQueryToken(query:SolInternacionBrowse, cleanAsistenciaId:boolean = true):SolInternacionBrowse{
+    if(!query) return null;
+
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+
+      if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key];
+      if(key === 'feDesde'         && !query[key]) delete query[key];
+      if(key === 'feDesde_ts'      && !query[key]) delete query[key];
+      if(key === 'feHasta'         && !query[key]) delete query[key];
+      if(key === 'feHasta_ts'      && !query[key]) delete query[key];
+
+    })
+
+    return query;
+  }
+
 
   static buildFilteredRecursosList(servicio: string, recursos: Recurso[]):Recurso[]{
     let filterList = []

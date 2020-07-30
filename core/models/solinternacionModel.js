@@ -187,6 +187,22 @@ function buildQuery(query){
       q["estado"] = query['estado'];
   }
 
+  if(query['servicio']){
+      q["internacion.estado"] = "servicio";
+      q["internacion.servicio"] = query['servicio'];
+  }
+
+  if(query['feDesde']){
+      let feDesde = parseInt(query['feDesde_ts'], 10);
+      let feHasta = parseInt(query['feHasta_ts'], 10);
+
+      q["transitos.fe_ts"] = {$gte: feDesde , $lt: feHasta};
+
+  }
+
+
+
+
   if(query['code']){
       q["code"] = query['code'];
   }

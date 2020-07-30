@@ -13,6 +13,8 @@ import { LocacionPeriferiaComponent } from './components/locacion-periferia/loca
 import { LocacionServiciosComponent } from './components/locacion-servicios/locacion-servicios.component';
 import { InternacionAltaComponent } from './components/internacion-alta/internacion-alta.component';
 import { InternacionViewComponent } from './components/internacion-view/internacion-view.component';
+import { InternacionDashboardPageComponent } from './dashboard/internacion-dashboard-page/internacion-dashboard-page.component';
+import { InternacionDashboardBrowseComponent } from './dashboard/internacion-dashboard-browse/internacion-dashboard-browse.component';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import { InternacionViewComponent } from './components/internacion-view/internac
     LocacionServiciosComponent,
     InternacionAltaComponent,
     InternacionViewComponent,
+    InternacionDashboardPageComponent,
+    InternacionDashboardBrowseComponent,
   ],
   imports: [
     CommonModule,

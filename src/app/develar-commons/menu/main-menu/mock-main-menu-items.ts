@@ -706,6 +706,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator'],
       },
       {
+        title: 'Navegar internación',
+        routing: '/salud/coordinacion/navegar',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Vigilancia epidemio',
         routing: '/salud/gestion/vigilancia',
         rolesOut: ['ivr:operator'],

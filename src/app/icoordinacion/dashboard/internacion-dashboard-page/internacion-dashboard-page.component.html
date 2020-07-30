@@ -1,0 +1,21 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>NAVEGACION DE SOLICITUDES DE INTERNACIÓN</mat-card-title>
+	</mat-card-header>
+</mat-card>
+
+<internacion-dashboard-browse 		
+										[query]="query" 
+										[export]='true'
+										(updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
+
+<mat-card>
+	<mat-card-content>								 
+
+	<dump-data  [title]="'MasterData'"
+	            [data$]='data$'
+	            [showTests]='true'></dump-data>
+
+	</mat-card-content>
+</mat-card>
+
