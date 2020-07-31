@@ -123,7 +123,6 @@ export class InternacionDashboardPageComponent implements OnInit {
   }
 
   radioChanged(e){
-    console.log('radio Changed: [%s]', e.value);
     this.targetEtario = parseInt(e.value, 10);
     this.totalCapacidad = this.globalResourcesData()
 
@@ -387,7 +386,6 @@ export class InternacionDashboardPageComponent implements OnInit {
 
 
   private globalResourcesData(){
-    console.log('refresh View')
     let capacidades = {}
 
     this.capacidadesOptList.forEach(t=>{
@@ -415,7 +413,7 @@ export class InternacionDashboardPageComponent implements OnInit {
             ocupado =   disponible[label.val]['ocupado']['neo'];
             capacidad = disponible[label.val]['capacidad']['neo'];
           }
-          console.log('acum globalResources: [%s]:[%s] [%s] [%s]', t.code, label.val, ocupado, capacidad)
+          //c onsole.log('acum globalResources: [%s]:[%s] [%s] [%s]', t.code, label.val, ocupado, capacidad)
 
           capacidades[label.val].ocupado += ocupado;
           capacidades[label.val].capacidad += capacidad;

@@ -9,9 +9,10 @@ import { PersonService } from '../../../person.service';
 import { SaludController } from '../../../salud.controller';
 import { Person, FamilyData, NucleoHabitacional, personModel, Address } from '../../../../entities/person/person';
 
-import {   Asistencia, AfectadoFollowUp,UpdateAsistenciaEvent,
+import {   Asistencia, AfectadoFollowUp,UpdateAsistenciaEvent, AsistenciaTable,
           AsistenciaHelper } from '../../../asistencia/asistencia.model';
 const UPDATE = 'update';
+const UPDATE_MULTIPLE = 'update_multiple';
 const CANCEL = 'cancel';
 const SEGUIMIENTO_ESTADO = 'seguimiento:estado';
 const ASIGNAR_MSJ =    'APLICAR esta asignación a los contactos';
@@ -45,6 +46,11 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   private result: UpdateAsistenciaEvent;
   private isNewRecord = false;
 
+  private selected: AsistenciaTable[];
+  public hasMultipleSelected = false;
+  public selectedCount = 0;
+  private procesadosCount = 0;
+
   public usersOptList = [];
   public dumpData: any;
 
@@ -57,7 +63,8 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  	this.asistencia = this.data.asistencia
+  	this.asistencia = this.data.asistencia;
+    this.selected = this.data.selected;
 
   	this.iniToken();
     this.initForEdit();
@@ -68,6 +75,15 @@ export class VigilanciaSeguimientoComponent implements OnInit {
     this.result.action = UPDATE;
   	this.initForSave()
   	this.saveToken();
+  }
+
+
+  onSubmitMultiple(){
+    this.formClosed = true;
+    this.result.action = UPDATE;
+    this.initForSave()
+    this.saveMultipleTokens();
+
   }
 
   onCancel(){
@@ -132,6 +148,94 @@ export class VigilanciaSeguimientoComponent implements OnInit {
     })
   }
 
+
+  private async saveMultipleTokens(){
+    this.procesadosCount = 0;
+    let result = false;
+
+    for(let tasis of this.selected){
+
+      result = await this.processEachSelected(tasis.asistenciaId, tasis);
+      if(result){
+        this.procesadosCount += 1;
+      }
+    }
+    this.ctrl.openSnackBar('ACTUALIZACIÓN exitosa de [' + this.procesadosCount + '] registros', 'CERRAR');
+
+    let resultEvent = {
+                    action: UPDATE_MULTIPLE,
+                    type: SEGUIMIENTO_ESTADO,
+                    token: this.asistencia
+                  } as  UpdateAsistenciaEvent;
+
+    this.closeDialogSuccess(resultEvent);
+
+
+  }
+
+  private processEachSelected(asistenciaId: string, tasis: AsistenciaTable){
+    return new Promise<boolean>((resolve, reject) => {
+
+        this.ctrl.fetchAsistenciaById(asistenciaId).then(asis =>{
+
+          if(asis){
+            this.applyAsignadoToAsistencia(asis, resolve)
+
+          } else {
+            this.ctrl.openSnackBar('ATENCIÓN: no se pudo recuperar la Asistencia de ' + tasis.ndoc, 'ACEPTAR');
+            resolve(false);
+
+          }
+
+        })
+    })
+
+  }
+
+  private applyAsignadoToAsistencia(asistencia: Asistencia, resolve ){
+    let followUpToken = asistencia.followUp;
+    if(followUpToken){
+
+      followUpToken.isActive = true;
+
+      if(!followUpToken.fe_inicio || !followUpToken.fets_inicio ){
+        followUpToken.fe_inicio   = this.seguimientoEvent.fe_inicio || devutils.txFromDate(new Date());
+        followUpToken.fets_inicio =  devutils.dateNumFromTx(followUpToken.fe_inicio);
+      }
+
+      followUpToken.tipo =         this.seguimientoEvent.tipo || 'sospecha';
+      followUpToken.isAsignado =   this.seguimientoEvent.isAsignado;
+      followUpToken.asignadoId =   this.seguimientoEvent.asignadoId;
+      followUpToken.asignadoSlug = this.seguimientoEvent.asignadoSlug;
+
+    }else {
+      followUpToken = new AfectadoFollowUp();
+      followUpToken = {...followUpToken, ...this.seguimientoEvent};
+      asistencia.followUp = followUpToken
+
+    }
+
+    let result = {
+                    action: UPDATE,
+                    type: SEGUIMIENTO_ESTADO,
+                    token: asistencia
+                  } as  UpdateAsistenciaEvent;
+
+    this.ctrl.manageEpidemioState( result ).subscribe(asistencia =>{
+      if(asistencia){
+        this.iterateFamilyList(asistencia).then(sucess => {
+          resolve(true);
+        })
+ 
+      }else {
+        this.ctrl.openSnackBar('Se produjo un error al intentar guardar los datos de ' + result.token.ndoc , 'ATENCIÓN');
+        resolve(false)
+      }
+    })
+
+  }
+
+
   private assignFollowUpToContactList(asistencia: Asistencia){
     this.ctrl.manageEpidemioState(this.result).subscribe(asistencia =>{
       if(asistencia){
@@ -147,8 +251,9 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   }
 
-  private loadPerson(token: Asistencia){
+  private async loadPerson(token: Asistencia){
     this.showDumpData = false;
+
 
     let personId = token.requeridox && token.requeridox.id
     let vinculoPerson: Person;
@@ -158,36 +263,84 @@ export class VigilanciaSeguimientoComponent implements OnInit {
       return;
     }
 
-    this.perSrv.fetchPersonById(personId).then(per => {
+    let per = await this.perSrv.fetchPersonById(personId);
+
+    if(per){
+      let familyList = per.familiares;
+
+      if(familyList && familyList.length) {
+
+        await this.iterateVinculosFam(familyList, token, per);
+      }
+
+    }else {
+      this.ctrl.openSnackBar('Error: no se pudo recuperar la Persona afectada', 'ATENCIÓN')
+      return;
+    }
+  }
+
+  private iterateFamilyList(token: Asistencia){
+    return new Promise((resolve, reject) => {
+      this.loadPersonPromise(token, resolve);
+
+    })    
+  }
+
+  private async loadPersonPromise(token:Asistencia, resolve){
+      this.showDumpData = false;
+      let personId = token.requeridox && token.requeridox.id
+      let vinculoPerson: Person;
+
+      if(!personId){
+        this.ctrl.openSnackBar('Error: solicitud de vigilancia sin identificación de Persona', 'ATENCIÓN')
+        resolve(false);
+        return;
+      }
+
+      let per = await this.perSrv.fetchPersonById(personId);
+
       if(per){
         let familyList = per.familiares;
 
         if(familyList && familyList.length) {
 
-          this.iterateVinculosFam(familyList, token, per);
+          await this.iterateVinculosFam(familyList, token, per, resolve);
+
+        }else{
+          resolve(true);
         }
 
       }else {
         this.ctrl.openSnackBar('Error: no se pudo recuperar la Persona afectada', 'ATENCIÓN')
+        resolve(false);
         return;
-      }
-    });
+      }    
   }
 
-  private async iterateVinculosFam(vinculos: FamilyData[], asistencia:Asistencia, person: Person){
+
+
+  private async iterateVinculosFam(vinculos: FamilyData[], asistencia:Asistencia, person: Person, resolve?){
     let resultArray = [];
+    let promiseArray = [];
 
     for(let i = 0; i < vinculos.length; i++){
       let result = new UpdateResult();
+      let token;
 
-      await this.processVinculoFam(vinculos[i], asistencia, result);
+      token = await this.processVinculoFam(vinculos[i], asistencia, result);
 
       resultArray.push(result);
+      promiseArray.push(token);
     }
 
     //this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
     this.dumpData = resultArray;
     this.showDumpData = true;
+
+    let promiseAll =  Promise.all(promiseArray);
+    promiseAll.then(x => {
+      resolve(true);
+    })
   }
 
   private async processVinculoFam(vinculo: FamilyData, asistencia: Asistencia, result: UpdateResult){
@@ -272,6 +425,11 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   private iniToken(){
     this.usersOptList = this.ctrl.buildEncuestadoresOptList();
 
+    if(this.selected && this.selected.length){
+      this.hasMultipleSelected = true;
+      this.selectedCount = this.selected.length;
+    }
+
   	if(this.asistencia.followUp){
   		this.seguimientoEvent = this.asistencia.followUp;
   		this.isNewRecord = false;
@@ -325,8 +483,11 @@ export class VigilanciaSeguimientoComponent implements OnInit {
   }
 
 
-  private closeDialogSuccess(){
-    this.dialogRef.close(this.result);
+  private closeDialogSuccess(resultEnd? ){
+
+    if(resultEnd)this.dialogRef.close(resultEnd);
+    else this.dialogRef.close(this.result);
+    
   }
 
 }

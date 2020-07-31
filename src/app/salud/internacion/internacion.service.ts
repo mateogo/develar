@@ -759,7 +759,6 @@ export class InternacionService {
 
         }else {
           console.log('error: [%s] [%s]', master.code, t.val);
-          console.dir(disponible)
           t['contador'] = 0
 
         }

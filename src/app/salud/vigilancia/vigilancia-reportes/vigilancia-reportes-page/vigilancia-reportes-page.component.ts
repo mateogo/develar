@@ -21,6 +21,8 @@ const SEARCH_NEXT = 'search_next';
 
 const EXPORT = 'export';
 
+const UPDATE_MULTIPLE = 'update_multiple';
+
 const R_DOMICILIOS = 'DOMICILIOS'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
@@ -303,7 +305,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
        iterator$.subscribe((step: boolean)=>{
           if(index < selected.length){
-            this.loadAsistenciaToEdit(selected[index].asistenciaId, iterator$)
+            this.loadAsistenciaToEdit(selected[index].asistenciaId, iterator$, selected)
             index += 1;
           }
        })
@@ -315,17 +317,17 @@ export class VigilanciaReportesPageComponent implements OnInit {
   }
 
 
-  private loadAsistenciaToEdit(asistenciaId, iterator$: Subject<boolean>){
+  private loadAsistenciaToEdit(asistenciaId, iterator$: Subject<boolean>, selected: AsistenciaTable[]){
       this.dsCtrl.fetchAsistenciaById(asistenciaId).then(asis =>{
         //c onsole.log('Fetched: [%s]', asis.ndoc)
         if(asis){
-          this.openSeguimientoModal(asis, iterator$)
+          this.openSeguimientoModal(asis, iterator$, selected)
         }
 
       })
   }
 
-  private openSeguimientoModal(asistencia: Asistencia, iterator$: Subject<boolean>){
+  private openSeguimientoModal(asistencia: Asistencia, iterator$: Subject<boolean>, selected: AsistenciaTable[]){
     if(!this.checkUserPermission(ROLE_ADMIN)){
       this.dsCtrl.openSnackBar('Acceso restringido', 'ACEPTAR');
       return;
@@ -338,6 +340,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
         data: {
 
           asistencia: asistencia,
+          selected: selected
 
         }
       }
@@ -345,10 +348,15 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: UpdateAsistenciaEvent) => {
       // c onsole.log('dialog CLOSED')
-      setTimeout(()=> {
-        iterator$.next(true);
+      if(res && res.action !== UPDATE_MULTIPLE){
+        setTimeout(()=> {
+          iterator$.next(true);
 
-      },200)
+        },200)        
+      }else {
+        //acaestoy
+        this.refreshSelection(this.query);
+      }
 
     });    
   }

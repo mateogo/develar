@@ -62,7 +62,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
 
     this.addSinSeleccion()
 
-    this.query = this.dsCtrl.vigilanciaSelector;
+    //this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
     this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
 

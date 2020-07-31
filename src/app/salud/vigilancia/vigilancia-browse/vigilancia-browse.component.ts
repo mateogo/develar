@@ -69,7 +69,7 @@ export class VigilanciaBrowseComponent implements OnInit {
 
     this.addSinSeleccion()
 
-    this.query = this.dsCtrl.vigilanciaSelector;
+    //this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
     this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
 
@@ -100,6 +100,7 @@ export class VigilanciaBrowseComponent implements OnInit {
 
   emitEvent(action:string){
   	this.query.searchAction = action;
+    console.dir(this.query)
   	this.updateQuery.next(this.query);
   }
 
@@ -300,8 +301,6 @@ export class VigilanciaBrowseComponent implements OnInit {
     this.avanceSisaOptList =   AsistenciaHelper.getOptionlist('avanceSisa');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
     this.sintomaCovidOptList =  AsistenciaHelper.getOptionlist('sintomaInfection');
-
-
 
 
     // list.forEach(l => {

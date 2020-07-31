@@ -66,7 +66,7 @@ export class VigilanciaReportesBrowseComponent implements OnInit {
 
     this.initOptionLists();
 
-    this.query = this.dsCtrl.vigilanciaSelector;
+    //this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
   }
 

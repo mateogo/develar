@@ -117,6 +117,12 @@
 		<button mat-raised-button color="warn"   class='m-1'
 				(click)="onCancel()">
 		    Cancelar </button>
+
+		<button *ngIf='hasMultipleSelected' mat-raised-button color="primary" class='m-1'
+				[disabled]="!form.valid || formClosed"
+				(click)="onSubmitMultiple()">
+		    Aplicar todos los seleccionados ({{ selectedCount }})</button>
+
 	</div>
 	  
 	</form>

@@ -47,8 +47,6 @@ export class MapBoxComponent implements OnInit {
     setTimeout(()=>{
       this._mapaFacade.getMapData(this.mapData).subscribe(geoJSON => {
         this.data = geoJSON;
-console.dir(this.data);
-
         this._mapaFacade.initMap('mapa', this.centerLat, this.centerLon, this.initialZoom, this.data);
         this.mapFilters = this.selectedFilters = this._mapaFacade.getDataGroups()
       })
