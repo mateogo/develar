@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="mb-3">
     <mat-card-header>
         <mat-card-title>NAVEGACION DE SOLICITUDES DE INTERNACIÓN</mat-card-title>
     </mat-card-header>
@@ -7,13 +7,13 @@
 <internacion-dashboard-browse [query]="query" [export]='true' (updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
 
 
-<mat-card>
+<mat-card class="my-3">
     <mat-card-content>
         <div class="row">
             <div class="col-sm-12 col-md-12">
                 <div class="d-flex justify-content-between align-items-center panel-header">
 
-                    <div class="panel-header-text">{{ title }}</div>
+                    <div class="panel-header-text">¡Poner el titulo aquí!</div>
 
                     <div class="panel-header-control">
                         <mat-button-toggle-group #view="matButtonToggleGroup">

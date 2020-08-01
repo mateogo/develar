@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  OnChanges,
   Input,
   Output,
   EventEmitter,
@@ -21,8 +20,6 @@ import { MatSort } from "@angular/material/sort";
 import { GenericDialogComponent } from "../../../develar-commons/generic-dialog/generic-dialog.component";
 
 import { SaludController } from "../../../salud/salud.controller";
-
-import { Person } from "../../../entities/person/person";
 
 import {
   SolicitudInternacion,
