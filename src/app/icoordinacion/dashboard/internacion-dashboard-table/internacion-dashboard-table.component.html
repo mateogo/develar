@@ -1,0 +1,292 @@
+<mat-card class="data-table mat-elevation-z8">
+<mat-card-content>
+
+  <div id="tableactions" class="d-flex flex-column flex-md-row justify-content-start align-items-center">
+    <mat-form-field style="font-size: 12px;  max-width: 200px">
+      <mat-select #actionFld placeholder="Acciones" [disabled]='selection.isEmpty()'
+          (selectionChange)="changeAction($event)" 
+          [(value)]="selectedAction" >
+        <mat-option *ngFor="let action of actionList" 
+          [value]="action.val" >{{ action.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <span style="margin: 0 15px 0 15px;" >
+      <small>{{ getLabel(selectedAction, actionList, 'Seleccionado: ') }}</small></span>
+
+    <button mat-button *ngIf='!selection.isEmpty()' color="accent" title="Ver EVENTO" 
+        (click)='triggerAction("editar")'  >
+        <i class='fas fa-pencil-alt'></i></button>
+
+    <button mat-button color="accent" title="Limpiar lista de items inspeccionados"
+        (click)='triggerAction("limpiar")'>
+        <i class='fas fa-times' aria-hidden="true"></i></button>
+
+    <button mat-button *ngIf='isColSelectionAllowed' color="accent"  title="Seleccione columnas de la tabla"
+        (click)='openModalDialog(formdata)'  ><i class='fa fa-cog'></i></button>
+   
+  </div>
+
+  <mat-table #table matSort [dataSource]="dataSource">
+
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef> 
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="asistenciaId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asistenciaId}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Acción </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="faudit_alta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha alta </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.faudit_alta}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="faudit_um">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha ult.modif </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.faudit_um}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.prioridad}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="personSlug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.personSlug}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="compName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Comprobante </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.compName}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="compNum">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.compNum}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fecomp_txa">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fecomp_txa}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fe_visita">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha visita </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fe_visita}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nucleo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> NúcleoHab </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nucleo}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Ciudad </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Convivientes </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.qty}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="barrio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Barrio </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.barrio}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="street2">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Inf adicional </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.street2}} </mat-cell>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="sector">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.sector}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="locacion">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Locación </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.locacion}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covid">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> COVID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covid}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="osocial">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> O/Social </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.osocial}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="slug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Observación </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.slug}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="avance">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Estado</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.avance}} </mat-cell>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="edad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Edad</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.edad}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="telefono">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Telefono</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.telefono}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidTxt">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> COVID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidTxt}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="LabTxt">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Muestra Lab</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.LabTxt}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fupTxt">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Seguimiento</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fupTxt}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_laboratorio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Laboratorio</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_laboratorio}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_estado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> SISA-LAB</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_estado}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_resultado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> RES-LAB</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_resultado}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_fe_toma">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha LAB</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_fe_toma}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_fets_toma">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> FeTomaTs</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_fets_toma}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lab_qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Muestras</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lab_qty}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ndoc">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> DNI</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ndoc}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reportadoPor">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Reportado por... </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.reportadoPor}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fe_reportado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Notificación</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fe_reportado}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidSintoma">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Síntoma</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidSintoma}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidActualState">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> EstadoCOVID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidActualState}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="covidAvance">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> CasoCOVID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.covidAvance}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qcontactos">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Contactos</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.qcontactos}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="asignadoSlug">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Asignado</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asignadoSlug}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="asignadoId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Asignado</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asignadoId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="fup_fe_inicio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> InicioSeguim</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fup_fe_inicio}} </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+
+
+  </mat-table>
+
+  <mat-paginator #paginator
+        [length]='itemsLength'
+        [pageIndex]="0"
+        [pageSize]="25"
+        [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+
+</mat-card-content>
+</mat-card>
+
+<ng-template #formdata >
+  <ng-container  *ngFor="let col of table_columns"  >
+    <p><mat-checkbox   [(ngModel)]='table_columns_sel[col]' 
+                    (change)='changeCheckBx($event, col)'>{{col}}
+        </mat-checkbox ></p>
+  </ng-container>
+</ng-template>
+
+
+
