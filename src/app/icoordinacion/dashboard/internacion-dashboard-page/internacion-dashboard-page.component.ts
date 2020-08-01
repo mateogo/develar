@@ -28,6 +28,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
   public data$ = new BehaviorSubject<any>({});
 
+  public showData: boolean = false; 
 
   constructor(
     	private dsCtrl: InternacionService,
@@ -40,8 +41,9 @@ export class InternacionDashboardPageComponent implements OnInit {
 
   refreshSelection(query: SolInternacionBrowse){
     this.query = InternacionHelper.cleanQueryToken(query, false);
-
     this.data$.next(this.query);
+
+    this.showData = false;
 
     console.log('Refresh Selection: listo para buscar');
 
@@ -52,7 +54,8 @@ export class InternacionDashboardPageComponent implements OnInit {
 
     			console.log('Resultado búsqueda: [%s]', list.length);
 
-    			this.data$.next(list);
+          this.data$.next(list);
+          this.showData = true;
 
     		}else{
     			console.log('Sin Reultados')

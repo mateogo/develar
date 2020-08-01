@@ -1,21 +1,51 @@
 <mat-card>
-	<mat-card-header>
-		<mat-card-title>NAVEGACION DE SOLICITUDES DE INTERNACIÓN</mat-card-title>
-	</mat-card-header>
+    <mat-card-header>
+        <mat-card-title>NAVEGACION DE SOLICITUDES DE INTERNACIÓN</mat-card-title>
+    </mat-card-header>
 </mat-card>
 
-<internacion-dashboard-browse 		
-										[query]="query" 
-										[export]='true'
-										(updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
+<internacion-dashboard-browse [query]="query" [export]='true' (updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
+
 
 <mat-card>
-	<mat-card-content>								 
+    <mat-card-content>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="d-flex justify-content-between align-items-center panel-header">
 
-	<dump-data  [title]="'MasterData'"
-	            [data$]='data$'
-	            [showTests]='true'></dump-data>
+                    <div class="panel-header-text">{{ title }}</div>
 
-	</mat-card-content>
+                    <div class="panel-header-control">
+                        <mat-button-toggle-group #view="matButtonToggleGroup">
+                            <mat-button-toggle value="table">
+                                <mat-icon>view_column</mat-icon>
+                            </mat-button-toggle>
+                            <mat-button-toggle value="list">
+                                <mat-icon>view_list</mat-icon>
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="showData">
+            <ng-container *ngIf='!view.value || view.value=="table"'>
+                <vigilancia-reportes-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"></vigilancia-reportes-table>
+            </ng-container>
+        </ng-container>
+    </mat-card-content>
 </mat-card>
 
+
+
+
+
+<mat-card>
+    <mat-card-content>
+
+        <dump-data [title]="'MasterData'" [data$]='data$' [showTests]='true'></dump-data>
+
+    </mat-card-content>
+</mat-card>

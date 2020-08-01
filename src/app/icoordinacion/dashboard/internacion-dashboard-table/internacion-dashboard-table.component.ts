@@ -71,7 +71,7 @@ const removeRelation = {
 };
 
 /**
- * @title Asitencia Table Componet
+ * @title Internacion Dashboard Table Component
  */
 
 @Component({
@@ -190,7 +190,10 @@ export class InternacionDashboardTableComponent implements OnInit {
       this.paginator,
       this.sort,
     );
+    
+    // TODO
     // this.dsCtrl.selectionModel = this.selection;
+
     this.actionList = InternacionHelper.getOptionlist("tableactions");
 
     this.displayedColumns.forEach((elem) => {
@@ -203,17 +206,16 @@ export class InternacionDashboardTableComponent implements OnInit {
   }
 
   ngOnChanges() {
-    //c onsole.log('********** ngOnChanges;')
+    
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
+  
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataRecordsSource.value.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -225,7 +227,6 @@ export class InternacionDashboardTableComponent implements OnInit {
   openEditor(item, col) {
     item.editflds[col] = item.editflds[col] > 1 ? 0 : item.editflds[col] + 1;
     item.total = item.pu * item.qt;
-    // this.dsCtrl.updateAsistenciaListItem(item);
   }
 
   changeAction(action: MatSelectChange) {
