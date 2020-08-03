@@ -5,8 +5,12 @@ html, body {
   padding: 0 !important; // override user agent stylesheet
 }
 
-.svg-constrain {
-	max-height: 3500px;
-	max-width: 2400px;
+canvas {
+  border: 2px solid rgba(0,0,0,0.12);
+  transition: 300ms;
+  border-radius: 4px;
+}
 
+canvas:hover {
+  border: 2px solid rgba(0,0,0,0.54);
 }
