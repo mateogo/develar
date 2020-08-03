@@ -141,6 +141,7 @@ export class  InternacionHelper {
       td._id = token._id
       td.fecomp_tsa = token.fecomp_tsa
       td.fecomp_txa = token.fecomp_txa
+      td.personSlug = token.requeridox.slug
       return td;
     })
 

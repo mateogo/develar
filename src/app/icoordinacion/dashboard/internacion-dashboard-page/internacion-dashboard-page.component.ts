@@ -67,6 +67,7 @@ export class InternacionDashboardPageComponent implements OnInit {
 
   private initTableData(list: SolicitudInternacion[]) {
     this.dsCtrl.updateTableData();
+    console.log("SHOW DATA TRUE")
     this.showData = true;
   }
   
