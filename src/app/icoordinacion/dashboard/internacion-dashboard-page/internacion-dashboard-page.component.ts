@@ -4,7 +4,11 @@ import { BehaviorSubject } from "rxjs";
 
 import { Person, personModel } from "../../../entities/person/person";
 
-import { SolInternacionBrowse } from "../../../salud/internacion/internacion.model";
+import {
+  SolInternacionBrowse,
+  SolicitudInternacion,
+  SolInternacionTable,
+} from "../../../salud/internacion/internacion.model";
 
 import { InternacionService } from "../../../salud/internacion/internacion.service";
 import { InternacionHelper } from "../../../salud/internacion/internacion.helper";
@@ -35,7 +39,9 @@ export class InternacionDashboardPageComponent implements OnInit {
     this.query = new SolInternacionBrowse();
   }
 
-  refreshSelection(query: SolInternacionBrowse) {
+  refreshSelection(query: SolInternacionBrowse): void {
+    console.log('internacion dasboard page query(%o)', query)
+
     this.query = InternacionHelper.cleanQueryToken(query, false);
     this.data$.next(this.query);
 
@@ -46,14 +52,36 @@ export class InternacionDashboardPageComponent implements OnInit {
     if (query.searchAction === SEARCH) {
       this.dsCtrl.fetchInternacionesByQuery(this.query).subscribe((list) => {
         if (list && list.length) {
-          console.log("Resultado búsqueda: [%s]", list.length);
-          this.data$.next(list);
-          this.showData = true;
+          console.log("(%s) resultados de búsqueda: (%o)", list.length, list);
+          this.data$.next(list);          
+          this.initTableData(list);
         } else {
-          console.log("Sin Reultados");
+          console.log("Sin Resultados");
         }
       });
     } else if (query.searchAction === EXPORT) {
+      //TODO: Exportar datos a Excel
+      console.log("TODO: Exportar datos a Excel");
+    }
+  }
+
+  private initTableData(list: SolicitudInternacion[]) {
+    this.dsCtrl.updateTableData();
+    this.showData = true;
+  }
+  
+  tableAction(action) { 
+    // this.showEditor = false;
+    console.log("tableAction(%s)", action);
+    let selection = this.dsCtrl.selectionModel;
+    let selected = selection.selected as SolInternacionTable[];
+
+    if (action === "editar") {
+      let eventToEdit = selected && selected.length && selected[0];
+
+      if (eventToEdit) {
+        // this.editData(eventToEdit.asistenciaId)
+      }
     }
   }
 }

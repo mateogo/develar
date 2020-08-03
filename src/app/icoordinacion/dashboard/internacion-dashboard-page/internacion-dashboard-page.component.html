@@ -14,7 +14,7 @@
                 <div class="d-flex justify-content-between align-items-center panel-header">
 
                     <div class="panel-header-text">¡Poner el titulo aquí!</div>
-
+                    <div>Viendo: {{ view.value }}</div>
                     <div class="panel-header-control">
                         <mat-button-toggle-group #view="matButtonToggleGroup">
                             <mat-button-toggle value="table">
@@ -32,7 +32,7 @@
 
         <ng-container *ngIf="showData">
             <ng-container *ngIf='!view.value || view.value=="table"'>
-                <vigilancia-reportes-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"></vigilancia-reportes-table>
+                <internacion-dashboard-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"></internacion-dashboard-table>
             </ng-container>
         </ng-container>
     </mat-card-content>

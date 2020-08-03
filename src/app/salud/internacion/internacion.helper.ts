@@ -115,10 +115,32 @@ export class  InternacionHelper {
 
 
   static buildDataTable(list: SolicitudInternacion[]): SolInternacionTable[]{
-
+    /*
+    export class SolInternacionTable {
+        _id: string;
+        asistenciaId: string;
+        compName:    string;
+        compNum:     string;
+        personId:    string;
+        personSlug:  string;
+        fecomp_tsa:  number;
+        fecomp_txa:  string;
+        action:      string;
+        slug:        string;
+        description: string;
+        sector:      string;
+        estado:      string;
+        avance:      string;
+        ts_alta:     number;
+        prioridad:   string;
+    };
+    */
+    
     return list.map(token => {
       let td = new SolInternacionTable();
-
+      td._id = token._id
+      td.fecomp_tsa = token.fecomp_tsa
+      td.fecomp_txa = token.fecomp_txa
       return td;
     })
 

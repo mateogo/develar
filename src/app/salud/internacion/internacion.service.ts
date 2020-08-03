@@ -630,8 +630,9 @@ export class InternacionService {
 
 
   updateTableData(){
-    let tableData = InternacionHelper.buildDataTable(this.solinternacionList);
-    this.emitLocHospDataSource.next(tableData);
+    let tableData = InternacionHelper.buildDataTable(this.solinternacionList)
+    console.log('updateTableData: %o', tableData)
+    this.emitLocHospDataSource.next(tableData)
   }
 
 

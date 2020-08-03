@@ -27,6 +27,7 @@ import {
 } from "../../../salud/internacion/internacion.model";
 
 import { InternacionHelper } from "../../../salud/internacion/internacion.helper";
+import { InternacionService } from "../../../salud/internacion/internacion.service";
 
 /**
  * @displayedColumns
@@ -101,84 +102,95 @@ export class InternacionDashboardTableComponent implements OnInit {
 
   private table_columns = [
     "select",
-    "asistenciaId",
-    "compName",
-    "compNum",
-    "avance",
-    "prioridad",
-    "personId",
-    "ndoc",
-    "personSlug",
-    "telefono",
-    "edad",
-    "qcontactos",
-    "asignadoSlug",
-    "fup_fe_inicio",
-    "faudit_alta",
-    "faudit_um",
-    "fecomp_tsa",
-    "fecomp_txa",
-    "covidAcutalSate",
-    "covidSintoma",
-    "covidAvance",
-    "covid",
-    "action",
-    "covidTxt",
-    "reportadoPor",
-    "fe_reportado",
-    "lab_laboratorio",
-    "lab_fe_toma",
-    "lab_estado",
-    "slug",
-    "locacion",
-    "osocial",
-    "description",
-    "sector",
+    "_id",
     "estado",
-    "ts_alta",
+    "queue"
   ];
 
   private table_columns_sel = {
     "select": false,
-    "compName": false,
-    "compNum": false,
-    "personSlug": false,
-    "fecomp_tsa": false,
-    "fecomp_txa": false,
-    "action": false,
-    "qcontactos": false,
-    "asignadoSlug": false,
-    "fup_fe_inicio": false,
-    "locacion": false,
-    "osocial": false,
-    "covid": false,
-    "slug": false,
-    "description": false,
-    "sector": false,
+    "_id": false, 
     "estado": false,
-    "avance": false,
-    "prioridad": false,
-    "ts_alta": false,
+    "queue": false
   };
 
+  // private table_columns = [
+  //   "select",
+  //   "asistenciaId",
+  //   "compName",
+  //   "compNum",
+  //   "avance",
+  //   "prioridad",
+  //   "personId",
+  //   "ndoc",
+  //   "personSlug",
+  //   "telefono",
+  //   "edad",
+  //   "qcontactos",
+  //   "asignadoSlug",
+  //   "fup_fe_inicio",
+  //   "faudit_alta",
+  //   "faudit_um",
+  //   "fecomp_tsa",
+  //   "fecomp_txa",
+  //   "covidAcutalSate",
+  //   "covidSintoma",
+  //   "covidAvance",
+  //   "covid",
+  //   "action",
+  //   "covidTxt",
+  //   "reportadoPor",
+  //   "fe_reportado",
+  //   "lab_laboratorio",
+  //   "lab_fe_toma",
+  //   "lab_estado",
+  //   "slug",
+  //   "locacion",
+  //   "osocial",
+  //   "description",
+  //   "sector",
+  //   "estado",
+  //   "ts_alta",
+  // ];
+
+  // private table_columns_sel = {
+  //   "select": false,
+  //   "compName": false,
+  //   "compNum": false,
+  //   "personSlug": false,
+  //   "fecomp_tsa": false,
+  //   "fecomp_txa": false,
+  //   "action": false,
+  //   "qcontactos": false,
+  //   "asignadoSlug": false,
+  //   "fup_fe_inicio": false,
+  //   "locacion": false,
+  //   "osocial": false,
+  //   "covid": false,
+  //   "slug": false,
+  //   "description": false,
+  //   "sector": false,
+  //   "estado": false,
+  //   "avance": false,
+  //   "prioridad": false,
+  //   "ts_alta": false,
+  // };
+
   public itemsLength: number = 0;
-
   private dataRecordsSource: BehaviorSubject<SolInternacionTable[]>;
-
   public selectedAction: string = "no_definido";
-
   public actionList: Array<any> = [];
-
   public dataSource: DataSource<any>;
-
   public selection = new SelectionModel<SolInternacionTable>(true, []);
 
   constructor(
-    private dsCtrl: SaludController,
+    private dsCtrl: InternacionService,
     public dialogService: MatDialog,
   ) {
     // this.displayedColumns = LABORATORIO;
-    // this.dataRecordsSource = this.dsCtrl.asistenciasDataSource;
+    this.dataRecordsSource = this.dsCtrl.internacionesDataSource;
+    console.log('Arrancando el componente Table...');
+    console.log(this.dataRecordsSource)
   }
 
   ngOnInit() {
@@ -187,10 +199,8 @@ export class InternacionDashboardTableComponent implements OnInit {
       this.paginator,
       this.sort,
     );
-    
-    // TODO
-    // this.dsCtrl.selectionModel = this.selection;
 
+    this.dsCtrl.selectionModel = this.selection;
     this.actionList = InternacionHelper.getOptionlist("tableactions");
 
     this.displayedColumns.forEach((elem) => {
@@ -202,11 +212,10 @@ export class InternacionDashboardTableComponent implements OnInit {
     });
   }
 
-  ngOnChanges() {
-    
-  }
+  // ngOnChanges() {
 
-  
+  // }
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataRecordsSource.value.length;
@@ -260,7 +269,6 @@ export class InternacionDashboardTableComponent implements OnInit {
   }
 
   changeCheckBx(event: MatCheckboxChange, col, cols) {
-    
   }
 
   getLabel(item: string, arr: Array<any>, prefix: string): string {
