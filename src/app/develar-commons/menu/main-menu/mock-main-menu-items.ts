@@ -1668,10 +1668,10 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
 
 ];
 
-export const EMPRESAS_ITEMS: MainMenuItem[] = [
+export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
 
   {
-    title: 'Comercios',
+    title: 'INDUSTRIAS',
     icon: '',
     active: false,
     groupTitle : true,
@@ -1889,6 +1889,6 @@ export const COMPANY_MENU = {
   salud:     SALUD_ITEMS,
   cck:       CCK_ITEMS,
   comercios: COMERCIO_ITEMS,
-  empresas:  EMPRESAS_ITEMS
+  industrias:  INDUSTRIAS_ITEMS
 };
 
