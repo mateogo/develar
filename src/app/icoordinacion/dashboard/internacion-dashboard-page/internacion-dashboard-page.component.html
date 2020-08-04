@@ -6,6 +6,7 @@
 
 <internacion-dashboard-browse [query]="query" [export]='true' (updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
 
+<mat-progress-bar mode="indeterminate" *ngIf="searching"></mat-progress-bar>
 
 <mat-card class="my-3">
     <mat-card-content>
