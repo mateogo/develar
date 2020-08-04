@@ -24,6 +24,19 @@
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/salud"
 		  }
+		},
+
+		{
+			"name": "industrias",
+		  "script" : "./bin/www",
+		  "env": {
+		          "NODE_ENV": "production",
+		          "PORT": "8082",
+		          "DBASE": "industrias",
+		          "SERVER": "https://industrias.brown.gob.ar",
+		          "FAVICON": "favicon.ico",
+		          "PUBLIC": "/www/industrias"
+		  }
 		}
 
 	]

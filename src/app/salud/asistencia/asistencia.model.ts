@@ -214,6 +214,7 @@ export class Locacion {
     street2: string = '';
     streetIn: string = '';
     streetOut: string = '';
+    hasBanio?: boolean = false;
     city: string = '';
     barrio?: string = '';
     lat: number = 0;
@@ -592,6 +593,7 @@ export class AfectadoFollowUp {
 const resultadoSeguimientoOptList = [
 	{ val: 'logrado',      label: 'Logrado'},
 	{ val: 'nocontesta',   label: 'No contesta'},
+	{ val: 'notelefono',   label: 'Teléfono incorrecto/ inexistente'},
 ];
 
 const vectorSeguimientoOptList = [

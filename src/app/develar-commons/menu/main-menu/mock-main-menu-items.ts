@@ -1673,10 +1673,10 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
 
 ];
 
-export const EMPRESAS_ITEMS: MainMenuItem[] = [
+export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
 
   {
-    title: 'Comercios',
+    title: 'INDUSTRIAS',
     icon: '',
     active: false,
     groupTitle : true,
@@ -1894,6 +1894,29 @@ export const COMPANY_MENU = {
   salud:     SALUD_ITEMS,
   cck:       CCK_ITEMS,
   comercios: COMERCIO_ITEMS,
-  empresas:  EMPRESAS_ITEMS
+  industrias:  INDUSTRIAS_ITEMS
 };
 
+/****
+  {
+    title: 'Formularios SALUD',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Investigación Epidemio',
+        routing: '/salud/formularios/epidemio',
+        rolesOut: ['ivr:operator']
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+
+
+
+***/

@@ -13,7 +13,7 @@
 
       <div class="col-sm-12 col-md-4">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
+          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número DOCUMENTO">
           <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
         </mat-form-field>
       </div>
@@ -82,6 +82,25 @@
         </mat-form-field>
       </div>
     </div>
+
+    <div class="row" >
+      <div class="col-sm-12 col-md-3">
+        <mat-form-field>
+          <mat-select #fldOSocial placeholder="Obra Social" 
+            [formControl]="form.controls['osocial']"
+            (selectionChange)="changeSelectionValue('osocial',fldOSocial.value)">
+            <mat-option *ngFor="let item of osocialOptList" [value]="item.val">{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col col-md-3">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['osocialTxt']" 
+                  placeholder="Nombre de la O/Social o Prepaga" >
+        </mat-form-field>
+      </div>
+    </div>
+
 
     <hr>
 
@@ -155,6 +174,23 @@
         </mat-form-field>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-3 d-flex align-items-center">
+        <label id="hasbanio-label" class="text-normal">¿Cuenta co baño de uso exclusivo?</label>
+      </div>
+
+      <div class="col-md-9 d-flex align-items-center">
+        <mat-radio-group  formControlName="hasBanio" aria-labelledby="hasbanio-label">
+          <mat-radio-button 
+                [checked]="form.controls['hasBanio'].value===false" 
+                [value]="false">No </mat-radio-button>
+          <mat-radio-button 
+                [checked]="form.controls['hasBanio'].value===true" 
+                [value]="true">Si</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
 
     <hr>
 

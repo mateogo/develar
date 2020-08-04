@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map }   from 'rxjs/operators';
 
 import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
-import { Person, Address, UpdatePersonEvent, PersonContactData, personModel } from '../../../../entities/person/person';
+import { Person, Address, UpdatePersonEvent, PersonContactData, CoberturaData, personModel } from '../../../../entities/person/person';
 import { PersonService } from '../../../person.service';
 import { InternacionService } from '../../internacion.service';
 
@@ -31,6 +31,7 @@ export class AltarapidaPersonComponent implements OnInit {
   public tcompPersonaFisica = personModel.tipoDocumPF;
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;
+  public osocialOptList =    personModel.osociales;
 
   public docBelongsTo = {error: ''};
 
@@ -149,6 +150,8 @@ export class AltarapidaPersonComponent implements OnInit {
           sexo:         [null],
           fenactx:      [null],
           telefono:     [null],
+          osocial:      [null],
+          osocialTxt:   [null],
 
           street1:     [null],
           street2:     [null],
@@ -158,6 +161,7 @@ export class AltarapidaPersonComponent implements OnInit {
 
           state:       [null],
           statetext:   [null],
+          hasBanio:    [null],
           country:     [null],
       });
   }
@@ -165,6 +169,9 @@ export class AltarapidaPersonComponent implements OnInit {
   private resetForm(model: Person) {
       let address = new Address();
       let contactData = new PersonContactData();
+      let coberturaData:CoberturaData;
+      let osocial = "";
+      let osocialSlug = '';
 
       let locaciones = model.locaciones|| [];
       if(locaciones && locaciones.length){
@@ -181,6 +188,15 @@ export class AltarapidaPersonComponent implements OnInit {
        	contactData = contacts[0]
       }
 
+      let coberturas = model.cobertura || [];
+
+      coberturaData = personModel.getObraSocial(coberturas);
+
+      if(coberturaData){
+        osocial = coberturaData.tingreso;
+        osocialSlug =  coberturaData.slug;
+      }
+
       this.form.reset({
           personType: model.personType,
           nombre: model.nombre,
@@ -193,12 +209,15 @@ export class AltarapidaPersonComponent implements OnInit {
           displayName: model.displayName,
 
           telefono: contactData.data,
+          osocial: osocial,
+          osocialTxt: osocialSlug,
 
           street1:     address.street1,
           street2:     address.street2,
           city:        address.city,
           barrio:      address.barrio,
           zip:         address.zip,
+          hasBanio:    address.hasBanio,
 
           state:       address.state ||'buenosaires',
           statetext:   address.statetext || 'Brown' ,
@@ -318,6 +337,11 @@ export class AltarapidaPersonComponent implements OnInit {
 function initForSave(form: FormGroup, model: Person): Person {
   const fvalue = form.value;
   let contactData:  PersonContactData;
+  let coberturaData:CoberturaData;
+  let osocial = "";
+  let osocialSlug = '';
+
+
   let address: Address;
 
   let locaciones = model.locaciones|| [];
@@ -335,6 +359,7 @@ function initForSave(form: FormGroup, model: Person): Person {
   address.street2 =      fvalue.street2;
   address.city =         fvalue.city;
   address.barrio =       fvalue.barrio;
+  address.hasBanio =     fvalue.hasBanio;
   address.zip =          fvalue.zip;
 
   address.state =        fvalue.state;
@@ -358,6 +383,10 @@ function initForSave(form: FormGroup, model: Person): Person {
     contactData.data = fvalue.telefono;
     model.contactdata = contacts;
 
+  }
+
+  if(fvalue.osocial || fvalue.osocialTxt){
+    model.cobertura = personModel.setObraSocial(model.cobertura, fvalue.osocial, fvalue.osocialTxt);
   }
   
   model.nacionalidad = 'AR';

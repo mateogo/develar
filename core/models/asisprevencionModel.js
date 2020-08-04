@@ -83,6 +83,7 @@ const locacionSch = new Schema({
     streetOut: { type: String, required: false},
     city:      { type: String, required: false},
     barrio:    { type: String, required: false},
+    hasBanio:  {type: Boolean, required: false, defalut: false},
     zip:       { type: String, required: false},
     lat:       { type: Number, required: false},
     lng:       { type: Number, required: false},

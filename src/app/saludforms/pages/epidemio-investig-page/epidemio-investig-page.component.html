@@ -1,0 +1,27 @@
+<ng-container *ngIf="searchPerson">
+	<mat-card>
+  	<mat-card-content>
+      <p class="text-resaltado">{{ title }}</p>
+      <altarapida-fetch (person$)='personFetched($event)'></altarapida-fetch>
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+
+<ng-container *ngIf='showView'>
+	<mat-card>
+		<mat-card-content>
+			<core-view [person]='person'></core-view>
+
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+
+<ng-container *ngIf='showInvestigForm'>
+	<mat-card>
+		<mat-card-content>
+			<investig-epidemio-edit [token]='currentAsistencia'></investig-epidemio-edit>
+
+		</mat-card-content>
+	</mat-card>
+</ng-container>
+

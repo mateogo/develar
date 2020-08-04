@@ -188,6 +188,7 @@ const addressSch = new mongoose.Schema({
     state:       {type: String,  required: false, defalut: ''},
     statetext:   {type: String,  required: false, defalut: ''},
     zip:         {type: String,  required: false, defalut: ''},
+    hasBanio:    {type: Boolean, required: false, defalut: false},
     estadoviv:   {type: String,  required: false, defalut: 'activa'},
     cualificacionviv: {type: String,  required: false, defalut: 'buena'},
     encuesta:    {type: encuestaSch, required: false},

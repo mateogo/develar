@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
-import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
+
 import { DevelarCommonsModule }    from '../develar-commons/develar-commons.module';
 import { NotificationsModule }    from '../notifications/notifications.module';
 
@@ -259,6 +259,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
   exports: [
       InternacionHeaderControlComponent,
       AltarapidaFetchComponent,
+      CoreDataViewComponent,
       SolinternacionViewComponent,
       TriageEditComponent,
       InternacionEditComponent

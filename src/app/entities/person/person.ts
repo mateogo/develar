@@ -118,6 +118,7 @@ export class Address {
     country: string = 'AR';
     encuesta: EncuestaAmbiental;
     estadoviv: string = 'activa';
+    hasBanio?: boolean = true; // baño de uso exclusivo;
     cualificacionviv: string = 'buena';
 }
 
@@ -1427,6 +1428,14 @@ const nivelEstudios: Array<any> = [
 		{val: 'otra',           label: 'Otra',              slug:'Otra' },
 ];
 
+const obrasSociales = [
+      {val: 'no_definido',  label: 'Seleccioneopción',   slug:'Seleccione opción' },
+      {val: 'noposee',      label: 'No posee',  slug:'No posee' },
+      {val: 'OSOCIAL',      label: 'O/SOCIAL',  slug:'O/SOCIAL' },
+      {val: 'PAMI',         label: 'PAMI',      slug:'PAMI' },
+      {val: 'mprivada',     label: 'Privado',   slug:'Privado' },
+      {val: 'otra',         label: 'Otra',      slug:'Otra' },
+];
 
 
 
@@ -1627,6 +1636,61 @@ class PersonModel {
       return coberturaOptList;
     }
 
+    getObraSocial(coberturas: CoberturaData[]): CoberturaData{
+      if(coberturas && coberturas.length){
+        let cobertura = coberturas.find(t=>{
+          if(t.estado === 'activa' && t.type === 'cobertura') return true;
+          else return false;
+        })
+        return cobertura;
+
+      }else {
+        return null
+      }
+
+    }
+
+    setObraSocial(coberturas: CoberturaData[], tingreso: string, slug: string ): CoberturaData[]{
+      let cobertura: CoberturaData;
+      let hoy = new Date();
+      coberturas = coberturas || [];
+
+      if(coberturas && coberturas.length){
+        cobertura = coberturas.find(t=>{
+          if(t.estado === 'activa' && t.type === 'cobertura') return true;
+          else return false;
+        })
+
+      }
+
+      if(cobertura){
+        cobertura.tingreso = tingreso;
+        cobertura.slug = slug;
+        cobertura.monto = 0;
+        cobertura.estado = 'activa';
+        cobertura.observacion = cobertura.observacion  || 'Informado en investigación epidemiológica COVID';
+        cobertura.fecha = cobertura.fecha || devutils.txFromDate(hoy);
+        cobertura.fe_ts = cobertura.fe_ts  || hoy.getTime();
+        cobertura.estado = 'activa';
+
+      }else {
+        cobertura = new CoberturaData();
+        cobertura.type = 'cobertura';
+        cobertura.tingreso = tingreso ;
+        cobertura.slug = slug;
+        cobertura.monto = 0;
+        cobertura.observacion = 'Informado en investigación epidemiológica COVID';
+        cobertura.fecha = devutils.txFromDate(hoy);
+        cobertura.fe_ts = hoy.getTime();
+        cobertura.estado = 'activa';
+
+        coberturas.push(cobertura);
+      }
+
+      return coberturas;
+
+    }
+
     getCoberturaTypeDato(item): string {
       return getLabel(item, coberturaOptList);
     }
@@ -1812,6 +1876,10 @@ class PersonModel {
 
     get nivelEstudios():Array<any> {
     	return nivelEstudios;
+    }
+
+    get osociales():Array<any> {
+      return obrasSociales;
     }
 
     getNivelEducativo(item):string {
