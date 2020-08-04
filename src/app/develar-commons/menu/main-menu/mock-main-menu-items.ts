@@ -752,24 +752,6 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
   {
-    title: 'Formularios SALUD',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Investigación Epidemio',
-        routing: '/salud/formularios/epidemio',
-        rolesOut: ['ivr:operator']
-      }
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-
-  },
-  {
     title: 'Entidades',
     icon: '',
     active: false,
@@ -1910,3 +1892,26 @@ export const COMPANY_MENU = {
   industrias:  INDUSTRIAS_ITEMS
 };
 
+/****
+  {
+    title: 'Formularios SALUD',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Investigación Epidemio',
+        routing: '/salud/formularios/epidemio',
+        rolesOut: ['ivr:operator']
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+
+
+
+***/
