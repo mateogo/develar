@@ -1,0 +1,257 @@
+<mat-card >
+<mat-card-content>
+  <form [formGroup]="form">
+	<mat-tab-group>
+
+		<mat-tab label="Investigación Epidemiológica">
+			<div class="container tab-container">
+
+			<div class="row">
+			  <div class="col-md-3 d-flex align-items-center">
+			    <span class="text-normal">Modo presunto de contagio</span>
+			  </div>
+			  <div class="col-md-4 d-flex align-items-center" >
+			      <mat-checkbox 
+			            [checked]="form.controls['hasContacto'].value===true"
+			            [formControl]="form.controls['hasContacto']" >
+			              ¿Tuvo contacto con persona c/COVID?
+			            </mat-checkbox>
+			  </div>
+			  <div class="col-md-4 d-flex align-items-center" >
+			      <mat-checkbox 
+			            [checked]="form.controls['hasEntorno'].value===true"
+			            [formControl]="form.controls['hasEntorno']" >
+			              ¿Contacto con sospechoso COVID?
+			            </mat-checkbox>
+			  </div>
+			</div>
+
+			<div class="row">
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Tiene síntomas en este momento">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasSintomas']" >
+                    ¿Tiene síntomas en este momento?</mat-checkbox>
+        </div>
+
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="fe_inicio" placeholder="Fecha inicio síntomas" >
+			    </mat-form-field>
+			  </div>
+
+			</div>
+
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">¿Tiene/ tuvo 37.5+ de fiebre?</span>
+	      </div>
+	      <div class="col-md-5 d-flex align-items-center">
+	        <mat-radio-group  formControlName="fiebreRB" aria-label="Signo de fiebre en los últimos 14 días">
+	          <mat-radio-button 
+	                [checked]="form.controls['fiebreRB'].value===1" 
+	                value="1">Verificó fiebre</mat-radio-button>
+	          <mat-radio-button 
+	                [checked]="form.controls['fiebreRB'].value===2" 
+	                value="2">Cree que tuvo</mat-radio-button>
+	          <mat-radio-button 
+	                [checked]="form.controls['fiebreRB'].value===3" 
+	                value="3" >No tuvo fiebre</mat-radio-button>
+	        </mat-radio-group>
+	      </div>
+
+	      <div class="col-md-1">
+	        <mat-form-field>
+	          <input  matInput type="number" min="35" max="44" 
+	                  formControlName="fiebre" placeholder="Fiebre verificada en grados" >
+	        </mat-form-field>
+	      </div>
+
+	    </div>
+
+
+
+				<!--/div>
+	  	</mat-tab>
+			<mat-tab label="Triage COVID">
+				<div class="container" -->
+
+
+
+
+
+
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Tiene/ tuvo alguno de estos síntomas?</span>
+			      </div>
+
+			      <div class="col-md-2 d-flex align-items-center" 
+			          title="Neumonía diagnosticada como COVID-19">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasNeumonia'].value===true"
+			                [formControl]="form.controls['hasNeumonia']" >
+			                  Neumonía</mat-checkbox>
+			      </div>
+
+			      <div class="col-md-2 d-flex align-items-center" 
+			          title="Dificultad respiratoria, falta de aire al respirar">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDifRespiratoria'].value===true"
+			                [formControl]="form.controls['hasDifRespiratoria']" >
+			                  Dificultad respiratoria</mat-checkbox>
+			      </div>
+
+			      <div class="col-md-2 d-flex align-items-center" 
+			           title="Tos y/o dolor de garganta reciente">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDolorGarganta'].value===true"
+			                [formControl]="form.controls['hasDolorGarganta']" >
+			                  Tos o Dolor de garganta
+			                </mat-checkbox>
+			      </div>
+
+
+			      <div class="col-md-2 d-flex align-items-center" 
+			          title="Dificultad respiratoria, falta de aire al respirar">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDolorCabeza'].value===true"
+			                [formControl]="form.controls['hasDolorCabeza']" >
+			                  Dolor de cabeza</mat-checkbox>
+			      </div>
+			    </div>
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Tiene/ tuvo alguno de estos síntomas?</span>
+			      </div>
+
+			      <div class="col-md-3 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasDiarrea'].value===true"
+			                [formControl]="form.controls['hasDiarrea']" >
+			                  Náuseas, vómitos, diarrea
+			                </mat-checkbox>
+			      </div>
+
+			      <div class="col-md-3 d-flex align-items-center"
+			      			title="Pérdida súbita sentido del gusto (DISGEUSIA)">
+			          <mat-checkbox 
+			                [checked]="form.controls['hasFaltaGusto'].value===true"
+			                [formControl]="form.controls['hasFaltaGusto']" >
+			                  Pérdida súbita sentido del gusto
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-3 d-flex align-items-center"
+			      			title="Dificultad respiratoria, falta de aire al respirar" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasFaltaOlfato'].value===true"
+			                [formControl]="form.controls['hasFaltaOlfato']" >
+			                  Pérdida súbita de olfato 
+			                </mat-checkbox>
+			      </div>
+			    </div>
+			    <div class="row">
+			      <div class=" offset-md3 col-md-8">
+			        <mat-form-field>
+			          <input  matInput  
+			                  formControlName="sintomas" placeholder="Describa otros síntomas" >
+			        </mat-form-field>
+			      </div>
+
+			    </div>
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Es trabajador/a esencial?</span>
+			      </div>
+			      <div class="col-md-9 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoSalud'].value===true"
+			                (change)="changeSalud()"
+			                [formControl]="form.controls['hasTrabajoSalud']" >
+			                Es personal esencial (médicx, enfermerx, camillerx, fuerzas de seguridad, asistencia a mayores o niños etc.)
+			                </mat-checkbox>
+			      </div>
+			    </div>
+
+			    <div *ngIf="showAmbitoLaboral" class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Su ámbito laboral es en...?</span>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoAdulMayores'].value===true"
+			                [formControl]="form.controls['hasTrabajoAdulMayores']" >
+			                  Residen Adul Mayores
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoHogares'].value===true"
+			                [formControl]="form.controls['hasTrabajoHogares']" >
+			                  Hogar de niños/as
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-2 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoHospitales'].value===true"
+			                [formControl]="form.controls['hasTrabajoHospitales']" >
+			                  Neuropsiquiátricos
+			                </mat-checkbox>
+			      </div>
+			      <div class="col-md-3 d-flex align-items-center" >
+			          <mat-checkbox 
+			                [checked]="form.controls['hasTrabajoPolicial'].value===true"
+			                [formControl]="form.controls['hasTrabajoPolicial']" >
+			                  Penitenciaría / comisaría
+			                </mat-checkbox>
+			      </div>
+			    </div>
+
+			    <div class="row">
+			      <div class="col-md-3 d-flex align-items-center">
+			        <span class="text-normal">¿Refiere otras situaciones?</span>
+			      </div>
+			      <div class="col-md-8">
+			        <mat-form-field>
+			          <input  matInput  
+			                  formControlName="contexto" placeholder="Describa su contexto" >
+			        </mat-form-field>
+			      </div>
+
+			    </div>
+
+			    <div class="row" >
+			      <div class="col">
+			        <mat-form-field>
+			          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones / Comentario" >
+			          </textarea> 
+			        </mat-form-field>
+			      </div>
+			    </div>
+
+			  </div>
+			</mat-tab>
+
+		</mat-tab-group>
+	</form>
+
+
+	<div class="novedades-container">
+		<div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
+
+		</div>
+	</div>
+
+</mat-card-content>
+</mat-card>

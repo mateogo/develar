@@ -136,6 +136,13 @@ const saludModuleRoutes: Routes = [
   }
 ];
 
+const saludFormulariosModuleRoutes: Routes = [
+  {
+    path: '', 
+    loadChildren: () => import('./saludforms/salud-forms.module').then(m => m.SaludFormsModule)
+  }
+];
+
 const coordinacionModuleRoutes: Routes = [
   {
     path: '', 
@@ -188,6 +195,11 @@ const saludRoutes: Routes = [
     path: 'coordinacion',
     component: DefaultLayoutComponent,
     children: coordinacionModuleRoutes
+  },
+  {
+    path: 'formularios',
+    component: DefaultLayoutComponent,
+    children: saludFormulariosModuleRoutes
   },
   {
     path: 'internacion',
