@@ -4,6 +4,7 @@
     </mat-card-header>
 </mat-card>
 
+
 <internacion-dashboard-browse [query]="query" [export]='true' (updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
 
 
@@ -13,10 +14,9 @@
             <div class="col-sm-12 col-md-12">
                 <div class="d-flex justify-content-between align-items-center panel-header">
 
-                    <div class="panel-header-text">¡Poner el titulo aquí!</div>
-                    <div>Viendo: {{ view.value }}</div>
+                    <div class="panel-header-text">Viendo: {{ view.value }}</div>
                     <div class="panel-header-control">
-                        <mat-button-toggle-group #view="matButtonToggleGroup">
+                        <mat-button-toggle-group #view="matButtonToggleGroup" value="table">
                             <mat-button-toggle value="table">
                                 <mat-icon>view_column</mat-icon>
                             </mat-button-toggle>
@@ -30,22 +30,23 @@
             </div>
         </div>
 
-        <ng-container *ngIf="showData">
-            <ng-container *ngIf='!view.value || view.value=="table"'>
-                <internacion-dashboard-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"></internacion-dashboard-table>
+
+        <ng-container *ngIf='showData'>
+            <ng-container *ngIf='!view.value || view.value === "table"'>
+                <internacion-dashboard-table (actionTriggered)="tableAction($event)"></internacion-dashboard-table>
+            </ng-container>
+            <ng-container *ngIf='view.value === "list"'>
+                <div>Poner la vista de lista de Facu</div>
             </ng-container>
         </ng-container>
+
     </mat-card-content>
 </mat-card>
 
 
 
-
-
 <mat-card>
     <mat-card-content>
-
         <dump-data [title]="'MasterData'" [data$]='data$' [showTests]='true'></dump-data>
-
     </mat-card-content>
 </mat-card>

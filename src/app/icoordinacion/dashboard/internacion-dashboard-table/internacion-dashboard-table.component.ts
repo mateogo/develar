@@ -5,65 +5,45 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-} from "@angular/core";
-import { DataSource, SelectionModel } from "@angular/cdk/collections";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatSelectChange } from "@angular/material/select";
-import { MatCheckboxChange } from "@angular/material/checkbox";
+} from '@angular/core';
+import { DataSource, SelectionModel } from '@angular/cdk/collections';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
-import { BehaviorSubject, Observable, merge } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, Observable, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
-import { GenericDialogComponent } from "../../../develar-commons/generic-dialog/generic-dialog.component";
-
-import { SaludController } from "../../../salud/salud.controller";
+import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
 
 import {
   SolicitudInternacion,
   SolInternacionTable,
-} from "../../../salud/internacion/internacion.model";
+} from '../../../salud/internacion/internacion.model';
 
-import { InternacionHelper } from "../../../salud/internacion/internacion.helper";
-import { InternacionService } from "../../../salud/internacion/internacion.service";
-
-/**
- * @displayedColumns
-    asistenciaId: string;
-    compName:    string;
-    compNum:     string;
-    personId:    string;
-    personSlug:  string;
-    fecomp_tsa:  number;
-    fecomp_txa:  string;
-    action:      string;
-    slug:        string;
-    description: string;
-    sector:      string;
-    estado:      string;
-    avance:      string;
-    ts_alta:     number;
- */
+import { InternacionHelper } from '../../../salud/internacion/internacion.helper';
+import { InternacionService } from '../../../salud/internacion/internacion.service';
 
 const removeRelation = {
-  width: "330px",
-  height: "700px",
+  width: '330px',
+  height: '700px',
   hasBackdrop: true,
-  backdropClass: "yellow-backdrop",
+  backdropClass: 'yellow-backdrop',
   data: {
-    itemplate: "",
-    caption: "Seleccione columnas...",
-    title: "Confirme la acción",
-    body: "Se dará de baja la relación seleccionada en esta ficha",
+    itemplate: '',
+    caption: 'Seleccione columnas...',
+    title: 'Confirme la acción',
+    body: 'Se dará de baja la relación seleccionada en esta ficha',
     accept: {
-      action: "accept",
-      label: "Aceptar",
+      action: 'accept',
+      label: 'Aceptar',
     },
     cancel: {
-      action: "cancel",
-      label: "Cancelar",
+      action: 'cancel',
+      label: 'Cancelar',
     },
   },
 };
@@ -73,112 +53,33 @@ const removeRelation = {
  */
 
 @Component({
-  selector: "internacion-dashboard-table",
-  templateUrl: "./internacion-dashboard-table.component.html",
-  styleUrls: ["./internacion-dashboard-table.component.scss"],
+  selector: 'internacion-dashboard-table',
+  templateUrl: './internacion-dashboard-table.component.html',
+  styleUrls: ['./internacion-dashboard-table.component.scss'],
 })
 export class InternacionDashboardTableComponent implements OnInit {
-  @Input()
-  public displayedColumns = [
-    "select",
-    "compNum",
-    "avance",
-    "prioridad",
-    "personSlug",
-    "faudit_alta",
-    "covid",
-    "locacion",
-    "osocial",
-  ];
-  @Input()
-  isColSelectionAllowed = true;
-  @Output()
-  private actionTriggered: EventEmitter<string> = new EventEmitter();
+  @Input() public displayedColumns = [ 'select', 'compNum', 'compName', 'sector', 'avance', 'slug', 'description' ];
+  @Input() isColSelectionAllowed = true;
+  @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild(MatPaginator, { static: true })
-  paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true })
-  sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = [
-    "select",
-    "_id",
-    "estado",
-    "queue"
-  ];
+  private table_columns = [ 'select', 'compNum', 'compName', 'sector', 'avance', 'slug', 'description' ];
 
   private table_columns_sel = {
-    "select": false,
-    "_id": false, 
-    "estado": false,
-    "queue": false
+    'select': false,
+    'compNum': true,
+    'compName': false,
+    'sector': false,
+    'avance': false,
+    'slug': false,
+    'description': false
   };
 
-  // private table_columns = [
-  //   "select",
-  //   "asistenciaId",
-  //   "compName",
-  //   "compNum",
-  //   "avance",
-  //   "prioridad",
-  //   "personId",
-  //   "ndoc",
-  //   "personSlug",
-  //   "telefono",
-  //   "edad",
-  //   "qcontactos",
-  //   "asignadoSlug",
-  //   "fup_fe_inicio",
-  //   "faudit_alta",
-  //   "faudit_um",
-  //   "fecomp_tsa",
-  //   "fecomp_txa",
-  //   "covidAcutalSate",
-  //   "covidSintoma",
-  //   "covidAvance",
-  //   "covid",
-  //   "action",
-  //   "covidTxt",
-  //   "reportadoPor",
-  //   "fe_reportado",
-  //   "lab_laboratorio",
-  //   "lab_fe_toma",
-  //   "lab_estado",
-  //   "slug",
-  //   "locacion",
-  //   "osocial",
-  //   "description",
-  //   "sector",
-  //   "estado",
-  //   "ts_alta",
-  // ];
-
-  // private table_columns_sel = {
-  //   "select": false,
-  //   "compName": false,
-  //   "compNum": false,
-  //   "personSlug": false,
-  //   "fecomp_tsa": false,
-  //   "fecomp_txa": false,
-  //   "action": false,
-  //   "qcontactos": false,
-  //   "asignadoSlug": false,
-  //   "fup_fe_inicio": false,
-  //   "locacion": false,
-  //   "osocial": false,
-  //   "covid": false,
-  //   "slug": false,
-  //   "description": false,
-  //   "sector": false,
-  //   "estado": false,
-  //   "avance": false,
-  //   "prioridad": false,
-  //   "ts_alta": false,
-  // };
-
-  public itemsLength: number = 0;
+  public itemsLength = 0;
   private dataRecordsSource: BehaviorSubject<SolInternacionTable[]>;
-  public selectedAction: string = "no_definido";
+  public selectedAction = 'no_definido';
   public actionList: Array<any> = [];
   public dataSource: DataSource<any>;
   public selection = new SelectionModel<SolInternacionTable>(true, []);
@@ -187,10 +88,7 @@ export class InternacionDashboardTableComponent implements OnInit {
     private dsCtrl: InternacionService,
     public dialogService: MatDialog,
   ) {
-    // this.displayedColumns = LABORATORIO;
     this.dataRecordsSource = this.dsCtrl.internacionesDataSource;
-    console.log('Arrancando el componente Table...');
-    console.log(this.dataRecordsSource)
   }
 
   ngOnInit() {
@@ -201,7 +99,7 @@ export class InternacionDashboardTableComponent implements OnInit {
     );
 
     this.dsCtrl.selectionModel = this.selection;
-    this.actionList = InternacionHelper.getOptionlist("tableactions");
+    this.actionList = InternacionHelper.getOptionlist('tableActions');
 
     this.displayedColumns.forEach((elem) => {
       this.table_columns_sel[elem] = true;
@@ -211,10 +109,6 @@ export class InternacionDashboardTableComponent implements OnInit {
       this.itemsLength = token && token.length;
     });
   }
-
-  // ngOnChanges() {
-
-  // }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -255,14 +149,16 @@ export class InternacionDashboardTableComponent implements OnInit {
   buildColumDef() {
     this.displayedColumns = [];
     this.table_columns.forEach((col) => {
-      if (this.table_columns_sel[col]) this.displayedColumns.push(col);
+      if (this.table_columns_sel[col]) {
+        this.displayedColumns.push(col);
+      }
     });
   }
 
   openModalDialog(templ) {
     removeRelation.data.itemplate = templ;
     this.openDialog(removeRelation).subscribe((result) => {
-      if (result === "accept") {
+      if (result === 'accept') {
         this.buildColumDef();
       }
     });

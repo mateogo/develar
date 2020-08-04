@@ -136,13 +136,23 @@ export class  InternacionHelper {
     };
     */
     
-    return list.map(token => {
-      let td = new SolInternacionTable();
-      td._id = token._id
-      td.fecomp_tsa = token.fecomp_tsa
-      td.fecomp_txa = token.fecomp_txa
-      return td;
-    })
+   return list.map(token => {
+    let td = new SolInternacionTable();
+    td._id = token._id;
+    td.fecomp_tsa = token.fecomp_tsa;
+    td.fecomp_txa = token.fecomp_txa;
+    td.personSlug = token.requeridox.slug;//
+    td.compName = token.compName;//
+    td.compNum = token.compNum;//
+    td.sector = token.sector;//
+    td.avance = token.avance;//
+    td.slug = token.slug;//
+    td.description = token.description;//
+    // Los elementos marcados con // son agregados para mostrar en la lista
+    // de internacion-dashboard-list y/o internacion-dashboard-table
+    // ver posibilidad de retirar o agregar más atributos
+    return td;
+  })
 
 
 
@@ -349,6 +359,12 @@ class TransitoDisplay {
   OptionLists  /
 **************/
 
+const tableActionsOptList: Array<any> = [
+  { val: 'no_definido', label: 'Seleccione opción', slug: 'Seleccione opción' },
+  { val: 'accion1', label: 'Acción 1', slug: 'Realizar acción 1' },
+  { val: 'accion2', label: 'Acción 2', slug: 'Realizar acción 2' }
+]
+
 const actionsOptList: Array<any> = [
         {val: 'no_definido', isRemitible: false,  key:'',           type:'Sin selección',  label: 'Sin selección' },
         {val: 'internacion', isRemitible: false,  key:'modalidad',  type:'internacion',       label: 'Internación' },
@@ -522,7 +538,8 @@ export const areasInternacion = areasOptList;
 
 const optionsLists = {
    default: default_option_list,
-   actions: actionsOptList,
+  actions: actionsOptList,
+  tableActions: tableActionsOptList,
    sectores: sectoresOptList,
    afecciones: afeccionOptList,
    target: targetInternacionOptList,
@@ -533,6 +550,6 @@ const optionsLists = {
    estadosTransitos: estadosTransitosOptList,
    capacidades: capacidadesOptList,
    estadosPeriferia: estadosPeriferiaOptList,
-
+  
 }
 

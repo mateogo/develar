@@ -26,10 +26,8 @@ const EXPORT = "export";
 })
 export class InternacionDashboardPageComponent implements OnInit {
   public query: SolInternacionBrowse;
-
   public data$ = new BehaviorSubject<any>({});
-
-  public showData: boolean = false;
+  public showData = false;
 
   constructor(
     private dsCtrl: InternacionService,
@@ -40,7 +38,7 @@ export class InternacionDashboardPageComponent implements OnInit {
   }
 
   refreshSelection(query: SolInternacionBrowse): void {
-    console.log('internacion dasboard page query(%o)', query)
+    console.log('internacion dasboard page query(%o)', query);
 
     this.query = InternacionHelper.cleanQueryToken(query, false);
     this.data$.next(this.query);
@@ -53,8 +51,9 @@ export class InternacionDashboardPageComponent implements OnInit {
       this.dsCtrl.fetchInternacionesByQuery(this.query).subscribe((list) => {
         if (list && list.length) {
           console.log("(%s) resultados de búsqueda: (%o)", list.length, list);
-          this.data$.next(list);          
+          this.data$.next(list);
           this.initTableData(list);
+          console.log("this.showData es %s", this.showData);
         } else {
           console.log("Sin Resultados");
         }
@@ -69,8 +68,8 @@ export class InternacionDashboardPageComponent implements OnInit {
     this.dsCtrl.updateTableData();
     this.showData = true;
   }
-  
-  tableAction(action) { 
+
+  tableAction(action) {
     // this.showEditor = false;
     console.log("tableAction(%s)", action);
     let selection = this.dsCtrl.selectionModel;
