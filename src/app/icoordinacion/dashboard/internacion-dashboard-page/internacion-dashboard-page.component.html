@@ -35,7 +35,7 @@
             <ng-container *ngIf='!view.value || view.value=="table"'>
                 <internacion-dashboard-table [displayedColumns]='tableActualColumns' (actionTriggered)="tableAction($event)"></internacion-dashboard-table>
             </ng-container>
-            <ng-container *ngIf='!view.value || view.value=="list"'>
+            <ng-container *ngIf='view.value=="list"'>
                 <internacion-dashboard-list></internacion-dashboard-list>
             </ng-container>
         </ng-container>
