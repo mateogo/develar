@@ -30,6 +30,7 @@ import { InternacionDashboardCardComponent } from './dashboard/internacion-dashb
     InternacionViewComponent,
     InternacionDashboardPageComponent,
     InternacionDashboardBrowseComponent,
+    InternacionDashboardTableComponent,
     InternacionDashboardListComponent,
     InternacionDashboardCardComponent
   ],
