@@ -16,6 +16,8 @@ import { InternacionViewComponent } from './components/internacion-view/internac
 import { InternacionDashboardPageComponent } from './dashboard/internacion-dashboard-page/internacion-dashboard-page.component';
 import { InternacionDashboardBrowseComponent } from './dashboard/internacion-dashboard-browse/internacion-dashboard-browse.component';
 import { InternacionDashboardTableComponent } from './dashboard/internacion-dashboard-table/internacion-dashboard-table.component';
+import { InternacionDashboardListComponent } from './dashboard/internacion-dashboard-list/internacion-dashboard-list.component';
+import { InternacionDashboardCardComponent } from './dashboard/internacion-dashboard-card/internacion-dashboard-card';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { InternacionDashboardTableComponent } from './dashboard/internacion-dash
     InternacionViewComponent,
     InternacionDashboardPageComponent,
     InternacionDashboardBrowseComponent,
-    InternacionDashboardTableComponent
+    InternacionDashboardListComponent,
+    InternacionDashboardCardComponent
   ],
   imports: [
     CommonModule,

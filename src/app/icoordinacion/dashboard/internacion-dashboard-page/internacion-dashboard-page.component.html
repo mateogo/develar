@@ -7,6 +7,7 @@
 
 <internacion-dashboard-browse [query]="query" [export]='true' (updateQuery)="refreshSelection($event)"></internacion-dashboard-browse>
 
+<mat-progress-bar mode="indeterminate" *ngIf="searching"></mat-progress-bar>
 
 <mat-card class="my-3">
     <mat-card-content>
@@ -35,10 +36,11 @@
             <ng-container *ngIf='!view.value || view.value === "table"'>
                 <internacion-dashboard-table (actionTriggered)="tableAction($event)"></internacion-dashboard-table>
             </ng-container>
-            <ng-container *ngIf='view.value === "list"'>
-                <div>Poner la vista de lista de Facu</div>
+            <ng-container *ngIf='view.value=="list"'>
+                <internacion-dashboard-list></internacion-dashboard-list>
             </ng-container>
         </ng-container>
+
 
     </mat-card-content>
 </mat-card>

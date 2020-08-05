@@ -115,44 +115,23 @@ export class  InternacionHelper {
 
 
   static buildDataTable(list: SolicitudInternacion[]): SolInternacionTable[]{
-    /*
-    export class SolInternacionTable {
-        _id: string;
-        asistenciaId: string;
-        compName:    string;
-        compNum:     string;
-        personId:    string;
-        personSlug:  string;
-        fecomp_tsa:  number;
-        fecomp_txa:  string;
-        action:      string;
-        slug:        string;
-        description: string;
-        sector:      string;
-        estado:      string;
-        avance:      string;
-        ts_alta:     number;
-        prioridad:   string;
-    };
-    */
-    
-   return list.map(token => {
-    let td = new SolInternacionTable();
-    td._id = token._id;
-    td.fecomp_tsa = token.fecomp_tsa;
-    td.fecomp_txa = token.fecomp_txa;
-    td.personSlug = token.requeridox.slug;//
-    td.compName = token.compName;//
-    td.compNum = token.compNum;//
-    td.sector = token.sector;//
-    td.avance = token.avance;//
-    td.slug = token.slug;//
-    td.description = token.description;//
-    // Los elementos marcados con // son agregados para mostrar en la lista
-    // de internacion-dashboard-list y/o internacion-dashboard-table
-    // ver posibilidad de retirar o agregar más atributos
-    return td;
-  })
+    return list.map(token => {
+      const td = new SolInternacionTable();
+      td._id = token._id;
+      td.fecomp_tsa = token.fecomp_tsa;
+      td.fecomp_txa = token.fecomp_txa;
+      td.personSlug = token.requeridox.slug;//
+      td.compName = token.compName;//
+      td.compNum = token.compNum;//
+      td.sector = token.sector;//
+      td.avance = token.avance;//
+      td.slug = token.slug;//
+      td.description = token.description;//
+      // Los elementos marcados con // son agregados para mostrar en la lista
+      // de internacion-dashboard-list y/o internacion-dashboard-table
+      // ver posibilidad de retirar o agregar más atributos
+      return td;
+    })
 
 
 

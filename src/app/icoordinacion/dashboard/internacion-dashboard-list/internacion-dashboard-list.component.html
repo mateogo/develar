@@ -1,0 +1,28 @@
+<mat-card>
+    <mat-card-content>
+          <div class="row">
+              <div class="col-sm-12 col-md-12">
+                  <div class="d-flex justify-content-between panel-header">
+                      <div class="panel-header-text">{{ title }}</div>
+                  </div>
+              </div>
+          </div>
+         <ng-container>
+              <div class="row" *ngIf="viewCard">
+                  <div class="col-sm-12 col-md-12" *ngFor="let item of internacionesList" >
+                      <internacion-dashboard-card [internacion]="item"></internacion-dashboard-card>											
+                  </div>
+              </div>
+          </ng-container>
+  
+          <mat-paginator #paginator
+            [length]="itemsLength"
+            [pageIndex]="0"
+            [pageSize]="25"
+            [pageSizeOptions]="[5, 25, 50, 75, 100]">
+          </mat-paginator>
+  
+              
+    </mat-card-content>
+  </mat-card>
+  
