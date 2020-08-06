@@ -1,0 +1,17 @@
+<ng-container *ngIf="showList">
+	<div  *ngFor="let item of asistenciaDataSource.connect()|async">
+
+			<vigil-seguimiento-base  [asistencia]='item' [viewList]='viewList'
+								(fetchPerson)='vinculoSelected($event)' ></vigil-seguimiento-base>
+
+	</div>
+
+
+</ng-container>
+
+	<mat-paginator #paginator
+      [length]="itemsLength"
+      [pageIndex]="0"
+      [pageSize]="25"
+      [pageSizeOptions]="[5, 25, 50, 75, 100]">
+	</mat-paginator>

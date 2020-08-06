@@ -752,6 +752,29 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
   {
+    title: 'Formularios SALUD',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Investigación Epidemio',
+        routing: '/salud/formularios/epidemio',
+        rolesOut: ['ivr:operator']
+      },
+      {
+        title: 'Seguimiento afectado/as',
+        routing: '/salud/formularios/seguimiento',
+        rolesOut: ['ivr:operator'],
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+  {
     title: 'Entidades',
     icon: '',
     active: false,

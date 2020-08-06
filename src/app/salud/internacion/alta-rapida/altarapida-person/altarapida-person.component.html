@@ -13,7 +13,7 @@
 
       <div class="col-sm-12 col-md-4">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número DOCUMENTO">
+          <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
           <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
         </mat-form-field>
       </div>
@@ -176,10 +176,23 @@
     </div>
     <div class="row">
       <div class="col-md-3 d-flex align-items-center">
-        <label id="hasbanio-label" class="text-normal">¿Cuenta co baño de uso exclusivo?</label>
+        <label id="hasbanio-label" class="text-normal">¿Cuenta con baño/hab de uso exclusivo?</label>
       </div>
 
-      <div class="col-md-9 d-flex align-items-center">
+      <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox
+          formControlName="hasBanio" aria-labelledby="hasbanio-label"
+          [checked]='true'>¿Baño de uso exclusivo?
+        </mat-checkbox>
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox
+          formControlName="hasHabitacion" aria-labelledby="hasbanio-label"
+          [checked]='true'>¿Habitación de uso exclusivo?
+        </mat-checkbox>
+      </div>
+
+      <!--div class="col-md-9 d-flex align-items-center">
         <mat-radio-group  formControlName="hasBanio" aria-labelledby="hasbanio-label">
           <mat-radio-button 
                 [checked]="form.controls['hasBanio'].value===false" 
@@ -188,7 +201,7 @@
                 [checked]="form.controls['hasBanio'].value===true" 
                 [value]="true">Si</mat-radio-button>
         </mat-radio-group>
-      </div>
+      </div-->
     </div>
 
 

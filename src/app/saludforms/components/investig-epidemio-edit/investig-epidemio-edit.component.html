@@ -26,8 +26,18 @@
 			  </div>
 			</div>
 
+			<hr>
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-resaltado">SÍNTOMAS</span>
+	      </div>
+	    </div>
+
 			<div class="row">
-        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Estado de síntomas</span>
+	      </div>
+        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
             title="Tiene síntomas en este momento">
             <mat-checkbox class="mat-checkbox-wrap"
                   [checked]="true"
@@ -71,98 +81,387 @@
 
 	    </div>
 
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">¿Tiene/ tuvo alguno de estos síntomas?</span>
+	      </div>
+
+	      <div class="col-md-2 d-flex align-items-center" 
+	          title="Neumonía diagnosticada como COVID-19">
+	          <mat-checkbox 
+	                [checked]="form.controls['hasNeumonia'].value===true"
+	                [formControl]="form.controls['hasNeumonia']" >
+	                  Neumonía</mat-checkbox>
+	      </div>
+
+	      <div class="col-md-2 d-flex align-items-center" 
+	          title="Dificultad respiratoria, falta de aire al respirar">
+	          <mat-checkbox 
+	                [checked]="form.controls['hasDifRespiratoria'].value===true"
+	                [formControl]="form.controls['hasDifRespiratoria']" >
+	                  Dificultad respiratoria</mat-checkbox>
+	      </div>
+
+	      <div class="col-md-2 d-flex align-items-center" 
+	           title="Tos y/o dolor de garganta reciente">
+	          <mat-checkbox 
+	                [checked]="form.controls['hasDolorGarganta'].value===true"
+	                [formControl]="form.controls['hasDolorGarganta']" >
+	                  Tos o Dolor de garganta
+	                </mat-checkbox>
+	      </div>
 
 
-				<!--/div>
-	  	</mat-tab>
-			<mat-tab label="Triage COVID">
-				<div class="container" -->
+	      <div class="col-md-2 d-flex align-items-center" 
+	          title="Dificultad respiratoria, falta de aire al respirar">
+	          <mat-checkbox 
+	                [checked]="form.controls['hasDolorCabeza'].value===true"
+	                [formControl]="form.controls['hasDolorCabeza']" >
+	                  Dolor de cabeza</mat-checkbox>
+	      </div>
+	    </div>
+
+	    <div class="row">
+	      <div class="offset-md-3 col-md-3 d-flex align-items-center" >
+	          <mat-checkbox 
+	                [checked]="form.controls['hasDiarrea'].value===true"
+	                [formControl]="form.controls['hasDiarrea']" >
+	                  Náuseas, vómitos, diarrea
+	                </mat-checkbox>
+	      </div>
+
+	      <div class="col-md-3 d-flex align-items-center"
+	      			title="Pérdida súbita sentido del gusto (DISGEUSIA)">
+	          <mat-checkbox 
+	                [checked]="form.controls['hasFaltaGusto'].value===true"
+	                [formControl]="form.controls['hasFaltaGusto']" >
+	                  Pérdida súbita sentido del gusto
+	                </mat-checkbox>
+	      </div>
+	      <div class="col-md-3 d-flex align-items-center"
+	      			title="Dificultad respiratoria, falta de aire al respirar" >
+	          <mat-checkbox 
+	                [checked]="form.controls['hasFaltaOlfato'].value===true"
+	                [formControl]="form.controls['hasFaltaOlfato']" >
+	                  Pérdida súbita de olfato 
+	                </mat-checkbox>
+	      </div>
+	    </div>
+
+	    <div class="row">
+	      <div class="offset-md-3 col-md-8">
+
+	        <mat-form-field>
+	          <input  matInput  
+	                  formControlName="sintomas" placeholder="Describa otros síntomas" >
+	        </mat-form-field>
+	      </div>
+
+	    </div>
+
+
+			<hr>
+	    <div class="row">
+	      <div class="col-md-12 d-flex align-items-center">
+	        <span class="text-resaltado">COMORBILIDADES</span>
+	      </div>
+	    </div>
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Comorbilidades</span>
+	      </div>
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Tinene diabetes">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasDiabetes']" >
+                    ¿Diabetes?</mat-checkbox>
+        </div>
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Tinene hipertensión areterial">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasHta']" >
+                    ¿HTA?</mat-checkbox>
+        </div>
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Tiene problemas de obesidad">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasObesidad']" >
+                    ¿Obesidad?</mat-checkbox>
+        </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Tinene hipertensión areterial">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasCardio']" >
+                    ¿Enferm cardiovascular?</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="offset-md-3 col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Tinene enfermedad pulmonar crónica">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasPulmonar']" >
+                    ¿Enferm pulmonar?</mat-checkbox>
+        </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Tinene alguna otra enfermedad crónica grave">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasCronica']" >
+                    ¿Otra enfermedad crónica?</mat-checkbox>
+        </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Es o ha sido fumador">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasFumador']" >
+                    ¿Es/ha sido fumador?</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="row">
+			  <!--div class="col-md-3 d-flex align-items-center">
+			    <span class="text-normal"></span>
+			  </div-->
+	      <div class="offset-md-3 col-md-8">
+	        <mat-form-field>
+	          <input  matInput 
+	                  formControlName="comorbilidad" placeholder="Otras comorbilidades" >
+	        </mat-form-field>
+	      </div>
+      	
+      </div>
+
+	    <div class="row">
+	      <div class="col-md-12 d-flex align-items-center">
+	        <span class="text-resaltado">ESTADO ACTUAL</span>
+	      </div>
+	    </div>
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Estado del paciente</span>
+	      </div>
+
+	      <div class="col-md-4">
+	        <mat-form-field>
+	          <mat-select #fldSintoma placeholder="Estado del paciente"
+	              [formControl]="form.controls['sintoma']"
+	              (selectionChange)="changeSelectionValue('sintoma',fldSintoma.value)" >
+	            <mat-option *ngFor="let item of sintomaOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+
+	      <div class="col-md-3">
+	        <mat-form-field>
+	          <input  matInput 
+	                  formControlName="fe_prevAlta" placeholder="Fecha proyectada de Alta" >
+	        </mat-form-field>
+	      </div>
+	    </div>
+
+			<hr>
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-resaltado">INTERNACIÓN / DERIVACIÓN</span>
+	      </div>
+	    </div>
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Internación</span>
+	      </div>
+
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Es o ha sido fumador">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['isInternado']" >
+                    ¿Está aislado?</mat-checkbox>
+        </div>
+	      <div class="col-md-4">
+	        <mat-form-field>
+	          <mat-select #fldTinternacion placeholder="Tipo de internación"
+	              [formControl]="form.controls['tinternacion']"
+	              (selectionChange)="changeSelectionValue('tinternacion',fldTinternacion.value)" >
+	            <mat-option *ngFor="let item of tinternacionOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="internacionSlug" placeholder="Lugar de internación" >
+			    </mat-form-field>
+			  </div>
+
+			</div>
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">¿Requiere internación?</span>
+	      </div>
+
+	      <div class="col-md-4">
+	        <mat-form-field>
+	          <mat-select #fldDerivacion placeholder="Derivación de internación a..."
+	              [formControl]="form.controls['derivacion']"
+	              (selectionChange)="changeSelectionValue('derivacion',fldDerivacion.value)" >
+	            <mat-option *ngFor="let item of derivacionOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+
+			</div>
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">¿Requiere derivación a otras áreas?</span>
+	      </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Salud mental">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaSaludMental']" >
+                    Área de Salud Mental</mat-checkbox>
+        </div>
+
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Desarrollo Social">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaDesarrollo']" >
+                    Área de Desarrollo Social</mat-checkbox>
+        </div>
+
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Solicitud de hisopado">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaHisopado']" >
+                    Solicitud de Hisopado</mat-checkbox>
+        </div>
+      </div>
+
+    	<div class='row'>
+        <div class="offset-md-3 col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Solicitud de hisopado">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaOtro']" >
+                    Otra clase de derivación</mat-checkbox>
+				</div>
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="derivacionSlug" placeholder="Otra derivación necesaria" >
+			    </mat-form-field>
+			  </div>
+        
+      </div>
+      <hr>
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-resaltado">CONTEXTO LABORAL</span>
+	      </div>
+	    </div>
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Tipo de trabajo</span>
+	      </div>
+
+	      <div class="col-md-4">
+	        <mat-form-field>
+	          <mat-select #fldTrabajo placeholder="Trabaja en..."
+	              [formControl]="form.controls['trabajo']"
+	              (selectionChange)="changeSelectionValue('trabajo',fldTrabajo.value)" >
+	            <mat-option *ngFor="let item of trabajoOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="trabajoSlug" placeholder="Lugar de Trabajo" >
+			    </mat-form-field>
+			  </div>
+
+			</div>
+
+      <hr>
+	    
+	    <div class="row" >
+	      <div class="col">
+	        <mat-form-field>
+	          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones / Comentario" >
+	          </textarea> 
+	        </mat-form-field>
+	      </div>
+	    </div>
+
+
+      <div class="row" >
+        <div class="col-md-3 offset-md-4">
+          <mat-form-field>
+            <mat-select #fldUserId placeholder="Informe elaborado por:"
+                [formControl]="form.controls['userId']"
+                (selectionChange)="changeSelectionValue('userId',fldUserId.value)" >
+              <mat-option *ngFor="let item of usersOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="fe_investig" placeholder="Fecha elaboración informe" >
+			    </mat-form-field>
+			  </div>
+
+      </div>
 
 
 
+	  	</div>
+			</mat-tab>
+		</mat-tab-group>
+	</form>
 
 
+	<div class="novedades-container">
+		<div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit()"
+          [disabled]="!form.valid" >CONFIRMAR INFORME</button>
+      
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
 
+		</div>
+	</div>
 
-			    <div class="row">
-			      <div class="col-md-3 d-flex align-items-center">
-			        <span class="text-normal">¿Tiene/ tuvo alguno de estos síntomas?</span>
-			      </div>
+</mat-card-content>
+</mat-card>
 
-			      <div class="col-md-2 d-flex align-items-center" 
-			          title="Neumonía diagnosticada como COVID-19">
-			          <mat-checkbox 
-			                [checked]="form.controls['hasNeumonia'].value===true"
-			                [formControl]="form.controls['hasNeumonia']" >
-			                  Neumonía</mat-checkbox>
-			      </div>
-
-			      <div class="col-md-2 d-flex align-items-center" 
-			          title="Dificultad respiratoria, falta de aire al respirar">
-			          <mat-checkbox 
-			                [checked]="form.controls['hasDifRespiratoria'].value===true"
-			                [formControl]="form.controls['hasDifRespiratoria']" >
-			                  Dificultad respiratoria</mat-checkbox>
-			      </div>
-
-			      <div class="col-md-2 d-flex align-items-center" 
-			           title="Tos y/o dolor de garganta reciente">
-			          <mat-checkbox 
-			                [checked]="form.controls['hasDolorGarganta'].value===true"
-			                [formControl]="form.controls['hasDolorGarganta']" >
-			                  Tos o Dolor de garganta
-			                </mat-checkbox>
-			      </div>
-
-
-			      <div class="col-md-2 d-flex align-items-center" 
-			          title="Dificultad respiratoria, falta de aire al respirar">
-			          <mat-checkbox 
-			                [checked]="form.controls['hasDolorCabeza'].value===true"
-			                [formControl]="form.controls['hasDolorCabeza']" >
-			                  Dolor de cabeza</mat-checkbox>
-			      </div>
-			    </div>
-
-			    <div class="row">
-			      <div class="col-md-3 d-flex align-items-center">
-			        <span class="text-normal">¿Tiene/ tuvo alguno de estos síntomas?</span>
-			      </div>
-
-			      <div class="col-md-3 d-flex align-items-center" >
-			          <mat-checkbox 
-			                [checked]="form.controls['hasDiarrea'].value===true"
-			                [formControl]="form.controls['hasDiarrea']" >
-			                  Náuseas, vómitos, diarrea
-			                </mat-checkbox>
-			      </div>
-
-			      <div class="col-md-3 d-flex align-items-center"
-			      			title="Pérdida súbita sentido del gusto (DISGEUSIA)">
-			          <mat-checkbox 
-			                [checked]="form.controls['hasFaltaGusto'].value===true"
-			                [formControl]="form.controls['hasFaltaGusto']" >
-			                  Pérdida súbita sentido del gusto
-			                </mat-checkbox>
-			      </div>
-			      <div class="col-md-3 d-flex align-items-center"
-			      			title="Dificultad respiratoria, falta de aire al respirar" >
-			          <mat-checkbox 
-			                [checked]="form.controls['hasFaltaOlfato'].value===true"
-			                [formControl]="form.controls['hasFaltaOlfato']" >
-			                  Pérdida súbita de olfato 
-			                </mat-checkbox>
-			      </div>
-			    </div>
-			    <div class="row">
-			      <div class="offset-md3 col-md-8">
-			        <mat-form-field>
-			          <input  matInput  
-			                  formControlName="sintomas" placeholder="Describa otros síntomas" >
-			        </mat-form-field>
-			      </div>
-
-			    </div>
+<!--
+	    <div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-resaltado">CONTEXTO LABORAL</span>
+	      </div>
+	    </div>
 
 			    <div class="row">
 			      <div class="col-md-3 d-flex align-items-center">
@@ -225,33 +524,4 @@
 
 			    </div>
 
-			    <div class="row" >
-			      <div class="col">
-			        <mat-form-field>
-			          <textarea matInput [formControl]="form.controls['description']" placeholder="Observaciones / Comentario" >
-			          </textarea> 
-			        </mat-form-field>
-			      </div>
-			    </div>
-
-			  </div>
-			</mat-tab>
-
-		</mat-tab-group>
-	</form>
-
-
-	<div class="novedades-container">
-		<div class="additional-info">
-      <button mat-raised-button color="primary" type="submit" 
-          (click)="onSubmit()"
-          [disabled]="!form.valid" >Aceptar</button>
-      
-      <button mat-button type="button" color="accent"
-          (click)="onCancel()" >Cancelar</button>
-
-		</div>
-	</div>
-
-</mat-card-content>
-</mat-card>
+<fin-->

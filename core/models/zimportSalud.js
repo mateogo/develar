@@ -311,7 +311,7 @@ function updateFollowUp(asis, token){
 	if(followUp){
 		followUp.isActive = true;
 		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
-		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.parseDateStr(token.fealta);
+		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
 		if(!followUp.isAsignado){
 			if(followUp.isContacto){
 				followUp.isAsignado = followUp.isContacto;
@@ -327,7 +327,7 @@ function updateFollowUp(asis, token){
 	}else {
 		let followUp = new AfectadoFollowUp();
 		followUp.fe_inicio = token.fealta;
-		followUp.fets_inicio = utils.parseDateStr(token.fealta);
+		followUp.fets_inicio = utils.dateNumFromTx(token.fealta);
 		asis.followUp = followUp;
 	}
 
@@ -357,10 +357,15 @@ function buildCovid(asis, token){
 	asis.infeccion = infeccion
 
 }
+
 function buildSisaEvent(asis, token){
 	let sisaEvent = new SisaEvent();
 	sisaEvent.fe_reportado = token.fealta;
 	sisaEvent.fe_consulta = token.fealta;
+
+	sisaEvent.fets_reportado = utils.dateNumFromTx(token.fealta);
+	sisaEvent.fets_consulta = utils.dateNumFromTx(token.fealta);
+
 	asis.sisaevent = sisaEvent;
 
 }
@@ -368,7 +373,7 @@ function buildSisaEvent(asis, token){
 function buildFollowUp(asis, token){
 	let followUp = new AfectadoFollowUp();
 	followUp.fe_inicio = token.fealta;
-	followUp.fets_inicio = utils.parseDateStr(token.fealta);
+	followUp.fets_inicio = utils.dateNumFromTx(token.fealta);
 	asis.followUp = followUp;
 }
 

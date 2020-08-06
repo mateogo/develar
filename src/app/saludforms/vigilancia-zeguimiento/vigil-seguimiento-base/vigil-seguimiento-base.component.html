@@ -1,0 +1,99 @@
+<mat-card  *ngIf='showPanel'>
+<mat-card-content>
+  <ng-container *ngIf='showAsistenciaView' >
+    <vigil-seguimiento-manage [token]='asistencia'  
+                      [viewList]='viewList'
+                      [showObservacionesPanel]=showObservacionesPanel
+                      (personSelected)='vinculoSelected($event)'
+                      (coreDataSelected)='coreDataSelected($event)'
+                      (familySelected)='editVinculo($event)' ></vigil-seguimiento-manage>
+  </ng-container>
+
+<div class="d-md-flex justify-content-start align-items-center" >
+  <mat-button-toggle-group #fldButtonGrp2  name="actions"  class="panel-header-followup"
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="seguimiento">
+      LLAMADOS
+    </mat-button-toggle>
+    <mat-button-toggle value="seguimientofwup">
+      Novedad
+    </mat-button-toggle>
+    <mat-button-toggle value="historialseguimiento">
+      Historial
+    </mat-button-toggle>
+    <mat-button-toggle value="calendarioseguimiento">
+      Calendario
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>      
+
+
+</div>
+
+<div class="d-md-flex justify-content-between align-items-center" >
+  <mat-button-toggle-group #fldButtonGrp2  name="actions"   class="panel-header-covid"
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="infection">
+      COVID
+    </mat-button-toggle>
+  </mat-button-toggle-group>      
+
+  
+  <mat-button-toggle-group #fldButtonGrp1  name="actions"  class="panel-header-laboratorio"
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="laboratorio">
+      NUEVO LABORATORIO
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #fldButtonGrp1  name="muestras"  class="panel-header-laboratorio"
+        (change)='editLaboratorio($event)'>
+    <ng-container *ngFor='let muestra of muestraslabList'>
+      <mat-button-toggle  [value]="muestra">
+        {{ muestra.secuencia || '#-LAB'}}
+      </mat-button-toggle>
+    </ng-container>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #fldButtonGrp1  name="actions" class="panel-header-vinculofam"
+        (change)='actionTriggered($event)'>
+    <mat-button-toggle value="vinculofam">
+      NUEVO CONTACTO
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+ 
+  <div class="d-md-flex justify-content-end align-items-center ">
+  <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
+        class="panel-header-selectors"
+        (change)='viewPanelsSelected($event)'>
+    <mat-button-toggle value="vinculos">
+      VER CONTACTOS
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
+        class="panel-header-closepanel"
+        (change)='closeFollowUpPanel()'>
+    <mat-button-toggle value="closefollowup">
+      CERRAR PANEL
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  </div>
+
+</div>
+
+<hr>
+
+
+<ng-container *ngIf='showObservacionesPanel' >
+
+  <observaciones-panel 
+          [audit]='auditToken'
+          [title]='"Asistencia y novedades extra-epidemiológica"'
+          [type]='"asisprevencion"'
+          [parent]='parentEntity' ></observaciones-panel>
+</ng-container>
+
+</mat-card-content>
+</mat-card>

@@ -29,18 +29,18 @@
     <fieldset formGroupName="vinculoForm">
     <!---nombre; apellido--->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input  matInput formControlName="nombre" placeholder="Nombre" >
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input  matInput formControlName="apellido" placeholder="Apellido" >
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldNucleoHabitacional placeholder="Núcleo habitacional"
               formControlName="nucleo"
@@ -92,7 +92,7 @@
 
     <!---nestudios; fenac; sexo --->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldSexo placeholder="Sexo"
               formControlName="sexo"
@@ -104,7 +104,7 @@
       </div>
 
 
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <input  matInput formControlName="fenactx" placeholder="Fecha de nacimiento" >
           <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
@@ -121,7 +121,7 @@
     </div>
     <!---nestudios; fenac; sexo --->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldEstadoVinculo placeholder="Estado del vínculo"
               formControlName="estado"
@@ -132,7 +132,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-8">
         <mat-form-field>
           <input  matInput formControlName="comentario" placeholder="Observación / comentario" >
         </mat-form-field>
@@ -143,13 +143,13 @@
       
     <fieldset formGroupName="addressForm">
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input matInput formControlName="street1" placeholder="Calle número" >
           <mat-hint align="end">{{ nucleoHabitacionalSelected() }}</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input matInput formControlName="street2" placeholder="Información adicional" >
         </mat-form-field>
@@ -157,12 +157,12 @@
     </div>
 
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input matInput formControlName="streetIn" placeholder="Entre calle..." >
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <input matInput formControlName="streetOut" placeholder="y calle..." >
         </mat-form-field>
@@ -170,7 +170,7 @@
     </div>
 
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldCiudad placeholder="Ciudad"
               formControlName='city'
@@ -181,7 +181,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldbarrio placeholder="Barrio"
               formControlName='barrio'
@@ -192,7 +192,7 @@
         </mat-form-field>
       </div>
       
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <input matInput formControlName='zip' placeholder="Código Postal" >
         </mat-form-field>

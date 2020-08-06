@@ -162,6 +162,7 @@ export class AltarapidaPersonComponent implements OnInit {
           state:       [null],
           statetext:   [null],
           hasBanio:    [null],
+          hasHabitacion: [null],
           country:     [null],
       });
   }
@@ -177,7 +178,6 @@ export class AltarapidaPersonComponent implements OnInit {
       if(locaciones && locaciones.length){
         address = locaciones[0];
       }
-
 
       address.addType = 'dni' ;
       address.slug = 'dirección en el DNI' ;
@@ -218,6 +218,7 @@ export class AltarapidaPersonComponent implements OnInit {
           barrio:      address.barrio,
           zip:         address.zip,
           hasBanio:    address.hasBanio,
+          hasHabitacion: address.hasHabitacion,
 
           state:       address.state ||'buenosaires',
           statetext:   address.statetext || 'Brown' ,
@@ -360,6 +361,7 @@ function initForSave(form: FormGroup, model: Person): Person {
   address.city =         fvalue.city;
   address.barrio =       fvalue.barrio;
   address.hasBanio =     fvalue.hasBanio;
+  address.hasHabitacion = fvalue.hasHabitacion;
   address.zip =          fvalue.zip;
 
   address.state =        fvalue.state;

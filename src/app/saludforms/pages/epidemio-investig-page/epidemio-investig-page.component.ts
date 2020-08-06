@@ -4,15 +4,18 @@ import { Subject, BehaviorSubject } from 'rxjs';
 
 import { SaludController } from '../../../salud/salud.controller';
 import { PersonService }   from '../../../salud/person.service';
+import { devutils }from '../../../develar-commons/utils'
 
 import {  Person } from '../../../entities/person/person';
 
-import { 	Asistencia, 
+import { 	Asistencia, Locacion,
           VigilanciaBrowse,
 					UpdateAsistenciaEvent, 
 					AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
 
 const UPDATE = 'update';
+const CANCEL = 'cancel';
+
 const TOKEN_TYPE = 'asistencia';
 const CREATE = 'create';
 const SEARCH = 'search';
@@ -34,15 +37,19 @@ export class EpidemioInvestigPageComponent implements OnInit {
 	public  person: Person;
 	private hasPerson = false;
 
-  public searchPerson = true;
+  public showPersonBrowse = false;
 	public showView = false;
   public showInvestigForm = false;
+  public showVigilanciaFollowUp = false;
 
   // asistencia
   public currentAsistencia: Asistencia;
   public hasSolicitud = false;
 
+  public usersOptList: Array<any> =[];
+
   public query: VigilanciaBrowse;
+  public viewList: Array<string> = [];
 
   constructor(
   		private perSrv: PersonService,
@@ -51,6 +58,11 @@ export class EpidemioInvestigPageComponent implements OnInit {
   	) { }
 
   ngOnInit(): void {
+    setTimeout( () => {
+      this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+      this.showPersonBrowse = true
+    }, 400);
+
   }
 
   /************************************/
@@ -73,25 +85,57 @@ export class EpidemioInvestigPageComponent implements OnInit {
     
   }
 
+  vinculoSelected(personId: string){
+    this.query = new VigilanciaBrowse();
+    this.query.isVigilado = false;
+    this.query.hasCovid = false;
+    this.query.viewList = [];
+
+    this.query.requirenteId = personId;
+
+  }
+
+  updateInvestig(event: UpdateAsistenciaEvent){
+    if(event.action === UPDATE) this.saveInvestigEpidemio(event.token);
+    this.resetInvestigForm();
+
+  }
 
 
+  /**********************************/
+  /*    Save Asistencia Investig   */
+  /********************************/
+  private saveInvestigEpidemio(asistencia: Asistencia){
+    this.currentAsistencia = asistencia;
+
+    this.dsCtrl.manageInvestigRecord(asistencia).subscribe(t =>{
+      if(t){
+        this.currentAsistencia = t;
+        this.dsCtrl.openSnackBar('Grabación exitosa', 'Aceptar');
+        this.resetInvestigForm();
+ 
+      }else {
+        this.dsCtrl.openSnackBar('ATENCIÓN: Se produjo un problema al intentar actualizar el registro', 'ACEPTAR');
+      }
+
+    });
+  }
 
   /************************/
   /*    Sol/Asistencia   */
   /**********************/
   private fetchSolicitudes(action: string, person:Person){
-    console.log('fetchSolicitudes BEGIN')
-
     this.query = new VigilanciaBrowse()
     this.query.requirenteId = this.person._id
+    this.query.viewList = [];
 
     this.showInvestigForm = false;
+    this.showVigilanciaFollowUp = false;
 
     AsistenciaHelper.cleanQueryToken(this.query, false);
 
 
     this.dsCtrl.fetchAsistenciaByQuery(this.query).subscribe(list => {
-      console.log('list fetched: [%s]', list && list.length)
       if(list && list.length > 0){
         this.currentAsistencia = list[0];
 
@@ -105,6 +149,42 @@ export class EpidemioInvestigPageComponent implements OnInit {
     })
   }
 
+  private updateAsistenciaFromPerson(asistencia: Asistencia, person: Person){
+    let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+    let locacion = asistencia.locacion || new Locacion();
+    let edad = null;
+
+    asistencia.sexo = person.sexo;
+    asistencia.fenactx = person.fenactx;
+
+    try {
+      edad = devutils.edadActual(devutils.dateFromTx(person.fenactx));
+    }
+    catch {
+      edad = null;
+    }
+    asistencia.edad = edad + '';
+
+    if(address) {
+      locacion.street1 = address.street1;
+      locacion.street2 = address.street2;
+      locacion.streetIn = address.streetIn;
+      locacion.streetOut = address.streetOut;
+      locacion.hasBanio = address.hasBanio;
+      locacion.hasHabitacion = address.hasHabitacion;
+
+      locacion.city = address.city;
+      locacion.barrio = address.barrio;
+      locacion.zip = address.zip;
+      locacion.lng = address.lng;
+      locacion.lat = address.lat;
+      
+      asistencia.locacion = locacion;
+    }
+
+  }
+
+
  private initNewAsistencia(person: Person){
  
     this.currentAsistencia = AsistenciaHelper.initNewAsistenciaEpidemio('epidemio', 'epidemiologia', person);
@@ -114,12 +194,28 @@ export class EpidemioInvestigPageComponent implements OnInit {
     this.dsCtrl.manageCovidRecord(this.currentAsistencia).subscribe(sol => {
       if(sol){
         this.currentAsistencia = sol;
-        this.showInvestigForm = false;
+        this.showInvestigForm = true;
 
       }else {
         //c onsole.log('fallo la creación de solicitud')
       }
     })
+
+  }
+
+  private resetInvestigForm(){
+    this.showView = false;
+    this.showInvestigForm = false;
+
+    this.showPersonBrowse = true;
+    this.showVigilanciaFollowUp = true;
+
+    // this.personFound = false;
+    // this.showAsistenciaEditor = false;
+    // this.showFollowUp = false;
+    // this.asistencia = null;
+    // this.currentPerson = null;
+    // this.dsCtrl.resetCurrentPerson();
 
   }
 

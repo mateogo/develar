@@ -141,7 +141,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   }
 
   private updateCovid(token: AfectadoUpdate, afectado: AfectadoFollowUp, today: Date){
-    if(token.resultado === 'nocontesta') return;
+    if(this.llamadoIsNotLogrado(token.resultado)) return;
 
     this.infeccion = this.asistencia.infeccion || new InfectionFollowUp();
     this.infeccion.sintoma = afectado.sintoma;
@@ -250,7 +250,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
   private resetForm(){
     this.seguimientoEvent = {...this.seguimientoEvent, ...this.form.value}
-    if(this.seguimientoEvent.resultado === 'nocontesta'){
+    if(this.llamadoIsNotLogrado(this.seguimientoEvent.resultado)){
       this.seguimientoEvent.internadoFup = 1;
       this.seguimientoEvent.sintoma = 'sindato';
       this.seguimientoEvent.slug = 'No contesta llamado';
@@ -268,7 +268,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
     }
 
     this.initForEdit();
-    if(this.seguimientoEvent.resultado === 'nocontesta'){
+    if(this.llamadoIsNotLogrado(this.seguimientoEvent.resultado)){
       this.form.get('locacionSlug').disable();
       this.form.get('slug').disable();
       this.form.get('sintoma').disable();
@@ -280,6 +280,11 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
       this.form.get('internadoFup').enable();
 
     }
+  }
+
+  private llamadoIsNotLogrado(resultado): boolean{
+    if(resultado === 'logrado') return false;
+    else return true;
   }
 
   private initForm(){

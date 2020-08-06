@@ -1,0 +1,139 @@
+<ng-container *ngIf='asistencia.isAsistencia'>
+
+
+  <ng-container *ngIf="showVinculosData">
+    <hr>
+    <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
+    <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
+        <p class='text-resaltado-vinculo'>{{ vinculo.slug }} 
+            <strong> Tel: {{ vinculo.token.telefono}}</strong></p>
+
+        <p class='text-normal-vinculo'>{{ vinculo.token.tdoc }}: {{ vinculo.token.ndoc }}  
+                    <strong>{{ vinculo.vinculo }} - {{ vinculo.token.nucleo }}</strong>
+            <span class="edit-control"
+                (click)='editVinculo(vinculo)' title="Edición de los datos del contacto">
+                <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
+            <span class="edit-control"
+                (click)='manageVinculo(vinculo)' title="Seguimiento del contacto">
+                <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+
+            <span *ngIf='vinculo.labBadge.hasData' class="badge-vinculo" >
+              <badge  [color]="vinculo.labBadge.color" >{{vinculo.labBadge.branding}}</badge>
+
+              <badge  *ngFor='let lab of vinculo.labBadge.muestras'
+                      matTooltip='{{lab.toolTip}}'
+                      [color]="lab.color" 
+                      [arrow]="lab.arrow" 
+                      [borderRadius]="lab.border">
+                      {{ lab.fecha }}</badge>
+            </span>
+
+            <span *ngIf='vinculo.hisopadoBadge.hasData' class="badge-vinculo" >
+              <badge  [color]="vinculo.hisopadoBadge.color" >{{vinculo.hisopadoBadge.branding}}</badge>
+            </span>
+
+            <span *ngIf='vinculo.covidBadge.hasData' class="badge-vinculo" 
+                  matTooltip='{{vinculo.covidBadge.toolTip}}'>
+              <badge  [color]="vinculo.covidBadge.color" >{{vinculo.covidBadge.branding}}</badge>
+              <badge  [color]="vinculo.covidBadge.color" 
+                      [arrow]="vinculo.covidBadge.arrow" 
+                      [borderRadius]="vinculo.covidBadge.border">
+                      {{ vinculo.covidBadge.label }}::{{ vinculo.covidBadge.fecha }}</badge>
+            </span>
+
+
+            <span *ngIf='vinculo.fupBadge.hasData'  class="badge-vinculo" 
+                  matTooltip='{{vinculo.fupBadge.toolTip}}'>
+              <badge  [color]="'warning'" >{{vinculo.fupBadge.branding}}</badge>
+              <badge  [color]="vinculo.fupBadge.asignado ? 'warning':'info' " >
+                        {{ vinculo.fupBadge.asignado ? ':-)':'o('  }}</badge>
+              <badge  [color]="'warning'" 
+                      [borderRadius]="vinculo.fupBadge.border">
+                      {{ vinculo.fupBadge.label }}</badge>
+              <badge  [color]="vinculo.fupBadge.color" 
+                      [arrow]="vinculo.fupBadge.arrow" 
+                      [borderRadius]="vinculo.fupBadge.border">
+                      {{ vinculo.fupBadge.fecha }}</badge>
+              <badge  [color]="vinculo.fupBadge.color">{{vinculo.fupBadge.qty}}</badge>
+            </span>
+        </p>
+
+
+    </div>
+  </ng-container>
+
+  <div *ngIf="showFollowUp" class='follow-up-container'>
+
+      <vigil-seguimiento-base [asistencia]='manageIndizado' 
+                              [viewList]='viewList'
+                              [showObservacionesPanel]=showObservacionesPanel
+                              (closePanel)='closeFollowUp($event)'></vigil-seguimiento-base>
+  </div >
+
+  <ng-container *ngIf='showIcons'>
+    <div class='row'>
+      <div class="col-md-12">
+        <p class='text-headerblock'>{{ asistencia.solicitante }}</p>
+        <p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  
+
+            <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong>
+          
+                  <span class="edit-control"
+                      (click)='editCoreData()' title="Edición de datos maestros">
+                      <i [class]="'fas fa-pencil-alt'" aria-hidden="true"></i></span>
+        </p>
+
+      </div>
+    </div>
+
+    <div class='row icons-block'>
+      <div class='col-md-8'>
+        <div class="d-md-flex justify-content-between align-items-center" >
+
+          <div *ngIf='covidBadge.hasData' 
+                matTooltip='{{covidBadge.toolTip}}'>
+            <badge  [color]="covidBadge.color" >{{covidBadge.branding}}</badge>
+            <badge  [color]="covidBadge.color" 
+                    [arrow]="covidBadge.arrow" 
+                    [borderRadius]="covidBadge.border">
+                    {{ covidBadge.label }}::{{ covidBadge.fecha }}</badge>
+          </div>
+ 
+          <div *ngIf='labBadge.hasData' >
+            <badge  [color]="labBadge.color" >{{labBadge.branding}}</badge>
+
+            <badge  *ngFor='let lab of labBadge.muestras'
+                    matTooltip='{{lab.toolTip}}'
+                    [color]="lab.color" 
+                    [arrow]="lab.arrow" 
+                    [borderRadius]="lab.border">
+                    {{ lab.fecha }}</badge>
+          </div>
+ 
+          <div *ngIf='fupBadge.hasData' 
+                matTooltip='{{fupBadge.toolTip}}'>
+            <badge  [color]="'warning'" >{{fupBadge.branding}}</badge>
+            <badge  [color]="fupBadge.asignado ? 'warning':'info' " >{{ fupBadge.asignado ? ':-)':'o('  }}</badge>
+            <badge  [color]="'warning'" 
+                    [borderRadius]="fupBadge.border">
+                    {{ fupBadge.label }}</badge>
+            <badge  [color]="fupBadge.color" 
+                    [arrow]="fupBadge.arrow" 
+                    [borderRadius]="fupBadge.border">
+                    {{ fupBadge.fecha }}</badge>
+            <badge  [color]="fupBadge.color">{{fupBadge.qty}}</badge>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf='asistencia.casoIndice'>
+      <p class='text-normal'>{{ asistencia.casoIndiceTxt }}
+          <span class="edit-control"
+              (click)='manageCasoIndice(asistencia.casoIndice)' title="Seguimiento del caso índice">
+              <i [class]="'far fa-edit'" aria-hidden="true"></i></span>
+      </p>
+  </ng-container>
+

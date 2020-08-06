@@ -1,0 +1,38 @@
+<vigilancia-alta-panel  (vigilanciaEvent)='vigilanciaAltaEvent($event)'></vigilancia-alta-panel>
+
+<vigil-seguimiento-browse [query]="query" 
+								(updateQuery)="refreshSelection($event)" ></vigil-seguimiento-browse>
+
+<mat-card>
+  <mat-card-content>
+	 	<div class="row">
+			<div class="col-sm-12 col-md-12">
+	 	  	<div class="d-flex justify-content-between align-items-center panel-header">
+
+					<div class="panel-header-text">{{ title }}</div>
+
+					<div class="panel-header-control" >
+					  <mat-button-toggle-group #view="matButtonToggleGroup"  >
+					    <mat-button-toggle value="grid">
+					      <mat-icon>view_module</mat-icon>
+					    </mat-button-toggle>
+					  </mat-button-toggle-group>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<ng-container *ngIf='showEditor'>
+				<vigilancia-panel [asistencia]='currentAsistencia'
+										(updateToken)='updateCurrentAsistencia($event)'
+										(fetchPerson)='vinculoSelected($event)' ></vigilancia-panel>
+		</ng-container>
+
+		<ng-container *ngIf='showData'>
+				<vigil-seguimiento-panel 
+									[viewList]='viewList'
+		 							(fetchPerson)='vinculoSelected($event)'  ></vigil-seguimiento-panel>
+		</ng-container>
+  </mat-card-content>
+</mat-card>

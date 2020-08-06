@@ -1,4 +1,4 @@
-<ng-container *ngIf="searchPerson">
+<ng-container *ngIf="showPersonBrowse">
 	<mat-card>
   	<mat-card-content>
       <p class="text-resaltado">{{ title }}</p>
@@ -19,9 +19,25 @@
 <ng-container *ngIf='showInvestigForm'>
 	<mat-card>
 		<mat-card-content>
-			<investig-epidemio-edit [token]='currentAsistencia'></investig-epidemio-edit>
+			<investig-epidemio-edit 
+						[token]='currentAsistencia'
+						[usersOptList]='usersOptList'
+						(updateToken)="updateInvestig($event)"></investig-epidemio-edit>
 
 		</mat-card-content>
 	</mat-card>
 </ng-container>
 
+
+
+<ng-container *ngIf='showVigilanciaFollowUp'>
+	<mat-card>
+		<mat-card-content>
+
+			<vigil-seguimiento-base  [asistencia]='currentAsistencia' [viewList]='viewList'
+								(fetchPerson)='vinculoSelected($event)' ></vigil-seguimiento-base>
+
+
+		</mat-card-content>
+	</mat-card>
+</ng-container>

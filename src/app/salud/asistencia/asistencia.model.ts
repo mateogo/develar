@@ -169,13 +169,6 @@ export class ContextoCovid {
 	fiebre: number = 37;
 	fiebreRB: number = 3;
 
-	hasDifRespiratoria: boolean = false;
-	hasDolorGarganta: boolean = false;
-	hasTos: boolean = false;
-	hasFaltaGusto: boolean = false;
-	hasFaltaOlfato: boolean = false;
-	sintomas: string;
-
 	hasViaje: boolean = false;
 	hasContacto: boolean = false;
 	hasEntorno: boolean = false;
@@ -185,6 +178,44 @@ export class ContextoCovid {
 	hasTrabajoPolicial: boolean = false;
 	hasTrabajoHospitales: boolean = false;
 	hasTrabajoSalud: boolean = false;
+	// sintomas
+	hasSintomas:boolean = false;
+
+	hasDifRespiratoria: boolean = false;
+	hasDolorGarganta: boolean = false;
+	hasTos: boolean = false;
+	hasNeumonia:boolean = false;
+	hasDolorCabeza:boolean = false;
+	hasFaltaGusto: boolean = false;
+	hasFaltaOlfato: boolean = false;
+	sintomas: string;
+
+	hasDiarrea:boolean = false;
+	hasDiabetes:boolean = false;
+	hasHta:boolean = false;
+	hasCardio:boolean = false;
+	hasPulmonar:boolean = false;
+	hasCronica:boolean = false;
+	hasFumador:boolean = false;
+	hasObesidad:boolean = false;
+	comorbilidad: string = "" // observaciones y otras comorbilidades
+
+	fe_inicio: string = '' // InfectionFollowUp.fe_inicio //fecha de inicio de síntomas
+	sintoma: string = "sindato" // estado general InfectionFollowUp.sintoma
+	fe_prevAlta: string = '' // InfectionFollowUp.fe_alta //fecha prevista de alta para el caso covid confirmado
+	isInternado: boolean = false; // InfectionFollowUp.isInternado;
+	tinternacion: string = 'nointernado' // tipo de internacion // tinternacionOptList
+	internacionSlug: string = '' // lugar de internación
+	derivacion: string //si necesita derivación // derivacionOptList
+	derivaSaludMental: boolean = false;
+	derivaDesarrollo: boolean = false;
+	derivaHisopado: boolean = false;
+	derivaOtro: boolean = false;
+	derivacionSlug: string = ''; 
+
+	trabajo: string;   // InfectionFollowUp.trabajo
+	trabajoSlug: string; // InfectionFollowUp.trabajoTxt
+
 	contexto: string;
 
 	esperaMedico: boolean = false;
@@ -199,6 +230,11 @@ export class ContextoCovid {
 
 	hasCOVID: boolean = false;
 	isCOVID: boolean = false;
+	//
+	fe_investig: string = '';
+	fets_investig: number = 0;
+	userInvestig: string = '';
+	userId: string = '';
 }
 
 export class CasoIndice {
@@ -215,6 +251,7 @@ export class Locacion {
     streetIn: string = '';
     streetOut: string = '';
     hasBanio?: boolean = false;
+    hasHabitacion?: boolean = false;
     city: string = '';
     barrio?: string = '';
     lat: number = 0;
@@ -307,8 +344,11 @@ const avanceInfectionOptList = [
 
 const sintomaOptList = [
 	{ val: 'asintomatico',   label: 'Asintomático'},
-	{ val: 'sintomatico',    label: 'Sintomático leve'},
-	{ val: 'grave',          label: 'Sintomático grave'},
+	{ val: 'sintomatico',    label: 'Sintomático: Leve'},
+	{ val: 'bueno',          label: 'Sintomático: Bueno'},
+	{ val: 'regular',        label: 'Sintomático: Regular'},
+	{ val: 'malo',           label: 'Sintomático: Malo'},
+	{ val: 'grave',          label: 'Sintomático: Grave'},
 	{ val: 'uti',            label: 'UTI'},
 	{ val: 'arm',            label: 'ARM'},
 	/** { val: 'enrecuperacion', label: 'En recuperación'}, */
@@ -318,17 +358,40 @@ const sintomaOptList = [
 	
 ];
 
+const tinternacionOptList = [
+	{ val: 'nointernado',    label: 'No internado'},
+	{ val: 'domiciliaria',   label: 'Domiciliaria'},
+	{ val: 'aislamiento',    label: 'Aislamiento'},
+	{ val: 'internacion',    label: 'HOSP-Sala común'},
+	{ val: 'uti',            label: 'HOSP-UTI'},
+	{ val: 'obito',          label: 'Óbito'},
+	{ val: 'alta',           label: 'ALTA'},
+];
+
+const derivacionOptList = [
+	{ val: 'norequiere',    label: 'Ninguno'},
+	{ val: 'domiciliaria',  label: 'En domicilio'},
+	{ val: 'aislamiento',   label: 'Centro de aislamiento'},
+	{ val: 'hospitalario',  label: 'Centro hospitalario'},
+	{ val: 'privado',       label: 'Derivación a inst privada'},
+];
+
 const lugartrabajoOptList = [
+	{ val: 'municipal',       label: 'Trabajador/a Municipal'},
+	{ val: 'seguridad',       label: 'Cuerpos y Fuerzas de Seguridad'},
+	{ val: 'salud',           label: 'Trabajador/a de la Salud'},
+	{ val: 'geriatrico',      label: 'Geriátrico'},
+	{ val: 'hogar',           label: 'Hogar/Merendero'},
+	{ val: 'logistica',       label: 'Lógistica/ Transporte'},
+	{ val: 'enfermerodom',    label: 'Atiende persona dependiente (a domicilio)'},
+	{ val: 'bombero',         label: 'Bombero'},
+	{ val: 'comercio',        label: 'Comercio/Empresa'},
+	{ val: 'limpieza',        label: 'Limpieza'},
+	{ val: 'atiendepúblico',  label: 'Otro atiende público'},
 	{ val: 'cuentapropia',    label: 'Cuenta propia'},
 	{ val: 'amadecasa',       label: 'Ama de casa'},
 	{ val: 'industria',       label: 'Industria'},
-	{ val: 'comercio',        label: 'Comercio'},
-	{ val: 'salud',           label: 'Salud'},
-	{ val: 'seguridad',       label: 'Seguridad'},
-	{ val: 'municipal',       label: 'Municipal'},
-	{ val: 'logistica',       label: 'Lógistica/ Distribución'},
 	{ val: 'oficio',          label: 'Oficio independiente'},
-	{ val: 'atiendepúblico',  label: 'Otro atiende público'},
 	{ val: 'otro',            label: 'Otro'},
 	{ val: 'sindato',         label: 'Sin dato'},
 ];
@@ -336,8 +399,9 @@ const lugartrabajoOptList = [
 const institucionalizadoOptList = [
 	{ val: 'noinstitucionalizado', label: 'No institucionalizado'},
 	{ val: 'geriatrico',  label: 'Geriátrico'},
-	{ val: 'comisaria',   label: 'Comisaría'},
+	{ val: 'seguridad',   label: 'Comisaría'},
 	{ val: 'hogar',       label: 'Hogar'},
+	{ val: 'salud',       label: 'Hospital'},
 	{ val: 'otro',        label: 'Otro'},
 	{ val: 'sindato',     label: 'Sin dato'},
 ];
@@ -358,6 +422,7 @@ export class InfectionFollowUp {
 	avance: string = 'sindato'; //avanceInfectionOptList
 	sintoma: string = 'sindato'; // sintomaOptList
 	locacionSlug: string = '' // lugar de internación
+	tinternacion: string = 'nointernado'; // tipo de internacion
 
 	institucion: string = 'noinstitucionalizado'; //institucionalizadoOptList
 	institucionTxt: string = 'No institucionalizado';
@@ -1812,6 +1877,8 @@ const optionsLists = {
    estadoActualInfection: estadoActualAfectadoOptList,
 	 institucionalizado: institucionalizadoOptList,
 	 lugartrabajo: lugartrabajoOptList,
+	 tinternacion: tinternacionOptList,
+	 derivacion: derivacionOptList,
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
    resultadoMuestraLab: resultadoMuestraLaboratorioOptList,

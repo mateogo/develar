@@ -26,8 +26,8 @@ import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
-import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion, CasoIndice,
-          AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp, SisaEvent, MuestraLaboratorio,
+import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion, CasoIndice, ContextoCovid,
+          AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp, SisaEvent, MuestraLaboratorio, AfectadoFollowUp,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
 import {   SolicitudInternacion } from './internacion/internacion.model';
@@ -64,6 +64,7 @@ const ROLE_OPERATOR =  'vigilancia:operator';
 
 const COM_OPERATOR =  'com:operator';
 const IVR_OPERATOR =  'ivr:operator';
+const INSTITUCIONALIZADO = ['seguridad', 'comisaria', 'hogar', 'geriatrico', 'salud' ];
 
 @Injectable({
 	providedIn: 'root'
@@ -560,6 +561,87 @@ export class SaludController {
 
 
 
+  /******************************************/
+  /******* ASISTENCIA INVESTIGACIÓN ********/
+  /****************************************/
+  manageInvestigRecord(asistencia:Asistencia ): Subject<Asistencia>{
+    let listener = new Subject<Asistencia>();
+    let investigacion = asistencia.sintomacovid;
+    this.updateCovidFromInvestig(asistencia, investigacion);
+    this.updateFollowUpFromInvestig(asistencia, investigacion);
+
+    this.updateAsistencia(listener, asistencia);
+    return listener;
+  }
+  
+  private updateFollowUpFromInvestig(asistencia: Asistencia, investigacion: ContextoCovid ){
+    let followUp = asistencia.followUp || new AfectadoFollowUp();
+    followUp.isActive = true;
+
+    followUp.fe_inicio = devutils.txFromDate(new Date());
+    followUp.fets_inicio = devutils.dateNumFromTx(followUp.fe_inicio);
+
+    followUp.tipo = 'infectado';
+    followUp.sintoma = investigacion.sintoma;
+    followUp.vector = followUp.vector || 'inicia';
+    followUp.fase = followUp.fase || 'fase0';
+    //followUp.slug = '';
+
+
+    // followUp.fe_ucontacto = '';
+    // followUp.fe_ullamado = '';
+    // followUp.parentId = '';
+    // followUp.parentSlug = '';
+    // followUp.qllamados = '';
+    // followUp.qcontactos = '';
+    // followUp.lastCall = '';
+    // followUp.qIntents = '';
+    // followUp.vector = '';
+    // followUp.fase = '';
+    // followUp.isAsignado = '';
+    // followUp.asignadoId = '';
+    // followUp.asignadoSlug = '';
+    // followUp.isContacto = '';
+    // followUp.derivadoId = '';
+    // followUp.derivadoSlug = '';
+    // followUp.fets_ucontacto = '';
+    // followUp.fets_ullamado = '';
+
+    asistencia.followUp = followUp;
+
+  }
+
+  private updateCovidFromInvestig(asistencia: Asistencia, investigacion: ContextoCovid ){
+    let infeccion = asistencia.infeccion || new InfectionFollowUp();
+    asistencia.isCovid = true;
+
+    infeccion.isActive = true;
+    infeccion.isInternado = investigacion.isInternado ;
+    //infeccion.isExtradistrito = '';
+    infeccion.hasCovid = true;
+    infeccion.actualState = 1;
+
+    infeccion.fe_inicio = investigacion.fe_inicio;
+    // infeccion.fe_confirma = infeccion.fe_confirma;
+    //infeccion.fe_alta = '';
+    infeccion.avance = infeccion.avance || 'comunitario';
+    infeccion.sintoma = investigacion.sintoma;
+    infeccion.locacionSlug = investigacion.internacionSlug || investigacion.tinternacion;
+    infeccion.tinternacion = investigacion.tinternacion;
+    infeccion.institucion = INSTITUCIONALIZADO.indexOf(investigacion.trabajo) !== -1 ? investigacion.trabajo : infeccion.institucion;
+    //infeccion.institucionTxt = '';
+    infeccion.trabajo = investigacion.trabajo;
+    infeccion.trabajoTxt = investigacion.trabajoSlug;
+    //infeccion.qcoworkers = '';
+    // infeccion.qcovivientes = '';
+    // infeccion.qotros = '';
+    infeccion.fets_inicio = devutils.dateNumFromTx(infeccion.fe_inicio);
+    //infeccion.fets_confirma = '';
+    //infeccion.fets_alta = '';
+    infeccion.slug = asistencia.description || infeccion.slug;
+
+    asistencia.infeccion = infeccion;
+  }
 
 
 

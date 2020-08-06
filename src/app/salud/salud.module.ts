@@ -92,6 +92,7 @@ import { VigilanciaPanelComponent } from './vigilancia/vigilancia-panel/vigilanc
 import { VigilanciaFollowupComponent } from './vigilancia/vigilancia-followup/vigilancia-followup.component';
 import { VigilanciaViewComponent } from './vigilancia/vigilancia-view/vigilancia-view.component';
 import { VigilanciaListComponent } from './vigilancia/vigilancia-list/vigilancia-list.component';
+
 import { VigilanciaSisaComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisa/vigilancia-sisa.component';
 import { VigilanciaSisafwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisafwup/vigilancia-sisafwup.component';
 import { VigilanciaSisahistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisahistory/vigilancia-sisahistory.component';
@@ -99,17 +100,18 @@ import { VigilanciaSeguimientoComponent } from './vigilancia/vigilancia-zmodal/v
 import { VigilanciaSeguimientofwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
 import { VigilanciaInfeccionComponent } from './vigilancia/vigilancia-zmodal/vigilancia-infeccion/vigilancia-infeccion.component';
-import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigilancia-alta-panel/vigilancia-alta-panel.component';
 import { VigilanciaLaboratorioComponent } from './vigilancia/vigilancia-zmodal/vigilancia-laboratorio/vigilancia-laboratorio.component';
 import { VigilanciaVinculosComponent } from './vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
+import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientocalendar/vigilancia-seguimientocalendar.component';
+import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigilancia-coredata/vigilancia-coredata.component';
+
+import { VigilanciaAltaPanelComponent } from './vigilancia/vigilancia-alta/vigilancia-alta-panel/vigilancia-alta-panel.component';
 import { VigilanciaDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-dashboard-page/vigilancia-dashboard-page.component';
 import { InternacionHeaderControlComponent } from './internacion/internacion-helpers/internacion-header-control/internacion-header-control.component';
-import { VigilanciaSeguimientocalendarComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientocalendar/vigilancia-seguimientocalendar.component';
 import { VigilanciaReportesPageComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-page/vigilancia-reportes-page.component';
 import { VigilanciaReportesBrowseComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-browse/vigilancia-reportes-browse.component';
 import { VigilanciaReportesTableComponent } from './vigilancia/vigilancia-reportes/vigilancia-reportes-table/vigilancia-reportes-table.component';
 import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigilancia-novedad.component';
-import { VigilanciaCoredataComponent } from './vigilancia/vigilancia-zmodal/vigilancia-coredata/vigilancia-coredata.component';
 import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
 import { SolcovidOfflineEditComponent } from './covid/sol-covid-data/solcovid-offline-edit/solcovid-offline-edit.component';
 import { SolcovidOfflinePanelComponent } from './covid/sol-covid-page/solcovid-offline-panel/solcovid-offline-panel.component';
@@ -262,7 +264,20 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
       CoreDataViewComponent,
       SolinternacionViewComponent,
       TriageEditComponent,
-      InternacionEditComponent
+      InternacionEditComponent,
+      VigilanciaSisaComponent,
+      VigilanciaSisafwupComponent,
+      VigilanciaSisahistoryComponent,
+      VigilanciaSeguimientoComponent,
+      VigilanciaSeguimientofwupComponent,
+      VigilanciaSeguimientohistoryComponent,
+      VigilanciaInfeccionComponent,
+      VigilanciaLaboratorioComponent,
+      VigilanciaVinculosComponent,
+      VigilanciaSeguimientocalendarComponent,
+      VigilanciaCoredataComponent,
+      VigilanciaAltaPanelComponent,
+      PersonBuscarComponent
   ]
 
 })

@@ -30,37 +30,22 @@ const FIEBRE_TXT = [
 })
 export class InvestigEpidemioEditComponent implements OnInit {
 	@Input() token: Asistencia;
+  @Input() usersOptList: Array<any> = [];
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
-  public actionOptList = []; // AsistenciaHelper.getOptionlist('actions');
-  public sectorOptList =  AsistenciaHelper.getOptionlist('sectores');
-  public sectorActionRelation = AsistenciaHelper.getSectorActionRelation();
-  public avanceEstadoRelation = AsistenciaHelper.getAvanceEstadoRelation();
-  public ciudadesOptList = AsistenciaHelper.getOptionlist('ciudades');
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
   public prioridadOptList = AsistenciaHelper.getOptionlist('prioridad');
-  public osocialOptList = AsistenciaHelper.getOptionlist('osocial');
-  public ciudadesList =   personModel.ciudades;
-  public barrioList = [];
 
-
-
-  public tcompPersonaFisica = personModel.tipoDocumPF;
-  public sexoOptList        = personModel.sexoList;
+  public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
+  public tinternacionOptList = AsistenciaHelper.getOptionlist('tinternacion')
+  public derivacionOptList = AsistenciaHelper.getOptionlist('derivacion')
+  public trabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
 
 	public form: FormGroup;
 
-  public showViewAlimento = false;
-  public showEditAlimento = false;
-  public showAmbitoLaboral = false;
-
   private formAction = "";
-  private fireEvent: UpdateAsistenciaEvent;
-
-  public novedadesTitle = 'Seguimiento de novedades relativas a esta SOLICITUD';
-  public currentEventTxt = '';
 
   public isCovid = false;
   public isDenuncia = false;
@@ -114,58 +99,17 @@ export class InvestigEpidemioEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    if(type==='sector'){
-      this.actionOptList = this.sectorActionRelation[val] || [];
 
-      if(this.actionOptList.length === 1){
-        this.form.get('action').setValue(this.actionOptList[0].val);
-
-      }
-    }
-
-    if(type==='avance'){
-      this.estadoOptList = this.avanceEstadoRelation[val] || [];
-      
-      if(this.token.avance === val && this.token.estado){
-        this.form.get('estado').setValue(this.token.estado);
-
-      } else if(this.estadoOptList.length === 1){
-        this.form.get('estado').setValue(this.estadoOptList[0].val);
-
-      }else {
-        this.form.get('estado').setValue(null);
-
-      }
-    }
   }
 
  
-  changeSalud(){
-    this.showAmbitoLaboral = !this.showAmbitoLaboral
-
-  }
-
-	changeCity() {
-	    this.barrioList = personModel.getBarrioList(this.form.value.city);
-
-	}
-
 
   buildForm(): FormGroup{
   	let form: FormGroup;
 
     form = this.fb.group({
 			description: [null],
-      sector:      [null, Validators.compose([Validators.required])],
-			action:      [null, Validators.compose([Validators.required])],
-			fecomp:      [null, Validators.compose([Validators.required])],
-      avance:      [null, Validators.compose([Validators.required])],
-      estado:      [null, Validators.compose([Validators.required])],
-      tdoc:        [null],
-      ndoc:        [null],
-      telefono:    [null, [this.validateCovidFlds(this)]],
-      sexo:        [null],
-      edad:        [null],
+
       tipo:        [1],
       prioridad:   [null],
 
@@ -184,9 +128,35 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasSintomas:        [null],
       fe_inicio:          [null],
 
+      sintoma:            [null],
+      fe_prevAlta:        [null],
+
       hasViaje:           [null],
       hasContacto:        [null],
       hasEntorno:         [null],
+
+      hasDiabetes:        [null],
+      hasHta:        [null],
+      hasCardio:        [null],
+      hasPulmonar:        [null],
+      hasCronica:        [null],
+      hasFumador:        [null],
+      hasObesidad:        [null],
+      comorbilidad:        [null],
+
+      isInternado:         [null],
+      tinternacion:        [null],
+      internacionSlug:     [null],
+
+      derivacion:          [null],
+      trabajo:             [null],
+      trabajoSlug:         [null],
+
+      derivaSaludMental:   [null],
+      derivaDesarrollo:    [null],
+      derivaHisopado:      [null],
+      derivaOtro:          [null],
+      derivacionSlug:      [null],
 
       hasTrabajoAdulMayores:  [null],
       hasTrabajoHogares:      [null],
@@ -195,15 +165,11 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasTrabajoSalud:        [null],
       contexto:               [null],
 
-      osocial:     [null],
-      osocialTxt:  [null],
-    	street1:            [null],
-    	streetIn:           [null],
-    	streetOut:          [null],
-    	city:               [null],
-    	barrio:             [null],
     	nombre:             [null],
     	apellido:           [null],
+
+      fe_investig:        [null],
+      userId:             [null],
 
     });
 
@@ -211,38 +177,17 @@ export class InvestigEpidemioEditComponent implements OnInit {
   }
 
   private initForEdit(form: FormGroup, token: Asistencia): FormGroup {
-    this.currentEventTxt = token._id ? 'Editando S/Asis ' + token.compNum + ' ' + token.fecomp_txa  : 'NUEVO EVENTO'
-
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let requirente = token.requeridox || new Requirente();
     let fiebreOptions = 1;
-
-
-    let locacion = token.locacion || new Locacion();
-		this.barrioList = personModel.getBarrioList(locacion.city);
-
-
 
     token.tipo = token.tipo || 4;
 
 		form.reset({
 			description: token.description,
-			action:      token.action,
-      sector:      token.sector,
-			fecomp:      token.fecomp_txa,
-      estado:      token.estado,
-      avance:      token.avance,
 
-      tdoc:        token.tdoc,
-      ndoc:        token.ndoc,
-      telefono:    token.telefono,
-      sexo:        token.sexo,
-      edad:        token.edad,
       tipo:        token.tipo,
       prioridad:   token.prioridad || 2,
-
-      osocial:     token.osocial,
-      osocialTxt:  token.osocialTxt,
 
       hasDifRespiratoria: sintomaCovid.hasDifRespiratoria,
       hasDolorGarganta:   sintomaCovid.hasDolorGarganta,
@@ -251,9 +196,44 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasTos:             sintomaCovid.hasTos,
       sintomas:           sintomaCovid.sintomas,
 
-      hasViaje:           sintomaCovid.hasViaje,
-      hasContacto:        sintomaCovid.hasContacto,
-      hasEntorno:         sintomaCovid.hasEntorno,
+      hasNeumonia:       sintomaCovid.hasNeumonia,
+      hasDolorCabeza:    sintomaCovid.hasDolorCabeza,
+      hasDiarrea:        sintomaCovid.hasDiarrea,
+      hasSintomas:       sintomaCovid.hasSintomas,
+      fe_inicio:         sintomaCovid.fe_inicio,
+
+      sintoma:            sintomaCovid.sintoma,
+      fe_prevAlta:        sintomaCovid.fe_prevAlta,
+
+
+      hasDiabetes:   sintomaCovid.hasDiabetes,
+      hasHta:        sintomaCovid.hasHta,
+      hasCardio:     sintomaCovid.hasCardio,
+      hasPulmonar:   sintomaCovid.hasPulmonar,
+      hasCronica:    sintomaCovid.hasCronica,
+      hasFumador:    sintomaCovid.hasFumador,
+      hasObesidad:   sintomaCovid.hasObesidad,
+      comorbilidad:  sintomaCovid.comorbilidad,
+
+
+      isInternado:     sintomaCovid.isInternado,
+      tinternacion:    sintomaCovid.tinternacion,
+      internacionSlug: sintomaCovid.internacionSlug,
+
+
+      derivaSaludMental: sintomaCovid.derivaSaludMental,
+      derivaDesarrollo:  sintomaCovid.derivaDesarrollo,
+      derivaHisopado:    sintomaCovid.derivaHisopado,
+      derivaOtro:        sintomaCovid.derivaOtro,
+      derivacion:        sintomaCovid.derivacion,
+      derivacionSlug:    sintomaCovid.derivacionSlug,
+
+      trabajo:           sintomaCovid.trabajo,
+      trabajoSlug:       sintomaCovid.trabajoSlug,
+
+      hasViaje:          sintomaCovid.hasViaje,
+      hasContacto:       sintomaCovid.hasContacto,
+      hasEntorno:        sintomaCovid.hasEntorno,
 
       hasTrabajoAdulMayores:  sintomaCovid.hasTrabajoAdulMayores,
       hasTrabajoHogares:      sintomaCovid.hasTrabajoHogares,
@@ -262,21 +242,17 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasTrabajoSalud:        sintomaCovid.hasTrabajoSalud,
 
       contexto:           sintomaCovid.contexto,
+      fe_investig:        sintomaCovid.fe_investig,
+      userId:             sintomaCovid.userId,
 
       fiebre:             sintomaCovid.fiebre,
       fiebreRB:           sintomaCovid.fiebreRB,
 
-    	street1:       locacion.street1,
-    	streetIn:      locacion.streetIn,
-    	streetOut:     locacion.streetOut,
-    	city:          locacion.city,
-    	barrio:        locacion.barrio,
     	nombre:        requirente.nombre || requirente.slug,
       apellido:      requirente.apellido,
 
 		});
 
-    this.actionOptList = this.sectorActionRelation[token.sector] || [];
     this.buildNovedades(token.novedades)
 
     this.isCovid =  token.tipo === 1 || token.tipo === 3 || token.tipo === 4;
@@ -325,19 +301,8 @@ export class InvestigEpidemioEditComponent implements OnInit {
 		const entity = token;
 
 		entity.description =  fvalue.description;
-		entity.action =       fvalue.action;
-    entity.sector =       fvalue.sector;
-		entity.fecomp_txa =   fvalue.fecomp;
-    entity.estado =       fvalue.estado;
-    entity.avance =       fvalue.avance;
 
-    entity.tdoc =       fvalue.tdoc;
-    entity.ndoc =       fvalue.ndoc;
-    entity.telefono =   fvalue.telefono;
-    entity.sexo =       fvalue.sexo;
-    entity.edad =       fvalue.edad;
     entity.tipo =       fvalue.tipo;
-
     entity.prioridad =  fvalue.prioridad;
 
 		entity.estado = entity.estado || 'activo';
@@ -353,15 +318,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     entity.osocialTxt = fvalue.osocialTxt;
 
 
-    let locacion = entity.locacion || new Locacion();
-		locacion.street1 =       fvalue.street1;
-		locacion.streetIn =      fvalue.streetIn;
-		locacion.streetOut =     fvalue.streetOut;
-		locacion.city =          fvalue.city;
-		locacion.barrio =        fvalue.barrio;
-
-		entity.locacion = locacion;
-
     let requirente = entity.requeridox|| new Requirente();
     requirente.slug =     fvalue.apellido + ', ' + fvalue.nombre;
     requirente.nombre =   fvalue.nombre;
@@ -372,12 +328,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     entity.requeridox =   requirente;
 
     //////////////////
-
-
-
-
-
-
 		return entity;
 	}
 
@@ -401,6 +351,41 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasFaltaOlfato =     fvalue.hasFaltaOlfato;
     covid.sintomas =           fvalue.sintomas;
 
+    covid.hasNeumonia =     fvalue.hasNeumonia;
+    covid.hasDolorCabeza =  fvalue.hasDolorCabeza;
+    covid.hasDiarrea =      fvalue.hasDiarrea;
+    covid.hasFaltaGusto =   fvalue.hasFaltaGusto;
+    covid.hasFaltaOlfato =  fvalue.hasFaltaOlfato;
+    covid.sintomas =        fvalue.sintomas;
+    covid.hasSintomas =     fvalue.hasSintomas;
+    covid.fe_inicio =       fvalue.fe_inicio;
+
+    covid.sintoma =           fvalue.sintoma;
+    covid.fe_prevAlta =       fvalue.fe_prevAlta;
+
+    covid.hasDiabetes =       fvalue.hasDiabetes;
+    covid.hasHta =            fvalue.hasHta;
+    covid.hasCardio =         fvalue.hasCardio;
+    covid.hasPulmonar =       fvalue.hasPulmonar;
+    covid.hasCronica =        fvalue.hasCronica;
+    covid.hasFumador =        fvalue.hasFumador;
+    covid.hasObesidad =       fvalue.hasObesidad;
+    covid.comorbilidad =      fvalue.comorbilidad;
+    covid.isInternado =       fvalue.isInternado;
+    covid.tinternacion =      fvalue.tinternacion;
+    covid.internacionSlug =   fvalue.internacionSlug;
+
+
+    covid.derivaSaludMental = fvalue.derivaSaludMental;
+    covid.derivaDesarrollo =  fvalue.derivaDesarrollo;
+    covid.derivaHisopado =    fvalue.derivaHisopado;
+    covid.derivaOtro =        fvalue.derivaOtro;
+    covid.derivacionSlug =    fvalue.derivacionSlug;
+    covid.derivacion =        fvalue.derivacion;
+
+    covid.trabajoSlug =       fvalue.trabajoSlug;
+    covid.trabajo =           fvalue.trabajo;
+
     covid.hasViaje =           fvalue.hasViaje;
     covid.hasContacto =        fvalue.hasContacto;
     covid.hasEntorno =         fvalue.hasEntorno;
@@ -413,6 +398,15 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.contexto =               fvalue.contexto;
 
     covid.indicacion = 'Permanecer aislado controlando los síntomas';
+
+    covid.fe_investig =         fvalue.fe_investig;
+    covid.userId =              fvalue.userId;
+    if(covid.fe_investig){
+      covid.fets_investig = devutils.dateNumFromTx(covid.fe_inicio);
+    }
+    if(covid.userId){
+      covid.userInvestig = this.usersOptList.find(t=>t.val === covid.userId).label;
+    }
 
     return covid;
   }

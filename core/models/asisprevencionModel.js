@@ -77,16 +77,17 @@ const novedadSch = new Schema({
 })
 
 const locacionSch = new Schema({
-    street1:   { type: String, required: false},
-    street2:   { type: String, required: false},
-    streetIn:  { type: String, required: false},
-    streetOut: { type: String, required: false},
-    city:      { type: String, required: false},
-    barrio:    { type: String, required: false},
-    hasBanio:  {type: Boolean, required: false, defalut: false},
-    zip:       { type: String, required: false},
-    lat:       { type: Number, required: false},
-    lng:       { type: Number, required: false},
+    street1:       { type: String,  required: false},
+    street2:       { type: String,  required: false},
+    streetIn:      { type: String,  required: false},
+    streetOut:     { type: String,  required: false},
+    city:          { type: String,  required: false},
+    barrio:        { type: String,  required: false},
+    hasBanio:      { type: Boolean, required: false, defalut: false},
+    hasHabitacion: { type: Boolean, required: false, defalut: false},
+    zip:           { type: String,  required: false},
+    lat:           { type: Number,  required: false},
+    lng:           { type: Number,  required: false},
 });
 
 
@@ -138,13 +139,6 @@ const contextoCovidSch = new Schema({
     fiebre:       { type: Number,  required: false },
     fiebreRB:     { type: Number,  required: false },
 
-    hasDifRespiratoria: { type: Boolean, required: false },
-    hasDolorGarganta:   { type: Boolean, required: false },
-    hasTos:             { type: Boolean, required: false },
-    hasFaltaGusto:      { type: Boolean, required: false },
-    hasFaltaOlfato:     { type: Boolean, required: false },
-    sintomas:           { type: String,  required: false },
-
     hasViaje:     { type: Boolean, required: false },
     hasContacto:  { type: Boolean, required: false },
     hasEntorno:   { type: Boolean, required: false },
@@ -154,6 +148,44 @@ const contextoCovidSch = new Schema({
     hasTrabajoPolicial:    { type: Boolean, required: false },
     hasTrabajoHospitales:  { type: Boolean, required: false },
     hasTrabajoSalud:       { type: Boolean, required: false },
+
+    hasSintomas:           { type: Boolean, required: false },
+
+    hasDifRespiratoria: { type: Boolean, required: false },
+    hasDolorGarganta:   { type: Boolean, required: false },
+    hasTos:             { type: Boolean, required: false },
+    hasNeumonia:        { type: Boolean, required: false },
+    hasDolorCabeza:     { type: Boolean, required: false },
+    hasFaltaGusto:      { type: Boolean, required: false },
+    hasFaltaOlfato:     { type: Boolean, required: false },
+    sintomas:           { type: String,  required: false },
+
+    hasDiarrea:            { type: Boolean, required: false },
+    hasDiabetes:           { type: Boolean, required: false },
+    hasHta:                { type: Boolean, required: false },
+    hasCardio:             { type: Boolean, required: false },
+    hasPulmonar:           { type: Boolean, required: false },
+    hasCronica:            { type: Boolean, required: false },
+    hasFumador:            { type: Boolean, required: false },
+    hasObesidad:           { type: Boolean, required: false },
+    comorbilidad:          { type: String, required: false },
+
+
+    fe_inicio:           { type: String,  required: false },
+    sintoma:             { type: String,  required: false },
+    fe_prevAlta:         { type: String,  required: false },
+    isInternado:         { type: Boolean, required: false },
+    tinternacion:        { type: String,  required: false },
+    internacionSlug:     { type: String,  required: false },
+    derivacion:          { type: String,  required: false },
+    derivaSaludMental:   { type: Boolean,  required: false },
+    derivaDesarrollo:    { type: Boolean,  required: false },
+    derivaHisopado:      { type: Boolean,  required: false },
+    derivaOtro:          { type: Boolean,  required: false },
+    derivacionSlug:      { type: String,  required: false },
+
+    trabajo:             { type: String, required: false },
+    trabajoSlug:         { type: String, required: false },
 
     contexto:     { type: String,  required: false },
 
@@ -167,8 +199,13 @@ const contextoCovidSch = new Schema({
     estaInternado:   { type: Boolean, required: false },
     estaEnDomicilio: { type: Boolean, required: false },
 
-    hasCOVID:     { type: Boolean, required: false },
-    isCOVID:      { type: Boolean, required: false },
+    hasCOVID:      { type: Boolean, required: false },
+    isCOVID:       { type: Boolean, required: false },
+
+    fe_investig:   { type: String, required: false },
+    fets_investig: { type: Number, required: false },
+    userInvestig:  { type: String, required: false },
+    userId:        { type: String, required: false },
 
 });
 
@@ -261,6 +298,8 @@ const infeccionFollowUpSch = new Schema({
     avance:         { type: String,  required: false },
     sintoma:        { type: String,  required: false },
     locacionSlug:   { type: String,  required: false },
+    tinternacion:   { type: String,  required: false },
+
     institucion:    { type: String,  required: false, default: 'noinstitucionalizado' },
     institucionTxt: { type: String,  required: false },
     trabajo:        { type: String,  required: false, default: 'sindato'  },

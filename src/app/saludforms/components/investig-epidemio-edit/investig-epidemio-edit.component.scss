@@ -1,4 +1,5 @@
 $color-destacado: #0645f5;
+$color-resaltado: #0755ff;
 
 .panel-header-control {
 		margin: 0 35px 0 0;
@@ -39,8 +40,8 @@ $color-destacado: #0645f5;
 
 .text-resaltado {
 		margin: 0 0 0 0;
-		color: $color-destacado;
-		font-weight: 400;
+		color: $color-resaltado;
+		font-weight: 700;
 		font-size: 1.2rem;
 		font-style: italic;
 

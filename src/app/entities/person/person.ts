@@ -119,6 +119,7 @@ export class Address {
     encuesta: EncuestaAmbiental;
     estadoviv: string = 'activa';
     hasBanio?: boolean = true; // baño de uso exclusivo;
+    hasHabitacion?: boolean = false; // Habitación de uso exclusivo;
     cualificacionviv: string = 'buena';
 }
 
