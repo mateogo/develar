@@ -149,6 +149,11 @@ export class SolInternacionTable {
 		avance:      string;
 		ts_alta:     number;
 		prioridad:   string;
+		// agregaremos atributos para mostrar en la vista (ver posibilidad de agregar/retirar otros)
+		camaSlug :   string;
+		locSlug :    string;
+		servicio :   string;
+
 };
 
 export class SolInternacionBrowse {

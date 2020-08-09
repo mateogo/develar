@@ -1,16 +1,23 @@
-<mat-card class="mb-3">
-    <mat-card-title>{{internacion._id}}</mat-card-title>
+<mat-card class="mb-3 mt-3">
+    <mat-card-title>
+        {{internacion.locSlug}} :: {{internacion.servicio}} - {{internacion.estado}}
+    </mat-card-title>
+    <mat-card-subtitle>
+        {{internacion.personSlug}}
+    </mat-card-subtitle>
     <mat-card-content>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-md-12">
-                   <p class='text-destacado'>{{internacion.compName}} : {{internacion.compNum}} - {{internacion.fecomp_txa}} -  <strong>ACTION</strong></p>
-                   <p class='text-resaltado'>{{ internacion.personSlug }}</p>
-                   <p class='text-normal'>{{internacion.sector}} :: {{internacion.slug}} :: {{internacion.avance}} </p>
-                   <p class='text-normal'> {{internacion.description}} </p>
-       
-                   <div class="novedades-container">
-                        <p> VEMOS DESPUÉS QUE PODEMOS MOSTRAR ACA</p>
+                    <p class='text-normal'>{{internacion.compName}} : {{internacion.compNum}} - {{internacion.fecomp_txa}} -  
+                       <strong>{{internacion.action}}</strong>
+                   </p>
+                   <p class='text-normal'>{{internacion.avance}} :: {{internacion.slug}} </p>
+                   <div *ngIf="internacion.estado === 'alocado'">
+                    <p class='text-normal' > {{internacion.description}} </p>
+                    <div class="novedades-container">
+                        <p>{{internacion.camaSlug}}</p>
+                   </div>
                    </div>
                </div>
            </div>

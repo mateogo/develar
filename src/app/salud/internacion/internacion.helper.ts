@@ -117,19 +117,33 @@ export class  InternacionHelper {
   static buildDataTable(list: SolicitudInternacion[]): SolInternacionTable[]{
     return list.map(token => {
       const td = new SolInternacionTable();
+      let internacion : Internacion;
+      internacion = token.internacion;
       td._id = token._id;
       td.fecomp_tsa = token.fecomp_tsa;
       td.fecomp_txa = token.fecomp_txa;
+      td.personId = token.requeridox.id;
       td.personSlug = token.requeridox.slug;//
       td.compName = token.compName;//
       td.compNum = token.compNum;//
-      td.sector = token.sector;//
-      td.avance = token.avance;//
-      td.slug = token.slug;//
-      td.description = token.description;//
+      td.prioridad = token.prioridad.toString();
+      td.ts_alta = token.ts_alta;
+      td.action = InternacionHelper.getOptionLabel(actionsOptList,token.action);
+      td.slug = internacion.slug;//
+      td.description = internacion.description;
+      td.avance = InternacionHelper.getOptionLabel(avanceSolicitudOptList,internacion.estado);//
+      td.estado = InternacionHelper.getOptionLabel(queueOptList,token.queue);//
+      td.locSlug = internacion.locSlug;
+      td.servicio = InternacionHelper.getOptionLabel(serviciosOptList,internacion.servicio);
+      if(token.queue === 'alocado'){//
+        td.camaSlug = internacion.camaSlug;//
+      }
       // Los elementos marcados con // son agregados para mostrar en la lista
       // de internacion-dashboard-list y/o internacion-dashboard-table
       // ver posibilidad de retirar o agregar más atributos
+
+
+      
       return td;
     })
 

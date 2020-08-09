@@ -1,5 +1,10 @@
 $color-destacado: #0645f5;
 
+mat-card-title,mat-card-subtitle{
+	color: $color-destacado;
+	font-style: italic;
+}
+
 .text-destacado {
 		margin: 0 0 0 0;
 		color: $color-destacado;
