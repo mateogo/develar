@@ -791,7 +791,8 @@ function buildQuery(query, today){
       q['followUp.asignadoId'] = query['userId']
 
     }else {
-      nestedOrs.push([{'followUp.asignadoId': query['userId']}, {'followUp.derivadoId': query['userId']} ])
+      //nestedOrs.push([{'followUp.asignadoId': query['userId']}, {'followUp.derivadoId': query['userId']} ])
+      q['followUp.asignadoId'] = query['userId']
     }
   }
 
@@ -1584,6 +1585,11 @@ function agruparCasosIndices(movimientos){
       return contactosMap;  
 }
 
+function isCovidActivo(asistencia){
+  if(asistencia && asistencia.infeccion && asistencia.infeccion.actualState === 1 ) return true;
+  return false;
+}
+
 function isCovidTotal(asistencia){
   if(asistencia && asistencia.infeccion && 
     (asistencia.infeccion.actualState === 1 || asistencia.infeccion.actualState === 4 || asistencia.infeccion.actualState === 5)) return true;
@@ -1631,13 +1637,13 @@ function sumarCasosPorUsuario(movimientos, contactMap){
 
       let isAsignado = asis.followUp && asis.followUp.isAsignado;
       let hasCasoIndice = asis.casoIndice && asis.casoIndice.parentId;
-      let covid = isCovidTotal(asis);
+      let covid = isCovidActivo(asis);
       
       let index = JSON.stringify(asis._id);
       let hasContactosEstrechos = contactMap.has(index);
       let token = {}; 
 
-      token['contactos'] = 1;
+      token['contactos'] = 0;
       token['isAsignado'] = isAsignado;
       token['asignadoId'] =   (asis.followUp && asis.followUp.asignadoId) || 'errorasignacion';
       token['asignadoSlug'] = (asis.followUp && asis.followUp.asignadoSlug) || 'Usuario sin nombre';
@@ -1659,12 +1665,12 @@ function sumarCasosPorUsuario(movimientos, contactMap){
 
         if(hasContactosEstrechos){
           token['contactos'] =contactMap.get(index).contactos;
-          targetMap.set(index, token)
 
         }else if(!hasCasoIndice){
             token['isHuerfano'] = true;
-            targetMap.set(index, token)
         }
+
+        targetMap.set(index, token)
 
       // no tiene asignado usuario 
       }else {
