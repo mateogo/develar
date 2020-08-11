@@ -100,7 +100,6 @@ export class VigilanciaBrowseComponent implements OnInit {
 
   emitEvent(action:string){
   	this.query.searchAction = action;
-    console.dir(this.query)
   	this.updateQuery.next(this.query);
   }
 

@@ -8,7 +8,7 @@ import {  Person } from '../../../../entities/person/person';
 
 import { 	Asistencia, 
           AsistenciaTable,
-          AsistenciaBrowse,
+          VigilanciaBrowse,
 					Alimento,
           AsistenciaSig, 
 					UpdateAsistenciaEvent, 
@@ -37,7 +37,7 @@ export class SolDashboardPageComponent implements OnInit {
   public title = 'Solicitudes';
   public openEditor = true;
   public unBindList = [];
-  public query: AsistenciaBrowse = new AsistenciaBrowse();
+  public query: VigilanciaBrowse = new VigilanciaBrowse();
 
   public showData =  false;
 	public showTable = false;
@@ -130,7 +130,7 @@ export class SolDashboardPageComponent implements OnInit {
     this.showData = false;
 
     if(!query){
-      query = new AsistenciaBrowse();
+      query = new VigilanciaBrowse();
       query['avance'] = 'emitido';
 
       this.query = query;
@@ -144,10 +144,8 @@ export class SolDashboardPageComponent implements OnInit {
 
     }
 
-    Object.keys(query).forEach(key =>{
-      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-    })
+    AsistenciaHelper.cleanQueryToken(this.query, true);
+
 
     this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
       if(list && list.length > 0){
@@ -293,8 +291,9 @@ export class SolDashboardPageComponent implements OnInit {
     this.openEditor = !this.openEditor;
   }
 
-  refreshSelection(query: AsistenciaBrowse){
+  refreshSelection(query: VigilanciaBrowse){
     this.query = query;
+    this.openEditor = false;
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
       this.fetchSolicitudes(this.query, query.searchAction);

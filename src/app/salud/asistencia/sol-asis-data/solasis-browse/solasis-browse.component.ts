@@ -5,7 +5,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
-import { AsistenciaBrowse,  AsistenciaHelper } from '../../asistencia.model';
+import { VigilanciaBrowse,  AsistenciaHelper } from '../../asistencia.model';
 
 import { SaludController } from '../../../salud.controller';
 
@@ -23,8 +23,8 @@ const SEARCH_NEXT = 'search_next';
   styleUrls: ['./solasis-browse.component.scss']
 })
 export class SolasisBrowseComponent implements OnInit {
-	@Input() query: AsistenciaBrowse = new AsistenciaBrowse();
-	@Output() updateQuery = new EventEmitter<AsistenciaBrowse>();
+	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
+	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
@@ -43,7 +43,7 @@ export class SolasisBrowseComponent implements OnInit {
 
 
   private formAction = "";
-  private fireEvent: AsistenciaBrowse;
+  private fireEvent: VigilanciaBrowse;
   public usersOptList;
 
   public isEncuesta = false;
@@ -60,11 +60,12 @@ export class SolasisBrowseComponent implements OnInit {
     this.sectorOptList.push(
        {val: 'no_definido', type:'Sin selección',  label: 'Sin selección' }
      );
+    this.query.isVigilado = false;
 
-    this.query = this.dsCtrl.asistenciasSelector;
-  	this.initForEdit(this.form, this.query);
-    this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+    this.initForEdit(this.form, this.query);
 
+    //this.query = this.dsCtrl.asistenciasSelector;
+    //this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
   }
 
   onSubmit(action){
@@ -90,14 +91,7 @@ export class SolasisBrowseComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    if(type === 'action' && val !== "encuesta"){
-      this.isEncuesta = false;
-    }
-    
-    if(type==="action" && val==="encuesta"){
-      if(!this.usersOptList || !this.usersOptList.length) this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
-      this.isEncuesta = true;
-    }
+
   }
 
   personFetched(person:Person){
@@ -116,12 +110,15 @@ export class SolasisBrowseComponent implements OnInit {
     form = this.fb.group({
       compPrefix:   [{value: "", disabled: true}],
       compName:     [{value: "", disabled: true}],
+      isVigilado:   [null],
       compNum_d:    [null],
       compNum_h:    [null],
       sector:       [null],
 			action:       [null],
 			fecomp_d:     [null],
 			fecomp_h:     [null],
+      fenovd:       [null],
+      fenovh:       [null],
       avance:       [null],
       estado:       [null],
       fe_visita:    [null],
@@ -130,13 +127,12 @@ export class SolasisBrowseComponent implements OnInit {
       city:         [null],
       urgencia:     [null],
       trabajadorId: [null],
-      avance_encuesta: [null],
     });
 
     return form;
   }
 
-  initForEdit(form: FormGroup, query: AsistenciaBrowse): FormGroup {
+  initForEdit(form: FormGroup, query: VigilanciaBrowse): FormGroup {
 		form.reset({
         compPrefix:  query.compPrefix,
         compName:    query.compName,
@@ -145,19 +141,18 @@ export class SolasisBrowseComponent implements OnInit {
 
         fecomp_d:     query.fecomp_d,
         fecomp_h:     query.fecomp_h,
+        fenovd:     query.fenovd,
+        fenovh:     query.fenovh,
+
+        isVigilado: query.isVigilado,
 
         action:      query.action,
         sector:      query.sector,
-        estado:      query.estado,
         avance:      query.avance,
+        estado:      query.estado,
+        city:        query.city,
+        barrio:      query.barrio,
 
-        fe_visita:       query.fe_visita,
-        ruta:            query.ruta,
-        urgencia:        query.urgencia,
-        city:            query.city,
-        barrio:          query.barrio,
-        trabajadorId:    query.trabajadorId,
-        avance_encuesta: query.avance_encuesta,
 		});
 
     if(query.requirenteId && !this.currentPerson) {
@@ -174,7 +169,7 @@ export class SolasisBrowseComponent implements OnInit {
       this.barrioList = personModel.getBarrioList(this.form.value.city);
   }
 
-	initForSave(form: FormGroup, query: AsistenciaBrowse): AsistenciaBrowse {
+	initForSave(form: FormGroup, query: VigilanciaBrowse): VigilanciaBrowse {
 		const fvalue = form.value;
 		const entity = query;
     let dateD = devutils.dateFromTx(fvalue.fecomp_d);
@@ -189,22 +184,25 @@ export class SolasisBrowseComponent implements OnInit {
     entity.fecomp_d =   fvalue.fecomp_d;
     entity.fecomp_h =   fvalue.fecomp_h;
 
+    entity.fenovd =   fvalue.fenovd;
+    entity.fenovh =   fvalue.fenovh;
+
+    entity.fenovd_ts =   devutils.dateNumFromTx(fvalue.fenovd);
+    entity.fenovh_ts =   devutils.dateNumPlusOneFromTx(fvalue.fenovh);
+
     entity.fecomp_ts_d = dateD ? dateD.getTime() : null;
     entity.fecomp_ts_h = dateH ? dateH.getTime() : null;
 
+    entity.isVigilado =   fvalue.isVigilado;
 
 		entity.action =       fvalue.action;
     entity.sector =       fvalue.sector;
-    entity.estado =       fvalue.estado;
     entity.avance =       fvalue.avance;
+    entity.estado =       fvalue.estado;
 
-    entity.fe_visita =       fvalue.fe_visita;
-    entity.ruta =            fvalue.ruta;
-    entity.barrio =          fvalue.barrio;
-    entity.city =            fvalue.city;
-    entity.urgencia =        fvalue.urgencia;
-    entity.trabajadorId =    fvalue.trabajadorId;
-    entity.avance_encuesta = fvalue.avance_encuesta;
+    entity.city =         fvalue.city;
+    entity.barrio =       fvalue.barrio;
+
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;

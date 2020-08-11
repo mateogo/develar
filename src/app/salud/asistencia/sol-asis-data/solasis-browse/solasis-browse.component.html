@@ -5,26 +5,32 @@
 	<!-- fecomp_txa; action; slug; -->
 	<!-- description;  -->
 	<!-- sector; estado; avance; ts_alta; ts_fin; ts_prog;  -->
-
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+          title="Sección para filtrar solicitudes bajo vigilancia">
+          <mat-checkbox class="mat-checkbox-wrap"
+                [checked]="true"
+                [formControl]="form.controls['isVigilado']" >
+                  bajo vigilancia epidemiológica</mat-checkbox>
+      </div>
+      <div class="col-md-1">
         <mat-form-field>
           <input matInput  
-          		[formControl]="form.controls['compPrefix']" placeholder="Prefijo" >
+              [formControl]="form.controls['compPrefix']" placeholder="Prefijo" >
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-2">
         <mat-form-field>
           <input matInput 
-          		[formControl]="form.controls['compName']" placeholder="Comprobante" >
+              [formControl]="form.controls['compName']" placeholder="Comprobante" >
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-2">
         <mat-form-field>
           <input matInput [formControl]="form.controls['compNum_d']" placeholder="Desde número" >
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-2">
         <mat-form-field>
           <input matInput [formControl]="form.controls['compNum_h']" placeholder="Hasta número" >
         </mat-form-field>
@@ -55,13 +61,14 @@
       </div>
       <div class="col">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['fecomp_d']" placeholder="Fecha desde" >
+          <input matInput [formControl]="form.controls['fecomp_d']" 
+          placeholder="Fecha carga de nuevo paciente desde" >
         </mat-form-field>
       </div>
 
       <div class="col">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha hasta" >
+          <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha nuevo paciente hasta" >
         </mat-form-field>
       </div>
 
@@ -92,6 +99,45 @@
 
     <div class="row" >
       <div class="col">
+       <mat-form-field>
+         <mat-select #fldCiudad placeholder="Ciudad"
+             [formControl]="form.controls['city']"
+             (selectionChange)="changeCity()" >
+           <mat-option *ngFor="let item of ciudadesList" 
+             [value]="item.val" >{{ item.label }}</mat-option>
+         </mat-select>
+       </mat-form-field>
+      </div>
+      <div class="col">
+       <mat-form-field>
+         <mat-select #fldbarrio placeholder="Barrio"
+             [formControl]="form.controls['barrio']"
+             (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+           <mat-option *ngFor="let item of barrioList" 
+             [value]="item.val" >{{ item.label }}</mat-option>
+         </mat-select>
+       </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fenovd']" 
+          placeholder="Fecha novedad desde" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fenovh']" placeholder="Fecha novedad hasta" >
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="row" >
+      <div class="col">
         <persona-buscar (person$)=personFetched($event)></persona-buscar>
       </div>
       <div class="col d-flex align-items-center">
@@ -102,105 +148,26 @@
       </div>
     </div>
 
-    <ng-container *ngIf="isEncuesta">
-    <h5>Filtros para Informes Ambientales</h5>
-    <div class="row" >
-      <div class="col">
-
-        <mat-form-field>
-          <input matInput [formControl]="form.controls['fe_visita']" 
-                  placeholder="Fecha prevista de visita" >
-        </mat-form-field>
-
-      </div>
-      <div class="col-md-2">
-        <mat-form-field>
-          <mat-select #fldUrgencia placeholder="Urgencia"
-              [formControl]="form.controls['urgencia']"
-              (selectionChange)="changeSelectionValue('urgencia',fldUrgencia.value)" >
-            <mat-option *ngFor="let item of urgenciaOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldAvance placeholder="Avance de tarea"
-              [formControl]="form.controls['avance_encuesta']"
-              (selectionChange)="changeSelectionValue('avance_encuesta',fldAvance.value)" >
-            <mat-option *ngFor="let item of encuestaOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-
-    </div>
-
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldCiudad placeholder="Ciudad"
-              [formControl]="form.controls['city']"
-              (selectionChange)="changeCity()" >
-            <mat-option *ngFor="let item of ciudadesList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldbarrio placeholder="Barrio"
-              [formControl]="form.controls['barrio']"
-              (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
-            <mat-option *ngFor="let item of barrioList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-
-      <div class="col">
-        <mat-form-field>
-          <input matInput [formControl]="form.controls['ruta']" placeholder="Ruta/ circuito" >
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldUserList placeholder="Trabajador social a/cargo"
-              [formControl]="form.controls['trabajadorId']"
-              (selectionChange)="changeSelectionValue('trabajadorId',fldUserList.value)" >
-            <mat-option *ngFor="let item of usersOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </div>
-    </ng-container>
-
     <hr>
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 
           (click)="onSubmit('search')"
           [disabled]="!form.valid" >Buscar</button>
+
+      <button mat-button type="button" color="accent"
+          (click)="onCancel()" >Cancelar</button>
+
       
-      <button mat-raised-button color="warn" 
+      <!--button mat-raised-button color="warn" 
           (click)="onSubmit('search_next')"
           [disabled]="!form.valid" >Buscar siguientes</button>
       
-      <button mat-button type="button" color="accent"
-          (click)="onCancel()" >Cancelar</button>
 
       <button mat-button type="button" color="accent"
           (click)="showMap('map:show')" >Mostrar mapa</button>
 
       <button mat-button type="button" color="accent"
-          (click)="showMap('map:hide')" >Cerrar mapa</button>
+          (click)="showMap('map:hide')" >Cerrar mapa</button -->
     </div>
 
 </form>

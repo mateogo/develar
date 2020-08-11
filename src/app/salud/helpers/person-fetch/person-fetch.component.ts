@@ -11,7 +11,7 @@ import { SaludController } from '../../salud.controller';
   styleUrls: ['./person-fetch.component.scss']
 })
 export class PersonFetchComponent implements OnInit {
-  @Input() tDoc = "PROV";
+  @Input() tDoc = "DNI";
 	@Output() person$ = new EventEmitter<Person[]>();
   @Output() event$ = new EventEmitter<UpdateEventEmitter>();
   public nDoc = "";

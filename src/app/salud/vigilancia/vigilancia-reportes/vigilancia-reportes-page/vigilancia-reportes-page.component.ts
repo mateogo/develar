@@ -103,7 +103,7 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.openBrowseEditor = !this.openBrowseEditor;
   }
 
-  refreshSelection(query: VigilanciaBrowse){// listener de solcovid-browse
+  refreshSelection(query: VigilanciaBrowse){
     this.showData = false;
     this.showGraph = false;
 
@@ -118,13 +118,13 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }
   }
   
-  updateCurrentAsistencia(e){ //listener de solcovid-panel
+  updateCurrentAsistencia(e){
     this.showEditor = false;
     this.currentAsistencia = null;
     this.fetchSolicitudes(this.query, SEARCH);
   }
 
-  mapRequest(act:string){ // listener de solcovid-browse
+  mapRequest(act:string){
     if(act ==="map:show"){
       this.initMapToRender();
 

@@ -491,7 +491,8 @@ function buildQuery(query, today){
 
   if(query['requirenteId']){
       q["requeridox.id"] = query['requirenteId'];
-      if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
+      //if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
+      return q; // es caso único, no filtra por nada más
 
   }
 
@@ -674,6 +675,14 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['city']) {
+    q['locacion.city'] = query['city'];
+  }
+
+  if(query['barrio']) {
+    q['locacion.barrio'] = query['barrio'];
+  }
+
   if(query['casosIndice']){
     nestedOrs.push([{'contactosEstrechos': {$gt: 0}}, {'hasParent': false} ])
   }
@@ -699,6 +708,11 @@ function buildQuery(query, today){
   if(query["fecomp_ts_d"]){
 
     comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
+  }
+
+
+  if(query["fenovd_ts"] && query["fenovh_ts"]){
+    q['novedades.fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10) }
   }
 
   if(query["fecomp_ts_h"]){
@@ -820,7 +834,7 @@ function buildQuery(query, today){
 
   return q;
 }
-//estado avance
+//estado avance city barrio
 
 /**
  * El Modelo es el objeto constructor de instancias concretas

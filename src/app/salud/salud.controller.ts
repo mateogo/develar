@@ -26,7 +26,7 @@ import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
 
-import { Asistencia, Alimento, AsistenciaBrowse, VigilanciaBrowse, Requirente, Locacion, CasoIndice, ContextoCovid,
+import { Asistencia, Alimento, VigilanciaBrowse, Requirente, Locacion, CasoIndice, ContextoCovid,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig, InfectionFollowUp, SisaEvent, MuestraLaboratorio, AfectadoFollowUp,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
@@ -76,7 +76,7 @@ export class SaludController {
   private actualUrlSegments: UrlSegment[] = [];
   private navigationUrl = "";
 
-  private _asistenciasSelector: AsistenciaBrowse;
+  private _asistenciasSelector: VigilanciaBrowse;
   private _vigilanciaSelector: VigilanciaBrowse;
 
   private _trabajadorxs: User[];
@@ -1684,12 +1684,12 @@ export class SaludController {
   }
 
   // Browse Solicitud de Asistencia Form Data 
-  get asistenciasSelector():AsistenciaBrowse{
-    if(!this._asistenciasSelector) this._asistenciasSelector = new AsistenciaBrowse();
+  get asistenciasSelector():VigilanciaBrowse{
+    if(!this._asistenciasSelector) this._asistenciasSelector = new VigilanciaBrowse();
     return this._asistenciasSelector;
   }
   
-  set asistenciasSelector(e: AsistenciaBrowse){
+  set asistenciasSelector(e: VigilanciaBrowse){
     this._asistenciasSelector = e;
   }
 

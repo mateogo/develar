@@ -5,7 +5,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
-import { AsistenciaBrowse,  AsistenciaHelper } from '../../../asistencia/asistencia.model';
+import { VigilanciaBrowse,  AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 import { SaludController } from '../../../salud.controller';
 
@@ -23,8 +23,8 @@ const SEARCH_NEXT = 'search_next';
   styleUrls: ['./solcovid-browse.component.scss']
 })
 export class SolcovidBrowseComponent implements OnInit {
-	@Input() query: AsistenciaBrowse = new AsistenciaBrowse();
-	@Output() updateQuery = new EventEmitter<AsistenciaBrowse>();
+	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
+	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
   public actionOptList =  AsistenciaHelper.getOptionlist('actions');
@@ -47,7 +47,7 @@ export class SolcovidBrowseComponent implements OnInit {
 
 
   private formAction = "";
-  private fireEvent: AsistenciaBrowse;
+  private fireEvent: VigilanciaBrowse;
   public usersOptList;
 
   public isEncuesta = false;
@@ -73,7 +73,7 @@ export class SolcovidBrowseComponent implements OnInit {
 	buttonActionEvent(e, step){
   	this.formAction = SEARCH;
 
-  	this.query = new AsistenciaBrowse();
+  	this.query = new VigilanciaBrowse();
   	this.query.avance = step.val;
 
     this.selected = step;

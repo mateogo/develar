@@ -1028,6 +1028,14 @@ export class VigilanciaBrowse {
 		compNum_h:   string;
 		actualState: string|number;
 		rebuildLatLon: boolean = false;
+		fecomp_d:    string;
+		fecomp_h:    string;
+		fecomp_ts_d:    number;
+		fecomp_ts_h:    number;
+		action:      string = '';
+		sector:      string = '';
+		estado:      string = 'activo';
+		avance:      string = '';
 
 		reporte:  string; // reportesVigilanciaOptList
 
@@ -1066,6 +1074,15 @@ export class VigilanciaBrowse {
 		feHasta?: string = '';
 		feDesde_ts?: number = 0;
 		feHasta_ts?: number = 0;
+		barrio:      string = '';
+		city:        string = '';
+
+		fenovd: string = '';
+		fenovh: string = '';
+
+		fenovd_ts: number = 0;
+		fenovh_ts: number = 0;
+
 }
 
 export interface AsistenciaSig {
@@ -1226,7 +1243,7 @@ const nucleoHabitacionalOptList: Array<any> = [
 
 const asisActionOptList: Array<any> = [
         {val: 'no_definido', isRemitible: false,  key:'',           type:'Sin selección',  label: 'Sin selección' },
-        {val: 'denuncia',    isRemitible: false,  key:'modalidad',  type:'denuncia',       label: 'COVID' },
+        {val: 'denuncia',    isRemitible: false,  key:'modalidad',  type:'denuncia',       label: 'Denuncia' },
         {val: 'covid',       isRemitible: false,  key:'modalidad',  type:'covid',          label: 'COVID' },
         {val: 'prevencion',  isRemitible: false,  key:'modalidad',  type:'prevencion',     label: 'Llamado prevención' },
         {val: 'same',        isRemitible: false,  key:'modalidad',  type:'same',           label: 'Derivar SAME' },

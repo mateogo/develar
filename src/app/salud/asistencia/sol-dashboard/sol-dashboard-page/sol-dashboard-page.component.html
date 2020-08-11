@@ -10,9 +10,9 @@
 				</div>
 		</div>
 		<ng-container *ngIf="openEditor">
-			<solcovid-browse [query]="query" 
+			<solasis-browse [query]="query" 
 											(updateQuery)="refreshSelection($event)"
-											(mapRequest)="mapRequest($event)" ></solcovid-browse>
+											(mapRequest)="mapRequest($event)" ></solasis-browse>
 		</ng-container>
 	</mat-card-content>
 </mat-card>
