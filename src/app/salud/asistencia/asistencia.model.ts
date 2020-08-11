@@ -2192,6 +2192,18 @@ export class AsistenciaHelper {
       if(key === 'feHasta'         && !query[key]) delete query[key];
       if(key === 'feHasta_ts'      && !query[key]) delete query[key];
 
+      if(key === 'fenovd'         && !query[key]) delete query[key];
+      if(key === 'fenovh'         && !query[key]) delete query[key];
+      if(key === 'fenovh_ts'      && !query[key]) delete query[key];
+      if(key === 'fenovd_ts'      && !query[key]) delete query[key];
+
+      if(key === 'barrio'         && !query[key]) delete query[key];
+      if(key === 'city'           && !query[key]) delete query[key];
+      if(key === 'action'         && !query[key]) delete query[key];
+      if(key === 'sector'         && !query[key]) delete query[key];
+      if(key === 'avance'         && !query[key]) delete query[key];
+
+
     })
 
     return query;
