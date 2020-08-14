@@ -1,0 +1,117 @@
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+	<div class="row">
+	    <div  class="col-md-3">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Derivación/ tarea activa? </mat-checkbox>
+		</div>
+    <div  class="col-md-9">
+        <p class="text-resaltado" >{{ displayAs }}</p>
+    </div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<mat-form-field>
+				<mat-label>Tipo de novedad</mat-label>
+				<mat-select #fldTnovedad  formControlName='tnovedad'
+										(selectionChange)="changeSelectionValue('tnovedad', fldTnovedad.value)">
+				    <mat-optgroup [disabled]="!tnovedadOptList.length" [label]="'Tipo de novedad'">
+				        <mat-option *ngFor="let item of tnovedadOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col-md-6">
+			<mat-form-field>
+				<mat-label>Urgencia</mat-label>
+				<mat-select #fldUrgencia  formControlName='urgencia'
+										(selectionChange)="changeSelectionValue('urgencia', fldUrgencia.value)">
+				    <mat-optgroup [disabled]="!urgenciaOptList.length" [label]="'Seleccione nivel urgencia'">
+				        <mat-option *ngFor="let item of urgenciaOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div class="row">
+	    <div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['novedad']" placeholder="Descripción de necesidad" >
+				</mat-form-field>
+	    </div>
+	</div>
+
+
+	<div class="row">
+			<div  class="col">
+				<mat-form-field>
+				  <input  matInput [formControl]="form.controls['fe_necesidad']" placeholder="Fecha de necesidad" >
+				</mat-form-field>
+			</div>
+			<div class="col-md-6">
+				<mat-form-field>
+					<mat-label>Tipo de intervención</mat-label>
+					<mat-select #fldTarea  formControlName='intervencion'
+											(selectionChange)="changeSelectionValue('intervencion', fldTarea.value)">
+					    <mat-optgroup [disabled]="!intervencionOptList.length" [label]="'Tipo de intervención'">
+					        <mat-option *ngFor="let item of intervencionOptList" [value]="item.val">
+					            {{ item.label }} 
+					        </mat-option>
+					    </mat-optgroup>
+					</mat-select>
+				</mat-form-field>
+			</div>
+
+	</div>
+
+
+	<div class="row">
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Estado de ejecución</mat-label>
+				<mat-select #fldEjecucion  formControlName='ejecucion'
+										(selectionChange)="changeSelectionValue('ejecucion', fldEjecucion.value)">
+				    <mat-optgroup [disabled]="!ejecucionOptList.length" [label]="'Estado ejecución'">
+				        <mat-option *ngFor="let item of ejecucionOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Sector a cargo</mat-label>
+				<mat-select #fldSector  formControlName='sector'
+										(selectionChange)="changeSelectionValue('sector', fldSector.value)">
+				    <mat-optgroup [disabled]="!sectorOptList.length" [label]="'Estado'">
+				        <mat-option *ngFor="let item of sectorOptList" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+
+	</div>
+
+	<div class="d-md-flex justify-content-start">
+		<button mat-raised-button color="primary" class='m-1'
+				[disabled]="!form.valid || formClosed"
+				(click)="onSubmit()">
+		    Aceptar </button>
+		<button mat-raised-button color="warn"   class='m-1'
+				(click)="onCancel()">
+		    Cancelar </button>
+	</div>
+	  
+	</form>
+</div>

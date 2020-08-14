@@ -1,0 +1,63 @@
+$color-destacado: #0645f5;
+$color-resaltado: #0755ff;
+$color-destacado-vinculo: #2413c6;
+$color-desafectado-vinculo: #8a95a1;
+
+
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 2rem;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-resaltado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.2rem;
+		color: $color-destacado;
+}
+
+.text-resaltado-vinculo {
+		margin: 0 0 0 0;
+		color: $color-destacado-vinculo;
+		font-weight: 700;
+		font-size: 1.1rem;
+		font-style: italic;
+
+}
+
+.text-normal-vinculo {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.0rem;
+		line-height: .8;
+		color: $color-destacado-vinculo;
+}
+
+.desactivado-vinculo {
+		color: $color-desafectado-vinculo;
+}
+
+.activado-vinculo {
+		color: $color-destacado-vinculo;
+}
+
+.edit-control{
+		margin: 0 5px 0 10px;
+		font-weight: 400;
+		font-size: 1.1rem;
+}
+
+

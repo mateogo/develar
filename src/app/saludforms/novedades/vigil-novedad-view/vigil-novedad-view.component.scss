@@ -1,0 +1,41 @@
+$color-destacado: #0645f5;
+$color-destacado-vinculo: #2413c6;
+$color-desafectado-vinculo: #8a95a1;
+
+$color-button: #3c4e62;
+$color-header: #2326ff;
+
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 2rem;
+		font-style: italic;
+
+}
+
+.text-headerblock{
+		margin: 0 0 0 0;
+		color: $color-header;
+		font-weight: 700;
+		font-size: 1.4rem;
+		font-style: italic;
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1rem;
+		line-height: .8;
+		color: $color-destacado;
+}
+

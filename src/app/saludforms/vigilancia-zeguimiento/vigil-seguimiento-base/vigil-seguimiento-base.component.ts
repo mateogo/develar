@@ -45,7 +45,7 @@ export class VigilSeguimientoBaseComponent implements OnInit {
 	@Input() asistencia: Asistencia;
   @Input() detailView = true;
   @Input() viewList: Array<String> = [];
-  @Input() showObservacionesPanel = true;
+  @Input() showObservacionesPanel = false;
   @Output() fetchPerson = new EventEmitter<string>();
 
   public muestraslabList: Array<MuestraLaboratorio> = [];

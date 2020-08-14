@@ -8,22 +8,59 @@
 
 			<div class="row">
 			  <div class="col-md-3 d-flex align-items-center">
-			    <span class="text-normal">Modo presunto de contagio</span>
+			    <span class="text-normal">Estado COVID</span>
 			  </div>
-			  <div class="col-md-4 d-flex align-items-center" >
-			      <mat-checkbox 
-			            [checked]="form.controls['hasContacto'].value===true"
-			            [formControl]="form.controls['hasContacto']" >
-			              ¿Tuvo contacto con persona c/COVID?
-			            </mat-checkbox>
+
+		    <div class="col d-flex align-items-center">
+		      <mat-radio-group  formControlName="actualState" aria-label="Estado actual">
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===6" 
+		              (change)='changeActualState(6)'
+		              [value]="6">En monitoreo</mat-radio-button>
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===0" 
+		              (change)='changeActualState(0)'
+		              [value]="0">Sospecha</mat-radio-button>
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===1" 
+		              (change)='changeActualState(1)'
+		              [value]="1">COVID confirmado</mat-radio-button>
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===2" 
+		              (change)='changeActualState(2)'
+		              [value]="2">Descartado</mat-radio-button>
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===4" 
+		              (change)='changeActualState(4)'
+		              [value]="4">Fallecido</mat-radio-button>
+		        <mat-radio-button 
+		              [checked]="form.controls['actualState'].value===5" 
+		              (change)='changeActualState(5)'
+		              [value]="5">Alta</mat-radio-button>
+		      </mat-radio-group>
+		    </div>
+		  </div>
+
+			<div class="row">
+			  <div class="col-md-3 d-flex align-items-center">
+			    <span class="text-normal">Caso EPIDEMIOLÓGICO</span>
 			  </div>
-			  <div class="col-md-4 d-flex align-items-center" >
-			      <mat-checkbox 
-			            [checked]="form.controls['hasEntorno'].value===true"
-			            [formControl]="form.controls['hasEntorno']" >
-			              ¿Contacto con sospechoso COVID?
-			            </mat-checkbox>
-			  </div>
+
+				<div class="col-md-4 d-flex align-items-center">
+					<mat-form-field>
+						<mat-label>Caso epidemiológico</mat-label>
+						<mat-select #fldAvanceCovid  formControlName='avanceCovid'
+												(selectionChange)="changeSelectionValue('avanceCovid', fldAvanceCovid.value)">
+
+						    <mat-optgroup [disabled]="!avanceCovidOptList.length" [label]="'Tipificación de casos'">
+						        <mat-option *ngFor="let item of avanceCovidOptList" [value]="item.val">
+						            {{ item.label }} 
+						        </mat-option>
+						    </mat-optgroup>
+
+						</mat-select>
+					</mat-form-field>
+				</div>
 			</div>
 
 			<hr>
@@ -369,12 +406,6 @@
 			  </div>
         
       </div>
-      <hr>
-	    <div class="row">
-	      <div class="col-md-3 d-flex align-items-center">
-	        <span class="text-resaltado">CONTEXTO LABORAL</span>
-	      </div>
-	    </div>
 			<div class="row">
 	      <div class="col-md-3 d-flex align-items-center">
 	        <span class="text-normal">Tipo de trabajo</span>
@@ -399,6 +430,13 @@
 			  </div>
 
 			</div>
+
+      <hr>
+	    <div class="row">
+	      <div class="col-md-12">
+					<vigil-altavinculo-base  [asistencia]='token'  ></vigil-altavinculo-base>
+	      </div>
+	    </div>
 
       <hr>
 	    

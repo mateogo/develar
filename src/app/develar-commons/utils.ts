@@ -452,7 +452,7 @@ function getBeginOfYear(firstOfYear: Date): number{
 }
 
 // feriados
-const inactivosList = ["31/03/2020", "10/04/2020", "01/05/2020", "25/05/2020", "15/06/2020", "09/07/2020", "10/07/2020"]
+const inactivosList = ["31/03/2020", "10/04/2020", "01/05/2020", "25/05/2020", "15/06/2020", "09/07/2020", "10/07/2020", "17/08/2020"]
 const laborDayOfWeek = [0, 1, 1, 1, 1, 1, 0]
 
 function nextLaborDay(date: Date, offset): Date{

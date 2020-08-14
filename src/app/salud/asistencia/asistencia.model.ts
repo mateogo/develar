@@ -137,13 +137,59 @@ export class Encuesta {
 		evaluacion:   string;
 
 };
+export class AvancesNovedad {
+		fe_nov: string;
+		fets_nov: number = 0;
+		ejecucion: string = ''; //ejecucionOptList
+		sector: string = '';
+		intervencion: string = '';
+		slug: string = '';
+		isCumplida: boolean = false;
+		userId: string;
+		userSlug: string;
+}
+
+const intervencionOptList = [
+		{ val: 'hisopar',           label: 'Hisopar'},
+		{ val: 'enviar107',         label: 'Enviar 107'},
+		{ val: 'investigepid',      label: 'Hacer Invesig Epidemiológica'},	
+		{ val: 'asistencia',        label: 'Asistencia Social'},
+		{ val: 'derivarIvr',        label: 'Derivar al IVR'},
+		{ val: 'derivarEpidemio',   label: 'Derivar Epidemiología'},
+		{ val: 'derivarSMental',    label: 'Derivar Sal Mental'},
+		{ val: 'derivarOtra',       label: 'Derivar otros'},
+		{ val: 'buscarTelefono',    label: 'Buscar Teléfono'},
+		{ val: 'buscarPlasma',      label: 'Buscar Plasma'},
+		{ val: 'emitirAlta',        label: 'Emitir Certif Alta'},
+		{ val: 'extraerAlta',       label: 'Extraer '},
+		{ val: 'internar',          label: 'Internar'},
+		{ val: 'notificarAlta',     label: 'Notificar Alta'},
+		{ val: 'urgencia',          label: 'Urgencia'},
+
+]
 
 export class Novedad {
 		_id?: string;
+		isActive: boolean = false;
 		tnovedad: string = 'operadorcom';
 		novedad: string = '';
-		fecomp_tsa:  number;
+		sector: string = '';  // salud.model.sectores
+		intervencion: string = ''; // intervencionOptList
+		urgencia: number = 1; // 1,2,3
+
 		fecomp_txa:  string;
+		fecomp_tsa:  number;
+
+		hasFeNecesidad: boolean = false;
+		fe_necesidad: string = '';
+		fets_necesidad: number = 0;
+
+		hasCumplimiento: boolean = false;
+		estado: string = 'activa';
+		avance: string = 'pendiente';
+		ejecucion: string = 'emitido'; // ejecucionOptList
+
+		actividades: AvancesNovedad[] = [];
 		atendidox: Atendido;
 
 		constructor(){
@@ -235,6 +281,8 @@ export class ContextoCovid {
 	fets_investig: number = 0;
 	userInvestig: string = '';
 	userId: string = '';
+	actualState: number;
+	avanceCovid: string;
 }
 
 export class CasoIndice {
@@ -332,6 +380,7 @@ export class Asistencia {
 const avanceInfectionOptList = [
 	{ val: 'comunitario', label: 'Comunitario'},
 	{ val: 'contacto',    label: 'Contacto estrecho'},
+	{ val: 'nexo',        label: 'Nexo epidemiológico'},
 	{ val: 'viaje',       label: 'Por viaje'},
 	{ val: 'essalud',     label: 'Es personal de salud'},
 	{ val: 'esesencial',  label: 'Es personal esencial'},
@@ -1051,7 +1100,7 @@ export class VigilanciaBrowse {
 		userId: string = ''; // usado para filtrale casos al operador
 		asignadoId: string = ''; // usado para buscar expresamente casos asignados a...
 
-		isVigilado: boolean = true;
+		isVigilado: boolean = false;
 		pendLaboratorio: boolean = false; // lista solo registros con resultados de LAB pendientes
 		hasCovid:   boolean = false;
 
@@ -1110,6 +1159,13 @@ export interface UpdateAsistenciaEvent {
 	token: Asistencia;
 };
 
+export interface UpdateNovedadEvent {
+	action: string;
+	type: string;
+	selected?: boolean;
+	token: Novedad;
+};
+
 export interface UpdateAlimentoEvent {
 	action: string;
 	type: string;
@@ -1131,7 +1187,7 @@ export interface UpdatePedidoEvent {
 export interface UpdateAsistenciaListEvent {
       action: string;
       type: string;
-      items: Array<Asistencia>;
+      items: Array<Asistencia|Novedad>;
 };
 
 
@@ -1252,17 +1308,16 @@ const asisActionOptList: Array<any> = [
 ];
 
 const novedadesTypeOptList: Array<any> = [
-        {val: 'operadorcom',  label: 'Operador/a COM' },
-        {val: 'operadorivr',  label: 'Operador/a Servicio IVR' },
-        {val: 'solmedicx',    label: 'Médico/a' },
-        {val: 'enviarsame',   label: 'SAME' },
-        {val: 'recomendacion',label: 'Recomendación' },
-        {val: 'epidemiologia',label: 'Epidemiología' },
-        {val: 'evolucion',    label: 'Evolución' },
-        {val: 'sisa',         label: 'Importación SISA' },
-        {val: 'nocontesta',   label: 'No contesta' },
-        {val: 'otros',        label: 'Otros' },
         {val: 'no_definido',  label: 'Sin selección' },
+        {val: 'operadorcom',  label: 'Seguimiento telefónico' },
+        {val: 'operadorivr',  label: 'Seguimiento c/IVR' },
+        {val: 'solmedicx',    label: 'Seguimiento Médico/a' },
+        {val: 'epidemiologia',label: 'Seguimient Epidemiología' },
+        {val: 'enviarsame',   label: 'Envía SAME' },
+        {val: 'nocontesta',   label: 'No contesta' },
+        {val: 'derivacion',   label: 'Requerim Derivación' },
+        {val: 'intervencion', label: 'Requerim Intervención' },
+        {val: 'otros',        label: 'Otros' },
 ];
 
 const evolucionTypeOptList: Array<any> = [
@@ -1370,6 +1425,7 @@ const urgenciaOptList = [
       {val: 1,  label: 'Baja',  slug:'Urgencia baja' },
       {val: 2,  label: 'Media', slug:'Urgencia media' },
       {val: 3,  label: 'Alta',  slug:'Urgencia alta' },
+      {val: 4,  label: 'Crítica',  slug:'Urgencia crítica' },
 ]
 
 
@@ -1419,6 +1475,21 @@ const avanceOptList = [
       {val: 'nocontesta',           tipo:9, order: 91, label: 'No contesta',          slug:'No contesta' },
       {val: 'descartado',           tipo:9, order: 92, label: 'Descartado',           slug:'Descartado' },
       {val: 'anulado',              tipo:9, order: 93, label: 'Anulado',              slug:'Anulado' },
+]
+
+const ejecucionOptList = [
+      {val: 'no_definido',          estado: 'activo',  tipo:0, order:  1, label: 'Sin selección',        slug:'Sin selección',   },
+      {val: 'emitido',              estado: 'activo',  tipo:0, order:  2, label: 'Emitida',              slug:'Emitida',         },
+      {val: 'derivado',             estado: 'activo',  tipo:1, order: 11, label: 'Derivado',             slug:'Derivado',        },
+      {val: 'enejecucion',          estado: 'activo',  tipo:1, order: 12, label: 'En ejecucion',         slug:'En ejecucion',    },
+      {val: 'cumplida',             estado: 'cerrado', tipo:1, order: 13, label: 'Cumplida',             slug:'Cumplida',        },
+      {val: 'nocumplida',           estado: 'cerrado', tipo:1, order: 14, label: 'No Cumplida',          slug:'No Cumplida',     },
+      {val: 'demorada',             estado: 'activo',  tipo:1, order: 15, label: 'Demorada',             slug:'Demorada',        },
+      {val: 'urgente',              estado: 'activo',  tipo:1, order: 16, label: 'Reclamo urgente',      slug:'Reclamo urgente', },
+      {val: 'noencontrado',         estado: 'cerrado', tipo:1, order: 18, label: 'No encontrado/a',      slug:'No encontrado/a', },
+      {val: 'nocontesta',           estado: 'cerrado', tipo:9, order: 91, label: 'No contesta',          slug:'No contesta',     },
+      {val: 'descartado',           estado: 'cerrado', tipo:9, order: 92, label: 'Descartado',           slug:'Descartado',      },
+      {val: 'anulado',              estado: 'baja',    tipo:9, order: 93, label: 'Anulado',              slug:'Anulado',         },
 ]
 
 
@@ -1862,22 +1933,27 @@ const optionsLists = {
    followup: followUpOptList,
    frecuencia: frecuenciaOptList,
    tableactions: tableActions,
-   sectores: sectores,
    ciudades: ciudadesBrown,
-   estado: estadosOptList,
-   avance: avanceOptList,
    encuesta: avanceEncuestaOptList,
-   urgencia: urgenciaOptList,
    pedidos: pedidosTypeOptList,
    periodo: periodoOptList,
    deposito: entregaDesdeOptList,
    novedades: novedadesTypeOptList,
-   novedadesEvolucion: evolucionTypeOptList,
    causa: causasOptList,
    indicaciones: indicacionOptList,
    osocial: obrasSociales,
    nucleoHabitacional: nucleoHabitacionalOptList,
    prioridad: prioridadOptList,
+
+   // novedades[]
+   novedadesEvolucion: evolucionTypeOptList,
+   urgencia: urgenciaOptList,
+   intervenciones: intervencionOptList,
+   estado: estadosOptList,
+   avance: avanceOptList,
+   ejecucion: ejecucionOptList,
+   sectores: sectores,
+
 
    //SISA
    avanceSisa: avanceSisaOptList,
@@ -2020,7 +2096,7 @@ export class AsistenciaHelper {
 	}
 
 	static getOptionLabel(type, val){
-		if(!val) return 'no-definido';
+		if(!val) return '';
 		if(!type) return val;
 		return getLabel(this.getOptionlist(type), val);
 	}
@@ -2105,6 +2181,34 @@ export class AsistenciaHelper {
 		})
 
 		return filteredList;
+	}
+
+	static filterActiveNovedades(list: Novedad[]): Novedad[]{
+		if(!list || !list.length) return [];
+
+		let filteredList = list.filter(t => {
+			return t.hasCumplimiento && t.estado === 'activa' && ['cumplida', 'baja', 'anulada'].indexOf(t.avance) === -1
+
+		})
+
+		return filteredList;
+	}
+
+	static initNewNovedad(tnovedad, sector, intervencion, urgencia, fe_necesidad): Novedad{
+		let novedad  = new Novedad();
+		novedad.tnovedad = tnovedad;
+		novedad.sector = sector;
+		novedad.intervencion =  intervencion;
+		novedad.urgencia = urgencia;
+		novedad.fecomp_txa = devutils.txFromDate(new Date());
+		novedad.fecomp_tsa = devutils.dateNumFromTx(novedad.fecomp_txa);
+		if(fe_necesidad){
+			novedad.hasCumplimiento = true;
+			novedad.hasFeNecesidad = true;
+			novedad.fe_necesidad =   novedad.fe_necesidad;
+			novedad.fets_necesidad = devutils.dateNumFromTx(novedad.fe_necesidad);
+		}
+		return novedad;
 	}
 
 

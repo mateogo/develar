@@ -37,6 +37,13 @@
 			<vigil-seguimiento-base  [asistencia]='currentAsistencia' [viewList]='viewList'
 								(fetchPerson)='vinculoSelected($event)' ></vigil-seguimiento-base>
 
+			<ng-container *ngIf='showNovedadesFollowUp'>
+				<vigil-novedad-panel
+								[asistencia]='currentAsistencia'
+								[items]='novedadesList'></vigil-novedad-panel>
+
+		</ng-container>
+
 
 		</mat-card-content>
 	</mat-card>

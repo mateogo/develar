@@ -624,7 +624,7 @@ export class SaludController {
     infeccion.fe_inicio = investigacion.fe_inicio;
     // infeccion.fe_confirma = infeccion.fe_confirma;
     //infeccion.fe_alta = '';
-    infeccion.avance = infeccion.avance || 'comunitario';
+    infeccion.avance = investigacion.avanceCovid || infeccion.avance || 'comunitario';
     infeccion.sintoma = investigacion.sintoma;
     infeccion.locacionSlug = investigacion.internacionSlug || investigacion.tinternacion;
     infeccion.tinternacion = investigacion.tinternacion;

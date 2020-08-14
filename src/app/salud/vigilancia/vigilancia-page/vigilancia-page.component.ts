@@ -74,7 +74,6 @@ export class VigilanciaPageComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('NEW QUERY ONINIT **********')
     this.query = new VigilanciaBrowse()
 
     let first = true;
@@ -327,7 +326,6 @@ export class VigilanciaPageComponent implements OnInit {
     }
 
     // current selector saved in Controller
-    console.log('NEW QUERY**********')
     this.query = new VigilanciaBrowse()
     //this.fetchSolicitudes(this.query, SEARCH);
   }

@@ -2,11 +2,18 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, AbstractControl, ValidatorFn, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
+import { SaludController } from '../../../salud/salud.controller';
+import { PersonService }   from '../../../salud/person.service';
+
 import { Person, personModel } from '../../../entities/person/person';
+
+import { VigilanciaVinculosComponent }    from '../../../salud/vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
+
 import {  Asistencia,
           Requirente,
           ContextoCovid,
           ContextoDenuncia,
+          InfectionFollowUp,
           Novedad, 
           Locacion,
           UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
@@ -42,6 +49,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
   public tinternacionOptList = AsistenciaHelper.getOptionlist('tinternacion')
   public derivacionOptList = AsistenciaHelper.getOptionlist('derivacion')
   public trabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
+  public avanceCovidOptList = AsistenciaHelper.getOptionlist('avanceInfection')
 
 	public form: FormGroup;
 
@@ -102,7 +110,9 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
   }
 
- 
+  changeActualState(estado){
+    //c onsole.log('Estado COVID: [%s]', estado);
+  }
 
   buildForm(): FormGroup{
   	let form: FormGroup;
@@ -134,7 +144,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasViaje:           [null],
       hasContacto:        [null],
       hasEntorno:         [null],
-
       hasDiabetes:        [null],
       hasHta:        [null],
       hasCardio:        [null],
@@ -171,6 +180,9 @@ export class InvestigEpidemioEditComponent implements OnInit {
       fe_investig:        [null],
       userId:             [null],
 
+      actualState:        [null],
+      avanceCovid:        [null],
+
     });
 
     return form;
@@ -179,6 +191,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
   private initForEdit(form: FormGroup, token: Asistencia): FormGroup {
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let requirente = token.requeridox || new Requirente();
+    let infeccion = token.infeccion || new InfectionFollowUp()
     let fiebreOptions = 1;
 
     token.tipo = token.tipo || 4;
@@ -250,10 +263,12 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
     	nombre:        requirente.nombre || requirente.slug,
       apellido:      requirente.apellido,
+      actualState:   infeccion.actualState,
+      avanceCovid:   infeccion.avance,
 
 		});
 
-    this.buildNovedades(token.novedades)
+    //this.buildNovedades(token.novedades)
 
     this.isCovid =  token.tipo === 1 || token.tipo === 3 || token.tipo === 4;
     this.isDenuncia = false;
@@ -306,7 +321,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     entity.prioridad =  fvalue.prioridad;
 
 		entity.estado = entity.estado || 'activo';
-    entity.novedades = [];
 
     entity.sintomacovid = this.buildCovid(fvalue, entity);
 
@@ -396,6 +410,9 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasTrabajoSalud =        fvalue.hasTrabajoSalud;
 
     covid.contexto =               fvalue.contexto;
+    covid.actualState = fvalue.actualState;
+    covid.avanceCovid = fvalue.avanceCovid;
+
 
     covid.indicacion = 'Permanecer aislado controlando los síntomas';
 
@@ -421,5 +438,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
       }) ;
 
   }
+
 
 }

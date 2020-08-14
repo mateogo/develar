@@ -96,6 +96,7 @@ import { VigilanciaListComponent } from './vigilancia/vigilancia-list/vigilancia
 import { VigilanciaSisaComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisa/vigilancia-sisa.component';
 import { VigilanciaSisafwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisafwup/vigilancia-sisafwup.component';
 import { VigilanciaSisahistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisahistory/vigilancia-sisahistory.component';
+import { VigilanciaNovedadesComponent } from './vigilancia/vigilancia-zmodal/vigilancia-novedades/vigilancia-novedades.component';
 import { VigilanciaSeguimientoComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
 import { VigilanciaSeguimientofwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
@@ -220,6 +221,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
     VigilanciaSisafwupComponent,
     VigilanciaSisahistoryComponent,
     VigilanciaSeguimientoComponent,
+    VigilanciaNovedadesComponent,
     VigilanciaSeguimientofwupComponent,
     VigilanciaSeguimientohistoryComponent,
     VigilanciaInfeccionComponent,
@@ -251,6 +253,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
   [
     VigilanciaSisaComponent, VigilanciaSisafwupComponent, VigilanciaSisahistoryComponent,
     VigilanciaSeguimientoComponent, VigilanciaSeguimientofwupComponent, VigilanciaSeguimientohistoryComponent,
+    VigilanciaNovedadesComponent,
     VigilanciaSeguimientocalendarComponent,
     VigilanciaInfeccionComponent,
     VigilanciaLaboratorioComponent,
@@ -269,6 +272,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
       VigilanciaSisafwupComponent,
       VigilanciaSisahistoryComponent,
       VigilanciaSeguimientoComponent,
+      VigilanciaNovedadesComponent,
       VigilanciaSeguimientofwupComponent,
       VigilanciaSeguimientohistoryComponent,
       VigilanciaInfeccionComponent,

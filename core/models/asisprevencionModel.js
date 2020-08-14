@@ -68,12 +68,39 @@ const itempedidoSch = new Schema({
   punitario: { type: Number, required: false },
 
 })
+const avanceNovedadSch = new Schema({
+    fe_nov:       { type: String,  required: false },
+    fets_nov:     { type: Number,  required: false },
+    ejecucion:    { type: String,  required: false },
+    sector:       { type: String,  required: false },
+    intervencion: { type: String,  required: false },
+    slug:         { type: String,  required: false },
+    isCumplido:   { type: Boolean, required: false },
+    userId:       { type: String,  required: false },
+    userSlug:     { type: String,  required: false },
+})
+
 const novedadSch = new Schema({
-    tnovedad:   { type: String,      required: false},
-    novedad:    { type: String,      required: false},
-    fecomp_txa: { type: String,      required: false},
-    fecomp_tsa: { type: Number,      required: false},
-    atendidox:  { type: atendidoSch, required: false},
+    isActive:     { type: Boolean, required: false },
+    tnovedad:     { type: String,  required: false },
+    novedad:      { type: String,  required: false },
+    sector:       { type: String,  required: false },
+    intervencion: { type: String,  required: false },
+    urgencia:     { type: Number,  required: false },
+
+    fecomp_txa:   { type: String,  required: false },
+    fecomp_tsa:   { type: Number,  required: false },
+
+    hasNecesidad: { type: Boolean,  required: false },
+    fe_necesidad: { type: String,   required: false },
+    fets_necesidad: { type: Number, required: false },
+
+    hasCumplimiento: { type: Boolean, required: false },
+    estado:          { type: String,  required: false },
+    avance:          { type: String,  required: false },
+    ejecucion:       { type: String,  required: false },
+    actividades:     [ avanceNovedadSch ],
+    atendidox:       { type: atendidoSch, required: false },
 })
 
 const locacionSch = new Schema({
@@ -201,6 +228,8 @@ const contextoCovidSch = new Schema({
 
     hasCOVID:      { type: Boolean, required: false },
     isCOVID:       { type: Boolean, required: false },
+    actualState:   { type: Number,  required: false },
+    avanceCovid:   { type: String,  required: false },
 
     fe_investig:   { type: String, required: false },
     fets_investig: { type: Number, required: false },
@@ -484,16 +513,16 @@ function buildQuery(query, today){
   let q = {};
   let nestedOrs = [];
 
-  // busco un registro en particular
-  if(query['isVigilado']){
-    q["isVigilado"] = true;
-  }
-
   if(query['requirenteId']){
       q["requeridox.id"] = query['requirenteId'];
       //if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
       return q; // es caso único, no filtra por nada más
 
+  }
+
+  // busco un registro en particular
+  if(query['isVigilado']){
+    q["isVigilado"] = true;
   }
 
 

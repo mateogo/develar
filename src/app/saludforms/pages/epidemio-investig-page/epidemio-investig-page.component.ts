@@ -8,7 +8,7 @@ import { devutils }from '../../../develar-commons/utils'
 
 import {  Person } from '../../../entities/person/person';
 
-import { 	Asistencia, Locacion,
+import { 	Asistencia, Locacion, Novedad,
           VigilanciaBrowse,
 					UpdateAsistenciaEvent, 
 					AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
@@ -31,7 +31,7 @@ const SEARCH_NEXT = 'search_next';
 })
 export class EpidemioInvestigPageComponent implements OnInit {
 
-  public title = 'Investigación Epidemiológica';
+  public title = 'INVESTIGACIÓN Epidemiológica';
   public formTitle = 'Formulario Integrado';
 
 	public  person: Person;
@@ -41,9 +41,11 @@ export class EpidemioInvestigPageComponent implements OnInit {
 	public showView = false;
   public showInvestigForm = false;
   public showVigilanciaFollowUp = false;
+  public showNovedadesFollowUp = false;
 
   // asistencia
   public currentAsistencia: Asistencia;
+  public novedadesList: Array<Novedad> = [];
   public hasSolicitud = false;
 
   public usersOptList: Array<any> =[];
@@ -75,7 +77,6 @@ export class EpidemioInvestigPageComponent implements OnInit {
     this.person = person;
     this.dsCtrl.updateCurrentPerson(person);
     this.hasPerson = true;
-
 
     this.fetchSolicitudes(SEARCH, this.person);
 
@@ -126,18 +127,23 @@ export class EpidemioInvestigPageComponent implements OnInit {
   /**********************/
   private fetchSolicitudes(action: string, person:Person){
     this.query = new VigilanciaBrowse()
+    //delete this.query.isVigilado;
+
     this.query.requirenteId = this.person._id
     this.query.viewList = [];
 
     this.showInvestigForm = false;
     this.showVigilanciaFollowUp = false;
-
+    this.showNovedadesFollowUp = false;
     AsistenciaHelper.cleanQueryToken(this.query, false);
 
 
     this.dsCtrl.fetchAsistenciaByQuery(this.query).subscribe(list => {
       if(list && list.length > 0){
         this.currentAsistencia = list[0];
+        this.novedadesList = this.sortNovedades(this.currentAsistencia.novedades);
+
+        this.updateAsistenciaFromPerson(this.currentAsistencia, this.person);
 
         this.showInvestigForm = true;
 
@@ -194,6 +200,7 @@ export class EpidemioInvestigPageComponent implements OnInit {
     this.dsCtrl.manageCovidRecord(this.currentAsistencia).subscribe(sol => {
       if(sol){
         this.currentAsistencia = sol;
+        this.novedadesList = this.sortNovedades(this.currentAsistencia.novedades);
         this.showInvestigForm = true;
 
       }else {
@@ -203,12 +210,30 @@ export class EpidemioInvestigPageComponent implements OnInit {
 
   }
 
+  private sortNovedades(novedades: Novedad[]): Novedad[]{
+    if(!novedades || !novedades.length) return [];
+    
+    novedades.sort((fel: Novedad, sel: Novedad)=> {
+        let f_fecha = fel.fets_necesidad|| fel.fecomp_txa || 0;
+        let s_fecha = sel.fets_necesidad|| sel.fecomp_txa || 0;
+
+        if(f_fecha < s_fecha ) return -1;
+
+        else if(f_fecha > s_fecha) return 1;
+
+        else return 0;
+    });
+    return novedades;
+
+  }
+
   private resetInvestigForm(){
     this.showView = false;
     this.showInvestigForm = false;
 
     this.showPersonBrowse = true;
     this.showVigilanciaFollowUp = true;
+    this.showNovedadesFollowUp = true;
 
     // this.personFound = false;
     // this.showAsistenciaEditor = false;
