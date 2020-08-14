@@ -63,7 +63,7 @@ export class VigilNovedadPanelComponent implements OnInit {
   }
 
   addItem(){
-
+    this.showList = false;
     this.openNovedadesModal(null);
 
     // let item = AsistenciaHelper.initNewNovedad('tarea', 'epidemiologia','hisopar', 1, '01/08/2020');
@@ -76,12 +76,17 @@ export class VigilNovedadPanelComponent implements OnInit {
     // this.showList = true;
 
   }
+
   private openNovedadesModal(novedad: Novedad){
 
     this.novedadService.openDialog(this.asistencia, novedad).subscribe(editEvent =>{
       if(editEvent.action === UPDATE){
         this.asistencia = editEvent.token;
+        this.refreshNovedadesList();
         //this.manageAsistenciaView(this.viewList);        
+      }else{
+        this.showList = true;
+
       }
     })
 
@@ -113,6 +118,28 @@ export class VigilNovedadPanelComponent implements OnInit {
 
     }
   }
+  private refreshNovedadesList(){
+    this.items = this.sortNovedades(this.asistencia.novedades)
+    this.showList = true;
+  }
+
+  private sortNovedades(novedades: Novedad[]): Novedad[]{
+    if(!novedades || !novedades.length) return [];
+    
+    novedades.sort((fel: Novedad, sel: Novedad)=> {
+        let f_fecha = fel.fets_necesidad|| fel.fecomp_txa || 0;
+        let s_fecha = sel.fets_necesidad|| sel.fecomp_txa || 0;
+
+        if(f_fecha < s_fecha ) return 1;
+
+        else if(f_fecha > s_fecha) return -1;
+
+        else return 0;
+    });
+    return novedades;
+
+  }
+
 
   private deleteItem(token: Novedad){
     let isNew = token._id ? false: true;

@@ -37,6 +37,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   public estadoCovidOptList =  [];
   public avanceCovidOptList =  [];
   public sintomaCovidOptList =  [];
+  public resultadoOptList = [];
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -140,6 +141,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       avanceSisa:       [null],
       qDaysSisa:        [null],
       qNotConsultaSisa: [null],
+      resultado:        [null],
 
       tipoSeguimiento: [null],
       qIntents:        [null],
@@ -182,6 +184,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
         avanceSisa: query.avanceSisa,
         qDaysSisa: query.qDaysSisa,
         qNotConsultaSisa: query.qNotConsultaSisa,
+        resultado: query.resultado
 
 		});
 
@@ -231,6 +234,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     entity.avanceSisa = fvalue.avanceSisa;
     entity.qDaysSisa = fvalue.qDaysSisa;
     entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
+    entity.resultado = fvalue.resultado;
 
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;
@@ -260,6 +264,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
                   this.estadoCovidOptList,
                   this.avanceCovidOptList,
                   this.sintomaCovidOptList,
+                  this.resultadoOptList,
                  ];
 
     this.actionOptList =       AsistenciaHelper.getOptionlist('actions');
@@ -272,6 +277,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     this.estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
     this.sintomaCovidOptList =  AsistenciaHelper.getOptionlist('sintomaInfection');
+    this.resultadoOptList =  AsistenciaHelper.getOptionlist('resultadoSeguim');
   }
 
 }

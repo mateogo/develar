@@ -11,8 +11,8 @@ const routes: Routes = [
 		component: EpidemioInvestigPageComponent
 	},
 	{
-		path:'epidemio',
-		component: EpidemioInvestigPageComponent
+		path:'seguimiento',
+		component: VigilSeguimientoPageComponent
 	},
 
 ];

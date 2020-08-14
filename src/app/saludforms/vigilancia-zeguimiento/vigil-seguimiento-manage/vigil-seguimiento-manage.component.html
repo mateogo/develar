@@ -2,7 +2,10 @@
 
 
   <ng-container *ngIf="showVinculosData">
-    <hr>
+
+    <vigil-altavinculo-base  [asistencia]='token'  ></vigil-altavinculo-base>
+
+    <!--hr>
     <p class='text-resaltado'>CONTACTOS: vínculos estrechos del sospechoso/ afectado</p>
     <div *ngFor="let vinculo of vinculosList$ | async" class="vinculo-token">
         <p class='text-resaltado-vinculo'>{{ vinculo.slug }} 
@@ -59,7 +62,7 @@
         </p>
 
 
-    </div>
+    </div -->
   </ng-container>
 
   <div *ngIf="showFollowUp" class='follow-up-container'>

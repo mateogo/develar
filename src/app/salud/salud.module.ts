@@ -97,6 +97,7 @@ import { VigilanciaSisaComponent } from './vigilancia/vigilancia-zmodal/vigilanc
 import { VigilanciaSisafwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisafwup/vigilancia-sisafwup.component';
 import { VigilanciaSisahistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-sisahistory/vigilancia-sisahistory.component';
 import { VigilanciaNovedadesComponent } from './vigilancia/vigilancia-zmodal/vigilancia-novedades/vigilancia-novedades.component';
+
 import { VigilanciaSeguimientoComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
 import { VigilanciaSeguimientofwupComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientofwup/vigilancia-seguimientofwup.component';
 import { VigilanciaSeguimientohistoryComponent } from './vigilancia/vigilancia-zmodal/vigilancia-seguimientohistory/vigilancia-seguimientohistory.component';
@@ -116,11 +117,13 @@ import { VigilanciaNovedadComponent } from './vigilancia/vigilancia-novedad/vigi
 import { SolcovidOfflinePageComponent } from './covid/sol-covid-page/solcovid-offline-page/solcovid-offline-page.component';
 import { SolcovidOfflineEditComponent } from './covid/sol-covid-data/solcovid-offline-edit/solcovid-offline-edit.component';
 import { SolcovidOfflinePanelComponent } from './covid/sol-covid-page/solcovid-offline-panel/solcovid-offline-panel.component';
-import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-page/vigil-seguimiento-page.component';
-import { VigilSeguimientoBrowseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-browse/vigil-seguimiento-browse.component';
-import { VigilSeguimientoPanelComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-panel/vigil-seguimiento-panel.component';
-import { VigilSeguimientoBaseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-base/vigil-seguimiento-base.component';
-import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-manage/vigil-seguimiento-manage.component';
+
+// import { VigilSeguimientoPageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-page/vigil-seguimiento-page.component';
+// import { VigilSeguimientoBrowseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-browse/vigil-seguimiento-browse.component';
+// import { VigilSeguimientoPanelComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-panel/vigil-seguimiento-panel.component';
+// import { VigilSeguimientoBaseComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-base/vigil-seguimiento-base.component';
+// import { VigilSeguimientoManageComponent } from './vigilancia/vigilancia-zeguimiento/vigil-seguimiento-manage/vigil-seguimiento-manage.component';
+
 import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/internacion-dashboard-page/internacion-dashboard-page.component';
 import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
 import { LlamadosDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/llamados-dashboard-page/llamados-dashboard-page.component';
@@ -239,11 +242,11 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
     SolcovidOfflinePageComponent,
     SolcovidOfflineEditComponent,
     SolcovidOfflinePanelComponent,
-    VigilSeguimientoPageComponent,
-    VigilSeguimientoBrowseComponent,
-    VigilSeguimientoPanelComponent,
-    VigilSeguimientoBaseComponent,
-    VigilSeguimientoManageComponent,
+    // VigilSeguimientoPageComponent,
+    // VigilSeguimientoBrowseComponent,
+    // VigilSeguimientoPanelComponent,
+    // VigilSeguimientoBaseComponent,
+    // VigilSeguimientoManageComponent,
     InternacionDashboardPageComponent,
     VigilanciaMappingPageComponent,
     LlamadosDashboardPageComponent,

@@ -7,6 +7,7 @@ import { PersonService } from '../../../salud/person.service';
 import { Person, FamilyData, NucleoHabitacional, personModel, Address } from '../../../entities/person/person';
 
 import {  Asistencia, 
+          Novedad,
           MuestraLaboratorio, 
           UpdateAsistenciaEvent,
           AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
@@ -61,6 +62,7 @@ export class VigilSeguimientoBaseComponent implements OnInit {
 
   private person: Person;
   private familyList: Array<FamilyData> = [];
+  public novedadesList: Array<Novedad> = [];
   
   private formAction = "";
   private fireEvent: UpdateAsistenciaEvent;
@@ -95,6 +97,7 @@ export class VigilSeguimientoBaseComponent implements OnInit {
   ngOnInit() {
 
     this.buildMuestrasLaboratorio(this.asistencia);
+    this.buildNovedades(this.asistencia);
 
     this.audit = this.buildAudit(this.asistencia);
     this.auditToken = this.dsCtrl.getAuditData();
@@ -139,6 +142,12 @@ export class VigilSeguimientoBaseComponent implements OnInit {
     this.manageAsistenciaView(e.value)
   }
 
+  viewPanelIntervenciones(e){
+    this.showObservacionesPanel = ! this.showObservacionesPanel;
+    //this.manageAsistenciaView(e.value)
+  }
+
+
   closeFollowUpPanel(){
     this.showPanel = false;
   }
@@ -147,10 +156,16 @@ export class VigilSeguimientoBaseComponent implements OnInit {
 
   private manageAsistenciaView(viewList){
     this.showAsistenciaView = false;
+    this.showObservacionesPanel = false;
     this.buildMuestrasLaboratorio(this.asistencia);
     this.viewList = viewList;
 
     setTimeout(() => {
+      console.dir(viewList)
+      if(viewList && viewList.indexOf('intervenciones')!== -1){
+        this.showObservacionesPanel = true;
+      }
+
       this.showAsistenciaView = true;
     },70)
   }
@@ -253,6 +268,30 @@ export class VigilSeguimientoBaseComponent implements OnInit {
     this.muestraslabList = token.muestraslab || [];
 
   }
+
+  private buildNovedades(token: Asistencia){
+
+    this.novedadesList = this.sortNovedades(token.novedades);
+    
+  }
+
+  private sortNovedades(novedades: Novedad[]): Novedad[]{
+    if(!novedades || !novedades.length) return [];
+    
+    novedades.sort((fel: Novedad, sel: Novedad)=> {
+        let f_fecha = fel.fets_necesidad|| fel.fecomp_txa || 0;
+        let s_fecha = sel.fets_necesidad|| sel.fecomp_txa || 0;
+
+        if(f_fecha < s_fecha ) return -1;
+
+        else if(f_fecha > s_fecha) return 1;
+
+        else return 0;
+    });
+    return novedades;
+
+  }
+
 
   private buildAudit(token: Asistencia):string{
     let audit = ''

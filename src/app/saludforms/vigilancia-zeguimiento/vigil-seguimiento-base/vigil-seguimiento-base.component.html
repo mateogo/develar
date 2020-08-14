@@ -26,10 +26,6 @@
 
   </mat-button-toggle-group>      
 
-
-</div>
-
-<div class="d-md-flex justify-content-between align-items-center" >
   <mat-button-toggle-group #fldButtonGrp2  name="actions"   class="panel-header-covid"
         (change)='actionTriggered($event)'>
     <mat-button-toggle value="infection">
@@ -37,6 +33,9 @@
     </mat-button-toggle>
   </mat-button-toggle-group>      
 
+</div>
+
+<div class="d-md-flex justify-content-between align-items-center" >
   
   <mat-button-toggle-group #fldButtonGrp1  name="actions"  class="panel-header-laboratorio"
         (change)='actionTriggered($event)'>
@@ -54,14 +53,22 @@
     </ng-container>
   </mat-button-toggle-group>
 
-  <mat-button-toggle-group #fldButtonGrp1  name="actions" class="panel-header-vinculofam"
+  <!--mat-button-toggle-group #fldButtonGrp1  name="actions" class="panel-header-vinculofam"
         (change)='actionTriggered($event)'>
     <mat-button-toggle value="vinculofam">
       NUEVO CONTACTO
     </mat-button-toggle>
-  </mat-button-toggle-group>
+  </mat-button-toggle-group -->
  
   <div class="d-md-flex justify-content-end align-items-center ">
+  <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
+        class="panel-header-selectors"
+        (change)='viewPanelIntervenciones($event)'>
+    <mat-button-toggle value="intervenciones">
+      INTERVENCIONES
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
   <mat-button-toggle-group #fldButtonGrp3 multiple name="view" 
         class="panel-header-selectors"
         (change)='viewPanelsSelected($event)'>
@@ -74,7 +81,7 @@
         class="panel-header-closepanel"
         (change)='closeFollowUpPanel()'>
     <mat-button-toggle value="closefollowup">
-      CERRAR PANEL
+      CERRAR
     </mat-button-toggle>
   </mat-button-toggle-group>
 
@@ -87,11 +94,18 @@
 
 <ng-container *ngIf='showObservacionesPanel' >
 
-  <observaciones-panel 
+
+        <vigil-novedad-panel
+                [asistencia]='asistencia'
+                [items]='novedadesList'></vigil-novedad-panel>
+
+
+  <!-- observaciones-panel 
           [audit]='auditToken'
           [title]='"Asistencia y novedades extra-epidemiológica"'
           [type]='"asisprevencion"'
-          [parent]='parentEntity' ></observaciones-panel>
+          [parent]='parentEntity' ></observaciones-panel -->
+
 </ng-container>
 
 </mat-card-content>

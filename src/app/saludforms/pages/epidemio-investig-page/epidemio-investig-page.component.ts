@@ -214,8 +214,8 @@ export class EpidemioInvestigPageComponent implements OnInit {
     if(!novedades || !novedades.length) return [];
     
     novedades.sort((fel: Novedad, sel: Novedad)=> {
-        let f_fecha = fel.fets_necesidad|| fel.fecomp_txa || 0;
-        let s_fecha = sel.fets_necesidad|| sel.fecomp_txa || 0;
+        let f_fecha = fel.fets_necesidad || fel.fecomp_txa || 0;
+        let s_fecha = sel.fets_necesidad || sel.fecomp_txa || 0;
 
         if(f_fecha < s_fecha ) return -1;
 
@@ -223,6 +223,7 @@ export class EpidemioInvestigPageComponent implements OnInit {
 
         else return 0;
     });
+
     return novedades;
 
   }

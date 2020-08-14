@@ -787,6 +787,10 @@ function buildQuery(query, today){
     q["followUp.tipo"] = query['tipoSeguimiento'];
   }
 
+  if(query['resultado']){
+    q["followUp.lastCall"] = query['resultado'];
+  }
+
   if(query['qIntents']){
     q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
   }

@@ -1131,6 +1131,7 @@ export class VigilanciaBrowse {
 
 		fenovd_ts: number = 0;
 		fenovh_ts: number = 0;
+		resultado: string = '';
 
 }
 
@@ -2306,6 +2307,7 @@ export class AsistenciaHelper {
       if(key === 'action'         && !query[key]) delete query[key];
       if(key === 'sector'         && !query[key]) delete query[key];
       if(key === 'avance'         && !query[key]) delete query[key];
+      if(key === 'resultado'      && !query[key]) delete query[key];
 
 
     })
