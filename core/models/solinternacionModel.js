@@ -725,8 +725,14 @@ function acumPeriferia(key, solicitud,  token){
 }
 
 function acumOcupacion(key, token){
+  if(!(token && token.servicios)){
+    return
+  }
+
   let item = token.servicios.find(t => t.type === key)
-  item.ocupado += 1
+  if(item){
+    item.ocupado += 1
+  }
 
 }
 
