@@ -88,7 +88,6 @@ export class VigilSeguimientoPageComponent implements OnInit {
     this.viewList = this.query.viewList || [];
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
-      console.dir(this.query)
       this.fetchSolicitudes(this.query, query.searchAction);
     }
   }
