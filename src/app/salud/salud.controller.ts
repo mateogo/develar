@@ -885,6 +885,7 @@ export class SaludController {
   }
 
   private loadAsistenciasByQuery(listener: Subject<Asistencia[]>, query){
+    console.dir(query);
 
     this.daoService.search<Asistencia>(ASIS_PREVENCION_RECORD, query).subscribe(list =>{
       if(list && list.length){

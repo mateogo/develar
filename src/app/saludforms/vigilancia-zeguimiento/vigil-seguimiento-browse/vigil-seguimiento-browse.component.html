@@ -4,7 +4,7 @@
 
 	<mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
-        <mat-panel-title><span class="text-resaltado">CRITERIOS DE BÚSQUEDA</span></mat-panel-title>
+        <mat-panel-title><span class="text-resaltado">CRITERIOS DE BÚSkEDA</span></mat-panel-title>
     </mat-expansion-panel-header>
 
     <div class='vigilancia-box'>
@@ -140,6 +140,119 @@
       </div>
 
     </div>
+    <hr>
+
+    <!-- fecomp_txa; intervencion; slug; -->
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldIntervencion placeholder="Tipo de Intervención"
+              [formControl]="form.controls['intervencion']"
+              (selectionChange)="changeSelectionValue('intervencion',fldIntervencion.value)" >
+            <mat-option *ngFor="let item of intervencionOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldSector placeholder="Sector aignado"
+              [formControl]="form.controls['sectorNovedad']"
+              (selectionChange)="changeSelectionValue('sectorNovedad',fldSector.value)" >
+            <mat-option *ngFor="let item of sectorOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecomp_d']" 
+          placeholder="Fecha carga de nuevo paciente desde" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha nuevo paciente hasta" >
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldEstado placeholder="Estado"
+              [formControl]="form.controls['estado']"
+              (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
+            <mat-option *ngFor="let item of estadoOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldAvance placeholder="Avance"
+              [formControl]="form.controls['avance']"
+              (selectionChange)="changeSelectionValue('avance',fldAvance.value)" >
+            <mat-option *ngFor="let item of avanceOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col">
+       <mat-form-field>
+         <mat-select #fldCiudad placeholder="Ciudad"
+             [formControl]="form.controls['city']"
+             (selectionChange)="changeCity()" >
+           <mat-option *ngFor="let item of ciudadesList" 
+             [value]="item.val" >{{ item.label }}</mat-option>
+         </mat-select>
+       </mat-form-field>
+      </div>
+      <div class="col">
+       <mat-form-field>
+         <mat-select #fldbarrio placeholder="Barrio"
+             [formControl]="form.controls['barrio']"
+             (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+           <mat-option *ngFor="let item of barrioList" 
+             [value]="item.val" >{{ item.label }}</mat-option>
+         </mat-select>
+       </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fenovd']" 
+          placeholder="Fecha novedad desde" >
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fenovh']" placeholder="Fecha novedad hasta" >
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="row" >
+      <div class="col">
+        <persona-buscar (person$)=personFetched($event)></persona-buscar>
+      </div>
+      <div class="col d-flex align-items-center">
+        <ng-container *ngIf="currentPerson">
+            <mat-checkbox [checked]='true' (change)="deSelectPerson($event)">
+            Selección activa: {{ currentPerson.displayName }}</mat-checkbox>
+        </ng-container>
+      </div>
+    </div>
+
     <hr>
 
     <div class="row" >

@@ -39,6 +39,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   public sintomaCovidOptList =  [];
   public resultadoOptList = [];
 
+  public intervencionOptList = [];
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
 
@@ -150,6 +151,24 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       casosIndice:     [null],
       avanceCovid:     [null],
       sintomaCovid:    [null],
+
+      sectorNovedad:   [null],
+      action:       [null],
+      fecomp_d:     [null],
+      fecomp_h:     [null],
+      fenovd:       [null],
+      fenovh:       [null],
+
+      avance:       [null],
+      estado:       [null],
+      fe_visita:    [null],
+      ruta:         [null],
+      barrio:       [null],
+      city:         [null],
+      urgencia:     [null],
+      intervencion: [null],
+      trabajadorId: [null],
+
     });
 
     return form;
@@ -184,7 +203,21 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
         avanceSisa: query.avanceSisa,
         qDaysSisa: query.qDaysSisa,
         qNotConsultaSisa: query.qNotConsultaSisa,
-        resultado: query.resultado
+        resultado: query.resultado,
+
+        fenovd:      query.fenovd,
+        fenovh:      query.fenovh,
+
+        action:      query.action,
+        sectorNovedad:      query.sectorNovedad,
+        avance:      query.avance,
+        estado:      query.estado,
+        city:        query.city,
+        barrio:      query.barrio,
+        urgencia:     query.urgencia,
+        intervencion:     query.intervencion,
+        trabajadorId: query.trabajadorId,
+
 
 		});
 
@@ -236,6 +269,22 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
     entity.resultado = fvalue.resultado;
 
+    entity.fenovd =        fvalue.fenovd;
+    entity.fenovh =        fvalue.fenovh;
+
+    entity.action =        fvalue.action;
+    entity.sectorNovedad =        fvalue.sectorNovedad;
+    entity.avance =        fvalue.avance;
+    entity.estado =        fvalue.estado;
+    entity.city =          fvalue.city;
+    entity.barrio =        fvalue.barrio;
+    entity.urgencia =      fvalue.urgencia;
+    entity.intervencion =      fvalue.intervencion;
+    entity.trabajadorId =  fvalue.trabajadorId;
+
+    if(entity.fenovd) entity.fenovd_ts = devutils.dateNumFromTx(entity.fenovd)
+    if(entity.fenovh) entity.fenovh_ts = devutils.dateNumPlusOneFromTx(entity.fenovh);
+
     if(this.currentPerson){
       entity.requirenteId = this.currentPerson._id;
 
@@ -265,6 +314,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
                   this.avanceCovidOptList,
                   this.sintomaCovidOptList,
                   this.resultadoOptList,
+                  this.intervencionOptList,
                  ];
 
     this.actionOptList =       AsistenciaHelper.getOptionlist('actions');
@@ -276,8 +326,9 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     this.tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp');
     this.estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
-    this.sintomaCovidOptList =  AsistenciaHelper.getOptionlist('sintomaInfection');
-    this.resultadoOptList =  AsistenciaHelper.getOptionlist('resultadoSeguim');
+    this.sintomaCovidOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
+    this.resultadoOptList =    AsistenciaHelper.getOptionlist('resultadoSeguim');
+    this.intervencionOptList = AsistenciaHelper.getOptionlist('intervenciones');
   }
 
 }

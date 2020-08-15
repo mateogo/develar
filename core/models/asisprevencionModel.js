@@ -512,6 +512,7 @@ function buildQuery(query, today){
 
   let q = {};
   let nestedOrs = [];
+  let comp_range = [];
 
   if(query['requirenteId']){
       q["requeridox.id"] = query['requirenteId'];
@@ -640,6 +641,30 @@ function buildQuery(query, today){
   }
 
   // busco segun query
+  if(query["fecomp_ts_h"]){
+
+    comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
+  }
+
+  if(query["fecomp_ts_d"]){
+
+    comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
+  }
+
+
+  if(query["compNum_d"]){
+    comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
+  }
+    
+  if(query["compNum_h"]){
+    comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
+  }
+
+
+  if(comp_range.length){
+    q["$and"] = comp_range;
+  }
+
   if(query['estado']){
       q["estado"] = query['estado'];
   }
@@ -678,32 +703,40 @@ function buildQuery(query, today){
 
   if(query['action']){
       q["action"] = query['action'];
-
-      if(query['action'] === "encuesta"){
-        if(query['ruta']) {
-          q['encuesta.ruta'] = query['ruta'];
-        }
-        if(query['trabajadorId']) {
-          q['encuesta.trabajadorId'] = query['trabajadorId'];
-        }
-        if(query['fe_visita']) {
-          q['encuesta.fe_visita'] = query['fe_visita'];
-        }
-        if(query['avance_encuesta']) {
-          q['encuesta.avance'] = query['avance_encuesta'];
-        }
-        if(query['barrio']) {
-          q['encuesta.barrio'] = query['barrio'];
-        }
-        if(query['city']) {
-          q['encuesta.city'] = query['city'];
-        }
-        if(query['urgencia']) {
-          q['encuesta.urgencia'] = parseInt(query['urgencia'], 10);
-        }
-      }
   }
 
+  // if(query['trabajadorId']) {
+  //   q['encuesta.trabajadorId'] = query['trabajadorId'];
+  // }
+
+  //Novedad novedad novedades Novedades
+  if(query['urgencia']) {
+    q['novedades.urgencia'] = parseInt(query['urgencia'], 10);
+  }
+
+  if(query['ejecucion']) {
+    q['novedades.ejecucion'] = parseInt(query['ejecucion'], 10);
+  }
+
+  if(query['intervencion']) {
+    q['novedades.intervencion'] = query['intervencion'];
+  }
+
+  if(query['avanceNovedad']) {
+    q['novedades.avance'] = query['avanceNovedad'];
+  }
+
+  if(query['sectorNovedad']) {
+    q['novedades.sector'] = query['sectorNovedad'];
+  }
+
+
+  if(query["fenovd_ts"] && query["fenovh_ts"]){
+    q['novedades.fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10) }
+  }
+
+
+  //locacion
   if(query['city']) {
     q['locacion.city'] = query['city'];
   }
@@ -711,6 +744,8 @@ function buildQuery(query, today){
   if(query['barrio']) {
     q['locacion.barrio'] = query['barrio'];
   }
+
+
 
   if(query['casosIndice']){
     nestedOrs.push([{'contactosEstrechos': {$gt: 0}}, {'hasParent': false} ])
@@ -720,38 +755,6 @@ function buildQuery(query, today){
     q['tipo'] = parseInt(query['tipo'], 10);
   }
 
-  if(query['sector']){
-      q["sector"] = query['sector'];
-  }
-
-  let comp_range = [];
-
-  if(query["compNum_d"]){
-    comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
-  }
-    
-  if(query["compNum_h"]){
-    comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
-  }
-
-  if(query["fecomp_ts_d"]){
-
-    comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
-  }
-
-
-  if(query["fenovd_ts"] && query["fenovh_ts"]){
-    q['novedades.fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10) }
-  }
-
-  if(query["fecomp_ts_h"]){
-
-    comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
-  }
-
-  if(comp_range.length){
-    q["$and"] = comp_range;
-  }
 
   if(query['hasCovid']){
     q["infeccion.hasCovid"] = true;
@@ -765,7 +768,6 @@ function buildQuery(query, today){
   if(query['casoCovid']){
     q['infeccion.actualState'] = {$in: [1, 4, 5]}; //  [{'infeccion.actualState': 1}, {'infeccion.actualState': 4}, {'infeccion.actualState': 5}]
   }
-  
   
   if(query['actualState']){
     let qData =  parseInt(query['actualState'], 10);
@@ -865,9 +867,9 @@ function buildQuery(query, today){
     q['$and'] = condition;
   }
 
-  return q;
+  return q; 
 }
-//estado avance city barrio
+//estado avance city barrio novedad sector action ejecucion fets_necesidad intervencion
 
 /**
  * El Modelo es el objeto constructor de instancias concretas

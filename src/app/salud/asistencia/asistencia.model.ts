@@ -1128,10 +1128,15 @@ export class VigilanciaBrowse {
 
 		fenovd: string = '';
 		fenovh: string = '';
-
+		avanceNovedad: string = '';
+		sectorNovedad: string = '';
+		intervencion: string = '';
+		ejecucion: string = '';
 		fenovd_ts: number = 0;
 		fenovh_ts: number = 0;
 		resultado: string = '';
+		urgencia:  number;
+		trabajadorId: string;
 
 }
 
@@ -2285,6 +2290,7 @@ export class AsistenciaHelper {
       if(key === 'qDaysSisa'        && !query[key]) delete query[key];
       if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
       if(key === 'casosIndice'      && !query[key]) delete query[key];
+      if(key === 'avance'           && !query[key]) delete query[key];
 
       if(key === 'asignadoId'      && !query[key]) delete query[key];
       if(key === 'rebuildLatLon'   && !query[key]) delete query[key];
@@ -2296,7 +2302,7 @@ export class AsistenciaHelper {
       if(key === 'feDesde_ts'      && !query[key]) delete query[key];
       if(key === 'feHasta'         && !query[key]) delete query[key];
       if(key === 'feHasta_ts'      && !query[key]) delete query[key];
-
+ 
       if(key === 'fenovd'         && !query[key]) delete query[key];
       if(key === 'fenovh'         && !query[key]) delete query[key];
       if(key === 'fenovh_ts'      && !query[key]) delete query[key];
@@ -2304,10 +2310,16 @@ export class AsistenciaHelper {
 
       if(key === 'barrio'         && !query[key]) delete query[key];
       if(key === 'city'           && !query[key]) delete query[key];
+
       if(key === 'action'         && !query[key]) delete query[key];
       if(key === 'sector'         && !query[key]) delete query[key];
-      if(key === 'avance'         && !query[key]) delete query[key];
+      if(key === 'sectorNovedad'  && !query[key]) delete query[key];
+      if(key === 'avanceNovedad'  && !query[key]) delete query[key];
+      if(key === 'intervencion'   && !query[key]) delete query[key];
+      if(key === 'ejecucion'      && !query[key]) delete query[key];
       if(key === 'resultado'      && !query[key]) delete query[key];
+      if(key === 'urgencia'       && !query[key]) delete query[key];
+      if(key === 'trabajadirId'   && !query[key]) delete query[key];
 
 
     })
