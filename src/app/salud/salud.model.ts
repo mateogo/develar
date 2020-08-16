@@ -27,19 +27,21 @@ function isInAsistenciaBlackList(token, action){
 
 
 export const sectores: SectorAtencion[] = [
-			{val:'epidemiologia',serial:'salud',  label: 'Epidemiología',     style: {'background-color': "#f2cded"}},
-			{val:'com',          serial:'salud',  label: 'COM',               style: {'background-color': "#f2cded"}},
-			{val:'same',         serial:'salud',  label: 'SAME',              style: {'background-color': "#f2aded"}},
-			{val:'internacion',  serial:'salud',  label: 'Coord Internación', style: {'background-color': "#f2cded"}},
-			{val:'coordinacion', serial:'salud',  label: 'Coord Operativa',   style: {'background-color': "#f2cded"}},
-			{val:'caps',         serial:'salud',  label: 'CAPS',              style: {'background-color': "#f2cded"}},
-			{val:'plasma',       serial:'salud',  label: 'Coord don plasma',  style: {'background-color': "#f2cded"}},
-			{val:'smental',      serial:'salud',  label: 'Salud Mental',      style: {'background-color': "#f2cded"}},
-			{val:'dsocial',      serial:'salud',  label: 'Desarrollo Social', style: {'background-color': "#f2cded"}},
-			{val:'deportes',     serial:'salud',  label: 'Vol Deportes',      style: {'background-color': "#f2cded"}},
-			{val:'voluntarios',  serial:'salud',  label: 'Vol Concejo Del',   style: {'background-color': "#f2cded"}},
-			{val:'direccion',    serial:'salud',  label: 'Dirección Médica' , style: {'background-color': "#f2dded"}},
-			{val:'ivr',          serial:'salud',  label: 'IVR',               style: {'background-color': "#f2cded"}},
+			{val:'epidemiologia',serial:'salud',  label: 'Epidemiología',      style: {'background-color': "#f2cded"}},
+			{val:'com',          serial:'salud',  label: 'COM',                style: {'background-color': "#f2cded"}},
+			{val:'same',         serial:'salud',  label: 'SAME',               style: {'background-color': "#f2aded"}},
+			{val:'internacion',  serial:'salud',  label: 'Coord Internación',  style: {'background-color': "#f2cded"}},
+			{val:'coordinacion', serial:'salud',  label: 'Coord Operativa',    style: {'background-color': "#f2cded"}},
+			{val:'caps',         serial:'salud',  label: 'CAPS',               style: {'background-color': "#f2cded"}},
+			{val:'plasma',       serial:'salud',  label: 'Coord don plasma',   style: {'background-color': "#f2cded"}},
+			{val:'smental',      serial:'salud',  label: 'Salud Mental',       style: {'background-color': "#f2cded"}},
+			{val:'dsocial',      serial:'salud',  label: 'Desarrollo Social',  style: {'background-color': "#f2cded"}},
+			{val:'deportes',     serial:'salud',  label: 'Vol Deportes',       style: {'background-color': "#f2cded"}},
+			{val:'voluntarios',  serial:'salud',  label: 'Vol Concejo Del',    style: {'background-color': "#f2cded"}},
+			{val:'brown0800',    serial:'salud',  label: 'Brown atiende 0800', style: {'background-color': "#f2dded"}},
+			{val:'direccion',    serial:'salud',  label: 'Dirección Médica' ,  style: {'background-color': "#f2dded"}},
+			{val:'ivr',          serial:'salud',  label: 'IVR',                style: {'background-color': "#f2cded"}},
+			{val:'sistema',      serial:'salud',  label: 'Sistema Brown Salud' ,  style: {'background-color': "#f2dded"}},
 	];
 
 

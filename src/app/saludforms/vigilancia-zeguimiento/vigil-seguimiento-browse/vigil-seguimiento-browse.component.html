@@ -144,7 +144,7 @@
 
     <!-- fecomp_txa; intervencion; slug; -->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldIntervencion placeholder="Tipo de Intervención"
               [formControl]="form.controls['intervencion']"
@@ -154,7 +154,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldSector placeholder="Sector aignado"
               [formControl]="form.controls['sectorNovedad']"
@@ -164,42 +164,49 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col">
+
+      <div class="col-md-3">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['fecomp_d']" 
-          placeholder="Fecha carga de nuevo paciente desde" >
+          <input matInput [formControl]="form.controls['fenovd']" 
+          placeholder="Fecha novedad desde" >
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
-          <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha nuevo paciente hasta" >
+          <input matInput [formControl]="form.controls['fenovh']" placeholder="Fecha novedad hasta" >
         </mat-form-field>
       </div>
-
+ 
+ 
     </div>
 
     <div class="row" >
-      <div class="col">
+      <div class="col-md-4">
         <mat-form-field>
-          <mat-select #fldEstado placeholder="Estado"
-              [formControl]="form.controls['estado']"
-              (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
-            <mat-option *ngFor="let item of estadoOptList" 
+          <mat-select #fldEjecucion placeholder="Ejecución"
+              [formControl]="form.controls['ejecucion']"
+              (selectionChange)="changeSelectionValue('ejecucion',fldEjecucion.value)" >
+            <mat-option *ngFor="let item of ejecucionOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col">
+
+     <div class="col-md-4">
         <mat-form-field>
-          <mat-select #fldAvance placeholder="Avance"
-              [formControl]="form.controls['avance']"
-              (selectionChange)="changeSelectionValue('avance',fldAvance.value)" >
-            <mat-option *ngFor="let item of avanceOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
+          <input matInput [formControl]="form.controls['fecomp_d']" 
+                placeholder="Fecha carga de nuevo paciente desde" >
         </mat-form-field>
       </div>
+
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['fecomp_h']" 
+                placeholder="Fecha nuevo paciente hasta" >
+        </mat-form-field>
+      </div>
+
     </div>
 
     <div class="row" >
@@ -226,19 +233,7 @@
     </div>
 
     <div class="row">
-      <div class="col">
-        <mat-form-field>
-          <input matInput [formControl]="form.controls['fenovd']" 
-          placeholder="Fecha novedad desde" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input matInput [formControl]="form.controls['fenovh']" placeholder="Fecha novedad hasta" >
-        </mat-form-field>
-      </div>
-    </div>
+   </div>
 
 
     <div class="row" >

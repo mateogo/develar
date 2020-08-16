@@ -149,25 +149,6 @@ export class AvancesNovedad {
 		userSlug: string;
 }
 
-const intervencionOptList = [
-		{ val: 'urgencia',          label: 'Urgencia'},
-		{ val: 'hisopar',           label: 'Hisopar'},
-		{ val: 'enviar107',         label: 'Enviar 107'},
-		{ val: 'investigepid',      label: 'Hacer Invesig Epidemiológica'},	
-		{ val: 'asistencia',        label: 'Derivar Asis Social'},
-		{ val: 'derivarIvr',        label: 'Derivar al IVR'},
-		{ val: 'derivarEpidemio',   label: 'Derivar Epidemiología'},
-		{ val: 'derivarSMental',    label: 'Derivar Sal Mental'},
-		{ val: 'internar',          label: 'Derivar Internación'},
-		{ val: 'derivarOtra',       label: 'Derivar otros'},
-		{ val: 'buscarTelefono',    label: 'Buscar Teléfono'},
-		{ val: 'buscarPlasma',      label: 'Promover don Plasma'},
-		{ val: 'extraerAlta',       label: 'Extraer Plasma '},
-		{ val: 'emitirAlta',        label: 'Emitir Certif Alta'},
-		{ val: 'notificarAlta',     label: 'Notificar Alta'},
-		{ val: 'no_definido',       label: ''},
-
-]
 
 export class Novedad {
 		_id?: string;
@@ -181,13 +162,13 @@ export class Novedad {
 		fecomp_txa:  string;
 		fecomp_tsa:  number;
 
-		hasFeNecesidad: boolean = false;
+		hasNecesidad: boolean = false;
 		fe_necesidad: string = '';
 		fets_necesidad: number = 0;
 
 		hasCumplimiento: boolean = false;
 		estado: string = 'activa';
-		avance: string = 'pendiente';
+		avance: string = 'emitido'; // deprecated
 		ejecucion: string = 'emitido'; // ejecucionOptList
 
 		actividades: AvancesNovedad[] = [];
@@ -1316,15 +1297,16 @@ const asisActionOptList: Array<any> = [
 
 const novedadesTypeOptList: Array<any> = [
         {val: 'no_definido',  label: 'Sin selección' },
-        {val: 'operadorcom',  label: 'Seguimiento telefónico' },
-        {val: 'operadorivr',  label: 'Seguimiento c/IVR' },
-        {val: 'solmedicx',    label: 'Seguimiento Médico/a' },
-        {val: 'epidemiologia',label: 'Seguimiento Epidemiología' },
-        {val: 'enviarsame',   label: 'Envía SAME' },
-        {val: 'nocontesta',   label: 'No contesta' },
+        {val: 'urgencia',     label: 'Alerta - Urgencia' },
+        {val: 'seguimiento',  label: 'Seguimiento telefónico' },
+        {val: 'investigacion', label: 'Seguim/Invest Epidemio' },
         {val: 'derivacion',   label: 'Requerim Derivación' },
-        {val: 'intervencion', label: 'Requerim Intervención' },
-        {val: 'evento',       label: 'Mensaje' },
+        {val: 'intervencion', label: 'Intervención' },
+        {val: 'datos',        label: 'Gestionar datos (tel equivocado)' },
+        {val: 'notifsistema', label: 'Notificaciones aplicativo' },
+        {val: 'notificacion', label: 'Notificaciones' },
+        {val: 'documentos',   label: 'Emisión certificado' },
+        {val: 'plasma',       label: 'Gestión plasma' },
         {val: 'otros',        label: 'Otros' },
 ];
 
@@ -1775,6 +1757,223 @@ const reportesVigilanciaOptList: Array<any> = [
    // {val: 'SEGUIMIENTO',      label: 'Reporte de seguimiento entre fechas' },
 ];
 
+const intervencionOptList = [
+		{ val: 'no_definido',        label: 'Sin selección'},
+		{ val: 'urgencia',           label: 'Atención Urgencia'},
+		{ val: 'hisopar',            label: 'Hisopar'},
+		{ val: 'enviar107',          label: 'Enviar 107'},
+		{ val: 'internar',           label: 'Requerir Internación'},
+		{ val: 'investigepid',       label: 'Hacer Invesig Epidemiológica'},	
+		{ val: 'derivarEpidemio',    label: 'Derivar Epidemiología'},
+		{ val: 'derivarAsis',        label: 'Derivar Asis Social'},
+		{ val: 'derivarIvr',         label: 'Derivar al IVR'},
+		{ val: 'derivarVolun',       label: 'Derivar Voluntarios'},
+		{ val: 'derivarSMental',     label: 'Derivar Sal Mental'},
+		{ val: 'derivarPlasma',      label: 'Derivar Ges Plasma'},
+		{ val: 'derivarOtra',        label: 'Derivar otros'},
+		{ val: 'buscarTelefono',     label: 'Buscar Teléfono'},
+		{ val: 'testearPlasma',      label: 'Labor p/Plasma'},
+		{ val: 'extraerAlta',        label: 'Extraer Plasma '},
+		{ val: 'emitirCertifAlta',   label: 'Emitir Certif Alta'},
+		{ val: 'notifEstadoAlta',    label: 'Notificar Estado de Alta'},
+		{ val: 'notifsistema',       label: 'Mensajes/Notif aplicativo'},
+
+]
+
+const intervencionManager = {
+		urgencia: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'urgente',
+			sector: 'coordinacion',
+			urgencia: 3,
+			tnovedad: 'urgencia', 
+			novedad: 'Atención Urgencia'
+		},
+		hisopar: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'coordinacion',
+			urgencia: 2,
+			tnovedad: 'intervencion', 
+			novedad: 'Hisopar'
+		},
+		enviar107: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'same',
+			urgencia: 2,
+			tnovedad: 'intervencion', 
+			novedad: 'Enviar 107'
+		},
+		internar: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'coordinacion',
+			urgencia: 2,
+			tnovedad: 'intervencion', 
+			novedad: 'Requerir Internación'
+		},
+		investigepid: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'epidemiologia',
+			urgencia: 1,
+			tnovedad: 'investigacion', 
+			novedad: 'Hacer Invesig Epidemiológica'
+		},
+		derivarEpidemio: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'epidemiologia',
+			urgencia: 1,
+			tnovedad: 'seguimiento', 
+			novedad: 'Derivar Epidemiología'
+		},
+		derivarAsis: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'voluntarios',
+			urgencia: 1,
+			tnovedad: 'deportes', 
+			novedad: 'Derivar Asis Social'
+		},
+		derivarIvr: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'ivr',
+			urgencia: 1,
+			tnovedad: 'seguimiento', 
+			novedad: 'Derivar al IVR'
+		},
+		derivarVolun: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'voluntarios',
+			urgencia: 1,
+			tnovedad: 'seguimiento', 
+			novedad: 'Derivar Voluntarios'
+		},
+		derivarSMental: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'smental',
+			urgencia: 1,
+			tnovedad: 'seguimiento', 
+			novedad: 'Derivar Sal Mental'
+		},
+		derivarPlasma: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'plasma',
+			urgencia: 1,
+			tnovedad: 'plasma', 
+			novedad: 'Derivar Ges Plasma'
+		},
+		derivarOtra: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'derivado',
+			sector: 'coordinacion',
+			urgencia: 1,
+			tnovedad: 'seguimiento', 
+			novedad: 'Derivar otros'
+		},
+		buscarTelefono: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'brown0800',
+			urgencia: 1,
+			tnovedad: 'datos', 
+			novedad: 'Buscar Teléfono'
+		},
+		testearPlasma: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'plasma',
+			urgencia: 1,
+			tnovedad: 'plasma', 
+			novedad: 'Labor p/Plasma'
+		},
+		extraerAlta: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'plasma',
+			urgencia: 3,
+			tnovedad: 'plasma', 
+			novedad: 'Extraer Plasma '
+		},
+		emitirCertifAlta: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'coordinacion',
+			urgencia: 1,
+			tnovedad: '', 
+			novedad: 'Emitir Certif Alta'
+		},
+		notifEstadoAlta: {
+			isActive: true,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'emitido',
+			sector: 'coordinacion',
+			urgencia: 1,
+			tnovedad: 'notificacion', 
+			novedad: 'Notificar Estado de Alta'
+		},
+		notifsistema: {
+			isActive: false,
+			hasNecesidad: false,
+			hasCumplimiento: false,
+			ejecucion: 'cumplido',
+			sector: 'sistema',
+			urgencia: 1,
+			tnovedad: 'notifsistema', 
+			novedad: 'Notificar Estado de Alta'
+		},
+		no_definido: {
+			isActive: false,
+			hasNecesidad: true,
+			hasCumplimiento: true,
+			ejecucion: 'anulado',
+			sector: 'coordinacion',
+			urgencia: 1,
+			tnovedad: '', 
+			novedad: ''}
+			,	
+}
+
+
 
 const MODALIDAD_ALIMENTO =     'alimentos';
 const MODALIDAD_HABITACIONAL = 'habitacional';
@@ -2076,20 +2275,27 @@ function getPesoCovid(asis: Asistencia): number{
     return peso;
 }
 
-function initNovedadToken(tnovedad: string, sector: string, intervencion: string, urgencia: number, fe_necesidad: string): Novedad{
+function initNovedadToken(intervencion: string, sector?: string,  urgencia?: number, fe_necesidad?: string): Novedad{
 		let novedad  = new Novedad();
-		novedad.tnovedad = tnovedad;
-		novedad.sector = sector;
-		novedad.intervencion =  intervencion;
-		novedad.urgencia = urgencia;
+		let spec =intervencionManager[intervencion];
+		if(spec){
+			novedad = Object.assign(novedad, spec);
+		} 
+		novedad.sector = sector || novedad.sector;
+		novedad.intervencion = intervencion;
+		novedad.urgencia = urgencia || novedad.urgencia;
 		novedad.fecomp_txa = devutils.txFromDate(new Date());
 		novedad.fecomp_tsa = devutils.dateNumFromTx(novedad.fecomp_txa);
+
 		if(fe_necesidad){
-			novedad.hasCumplimiento = true;
-			novedad.hasFeNecesidad = true;
-			novedad.fe_necesidad =   novedad.fe_necesidad;
-			novedad.fets_necesidad = devutils.dateNumFromTx(novedad.fe_necesidad);
+			novedad.fe_necesidad =   fe_necesidad;
+			novedad.fets_necesidad = devutils.dateNumFromTx(fe_necesidad);
+		}else{
+			novedad.fe_necesidad =   novedad.fecomp_txa;
+			novedad.fets_necesidad = novedad.fecomp_tsa;
+
 		}
+
 		return novedad;
 }
 
@@ -2243,8 +2449,8 @@ export class AsistenciaHelper {
 		return filteredList;
 	}
 
-	static initNewNovedad(tnovedad, sector, intervencion, urgencia, fe_necesidad): Novedad{
-		return initNovedadToken(tnovedad, sector, intervencion, urgencia, fe_necesidad)
+	static initNewNovedad(intervencion, sector?): Novedad{
+		return initNovedadToken(intervencion, sector)
 	}
 
 
@@ -2466,7 +2672,7 @@ export class AsistenciaHelper {
 		let ts = Date.now();
 		let requirente: Requirente;
 		let token = new Asistencia();
-		let novedad = initNovedadToken("evento", (sector||'coordinacion'),'no_definido', 0, '');
+		let novedad = initNovedadToken("notifsistema", (sector||'coordinacion'));
 		novedad.novedad  = 'Alta nuevo caso de seguimiento por epidemiología';
 
 

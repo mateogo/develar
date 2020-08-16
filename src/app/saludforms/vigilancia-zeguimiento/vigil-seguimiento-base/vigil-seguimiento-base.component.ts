@@ -161,7 +161,6 @@ export class VigilSeguimientoBaseComponent implements OnInit {
     this.viewList = viewList;
 
     setTimeout(() => {
-      console.dir(viewList)
       if(viewList && viewList.indexOf('intervenciones')!== -1){
         this.showObservacionesPanel = true;
       }

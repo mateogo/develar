@@ -38,6 +38,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   public avanceCovidOptList =  [];
   public sintomaCovidOptList =  [];
   public resultadoOptList = [];
+  public ejecucionOptList = [];
 
   public intervencionOptList = [];
   public ciudadesList =   personModel.ciudades;
@@ -159,8 +160,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       fenovd:       [null],
       fenovh:       [null],
 
-      avance:       [null],
-      estado:       [null],
+      ejecucion:    [null],
       fe_visita:    [null],
       ruta:         [null],
       barrio:       [null],
@@ -210,8 +210,8 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
 
         action:      query.action,
         sectorNovedad:      query.sectorNovedad,
-        avance:      query.avance,
-        estado:      query.estado,
+
+        ejecucion:   query.ejecucion,
         city:        query.city,
         barrio:      query.barrio,
         urgencia:     query.urgencia,
@@ -271,11 +271,11 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
 
     entity.fenovd =        fvalue.fenovd;
     entity.fenovh =        fvalue.fenovh;
+    entity.ejecucion =     fvalue.ejecucion;
 
     entity.action =        fvalue.action;
     entity.sectorNovedad =        fvalue.sectorNovedad;
-    entity.avance =        fvalue.avance;
-    entity.estado =        fvalue.estado;
+
     entity.city =          fvalue.city;
     entity.barrio =        fvalue.barrio;
     entity.urgencia =      fvalue.urgencia;
@@ -315,6 +315,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
                   this.sintomaCovidOptList,
                   this.resultadoOptList,
                   this.intervencionOptList,
+                  this.ejecucionOptList,
                  ];
 
     this.actionOptList =       AsistenciaHelper.getOptionlist('actions');
@@ -329,6 +330,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     this.sintomaCovidOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
     this.resultadoOptList =    AsistenciaHelper.getOptionlist('resultadoSeguim');
     this.intervencionOptList = AsistenciaHelper.getOptionlist('intervenciones');
+    this.ejecucionOptList =    AsistenciaHelper.getOptionlist('ejecucion');
   }
 
 }

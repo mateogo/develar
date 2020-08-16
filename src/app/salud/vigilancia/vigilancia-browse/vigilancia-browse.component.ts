@@ -42,6 +42,10 @@ export class VigilanciaBrowseComponent implements OnInit {
   public avanceCovidOptList =  [];
   public sintomaCovidOptList =  [];
   public reportesOptList =     [];
+  public ejecucionOptList = [];
+
+  public intervencionOptList = [];
+
 
   public ciudadesList =   personModel.ciudades;
   public barrioList = [];
@@ -166,11 +170,18 @@ export class VigilanciaBrowseComponent implements OnInit {
       casosIndice:     [null],
       avanceCovid:     [null],
       sintomaCovid:    [null],
+      sectorNovedad:   [null],
+      intervencion:    [null],
+      fenovd:          [null],
+      fenovh:          [null],
+
+
+
     });
 
     return form;
   }
-
+//sectorNovedad fenovd fenovh intervencion
   initForEdit(form: FormGroup, query: VigilanciaBrowse): FormGroup {
 		form.reset({
         compPrefix:  query.compPrefix,
@@ -193,9 +204,13 @@ export class VigilanciaBrowseComponent implements OnInit {
         casosIndice:  query.casosIndice ? true: false,
 
         sintomaCovid:   query.sintomaCovid,
-        asignadoId:    query.asignadoId,
-        avanceCovid:   query.avanceCovid,
-
+        asignadoId:     query.asignadoId,
+        avanceCovid:    query.avanceCovid,
+        intervencion:   query.intervencion,
+        sectorNovedad:  query.sectorNovedad,
+        fenovd:         query.fenovd,
+        fenovh:         query.fenovh,
+ 
         isActiveSisa: query.isActiveSisa,
         avanceSisa: query.avanceSisa,
         qDaysSisa: query.qDaysSisa,
@@ -246,8 +261,12 @@ export class VigilanciaBrowseComponent implements OnInit {
 
     entity.casosIndice =   fvalue.casosIndice ? 1: 0;
 
-    entity.avanceCovid =   fvalue.avanceCovid;
-    entity.sintomaCovid =   fvalue.sintomaCovid;
+    entity.avanceCovid =     fvalue.avanceCovid;
+    entity.sintomaCovid =    fvalue.sintomaCovid;
+    entity.intervencion =    fvalue.intervencion;
+    entity.sectorNovedad =   fvalue.sectorNovedad;
+    entity.fenovd =          fvalue.fenovd;
+    entity.fenovh =          fvalue.fenovh;
 
     entity.isActiveSisa = fvalue.isActiveSisa;
     entity.avanceSisa = fvalue.avanceSisa;
@@ -284,6 +303,8 @@ export class VigilanciaBrowseComponent implements OnInit {
                   this.avanceSisaOptList,
                   this.avanceCovidOptList,
                   this.sintomaCovidOptList,
+                  this.intervencionOptList,
+                  this.ejecucionOptList,
                   this.reportesOptList
                  ];
 
@@ -300,6 +321,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     this.avanceSisaOptList =   AsistenciaHelper.getOptionlist('avanceSisa');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
     this.sintomaCovidOptList =  AsistenciaHelper.getOptionlist('sintomaInfection');
+    this.intervencionOptList = AsistenciaHelper.getOptionlist('intervenciones');
+    this.ejecucionOptList =    AsistenciaHelper.getOptionlist('ejecucion');
 
 
     // list.forEach(l => {

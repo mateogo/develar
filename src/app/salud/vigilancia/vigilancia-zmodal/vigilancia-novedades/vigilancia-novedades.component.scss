@@ -1,8 +1,16 @@
 $color-destacado: #0645f5;
+$color-hint: #f52020;
 
 .form-control {
 	margin-left: 15px;
 }
+
+.mat-hint {
+		color: $color-hint;
+		font-weight: 700;
+
+}
+
 
 .text-resaltado {
 		margin: 0 0 0 0;

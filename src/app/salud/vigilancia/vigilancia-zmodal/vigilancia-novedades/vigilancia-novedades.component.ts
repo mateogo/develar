@@ -28,6 +28,7 @@ export class VigilanciaNovedadesComponent implements OnInit {
 
   public novedad: Novedad;
   public novedades: Array<Novedad> = [];
+  private intervencion: string;
 
   private avancesNovedad: Array<AvancesNovedad>;
 
@@ -56,13 +57,15 @@ export class VigilanciaNovedadesComponent implements OnInit {
   ngOnInit(): void {
  
   	this.isNewNovedad = true;
-  	this.asistencia = this.data.asistencia
+  	this.asistencia = this.data.asistencia;
+    this.intervencion = this.data.intervencion || 'no_definido'; // target de la nueva intervencion
+
   	this.novedades = this.asistencia.novedades || [];
 
-  	this.novedad = this.data.novedad
+  	this.novedad = this.data.novedad ;
 
   	if(this.novedad){
-  		this.isNewNovedad = false;
+  		this.isNewNovedad = true;
   		let novedadToken = this.novedades.find(t => t._id === this.novedad._id)
 
   		if(novedadToken){
@@ -72,7 +75,7 @@ export class VigilanciaNovedadesComponent implements OnInit {
   		}
 
   	}else{
-  		this.novedad = new Novedad();
+  		this.novedad = AsistenciaHelper.initNewNovedad(this.intervencion)
 
   	}
 
@@ -98,11 +101,36 @@ export class VigilanciaNovedadesComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'intervencion'){
+      this.intervencion = val;
+      this.novedad = AsistenciaHelper.initNewNovedad(val)
+      this.initForEdit()
+
+
+    }
+
+  }
+  hayNovedadesPendientes(){
+    return this.searchSameIntervencion(this.intervencion)
   }
 
   changeActualState(estado){
     //c onsole.log('Estado COVID: [%s]', estado);
+  }
+
+  private searchSameIntervencion(intervencion: string){
+    let casos = '' ;
+    casos = this.novedades.filter(t => {
+      if(t.intervencion === intervencion && t.isActive) return true;
+
+    }).reduce((memo, t)=>{
+      return memo + t.fecomp_txa + '; '
+    },'' )
+    if(casos){
+      casos = 'Requerim previo: ' + casos;
+    }
+    return casos;
+
   }
 
 
@@ -124,16 +152,18 @@ export class VigilanciaNovedadesComponent implements OnInit {
     //this.novedad = {...this.novedad, ...this.form.value} --->OjO... esto clona, no es lo buscado
 
     this.novedad = Object.assign(this.novedad, this.form.value);
-
+    if(this.isNewNovedad){
+      this.novedad.fecomp_txa = devutils.txFromDate(today);
+      this.novedad.fecomp_tsa = today.getTime();
+    }
 
     this.novedad.fecomp_txa = this.novedad.fecomp_txa ? devutils.txFromDate(devutils.dateFromTx(this.novedad.fecomp_txa)) : devutils.txFromDate(today);
     this.novedad.fecomp_tsa = devutils.dateNumFromTx(this.novedad.fecomp_txa);
 
     this.novedad.fe_necesidad = this.novedad.fe_necesidad ? devutils.txFromDate(devutils.dateFromTx(this.novedad.fe_necesidad)) : devutils.txFromDate(today);
     this.novedad.fets_necesidad = devutils.dateNumFromTx(this.novedad.fe_necesidad);
-    this.novedad.hasFeNecesidad = true;
-    this.novedad.estado = this.novedad.ejecucion ? this.ejecucionOptList.find(t=>t.val === this.novedad.ejecucion).estado : 'activo';
 
+    this.novedad.estado = this.novedad.ejecucion ? this.ejecucionOptList.find(t=>t.val === this.novedad.ejecucion).estado : 'activo';
 
     let token = {
             fe_nov: devutils.txFromDate(today),

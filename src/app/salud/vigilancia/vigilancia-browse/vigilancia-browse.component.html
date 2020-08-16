@@ -332,6 +332,44 @@
 
     <ng-container *ngIf="showReporteBox"  >
       <div class="row" >
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select #fldIntervencion placeholder="Tipo de Intervención"
+                [formControl]="form.controls['intervencion']"
+                (selectionChange)="changeSelectionValue('intervencion',fldIntervencion.value)" >
+              <mat-option *ngFor="let item of intervencionOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select #fldSector placeholder="Sector aignado"
+                [formControl]="form.controls['sectorNovedad']"
+                (selectionChange)="changeSelectionValue('sectorNovedad',fldSector.value)" >
+              <mat-option *ngFor="let item of sectorOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['fenovd']" 
+            placeholder="Fecha novedad desde" >
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['fenovh']" placeholder="Fecha novedad hasta" >
+          </mat-form-field>
+        </div>
+   
+   
+      </div>
+      
+      <div class="row" >
         <div class="col">
           <mat-form-field>
             <mat-select #fldTipoReporte placeholder="Tipo de reporte"

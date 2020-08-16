@@ -715,7 +715,7 @@ function buildQuery(query, today){
   }
 
   if(query['ejecucion']) {
-    q['novedades.ejecucion'] = parseInt(query['ejecucion'], 10);
+    q['novedades.ejecucion'] = query['ejecucion'];
   }
 
   if(query['intervencion']) {
