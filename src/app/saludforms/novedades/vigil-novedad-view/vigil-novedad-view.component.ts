@@ -50,7 +50,7 @@ export class VigilNovedadViewComponent implements OnInit {
   private buildNovedadData(novedad){
   	this.tnovedad =     AsistenciaHelper.getOptionLabel('novedades', novedad.tnovedad);
   	this.sector =       AsistenciaHelper.getOptionLabel('sectores', novedad.sector || 'epidemiologia');
-  	this.urgencia =     AsistenciaHelper.getOptionLabel('urgencia', novedad.urgencia || 1);
+  	this.urgencia =     AsistenciaHelper.getOptionLabel('urgencia', novedad.urgencia );
   	this.avance =       AsistenciaHelper.getOptionLabel('avance', novedad.avance );
   	this.estado =       AsistenciaHelper.getOptionLabel('estado', novedad.estado);
     this.intervencion = AsistenciaHelper.getOptionLabel('intervenciones', novedad.intervencion);

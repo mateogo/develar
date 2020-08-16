@@ -161,10 +161,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
       trabajo:             [null],
       trabajoSlug:         [null],
 
-      derivaSaludMental:   [null],
-      derivaDesarrollo:    [null],
-      derivaHisopado:      [null],
-      derivaOtro:          [null],
       derivacionSlug:      [null],
 
       hasTrabajoAdulMayores:  [null],
@@ -234,11 +230,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
       internacionSlug: sintomaCovid.internacionSlug,
 
 
-      derivaSaludMental: sintomaCovid.derivaSaludMental,
-      derivaDesarrollo:  sintomaCovid.derivaDesarrollo,
-      derivaHisopado:    sintomaCovid.derivaHisopado,
-      derivaOtro:        sintomaCovid.derivaOtro,
-      derivacion:        sintomaCovid.derivacion,
+      derivacion:        sintomaCovid.derivacion, // de internación
       derivacionSlug:    sintomaCovid.derivacionSlug,
 
       trabajo:           sintomaCovid.trabajo,
@@ -389,11 +381,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.tinternacion =      fvalue.tinternacion;
     covid.internacionSlug =   fvalue.internacionSlug;
 
-
-    covid.derivaSaludMental = fvalue.derivaSaludMental;
-    covid.derivaDesarrollo =  fvalue.derivaDesarrollo;
-    covid.derivaHisopado =    fvalue.derivaHisopado;
-    covid.derivaOtro =        fvalue.derivaOtro;
     covid.derivacionSlug =    fvalue.derivacionSlug;
     covid.derivacion =        fvalue.derivacion;
 

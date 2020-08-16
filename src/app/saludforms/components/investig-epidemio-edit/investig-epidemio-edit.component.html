@@ -304,6 +304,38 @@
 	        </mat-form-field>
 	      </div>
 	    </div>
+	    <div class="row">
+			  <div class="col-md-8">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="derivacionSlug" placeholder="Otras observaciones" >
+			    </mat-form-field>
+			  </div>
+			</div>
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Tipo de trabajo</span>
+	      </div>
+
+	      <div class="col-md-4">
+	        <mat-form-field>
+	          <mat-select #fldTrabajo placeholder="Trabaja en..."
+	              [formControl]="form.controls['trabajo']"
+	              (selectionChange)="changeSelectionValue('trabajo',fldTrabajo.value)" >
+	            <mat-option *ngFor="let item of trabajoOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+
+			  <div class="col-md-3">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="trabajoSlug" placeholder="Lugar de Trabajo" >
+			    </mat-form-field>
+			  </div>
+			</div>
 
 			<hr>
 	    <div class="row">
@@ -359,78 +391,7 @@
 	          </mat-select>
 	        </mat-form-field>
 	      </div>
-
 			</div>
-			<div class="row">
-	      <div class="col-md-3 d-flex align-items-center">
-	        <span class="text-normal">¿Requiere derivación a otras áreas?</span>
-	      </div>
-        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
-            title="Salud mental">
-            <mat-checkbox class="mat-checkbox-wrap"
-                  [checked]="true"
-                  [formControl]="form.controls['derivaSaludMental']" >
-                    Área de Salud Mental</mat-checkbox>
-        </div>
-
-        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
-            title="Desarrollo Social">
-            <mat-checkbox class="mat-checkbox-wrap"
-                  [checked]="true"
-                  [formControl]="form.controls['derivaDesarrollo']" >
-                    Área de Desarrollo Social</mat-checkbox>
-        </div>
-
-        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
-            title="Solicitud de hisopado">
-            <mat-checkbox class="mat-checkbox-wrap"
-                  [checked]="true"
-                  [formControl]="form.controls['derivaHisopado']" >
-                    Solicitud de Hisopado</mat-checkbox>
-        </div>
-      </div>
-
-    	<div class='row'>
-        <div class="offset-md-3 col-md-3 d-md-flex justify-content-start align-items-center" 
-            title="Solicitud de hisopado">
-            <mat-checkbox class="mat-checkbox-wrap"
-                  [checked]="true"
-                  [formControl]="form.controls['derivaOtro']" >
-                    Otra clase de derivación</mat-checkbox>
-				</div>
-			  <div class="col-md-3">
-			    <mat-form-field>
-			      <input  matInput  
-			              formControlName="derivacionSlug" placeholder="Otra derivación necesaria" >
-			    </mat-form-field>
-			  </div>
-        
-      </div>
-			<div class="row">
-	      <div class="col-md-3 d-flex align-items-center">
-	        <span class="text-normal">Tipo de trabajo</span>
-	      </div>
-
-	      <div class="col-md-4">
-	        <mat-form-field>
-	          <mat-select #fldTrabajo placeholder="Trabaja en..."
-	              [formControl]="form.controls['trabajo']"
-	              (selectionChange)="changeSelectionValue('trabajo',fldTrabajo.value)" >
-	            <mat-option *ngFor="let item of trabajoOptList" 
-	              [value]="item.val" >{{ item.label }}</mat-option>
-	          </mat-select>
-	        </mat-form-field>
-	      </div>
-
-			  <div class="col-md-3">
-			    <mat-form-field>
-			      <input  matInput  
-			              formControlName="trabajoSlug" placeholder="Lugar de Trabajo" >
-			    </mat-form-field>
-			  </div>
-
-			</div>
-
       <hr>
 	    <div class="row">
 	      <div class="col-md-12">
@@ -486,7 +447,7 @@
           [disabled]="!form.valid" >CONFIRMAR INFORME</button>
       
       <button mat-button type="button" color="accent"
-          (click)="onCancel()" >Cancelar</button>
+          (click)="onCancel()" >Cancelar|Siguiente</button>
 
 		</div>
 	</div>
@@ -561,5 +522,47 @@
 			      </div>
 
 			    </div>
+
+
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">¿Requiere derivación a otras áreas?</span>
+	      </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Salud mental">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaSaludMental']" >
+                    Área de Salud Mental</mat-checkbox>
+        </div>
+
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Desarrollo Social">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaDesarrollo']" >
+                    Área de Desarrollo Social</mat-checkbox>
+        </div>
+
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Solicitud de hisopado">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaHisopado']" >
+                    Solicitud de Hisopado</mat-checkbox>
+        </div>
+      </div>
+
+    	<div class='row'>
+        <div class="offset-md-3 col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Solicitud de hisopado">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['derivaOtro']" >
+                    Otra clase de derivación</mat-checkbox>
+				</div>
+        
+      </div>
+
 
 <fin-->

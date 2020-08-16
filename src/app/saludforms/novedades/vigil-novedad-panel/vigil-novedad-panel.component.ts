@@ -48,6 +48,7 @@ export class VigilNovedadPanelComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    //c onsole.log('Novedad Panel: items:[%s]', this.items && this.items.length)
  
   	if(this.items && this.items.length){
       this.showList = true;
@@ -198,9 +199,9 @@ export class VigilNovedadPanelComponent implements OnInit {
     this.showListMode = !this.showListMode;
 
     if(this.showListMode === true){
-      this.title = 'Novedades y tareas pendientes';
+      this.title = 'Derivaciones, acciones, mensaje, novedades :: PENDIENTES';
     } else {
-      this.title = 'Novedades TODAS';
+      this.title = 'Derivaciones, acciones, mensajes, novedades';
 
     }
     this.showActiveList = this.showListMode;

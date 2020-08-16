@@ -613,17 +613,25 @@ export class SaludController {
 
   private updateCovidFromInvestig(asistencia: Asistencia, investigacion: ContextoCovid ){
     let infeccion = asistencia.infeccion || new InfectionFollowUp();
-    asistencia.isCovid = true;
+    infeccion.actualState = investigacion.actualState;
 
-    infeccion.isActive = true;
+    if(AsistenciaHelper.isActualStateCovid(infeccion.actualState)){
+      asistencia.isCovid = true;
+      infeccion.isActive = true;
+      infeccion.hasCovid = true;
+      infeccion.fe_inicio = investigacion.fe_inicio || infeccion.fe_inicio;
+
+    }else {
+      asistencia.isCovid = false;
+      infeccion.hasCovid = false;
+    }
+
     infeccion.isInternado = investigacion.isInternado ;
     //infeccion.isExtradistrito = '';
-    infeccion.hasCovid = true;
-    infeccion.actualState = 1;
 
-    infeccion.fe_inicio = investigacion.fe_inicio;
     // infeccion.fe_confirma = infeccion.fe_confirma;
     //infeccion.fe_alta = '';
+
     infeccion.avance = investigacion.avanceCovid || infeccion.avance || 'comunitario';
     infeccion.sintoma = investigacion.sintoma;
     infeccion.locacionSlug = investigacion.internacionSlug || investigacion.tinternacion;
@@ -643,7 +651,7 @@ export class SaludController {
     asistencia.infeccion = infeccion;
   }
 
-
+//actualState
 
   /****************************************/
   /******* ASISTENCIA COVID ********/
