@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SaludController } from '../../../salud/salud.controller';
 
 import { NovedadesFollowUpService }  from '../../vigilancia-zmodal-managers/fup-novedades-modal.service';
+import { LaboratorioNovedadService } from '../../vigilancia-zmodal-managers/laboratorio-novedad-modal.service';
 
 import { PersonService } from '../../../salud/person.service';
 
@@ -10,6 +11,7 @@ import { Person, FamilyData, NucleoHabitacional, personModel, Address } from '..
 
 import {  Asistencia,
 					Novedad,
+          MuestraLaboratorio, 
 					UpdateNovedadEvent,
           UpdateAsistenciaListEvent,
           AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
@@ -28,9 +30,9 @@ const BG_COLOR_SELECTED = "#f2eded"; //75787B //0645f5
   selector: 'vigil-novedad-base',
   templateUrl: './vigil-novedad-base.component.html',
   styleUrls: ['./vigil-novedad-base.component.scss'],
-  providers: [ NovedadesFollowUpService 
-
-  ]
+  providers: [   NovedadesFollowUpService,
+                 LaboratorioNovedadService
+             ]
 })
 export class VigilNovedadBaseComponent implements OnInit {
 	@Input() novedad: Novedad;
@@ -42,6 +44,8 @@ export class VigilNovedadBaseComponent implements OnInit {
 
 	public showView = true;
 	public showEditPanel = false;
+
+  public isHisopado = false;
 
   public showEditBase = false;
   public showEditModalidad = false;
@@ -57,7 +61,8 @@ export class VigilNovedadBaseComponent implements OnInit {
   public selectedStyle = {};
 
   constructor(
-    private novedadService: NovedadesFollowUpService
+    private novedadService: NovedadesFollowUpService,
+    private labNovedad: LaboratorioNovedadService
 
     ) { }
 
@@ -73,12 +78,22 @@ export class VigilNovedadBaseComponent implements OnInit {
     }
 
     this.loadChips();
+    this.initOnce();
 
     // if(!this.novedad.compNum || this.novedad.compNum === "00000"){
     //   this.editToken()
     // }
   }
 
+  private initOnce(){
+    if(this.novedad.intervencion === 'hisopar'){
+      this.isHisopado = true;
+    }
+  }
+
+  muestraLaboratorio(){
+    this.openLaboratorioModal(null)
+  }
 
   editToken(){
     this.openNovedadesModal(this.novedad);
@@ -99,17 +114,6 @@ export class VigilNovedadBaseComponent implements OnInit {
     // }
   }
 
-  private openNovedadesModal(novedad: Novedad){
-
-    this.novedadService.openDialog(this.asistencia, novedad).subscribe(editEvent =>{
-      if(editEvent.action === UPDATE){
-        this.asistencia = editEvent.token;
-        //this.manageAsistenciaView(this.viewList);        
-      }
-    })
-
-
-  }
 
   private loadChips(){
     this.chips = [] as ChipSchema[];
@@ -191,6 +195,42 @@ export class VigilNovedadBaseComponent implements OnInit {
 
 	removeToken(){
 	}
+
+
+
+
+  private manageModalEditors(token: string){
+
+
+    if(token === 'laboratorio')   this.openLaboratorioModal(null)
+    if(token === 'novedades')   this.openNovedadesModal(null)
+
+  }
+
+
+  private openLaboratorioModal(muestralab: MuestraLaboratorio){
+
+    this.labNovedad.openDialog(this.asistencia, muestralab).subscribe(editEvent =>{
+      if(editEvent.action === UPDATE){
+        this.asistencia = editEvent.token;
+        //
+      }
+    })
+
+  }
+
+  private openNovedadesModal(novedad: Novedad){
+
+    this.novedadService.openDialog(this.asistencia, novedad).subscribe(editEvent =>{
+      if(editEvent.action === UPDATE){
+        this.asistencia = editEvent.token;
+        //this.manageAsistenciaView(this.viewList);        
+      }
+    })
+
+
+  }
+
 
 }
 

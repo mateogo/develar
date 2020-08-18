@@ -710,30 +710,54 @@ function buildQuery(query, today){
   // }
 
   //Novedad novedad novedades Novedades
+  let novedadesMatch = {};
+
+  // q['novedades']  = { $elemMatch: {
+  //                                   'intervencion': query['intervencion']
+  //                                  }
+  //                   }
+
   if(query['urgencia']) {
-    q['novedades.urgencia'] = parseInt(query['urgencia'], 10);
+    novedadesMatch['urgencia'] =  parseInt(query['urgencia'], 10);
+    //q['novedades.urgencia'] = parseInt(query['urgencia'], 10);
   }
 
   if(query['ejecucion']) {
-    q['novedades.ejecucion'] = query['ejecucion'];
+    novedadesMatch['ejecucion'] =  query['ejecucion'];
+    //novedades.push({'novedades.ejecucion': query['ejecucion'] });
+    //q['novedades.ejecucion'] = query['ejecucion'];
   }
 
   if(query['intervencion']) {
-    q['novedades.intervencion'] = query['intervencion'];
+    novedadesMatch['intervencion'] =  query['intervencion'];
+     //novedades.push({'novedades.intervencion': query['intervencion'] });
+    //q['novedades.intervencion'] = query['intervencion'];
   }
 
   if(query['avanceNovedad']) {
-    q['novedades.avance'] = query['avanceNovedad'];
+    novedadesMatch['avance'] =  query['avance'];
+    //novedades.push({'novedades.avance': query['avance'] });
+    //q['novedades.avance'] = query['avanceNovedad'];
   }
 
   if(query['sectorNovedad']) {
-    q['novedades.sector'] = query['sectorNovedad'];
+    novedadesMatch['sector'] =  query['sector'];
+    //novedades.push({'novedades.sector': query['sector'] });
+    //q['novedades.sector'] = query['sectorNovedad'];
+  }
+  if(Object.keys(novedadesMatch).length){
+      q['novedades']  = { $elemMatch: novedadesMatch }
+
   }
 
 
-  if(query["fenovd_ts"] && query["fenovh_ts"]){
-    q['novedades.fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10) }
-  }
+  // if(query["fenovd_ts"] && query["fenovh_ts"]){
+  //   novedades.push({'novedades.fecomp_tsa':  {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10)} });
+  //  //q['novedades.fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10) }
+  // }
+  // if(novedades.length){
+  //   q['$and'] = novedades;
+  // }
 
 
   //locacion
@@ -866,6 +890,7 @@ function buildQuery(query, today){
 
     q['$and'] = condition;
   }
+  //console.dir(q)
 
   return q; 
 }

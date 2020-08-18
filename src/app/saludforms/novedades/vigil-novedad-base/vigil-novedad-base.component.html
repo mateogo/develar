@@ -1,6 +1,7 @@
 <mat-card class="detail-card">
   <mat-card-content>
   	<ng-container *ngIf="showView">
+
 		 	<div [ngStyle]=selectedStyle class="row">
 		 		<div class="col-md-12">
 		 			<vigil-novedad-view 
@@ -17,6 +18,14 @@
 						(click)='editToken()' title="Editar datos base">
 						<i [class]="showEditBase ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></span>
+					<span *ngIf="isHisopado">
+						<badge  matTooltip='Genera una nueva solicitud de laboratorio con opción a emitir el PDF'
+							(click)='muestraLaboratorio()'
+            	[color]="'info'" 
+            	[arrow]="'right'" 
+            	[borderRadius]="false">
+            	{{ 'emitir solicitud hisopado' }}</badge></span>
+
 
 					<mat-chip-list *ngIf="!showEditPanel" aria-label="Falta perfeccionar la S/Asistencia">
 					  <mat-chip  *ngFor='let chip of chips' 
@@ -24,18 +33,18 @@
 					  		[color]="chip.color"  selected>{{ chip.text }}</mat-chip>
 					</mat-chip-list>
 
-
 	 				<div *ngIf="showSelectControl" >
 	      		<button mat-raised-button color="accent" 
 	        		  (click)="tokenSelected()" >Seleccionar</button>
 	 				</div>
-
 	 			</div>
-	 			
+
+
 	 		</div>
 		
 		</div>
-	
+
+
 		<ng-container *ngIf="showEditPanel">
 			<ng-container *ngIf="showEditBase">
 			 	<div class="row">

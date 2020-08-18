@@ -7,7 +7,7 @@ import { SaludController } from '../../../salud.controller';
 
 import { devutils }from '../../../../develar-commons/utils';
 
-import {   Asistencia, MuestraLaboratorio, UpdateAsistenciaEvent,
+import {   Asistencia, MuestraLaboratorio, Novedad, AvancesNovedad, UpdateAsistenciaEvent,
           AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 const UPDATE = 'update';
@@ -24,7 +24,9 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   public formClosed = false;
 
   public asistencia: Asistencia;
+  private novedad: Novedad;
   public isNewLab = false;
+  private genSolHisopadoPDF = false;
 
   public muestralab: MuestraLaboratorio;
   public muestraslab: Array<MuestraLaboratorio> = [];
@@ -48,7 +50,8 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   ngOnInit(): void {
  
   	this.isNewLab = true;
-  	this.asistencia = this.data.asistencia
+  	this.asistencia = this.data.asistencia;
+    this.novedad = this.data.novedad;
   	this.muestraslab = this.asistencia.muestraslab || [];
 
   	this.muestralab = this.data.laboratorio
@@ -76,6 +79,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   }
 
   onSubmit(){
+    this.genSolHisopadoPDF = false;
     this.formClosed = true;
     this.result.action = UPDATE;
   	this.initForSave()
@@ -85,6 +89,15 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   onCancel(){
     this.result.action = CANCEL;
 		this.dialogRef.close();
+  }
+
+  genSolicitudHisopado(){
+    this.genSolHisopadoPDF = true;
+    this.formClosed = true;
+    this.result.action = UPDATE;
+    this.initForSave()
+    this.saveToken();
+
   }
 
   changeSelectionValue(type, val){
@@ -102,11 +115,19 @@ export class VigilanciaLaboratorioComponent implements OnInit {
     	if(asistencia){
     		this.result.token = asistencia;
     		this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
+
+        /***GENERA PDF***/
+        if(this.genSolHisopadoPdf) this.genSolHisopadoPdf(this.asistencia);
+
     		this.closeDialogSuccess()
     	}else {
     		this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
     	}
     })
+  }
+
+  private genSolHisopadoPdf(asis: Asistencia){
+    this.ctrl.exportSolHisopado(asis._id);
   }
 
   private initForSave(){
@@ -127,10 +148,57 @@ export class VigilanciaLaboratorioComponent implements OnInit {
  		}  
 
  		this.asistencia.muestraslab = this.muestraslab;
+    this.updateNovedades(this.asistencia, this.novedad);
 
     this.result.token = this.asistencia;
     this.result.type = LABORATORIO_ESTADO;
 		//Recibido vía alerta SISA por afectado que vive en Brown
+  }
+
+  private updateNovedades(asistencia: Asistencia, novedad?: Novedad){
+    let hasNovedad = false;
+    
+    if(novedad){
+      hasNovedad = true;
+    }
+
+    let novedades = asistencia.novedades|| [];
+    let token = novedades.find(nov => {
+      if(nov.intervencion === 'hisopar' && nov.estado === 'activo'  ){
+        if(!hasNovedad) return true;
+
+        if(hasNovedad && novedad._id === nov._id){
+          return true;
+
+        }else{
+          return false
+        }
+
+      }else{
+        return false;
+      }
+    });
+
+    if(token){
+      let today = new Date();
+      token.estado = 'cumplido';
+      token.ejecucion = 'cumplido';
+      token.isActive = false;
+      let avance = {
+        fe_nov: devutils.txFromDate(today),
+        fets_nov: today.getTime(),
+        ejecucion: 'cumplido',
+        sector: token.sector,
+        intervencion: token.intervencion,
+        isCumplida: true,
+        userId: '',
+        userSlug: ''
+
+      }as AvancesNovedad;
+      let avances = token.actividades || [];
+      avances.push(avance);
+      token.actividades = avances;
+    }
   }
 
   private initForEdit(){

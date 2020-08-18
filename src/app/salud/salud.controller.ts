@@ -1000,6 +1000,16 @@ export class SaludController {
 
   }
 
+  exportSolHisopado(asisId:any){
+    let url = `api/pdf/solhisopadoform/${asisId}`;
+
+    //let params = this.daoService.buildParams(query);
+    //const Url = 'api/asisprevencion/exportarmovimientos?' + params.toString();
+
+    const windw = window.open(url, 'about:blank')
+
+  }
+
   exportSequimientosByQuery(query:any){
     let params = this.daoService.buildParams(query);
     const Url = 'api/asisprevencion/exportarseguimientos?' + params.toString();

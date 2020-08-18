@@ -2,9 +2,9 @@
  * Asistencia de Prevención Sec SALUD routes
  */
 
-var express = require('express');
-var router = express.Router();
-var service = require('../models/asisprevencionModel.js');
+const express = require('express');
+const router = express.Router();
+const service = require('../models/asisprevencionModel.js');
 
 const whoami =  "Router:routes/asisprevencionRoutes: ";
 

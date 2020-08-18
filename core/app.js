@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
+const pdfRoutes = require('./routes/zpdfRoutes.js');
 const auditentregasRoutes = require('./routes/auditentregasRoutes.js');
 const asistenciasRoutes = require('./routes/asistenciasRoutes.js');
 const asisprevencionRoutes = require('./routes/asisprevencionRoutes.js');
@@ -49,7 +50,6 @@ const uploadRoutes = require('./services/uploadfs');
 const downloadRoutes = require('./routes/downloadRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
 
-
 const app = express();
 
 // analizar estas declaraciones. Qué son 'cors': Cross origin request
@@ -60,8 +60,6 @@ const app = express();
 //   res.header("Access-Control-Allow-Credentials", true);
 //   next();
 //   });
-
-
 // view engine setup
 app.set('views', path.join(config.rootPath, 'core/views'));
 app.set('view engine', 'pug');
@@ -111,6 +109,7 @@ app.use('/api/auditentregas', auditentregasRoutes);
 app.use('/api/recordcards', recordcardRoutes);
 app.use('/api/seriales', serialRoutes);
 app.use('/api/turnos', turnosRoutes);
+app.use('/api/pdf', pdfRoutes);
 app.use('/api/auditodatos', zauditDataRoutes);
 app.use('/api/locacionhospitalaria', locacioneshospRoutes);
 app.use('/api/turnosdisponibles', gturnosRoutes);

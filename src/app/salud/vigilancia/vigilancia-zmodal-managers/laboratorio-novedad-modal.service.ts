@@ -10,7 +10,8 @@ import { PersonService } from '../../person.service';
 import { Person, FamilyData, NucleoHabitacional, personModel, Address } from '../../../entities/person/person';
 
 import {  Asistencia, 
-          MuestraLaboratorio, 
+          MuestraLaboratorio,
+          Novedad,
           UpdateAsistenciaEvent,
           AsistenciaHelper } from '../../asistencia/asistencia.model';
 
@@ -35,21 +36,21 @@ export class LaboratorioNovedadService {
   	) {}
 
 
-  openDialog(asistencia: Asistencia, muestralab: MuestraLaboratorio ): Subject<UpdateAsistenciaEvent>{
+  openDialog(asistencia: Asistencia, muestralab: MuestraLaboratorio, novedad?: Novedad ): Subject<UpdateAsistenciaEvent>{
   	this.asistencia = asistencia;
 
-    this.loadAsistencia(asistencia._id, muestralab);
+    this.loadAsistencia(asistencia._id, muestralab, novedad);
 
   	return this.dialogResult$;
   }
 
 
-  private loadAsistencia(asistenciaId, muestralab: MuestraLaboratorio){
+  private loadAsistencia(asistenciaId, muestralab: MuestraLaboratorio, novedad?: Novedad){
     this.dsCtrl.fetchAsistenciaById(asistenciaId).then(asis=> {
     	if(asis){
 
     		this.asistencia = asis;
-        this.openModalDialog(this.asistencia, muestralab);
+        this.openModalDialog(this.asistencia, muestralab, novedad);
 
     	}else {
     		this.fireError('Error: No se pudo recuperar la Asistencia', 'ATENCIÓN')
@@ -59,13 +60,14 @@ export class LaboratorioNovedadService {
     })
   }
 
-  private openModalDialog(asistencia: Asistencia, muestralab: MuestraLaboratorio){
+  private openModalDialog(asistencia: Asistencia, muestralab: MuestraLaboratorio, novedad?: Novedad){
     const dialogRef = this.dialog.open(
       VigilanciaLaboratorioComponent,
       {
         width: '800px',
         data: {
           asistencia: asistencia,
+          novedad: novedad,
           laboratorio: muestralab
 
         }

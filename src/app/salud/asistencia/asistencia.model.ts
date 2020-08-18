@@ -167,7 +167,7 @@ export class Novedad {
 		fets_necesidad: number = 0;
 
 		hasCumplimiento: boolean = false;
-		estado: string = 'activa';
+		estado: string = 'activa'; // estadosOptList
 		avance: string = 'emitido'; // deprecated
 		ejecucion: string = 'emitido'; // ejecucionOptList
 
