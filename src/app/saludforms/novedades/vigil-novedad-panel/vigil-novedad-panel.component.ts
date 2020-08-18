@@ -152,18 +152,7 @@ export class VigilNovedadPanelComponent implements OnInit {
 
   private filterActiveItems(){
     this.activeitems = [];
-    setTimeout(()=>{
-      this.activeitems = AsistenciaHelper.filterActiveNovedades(this.items);
-
-      if(this.activeitems && this.activeitems.length){
-        this.toggleActiveView();
-
-      }else{
-        this.toggleActiveView();
-
-      }
-
-    },500);
+    this.activeitems = AsistenciaHelper.filterActiveNovedades(this.items);
 
   }
 
@@ -204,8 +193,20 @@ export class VigilNovedadPanelComponent implements OnInit {
       this.title = 'Derivaciones, acciones, mensajes, novedades';
 
     }
-    this.showActiveList = this.showListMode;
-    this.showFullList = !this.showListMode;
+    if(this.showListMode){
+      this.filterActiveItems();
+
+    }
+    
+    setTimeout(()=>{
+      this.showActiveList = this.showListMode;
+      this.showFullList = !this.showListMode;
+
+    
+    },300);
+
+
+
   }
 
 

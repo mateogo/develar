@@ -14,8 +14,8 @@
 		</div>
 			
 		<ng-container *ngIf="showList">
-			<ng-container *ngIf="showActiveList">
 
+			<ng-container *ngIf="showActiveList">
 				<div  *ngFor="let item of activeitems" class="row">
 					<div class="col-sm-12 col-md-12">
 						<vigil-novedad-base [novedad]='item'
@@ -23,8 +23,8 @@
 												(updateToken)='updateNovedad($event)'></vigil-novedad-base>
 					</div>
 				</div>
-
 			</ng-container>
+
 			<ng-container *ngIf="showFullList">
 				<div  *ngFor="let item of items" class="row">
 					<div class="col-sm-12 col-md-12">
@@ -33,12 +33,12 @@
 												(updateToken)='updateNovedad($event)'></vigil-novedad-base>
 					</div>
 				</div>
-
-				<p><button mat-button type="button" color="accent" title="Asistencias activas"
-  				(click)="activeView()" >Cambiar VISTA</button></p>
-
-
 			</ng-container>
+			
+
+			<p><button mat-button type="button" color="accent" title="Asistencias activas"
+  				(click)="activeView()" >VISTA: Solo pendientes ó todas las novedades</button></p>
+
 		</ng-container>
 			
   </mat-card-content>

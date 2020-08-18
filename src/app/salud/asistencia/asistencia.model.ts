@@ -2442,7 +2442,8 @@ export class AsistenciaHelper {
 		if(!list || !list.length) return [];
 
 		let filteredList = list.filter(t => {
-			return t.hasCumplimiento && t.estado === 'activo' && ['cumplido', 'baja', 'anulado'].indexOf(t.avance) === -1
+			return t.isActive === true && t.estado === 'activo' 
+			//return t.hasCumplimiento && t.estado === 'activo' && ['cumplido', 'baja', 'anulado'].indexOf(t.avance) === -1
 
 		})
 
