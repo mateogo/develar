@@ -40,6 +40,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
   @Input() usersOptList: Array<any> = [];
 	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
+  public actualStateOptList = AsistenciaHelper.getOptionlist('estadoActualInfection');
   public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
@@ -55,7 +56,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
   private formAction = "";
 
-  public isCovid = false;
+  public estadoActualCovid = '';
   public isDenuncia = false;
   public showButtons = false;
   public tipoEdit = 1;
@@ -176,7 +177,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
       fe_investig:        [null],
       userId:             [null],
 
-      actualState:        [null],
+      //actualState:        [null],
       avanceCovid:        [null],
 
     });
@@ -187,7 +188,19 @@ export class InvestigEpidemioEditComponent implements OnInit {
   private initForEdit(form: FormGroup, token: Asistencia): FormGroup {
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let requirente = token.requeridox || new Requirente();
-    let infeccion = token.infeccion || new InfectionFollowUp()
+
+    let infeccion = token.infeccion;
+    if(infeccion){
+      this.estadoActualCovid = AsistenciaHelper.getOptionLabel('estadoActualInfection', infeccion.actualState);
+
+    }else {
+      infeccion = new InfectionFollowUp();
+      this.estadoActualCovid = 'Pendiente de evaluación';
+
+    }
+
+
+
     let fiebreOptions = 1;
 
     token.tipo = token.tipo || 4;
@@ -255,14 +268,13 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
     	nombre:        requirente.nombre || requirente.slug,
       apellido:      requirente.apellido,
-      actualState:   infeccion.actualState,
+      //actualState:   infeccion.actualState,
       avanceCovid:   infeccion.avance,
 
 		});
 
     //this.buildNovedades(token.novedades)
 
-    this.isCovid =  token.tipo === 1 || token.tipo === 3 || token.tipo === 4;
     this.isDenuncia = false;
 
     this.tipoEdit = 1
@@ -344,6 +356,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();
+    let infeccion = entity.infeccion || new InfectionFollowUp()
 
     covid.hasFiebre = fvalue.fiebreRB !== 3;
     covid.fiebreTxt = this.leyendaFiebre(fvalue.fiebreRB);
@@ -397,9 +410,10 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasTrabajoSalud =        fvalue.hasTrabajoSalud;
 
     covid.contexto =               fvalue.contexto;
-    covid.actualState = fvalue.actualState;
     covid.avanceCovid = fvalue.avanceCovid;
 
+    // Tomo el valor pre-existente, no se edita acá
+    covid.actualState = infeccion.actualState;
 
     covid.indicacion = 'Permanecer aislado controlando los síntomas';
 

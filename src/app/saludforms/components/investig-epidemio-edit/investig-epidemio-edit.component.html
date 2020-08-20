@@ -8,10 +8,13 @@
 
 			<div class="row">
 			  <div class="col-md-3 d-flex align-items-center">
-			    <span class="text-normal">Estado COVID</span>
+			    <span class="text-normal">Estado actual COVID</span>
 			  </div>
-
-		    <div class="col d-flex align-items-center">
+	    	<div class="col d-flex align-items-center">
+	    		<span class="text-normal">{{ estadoActualCovid }}</span>
+	    	</div>
+	
+		    <!-- div class="col d-flex align-items-center">
 		      <mat-radio-group  formControlName="actualState" aria-label="Estado actual">
 		        <mat-radio-button 
 		              [checked]="form.controls['actualState'].value===6" 
@@ -38,7 +41,7 @@
 		              (change)='changeActualState(5)'
 		              [value]="5">Alta</mat-radio-button>
 		      </mat-radio-group>
-		    </div>
+		    </div -->
 		  </div>
 
 			<div class="row">

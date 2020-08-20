@@ -86,7 +86,7 @@ export class VigilNovedadBaseComponent implements OnInit {
   }
 
   private initOnce(){
-    if(this.novedad.intervencion === 'hisopar'){
+    if(this.novedad.intervencion === 'hisopar' &&  this.novedad.isActive === true){
       this.isHisopado = true;
     }
   }
@@ -163,6 +163,17 @@ export class VigilNovedadBaseComponent implements OnInit {
     }
   }
 
+  private emitEventFromModal(){
+    this.updateToken.next(
+      {
+        action: UPDATE,
+        type: TOKEN_TYPE,
+        token: this.novedad
+      } as UpdateNovedadEvent
+    )
+
+  }
+
   tokenSelected(){
     this.toggleSelectd = !this.toggleSelectd;
 
@@ -213,6 +224,7 @@ export class VigilNovedadBaseComponent implements OnInit {
     this.labNovedad.openDialog(this.asistencia, muestralab).subscribe(editEvent =>{
       if(editEvent.action === UPDATE){
         this.asistencia = editEvent.token;
+        this.emitEventFromModal()
         //
       }
     })
@@ -224,6 +236,7 @@ export class VigilNovedadBaseComponent implements OnInit {
     this.novedadService.openDialog(this.asistencia, novedad).subscribe(editEvent =>{
       if(editEvent.action === UPDATE){
         this.asistencia = editEvent.token;
+        this.emitEventFromModal()
         //this.manageAsistenciaView(this.viewList);        
       }
     })

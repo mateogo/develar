@@ -98,6 +98,8 @@ export class VigilNovedadPanelComponent implements OnInit {
 
   updateNovedad(event: UpdateNovedadEvent){
     if(event.action === UPDATE){
+      this.showList = false;
+      this.refreshNovedadesList()
       // // this.dsCtrl.manageAsistenciaRecord(event.token).subscribe(t =>{
       // //   if(t){
       // //     event.token = t;

@@ -56,6 +56,8 @@ const SISA_FWUP =   'sisa:followup';
 const SEGUIMIENTO_ESTADO = 'seguimiento:estado';
 const SEGUIMIENTO_FWUP =   'seguimiento:fwup';
 
+const NOVEDAD_ESTADO = 'novedad:estado';
+
 const INFECTION_ESTADO = 'infection:estado';
 
 const LABORATORIO_ESTADO = 'laboratorio:estado';
@@ -448,6 +450,21 @@ export class SaludController {
 
     }else if(transition === INFECTION_ESTADO ){
 
+    }else if(transition === NOVEDAD_ESTADO ){
+      let novedades = asistencia.novedades || [] ;
+      let infection = asistencia.infeccion || new InfectionFollowUp(); 
+
+      if(novedades && novedades.length){
+        let novedad = novedades[novedades.length - 1];
+        if(novedad.intervencion === 'hisopar'){
+          // si se lo hisopa es porque es sospechoso
+          infection.actualState = [2, 5, 6].indexOf(infection.actualState) !== -1 ? 0 : infection.actualState;
+          asistencia.infeccion = infection;
+
+        }
+
+      }
+
 
     }else if(transition === LABORATORIO_ESTADO ){
       let laboratorios = asistencia.muestraslab || [] ;
@@ -456,6 +473,9 @@ export class SaludController {
       if(laboratorios && laboratorios.length){
         let laboratorio = laboratorios[laboratorios.length - 1];
         if(laboratorio.estado === 'presentada'){
+          
+          infection.actualState = [2, 5, 6].indexOf(infection.actualState) !== -1 ? 0 : infection.actualState;
+
           if (laboratorio.resultado === 'confirmada'){
             infection.hasCovid = true;
             infection.isActive = true;

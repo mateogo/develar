@@ -474,7 +474,7 @@ export class InfectionFollowUp {
 // extra-distrito: TOTO
 const estadoActualAfectadoOptList = [
 	{ val: 0, label: 'SOSPECHA'},
-	{ val: 1, label: 'COVID'},
+	{ val: 1, label: 'COVID+'},
 	{ val: 2, label: 'DESCARTADO'},
 	{ val: 4, label: 'FALLECIDO'},
 	{ val: 5, label: 'DE ALTA'},
