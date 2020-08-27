@@ -1061,8 +1061,8 @@ export class VigilanciaBrowse {
 		rebuildLatLon: boolean = false;
 		fecomp_d:    string;
 		fecomp_h:    string;
-		fecomp_ts_d:    number;
-		fecomp_ts_h:    number;
+		fecomp_ts_d:  number;
+		fecomp_ts_h:  number;
 		action:      string = '';
 		sector:      string = '';
 		estado:      string = 'activo';
@@ -1087,6 +1087,7 @@ export class VigilanciaBrowse {
 		hasCovid:   boolean = false;
 
 		casoCovid:   boolean = false;
+		hasParent: boolean;
 		vigiladoCovid:   boolean = false;
 
 
@@ -2513,8 +2514,10 @@ export class AsistenciaHelper {
 
       if(key === 'asistenciaId' && cleanAsistenciaId) delete query[key];
 
-      if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key];
+      if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key]; // estas keys solo se usan en el form
+
       if(key === 'isVigilado'       && !query[key]) delete query[key];
+      if(key === 'hasParent'        && !query[key]) delete query[key];
       if(key === 'hasCovid'         && !query[key]) delete query[key];
       if(key === 'casoCovid'        && !query[key]) delete query[key];
       if(key === 'vigiladoCovid'    && !query[key]) delete query[key];
@@ -2539,6 +2542,8 @@ export class AsistenciaHelper {
       if(key === 'feDesde_ts'      && !query[key]) delete query[key];
       if(key === 'feHasta'         && !query[key]) delete query[key];
       if(key === 'feHasta_ts'      && !query[key]) delete query[key];
+      if(key === 'fecomp_ts_d'     && !query[key]) delete query[key];
+      if(key === 'fecomp_ts_h'     && !query[key]) delete query[key];
  
       if(key === 'fenovd'         && !query[key]) delete query[key];
       if(key === 'fenovh'         && !query[key]) delete query[key];

@@ -148,6 +148,8 @@ export class VigilanciaBrowseComponent implements OnInit {
       compName:     [{value: "", disabled: true}],
       compNum_d:       [null],
       compNum_h:       [null],
+      fecomp_d:        [null],
+      fecomp_h:        [null],
       isVigilado:      [null],
       hasCovid:        [null],
       casoCovid:       [null],
@@ -159,6 +161,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       reporte:         [null],   
 
       isActiveSisa:    [null],
+      hasParent:       [null],
       avanceSisa:      [null],
       qDaysSisa:       [null],
       qNotConsultaSisa: [null],
@@ -189,6 +192,9 @@ export class VigilanciaBrowseComponent implements OnInit {
         compNum_d:   query.compNum_d,
         compNum_h:   query.compNum_h,
 
+        fecomp_d:   query.fecomp_d,
+        fecomp_h:   query.fecomp_h,
+
         isVigilado: query.isVigilado,
         pendLaboratorio: query.pendLaboratorio,
         actualState: query.actualState,
@@ -212,6 +218,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         fenovh:         query.fenovh,
  
         isActiveSisa: query.isActiveSisa,
+        hasParent: query.hasParent,
         avanceSisa: query.avanceSisa,
         qDaysSisa: query.qDaysSisa,
         qNotConsultaSisa: query.qNotConsultaSisa,
@@ -235,8 +242,15 @@ export class VigilanciaBrowseComponent implements OnInit {
 		const fvalue = form.value;
 		const entity = new VigilanciaBrowse();
 
-    let dateD = devutils.dateFromTx(fvalue.fecomp_d);
-    let dateH = devutils.dateFromTx(fvalue.fecomp_h);
+    if(fvalue.fecomp_d && fvalue.fecomp_h){
+      entity.fecomp_ts_d = devutils.dateNumFromTx(fvalue.fecomp_d);
+      entity.fecomp_ts_h = devutils.dateNumPlusOneFromTx(fvalue.fecomp_h);
+
+    }else{
+      entity.fecomp_ts_d = null;
+      entity.fecomp_ts_h = null;
+
+    }
 
     entity.compPrefix =  fvalue.compPrefix;
     entity.compName =    fvalue.compName;
@@ -269,6 +283,8 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.fenovh =          fvalue.fenovh;
 
     entity.isActiveSisa = fvalue.isActiveSisa;
+    entity.hasParent = fvalue.hasParent;
+
     entity.avanceSisa = fvalue.avanceSisa;
     entity.qDaysSisa = fvalue.qDaysSisa;
     entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;

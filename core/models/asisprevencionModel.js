@@ -641,16 +641,10 @@ function buildQuery(query, today){
   }
 
   // busco segun query
-  if(query["fecomp_ts_h"]){
+  if(query["fecomp_ts_d"] && query["fecomp_ts_h"] ){
+    q['fecomp_tsa'] = {$gte: parseInt(query["fecomp_ts_d"],10), $lt: parseInt(query["fecomp_ts_h"], 10)} ;
 
-    comp_range.push( {"fecomp_tsa": { $lte: query["fecomp_ts_h"]} });
   }
-
-  if(query["fecomp_ts_d"]){
-
-    comp_range.push( {"fecomp_tsa": { $gte: query["fecomp_ts_d"]} });
-  }
-
 
   if(query["compNum_d"]){
     comp_range.push( {"compNum": { $gte: query["compNum_d"]} });
@@ -771,6 +765,10 @@ function buildQuery(query, today){
 
   if(query['barrio']) {
     q['locacion.barrio'] = query['barrio'];
+  }
+
+  if(query['hasParent']){
+    q['hasParent'] = true;
   }
 
 

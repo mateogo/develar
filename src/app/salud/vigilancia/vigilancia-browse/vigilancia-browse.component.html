@@ -43,6 +43,25 @@
           </mat-form-field>
         </div>
       </div>
+      
+      <div class="row" >
+        <div class="col-md-6 d-md-flex align-items-center">
+          <span>Selección según rango de fechas de ingreso al sistema</span>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['fecomp_d']" placeholder="Fecha ingreso desde" >
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['fecomp_h']" placeholder="Fecha ingreso hasta" >
+          </mat-form-field>
+        </div>
+      </div>
+
+
       <hr>
       <div class="row" >
         <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
@@ -53,7 +72,7 @@
                   <span class='mat-data'>COVID ACTIVOS</span>
         </div>
 
-        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
             title="Sección para filtrar total de casos covid">
           <mat-checkbox  class='mat-check'
                   [checked]="false"
@@ -61,13 +80,23 @@
                   <span class='mat-data'>COVID TOTALES: Activos + Altas + Fallecidos</span>
         </div>
 
-        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
             title="Casos marcados ">
           <mat-checkbox  class='mat-check'
                   [checked]="false"
                   [formControl]="form.controls['vigiladoCovid']" ></mat-checkbox>
                   <span class='mat-data'>Afectado COVID: bajo seguimiento</span>
         </div>
+
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Filtrar solo aquellos que son contactos estrechos de otro afectado/a">
+          <mat-checkbox  class='mat-check'
+                  [checked]="false"
+                  [formControl]="form.controls['hasParent']" ></mat-checkbox>
+                  <span class='mat-data'>Solo contactos estrechos</span>
+        </div>
+
+
 
       </div>
 
