@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const routes = require(path.join(config.rootPath, 'core/routes/index'));
+const excelRoutes = require('./routes/zexcelRoutes.js');
 const pdfRoutes = require('./routes/zpdfRoutes.js');
 const auditentregasRoutes = require('./routes/auditentregasRoutes.js');
 const asistenciasRoutes = require('./routes/asistenciasRoutes.js');
@@ -111,6 +112,7 @@ app.use('/api/seriales', serialRoutes);
 app.use('/api/turnos', turnosRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api/auditodatos', zauditDataRoutes);
+app.use('/api/importexcel', excelRoutes);
 app.use('/api/locacionhospitalaria', locacioneshospRoutes);
 app.use('/api/turnosdisponibles', gturnosRoutes);
 app.use('/api/turnosasignados', gturnosasignadosRoutes);

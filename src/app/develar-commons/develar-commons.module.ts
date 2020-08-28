@@ -95,6 +95,7 @@ import { MapService } from './mapbox/services/map.api';
 
 import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.component';
 import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
+//import { CargaExcelModule } from './carga-excel/carga-excel.module';
 
 
 @NgModule({
@@ -112,6 +113,8 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
       apiKey: 'AIzaSyAJpFOgoCTiLudPL1lChcn-kIm-zlses0w'
 
     }),
+
+    //CargaExcelModule,
   ],
   declarations: [
     NavbarComponent,
@@ -179,7 +182,7 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     PieChartComponent,
     ForceDirectedGraphComponent,
     MapBoxComponent,
-    MapPopupComponent
+    MapPopupComponent,
   ],
   exports:[
     DevelarMaterialModule,

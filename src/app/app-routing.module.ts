@@ -303,8 +303,18 @@ const develarRoutes:Routes = [
 
 ];
 
+const cargaexcelRoutes : Routes = [
+  {
+    path: '',
+    loadChildren: () => import ('./develar-commons/carga-excel/carga-excel.module').then( m => m.CargaExcelModule)
+  }
+]
 
 const routes: Routes = [
+  {
+    path: 'cargaexcel',
+    children: cargaexcelRoutes
+  },
   {
     path: 'test',
     component: DefaultLayoutComponent,
