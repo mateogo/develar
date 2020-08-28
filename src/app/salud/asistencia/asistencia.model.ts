@@ -1960,7 +1960,7 @@ const intervencionManager = {
 			sector: 'sistema',
 			urgencia: 1,
 			tnovedad: 'notifsistema', 
-			novedad: 'Notificar Estado de Alta'
+			novedad: 'Notificion Sistema'
 		},
 		no_definido: {
 			isActive: false,

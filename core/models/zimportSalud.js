@@ -51,10 +51,10 @@ exports.importSisaArchive = processSisaArchive;
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
     //deploy
-    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
 
     // local
-    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -156,7 +156,7 @@ const buildSaludCoreData = function(person, token){
 
     person.idbrown = 'sisa:' + token.fealta;
     person.alerta = 'COVID - fecha inicio síntomas: ' + token.fesintoma;
-    person.locacion = token.calle + ' ' + token.localidad;
+    person.locacion = token.direccion + ' ' + token.localidad;
 
     person.tdoc = 'DNI';
     person.ndoc = token.ndoc;
@@ -201,7 +201,7 @@ const buildSaludLocaciones = function(person, token){
         "description": "Importado de excel",
         "isDefault": true,
         "addType": "principal",
-        "street1": token.calle || 'sin dato',
+        "street1": token.direccion || 'sin dato',
         "street2": "",
         "streetIn": "",       
         "streetOut": "",
@@ -284,10 +284,11 @@ async function updateAsistenciaRecord(token, person, asis){
 		asis.estado = 'activo';
 		asis.avance = 'emitido';
 
+		updateCoreAsis(asis, person, token)
+
 		updateFollowUp(asis, token);
 		buildCovid(asis,token);
 
-		console.log('UPDATE ASIS: [%s] [%s]', asis.ndoc, asis.compNum)
 		await AsisprevencionRecord.findByIdAndUpdate(asis.id, asis, { new: true }).exec();
 }
 
@@ -299,7 +300,6 @@ async function createAsistenciaRecord(token, person, compNum){
 				buildFollowUp(asis, token);
 				buildSisaEvent(asis, token);
 
-				console.log('CREATE ASIS: [%s] [%s]', asis.ndoc, asis.compNum)
 				asis.save();
 
 }
@@ -352,6 +352,24 @@ function buildCovid(asis, token){
 	if(token.fealta){
 		infeccion.fe_confirma = token.fealta;
 		infeccion.fets_confirma = utils.dateNumFromTx(token.fealta);
+	}
+
+	if(token['novedad']){
+		let novedad = token['novedad'];
+		novedad = (novedad && novedad.toLowerCase()) || '';
+
+		if(novedad === 'obito' ){
+			infeccion.actualState = 4
+			infeccion.hasCovid = false;
+			infeccion.fe_alta = token.fealta
+
+		}else if (novedad === 'nexo'){
+			infeccion.avance = 'nexo';
+
+		}else if (novedad === 'geriatrico'){
+			infeccion.institucion = 'geriatrico';
+			infeccion.institucionTxt = 'Geriátrico';
+		}
 	}
 
 	asis.infeccion = infeccion
@@ -451,9 +469,108 @@ function buildFollowUp(asis, token){
 
 **/
 
+function updateCoreAsis(asis, person, data){
+
+		let ts = Date.now();
+		let novedades = asis.novedades || [];
+
+		let fealta = data.fealta || utils.dateToStr(new Date());
+		let fealta_date = utils.parseDateStr(fealta) || new Date();
+		let fealta_ts = fealta_date ? fealta_date.getTime() : ts;
+
+		let requirente;
+
+		let novedad = {
+			isActive: false,
+			tnovedad: "notifsistema",
+			novedad: 'Actualización por importación de registro del sistema SISA',
+			sector: 'sistema',
+
+			intervencion: 'notifsistema',
+			urgencia: 1,
+
+			fecomp_txa: fealta,
+			fecomp_tsa: fealta_ts,
+
+			hasNecesidad: false,
+			fe_necesidad: fealta,
+			fets_necesidad: fealta_ts,
+
+			hasCumplimiento: true,
+			estado: 'cumplido',
+			avance: 'emitido',
+			ejecucion: 'cumplido',
+	
+			atendidox: null
+		}
+
+		novedades.push(novedad);
+
+		if(person){
+
+			let edad = getEdadFromPerson(person)
+  		requirente = buildCovidRequirente(person);
+
+			asis.idPerson = person._id;
+			asis.ndoc = (person.ndoc && person.ndoc !== asis.ndoc) ? person.ndoc: asis.ndoc;
+			asis.tdoc = person.tdoc;
+			asis.sexo = asis.sexo ? asis.sexo : person.sexo;
+			asis.edad = asis.edad ? asis.edad : edad + '';
+
+			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
+			let telData = telefono ? telefono.data : '';
+			let telExistente = asis.telefono || '';
+
+			if(telData !== telExistente && telData !== 'sin dato'){
+				telExistente = telExistente ? telExistente + ' ' + telData : telData;
+			}
+			asis.telefono = telData;
+
+			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
+			if(address) {
+				let locacion = asis.locacion || new Locacion();
+				locacion.street1 = address.street1;
+				locacion.streetIn = address.streetIn;
+				locacion.streetOut = address.streetOut;
+				locacion.city = address.city;
+				locacion.zip = address.zip;
+				locacion.barrio = address.barrio;
+				asis.locacion = locacion;
+			}
+
+		}else{
+			requirente = new Requirente();
+			asis.idPerson = null;
+		}
+
+		asis.fenotif_txa = fealta;
+		asis.fenotif_tsa = fealta_ts;
+
+		asis.tipo = 1;
+		asis.prioridad = 2;
+    asis.idbrown = 'sisa:' + data.fealta;
+
+		asis.action = 'epidemio';
+		asis.slug = 'Alta importacion SISA: ' + fealta;
+
+		asis.requeridox = requirente;
+
+		asis.ts_fin = 0
+		asis.ts_prog = ts;
+		asis.estado = 'activo';
+		asis.avance = 'emitido';
+		asis.novedades = novedades;
+		asis.isVigilado = true;
+
+		return asis;
+}
+
+
+
 function buildCoreAsis(asis, person, compNum, data){
 
 		let ts = Date.now();
+		let novedades = [];
 
 		let fealta = data.fealta || utils.dateToStr(new Date());
 		let fealta_date = utils.parseDateStr(fealta) || new Date();
@@ -463,15 +580,30 @@ function buildCoreAsis(asis, person, compNum, data){
 		let requirente;
 
 		let novedad = {
-			tnovedad: "sisa",
+			isActive: false,
+			tnovedad: "notifsistema",
 			novedad: 'Alta registro importado de SISA',
+			sector: 'sistema',
+
+			intervencion: 'notifsistema',
+			urgencia: 1,
+
 			fecomp_txa: fealta,
 			fecomp_tsa: fealta_ts,
-			atendidox: null
 
+			hasNecesidad: false,
+			fe_necesidad: fealta,
+			fets_necesidad: fealta_ts,
+
+			hasCumplimiento: true,
+			estado: 'cumplido',
+			avance: 'emitido',
+			ejecucion: 'cumplido',
+	
+			atendidox: null
 		}
 
-
+		novedades.push(novedad);
 
 		if(person){
 
@@ -486,6 +618,34 @@ function buildCoreAsis(asis, person, compNum, data){
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
 			asis.telefono = telefono ? telefono.data : '';
 
+			if(!telefono || (telefono && telefono.data === 'sin dato')){
+				let sintelefono = {
+					isActive: true,
+					tnovedad: "datos",
+					novedad: 'Registro importado SISA sin teléfono',
+					sector: 'sistema',
+
+					intervencion: 'buscarTelefono',
+					urgencia: 1,
+
+					fecomp_txa: fealta,
+					fecomp_tsa: fealta_ts,
+
+					hasNecesidad: true,
+					fe_necesidad: fealta,
+					fets_necesidad: fealta_ts,
+
+					hasCumplimiento: true,
+					estado: 'activo',
+					avance: 'emitido',
+					ejecucion: 'emitido',
+
+					atendidox: null
+				}
+
+				novedades.push(sintelefono);				
+			}
+
 			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
 			if(address) {
 				let locacion = new Locacion();
@@ -493,6 +653,7 @@ function buildCoreAsis(asis, person, compNum, data){
 				locacion.streetIn = address.streetIn;
 				locacion.streetOut = address.streetOut;
 				locacion.city = address.city;
+				locacion.zip = address.zip;
 				locacion.barrio = address.barrio;
 				asis.locacion = locacion;
 			}
@@ -530,7 +691,7 @@ function buildCoreAsis(asis, person, compNum, data){
 		asis.ts_prog = ts;
 		asis.estado = 'activo';
 		asis.avance = 'emitido';
-		asis.novedades = [ novedad ];
+		asis.novedades = novedades;
 		asis.isVigilado = true;
 
 		return asis;

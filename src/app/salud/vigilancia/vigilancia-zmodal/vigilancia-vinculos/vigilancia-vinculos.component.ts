@@ -417,10 +417,17 @@ export class VigilanciaVinculosComponent implements OnInit {
   private saveMainPerson(){ //(c)
     this.vinculo.personId = this.vPerson._id;
     this.vinculo.hasOwnPerson = true;
+    this.isNewVinculo = false;
 
     this.perSrv.updatePersonPromise(this.person).then(per =>{
       if(per){
-        this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
+        this.ctrl.openSnackBar('Actualización del afectado/a exitosa', 'Cerrar');
+        this.person = per;
+
+        setTimeout(()=> {
+          this.updateSeguimientoBajoCasoIndice();
+        },300);
+
         this.closeDialogSuccess()
 
       }else{
@@ -480,6 +487,7 @@ export class VigilanciaVinculosComponent implements OnInit {
         vAsistencia.requeridox.apellido = this.vinculo.apellido;
 
         this.ctrl.manageCovidRecord(vAsistencia).subscribe(asis => {
+          if(asis) this.vAsistencia = asis;
           this.saveMainPerson();
         })
 
