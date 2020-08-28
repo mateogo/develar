@@ -2254,7 +2254,7 @@ function buildExcelStream(movimientos, query, req, res){
 
       const requeridox = row.requeridox || {nombre: 'Sin beneficiario', apellido: 's/d', tdoc: 's/d', ndoc: 's/d'};
       const { tdoc, ndoc, nombre, apellido } = requeridox;
-      let requeridoxArr = [ tdoc, ndoc, nombre, apellido];
+      let requeridoxArr = [ tdoc, (ndoc || row.ndoc), nombre, apellido];
 
       const {compNum, telefono, edad } = row;
       let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), telefono, edad ];

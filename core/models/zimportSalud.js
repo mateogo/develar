@@ -51,10 +51,10 @@ exports.importSisaArchive = processSisaArchive;
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
     //deploy
-    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
 
     // local
-    const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
