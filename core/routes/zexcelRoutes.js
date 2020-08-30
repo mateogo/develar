@@ -4,13 +4,20 @@ const excelimport = require('../models/zcargaExcel.js');
 
 const whoami =  "Router:routes/zexcelRoutes: ";
 
-router.get('/', function (req, res) {
-    excelimport.importExcel(req, function(err) {
+router.get('/nrows', function (req, res) {
+    excelimport.getNRows(req, function(err) {
         res.status(400).json(err);
     }, function(entities) {
         res.status(200).json(entities);
     });
-    res.send({});
+});
+
+router.get('/registros', function (req, res) {
+    excelimport.getRegistros(req, function(err) {
+        res.status(400).json(err);
+    }, function(entities) {
+        res.status(200).json(entities);
+    });
 });
 
 module.exports = router;

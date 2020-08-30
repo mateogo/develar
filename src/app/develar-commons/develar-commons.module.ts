@@ -97,7 +97,6 @@ import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.compo
 import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
 //import { CargaExcelModule } from './carga-excel/carga-excel.module';
 
-
 @NgModule({
   imports: [
   	CommonModule,

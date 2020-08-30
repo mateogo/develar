@@ -199,8 +199,11 @@ export class DaoService {
       geocode: {
         backendURL: 'api/utils/geocode'
       },
-      importexcel: {
-        backendURL: 'api/importexcel'
+      excelnrows: {
+        backendURL: 'api/importexcel/nrows'
+      },
+      excelregistros: {
+        backendURL: 'api/importexcel/registros'
       },
     };
   }
@@ -466,11 +469,20 @@ export class DaoService {
       .catch(this.handleError);
   }
 
-  cargarExcel<T>(): Promise<T[]>{
-    let url = `${this.dao['importexcel'].backendURL}`;
+  getExcelNRows<T>(): Promise<T[]>{
+    let url = `${this.dao['excelnrows'].backendURL}`;
 
     return this.http
-      .get<T>(url,{headers: this.headers} )
+      .get<T>(url)
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  getExcelRegistros<T>(): Promise<T[]>{
+    let url = `${this.dao['excelregistros'].backendURL}`;
+
+    return this.http
+      .get<T>(url)
       .toPromise()
       .catch(this.handleError);
   }
