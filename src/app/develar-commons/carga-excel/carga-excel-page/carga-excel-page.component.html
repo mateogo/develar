@@ -1,10 +1,33 @@
 <mat-card>
-    <mat-card-header>Visor Excel</mat-card-header>
-    <div *ngIf="nrows">
+    <mat-card-content>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="d-flex justify-content-between panel-header">
+                    <div class="panel-header-text">{{ title }}</div>
+                    <div class="panel-header-control" ><span 
+                        (click)='addItem()' title="Agregar Item">
+                        <i [class]="openEditor ? 'fas fa-plus' : 'far fa-plus'" 
+                            aria-hidden="true"></i></span></div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="showEdit">
+            <asset-create (assetEmitted)='selectAsset($event)' ></asset-create>
+            <div class="additional-info">
+                <button mat-raised-button color="primary" 
+                        (click)="onSubmit()" >Cerrar</button>
+            </div>
+        </ng-container>
+    </mat-card-content>
+</mat-card>
+  
+<mat-card>
+    <mat-card-header class="panel-header-text">Visor Excel</mat-card-header>
+    <div *ngIf="asset">
         <mat-card-subtitle >
             El archivo contiene {{nrows}} filas
         </mat-card-subtitle>
-        <button (click)="cargarRegistros();">continuar</button><button>cancelar</button>
+        <button mat-raised-button color="warning" (click)="cargarRegistros()">Confirmar importación</button>
     </div>
     <table mat-table [dataSource]="registros" class="mat-elevation-z8">
         <ng-container *ngFor="let col of columnsToDisplay" [matColumnDef]="col">

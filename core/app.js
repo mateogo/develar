@@ -112,7 +112,7 @@ app.use('/api/seriales', serialRoutes);
 app.use('/api/turnos', turnosRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api/auditodatos', zauditDataRoutes);
-app.use('/api/importexcel', excelRoutes);
+app.use('/api/excel', excelRoutes);
 app.use('/api/locacionhospitalaria', locacioneshospRoutes);
 app.use('/api/turnosdisponibles', gturnosRoutes);
 app.use('/api/turnosasignados', gturnosasignadosRoutes);

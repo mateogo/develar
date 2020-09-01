@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { DaoService } from '../../dao.service';
+import { Asset } from '../../develar-entities';
+
+const CORE = 'core';
+const TOKEN_TYPE = 'assets';
+const CANCEL = 'cancel';
+const DELETE = 'delete';
+const UPDATE = 'update';
 
 @Component({
   selector: 'carga-excel-page',
@@ -8,6 +14,11 @@ import { DaoService } from '../../dao.service';
   styleUrls: ['./carga-excel-page.component.scss']
 })
 export class CargaExcelPageComponent implements OnInit {
+  public title = 'Subir Archivo';
+	public showEdit = false;
+  public openEditor = true;
+
+  asset : Asset;
   nrows : number;
   registros: Array<object> = [];
   columnsToDisplay: Array<string> = [];
@@ -16,28 +27,21 @@ export class CargaExcelPageComponent implements OnInit {
       private daoService: DaoService
   	) { }
 
-  ngOnInit() {
-    const self = this
-    this.getExcelNRows().then(
-      function(value){
-        console.log(value)
-        self.nrows = value.nrows;
-      } 
-    );
+  ngOnInit() { }
+
+  addItem(){
+    this.showEdit = true;
   }
 
-  getExcelNRows(): Promise<any>{
-    return this.daoService.getExcelNRows();
-  }
-  getExcelRegistros(): Promise<any>{
-    return this.daoService.getExcelRegistros();
-  }
+  selectAsset(asset){
+    console.log(asset.path);
+    this.asset = asset;
 
-  cargarRegistros(){
     const self = this
-    this.getExcelRegistros().then(
+    this.getExcelData(this.asset.path).then(
       function(value){
         console.log(value);
+        self.nrows = value.nrows;
         self.registros = value.registros;
         self.columnsToDisplay = value.colHeaders;
       },
@@ -45,6 +49,34 @@ export class CargaExcelPageComponent implements OnInit {
         console.log(reason);
       }
     )
+  }
+
+  onSubmit(){
+    this.showEdit = false;
+  }
+
+  getExcelData(path: string): Promise<any>{
+    let obj = {path: path}
+    return this.daoService.getExcelData(obj);
+  }
+
+  import(path: string){
+    let obj = {path: path}
+    return this.daoService.importExcelData(obj);
+  }
+
+  cargarRegistros(){
+    if(this.asset){
+      this.import(this.asset.path).then(
+        function(value){
+          console.log(value);
+          alert("importacion exitosa");
+        },
+        function(reason){
+          console.log(reason);
+        }
+      )
+    }
   }
 
 }

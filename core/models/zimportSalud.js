@@ -27,7 +27,7 @@ const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
 const SerialRecord = serialModule.getRecord();
 
-
+const excel = require('../models/zcargaExcel.js');
 
 
 /**
@@ -51,8 +51,8 @@ exports.importSisaArchive = processSisaArchive;
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
     //deploy
-    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
-
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+	
     // local
     //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
@@ -64,10 +64,17 @@ function processSisaArchive(req, errcb, cb){
         return name.toUpperCase();
     }
 
-    csv({delimiter: ';'})
-    .fromFile(arch)
-    .then((persons) => {
+	excel.getData(req,function(err) {
+        console.log(err)
+    }, function(entities) {
+        let persons = entities.registros;
+    //});
 
+    // csv({delimiter: ';'})
+    // .fromFile(arch)
+    // .then((persons) => {
+
+			console.log(persons)
     		let compNumCounter = 0;
     		if(!persons) persons = [];
 

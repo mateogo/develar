@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const excelimport = require('../models/zcargaExcel.js');
+const excel = require('../models/zcargaExcel.js');
+const saludimport = require('../models/zimportSalud.js');
 
 const whoami =  "Router:routes/zexcelRoutes: ";
 
-router.get('/nrows', function (req, res) {
-    excelimport.getNRows(req, function(err) {
+router.post('/', function (req, res) {
+    excel.getData(req, function(err) {
         res.status(400).json(err);
     }, function(entities) {
         res.status(200).json(entities);
     });
 });
 
-router.get('/registros', function (req, res) {
-    excelimport.getRegistros(req, function(err) {
+router.post('/import', function (req, res) {
+    saludimport.importSisaArchive(req, function(err) {
         res.status(400).json(err);
     }, function(entities) {
         res.status(200).json(entities);
