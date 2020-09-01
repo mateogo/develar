@@ -157,30 +157,25 @@ export class VigilanciaLaboratorioComponent implements OnInit {
 
   private updateNovedades(asistencia: Asistencia, novedad?: Novedad){
     let hasNovedad = false;
+    let today = new Date();
     
     if(novedad){
       hasNovedad = true;
     }
 
-    let novedades = asistencia.novedades|| [];
-    let token = novedades.find(nov => {
+    let novedades = asistencia.novedades || [];
+
+    novedades.forEach(nov => {
       if(nov.intervencion === 'hisopar' && nov.estado === 'activo'  ){
-        if(!hasNovedad) return true;
+        this.markHisopadoAsFulfilled(nov, today);
 
-        if(hasNovedad && novedad._id === nov._id){
-          return true;
-
-        }else{
-          return false
-        }
-
-      }else{
-        return false;
       }
     });
 
+  }
+
+  private markHisopadoAsFulfilled(token: Novedad, today: Date){
     if(token){
-      let today = new Date();
       token.estado = 'cumplido';
       token.ejecucion = 'cumplido';
       token.isActive = false;
@@ -195,10 +190,12 @@ export class VigilanciaLaboratorioComponent implements OnInit {
         userSlug: ''
 
       }as AvancesNovedad;
+
       let avances = token.actividades || [];
       avances.push(avance);
       token.actividades = avances;
     }
+
   }
 
   private initForEdit(){
