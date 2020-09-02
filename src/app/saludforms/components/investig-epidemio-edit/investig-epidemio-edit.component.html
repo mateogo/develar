@@ -242,7 +242,7 @@
       </div>
 
       <div class="row">
-        <div class="offset-md-3 col-md-3 d-md-flex justify-content-start align-items-center" 
+        <div class="offset-md-3 col-md-2 d-md-flex justify-content-start align-items-center" 
             title="Tinene enfermedad pulmonar crónica">
             <mat-checkbox class="mat-checkbox-wrap"
                   [checked]="true"
@@ -256,12 +256,19 @@
                   [formControl]="form.controls['hasCronica']" >
                     ¿Otra enfermedad crónica?</mat-checkbox>
         </div>
-        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
             title="Es o ha sido fumador">
             <mat-checkbox class="mat-checkbox-wrap"
                   [checked]="true"
                   [formControl]="form.controls['hasFumador']" >
                     ¿Es/ha sido fumador?</mat-checkbox>
+        </div>
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="Está embarazada en este momento">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasEmbarazo']" >
+                    ¿Está embarazada?</mat-checkbox>
         </div>
       </div>
 

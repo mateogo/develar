@@ -192,6 +192,7 @@ const contextoCovidSch = new Schema({
     hasHta:                { type: Boolean, required: false },
     hasCardio:             { type: Boolean, required: false },
     hasPulmonar:           { type: Boolean, required: false },
+    hasEmbarazo:           { type: Boolean, required: false },
     hasCronica:            { type: Boolean, required: false },
     hasFumador:            { type: Boolean, required: false },
     hasObesidad:           { type: Boolean, required: false },
@@ -654,6 +655,38 @@ function buildQuery(query, today){
     comp_range.push( {"compNum": { $lte: query["compNum_h"]} });
   }
 
+  if(query['hasPrexistentes']){
+    q['sintomacovid'] = {$ne: null}
+
+
+    q["$or"] = [
+        {
+            'sintomacovid.hasDiabetes': true
+        },
+        { 
+            'sintomacovid.hasHta': true
+        },
+        { 
+            'sintomacovid.hasCardio': true
+        },
+        { 
+            'sintomacovid.hasPulmonar': true
+        },
+        { 
+            'sintomacovid.hasEmbarazo': true
+        },
+        { 
+            'sintomacovid.hasCronica': true
+        },
+        { 
+            'sintomacovid.hasFumador': true
+        }, 
+        {
+            'sintomacovid.hasObesidad': true
+        }
+    ]
+
+  }
 
   if(comp_range.length){
     q["$and"] = comp_range;

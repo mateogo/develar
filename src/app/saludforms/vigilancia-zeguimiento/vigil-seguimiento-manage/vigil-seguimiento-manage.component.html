@@ -76,7 +76,16 @@
   <ng-container *ngIf='showIcons'>
     <div class='row'>
       <div class="col-md-12">
-        <p class='text-headerblock'>{{ asistencia.solicitante }}</p>
+        <p class='text-headerblock'>{{ asistencia.solicitante }}
+
+          <span *ngIf='comorbilidadBadge.hasData'
+                matTooltip='{{comorbilidadBadge.toolTip}}'>
+            <badge  [color]="comorbilidadBadge.color" >{{comorbilidadBadge.branding}}</badge>
+          </span>
+
+
+        </p>
+
         <p class='text-normal'>{{ asistencia.dni }}: {{ asistencia.cNum }} - {{ asistencia.fecha }} -  
 
             <strong>{{ asistencia.action }}  {{ asistencia.epiw}}</strong>

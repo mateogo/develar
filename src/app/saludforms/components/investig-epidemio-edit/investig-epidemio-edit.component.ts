@@ -146,13 +146,14 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasContacto:        [null],
       hasEntorno:         [null],
       hasDiabetes:        [null],
-      hasHta:        [null],
-      hasCardio:        [null],
+      hasHta:             [null],
+      hasCardio:          [null],
       hasPulmonar:        [null],
-      hasCronica:        [null],
-      hasFumador:        [null],
+      hasEmbarazo:        [null],
+      hasCronica:         [null],
+      hasFumador:         [null],
       hasObesidad:        [null],
-      comorbilidad:        [null],
+      comorbilidad:       [null],
 
       isInternado:         [null],
       tinternacion:        [null],
@@ -232,6 +233,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasHta:        sintomaCovid.hasHta,
       hasCardio:     sintomaCovid.hasCardio,
       hasPulmonar:   sintomaCovid.hasPulmonar,
+      hasEmbarazo:   sintomaCovid.hasEmbarazo,
       hasCronica:    sintomaCovid.hasCronica,
       hasFumador:    sintomaCovid.hasFumador,
       hasObesidad:   sintomaCovid.hasObesidad,
@@ -386,6 +388,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasHta =            fvalue.hasHta;
     covid.hasCardio =         fvalue.hasCardio;
     covid.hasPulmonar =       fvalue.hasPulmonar;
+    covid.hasEmbarazo =       fvalue.hasEmbarazo;
     covid.hasCronica =        fvalue.hasCronica;
     covid.hasFumador =        fvalue.hasFumador;
     covid.hasObesidad =       fvalue.hasObesidad;

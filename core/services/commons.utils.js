@@ -267,14 +267,11 @@ exports.edadActual = function(dob){
 
 
 exports.parseDateStr = function(str) {
-    //console.log('parseDate BEGIN [%s]',str)
     if(!str) return null;
-
-    var mx = str.match(/(\d+)/g);
-    if(!mx) return null;
-
-    var ty = new Date();
-    if(mx.length === 0) return ty;
+    let mx = str.match(/(\d+)/g);
+    let ty = new Date();
+    if(!mx || mx.length === 0) return ty;
+    mx = mx.map(t => parseInt(t,10));
     if(mx.length === 1){
         if(mx[0]<0 || mx[0]>31) return null;
         else return new Date(ty.getFullYear(),ty.getMonth(),mx[0]);
@@ -287,24 +284,40 @@ exports.parseDateStr = function(str) {
     if(mx.length === 3){
         if(mx[0]<0 || mx[0]>31) return null;
         if(mx[1]<0 || mx[1]>12) return null;
+
+        if(mx[2]<30) mx[2]=mx[2]+2000;
+        if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
         if(mx[2]<1000 || mx[2]>2100) return null;
+
         else return new Date(mx[2],mx[1]-1,mx[0]);
     }
     if(mx.length === 4){
         if(mx[0]<0 || mx[0]>31) return null;
         if(mx[1]<0 || mx[1]>12) return null;
+
+        if(mx[2]<30) mx[2]=mx[2]+2000;
+        if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
         if(mx[2]<1000 || mx[2]>2100) return null;
+
         if(mx[3]<0 || mx[3]>24) return null;
         else return new Date(mx[2],mx[1]-1,mx[0],mx[3],0);
     }
     if(mx.length === 5){
         if(mx[0]<0 || mx[0]>31) return null;
         if(mx[1]<0 || mx[1]>12) return null;
+
+        if(mx[2]<30) mx[2]=mx[2]+2000;
+        if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
         if(mx[2]<1000 || mx[2]>2100) return null;
+
         if(mx[3]<0 || mx[3]>24) return null;
         if(mx[4]<0 || mx[4]>60) return null;
         else return new Date(mx[2],mx[1]-1,mx[0],mx[3],mx[4]);
     }
+
+
+
+
 }
 
 

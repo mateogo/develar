@@ -17,6 +17,8 @@ import {   Asistencia, HisopadoYa,
           MuestraLaboratorio,
           AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
 
+const BADGE_COLOR = ['info', 'info', 'warning', 'warning', 'danger', 'danger', 'danger', 'danger', 'danger', 'danger', 'danger', 'danger', 'danger', 'danger'];
+
 
 
 @Component({
@@ -61,6 +63,7 @@ export class VigilSeguimientoManageComponent implements OnInit {
   public muestrasList: MuestraslabData[] = [];
   public vinculosList$: Observable<VinculosData[]>;
 
+  public comorbilidadBadge: ComorbilidadBadge = new ComorbilidadBadge();
   public sisaBadge: SisaBadge = new SisaBadge();
   public covidBadge: CovidBadge = new CovidBadge();
   public fupBadge: FollowUpBadge = new FollowUpBadge();
@@ -354,6 +357,7 @@ export class VigilSeguimientoManageComponent implements OnInit {
     toPrint.avance =  AsistenciaHelper.getPrefixedOptionLabel('avance', token.estado, token.avance);
     toPrint.locacionTxt = this.buildDireccion(token)
 
+    this.comorbilidadBadge = this.buildComorbilidadBadge(token);
 
     this.sisaBadge = this.buildSisaBadge(token);
     this.covidBadge = this.buildCovidBadge(token);
@@ -423,6 +427,9 @@ export class VigilSeguimientoManageComponent implements OnInit {
         followupBadgeToken.color = 'success'
 
       }
+
+
+
 
     }
     return followupBadgeToken;
@@ -532,6 +539,76 @@ export class VigilSeguimientoManageComponent implements OnInit {
     }
     return covidBadgeToken;
 
+  }
+
+  private buildComorbilidadBadge(token: Asistencia): ComorbilidadBadge{
+    let badgeToken = new ComorbilidadBadge();
+    let q = 0;
+    let toolTip = '';
+    let sintomas = token.sintomacovid;
+    if(sintomas){
+      if(sintomas.hasDiabetes){
+        toolTip += ' [Diabetes]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+      if(sintomas.hasHta){
+        toolTip += ' [HTA]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+      if(sintomas.hasCardio){
+        toolTip += ' [Cardio]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+
+      if(sintomas.hasPulmonar){
+        toolTip += ' [Pulmonar]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+ 
+      if(sintomas.hasEmbarazo){
+        toolTip += ' [Embarazada]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+
+     if(sintomas.hasCronica){
+        toolTip += ' [Otras]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+
+     if(sintomas.hasFumador){
+        toolTip += ' [Fumador]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+
+    if(sintomas.hasObesidad){
+        toolTip += ' [Obesidad]';
+        q += 1;
+        badgeToken.hasData = true;
+
+      }
+    }
+
+    if(badgeToken.hasData){
+      badgeToken.color = BADGE_COLOR[q];
+      badgeToken.toolTip = toolTip;
+      badgeToken.branding = 'preexistentes: #' + q;
+    }    
+
+    return badgeToken;
   }
   
   private buildSisaBadge(token: Asistencia): SisaBadge{
@@ -709,6 +786,20 @@ class SisaBadge {
   label = '';
   fecha = '';
   toolTip = '';
+}
+
+class ComorbilidadBadge {
+  hasData = false;
+  color = 'info';
+  border = false;
+  outline = true;
+  arrow = 'bottom';
+  size = '';
+  branding = 'X';
+  label = '';
+  fecha = '';
+  toolTip = '';
+  qty = 0;
 }
 
 class CovidBadge {

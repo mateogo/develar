@@ -413,7 +413,9 @@ export class SaludController {
     let year = today.getFullYear();
 
     let fecha_caso_notificado = asistencia && asistencia.sisaevent && asistencia.sisaevent.fe_reportado;
+
     if(fecha_caso_notificado){
+
       let fecha = devutils.dateFromTx(fecha_caso_notificado);
       asistencia.fenotif_txa = devutils.txFromDate(fecha);
       asistencia.fenotif_tsa = fecha.getTime();

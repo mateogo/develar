@@ -17,7 +17,7 @@
                   <span class='mat-data'>COVID ACTIVOS</span>
         </div>
 
-        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
             title="Sección para filtrar total de casos covid">
           <mat-checkbox  class='mat-check'
                   [checked]="false"
@@ -25,12 +25,19 @@
                   <span class='mat-data'>COVID TOTALES: Activos + Altas + Fallecidos</span>
         </div>
 
-        <div class="col-md-4 d-md-flex justify-content-start align-items-center" 
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
             title="Casos marcados ">
           <mat-checkbox  class='mat-check'
                   [checked]="false"
                   [formControl]="form.controls['vigiladoCovid']" ></mat-checkbox>
                   <span class='mat-data'>Afectado COVID: bajo seguimiento</span>
+        </div>
+        <div class="col-md-3 d-md-flex justify-content-start align-items-center" 
+            title="Casos marcados ">
+          <mat-checkbox  class='mat-check'
+                  [checked]="false"
+                  [formControl]="form.controls['hasPrexistentes']" ></mat-checkbox>
+                  <span class='mat-data'>Con afecciones prexistentes</span>
         </div>
 
       </div>

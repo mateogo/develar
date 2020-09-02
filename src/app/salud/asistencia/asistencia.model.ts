@@ -223,6 +223,7 @@ export class ContextoCovid {
 	hasHta:boolean = false;
 	hasCardio:boolean = false;
 	hasPulmonar:boolean = false;
+	hasEmbarazo:boolean = false;
 	hasCronica:boolean = false;
 	hasFumador:boolean = false;
 	hasObesidad:boolean = false;
@@ -1102,6 +1103,7 @@ export class VigilanciaBrowse {
 		avanceCovid: string = '';
 
 		sintomaCovid: string = '';
+		hasPrexistentes: boolean = false;
 		feDesde?: string = '';
 		feHasta?: string = '';
 		feDesde_ts?: number = 0;
@@ -2517,6 +2519,7 @@ export class AsistenciaHelper {
       if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key]; // estas keys solo se usan en el form
 
       if(key === 'isVigilado'       && !query[key]) delete query[key];
+      if(key === 'hasPrexistentes'  && !query[key]) delete query[key];
       if(key === 'hasParent'        && !query[key]) delete query[key];
       if(key === 'hasCovid'         && !query[key]) delete query[key];
       if(key === 'casoCovid'        && !query[key]) delete query[key];

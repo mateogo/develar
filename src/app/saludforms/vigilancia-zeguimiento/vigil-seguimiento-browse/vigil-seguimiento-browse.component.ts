@@ -130,6 +130,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       compNum_d:       [null],
       compNum_h:       [null],
       isVigilado:      [null],
+      hasPrexistentes: [null],
       hasCovid:        [null],
       casoCovid:       [null],
       vigiladoCovid:   [null],
@@ -182,6 +183,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
         compNum_h:   query.compNum_h,
 
         isVigilado: query.isVigilado,
+        hasPrexistentes: query.hasPrexistentes,
         pendLaboratorio: query.pendLaboratorio,
         actualState: query.actualState,
         reporte: query.reporte,
@@ -244,6 +246,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     entity.compNum_h =   fvalue.compNum_h;
 
     entity.isVigilado =   fvalue.isVigilado;
+    entity.hasPrexistentes =   fvalue.hasPrexistentes;
     entity.pendLaboratorio =   fvalue.pendLaboratorio;
     entity.actualState  = fvalue.actualState;
     entity.reporte = fvalue.reporte;
