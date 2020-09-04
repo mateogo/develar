@@ -25,10 +25,14 @@ margin-bottom: 30px;
 }
 
 .imagepreview{
-max-width:  200px;
-max-height: 70px;
-margin-left: 5px;
-margin-top: 5px;
-width: auto;
-height: auto;
+    max-width:  200px;
+    max-height: 70px;
+    margin-left: 5px;
+    margin-top: 5px;
+    width: auto;
+    height: auto;
+}
+
+#selectImportType{
+    display: inherit;
 }

@@ -476,11 +476,11 @@ export class DaoService {
       .catch(this.handleError);
   }
 
-  importExcelData<T>(path): Promise<T[]>{
+  importExcelData<T>(query): Promise<T[]>{
     let url = `${this.dao['excel'].importURL}`;
 
     return this.http
-      .post(url, JSON.stringify(path), {headers: this.headers})
+      .post(url, JSON.stringify(query), {headers: this.headers})
       .toPromise()
       .catch(this.handleError);
   }

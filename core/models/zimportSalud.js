@@ -73,8 +73,7 @@ function processSisaArchive(req, errcb, cb){
     // csv({delimiter: ';'})
     // .fromFile(arch)
     // .then((persons) => {
-
-			console.log(persons)
+		
     		let compNumCounter = 0;
     		if(!persons) persons = [];
 

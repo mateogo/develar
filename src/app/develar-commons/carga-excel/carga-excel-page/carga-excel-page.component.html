@@ -5,40 +5,50 @@
                 <div class="d-flex justify-content-between panel-header">
                     <div class="panel-header-text">{{ title }}</div>
                     <div class="panel-header-control" ><span 
-                        (click)='addItem()' title="Agregar Item">
-                        <i [class]="openEditor ? 'fas fa-plus' : 'far fa-plus'" 
+                        (click)='toggleAssetUpload()' [title]="!showEdit ? 'Abrir' : 'Cerrar'">
+                        <i [class]="!showEdit ? 'fas fa-plus' : 'fas fa-minus'" 
                             aria-hidden="true"></i></span></div>
                 </div>
             </div>
         </div>
         <ng-container *ngIf="showEdit">
             <asset-create (assetEmitted)='selectAsset($event)' ></asset-create>
-            <div class="additional-info">
-                <button mat-raised-button color="primary" 
-                        (click)="onSubmit()" >Cerrar</button>
-            </div>
         </ng-container>
     </mat-card-content>
 </mat-card>
   
 <mat-card>
+    <mat-card-content #selectImportType class="text-center">
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de importación</mat-label>
+            <mat-select [(value)]='selectedImportType' formControlName="importType" placeholder="Seleccionar tipo de importación" required>
+                <mat-option *ngFor="let value of importTypes" [value]="value">
+                    {{value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>
+            <button mat-flat-button class="m-2" color="primary" (click)="testearImportacion()" [disabled]="!selectedImportType">Testear importación</button>
+            <button mat-flat-button class="m-2" color="warn" (click)="importarDatos()" [disabled]="!selectedImportType">Confirmar importación</button>
+        </div>
+    </mat-card-content>
     <mat-card-header class="panel-header-text">Visor Excel</mat-card-header>
-    <div *ngIf="asset">
-        <mat-card-subtitle >
+    <mat-card-content *ngIf="asset">
+        <mat-card-subtitle>
             El archivo contiene {{nrows}} filas
         </mat-card-subtitle>
-        <button mat-raised-button color="warning" (click)="cargarRegistros()">Confirmar importación</button>
-    </div>
-    <table mat-table [dataSource]="registros" class="mat-elevation-z8">
-        <ng-container *ngFor="let col of columnsToDisplay" [matColumnDef]="col">
-            <mat-header-cell *matHeaderCellDef>
-                {{col}}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                {{element[col]}}
-            </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row> 
-    </table>
+        <table mat-table [dataSource]="registros" class="mat-elevation-z8">
+            <ng-container *ngFor="let col of columnsToDisplay" [matColumnDef]="col">
+                <mat-header-cell *matHeaderCellDef>
+                    {{col}}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element[col]}}
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row> 
+        </table>
+    </mat-card-content>
 </mat-card>
+
