@@ -10,7 +10,10 @@
 		          "SERVER": "https://dsocial.brown.gob.ar",
 		          "FAVICON": "favicon.ico",
 		          "PUBLIC": "/www/dsocial"
-		  }
+		  },
+		  "args":[
+		  	"--max_old_space_size=1024"
+		  ]
 		},
 
 		{

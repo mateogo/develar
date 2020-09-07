@@ -135,14 +135,14 @@ function processOnePerson(person, token, compNum){
     }
 
 
-    buildSaludCoreData(person, token);
-    buildSaludLocaciones(person, token);
+    buildSaludCoreData(person, token, isNew);
+    buildSaludLocaciones(person, token, isNew);
 
 
     saveSaludRecord(person, isNew, token, compNum);
 }
 
-const buildSaludCoreData = function(person, token){
+const buildSaludCoreData = function(person, token, isNew){
 
     person.grupo_familiar = 0;
     person.apellido = token.apellido
@@ -166,15 +166,30 @@ const buildSaludCoreData = function(person, token){
     person.ts_alta = Date.now();
     person.ts_umodif = person.ts_alta;
 
-    let contactdata = {
+    let contactdata = person.contactdata && person.contactdata.length && person.contactdata[0];
+
+    if(!contactdata){
+
+    	contactdata = {
         tdato: 'CEL',
         data: token.telefono || 'sin dato',
         type:  'PER',
         slug: 'dato importado de excel',
         isPrincipal: true,
+    	}
+    	person.contactdata = [ contactdata]
+
+    }else {
+
+    	if(token.telefono && token.telefono !== contactdata.data){
+    		contactdata.data = contactdata.data + ' / ' + token.telefono;
+    	}
 
     }
-    person.contactdata = [ contactdata]
+
+
+
+
 
     // person.locaciones = token. ;
     // person.familiares = token. ;
@@ -184,8 +199,8 @@ const buildSaludCoreData = function(person, token){
     // person.oficios = token. ;
 }
 
-const buildSaludLocaciones = function(person, token){
-    let locaciones = [];
+const buildSaludLocaciones = function(person, token, isNew){
+    let locaciones = person.locaciones || [];
     let city = '';
     let zip = '';
     let barrio =  '';
@@ -223,7 +238,6 @@ const buildSaludLocaciones = function(person, token){
 
 function saveSaludRecord(person, isNew, token, compNum){
     if(isNew){
-
 
     	//c onsole.log('Ready To PersonSave')
       person.save().then(person =>{
@@ -518,23 +532,23 @@ function updateCoreAsis(asis, person, data){
 			asis.edad = asis.edad ? asis.edad : edad + '';
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
-			let telData = telefono ? telefono.data : '';
+			let telData = telefono ? telefono.data || '' : '';
 			let telExistente = asis.telefono || '';
 
 			if(telData !== telExistente && telData !== 'sin dato'){
 				telExistente = telExistente ? telExistente + ' ' + telData : telData;
 			}
-			asis.telefono = telData;
+			asis.telefono = telExistente;
 
 			let address = person.locaciones && person.locaciones.length && person.locaciones[0];
 			if(address) {
 				let locacion = asis.locacion || new Locacion();
-				locacion.street1 = address.street1;
-				locacion.streetIn = address.streetIn;
-				locacion.streetOut = address.streetOut;
-				locacion.city = address.city;
-				locacion.zip = address.zip;
-				locacion.barrio = address.barrio;
+				locacion.street1 = locacion.street1 || address.street1;
+				locacion.streetIn = locacion.streetIn || address.streetIn;
+				locacion.streetOut = locacion.streetOut || address.streetOut;
+				locacion.city = locacion.city || address.city;
+				locacion.zip = locacion.zip || address.zip;
+				locacion.barrio = locacion.barrio || address.barrio;
 				asis.locacion = locacion;
 			}
 
@@ -1196,6 +1210,7 @@ db.usuarios.insertOne({
 1596234544774
 1596164400000
 
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed 
 
 */
 
