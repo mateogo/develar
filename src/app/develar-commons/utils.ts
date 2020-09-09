@@ -322,7 +322,6 @@ const parseDateStr = function(str) {
         if(mx[2]<30) mx[2]=mx[2]+2000;
         if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
 
-console.log('#3 parseDate: [%s]', mx[2])
         if(mx[2]<1000 || mx[2]>2100) return null;
         else return new Date(mx[2],mx[1]-1,mx[0]);
     }
@@ -332,7 +331,6 @@ console.log('#3 parseDate: [%s]', mx[2])
 
         if(mx[2]<30) mx[2]=mx[2]+2000;
         if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
-console.log('#4 parseDate: [%s]', mx[2])
 
         if(mx[2]<1000 || mx[2]>2100) return null;
 
@@ -346,7 +344,6 @@ console.log('#4 parseDate: [%s]', mx[2])
         if(mx[2]<30) mx[2]=mx[2]+2000;
         if(mx[2]>=30 && mx[2]<100) mx[2]=mx[2]+1900;
 
-console.log('#5 parseDate: [%s]', mx[2])
         if(mx[2]<1000 || mx[2]>2100) return null;
         if(mx[3]<0 || mx[3]>24) return null;
         if(mx[4]<0 || mx[4]>60) return null;

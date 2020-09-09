@@ -551,11 +551,12 @@ function buildQuery(query, today){
       let fede = feha - (1000 * 60 * 60 * 24 * 15);
       q = {
             avance: {'$ne': 'anulado'},
+            telefono: {'$ne': null},
             isVigilado: true,
             estado: 'activo',
             hasParent: true,
             fecomp_tsa: { '$gte': fede, '$lt': feha },
-            'infeccion.actualState': { '$not': {'$in': [1, 4, 5] } } 
+            'infeccion.actualState': { '$not': {'$in': [1, 2,  4, 5] } } 
           }
       return q;
   }
