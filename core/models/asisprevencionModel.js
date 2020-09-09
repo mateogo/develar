@@ -551,7 +551,7 @@ function buildQuery(query, today){
       let fede = feha - (1000 * 60 * 60 * 24 * 15);
       q = {
             avance: {'$ne': 'anulado'},
-            telefono: {'$ne': null},
+            telefono: {'$nin': [null, ""]},
             isVigilado: true,
             estado: 'activo',
             hasParent: true,
