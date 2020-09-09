@@ -58,6 +58,18 @@ const vinculosOptList = [
         {val: 'otro',     label: 'Otro',      slug:'Otro' },
 ];
 
+const locMuestraOptList = [
+    { val: 'emergen107', label: 'Emergencia/107' },
+    { val: 'detectar',   label: 'Operativo DeTecTar' },
+    { val: 'CAPS01',     label: 'CAPS-01 Min Rivadavia' },
+    { val: 'CAPS06',     label: 'CAPS-06 Los álamos' },
+    { val: 'CAPS12',     label: 'CAPS-12 Don Orione' },
+    { val: 'CAPS15',     label: 'CAPS-15 Glew 2' },
+    { val: 'CAPS16',     label: 'CAPS-16 Rafael Calzada' },
+    { val: 'CAPS26',     label: 'CAPS-26 USAmb Burzaco' },
+    { val: 'otro',       label: 'Otro/ extra-Muni'  },
+];
+
 function genHispadoForm(req, res){
     let asisId = req.params.id;
     if(asisId){
@@ -468,7 +480,7 @@ function seccionOCHO(doc, y, data, spec){
     let tx26 = `Lavado broncoalveolar:`;
     let tx27 = `Otra: ............................................. `;
 
-    let tx31 = `Fecha de toma de muestra: ...../...../.....                 Lugar de toma de la muestra: .................................................  `;
+    let tx31 = `Fecha de toma de muestra: ${ data.fechalab }              Lugar de toma de la muestra: ${ data.muestra }  `;
     let tx32 = `Fecha en que se deriva la muestra:  ...../...../.....  Lugar de derivación:.............................................  Fecha de derivación al LNR: ...../...../..... `;
 
     let tx51 = `Datos de la persona que notifica:`;
@@ -617,7 +629,12 @@ function rowTable(doc, x, y, data){
 
 function mapQueryToHisopadoData(asis, person){
     const data = getMockData();
-    const locacion = asis.locacion;
+    const locacion = asis.locacion || {
+            city: '...........................',
+            street1: '........................',
+            barrio: '.........................',
+            zip: '............................'
+        };
 
     const edad = utils.edadActual(utils.parseDateStr(asis.fenactx)) || 's/d';
     const triage = asis.sintomacovid || {};
@@ -637,17 +654,23 @@ function mapQueryToHisopadoData(asis, person){
                 }
     })
 
+    let laboratorio = null;
+    data.muestra = '...............................................';
+    data.fechalab = '...../...../.......';
 
-    if(!locacion){
-        locacion = {
-            city: 'Adrogué',
-            street1: 'sin dato',
-            barrio: 'sin dato'
-        }
+    const laboratorios = asis.muestraslab;
+    if(laboratorios && laboratorios.length){
+        laboratorio = laboratorios[laboratorios.length - 1];
+        data.fechalab = laboratorio.fe_toma || '...../...../.......';
+
+        let locMuestra = locMuestraOptList.find(t => t.val === laboratorio.locacionId);
+
+        data.muestra = (locMuestra && locMuestra.val !== 'otro') ? locMuestra.label : (laboratorio.locacionSlug || '............................................')
     }
 
+
     data.displayAs = asis.requeridox.slug;
-    data.sexo = asis.sexo;
+    data.sexo = asis.sexo || ' [ F ]  [ M ]';
     data.ndoc = asis.ndoc;
     data.nacionalidad =     'Argentino/a';
     data.provincia =        'Buenos Aires';
@@ -656,8 +679,8 @@ function mapQueryToHisopadoData(asis, person){
     data.barrio =           locacion.barrio;
     data.street1 =          locacion.street1;
     data.zip =              locacion.zip;
-    data.telefono =         asis.telefono;
-    data.fenac =            asis.fenactx;
+    data.telefono =         asis.telefono || '............................';
+    data.fenac =            asis.fenactx || '............................';
     data.edad =             edad;
     data.embarazo =         '';
     data.sintoma =          triage.hasSintomas ? 'SI' : 'NO'
@@ -672,7 +695,7 @@ function mapQueryToHisopadoData(asis, person){
     data.disgeusia =         triage.hasFaltaGusto ? 'SI' : 'NO';
     data.odinofagia =        triage.hasDolorGarganta ? 'SI' : 'NO';
     data.tos =               triage.hasTos ? 'SI' : 'NO';
-    data.otrosSintomas =     triage.sintomas;
+    data.otrosSintomas =     triage.sintomas || '...............................................';
     data.comorbilidad =      hasComorbilidades ? 'PRESENTA COMORBILIDADES' : 'SIN COMORBILIDADES'
     data.asma =              ' ';
     data.diabetes =          triage.hasDiabetes ? 'SI' : 'NO';
@@ -693,8 +716,8 @@ function mapQueryToHisopadoData(asis, person){
     data.obesidad =          triage.hasObesidad ? 'SI' : 'NO';
     data.cronica =           triage.hasCronica ? 'SI' : 'NO';
     data.otrasComorbilidades =  triage.comorbilidad;
-    data.trabaja =           hasTrabajo;
-    data.trabajoTxt =        triage.trabajoSlug;
+    data.trabaja =           hasTrabajo || '[ SI ]  [ NO ]';
+    data.trabajoTxt =        triage.trabajoSlug || '....................................';
     data.tuvoContacto =      triage.hasEntorno ? 'SI' : 'NO';
     data.tuvoConfirmados =   triage.hasContacto ? 'SI' : 'NO';
     data.visitoAlgoInusual = triage.hasViaje ? 'SI' : 'NO';

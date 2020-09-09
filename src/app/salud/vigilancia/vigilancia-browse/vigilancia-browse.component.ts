@@ -43,6 +43,7 @@ export class VigilanciaBrowseComponent implements OnInit {
   public sintomaCovidOptList =  [];
   public reportesOptList =     [];
   public ejecucionOptList = [];
+  public locMuestraOptList = [];
 
   public intervencionOptList = [];
 
@@ -156,6 +157,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       vigiladoCovid:   [null],
       necesitaLab:     [null],
       pendLaboratorio: [null],
+      locacionId:      [null],
       actualState:     [null],
       isSeguimiento:   [null],
       reporte:         [null],   
@@ -197,6 +199,7 @@ export class VigilanciaBrowseComponent implements OnInit {
 
         isVigilado: query.isVigilado,
         pendLaboratorio: query.pendLaboratorio,
+        locacionId: query.locacionId,
         actualState: query.actualState,
         reporte: query.reporte,
         hasCovid:   query.hasCovid,
@@ -260,6 +263,7 @@ export class VigilanciaBrowseComponent implements OnInit {
 
     entity.isVigilado =   fvalue.isVigilado;
     entity.pendLaboratorio =   fvalue.pendLaboratorio;
+    entity.locacionId = fvalue.locacionId;
     entity.actualState  = fvalue.actualState;
     entity.reporte = fvalue.reporte;
     entity.hasCovid =     fvalue.hasCovid;
@@ -321,6 +325,7 @@ export class VigilanciaBrowseComponent implements OnInit {
                   this.sintomaCovidOptList,
                   this.intervencionOptList,
                   this.ejecucionOptList,
+                  this.locMuestraOptList,
                   this.reportesOptList
                  ];
 
@@ -336,9 +341,10 @@ export class VigilanciaBrowseComponent implements OnInit {
     this.estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
     this.avanceSisaOptList =   AsistenciaHelper.getOptionlist('avanceSisa');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
-    this.sintomaCovidOptList =  AsistenciaHelper.getOptionlist('sintomaInfection');
+    this.sintomaCovidOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
     this.intervencionOptList = AsistenciaHelper.getOptionlist('intervenciones');
     this.ejecucionOptList =    AsistenciaHelper.getOptionlist('ejecucion');
+    this.locMuestraOptList =   AsistenciaHelper.getOptionlist('locMuestraOptList');
 
 
     // list.forEach(l => {

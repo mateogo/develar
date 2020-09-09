@@ -546,6 +546,21 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['reporte'] && query['reporte']==="LLAMADOSIVR"){
+      let feha = Date.now();
+      let fede = feha - (1000 * 60 * 60 * 24 * 15);
+      q = {
+            avance: {'$ne': 'anulado'},
+            isVigilado: true,
+            estado: 'activo',
+            hasParent: true,
+            fecomp_tsa: { '$gte': fede, '$lt': feha },
+            'infeccion.actualState': { '$not': {'$in': [1, 4, 5] } } 
+          }
+      return q;
+  }
+
+
   if(query['reporte'] && query['reporte']==="CONTACTOS"){
       q = {
             avance: {$ne: 'anulado'},
@@ -836,6 +851,10 @@ function buildQuery(query, today){
 
   if(query['pendLaboratorio']){
     q["muestraslab.estado"] = {$in: ['presentada', 'enestudio']};
+  }
+
+  if(query['locacionId']){
+    q["muestraslab.locacionId"] = query['locacionId'];
   }
 
 
@@ -2191,7 +2210,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long', 'IngresoSistema']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -2292,13 +2311,13 @@ function buildExcelStream(movimientos, query, req, res){
       const {compNum, telefono, edad } = row;
       let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), telefono, edad ];
       
-      worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...casoindiceArr, ...laboratorioArr, ...locacionArr ]).commit()
+      worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...casoindiceArr, ...laboratorioArr, ...locacionArr, row.fecomp_txa ]).commit()
 
     })
     worksheet.commit()
     workbook.commit()
 }
-//casoIndic
+//casoIndic fe_comp fecomp_txa
 //followUp
 /*******************************************/
 /***** REPORTE VIGILANCIA DE CONTACTO *****/
@@ -2938,6 +2957,24 @@ function buildInverteTree(req, errcb, cb){
 
 /***
 db.asisprevenciones.find({sector: 'ivr',avance: {$in: ['emitido', 'descartado', 'esperamedico', 'enobservacion', 'nocontesta','enaislamiento', 'esperasame' ]}},{avance:1}).count()
+
+
+// QUERY REPORTE SEGUIMIENTO IVR
+db.asisprevenciones.find({avance: { '$ne': 'anulado' },
+  isVigilado: true,
+  fecomp_tsa: { '$gte': 1597460400000, '$lt': 1601521200000 },
+  estado: 'activo',
+  hasParent: true,
+  'infeccion.actualState': {'$not': {'$in': [1, 4, 5]}}}
+  ).count()
+
+db.asisprevenciones.find({
+  avance: { '$ne': 'anulado' },
+  'followUp.altaVigilancia': { '$ne': true },
+  isVigilado: true,
+  estado: 'activo',
+  'muestraslab.locacionId': 'CAPS15'
+}).count()
 
 ****/
 

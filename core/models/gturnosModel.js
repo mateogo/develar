@@ -865,6 +865,10 @@ exports.createInitialData = function (){
       lugarId: token.recurso
     }
 
+    // oJo: Longchamps entrega 35/35/30 por día, es el único caso que tiene un excedente de 10 unidades
+    //      esto se corrigió por update en la base de datos:
+    //      db.turnosdisponibles.updateMany({'recurso.lugarId': 'longchamps', hora: 9},{$set: {'capacidad.qty':35 }})
+
     let capacidad = {
       qty: 30,
       ume: 'KIT-ALIM-STD'

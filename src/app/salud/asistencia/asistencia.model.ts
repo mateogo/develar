@@ -562,6 +562,18 @@ const estadoMuestraLaboratorioOptList = [
 	{ val: 'nopresentada',  label: 'No figura en SISA'  },
 ];
 
+const locMuestraOptList = [
+	{ val: 'emergen107', label: 'Emergencia/107' },
+	{ val: 'detectar',   label: 'Operativo DeTecTar' },
+	{ val: 'CAPS01',     label: 'CAPS-01 Min Rivadavia' },
+	{ val: 'CAPS06',     label: 'CAPS-06 Los álamos' },
+	{ val: 'CAPS12',     label: 'CAPS-12 Don Orione' },
+	{ val: 'CAPS15',     label: 'CAPS-15 Glew 2' },
+	{ val: 'CAPS16',     label: 'CAPS-16 Rafael Calzada' },
+	{ val: 'CAPS26',     label: 'CAPS-26 USAmb Burzaco' },
+	{ val: 'otro',       label: 'Otro/ extra-Muni'  },
+];
+
 const resultadoMuestraLaboratorioOptList = [
 	{ val: 'confirmada',  label: 'Positiva / Detectable'    },
 	{ val: 'descartada',  label: 'Negativa / No detectable' },
@@ -583,7 +595,7 @@ export class MuestraLaboratorio {
 	fe_toma: string = '';
 	tipoMuestra: string = 'hisopado'; // tipoMuestraLaboratorioOptList
 
-	locacionId: string = '';
+	locacionId: string = ''; // locMuestraOptList
 	locacionSlug: string = '';
 
 	laboratorio: string = '';
@@ -792,7 +804,7 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 			td.ts_alta = sol.ts_alta;
 
 			td.personId = sol.idPerson;
-			td.ndoc = sol.requeridox && sol.requeridox.ndoc;
+			td.ndoc = (sol.requeridox && sol.requeridox.ndoc) || sol.ndoc;
 			td.personSlug = sol.requeridox.nombre ? (sol.requeridox.apellido ? sol.requeridox.apellido + ', ' + sol.requeridox.nombre : sol.requeridox.nombre) : (sol.requeridox.slug ? sol.requeridox.slug: '');
 			td.edad = sol.edad ? sol.edad : '';
 			td.telefono = sol.telefono || '';
@@ -849,7 +861,7 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 
 				let fecha = sol.infeccion.actualState === 1 ?  devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_inicio): devutils.txDayMonthFormatFromDateNum(sol.infeccion.fets_confirma);
 				td.covidTxt =  AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', sol.infeccion.avance) + ' :: ' +fecha;
-				td.covidActualState = AsistenciaHelper.getPrefixedOptionLabel('estadoActualInfection', '',sol.infeccion.actualState);
+				td.covidActualState = AsistenciaHelper.getActualStateOptionLabel('estadoActualInfection', '',sol.infeccion.actualState);
 				td.covidAvance = AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '',sol.infeccion.avance);
 				td.covidSintoma = AsistenciaHelper.getPrefixedOptionLabel('sintomaInfection', '',sol.infeccion.sintoma);
 			}
@@ -1093,6 +1105,7 @@ export class VigilanciaBrowse {
 
 
 		necesitaLab: boolean = false;
+		locacionId:   string = ''; // refiere a muestraslab.locacionId
 		isSeguimiento: boolean = false;
 		tipoSeguimiento: string;
 		qIntents: number = 0;
@@ -1750,6 +1763,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'LABORATORIO',      label: 'Auditoría de Laboratorios Pendientes' },
     {val: 'COVID',            label: 'Reporte COVID (Activos + Altas + Fallecidos)' },
     {val: 'CONTACTOSESTRECHOS', label: 'Reporte CONTACTOS' },
+    {val: 'LLAMADOSIVR',      label: 'Reporte Seguimiento IVR' },
     {val: 'DOMICILIOS',       label: 'Reporte Domicilios de contactos' },
     {val: 'LABNEGATIVO',      label: 'Reporte Sospechosos con LAB NEGATIVO' },
     {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },
@@ -2185,6 +2199,7 @@ const optionsLists = {
 	 derivacion: derivacionOptList,
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
+   locMuestraOptList: locMuestraOptList,
    resultadoMuestraLab: resultadoMuestraLaboratorioOptList,
    sequenceMuestraLab: labsequenceOptList,
 
@@ -2340,6 +2355,11 @@ export class AsistenciaHelper {
 
 	static getPrefixedOptionLabel(type, prefix, val){
 		if(!val) return 'no-definido';
+		if(!type) return prefix + '::' + val;
+		return getPrefixedLabel(this.getOptionlist(type), prefix, val);
+	}
+
+	static getActualStateOptionLabel(type, prefix, val){
 		if(!type) return prefix + '::' + val;
 		return getPrefixedLabel(this.getOptionlist(type), prefix, val);
 	}
@@ -2525,6 +2545,7 @@ export class AsistenciaHelper {
       if(key === 'casoCovid'        && !query[key]) delete query[key];
       if(key === 'vigiladoCovid'    && !query[key]) delete query[key];
       if(key === 'necesitaLab'      && !query[key]) delete query[key];
+      if(key === 'locacionId'       && !query[key]) delete query[key];
       if(key === 'isSeguimiento'    && !query[key]) delete query[key];
       if(key === 'isActiveSisa'     && !query[key]) delete query[key];
       if(key === 'pendLaboratorio'  && !query[key]) delete query[key];

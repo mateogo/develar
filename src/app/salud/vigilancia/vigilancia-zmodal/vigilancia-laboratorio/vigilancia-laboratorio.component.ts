@@ -35,6 +35,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
   public estadoOptList = AsistenciaHelper.getOptionlist('estadoMuestraLab');
   public resultadoOptList = AsistenciaHelper.getOptionlist('resultadoMuestraLab');
   public secuenciaOptList = AsistenciaHelper.getOptionlist('sequenceMuestraLab');
+  public locMuestraOptList = AsistenciaHelper.getOptionlist('locMuestraOptList');
 
   public displayAs = '';
 
@@ -117,7 +118,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
     		this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
 
         /***GENERA PDF***/
-        if(this.genSolHisopadoPdf) this.genSolHisopadoPdf(this.asistencia);
+        if(this.genSolHisopadoPDF) this.genSolHisopadoPdf(this.asistencia);
 
     		this.closeDialogSuccess()
     	}else {
@@ -202,6 +203,7 @@ export class VigilanciaLaboratorioComponent implements OnInit {
     this.formClosed = false;
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.muestralab.secuencia = this.muestralab.secuencia || '1ER LAB'
+    this.muestralab.locacionId = this.muestralab.locacionId || 'otro'
     this.form = this.fb.group(this.muestralab);
   }
 

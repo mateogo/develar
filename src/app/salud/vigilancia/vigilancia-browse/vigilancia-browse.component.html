@@ -152,6 +152,22 @@
                   [formControl]="form.controls['pendLaboratorio']" ></mat-checkbox>
                   <span class='mat-data'>LABORATORIO pendiente de resultado</span>
         </div>
+ 
+        <div  class="col-md-4">
+          <mat-form-field>
+            <mat-label>Toma de muestra en</mat-label>
+            <mat-select #fldLocacionId  formControlName='locacionId'
+                        (selectionChange)="changeSelectionValue('locacionId', fldLocacionId.value)">
+                <mat-optgroup [disabled]="!locMuestraOptList.length" [label]="'Toma de muestra'">
+                    <mat-option *ngFor="let item of locMuestraOptList" [value]="item.val">
+                        {{ item.label }} 
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
       </div>
       <hr>
 

@@ -24,6 +24,7 @@ const EXPORT = 'export';
 const UPDATE_MULTIPLE = 'update_multiple';
 
 const R_DOMICILIOS = 'DOMICILIOS'
+const R_IVR = 'LLAMADOSIVR'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
 const R_ASIGNACION = 'ASIGNACIONCASOS'
