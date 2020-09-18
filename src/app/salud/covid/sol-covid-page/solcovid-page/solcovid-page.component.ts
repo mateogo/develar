@@ -481,7 +481,7 @@ export class SolcovidPageComponent implements OnInit {
   private loadPersonDataIntoAsistencia(asistencia: Asistencia, person: Person){
       let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
       asistencia.sexo = person.sexo ? (asistencia.sexo ? asistencia.sexo : person.sexo) : asistencia.sexo;
-      asistencia.telefono = asistencia.telefono  ? asistencia.telefono  : telefono.data
+      asistencia.telefono = asistencia.telefono  ? asistencia.telefono  : (telefono && telefono.data) || ''
 
 
       let address = person.locaciones && person.locaciones.length && person.locaciones[0];

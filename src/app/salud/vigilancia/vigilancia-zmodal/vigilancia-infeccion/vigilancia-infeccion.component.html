@@ -56,20 +56,36 @@
   </div>
 
   <div class="row">
-    <div class="col">
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>Método de diagnóstico</mat-label>
+        <mat-select #fldmdiagnostico  formControlName='mdiagnostico'
+                    (selectionChange)="changeSelectionValue('mdiagnostico', fldmdiagnostico.value)">
+
+            <mat-optgroup [disabled]="!mdiagnosticoOptList.length" [label]="'Diagnóstico'">
+                <mat-option *ngFor="let item of mdiagnosticoOptList" [value]="item.val">
+                    {{ item.label }} 
+                </mat-option>
+            </mat-optgroup>
+
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
       <mat-form-field>
         <input matInput [formControl]="form.controls['fe_inicio']" 
               placeholder="Fecha inicio síntomas">
       </mat-form-field>
     </div>
 
-    <div class="col">
+    <div class="col-md-3">
       <mat-form-field>
         <input matInput [formControl]="form.controls['fe_confirma']" 
               placeholder="Fecha confirmación infección">
       </mat-form-field>
     </div>
-    <div class="col">
+    <div class="col-md-3">
       <mat-form-field>
         <input matInput [formControl]="form.controls['fe_alta']" 
               placeholder="Fecha alta o fallecimiento">
@@ -80,7 +96,7 @@
 
 
 	<div class="row">
-		<div class="col">
+		<div class="col-md-4">
 			<mat-form-field>
 				<mat-label>Caso epidemiológico</mat-label>
 				<mat-select #fldAvance  formControlName='avance'
@@ -95,7 +111,7 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-		<div class="col">
+		<div class="col-md-4">
 			<mat-form-field>
 				<mat-label>Estado del síntoma</mat-label>
 				<mat-select #fldAvance  formControlName='sintoma'
@@ -110,7 +126,7 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-    <div  class="col">
+    <div  class="col-md-4">
         <mat-form-field>
           <input type="number" matInput [formControl]="form.controls['qcovivientes']" 
                   placeholder="Cantidad de contactos estrechos" >

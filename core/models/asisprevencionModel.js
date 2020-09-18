@@ -320,6 +320,7 @@ const infeccionFollowUpSch = new Schema({
     isExtradistrito: { type: Boolean, required: false, default: false },
     hasCovid:     { type: Boolean, required: false },
     actualState:  { type: Number,  required: false },
+    mdiagnostico: { type: String,  required: false, default: 'noconfirmado' },
 
     fe_inicio:    { type: String,  required: false },
     fe_confirma:  { type: String,  required: false },

@@ -359,11 +359,11 @@ export class Asistencia {
 		morbilidades:      Array<Morbilidad>;
 };
 
-
+// modo de contagio
 const avanceInfectionOptList = [
 	{ val: 'comunitario', label: 'Comunitario'},
 	{ val: 'contacto',    label: 'Contacto estrecho'},
-	{ val: 'nexo',        label: 'Nexo epidemiológico'},
+	{ val: 'nexo',        label: 'Contacto conviviente'},
 	{ val: 'viaje',       label: 'Por viaje'},
 	{ val: 'essalud',     label: 'Es personal de salud'},
 	{ val: 'esesencial',  label: 'Es personal esencial'},
@@ -447,6 +447,8 @@ export class InfectionFollowUp {
 
 	actualState: number = 6 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
 													//estadoActualAfectadoOptList
+	mdiagnostico: string = 'noconfirmado'; //mdiagnosticoOptList
+
 	fe_inicio: string = '';  
 	fe_confirma: string = '';
 	fe_alta: string = '';
@@ -480,6 +482,15 @@ const estadoActualAfectadoOptList = [
 	{ val: 4, label: 'FALLECIDO'},
 	{ val: 5, label: 'DE ALTA'},
 	{ val: 6, label: 'EN MONITOREO'},
+];
+
+// Método de Diagnóstico COVID
+const mdiagnosticoOptList = [
+	{ val: 'noconfirmado', label: 'NO CONFIRMADO'},
+	{ val: 'laboratorio',  label: 'LABORATORIO'},
+	{ val: 'nexo',         label: 'NEXO EPIDEMIOLÓGICO'},
+	{ val: 'clinica',      label: 'CLÍNICA'},
+	{ val: 'descartado',   label: 'DESCARTADO'},
 ];
 
 const tipoLocacionOptList = [
@@ -2193,6 +2204,7 @@ const optionsLists = {
    avanceInfection: avanceInfectionOptList,
    sintomaInfection: sintomaOptList,
    estadoActualInfection: estadoActualAfectadoOptList,
+   metodoDiagnostico: mdiagnosticoOptList,
 	 institucionalizado: institucionalizadoOptList,
 	 lugartrabajo: lugartrabajoOptList,
 	 tinternacion: tinternacionOptList,

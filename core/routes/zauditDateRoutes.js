@@ -12,11 +12,29 @@
 const express = require('express');
 const router = express.Router();
 const service = require('../models/zauditDataService.js');
+const covidservice = require('../models/zauditCovidCasesService.js');
 
 const saludimport = require('../models/zimportSalud.js');
 
 
 const whoami =  "Router:routes/zauditDataRoutes: ";
+
+/**
+ * Regenera el campo asisprevencion.infeccion.mdiagnostico
+ * mdiagnostico: Método de diagnóstico
+ * Diferencia los diagnosticados por vía Laboratorio de los casos por clinica o nexo
+ * server: http://salud.brown.gob.ar/api/auditodatos/mdiagnostico
+ */
+router.get('/mdiagnostico', function (req, res) {
+    covidservice.metodoDiagnostico(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 
 /**

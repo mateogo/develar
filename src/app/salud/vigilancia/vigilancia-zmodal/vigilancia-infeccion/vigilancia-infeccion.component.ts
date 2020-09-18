@@ -33,6 +33,7 @@ export class VigilanciaInfeccionComponent implements OnInit {
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
   public institucionOptList = AsistenciaHelper.getOptionlist('institucionalizado')
   public lugartrabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
+  public mdiagnosticoOptList = AsistenciaHelper.getOptionlist('metodoDiagnostico')
 
   private result: UpdateAsistenciaEvent;
 
@@ -115,12 +116,15 @@ export class VigilanciaInfeccionComponent implements OnInit {
   private initForEdit(){
     this.formClosed = false;
 
+
+
   
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.infection.isInternado = this.infection.isInternado || false;
     this.infection.isExtradistrito = this.infection.isExtradistrito || false;
     this.infection.locacionSlug = this.infection.locacionSlug || '';
     this.infection.trabajo = this.infection.trabajo || 'sindato';
+    this.infection.mdiagnostico = this.infection.mdiagnostico || 'noconfirmado';
     this.infection.institucion = this.infection.institucion || 'noinstitucionalidado';
     this.infection.trabajoTxt = this.infection.trabajoTxt || '';
     this.infection.institucionTxt = this.infection.institucionTxt || 'No institucionalizado';
