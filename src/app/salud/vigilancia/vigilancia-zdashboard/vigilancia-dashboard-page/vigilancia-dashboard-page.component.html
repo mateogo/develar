@@ -131,6 +131,31 @@
 <div class="cards" >
 <div class="row">
 
+  <div *ngIf="showChart && asistenciasByMdiagnostico.data.length" class="col-xl-12">
+    <card [bgColor]="''" class="chart-card">
+      <div class="chart">
+        <canvas
+          baseChart
+          [data]="asistenciasByMdiagnostico.data"
+          [colors]="asistenciasByMdiagnostico.styles"
+          [labels]="asistenciasByMdiagnostico.labels"
+          [legend]="false"
+          [options]="asistenciasByMdiagnostico.opts"
+          [chartType]="asistenciasByMdiagnostico.type"
+          width="100%"
+          height="100%"
+        ></canvas>
+      </div>
+      <div class="info">
+        <div class="title">
+          <strong>{{ asistenciasByMdiagnostico.title}}</strong> 
+          <small>{{ asistenciasByMdiagnostico.stitle }}</small></div>
+        <div class="small">{{asistenciasByMdiagnostico.slug}}</div>
+        <div class="small">{{asistenciasByMdiagnostico.error}}</div>
+      </div>
+    </card>
+  </div>
+
   <div *ngIf="showChart && asistenciasByAvance.data.length" class="col-xl-12">
     <card [bgColor]="''" class="chart-card">
       <div class="chart">

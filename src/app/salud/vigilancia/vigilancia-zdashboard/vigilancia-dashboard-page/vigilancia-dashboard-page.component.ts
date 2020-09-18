@@ -39,6 +39,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 
   public estadoOptList =   AsistenciaHelper.getOptionlist('estadoActualInfection');
   public avanceOptList =   AsistenciaHelper.getOptionlist('avanceInfection');
+  public mdiagnosticoOptList =   AsistenciaHelper.getOptionlist('metodoDiagnostico');
   public sintomaOptList =   AsistenciaHelper.getOptionlist('sintomaInfection');
 
   public actualState = {};
@@ -103,6 +104,8 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   private asistenciasHelperByAvance = {};
   public asistenciasByAvance: ChartData = new ChartData();
 
+  private asistenciasHelperByMdiagnostico = {};
+  public asistenciasByMdiagnostico: ChartData = new ChartData();
   //Person<
 
 
@@ -152,6 +155,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     this.initPersonByCityChart();
     this.initAsistenciasBySintomaChart();
     this.initAsistenciasByAvanceChart();
+    this.initAsistenciasByMdiagnosticoChart();
     this.tiles = [];
 
     let sscrp2 = this.dsCtrl.fetchEpidemioDashboard(fecharef).subscribe(master => {
@@ -333,6 +337,9 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 
     this.asistenciasHelperByAvance = {};
     this.asistenciasByAvance.error = "";
+
+    this.asistenciasHelperByMdiagnostico = {};
+    this.asistenciasByMdiagnostico.error = "";
 
 
   }
@@ -541,6 +548,103 @@ export class VigilanciaDashboardPageComponent implements OnInit {
     this.asistenciasByAvance.slug = avanceArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
 
   }
+
+
+
+  /*********************************
+   AsistenciasByMETODO DIAGNOSTICO
+  *******************************/
+  initAsistenciasByMdiagnosticoChart(){
+    this.asistenciasByMdiagnostico.type = 'pie';
+
+    this.asistenciasByMdiagnostico.labels = [];
+
+    this.asistenciasByMdiagnostico.data = [];
+
+    this.asistenciasByMdiagnostico.styles = [
+        {
+          backgroundColor: [
+              "#778391",
+              "#5dade0",
+              "#3c4e62",
+              "#778391",
+              "#5dade0",
+              "#3c4e62",
+              "#5dade0",
+              "#5aa9da",
+              "#56a9de",
+              "#4ea1d9",
+              "#47a7d7",
+              "#42a2d2",
+              "#3e9ece",
+              "#3797c7",
+              "#3292c2",
+              "#2d8dbd",
+              "#5dade0",
+              "#5dade0",
+              "#5dade0",
+              "#5dade0",
+              "#5dade0",
+              "#5dade0",
+              "#5dade0",
+              "#3c4e62",
+              "#778391",
+              "#5dade0",
+              "#3c4e62",
+              "#778391",
+              "#5dade0",
+              "#3c4e62",
+            ],
+        }
+      ];
+    this.asistenciasByMdiagnostico.opts = {
+        elements: {
+          arc : {
+              borderWidth: 0
+            }
+        },
+        tooltips: false
+      };
+
+  }
+
+  acumByAsistenciasMdiagnosticos(t:Tile){
+    if(this.asistenciasHelperByMdiagnostico[t.mdiagnostico]){
+      this.asistenciasHelperByMdiagnostico[t.mdiagnostico].cardinal += t.cardinal;
+
+    }else {
+       this.asistenciasHelperByMdiagnostico[t.mdiagnostico] = {
+         cardinal: t.cardinal,
+         label: AsistenciaHelper.getOptionLabel('metodoDiagnostico', t.mdiagnostico)
+       }
+    }
+  }
+
+  resetAsistenciasByMdiagnosticosChart(){
+
+    let avanceArray = []
+    Object.keys(this.asistenciasHelperByMdiagnostico).forEach(k => {
+
+        avanceArray.push(this.asistenciasHelperByMdiagnostico[k]);
+
+    })
+
+
+    avanceArray.sort((fel, sel)=> {
+      if(fel.cardinal < sel.cardinal) return 1;
+      else if(fel.cardinal > sel.cardinal) return -1;
+      else return 0;
+    })
+
+    this.asistenciasByMdiagnostico.data = avanceArray.map(t => t.cardinal);
+    this.asistenciasByMdiagnostico.labels = avanceArray.map(t => t.label);
+    this.asistenciasByMdiagnostico.title  = "Método diagnóstico " //+ this.asistenciasByMdiagnostico.data.reduce((p, t)=> p+t);
+    this.asistenciasByMdiagnostico.stitle = "" ;//Asistencias por Avance";
+    this.asistenciasByMdiagnostico.slug = avanceArray.reduce((p, t)=>p + t.cardinal + "::" + t.label + " / ", " ");
+
+  }
+
+
 
 
   /******************
@@ -870,6 +974,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   	this.acumByPersonCity(t);
     this.acumByAsistenciasSintoma(t);
     this.acumByAsistenciasAvance(t);
+    this.acumByAsistenciasMdiagnosticos(t);
 
   }
 
@@ -890,6 +995,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
 		  	this.resetPersonByCityChart();
         this.resetAsistenciasBySintomaChart();
         this.resetAsistenciasByAvanceChart();
+        this.resetAsistenciasByMdiagnosticosChart();
         this.showChart = true;
 
   	},200)

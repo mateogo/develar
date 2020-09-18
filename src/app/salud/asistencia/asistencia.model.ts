@@ -48,6 +48,7 @@ export interface Tile {
 		sexo:     string;
 		edadId:   string;
 		estado:   string;
+		mdiagnostico: string;
 		avance:   string;
 		action?:   string;
 		sintoma?:  string;

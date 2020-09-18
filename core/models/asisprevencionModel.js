@@ -2625,6 +2625,13 @@ function getSintoma(asistencia){
   return 'asintomatico';
 }
 
+function getMdiagnostico(asistencia){
+  if(asistencia && asistencia.infeccion){
+    return asistencia.infeccion.mdiagnostico
+  }
+  return 'noconfirmado';
+}
+
 
 /**********************************/
 /*         TABLERO EPIDEMIO    */
@@ -2675,6 +2682,7 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
       estado: getEstado(asistencia),
       avance: getAvance(asistencia),
       sintoma: getSintoma(asistencia),
+      mdiagnostico: getMdiagnostico(asistencia),
       sector: asistencia.sector,
       cardinal: 1
     };
@@ -2707,8 +2715,9 @@ function buildId(token, fecomp, timeframe){
   let estadoId = "[" + ("            " + token.estado).substr(-4) + "]" 
   let avanceId = "[" + ("            " + token.avance).substr(-15) + "]" 
   let sintomaId = "[" + ("           " + token.sintoma).substr(-15) + "]" 
+  let mdiagnosticoId = "[" + ("           " + token.mdiagnostico).substr(-15) + "]" 
   let sectorId = "[" + ("            " + token.sector).substr(-15) + "]" 
-  return fechaId + ':' + edadId + ':' + sexoId + ':' + estadoId + avanceId + sintomaId + sectorId;
+  return fechaId + ':' + edadId + ':' + sexoId + ':' + estadoId + avanceId + sintomaId + sectorId + mdiagnosticoId;
 }
 
 function buildDiaMes(token, fecomp, timeframe){
