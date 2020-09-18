@@ -637,10 +637,11 @@ function mapQueryToHisopadoData(asis, person){
         };
 
     const edad = utils.edadActual(utils.parseDateStr(asis.fenactx)) || 's/d';
-    const triage = asis.sintomacovid || {};
-    const hasComorbilidades = triage.hasDiabetes || triage.hasCardio || triage.hasHta || triage.hasPulmonar || triage.hasCronica || triage.hasObesidad ;
 
+    const triage = asis.sintomacovid || {};
+    const hasComorbilidades = (triage.hasDiabetes || triage.hasCardio || triage.hasHta || triage.hasPulmonar || triage.hasCronica || triage.hasObesidad) ;
     const hasTrabajo = triage.trabajo && !(triage.trabajo === 'sindato' || triage.trabajo === 'otro');
+
     const familiares = person.familiares || [];
     const vinculos = familiares.map(vin => {
         let vinculo = vinculosOptList.find(t => t.val === vin.vinculo);
@@ -708,7 +709,7 @@ function mapQueryToHisopadoData(asis, person){
     data.epoc =              triage.hasPulmonar ? 'SI' : 'NO';
     data.fumador =           triage.hasFumador ? 'SI' : 'NO';
     data.hta =               triage.hasHta ? 'SI' : 'NO';
-    data.tuberculosis =      triage.hasCardio ? ' ' : ' ';
+    data.tuberculosis =      ' ' ;
     data.insufcardiaca =     triage.hasCardio ? 'SI' : 'NO';
     data.neumonia =          ' ';
     data.inmunosupresion =   ' ';

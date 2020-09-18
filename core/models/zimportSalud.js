@@ -532,8 +532,8 @@ function updateCoreAsis(asis, person, data){
 			asis.edad = asis.edad ? asis.edad : edad + '';
 
 			let telefono = person.contactdata && person.contactdata.length && person.contactdata[0];
-			let telData = telefono ? telefono.data || '' : '';
-			let telExistente = asis.telefono || '';
+			let telData = telefono ? telefono.data || 'sin dato' : 'sin dato';
+			let telExistente = asis.telefono || 'sin dato';
 
 			if(telData !== telExistente && telData !== 'sin dato'){
 				telExistente = telExistente ? telExistente + ' ' + telData : telData;
