@@ -87,7 +87,7 @@ function processExecutor(movimientos, errcb, cb){
         console.log(report);
       }
 
-      //updateAsisprevencionInfection(asis, infection);
+      updateAsisprevencionInfection(asis, infection);
       contador[infection.mdiagnostico] += 1;
       outerCount += 1;
 
