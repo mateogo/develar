@@ -31,7 +31,6 @@ exports.metodoDiagnostico = function(errcb, cb){
   let regexQuery = {
     isVigilado: true,
     avance: {$ne: 'anulado'},
-    'infeccion.isActive': true,
     'infeccion.actualState': {$in: [0,1,2,3,4,5,6]}
   }
 
@@ -77,7 +76,7 @@ function processExecutor(movimientos, errcb, cb){
     //if(outerCount > 500 ) return;
     
     let infection = asis.infeccion;
-    if(infection && infection.isActive === true){
+    if(infection){
       reviewInfection(asis, infection);
       processInfection(asis, infection);
 

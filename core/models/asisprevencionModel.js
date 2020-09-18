@@ -721,6 +721,7 @@ function buildQuery(query, today){
       q["ndoc"] = query['ndoc'];
   }
 
+
   if(query['avance']){
       q["avance"] = query['avance'];
   }
@@ -835,6 +836,10 @@ function buildQuery(query, today){
   if(query['hasCovid']){
     q["infeccion.hasCovid"] = true;
 
+  }
+
+  if(query['mdiagnostico']){
+      q["infeccion.mdiagnostico"] = query['mdiagnostico'];
   }
 
   if(query['vigiladoCovid']){
@@ -2212,7 +2217,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Sítoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long', 'IngresoSistema']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Síntoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Método diagnóstico','Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long', 'IngresoSistema']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -2297,14 +2302,15 @@ function buildExcelStream(movimientos, query, req, res){
             fe_confirma: 's/d',
             fe_alta: 's/d',
             avance: 's/d',
+            mdiagnostico: 's/d',
             sintoma: 's/d',
             locacionSlug: 's/d',
           }
       }else{
         covid_token.covid = covidOptList[covid_token.actualState || 0];
       }
-     const { covid, fe_inicio, fe_confirma, fe_alta, avance, sintoma, locacionSlug } = covid_token;
-     let covidArr = [  covid, fe_inicio, fe_confirma, fe_alta, avance, sintoma, locacionSlug  ];
+     const { covid, fe_inicio, fe_confirma, fe_alta, avance, mdiagnostico, sintoma, locacionSlug } = covid_token;
+     let covidArr = [  covid, fe_inicio, fe_confirma, fe_alta, avance, mdiagnostico, sintoma, locacionSlug  ];
 
       const requeridox = row.requeridox || {nombre: 'Sin beneficiario', apellido: 's/d', tdoc: 's/d', ndoc: 's/d'};
       const { tdoc, ndoc, nombre, apellido } = requeridox;
@@ -2608,7 +2614,7 @@ function getEstado(asistencia){
   if(asistencia && asistencia.infeccion){
     return asistencia.infeccion.actualState
   }
-  return 6
+  return 7
 }
 
 function getAvance(asistencia){
@@ -2627,9 +2633,9 @@ function getSintoma(asistencia){
 
 function getMdiagnostico(asistencia){
   if(asistencia && asistencia.infeccion){
-    return asistencia.infeccion.mdiagnostico
+    return asistencia.infeccion.mdiagnostico || 'casos-no-covid'
   }
-  return 'noconfirmado';
+  return 'casos-no-covid';
 }
 
 
@@ -2687,7 +2693,9 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
       cardinal: 1
     };
 
-    token.id = buildId(token,fecomp, timeframe);
+    if(token)
+
+    token.id = buildId(token, fecomp, timeframe);
     processToken(token, master);
 
   })

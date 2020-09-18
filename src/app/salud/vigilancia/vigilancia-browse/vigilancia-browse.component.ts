@@ -39,6 +39,7 @@ export class VigilanciaBrowseComponent implements OnInit {
   public tipoFollowUpOptList = [];
   public estadoCovidOptList =  [];
   public avanceSisaOptList =   [];
+  public mdiagnosticoOptList =   [];
   public avanceCovidOptList =  [];
   public sintomaCovidOptList =  [];
   public reportesOptList =     [];
@@ -165,6 +166,7 @@ export class VigilanciaBrowseComponent implements OnInit {
       isActiveSisa:    [null],
       hasParent:       [null],
       avanceSisa:      [null],
+      mdiagnostico:    [null],
       qDaysSisa:       [null],
       qNotConsultaSisa: [null],
 
@@ -223,6 +225,7 @@ export class VigilanciaBrowseComponent implements OnInit {
         isActiveSisa: query.isActiveSisa,
         hasParent: query.hasParent,
         avanceSisa: query.avanceSisa,
+        mdiagnostico: query.mdiagnostico,
         qDaysSisa: query.qDaysSisa,
         qNotConsultaSisa: query.qNotConsultaSisa,
 
@@ -290,6 +293,7 @@ export class VigilanciaBrowseComponent implements OnInit {
     entity.hasParent = fvalue.hasParent;
 
     entity.avanceSisa = fvalue.avanceSisa;
+    entity.mdiagnostico = fvalue.mdiagnostico;
     entity.qDaysSisa = fvalue.qDaysSisa;
     entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
 
@@ -321,6 +325,7 @@ export class VigilanciaBrowseComponent implements OnInit {
                   this.tipoFollowUpOptList,
                   this.estadoCovidOptList,
                   this.avanceSisaOptList,
+                  this.mdiagnosticoOptList,
                   this.avanceCovidOptList,
                   this.sintomaCovidOptList,
                   this.intervencionOptList,
@@ -340,6 +345,7 @@ export class VigilanciaBrowseComponent implements OnInit {
     this.tipoFollowUpOptList = AsistenciaHelper.getOptionlist('tipoFollowUp');
     this.estadoCovidOptList =  AsistenciaHelper.getOptionlist('estadoActualInfection');
     this.avanceSisaOptList =   AsistenciaHelper.getOptionlist('avanceSisa');
+    this.mdiagnosticoOptList = AsistenciaHelper.getOptionlist('metodoDiagnostico');
     this.avanceCovidOptList =  AsistenciaHelper.getOptionlist('avanceInfection');
     this.sintomaCovidOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
     this.intervencionOptList = AsistenciaHelper.getOptionlist('intervenciones');

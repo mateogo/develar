@@ -37,7 +37,7 @@ export class VigilanciaDashboardPageComponent implements OnInit {
   public sectorOptList =   [];
 
 
-  public estadoOptList =   AsistenciaHelper.getOptionlist('estadoActualInfection');
+  public estadoOptList =   AsistenciaHelper.getOptionlist('estadoActualTablero');
   public avanceOptList =   AsistenciaHelper.getOptionlist('avanceInfection');
   public mdiagnosticoOptList =   AsistenciaHelper.getOptionlist('metodoDiagnostico');
   public sintomaOptList =   AsistenciaHelper.getOptionlist('sintomaInfection');

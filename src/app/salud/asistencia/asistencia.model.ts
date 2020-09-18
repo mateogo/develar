@@ -485,9 +485,19 @@ const estadoActualAfectadoOptList = [
 	{ val: 6, label: 'EN MONITOREO'},
 ];
 
+const estadoActualTableroOptList = [
+	{ val: 0, label: 'SOSPECHA'},
+	{ val: 1, label: 'COVID+'},
+	{ val: 2, label: 'DESCARTADO'},
+	{ val: 4, label: 'FALLECIDO'},
+	{ val: 5, label: 'DE ALTA'},
+	{ val: 6, label: 'EN MONITOREO'},
+	{ val: 7, label: 'NO COVID'},
+];
+
 // Método de Diagnóstico COVID
 const mdiagnosticoOptList = [
-	{ val: 'noconfirmado', label: 'NO CONFIRMADO'},
+	{ val: 'noconfirmado', label: 'EN MONITOREO'},
 	{ val: 'laboratorio',  label: 'LABORATORIO'},
 	{ val: 'nexo',         label: 'NEXO EPIDEMIOLÓGICO'},
 	{ val: 'clinica',      label: 'CLÍNICA'},
@@ -1088,10 +1098,11 @@ export class VigilanciaBrowse {
 		fecomp_h:    string;
 		fecomp_ts_d:  number;
 		fecomp_ts_h:  number;
-		action:      string = '';
-		sector:      string = '';
-		estado:      string = 'activo';
-		avance:      string = '';
+		action:       string = '';
+		sector:       string = '';
+		estado:       string = 'activo';
+		avance:       string = '';
+		mdiagnostico: string = '';
 
 		reporte:  string; // reportesVigilanciaOptList
 
@@ -2205,6 +2216,7 @@ const optionsLists = {
    avanceInfection: avanceInfectionOptList,
    sintomaInfection: sintomaOptList,
    estadoActualInfection: estadoActualAfectadoOptList,
+   estadoActualTablero: estadoActualTableroOptList,
    metodoDiagnostico: mdiagnosticoOptList,
 	 institucionalizado: institucionalizadoOptList,
 	 lugartrabajo: lugartrabajoOptList,
@@ -2568,6 +2580,7 @@ export class AsistenciaHelper {
       if(key === 'qNotConsultaSisa' && !query[key]) delete query[key];
       if(key === 'casosIndice'      && !query[key]) delete query[key];
       if(key === 'avance'           && !query[key]) delete query[key];
+      if(key === 'mdiagnostico'     && !query[key]) delete query[key];
 
       if(key === 'asignadoId'      && !query[key]) delete query[key];
       if(key === 'rebuildLatLon'   && !query[key]) delete query[key];

@@ -101,12 +101,22 @@
       </div>
 
       <div class="row" >
-        <div class="col-md-3 offset-md-3">
+        <div class="col-md-2 offset-md-2">
           <mat-form-field>
             <mat-select #fldEstadoCovid placeholder="Estado de caso"
                 [formControl]="form.controls['actualState']"
                 (selectionChange)="changeSelectionValue('actualState',fldEstadoCovid.value)" >
               <mat-option *ngFor="let item of estadoCovidOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select #fldMdiagnostico placeholder="Método de Diagnóstico"
+                [formControl]="form.controls['mdiagnostico']"
+                (selectionChange)="changeSelectionValue('avance',fldMdiagnostico.value)" >
+              <mat-option *ngFor="let item of mdiagnosticoOptList" 
                 [value]="item.val" >{{ item.label }}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -121,7 +131,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <mat-form-field>
             <mat-select #fldSintoma placeholder="Estado del síntoma"
                 [formControl]="form.controls['sintomaCovid']"
