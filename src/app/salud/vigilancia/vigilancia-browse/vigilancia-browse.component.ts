@@ -310,6 +310,9 @@ export class VigilanciaBrowseComponent implements OnInit {
 
     AsistenciaHelper.cleanQueryToken(entity, true);
 
+    if(entity.fenovd) entity.fenovd_ts = devutils.dateNumFromTx(entity.fenovd)
+    if(entity.fenovh) entity.fenovh_ts = devutils.dateNumPlusOneFromTx(entity.fenovh);
+
     this.dsCtrl.vigilanciaSelector = entity;
 		return entity;
 	}

@@ -2995,6 +2995,9 @@ db.asisprevenciones.find({
   'muestraslab.locacionId': 'CAPS15'
 }).count()
 
+
+curl --request POST --url https://iop.hml.gba.gob.ar/servicios/JWT/1/REST/jwt --header 'authorization: Basic d3NfaG1sX2NvdmlkMTk6bkRxeUpJVnF4aksxak1a
+
 ****/
 
 
