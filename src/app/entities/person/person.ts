@@ -1946,8 +1946,11 @@ class PersonModel {
 
     buildFamilyDataFromPerson(p:Person, fam:FamilyData):FamilyData{
       if(!fam) fam = new FamilyData();
+      let contactdata = p.contactdata && p.contactdata.length && p.contactdata[0];
+      let telefono = contactdata ? contactdata.data : '';
 
       fam.nombre = p.nombre;
+      fam.telefono = telefono;
       fam.apellido = p.apellido;
       fam.tdoc = p.tdoc;
       fam.ndoc = p.ndoc;

@@ -477,7 +477,11 @@ export class VigilanciaVinculosComponent implements OnInit {
         vAsistencia.locacion = this.locacion;
         vAsistencia.ndoc = this.vinculo.ndoc;
         vAsistencia.tdoc = this.vinculo.tdoc;
-        vAsistencia.telefono = this.vinculo.telefono;
+
+        if(this.vinculo.telefono && this.vinculo.telefono !== vAsistencia.telefono ){
+          vAsistencia.telefono = vAsistencia.telefono ? this.vinculo.telefono  + '// ant:' + vAsistencia.telefono : this.vinculo.telefono;
+        }
+
         vAsistencia.sexo = this.vinculo.sexo;
         vAsistencia.edad = this.edadActual;
 
@@ -526,11 +530,20 @@ export class VigilanciaVinculosComponent implements OnInit {
     if(this.vinculo.telefono){
 
       let contactData = this.vPerson.contactdata && this.vPerson.contactdata.length && this.vPerson.contactdata[0];
+      if(contactData){
+        if( contactData.data !== this.vinculo.telefono){
+          let nuevo = new PersonContactData();
+          nuevo.slug = 'actualizado por vínculo de caso índice'
+          nuevo.data = this.vinculo.telefono;
+          this.vPerson.contactdata.unshift(nuevo);
+        }
+      }
+
       if(!contactData){
         contactData = new PersonContactData();
+        contactData.data = this.vinculo.telefono;
         this.vPerson.contactdata = [contactData];
       }
-      contactData.data = this.vinculo.telefono;
 
     }
   }
