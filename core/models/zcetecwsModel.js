@@ -24,23 +24,31 @@ const self = this;
 const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
 
-const modo = 'produccion' // 'produccion'
+const modo = 'produccion'; // 'produccion'
+
 const spec = {
 	homologacion: {
 		url: 'https://iop.hml.gba.gob.ar',
 		usermal: 'd3NfaG1sX2FiX2FzaXN0ZW5jaWFjb3ZpZDE5OmNVNk51LDY1aXBJODJwNw==',
 		usergold: 'd3NfaG1sX2NvdmlkMTk6bkRxeUpJVnF4aksxak1a',
-		user64: 'd3NfaG1sX2FiX2FzaXN0ZW5jaWFjb3ZpZDE5OiVrTWxlU0VHMiF6Tis1Ow=='
+		userreal: 'd3NfaG1sX2FiX2FzaXN0ZW5jaWFjb3ZpZDE5OiVrTWxlU0VHMiF6Tis1Ow==',
+		user64:   'd3NfaG1sX2NvdmlkMTk6bkRxeUpJVnF4aksxak1a'
 	},
 	produccion: {
 		url: 'https://iop.gba.gob.ar',
 		user64: 'd3NfcHJvZF9hYl9hc2lzdGVuY2lhY292aWQxOTpjVTZOdSw2NWlwSTgycDc=',
+
 	}
 }
 
 const USER_B64 =    spec[modo].user64; 
 const TOKEN_URL =   spec[modo].url + '/servicios/JWT/1/REST/jwt';
 const SERVICE_URL = spec[modo].url + '/servicios/asistenciacovid/1/altaSeguimiento';
+
+const datamap = {
+	estados: spec[modo].url + '/servicios/asistenciacovid/1/estados'
+}
+
 
 //Credenciales PRODUCCIÓN: "ws_prod_ab_asistenciacovid19:cU6Nu,65ipI82p7"
 // php -a; echo  base64_encode('ws_prod_ab_asistenciacovid19:cU6Nu,65ipI82p7');
@@ -74,6 +82,7 @@ const N_HAB_00 = 'NUC-HAB-00'
 exports.useCetecWebService = cetecPrestacionesCovidWS;
 exports.generarCetec = generateCetecData;
 exports.downloadCetec = exportToExcel;
+exports.getCetecCovidData = cetecGetDataCovidWS;
 
 const sexoOptList = [
     {val: 'F',        sexo: '2', label: 'Femenino',      slug:'Femenino' },
@@ -411,6 +420,90 @@ function getOptRecord(list, val){
 
 
 }
+
+/*************************************************/
+/* 	CONSULTA PARAMETRO DEL SISTEMA  */
+/***********************************************/
+
+/**
+	API:
+	  local:  http://localhost:8080/api/cetec/getdatosmaestros
+	  server: http://salud.brown.gob.ar/api/cetec/getdatosmaestros
+*/
+function cetecGetDataCovidWS(req, errcb, cb){
+	console.log('CETE-GETDATOSMAESTROS-BEGIN');
+	let token ;
+
+	const config_token = {
+	  method: 'post',
+	  url: TOKEN_URL,
+	  headers: { 
+	    'Authorization': 'Basic ' + USER_B64
+	  }
+	};
+
+	axios(config_token)
+	.then(function (response) {
+		console.log('token [%s]', (response && response.data) ? 'ok' : 'error')
+
+	  token = 'Bearer ' + response.data;
+	  _getCovidData(token, req, errcb, cb)
+
+
+
+
+	})
+	.catch(function (error) {
+	  console.log(error);
+	});
+
+
+
+
+	let result = {
+		resultado: 'ok',
+		personas: 0,
+		prestaciones: 0
+	}
+
+
+}
+
+function _getCovidData(token, req, errcb, cb){
+	const ESTADOS = 'estados'
+
+	console.log('READY TO GET DATA');
+	console.log('=================');
+
+	const config = {
+	  method: 'get',
+	  url: datamap[ESTADOS],
+	  headers: { 
+	    'Content-Type': 'application/json', 
+	    'Authorization': token, 
+	  }
+	};
+
+	axios(config)
+	.then(function (response) {
+		//JSON.stringify(response)
+		if(cb){
+			cb(response.data);
+		}
+
+	})
+	.catch(function (error) {
+	  console.log(error);
+		if(cb){
+			cb(error);
+		}
+	});
+
+}
+
+
+
+////////////////////////////
 
 
 

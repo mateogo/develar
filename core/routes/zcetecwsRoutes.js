@@ -34,6 +34,27 @@ router.get('/sendinfo', function (req, res) {
 });
 
 /**
+ * Recupera parametros maestros del sistema
+ * 
+ * local: localhost:8080/api/cetec/getdatosmaestros
+ * server: http://salud.brown.gob.ar/api/cetec/getdatosmaestros
+ */
+router.get('/getdatosmaestros', function (req, res) {
+    service.getCetecCovidData(req, 
+
+    function(err) {
+        res.status(400).json(err);
+
+    }, 
+    function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
+/**
  * Prepara datos a transferir a CETEC
  * 
  * local: localhost:8080/api/cetec/generarinfo
