@@ -176,6 +176,19 @@ exports.dateToStr = function(date) {
     return da+"/"+mo+"/"+ye;
 };
 
+exports.datexToYYYYMMDDStr = function(dateTxt) {
+    if(!dateTxt) return null;
+    let date = this.parseDateStr(dateTxt);
+    if(!date) return null;
+
+    var prefix = '00';
+
+    var da = (prefix+date.getDate()).substr(-prefix.length);
+    var mo = (prefix+(date.getMonth()+1)).substr(-prefix.length);
+    var ye = date.getFullYear();
+    return ye+"-"+mo+"-"+da;
+};
+
 exports.getDeepValue = function(obj, path) {
   var parts = path.split('.'),
         rv,

@@ -300,6 +300,9 @@ export class Asistencia {
 		tipo:        number = 1; // 1: COVID 2:Denuncia  3:IVR 4:Detectar
 		prioridad:   number = 2; // 1:baja 2:media 3: alta
 
+		mcetec: number = 0;  // 0: pendiente; 1: migrado; 2: no aplica;
+		fets_cetec: number = 0; 
+
 		idPerson:    string;
 		ndoc:        string;
 		tdoc:        string;
@@ -307,7 +310,7 @@ export class Asistencia {
 		fenactx:     string;
 		edad:        string;
 		telefono:    string;
-		osocial:     string;
+		osocial:     string; // obrasSociales
 		osocialTxt:  string;
 
 		contactosEstrechos?:number = 0; // helper de listado
@@ -838,7 +841,7 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 			td.estado = sol.estado;
 			td.avance = AsistenciaHelper.getOptionLabel('avance', sol.avance);
 
-			td.osocial = sol.osocial + '::' + sol.osocialTxt
+			//td.osocial = sol.osocial + '::' + sol.osocialTxt
 			td.osocial = sol.osocial ? sol.osocial + (sol.osocialTxt ? '::' + sol.osocialTxt : '') : ''
 			td.faudit_alta = ((new Date(sol.ts_alta)).toString()).substr(0,21);
 			td.faudit_um = ((new Date(sol.ts_prog)).toString()).substr(0,21);

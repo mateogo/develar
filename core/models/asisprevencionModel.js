@@ -446,6 +446,9 @@ const asisprevencionSch = new Schema({
     tipo:        { type: Number, required: false },
     prioridad:   { type: Number, required: false },
 
+    mcetec:      { type: Number, required: false, default: 0 },
+    fets_cetec:  { type: Number, required: false, default: 0 },
+
     idPerson:    { type: String, required: false },
     ndoc:        { type: String, required: false },
     tdoc:        { type: String, required: false },
