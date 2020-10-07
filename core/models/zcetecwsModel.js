@@ -523,32 +523,32 @@ function cetecPrestacionesCovidWS(req, errcb, cb){
 	const data = new FormData();
 	data.append('cuit_municipio', '33999001489');
 	data.append('sigla_tipo_doc', 'D.N.I');
-	data.append('apellido', 'Gomez Ortega');
-	data.append('nombre', 'Mateo');
-	data.append('nro_doc', '14391664');
+	data.append('apellido', 'Basualdo');
+	data.append('nombre', 'Ivan');
+	data.append('nro_doc', '36894561');
 	data.append('sexo', '1');
 	data.append('localidad_id', '60');
-	data.append('fecha_nacimiento', '1960-02-15');
+
+	data.append('fecha_nacimiento', '1992-02-15');
 	data.append('tipo_seg_id', '3');
-	data.append('domicilio', 'Rosales 1312');
+	data.append('domicilio', 'Echenagusia 3310');
 	data.append('barrio', 'Adrogué Centro');
 	data.append('nacionalidad', 'Argentino');
 	data.append('email', 'mgomezortega@gmail.com');
 	data.append('telefono', '1144742025');
 	data.append('obra_social', 'osde');
 	data.append('fecha_diagnostico', '2020-08-14');
-	data.append('fecha_alta_definitiva', '');
 	data.append('origen_id', '1');
 	data.append('claificacion_id', '1');
 	data.append('estado_id', '5');
-	data.append('establecimiento_cod', '02801071');
-	data.append('evolucion_id', '1');
-	data.append('fecha_papel', '2020-08-14');
+	data.append('establecimiento_cod', '02800920');
+	data.append('evolucion_id', '4');
+	data.append('fecha_papel', '2020-10-02');
 	data.append('grupo_evento_id', '113');
-	data.append('clasificacion_manual', 'mensaje');
-	data.append('clasificacion_manual_id', '756');
+	data.append('clasificacion_manual', 'No contesta - llamada manual');
+	data.append('clasificacion_manual_id', '774');
 	data.append('evento_id', '307');
-	data.append('fecha_seguimiento', '2020-08-14');
+	data.append('fecha_seguimiento', '2020-10-02');
 
 
 	const config_token = {
@@ -1272,3 +1272,37 @@ class CetecBaseData {
 	}
 }
 
+
+/*****
+	EJEMPLO-1: MGO
+	const data = new FormData();
+	data.append('cuit_municipio', '33999001489');
+	data.append('sigla_tipo_doc', 'D.N.I');
+	data.append('apellido', 'Gomez Ortega');
+	data.append('nombre', 'Mateo');
+	data.append('nro_doc', '14391664');
+	data.append('sexo', '1');
+	data.append('localidad_id', '60');
+	data.append('fecha_nacimiento', '1960-02-15');
+	data.append('tipo_seg_id', '3');
+	data.append('domicilio', 'Rosales 1312');
+	data.append('barrio', 'Adrogué Centro');
+	data.append('nacionalidad', 'Argentino');
+	data.append('email', 'mgomezortega@gmail.com');
+	data.append('telefono', '1144742025');
+	data.append('obra_social', 'osde');
+	data.append('fecha_diagnostico', '2020-08-14');
+	data.append('fecha_alta_definitiva', '');
+	data.append('origen_id', '1');
+	data.append('claificacion_id', '1');
+	data.append('estado_id', '5');
+	data.append('establecimiento_cod', '02801071');
+	data.append('evolucion_id', '1');
+	data.append('fecha_papel', '2020-08-14');
+	data.append('grupo_evento_id', '113');
+	data.append('clasificacion_manual', 'mensaje');
+	data.append('clasificacion_manual_id', '756');
+	data.append('evento_id', '307');
+	data.append('fecha_seguimiento', '2020-08-14');
+
+****/
