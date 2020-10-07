@@ -541,12 +541,12 @@ function cetecPrestacionesCovidWS(req, errcb, cb){
 	data.append('origen_id', '1');
 	data.append('claificacion_id', '1');
 	data.append('estado_id', '5');
-	data.append('establecimiento_cod', '02800920');
+	data.append('establecimiento_cod', '02800229');
 	data.append('evolucion_id', '4');
 	data.append('fecha_papel', '2020-10-02');
 	data.append('grupo_evento_id', '113');
 	data.append('clasificacion_manual', 'No contesta - llamada manual');
-	data.append('clasificacion_manual_id', '774');
+	data.append('clasificacion_manual_id', '752');
 	data.append('evento_id', '307');
 	data.append('fecha_seguimiento', '2020-10-02');
 
