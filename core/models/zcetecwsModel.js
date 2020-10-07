@@ -24,7 +24,13 @@ const self = this;
 const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
 
-const modo = 'produccion'; // 'produccion'
+const modo = 'homologacion'; // 'produccion'
+
+const ESTADO_OK = 'migrado';
+const ESTADO_ERROR = 'error';
+const ESTADO_INVALIDO = 'invalido';
+const ESTADO_BAJA = 'baja';
+
 
 const spec = {
 	homologacion: {
@@ -83,6 +89,7 @@ exports.useCetecWebService = cetecPrestacionesCovidWS;
 exports.generarCetec = generateCetecData;
 exports.downloadCetec = exportToExcel;
 exports.getCetecCovidData = cetecGetDataCovidWS;
+exports.migrarCetecWebService = migrarRegistrosCetec;
 
 const sexoOptList = [
     {val: 'F',        sexo: '2', label: 'Femenino',      slug:'Femenino' },
@@ -158,6 +165,41 @@ const tinternacionOptList = [
 	{ val: 'uti',          estado_id: '3',  label: 'HOSP-UTI'},
 	{ val: 'obito',        estado_id: '2',  label: 'Óbito'},
 	{ val: 'alta',         estado_id: '1',  label: 'ALTA'},
+];
+
+
+const cetecKeys = [
+					'cuit_municipio',
+					'sigla_tipo_doc',
+					'nro_doc',
+					'apellido',
+					'nombre',
+					'sexo',
+					'fecha_nacimiento',
+					'nacionalidad',
+					'localidad_id',
+					'domicilio',
+					'barrio',
+					'email',
+					'telefono',
+					'obra_social',
+					'fecha_diagnostico',
+					'fecha_alta_definitiva',
+					'origen_id',
+					'clasificacion_id',
+					'estado_id',
+];
+
+const intervencionKeys = [
+					'tipo_seg_id',
+					'establecimiento_cod',
+					'evolucion_id',
+					'fecha_papel',
+					'grupo_evento_id',
+					'clasificacion_manual',
+					'clasificacion_manual_id',
+					'evento_id',
+					'fecha_seguimiento',
 ];
 
 const locMuestraOptList = [
@@ -274,9 +316,11 @@ const cetecSch = new Schema({
 		//
 		fe_alta:        { type: String, required: false },
 		mesFacturacion: { type: String, required: false },
+		registronro:    { type: Number, required: false, default: 0 },
 
 		estado:         { type: String, required: false }, //estadoOptList
 		fe_transfe:     { type: String, required: false },
+		errmessage:     { type: String, required: false },
 		paciente_id:    { type: String, required: false },
 
 		asistenciaId:   { type: String, required: false },
@@ -421,6 +465,191 @@ function getOptRecord(list, val){
 
 }
 
+
+
+/*************************************************/
+/* 	Migra registros  CETEC desde cetecdata */
+/***********************************************/
+/**
+	API:
+	  local:  http://localhost:8080/api/cetec/migrarinfo
+	  server: http://salud.brown.gob.ar/api/cetec/migrarinfo
+**/
+function migrarRegistrosCetec(req, errcb, cb){
+	let query = {
+		estado: 'pendiente',
+		// regdesde: 0,
+		// reghasta: 0,
+		// mesFacturacion: '2020-05'
+	}
+
+  let regexQuery = buildQuery(query)
+
+  console.log('CETEC MIGRACION BEGIN: *********')
+  console.dir(regexQuery);
+
+  Record.find(regexQuery).limit(10).lean().exec(function(err, entities) {
+      if (err) {
+          console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+          errcb(err);
+
+      }else{
+          if(entities && entities.length){
+          		console.log('migrateCetecData TO BEGIN [%s]', entities.length);
+
+              _insertRegistrosEnCETEC(entities, query, errcb, cb)
+
+          }
+      }
+  });
+
+}
+
+async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
+	let today = new Date();
+
+	for(let i = 0; i < movimientos.length; i++){
+
+		let cetec = movimientos[i];
+		let intervenciones = cetec.intervenciones;
+		let token;
+		let save_response;
+
+console.log('[%s]=================== INICIA',i)
+		if(!(intervenciones && intervenciones.length)){
+
+			let errmsg = 'Registro sin intervenciones';
+		console.log('[%s] MARCA SIN MOVIMIENTOS',i)
+			await _updateSourceWithError(ESTADO_INVALIDO, today, errmsg, cetec);
+
+		}else {
+			try {
+console.log('[%s] TOKEN',i)
+				let response = await _getToken();
+				token = 'Bearer ' + response.data;
+
+			}catch(e){
+				console.log('error NOT TOKEN')
+				break;
+			}
+
+
+console.log('[%s] ITERACION>>>>>>>>>>>>>',i)
+			for(let j = 0; j < intervenciones.length; j++){
+				let intervencion = intervenciones[j];
+				
+				try {
+console.log('[%s]:[%s] Save Record',i, j)
+					save_response = await _saveCetecRecord(token, cetec, intervencion);
+
+console.log('[%s]:[%s] Update source',i, j)
+					await _updateSourceRecord(today, save_response, cetec, intervencion);
+
+
+				}catch(e){
+console.log('[%s]:[%s] Catchig ERROR',i, j)
+					console.log('error SAVING CETEC RECORD: ')
+					console.log('=======================================================================')
+					console.dir(e )
+					console.log('=======================================================================')
+					await _updateSourceWithError(ESTADO_ERROR, today, 'exception trying to save CETEC', cetec )
+					break;
+				}
+
+			}//for intervenciones...
+		}// if_then_else
+console.log('[%s] <<<<<< LOOP <<<<<<<<<<<',i)
+
+	}// for mmovimientos...
+	cb({procesados: movimientos.length })
+
+}
+
+async function _getToken(){
+	let token ;
+	const config_token = {
+	  method: 'post',
+	  url: TOKEN_URL,
+	  headers: { 
+	    'Authorization': 'Basic ' + USER_B64
+	  }
+	};
+
+	return axios(config_token);
+}
+
+async function _saveCetecRecord(token, cetec, intervencion){
+
+	console.log('insert cetec')
+
+	const data = new FormData();
+	
+	cetecKeys.forEach(k => {
+		if(cetec[k]){
+			data.append(k, cetec[k]);
+		}
+	})
+
+	intervencionKeys.forEach(k => {
+		if(intervencion[k]){
+			data.append(k, intervencion[k]);
+		}
+	})
+
+	const config = {
+	  method: 'post',
+	  url: SERVICE_URL,
+	  headers: { 
+	    'Content-Type': 'application/json', 
+	    'Authorization': token, 
+	    ...data.getHeaders()
+	  },
+	  data : data
+	};
+
+	return axios(config);
+}
+// name
+
+async function _updateSourceRecord(fecha, resp, cetec, intervencion){
+	console.log('ready to update source record')
+	let response = resp && resp.data;
+	if(! resp || !response) {
+		return _updateSourceWithError(ESTADO_ERROR, fecha, 'Inserción de registro no produjo respuesta', cetec )
+
+	}
+
+	if(response.paciente_id){
+		cetec.paciente_id = response.paciente_id;
+		cetec.estado = ESTADO_OK;
+		cetec.fe_transfe = utils.dateToStr(fecha);
+		cetec.errmessage = response.mensaje;
+
+		intervencion.seguimiento_id = response.seguimiento_id
+
+		return Record.findByIdAndUpdate(cetec._id, cetec, { new: true }).exec();
+
+	}else {
+		let status = (resp && resp.status) || "000";
+		let errors = (response && response.length && response.join(" :: ")) || 'sin data...'
+		return _updateSourceWithError(ESTADO_ERROR, fecha, status + ': ' + errors , cetec )
+	}
+
+}
+
+async function _updateSourceWithError(estado, fecha, errmsg, cetec ){
+		let update_data = {
+			estado: estado,
+			fe_transfe: utils.dateToStr(fecha),
+			errmessage: errmsg
+		}
+		return Record.findByIdAndUpdate(cetec._id, update_data, { new: true }).exec();
+}
+////////////////////////////////////////
+
+
+
+
 /*************************************************/
 /* 	CONSULTA PARAMETRO DEL SISTEMA  */
 /***********************************************/
@@ -539,7 +768,7 @@ function cetecPrestacionesCovidWS(req, errcb, cb){
 	data.append('obra_social', 'osde');
 	data.append('fecha_diagnostico', '2020-08-14');
 	data.append('origen_id', '1');
-	data.append('claificacion_id', '1');
+	data.append('clasificacion_id', '1');
 	data.append('estado_id', '5');
 	data.append('establecimiento_cod', '02800229');
 	data.append('evolucion_id', '4');
@@ -714,6 +943,7 @@ function buildIntervenciones(today, cetec, asis){
 	buildInvestigacion(today, cetec, asis);
 	buildFollowUp(today, cetec, asis);
 	buildLlamadosCovid(today, cetec, asis);
+	buildLlamadosSospechosos(today, cetec, asis);
 
 
 }
@@ -721,29 +951,19 @@ function buildIntervenciones(today, cetec, asis){
 /***********************************************/
 /*****  ATENCIÓN: ARRAY DE INTERVENCIONES *****/
 /*********************************************/
+/*****  CONTACTOS_FOLLOW UP *****/
+function buildLlamadosSospechosos(today, cetec, asis){
+	if(!cetec.isSospechoso) return;
 
-/*****  FOLLOW UP *****/
-function buildLlamadosCovid(today, cetec, asis){
-	if(!cetec.isCasoCovid) return;
-
-	let fetx_confirma = fechaConfirmacion(cetec, asis);
+	let fetx_confirma = fechaBase(cetec, asis);
 	if(!fetx_confirma) return;
 
 	if(cetec.qFollowUp > 0) return;
 
 	let sofar = cetec.qFollowUp + cetec.qHisopados + cetec.qInvestig;
-	let resto = TOPE_COVID - sofar;
+	let resto = TOPE_SOSPECHA - sofar;
 
-	let fetx_alta = asis.infeccion.fe_alta;
-	let fe_alta;
-
-	if(cetec.actualState === 4 && cetec.actualState === 5){
-		if(!fetx_alta) return;
-		fe_alta = utils.parseDateStr(fetx_alta);
-		if(!fe_alta) return;
-	}else {
-		fe_alta = today;
-	}
+	let fe_alta = today
 
 	let fe_confirma = utils.parseDateStr(fetx_confirma);
 	let fedesde = new Date(2020, 4, 1).getTime(); // 01/05/2020
@@ -754,13 +974,13 @@ function buildLlamadosCovid(today, cetec, asis){
 		let dd = fe_confirma.getDate()
 
 		for (let i = 0; i < resto; i++){
-			addLlamadosCovidToPrestaciones(cetec, asis, i, yy, mm, dd, fe_alta, resto );
+			addLlamadosSospechosoToPrestaciones(cetec, asis, i, yy, mm, dd, fe_alta, resto );
 		}
 	}
 
 }
 
-function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta, resto ){
+function addLlamadosSospechosoToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta, resto ){
 
 	let establecimiento = '02800628'; // Secretaría
 	let fe_llamado = new Date(yy, mm, dd + index);
@@ -798,6 +1018,109 @@ function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta,
 
   if(evolucion === "4"){
 		clasificacion = "774"
+
+  }else if(evolucion === 5){
+		clasificacion = "776"
+
+  }
+
+	let intervencion = {
+		seguimiento_id: '',
+		tipo_seg_id: "3",
+		establecimiento_cod: establecimiento,
+		evolucion_id: evolucion,
+		fecha_papel: utils.datexToYYYYMMDDStr(fecha),
+		grupo_evento_id: GRUPO_EVENTO_ID,
+		clasificacion_manual: mensaje,
+		clasificacion_manual_id: clasificacion,
+		evento_id: "309",
+		fecha_seguimiento: utils.datexToYYYYMMDDStr(fecha),
+	}
+
+	cetec.intervenciones.push(intervencion);
+	cetec.qCovid += 1;
+}
+
+
+
+
+
+
+/*****  FOLLOW UP *****/
+function buildLlamadosCovid(today, cetec, asis){
+	if(!cetec.isCasoCovid) return;
+
+	let fetx_confirma = fechaConfirmacion(cetec, asis);
+	if(!fetx_confirma) return;
+
+	if(cetec.qFollowUp > 0) return;
+
+	let sofar = cetec.qFollowUp + cetec.qHisopados + cetec.qInvestig;
+	let resto = TOPE_COVID - sofar;
+
+	let fetx_alta = asis.infeccion.fe_alta;
+	let fe_alta;
+
+	if(cetec.actualState === 4 || cetec.actualState === 5){
+		if(!fetx_alta) return;
+		fe_alta = utils.parseDateStr(fetx_alta);
+		if(!fe_alta) return;
+	}else {
+		fe_alta = today;
+	}
+
+	let fe_confirma = utils.parseDateStr(fetx_confirma);
+	let fedesde = new Date(2020, 4, 1).getTime(); // 01/05/2020
+
+	if(fe_confirma.getTime() >= fedesde){
+		let yy = fe_confirma.getFullYear();
+		let mm = fe_confirma.getMonth();
+		let dd = fe_confirma.getDate()
+
+		for (let i = 0; i < resto; i++){
+			addLlamadosCovidToPrestaciones(cetec, asis, i, yy, mm, dd, fe_alta, resto );
+		}
+	}
+
+}
+
+function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta, resto ){
+
+	let establecimiento = '02800628'; // Secretaría
+	let fe_llamado = new Date(yy, mm, dd + index);
+
+	if(fe_llamado > fe_alta) return;
+
+	let fecha = utils.dateToStr(fe_llamado);
+	let resultado = 'logrado';
+	let vector = index ? 'estable' : 'inicia';
+	let clasificacion = "754";
+	let evolucion = "1";
+	
+	let mensaje =  'Seguimiento telefónico del afectado/a';
+
+	if(resultado === 'nocontesta' || resultado === "notelefono"){
+		evolucion = "4"		
+
+	} else if( vector === 'inicia'){
+		evolucion = "1"
+
+	} else if( vector === 'estable'){
+		evolucion = "1"
+
+	} else if( vector === 'mejora'){
+		evolucion = "1"
+
+	} else if( vector === 'desmejora'){
+		evolucion = "3"
+
+	}
+
+	if(index === resto -1 ){
+		evolucion = "5"
+	}
+
+  if(evolucion === "4"){
 
   }else if(evolucion === 5){
 		clasificacion = "781"
@@ -844,7 +1167,12 @@ function addFollowUpToPrestaciones(cetec, asis, fup){
 	let fecha = fup.fe_llamado;
 	let resultado = fup.resultado;
 	let vector = fup.vector;
-	let clasificacion = "772";
+	let clasificacion = "752";
+
+	if(cetec.isCasoCovid){
+		clasificacion = '754';
+	}
+
 	let evolucion = "1";
 	
 	let mensaje = (fup.slug || '')  + (fup.indicacion ? (fup.slug ? (' - ' + fup.indicacion ) : fup.indicacion) : '');
@@ -869,16 +1197,15 @@ function addFollowUpToPrestaciones(cetec, asis, fup){
 
 	if(fup.altaVigilancia){
 		evolucion = "5"
+		clasificacion = 781;
 	}
 
   if(evolucion === "4"){
-		clasificacion = "774"
 
   }else if(evolucion === 5){
-		clasificacion = "781"
 
   }else if(fup.sintoma === 'asintomatico'){
-		clasificacion = "757"
+
 	} 
 
 
@@ -1055,13 +1382,16 @@ function checkIfSospechoso(cetec, asis){
 	if(cetec.hasLaboratorio) return true;
 	if(cetec.hasNovedades) return true;
 
+	// agregar contacto estrecho
+	if(asis.casoIndice && asis.casoIndice.parentId) return true;
+
 	return false;
 }
 
 function isHisopadoPropio(cetec, asis, lab){
 	let token = getOptRecord(locMuestraOptList, lab.locacionId);
 	if(lab.locacionId){
-		console.log('lab.locacionId [%s]  [%s] [%s] [%s] ', lab.locacionId, lab.secuencia, lab.locacionSlug, token);
+		//console.log('lab.locacionId [%s]  [%s] [%s] [%s] ', lab.locacionId, lab.secuencia, lab.locacionSlug, token);
 	}
 
 	if(token) return true;
@@ -1083,6 +1413,31 @@ function fechaConfirmacion(cetec, asis){
 	}
 	return null;
 }
+
+function fechaBase(cetec, asis){
+	let fecha;
+
+	let infection = asis.infeccion;
+	if(infection){
+		fecha = infection.fe_confirma;
+		if(fecha) return fecha;
+
+		fecha = infection.fe_inicio;
+		if(fecha) return fecha;
+	}
+
+	let sisa = asis.sisaevent;
+	if(sisa){
+		fecha = sisa.fe_reportado;
+		if(fecha) return fecha;
+	}
+
+	fecha = asis.fecomp_txa;
+	if(fecha) return fecha;
+
+	return null;
+}
+
 
 
 function checkIfCovid(cetec, asis){
@@ -1242,6 +1597,7 @@ class CetecBaseData {
 
 			this.fe_alta = utils.dateToStr(fecha);
 			this.mesFacturacion = '';
+			this.registronro = 0;
 			this.estado = 'pendiente';
 			this.fe_transfe = '';
 			this.asistenciaId = asis._id;
@@ -1294,7 +1650,7 @@ class CetecBaseData {
 	data.append('fecha_diagnostico', '2020-08-14');
 	data.append('fecha_alta_definitiva', '');
 	data.append('origen_id', '1');
-	data.append('claificacion_id', '1');
+	data.append('clasificacion_id', '1');
 	data.append('estado_id', '5');
 	data.append('establecimiento_cod', '02801071');
 	data.append('evolucion_id', '1');
@@ -1304,5 +1660,45 @@ class CetecBaseData {
 	data.append('clasificacion_manual_id', '756');
 	data.append('evento_id', '307');
 	data.append('fecha_seguimiento', '2020-08-14');
+
+
+
+	data.append('cuit_municipio', cetec.cuit_municipio);
+	data.append('sigla_tipo_doc', cetec.sigla_tipo_doc);
+	data.append('nro_doc',        cetec.nro_doc);
+console.log(1);
+
+	data.append('apellido',         cetec.apellido);
+	data.append('nombre',           cetec.nombre);
+	data.append('sexo',             cetec.sexo);
+	data.append('fecha_nacimiento', cetec.fecha_nacimiento);
+	data.append('nacionalidad',     cetec.nacionalidad);
+console.log(2);
+
+	data.append('localidad_id', cetec.localidad_id);
+	data.append('domicilio',    cetec.domicilio);
+	data.append('barrio',       cetec.barrio);
+	data.append('email',        cetec.email);
+	data.append('telefono',     cetec.telefono);
+	data.append('obra_social',  cetec.obra_social);
+console.log(3);
+
+	data.append('fecha_diagnostico',     cetec.fecha_diagnostico);
+	data.append('fecha_alta_definitiva', cetec.fecha_alta_definitiva);
+	//evento_caso_id: null
+	data.append('origen_id',             cetec.origen_id);
+	data.append('clasificacion_id',      cetec.clasificacion_id);
+	data.append('estado_id',             cetec.estado_id);
+console.log(4);
+
+	data.append('tipo_seg_id',             intervencion.tipo_seg_id);
+	data.append('establecimiento_cod',     intervencion.establecimiento_cod);
+	data.append('evolucion_id',            intervencion.evolucion_id);
+	data.append('fecha_papel',             intervencion.fecha_papel);
+	data.append('grupo_evento_id',         intervencion.grupo_evento_id);
+	data.append('clasificacion_manual',    intervencion.clasificacion_manual);
+	data.append('clasificacion_manual_id', intervencion.clasificacion_manual_id);
+	data.append('evento_id',               intervencion.evento_id);
+	data.append('fecha_seguimiento',       intervencion.fecha_seguimiento);
 
 ****/

@@ -34,6 +34,26 @@ router.get('/sendinfo', function (req, res) {
 });
 
 /**
+ * Envía registros de la coleccion cetecevents
+ * 
+ * local: localhost:8080/api/cetec/migrarinfo
+ * server: http://salud.brown.gob.ar/api/cetec/migrarinfo
+ */
+router.get('/migrarinfo', function (req, res) {
+    service.migrarCetecWebService(req, 
+
+    function(err) {
+        res.status(400).json(err);
+
+    }, 
+    function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+/**
  * Recupera parametros maestros del sistema
  * 
  * local: localhost:8080/api/cetec/getdatosmaestros
