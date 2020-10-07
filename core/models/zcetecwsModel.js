@@ -30,6 +30,7 @@ const ESTADO_OK = 'migrado';
 const ESTADO_ERROR = 'error';
 const ESTADO_INVALIDO = 'invalido';
 const ESTADO_BAJA = 'baja';
+const ESTADO_NOCUMPLE = 'nocumple';
 
 
 const spec = {
@@ -80,6 +81,8 @@ const TOPE_SOSPECHA = 3;
 const covidOptList = [ 'SOSPECHA', 'COVID', 'DESCARTADO', 's/d', 'FALLECIDO', 'DE ALTA', 'EN MONITOREO'];
 const N_HAB_00 = 'NUC-HAB-00'
 
+var indexCount = 100000;
+
 /**
 	API:
 	  local:  http://localhost:8080/api/cetec/sendinfo
@@ -98,9 +101,10 @@ const sexoOptList = [
 
 const estadoOptList = [
     {val: 'pendiente',   label: 'Pendiente',      slug:'Pendiente de ser transferido via WS' },
+    {val: 'nocumple',     label: 'No cumple',        slug:'No cumple condiciones para migrar, validación ex-ante' },
     {val: 'migrado',     label: 'Migrado',        slug:'Migrado OK via WS' },
     {val: 'error',       label: 'Error',          slug:'Migrado con ERRORES' },
-    {val: 'invalido',    label: 'Fuera rango fechas', slug:'No valida para migrar' },
+    {val: 'invalido',    label: 'Fuera rango fechas', slug:'No valida para migrar, validación ex-post' },
     {val: 'baja',        label: 'Baja',           slug:'Registro de baja' },
 ];
 
@@ -168,6 +172,16 @@ const tinternacionOptList = [
 ];
 
 
+const cetecRequiredKeys = [
+					'cuit_municipio',
+					'sigla_tipo_doc',
+					'nro_doc',
+					'apellido',
+					'nombre',
+					'sexo',
+					'localidad_id',
+];
+
 const cetecKeys = [
 					'cuit_municipio',
 					'sigla_tipo_doc',
@@ -188,6 +202,17 @@ const cetecKeys = [
 					'origen_id',
 					'clasificacion_id',
 					'estado_id',
+];
+
+const intervencionRequiredKeys = [
+					'establecimiento_cod',
+					'evolucion_id',
+					'fecha_papel',
+					'grupo_evento_id',
+					'clasificacion_manual',
+					'clasificacion_manual_id',
+					'evento_id',
+					'fecha_seguimiento',
 ];
 
 const intervencionKeys = [
@@ -279,14 +304,14 @@ const eventoIdOptList = [
 	{val: 309, cod_evento: 'ev0173', label: 	"Contacto de caso COVID+" },
 ];
 
-
+// Ojo Don Orione
 const ciudadesBrown = [
     {val: 'no_definido',         localidad_id:"xx",  cp:'1800', label: 'Seleccione opción',slug:'Seleccione opción' },
     {val: 'adrogue',             localidad_id:"60",  cp:'1846', label: 'Adrogué ',   slug:'Adrogué' },
     {val: 'burzaco',             localidad_id:"61",  cp:'1852', label: 'Burzaco ',   slug:'Burzaco' },
     {val: 'calzada',             localidad_id:"68",  cp:'1847', label: 'Rafael Calzada ',   slug:'Rafael Calzada' },
     {val: 'claypole',            localidad_id:"62",  cp:'1849', label: 'Claypole',   slug:'Claypole' },
-    {val: 'donorione',           localidad_id:"xx",  cp:'1850', label: 'Don Orione', slug:'Don Orione' },
+    {val: 'donorione',           localidad_id:"62",  cp:'1850', label: 'Don Orione', slug:'Don Orione' },
     {val: 'glew',                localidad_id:"63",  cp:'1856', label: 'Glew',       slug:'Glew' },
     {val: 'longchamps',          localidad_id:"65",  cp:'1854', label: 'Longchamps', slug:'Longchamps' },
     {val: 'malvinasargentinas',  localidad_id:"78",  cp:'1846', label: 'Malvinas Argentinas',slug:'Malvinas Argentinas' },
@@ -890,18 +915,77 @@ async function processCetecData(movimientos, errcb, cb){
 		let asis = movimientos[i];
 		let cetecData = buildRecordState(today, asis);
 
-		let isValidRecord = await validateRecord(asis)
-
+		let isValidRecord = validateRecord(cetecData)
+	
 		//console.log('ASISTENCIA: [%s] [%s] [%s] [%s]', asis.compNum, asis.fecomp_txa, asis.requeridox.apellido, isValidRecord );
 		let record = await saveCetecRecord(cetecData)
 		//console.log('SAVED: [%s]', record.apellido );
+	
+	
 
 	}
+	console.log('GEN CETEC ENDING VALIDADOS [%s]', indexCount);
 }
 
 
-async function validateRecord(asis){
-	return true;
+function validateRecord(cetec){
+	let validate = true;
+	let errors = 'Error: ';
+
+	if(!cetec.nombre){
+		if(cetec.apellido){
+			let split = cetec.apellido.split(" ");
+			cetec.nombre =  (split && split.length && split[split.length-1]) || '';
+		}
+	}
+
+
+
+	cetecRequiredKeys.forEach(t => {
+		if(!cetec[t]) {
+			validate = false;
+			errors = errors + 'cetecRequired '
+		}
+	})
+
+
+	if(cetec.intervenciones && cetec.intervenciones.length){
+		let mesValid = false;
+		cetec.intervenciones.forEach(iv =>{
+			intervencionRequiredKeys.forEach(t => {
+				if(!iv[t]) {
+					validate = false;
+					errors = errors + 'intervencionesRequired '
+				}
+			})
+
+			if(iv.fecha_seguimiento && iv.fecha_seguimiento.substring(0,7) >= "2020-05") mesValid = true;
+		})
+
+		if(!mesValid) {
+			validate = false;
+			errors = errors + 'mes no-valido '
+		}
+
+
+	}else {
+		validate = false;
+		errors = errors + 'sin intervenciones '
+
+	}
+
+	if(validate){
+		indexCount +=1;
+		cetec.registronro = indexCount;
+		cetec.mesFacturacion = cetec.intervenciones[0].fecha_seguimiento.substring(0,7);
+	}else{
+		cetec.estado = ESTADO_NOCUMPLE;
+		cetec.errmessage = errors;
+
+	}
+
+
+	return validate;
 }
 
 async function saveCetecRecord(cetec){
@@ -1446,10 +1530,11 @@ function checkIfCovid(cetec, asis){
 }
 
 function getLocalidadId(cetec, asis){
-	let locacionId;
 	if(cetec.hasLocacion){
 		let token =  getOptRecord(ciudadesBrown, asis.locacion.city);
-		return token ? token.localidad_id : "xx";
+		return token ? token.localidad_id : "60";
+	}else {
+		return '60';
 	}
 }
 
