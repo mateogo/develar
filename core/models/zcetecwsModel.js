@@ -24,7 +24,7 @@ const self = this;
 const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
 
-const modo = 'homologacion'; // 'produccion'
+const modo = 'produccion'; // 'produccion'
 
 const ESTADO_OK = 'migrado';
 const ESTADO_ERROR = 'error';
@@ -477,6 +477,11 @@ function buildQuery(query){
   if(query['estado']){
       q["estado"] = query['estado'];
   }
+
+  if(query['mesFacturacion']){
+      q["mesFacturacion"] = query['mesFacturacion'];
+  }
+
 
   return q;
 }
@@ -1385,7 +1390,8 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 
 function exportToExcel(req, res){
 	let query = {
-		estado: 'pendiente'
+		estado: 'pendiente',
+		mesFacturacion: '2020-05'
 	}
 
   let regexQuery = buildQuery(query)
@@ -1393,7 +1399,7 @@ function exportToExcel(req, res){
   console.log('CETEC EXPORT BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(500).lean().exec(function(err, entities) {
+  Record.find(regexQuery).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
@@ -1428,21 +1434,21 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['FeProceso', 'Estado migracion', 'Domicilio?', 'Covid?', 'Llamados?', 'Novedades?', 'Laboratorios?', 'Encuesta?', 'CasoCOVID','CasoSOSPECHOSO', 'EstadoCOVID', 'DNI', 'Apellido', 'Nombre', 'Sexo', 'FeNacim', 'domicilio', 'localidad', 'telefono', 'obra social', 'Diagnostico', 'Alta definitiva', 'idOrigen', 'idClasifi', 'idEstado', '#llam', '#Hiso', '#Inves', '#xCovid']).commit();
+    worksheet.addRow(["#",'FeProceso', 'Estado migracion', 'Domicilio?', 'Covid?', 'Llamados?', 'Novedades?', 'Laboratorios?', 'Encuesta?', 'CasoCOVID','CasoSOSPECHOSO', 'EstadoCOVID', 'DNI', 'Apellido', 'Nombre', 'Sexo', 'FeNacim', 'domicilio', 'localidad', 'telefono', 'obra social', 'Diagnostico', 'Alta definitiva', 'idOrigen', 'idClasifi', 'idEstado', '#llam', '#Hiso', '#Inves', '#xCovid']).commit();
 
     movimientos.forEach((row, index )=> {
 
     	const { fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid} = row;
-    	let basicArr = [ fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid];
+    	let basicArr = [ 1, fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid];
       
       worksheet.addRow([...basicArr ]).commit()
 
       let intervenciones = row.intervenciones;
       if(intervenciones && intervenciones.length){
-    		worksheet.addRow([ '','','FechaSeguim','idTipoSeguim', 'idEstablecimiento', 'idEvolucion', 'Fecha_papel', 'idGrupoEvento', 'idEvento','idClasifManual', 'Clasificacion (leyenda)']).commit();
+    		worksheet.addRow([ 2,'','','FechaSeguim','idTipoSeguim', 'idEstablecimiento', 'idEvolucion', 'Fecha_papel', 'idGrupoEvento', 'idEvento','idClasifManual', 'Clasificacion (leyenda)']).commit();
       	intervenciones.forEach(evento => {
 	  	  		const {fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual } = evento;
-  	  			let eventoArr = [ "", "", fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual ];
+  	  			let eventoArr = [ 2,"", "", fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual ];
       			worksheet.addRow([...eventoArr ]).commit()
 
       	})
