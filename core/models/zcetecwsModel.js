@@ -1516,14 +1516,11 @@ function getFechaDiagnostico(cetec, asis){
 function getFechaAltaDefinitiva(cetec, asis){
 	let fecha = null;
 	if(cetec.actualState === 5){
-		fecha = utils.datexToYYYMMDDStr(asis.infeccion.fe_alta);
+		fecha = utils.datexToYYYYMMDDStr(asis.infeccion.fe_alta);
 	} 
 
 	return fecha;
 }
-
-
-
 
 
 
