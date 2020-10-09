@@ -548,7 +548,6 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 		let token;
 		let save_response;
 
-console.log('[%s]=================== INICIA [%s]',i, cetec.nro_doc);
 		if(!(intervenciones && intervenciones.length)){
 
 			let errmsg = 'Registro sin intervenciones';
@@ -564,6 +563,7 @@ console.log('[%s]=================== INICIA [%s]',i, cetec.nro_doc);
 				break;
 			}
 
+			console.log('[%s]========== PROCESS [%s]',i, cetec.nro_doc, intervenciones.length );
 			for(let j = 0; j < intervenciones.length; j++){
 				let intervencion = intervenciones[j];
 				
@@ -605,8 +605,6 @@ async function _getToken(){
 
 async function _saveCetecRecord(token, cetec, intervencion){
 
-	console.log('insert cetec')
-
 	const data = new FormData();
 	
 	cetecKeys.forEach(k => {
@@ -637,7 +635,7 @@ async function _saveCetecRecord(token, cetec, intervencion){
 // name
 
 async function _updateSourceRecord(fecha, resp, cetec, intervencion){
-	console.log('ready to update source record')
+
 	let response = resp && resp.data;
 	if(! resp || !response) {
 		return _updateSourceWithError(ESTADO_ERROR, fecha, 'Inserción de registro no produjo respuesta', cetec )
