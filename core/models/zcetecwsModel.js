@@ -304,7 +304,7 @@ const eventoIdOptList = [
 
 // Ojo Don Orione
 const ciudadesBrown = [
-    {val: 'no_definido',         localidad_id:"xx",  cp:'1800', label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'no_definido',         localidad_id:"60",  cp:'1800', label: 'Seleccione opción',slug:'Seleccione opción' },
     {val: 'adrogue',             localidad_id:"60",  cp:'1846', label: 'Adrogué ',   slug:'Adrogué' },
     {val: 'burzaco',             localidad_id:"61",  cp:'1852', label: 'Burzaco ',   slug:'Burzaco' },
     {val: 'calzada',             localidad_id:"68",  cp:'1847', label: 'Rafael Calzada ',   slug:'Rafael Calzada' },
@@ -317,7 +317,7 @@ const ciudadesBrown = [
     {val: 'ministrorivadavia',   localidad_id:"67",  cp:'1852', label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
     {val: 'solano',              localidad_id:"70",  cp:'1846', label: 'San Fco Solano',   slug:'San Fco Solano' },
     {val: 'sanjose',             localidad_id:"69",  cp:'1846', label: 'San José',   slug:'San José' },
-    {val: 'extradistrito',       localidad_id:"xx",  cp:'0000', label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
+    {val: 'extradistrito',       localidad_id:"60",  cp:'0000', label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 
 const cetecIntervencionSch = new Schema({
@@ -539,20 +539,23 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 	for(let i = 0; i < movimientos.length; i++){
 
 		let cetec = movimientos[i];
+
+		//parches zone /////////
+		if(cetec.localidad_id === 'xx') cetec.localidad_id = "60"
+		///////////////////////
+
 		let intervenciones = cetec.intervenciones;
 		let token;
 		let save_response;
 
-console.log('[%s]=================== INICIA',i)
+console.log('[%s]=================== INICIA [%s]',i, cetec.nro_doc);
 		if(!(intervenciones && intervenciones.length)){
 
 			let errmsg = 'Registro sin intervenciones';
-		console.log('[%s] MARCA SIN MOVIMIENTOS',i)
 			await _updateSourceWithError(ESTADO_INVALIDO, today, errmsg, cetec);
 
 		}else {
 			try {
-console.log('[%s] TOKEN',i)
 				let response = await _getToken();
 				token = 'Bearer ' + response.data;
 
@@ -561,21 +564,16 @@ console.log('[%s] TOKEN',i)
 				break;
 			}
 
-
-console.log('[%s] ITERACION>>>>>>>>>>>>>',i)
 			for(let j = 0; j < intervenciones.length; j++){
 				let intervencion = intervenciones[j];
 				
 				try {
-console.log('[%s]:[%s] Save Record',i, j)
 					save_response = await _saveCetecRecord(token, cetec, intervencion);
 
-console.log('[%s]:[%s] Update source',i, j)
 					await _updateSourceRecord(today, save_response, cetec, intervencion);
 
 
 				}catch(e){
-console.log('[%s]:[%s] Catchig ERROR',i, j)
 					console.log('error SAVING CETEC RECORD: ')
 					console.log('=======================================================================')
 					console.dir(e )
@@ -586,7 +584,6 @@ console.log('[%s]:[%s] Catchig ERROR',i, j)
 
 			}//for intervenciones...
 		}// if_then_else
-console.log('[%s] <<<<<< LOOP <<<<<<<<<<<',i)
 
 	}// for mmovimientos...
 	cb({procesados: movimientos.length })
