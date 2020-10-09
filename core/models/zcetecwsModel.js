@@ -895,6 +895,7 @@ const fe_desde = new Date(2020, 4, 1).getTime();
 function generateCetecData (req, errcb, cb){
   let regexQuery = {
     isVigilado: true,
+    mcetec: {$ne: 1},
     avance: {$ne: 'anulado'}
   }
 
