@@ -516,7 +516,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(100).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(200).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
@@ -1086,39 +1086,37 @@ function addLlamadosSospechosoToPrestaciones(cetec, asis, index, yy, mm, dd, fe_
 	let fecha = utils.dateToStr(fe_llamado);
 	let resultado = 'logrado';
 	let vector = index ? 'estable' : 'inicia';
-	let clasificacion = "772";
 	let evolucion = "1";
+	let eventId;
 	
 	let mensaje =  'Seguimiento telefónico del afectado/a';
-
-	if(resultado === 'nocontesta' || resultado === "notelefono"){
-		evolucion = "4"		
-
-	} else if( vector === 'inicia'){
-		evolucion = "1"
-
-	} else if( vector === 'estable'){
-		evolucion = "1"
-
-	} else if( vector === 'mejora'){
-		evolucion = "1"
-
-	} else if( vector === 'desmejora'){
-		evolucion = "3"
-
-	}
 
 	if(index === resto -1 ){
 		evolucion = "5"
 	}
 
-  if(evolucion === "4"){
-		clasificacion = "774"
+	if(cetec.isSospechoso){
+		eventId = "307"
+	  if(evolucion === "1"){
+			clasificacion = "752"
 
-  }else if(evolucion === 5){
-		clasificacion = "776"
+	  }else if(evolucion === "5"){
+			clasificacion = "781"
 
-  }
+	  }
+
+	}else {
+		eventId = "309"
+
+	  if(evolucion === "1"){
+			clasificacion = "772"
+
+	  }else if(evolucion === "5"){
+			clasificacion = "770"
+
+	  }
+	}
+
 
 	let intervencion = {
 		seguimiento_id: '',
@@ -1129,7 +1127,7 @@ function addLlamadosSospechosoToPrestaciones(cetec, asis, index, yy, mm, dd, fe_
 		grupo_evento_id: GRUPO_EVENTO_ID,
 		clasificacion_manual: mensaje,
 		clasificacion_manual_id: clasificacion,
-		evento_id: "309",
+		evento_id: eventId,
 		fecha_seguimiento: utils.datexToYYYYMMDDStr(fecha),
 	}
 
@@ -1310,16 +1308,8 @@ function addFollowUpToPrestaciones(cetec, asis, fup){
 
 	if(fup.altaVigilancia){
 		evolucion = "5"
-		clasificacion = 781;
+		clasificacion = "781";
 	}
-
-  if(evolucion === "4"){
-
-  }else if(evolucion === 5){
-
-  }else if(fup.sintoma === 'asintomatico'){
-
-	} 
 
 
 	let intervencion = {
