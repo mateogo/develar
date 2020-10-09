@@ -509,7 +509,7 @@ function migrarRegistrosCetec(req, errcb, cb){
 		estado: 'pendiente',
 		// regdesde: 0,
 		// reghasta: 0,
-		// mesFacturacion: '2020-05'
+		mesFacturacion: '2020-05'
 	}
 
   let regexQuery = buildQuery(query)
@@ -1675,6 +1675,7 @@ function getFechaAltaDefinitiva(cetec, asis){
 	let fecha = null;
 	if(cetec.actualState === 5 || cetec.actualState === 4){
 		fecha = fechaAltaCovid(cetec, asis);
+		if(fecha) utils.datexToYYYYMMDDStr(fecha)
 	} 
 
 	return fecha;
