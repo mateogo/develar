@@ -1404,7 +1404,7 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 
 function exportToExcel(req, res){
 	let query = {
-		mesFacturacion: '2020-05'
+		mesFacturacion: '2020-06'
 	}
 
   let regexQuery = buildQuery(query)
