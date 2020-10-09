@@ -672,7 +672,7 @@ function _updateAsisRecord(fecha, resp, cetec, intervencion){
 		mcetec: 1,
 		fets_cetec: fecha.getTime()
 	}
-	AsisprevencionRecord.findByIdAndUpdate(cetec.asistenciaId, cetec, { new: true }).exec();	
+	AsisprevencionRecord.findByIdAndUpdate(cetec.asistenciaId, token, { new: true }).exec();	
 }
 
 async function _updateSourceWithError(estado, fecha, errmsg, cetec ){
