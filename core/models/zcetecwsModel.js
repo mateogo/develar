@@ -516,7 +516,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(200).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(500).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
@@ -542,7 +542,8 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 		let cetec = movimientos[i];
 
 		//parches zone /////////
-		if(cetec.localidad_id === 'xx') cetec.localidad_id = "60"
+		if(cetec.localidad_id === 'xx') cetec.localidad_id = "60";
+		if(cetec.tdoc === 'PROV') break;
 		///////////////////////
 
 		let intervenciones = cetec.intervenciones;
@@ -948,6 +949,11 @@ function validateRecord(cetec){
 		}
 	}
 
+
+	if(cetec.tdoc === "PROV"){
+			validate = false;
+			errors = errors + 'docum provisorio '
+	}
 
 
 	cetecRequiredKeys.forEach(t => {
