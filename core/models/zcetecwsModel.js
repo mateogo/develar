@@ -508,7 +508,7 @@ function migrarRegistrosCetec(req, errcb, cb){
 		estado: 'pendiente',
 		// regdesde: 0,
 		// reghasta: 0,
-		mesFacturacion: '2020-06'
+		mesFacturacion: '2020-07'
 	}
 
   let regexQuery = buildQuery(query)
@@ -1410,7 +1410,7 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 
 function exportToExcel(req, res){
 	let query = {
-		mesFacturacion: '2020-06'
+		mesFacturacion: '2020-07'
 	}
 
   let regexQuery = buildQuery(query)
