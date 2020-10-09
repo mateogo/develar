@@ -543,7 +543,7 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 
 		//parches zone /////////
 		if(cetec.localidad_id === 'xx') cetec.localidad_id = "60";
-		//if(cetec.tdoc === 'PROV') break;
+		if(cetec.tdoc === 'PROV') continue;
 		///////////////////////
 
 		let intervenciones = cetec.intervenciones;
