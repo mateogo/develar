@@ -226,8 +226,8 @@ const intervencionKeys = [
 ];
 
 const locMuestraOptList = [
-	{ val: 'emergen107', establecimiento_cod: '02800920', label: 'Emergencia/107' },
-	{ val: 'detectar',   establecimiento_cod: '02800920', label: 'Operativo DeTecTar' },
+	{ val: 'emergen107', establecimiento_cod: '02800628', label: 'Emergencia/107' },
+	{ val: 'detectar',   establecimiento_cod: '02800628', label: 'Operativo DeTecTar' },
 	{ val: 'CAPS01',     establecimiento_cod: '02800229', label: 'CAPS-01 Min Rivadavia' },
 	{ val: 'CAPS06',     establecimiento_cod: '02800245', label: 'CAPS-06 Los álamos' },
 	{ val: 'CAPS12',     establecimiento_cod: '02800385', label: 'CAPS-12 Don Orione' },
@@ -516,7 +516,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(20).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(200).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
