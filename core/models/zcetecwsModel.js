@@ -487,7 +487,6 @@ function buildQuery(query){
 }
 
 function getOptRecord(list, val){
-	if(!val) return '';
 	if(!list || !list.length) return val || '';
 
 	return list.find(t => t.val == val);
@@ -1453,12 +1452,12 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(["#",'FeProceso', 'Estado migracion', 'Domicilio?', 'Covid?', 'Llamados?', 'Novedades?', 'Laboratorios?', 'Encuesta?', 'CasoCOVID','CasoSOSPECHOSO', 'EstadoCOVID', 'DNI', 'Apellido', 'Nombre', 'Sexo', 'FeNacim', 'domicilio', 'localidad', 'telefono', 'obra social', 'Diagnostico', 'Alta definitiva', 'idOrigen', 'idClasifi', 'idEstado', '#llam', '#Hiso', '#Inves', '#xCovid']).commit();
+    worksheet.addRow(["#",'FeProceso', 'Estado migracion', 'Domicilio?', 'Covid?', 'Llamados?', 'Novedades?', 'Laboratorios?', 'Encuesta?', 'CasoCOVID','CasoSOSPECHOSO','CasoCEstrecho', 'EstadoCOVID', 'DNI', 'Apellido', 'Nombre', 'Sexo', 'FeNacim', 'domicilio', 'localidad', 'telefono', 'obra social', 'Diagnostico', 'Alta definitiva', 'idOrigen', 'idClasifi', 'idEstado', '#llam', '#Hiso', '#Inves', '#xCovid']).commit();
 
     movimientos.forEach((row, index )=> {
 
-    	const { fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid} = row;
-    	let basicArr = [ 1, fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid];
+    	const { fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso,isContactoEstrecho, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid} = row;
+    	let basicArr = [ 1, fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, isContactoEstrecho, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid];
       
       worksheet.addRow([...basicArr ]).commit()
 
@@ -1645,6 +1644,8 @@ function getOrigenId(cetec, asis){
 	let origen = null;
 
 	if(cetec.hasInfection){
+		if(cetec.actualState === 2) return null;
+
 		if(cetec.isCasoCovid){
 			origen = 3 // default 3 = comunitairio
 		}
