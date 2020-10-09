@@ -1675,7 +1675,7 @@ function getFechaAltaDefinitiva(cetec, asis){
 	let fecha = null;
 	if(cetec.actualState === 5 || cetec.actualState === 4){
 		fecha = fechaAltaCovid(cetec, asis);
-		if(fecha) utils.datexToYYYYMMDDStr(fecha)
+		if(fecha) fecha = utils.datexToYYYYMMDDStr(fecha)
 	} 
 
 	return fecha;
