@@ -1527,7 +1527,7 @@ function fechaAltaCovid(cetec, asis){
 		let fe_alta = utils.projectedDate(utils.parseDateStr(fecha_confirma), 0, COVID_OFFSET_ALTA);
 		if(!fe_alta) return null;
 
-		fecha = utils.txFromDate(fe_alta);
+		fecha = utils.dateToStr(fe_alta);
 		return fecha;
 
 	}

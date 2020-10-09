@@ -15,7 +15,7 @@ const service = require('../models/zcetecwsModel.js');
 const whoami =  "Router:routes/zcetecwsRoutes: ";
 
 /**
- * Envía registros de la coleccion cetecevents
+ * Envía registros de un caso puntual
  * 
  * local: localhost:8080/api/cetec/sendinfo
  * server: http://salud.brown.gob.ar/api/cetec/sendinfo
@@ -35,7 +35,7 @@ router.get('/sendinfo', function (req, res) {
 
 /**
  * Envía registros de la coleccion cetecevents
- * 
+ * OJO OJO OJO
  * local: localhost:8080/api/cetec/migrarinfo
  * server: http://salud.brown.gob.ar/api/cetec/migrarinfo
  */
@@ -96,8 +96,8 @@ router.get('/generarinfo', function (req, res) {
 /**
  * Prepara datos a transferir a CETEC
  * 
- * local: localhost:8080/api/cetec/generarinfo
- * server: http://salud.brown.gob.ar/api/cetec/generarinfo
+ * local: localhost:8080/api/cetec/download
+ * server: http://salud.brown.gob.ar/api/cetec/download
  */
 router.get('/download', function (req, res) {
     service.downloadCetec(req, res);
