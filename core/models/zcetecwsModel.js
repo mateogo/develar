@@ -526,6 +526,7 @@ function migrarRegistrosCetec(req, errcb, cb){
           		console.log('migrateCetecData TO BEGIN [%s]', entities.length);
 
               _insertRegistrosEnCETEC(entities, query, errcb, cb)
+							cb({aprocesar: entities.length });
 
           }
       }
@@ -586,7 +587,6 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 		}// if_then_else
 
 	}// for mmovimientos...
-	cb({procesados: movimientos.length })
 
 }
 
