@@ -197,7 +197,6 @@ const cetecKeys = [
 					'barrio',
 					'email',
 					'telefono',
-					'obra_social',
 					'fecha_diagnostico',
 					'fecha_alta_definitiva',
 					'origen_id',
@@ -654,7 +653,9 @@ async function _updateSourceRecord(fecha, resp, cetec, intervencion){
 		cetec.fe_transfe = utils.dateToStr(fecha);
 		cetec.errmessage = response.mensaje;
 
-		intervencion.seguimiento_id = response.seguimiento_id
+		intervencion.seguimiento_id = response.seguimiento_id;
+
+		_updateAsisRecord(fecha, resp, cetec, intervencion)
 
 		return Record.findByIdAndUpdate(cetec._id, cetec, { new: true }).exec();
 
@@ -664,6 +665,14 @@ async function _updateSourceRecord(fecha, resp, cetec, intervencion){
 		return _updateSourceWithError(ESTADO_ERROR, fecha, status + ': ' + errors , cetec )
 	}
 
+}
+
+function _updateAsisRecord(fecha, resp, cetec, intervencion){
+	let token = {
+		mcetec: 1,
+		fets_cetec: fecha.getTime()
+	}
+	AsisprevencionRecord.findByIdAndUpdate(cetec.asistenciaId, cetec, { new: true }).exec();	
 }
 
 async function _updateSourceWithError(estado, fecha, errmsg, cetec ){
@@ -1051,8 +1060,6 @@ function buildLlamadosSospechosos(today, cetec, asis){
 	let fetx_confirma = fechaBase(cetec, asis);
 	if(!fetx_confirma) return;
 
-	if(cetec.qFollowUp > 0) return;
-
 	let sofar = cetec.qFollowUp + cetec.qHisopados + cetec.qInvestig;
 	let resto = TOPE_SOSPECHA - sofar;
 
@@ -1146,8 +1153,11 @@ function buildLlamadosCovid(today, cetec, asis){
 	let fetx_confirma = fechaConfirmacion(cetec, asis);
 	if(!fetx_confirma) return;
 
+
 	let sofar = cetec.qFollowUp + cetec.qHisopados + cetec.qInvestig;
 	let resto = TOPE_COVID - sofar;
+
+	if( resto < 4 ) return;
 
 	let fe_alta = today;
 
@@ -1383,7 +1393,7 @@ function buildHisopados(today, cetec, asis){
 
 function addHisopadoToPrestaciones(cetec, asis, lab){
 	let token = getOptRecord(locMuestraOptList, lab.locacionId);
-	let establecimiento = token ? token.establecimiento_cod : '02800920'; // default:107
+	let establecimiento = token ? token.establecimiento_cod : '02800628'; // default:107
 	let fecha = lab.fe_toma || lab.fe_resestudio || lab.fe_notificacion;
 	let intervencion = {
 		seguimiento_id: '',
@@ -1408,7 +1418,6 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 
 function exportToExcel(req, res){
 	let query = {
-		estado: 'pendiente',
 		mesFacturacion: '2020-05'
 	}
 
