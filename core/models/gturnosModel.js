@@ -464,17 +464,17 @@ exports.createInitialData = function (){
     if(true){
       return  [
 
-      //cicburzaco
-      {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'CIC BURZACO 12:00 hs' },
-      {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'CIC BURZACO 12:30 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'CIC BURZACO 12:00 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'CIC BURZACO 12:30 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'CIC BURZACO 12:00 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'CIC BURZACO 12:30 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'CIC BURZACO 12:00 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'CIC BURZACO 12:30 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'CIC BURZACO 12:00 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'CIC BURZACO 12:30 hs' },
+      // donorione Pasa a 12 y 12:30
+      {recurso: 'donorione', dow: 1, hora: 12, slug: 'DEL DON ORIONE 12:00 hs' },
+      {recurso: 'donorione', dow: 1, hora: 12, slug: 'DEL DON ORIONE 12:30 hs' },
+      {recurso: 'donorione', dow: 2, hora: 12, slug: 'DEL DON ORIONE 12:00 hs' },
+      {recurso: 'donorione', dow: 2, hora: 12, slug: 'DEL DON ORIONE 12:30 hs' },
+      {recurso: 'donorione', dow: 3, hora: 12, slug: 'DEL DON ORIONE 12:00 hs' },
+      {recurso: 'donorione', dow: 3, hora: 12, slug: 'DEL DON ORIONE 12:30 hs' },
+      {recurso: 'donorione', dow: 4, hora: 12, slug: 'DEL DON ORIONE 12:00 hs' },
+      {recurso: 'donorione', dow: 4, hora: 12, slug: 'DEL DON ORIONE 12:30 hs' },
+      {recurso: 'donorione', dow: 5, hora: 12, slug: 'DEL DON ORIONE 12:00 hs' },
+      {recurso: 'donorione', dow: 5, hora: 12, slug: 'DEL DON ORIONE 12:30 hs' },
 
       //burzaco
       {recurso: 'burzaco', dow: 1, hora: 12, slug: 'DEL BURZACO 12:00 hs' },
@@ -547,6 +547,18 @@ exports.createInitialData = function (){
       {recurso: 'glew', dow: 5, hora: 13, slug: 'DEL GLEW 13:00 hs' },
 
 
+      //cicburzaco Pasa a 9:30
+      {recurso: 'cicburzaco', dow: 1, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+
 
       //rcalzada
       {recurso: 'rcalzada', dow: 1, hora:  9,  slug: 'DEL RAFAEL CALZADA 09:30 hs'},
@@ -595,18 +607,6 @@ exports.createInitialData = function (){
       {recurso: 'solano', dow: 4, hora: 10, slug: 'DEL SAN FCO SOLANO 10:00 hs' },
       {recurso: 'solano', dow: 5, hora:  9, slug: 'DEL SAN FCO SOLANO 09:30 hs' },
       {recurso: 'solano', dow: 5, hora: 10, slug: 'DEL SAN FCO SOLANO 10:00 hs' },
-
-      // donorione
-      {recurso: 'donorione', dow: 1, hora:  9, slug: 'DEL DON ORIONE 09:30 hs' },
-      {recurso: 'donorione', dow: 1, hora: 10, slug: 'DEL DON ORIONE 10:00 hs' },
-      {recurso: 'donorione', dow: 2, hora:  9, slug: 'DEL DON ORIONE 09:30 hs' },
-      {recurso: 'donorione', dow: 2, hora: 10, slug: 'DEL DON ORIONE 10:00 hs' },
-      {recurso: 'donorione', dow: 3, hora:  9, slug: 'DEL DON ORIONE 09:30 hs' },
-      {recurso: 'donorione', dow: 3, hora: 10, slug: 'DEL DON ORIONE 10:00 hs' },
-      {recurso: 'donorione', dow: 4, hora:  9, slug: 'DEL DON ORIONE 09:30 hs' },
-      {recurso: 'donorione', dow: 4, hora: 10, slug: 'DEL DON ORIONE 10:00 hs' },
-      {recurso: 'donorione', dow: 5, hora:  9, slug: 'DEL DON ORIONE 09:30 hs' },
-      {recurso: 'donorione', dow: 5, hora: 10, slug: 'DEL DON ORIONE 10:00 hs' },
 
       // claypole
       {recurso: 'claypole', dow: 1, hora:  9 , slug: 'DEL CLAYPOLE 09:30 hs'},

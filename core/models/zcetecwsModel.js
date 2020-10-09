@@ -32,6 +32,8 @@ const ESTADO_INVALIDO = 'invalido';
 const ESTADO_BAJA = 'baja';
 const ESTADO_NOCUMPLE = 'nocumple';
 
+const COVID_OFFSET_ALTA = 10;
+
 
 const spec = {
 	homologacion: {
@@ -147,7 +149,6 @@ const clasificacionAfectadoOptList = [
 	{ val: 4, clasificacion_id: '1', label: 'FALLECIDO'},
 	{ val: 5, clasificacion_id: '1', label: 'DE ALTA'},
 	{ val: 6, clasificacion_id: '3', label: 'EN MONITOREO'},
-	{ val: 7, clasificacion_id: '2', label: 'NO_COVID'},
 ];
 
 const estadoActualAfectadoOptList = [
@@ -209,7 +210,6 @@ const intervencionRequiredKeys = [
 					'evolucion_id',
 					'fecha_papel',
 					'grupo_evento_id',
-					'clasificacion_manual',
 					'clasificacion_manual_id',
 					'evento_id',
 					'fecha_seguimiento',
@@ -221,7 +221,6 @@ const intervencionKeys = [
 					'evolucion_id',
 					'fecha_papel',
 					'grupo_evento_id',
-					'clasificacion_manual',
 					'clasificacion_manual_id',
 					'evento_id',
 					'fecha_seguimiento',
@@ -359,6 +358,7 @@ const cetecSch = new Schema({
 		hasEncuesta:    { type: Boolean, required: false },
 		isCasoCovid:    { type: Boolean, required: false },
 		isSospechoso:   { type: Boolean, required: false },
+		isContactoEstrecho:   { type: Boolean, required: false },
 		actualState:    { type: Number,  required: false },
 
 		// afectado
@@ -1009,14 +1009,18 @@ function buildRecordState(today, asis){
 	cetecData.localidad_id = getLocalidadId(cetecData, asis);
 	cetecData.fecha_nacimiento = utils.datexToYYYYMMDDStr(asis.fenactx);
 	cetecData.sigla_tipo_doc = getSiglaTipoDoc(cetecData, asis);
-	cetecData.fecha_diagnostico = getFechaDiagnostico(cetecData, asis);
-	cetecData.fecha_alta_definitiva = getFechaAltaDefinitiva(cetecData, asis)
-	cetecData.origen_id = getOrigenId(cetecData, asis);
-	cetecData.clasificacion_id = getClasificacionId(cetecData, asis);
-	cetecData.estado_id = getEstadoId(cetecData, asis);
-
+	
 	cetecData.isCasoCovid = checkIfCovid(cetecData, asis);
 	cetecData.isSospechoso = checkIfSospechoso(cetecData, asis);
+	cetecData.isContactoEstrecho = checkIfContactoEstrecho(cetecData, asis);
+
+
+	cetecData.fecha_diagnostico = getFechaDiagnostico(cetecData, asis);
+	cetecData.fecha_alta_definitiva = getFechaAltaDefinitiva(cetecData, asis)
+
+	cetecData.clasificacion_id = getClasificacionId(cetecData, asis);
+	cetecData.origen_id = getOrigenId(cetecData, asis);
+	cetecData.estado_id = getEstadoId(cetecData, asis);
 
 	buildIntervenciones(today, cetecData, asis);
 
@@ -1031,6 +1035,7 @@ function buildIntervenciones(today, cetec, asis){
 	buildHisopados(today, cetec, asis);
 	buildInvestigacion(today, cetec, asis);
 	buildFollowUp(today, cetec, asis);
+	//
 	buildLlamadosCovid(today, cetec, asis);
 	buildLlamadosSospechosos(today, cetec, asis);
 
@@ -1040,9 +1045,9 @@ function buildIntervenciones(today, cetec, asis){
 /***********************************************/
 /*****  ATENCIÓN: ARRAY DE INTERVENCIONES *****/
 /*********************************************/
-/*****  CONTACTOS_FOLLOW UP *****/
+/*****  MANDA HASTA TRES LLAMADOS POR SOSPECHA / CONTACTO ESTRECHO *****/
 function buildLlamadosSospechosos(today, cetec, asis){
-	if(!cetec.isSospechoso) return;
+	if(!(cetec.isSospechoso || cetec.isContactoEstrecho)) return;
 
 	let fetx_confirma = fechaBase(cetec, asis);
 	if(!fetx_confirma) return;
@@ -1074,7 +1079,7 @@ function addLlamadosSospechosoToPrestaciones(cetec, asis, index, yy, mm, dd, fe_
 	let establecimiento = '02800628'; // Secretaría
 	let fe_llamado = new Date(yy, mm, dd + index);
 
-	if(fe_llamado > fe_alta) return;
+	//if(fe_llamado > fe_alta) return;
 
 	let fecha = utils.dateToStr(fe_llamado);
 	let resultado = 'logrado';
@@ -1135,27 +1140,23 @@ function addLlamadosSospechosoToPrestaciones(cetec, asis, index, yy, mm, dd, fe_
 
 
 
-/*****  FOLLOW UP *****/
+/*****  LLAMADOS AGREGADOS *****/
 function buildLlamadosCovid(today, cetec, asis){
 	if(!cetec.isCasoCovid) return;
 
 	let fetx_confirma = fechaConfirmacion(cetec, asis);
 	if(!fetx_confirma) return;
 
-	if(cetec.qFollowUp > 0) return;
-
 	let sofar = cetec.qFollowUp + cetec.qHisopados + cetec.qInvestig;
 	let resto = TOPE_COVID - sofar;
 
-	let fetx_alta = asis.infeccion.fe_alta;
-	let fe_alta;
+	let fe_alta = today;
 
 	if(cetec.actualState === 4 || cetec.actualState === 5){
+		let fetx_alta = fechaAltaCovid(cetec, asis);
 		if(!fetx_alta) return;
 		fe_alta = utils.parseDateStr(fetx_alta);
 		if(!fe_alta) return;
-	}else {
-		fe_alta = today;
 	}
 
 	let fe_confirma = utils.parseDateStr(fetx_confirma);
@@ -1178,9 +1179,15 @@ function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta,
 	let establecimiento = '02800628'; // Secretaría
 	let fe_llamado = new Date(yy, mm, dd + index);
 
-	if(fe_llamado > fe_alta) return;
+
+	//if(fe_llamado > fe_alta) return;
 
 	let fecha = utils.dateToStr(fe_llamado);
+
+	let fe_seguimiento = utils.datexToYYYYMMDDStr(fecha);
+
+	if(_checkIfAlreadyCalled(cetec, fe_seguimiento)) return;
+
 	let resultado = 'logrado';
 	let vector = index ? 'estable' : 'inicia';
 	let clasificacion = "754";
@@ -1189,7 +1196,8 @@ function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta,
 	let mensaje =  'Seguimiento telefónico del afectado/a';
 
 	if(resultado === 'nocontesta' || resultado === "notelefono"){
-		evolucion = "4"		
+		evolucion = "4"
+		mensaje: 'No contesta/ no logrado'		
 
 	} else if( vector === 'inicia'){
 		evolucion = "1"
@@ -1215,6 +1223,10 @@ function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta,
 		clasificacion = "781"
 
   }
+	
+	if(fe_llamado > fe_alta){
+		// es llamado post-alta, ver qué
+	}
 
 	let intervencion = {
 		seguimiento_id: '',
@@ -1226,13 +1238,19 @@ function addLlamadosCovidToPrestaciones(cetec, asis, index, yy, mm, dd, fe_alta,
 		clasificacion_manual: mensaje,
 		clasificacion_manual_id: clasificacion,
 		evento_id: "307",
-		fecha_seguimiento: utils.datexToYYYYMMDDStr(fecha),
+		fecha_seguimiento: fe_seguimiento,
 	}
 
 	cetec.intervenciones.push(intervencion);
 	cetec.qCovid += 1;
 }
 
+function _checkIfAlreadyCalled(cetec, fe_seguimiento) {
+	let ok = false;
+	let intervenciones = cetec.intervenciones || [];
+	let token = intervenciones.find(t => t.fecha_seguimiento === fe_seguimiento); 
+	return token ? true: false;
+}
 
 
 /*****  FOLLOW UP *****/
@@ -1268,6 +1286,7 @@ function addFollowUpToPrestaciones(cetec, asis, fup){
 	if(!mensaje) mensaje = 'Seguimiento telefónico del afectado/a';
 
 	if(resultado === 'nocontesta' || resultado === "notelefono"){
+		mensaje: 'No contesta/ no logrado'		
 		evolucion = "4"		
 
 	} else if( vector === 'inicia'){
@@ -1467,10 +1486,15 @@ function buildExcelStream(movimientos, query, req, res){
 function checkIfSospechoso(cetec, asis){
 	if(cetec.isCasoCovid) return false;
 
-	if(cetec.actualState === 3) return true;
+	if(cetec.actualState === 0 || cetec.actualState === 6) return true;
 
 	if(cetec.hasLaboratorio) return true;
-	if(cetec.hasNovedades) return true;
+
+	return false;
+}
+
+function checkIfContactoEstrecho(cetec, asis){
+	if(cetec.isCasoCovid || cetec.isSospechoso ) return false;
 
 	// agregar contacto estrecho
 	if(asis.casoIndice && asis.casoIndice.parentId) return true;
@@ -1487,6 +1511,27 @@ function isHisopadoPropio(cetec, asis, lab){
 	if(token) return true;
 
 	return false;
+}
+
+function fechaAltaCovid(cetec, asis){
+	let fecha;
+	let fecha_confirma;
+
+	if(cetec.isCasoCovid){
+		fecha = asis.infeccion.fe_alta;
+		if(fecha) return fecha;
+
+		fecha_confirma = fechaConfirmacion(cetec, asis)
+		if(!fecha_confirma) return null;
+
+		let fe_alta = utils.projectedDate(utils.parseDateStr(fecha_confirma), 0, COVID_OFFSET_ALTA);
+		if(!fe_alta) return null;
+
+		fecha = utils.txFromDate(fe_alta);
+		return fecha;
+
+	}
+	return null;
 }
 
 function fechaConfirmacion(cetec, asis){
@@ -1554,6 +1599,15 @@ function getSexo(cetec, asis){
 	return token ? token.sexo : '1';
 }
 
+/*
+	1	CURADO
+	2	FALLECIDO
+
+	3	INTERNADO
+	4	AISLAM INSTITUCIONAL
+	5	AISLAM DOMICILIARIO
+	6	ENVIADO al sistema de Gestión COVID
+*/
 function getEstadoId(cetec, asis){
 	let value = 0;
 	if(cetec.hasInfection){
@@ -1570,24 +1624,36 @@ function getEstadoId(cetec, asis){
 	return null;
 }
 
+/*
+	1	COVID+
+	2	DESCARTADO
+	3	SOSPECHOSO
+	4	CONTACTO ESTRECHO
+*/
 function getClasificacionId(cetec, asis){
 	if(cetec.hasInfection){
 		let token = getOptRecord(clasificacionAfectadoOptList, cetec.actualState);
 		return token ? token.clasificacion_id : null;
 	}
+	if(cetec.isContactoEstrecho) return 4
 	return null;
 }
 
 
 
 function getOrigenId(cetec, asis){
+	let origen = null;
 
 	if(cetec.hasInfection){
-		let token = getOptRecord(avanceInfectionOptList, asis.infeccion.avance);
-		return token ? token.origen_id : null;
-	}
-	return null;
+		if(cetec.isCasoCovid){
+			origen = 3 // default 3 = comunitairio
+		}
 
+		let token = getOptRecord(avanceInfectionOptList, asis.infeccion.avance);
+		return token ? (token.origen_id || origen) : origen;
+	}
+
+	return origen;
 }
 
 function getFechaDiagnostico(cetec, asis){
@@ -1606,14 +1672,12 @@ function getFechaDiagnostico(cetec, asis){
 
 function getFechaAltaDefinitiva(cetec, asis){
 	let fecha = null;
-	if(cetec.actualState === 5){
-		fecha = utils.datexToYYYYMMDDStr(asis.infeccion.fe_alta);
+	if(cetec.actualState === 5 || cetec.actualState === 4){
+		fecha = fechaAltaCovid(cetec, asis);
 	} 
 
 	return fecha;
 }
-
-
 
 //hasLocacion
 class CetecBaseData {
@@ -1788,5 +1852,36 @@ console.log(4);
 	data.append('clasificacion_manual_id', intervencion.clasificacion_manual_id);
 	data.append('evento_id',               intervencion.evento_id);
 	data.append('fecha_seguimiento',       intervencion.fecha_seguimiento);
+
+
+	const data = new FormData();
+	cuit_municipio
+	sigla_tipo_doc
+	apellido
+	nombre
+	nro_doc
+	sexo
+	localidad_id
+	fecha_nacimiento
+	tipo_seg_id
+	domicilio
+	barrio
+	nacionalidad
+	email
+	telefono
+	obra_social
+	fecha_diagnostico
+	origen_id
+	clasificacion_id
+	estado_id
+	establecimiento_cod
+	evolucion_id
+	fecha_papel
+	grupo_evento_id
+	clasificacion_manual
+	clasificacion_manual_id
+	evento_id
+	fecha_seguimiento
+
 
 ****/

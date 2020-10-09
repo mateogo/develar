@@ -365,6 +365,7 @@ function umeTx(ume, fume, fumetx, qt, freq){
 // si plus_day === 0, entonces devuelve la fecha de fin de mes, acorde al mes computado.
 // si plus_day !== 0, entonces la suma, a modo de corrimiento, respecto del día actual.
 function getProjectedDate(date: Date, plus_day:number, plus_month:number){
+    if(!date) return null;
     plus_day = plus_day || 0;
     plus_month = plus_month || 0;
 
@@ -466,7 +467,7 @@ function getBeginOfYear(firstOfYear: Date): number{
 }
 
 // feriados
-const inactivosList = ["31/03/2020", "10/04/2020", "01/05/2020", "25/05/2020", "15/06/2020", "09/07/2020", "10/07/2020", "17/08/2020", "30/09/2020"]
+const inactivosList = [ "31/03/2020", "10/04/2020", "01/05/2020", "25/05/2020", "15/06/2020", "09/07/2020", "10/07/2020", "17/08/2020", "30/09/2020", "12/10/2020" ]
 const laborDayOfWeek = [0, 1, 1, 1, 1, 1, 0]
 
 function nextLaborDay(date: Date, offset): Date{

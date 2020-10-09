@@ -498,6 +498,8 @@ const estadoActualTableroOptList = [
 	{ val: 7, label: 'NO COVID'},
 ];
 
+
+
 // Método de Diagnóstico COVID
 const mdiagnosticoOptList = [
 	{ val: 'noconfirmado', label: 'EN MONITOREO'},
