@@ -518,7 +518,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(10).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(2).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
@@ -1410,7 +1410,7 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 function exportToExcel(req, res){
 	let query = {
 		estado: 'pendiente',
-		mesFacturacion: '2020-07'
+		mesFacturacion: '2020-05'
 	}
 
   let regexQuery = buildQuery(query)
