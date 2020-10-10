@@ -9,6 +9,7 @@ const fs =     require('fs');
 const path =   require('path');
 const utils =  require('../services/commons.utils');
 const Excel =  require('exceljs')
+const csv = require('csvtojson')
 
 const axios =    require('axios');
 const FormData = require('form-data');
@@ -90,11 +91,15 @@ var indexCount = 100000;
 	  local:  http://localhost:8080/api/cetec/sendinfo
 	  server: http://salud.brown.gob.ar/api/cetec/sendinfo
 **/
-exports.useCetecWebService = cetecPrestacionesCovidWS;
 exports.generarCetec = generateCetecData;
+exports.generarDescartados = processDescartadosSisaArchive
+
+exports.migrarCetecWebService = migrarRegistrosCetec;
+
+exports.useCetecWebService = cetecPrestacionesCovidWS;
 exports.downloadCetec = exportToExcel;
 exports.getCetecCovidData = cetecGetDataCovidWS;
-exports.migrarCetecWebService = migrarRegistrosCetec;
+
 
 const sexoOptList = [
     {val: 'F',        sexo: '2', label: 'Femenino',      slug:'Femenino' },
@@ -297,6 +302,23 @@ const clasificacionManualIdOptList = [
 	{val: 776, label: 	"Estudiado por laboratorio y negativo" },
 ];
 
+
+const clasificacionManualDescartadosOptList = [
+	{ val: "Caso descartado",                                  clasificacion_id: "176"  },
+	{ val: "Descartado COVID - No estudiado OVR",              clasificacion_id: "788"  },
+	{ val: "Caso sospechoso de COVID-19",                      clasificacion_id: "752"  },
+	{ val: "Caso confirmado de COVID-19",                      clasificacion_id: "754"  },
+	{ val: "Descartado COVID-19 por laboratorio",              clasificacion_id: "775"  },
+	{ val: "Caso confirmado por criterio clínico-epidemiológico",               clasificacion_id: "781"  },
+	{ val: "Caso confirmado con criterio laboratorial para fin de seguimiento", clasificacion_id: "775"  },
+	{ val: "Caso confirmado con criterio epidemiológico de fin de seguimiento", clasificacion_id: "781"  },
+	{ val: "Confirmado COVID - Coinfección con OVR",           clasificacion_id: "787"  },
+	{ val: "Descartado COVID - Confirmado OVR",                clasificacion_id: "786"  },
+	{ val: "Caso invalidado por epidemiología",                clasificacion_id: "596"  },
+	{ val: "Caso sospechoso validado por autoridad sanitaria", clasificacion_id: "756"  },
+];
+
+
 const eventoIdOptList = [
 	{val: 307, cod_evento: 'ev0178', label: 	"Caso sospechoso de COVID" },
 	{val: 309, cod_evento: 'ev0173', label: 	"Contacto de caso COVID+" },
@@ -318,6 +340,23 @@ const ciudadesBrown = [
     {val: 'solano',              localidad_id:"70",  cp:'1846', label: 'San Fco Solano',   slug:'San Fco Solano' },
     {val: 'sanjose',             localidad_id:"69",  cp:'1846', label: 'San José',   slug:'San José' },
     {val: 'extradistrito',       localidad_id:"60",  cp:'0000', label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
+];
+const ciudadesSisa = [
+		{ val: "BURZACO"              , localidad_id: "61" },
+		{ val: "ADROGUE"              , localidad_id: "60" },
+		{ val: "ALMIRANTE BROWN"      , localidad_id: "60" },
+		{ val: "CLAYPOLE"             , localidad_id: "62" },
+		{ val: "DON ORIONE"           , localidad_id: "62" },
+		{ val: "GLEW"                 , localidad_id: "63" },
+		{ val: "JOSE MARMOL"          , localidad_id: "64" },
+		{ val: "JOSÉ MARMOL"          , localidad_id: "64" },
+		{ val: "LONGCHAMPS"           , localidad_id: "65" },
+		{ val: "MALVINAS ARGENTINAS"  , localidad_id: "78" },
+		{ val: "MINISTRO RIVADAVIA"   , localidad_id: "67" },
+		{ val: "RAFAEL CALZADA"       , localidad_id: "68" },
+		{ val: "RAYO DE SOL"          , localidad_id: "70" },
+		{ val: "SAN FRANCISCO SOLANO" , localidad_id: "70" },
+		{ val: "SAN JOSE"             , localidad_id: "69" },
 ];
 
 const cetecIntervencionSch = new Schema({
@@ -493,6 +532,124 @@ function getOptRecord(list, val){
 
 }
 
+function getOptData(list, val, key, xomision){
+	if(!list || !list.length) return xomision || '';
+	let record = list.find(t => t.val == val);
+	if(record){
+		return record[key] || xomision;
+	}else{
+		return xomision || '';
+	}
+
+}
+
+//////////////////////////////////////////////////
+
+
+/****************************************************************/
+/* 	Importa DESCARTADOS de archivo CSV originado por SISA SNVS */
+/**************************************************************/
+function processDescartadosSisaArchive(errcb, cb){
+    //deploy
+    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/descartadosImport.csv');
+
+    // local
+    //const arch = path.join(config.rootPath,        'public/migracion/sisa/descartadosImport.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    csv({delimiter: ';'})
+    .fromFile(arch)
+    .then((persons) => {
+
+				_importDescartadosIterator(persons, errcb, cb);
+				cb({result: "ok: " + persons.length})
+
+    });
+}
+
+
+async function _importDescartadosIterator(movimientos, errcb, cb){
+	let maxIterator = movimientos.length
+	let token;
+	let indexCount = 200000;
+	let today = new Date();
+
+
+	for(let index = 0; index < maxIterator; index ++){
+		let record = movimientos[index];
+
+		if(!_validateDescartado(record)){
+			console.log('Not valid record: [%s] [%s] [%s]', record.tdoc, record.sexo, record.localidad)
+			continue;
+		}
+
+		let asis = await _tryAlreadyInBrown(record.ndoc);
+
+		if(asis && asis._i){
+			console.log('Already in BrownSalud')
+			continue;
+		}
+
+		let cetec = new CetecDescartadoData(today, record);
+		let classif_id = getOptData(clasificacionManualDescartadosOptList, record.clasificacion_manual, "clasificacion_id", '176');
+	
+		let intervencion = {
+			seguimiento_id: '',
+			tipo_seg_id: "3",
+			establecimiento_cod: '02800628',
+			evolucion_id: "2",
+			fecha_papel: record.fecha_papel === 'sin_dato' ? null : utils.datexToYYYYMMDDStr(record.fecha_papel),
+			grupo_evento_id: GRUPO_EVENTO_ID,
+			clasificacion_manual: 'Descartado',
+			clasificacion_manual_id: classif_id ,
+			evento_id: "307",
+			fecha_seguimiento: utils.datexToYYYYMMDDStr(record.fealta),
+		}
+
+		cetec.intervenciones.push(intervencion);
+		cetec.qFollowUp += 1;
+
+		indexCount +=1;
+		cetec.registronro = indexCount;
+		cetec.mesFacturacion = 'DESCARTADO:' + cetec.intervenciones[0].fecha_seguimiento.substring(0,7);
+
+
+		let saved_record = await saveCetecDocument(cetec)
+
+
+	}
+
+}
+
+function _validateDescartado(record){
+	let valid = true;
+
+	if(record.tdoc !== 'DNI') return false;
+	if(!(record.sexo === "M" || record.sexo === "F" )) return false;
+	if(record.localidad === 'sin_dato') return false;
+
+	return valid;
+}
+
+async function _tryAlreadyInBrown(cetec){
+	let query = {
+		ndoc: cetec.nro_doc
+	}
+	return AsisprevencionRecord.find(query).lean().exec();
+}
+
+
+
+
+
+///////////////////////////////////////////
 
 
 /*************************************************/
@@ -516,7 +673,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(500).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(5).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
@@ -664,6 +821,7 @@ async function _updateSourceRecord(fecha, resp, cetec, intervencion){
 }
 
 function _updateAsisRecord(fecha, resp, cetec, intervencion){
+	if(!cetec.asistenciaId) return;
 	let token = {
 		mcetec: 1,
 		fets_cetec: fecha.getTime()
@@ -928,7 +1086,7 @@ async function processCetecData(movimientos, errcb, cb){
 		let isValidRecord = validateRecord(cetecData)
 	
 		//console.log('ASISTENCIA: [%s] [%s] [%s] [%s]', asis.compNum, asis.fecomp_txa, asis.requeridox.apellido, isValidRecord );
-		let record = await saveCetecRecord(cetecData)
+		let record = await saveCetecDocument(cetecData)
 		//console.log('SAVED: [%s]', record.apellido );
 	
 	
@@ -1003,7 +1161,7 @@ function validateRecord(cetec){
 	return validate;
 }
 
-async function saveCetecRecord(cetec){
+async function saveCetecDocument(cetec){
 	let record = new Record(cetec);
 	return record.save()
 }
@@ -1779,6 +1937,58 @@ class CetecBaseData {
 			this.origen_id = '';
 			this.clasificacion_id = '';
 			this.estado_id = '';
+			this.intervenciones = [];
+	}
+}
+
+class CetecDescartadoData {
+	constructor(fecha, record){
+
+			this.hasLocacion = record.direccion !== 'sin_dato' ? true : false
+			this.hasInfection = false;
+			this.hasLaboratorio = false;
+			this.hasFollowUp = false;
+			this.hasNovedades = false;
+			this.hasEncuesta = false;
+
+			this.qFollowUp = 0;
+			this.qHisopados = 0;
+			this.qInvestig = 0;
+			this.qCovid = 0;
+
+			this.fe_alta = utils.dateToStr(fecha);
+			this.mesFacturacion = ''; // ojo
+			this.registronro = 0;
+
+			this.estado = 'pendiente';
+			this.fe_transfe = '';
+			this.paciente_id = '';
+
+			this.asistenciaId = null;
+			this.idPerson = null;
+
+			this.cuit_municipio = CUIT_MBA;
+			this.sigla_tipo_doc = 'D.N.I';
+			this.tdoc = record.tdoc;
+			this.nro_doc = record.ndoc;
+			this.apellido = record.apellido;
+			this.nombre = record.nombre
+			this.sexo = record.sexo === 'M' ? "1" : "2";
+
+			this.fecha_nacimiento = record.fe_nac === 'sin_dato' ? null : utils.datexToYYYYMMDDStr(record.fe_nac);
+			this.nacionalidad = 'argentino';
+			this.domicilio = record.direccion;
+			this.barrio = null;
+			this.localidad_id = getOptData(ciudadesSisa, record.localidad, 'localidad_id', '60');
+			this.email = null;
+			this.telefono = null;
+			this.obra_social = null;
+			this.fecha_diagnostico = utils.datexToYYYYMMDDStr(record.fealta);
+			this.fecha_alta_definitiva = utils.datexToYYYYMMDDStr(record.fealta)
+			this.evento_caso_id = record.evento_id;
+			this.origen_id = null;
+			this.clasificacion_id = '2';
+			this.estado_id = null;
 			this.intervenciones = [];
 	}
 }

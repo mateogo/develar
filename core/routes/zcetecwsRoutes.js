@@ -93,6 +93,29 @@ router.get('/generarinfo', function (req, res) {
     });
 });
 
+
+/**
+ * Prepara datos a transferir a CETEC
+ * 
+ * local: localhost:8080/api/cetec/generardescartados
+ * server: http://salud.brown.gob.ar/api/cetec/generardescartados
+ */
+router.get('/generardescartados', function (req, res) {
+    service.generarDescartados(req, 
+
+    function(err) {
+        res.status(400).json(err);
+
+    }, 
+    function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+
+
 /**
  * Prepara datos a transferir a CETEC
  * 
