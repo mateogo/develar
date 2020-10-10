@@ -673,7 +673,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(5).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(50).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
