@@ -665,7 +665,7 @@ function migrarRegistrosCetec(req, errcb, cb){
 		estado: 'pendiente',
 		// regdesde: 0,
 		// reghasta: 0,
-		mesFacturacion: '2020-07'
+		mesFacturacion: 'DESCARTADO:2020-05'
 	}
 
   let regexQuery = buildQuery(query)
