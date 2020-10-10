@@ -665,7 +665,7 @@ function migrarRegistrosCetec(req, errcb, cb){
 		estado: 'pendiente',
 		// regdesde: 0,
 		// reghasta: 0,
-		mesFacturacion: 'DESCARTADO:2020-06'
+		mesFacturacion: 'DESCARTADO:2020-07'
 	}
 
   let regexQuery = buildQuery(query)
@@ -673,7 +673,7 @@ function migrarRegistrosCetec(req, errcb, cb){
   console.log('CETEC MIGRACION BEGIN: *********')
   console.dir(regexQuery);
 
-  Record.find(regexQuery).limit(500).lean().exec(function(err, entities) {
+  Record.find(regexQuery).limit(2000).lean().exec(function(err, entities) {
       if (err) {
           console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
           errcb(err);
