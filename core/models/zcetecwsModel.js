@@ -725,6 +725,10 @@ async function _insertRegistrosEnCETEC(movimientos, query, errcb, cb){
 			console.log('[%s]========== PROCESS [%s]',i, cetec.nro_doc, intervenciones.length );
 			for(let j = 0; j < intervenciones.length; j++){
 				let intervencion = intervenciones[j];
+				//parches zone /////////
+				if(!intervencion.fecha_papel) {
+					intervencion.fecha_papel = intervencion.fecha_seguimiento;
+				}
 				
 				try {
 					save_response = await _saveCetecRecord(token, cetec, intervencion);
