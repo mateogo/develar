@@ -549,6 +549,13 @@ function getOptData(list, val, key, xomision){
 /****************************************************************/
 /* 	Importa DESCARTADOS de archivo CSV originado por SISA SNVS */
 /**************************************************************/
+/**
+ * Prepara datos a transferir a CETEC
+ * 
+ * local: localhost:8080/api/cetec/generardescartados
+ * server: https://salud.brown.gob.ar/api/cetec/generardescartados
+ */
+
 function processDescartadosSisaArchive(errcb, cb){
     //deploy
     const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/descartadosImport.csv');
@@ -1572,7 +1579,8 @@ function addHisopadoToPrestaciones(cetec, asis, lab){
 
 function exportToExcel(req, res){
 	let query = {
-		mesFacturacion: '2020-07'
+		//mesFacturacion: '2020-07'
+		estado: 'migrado'
 	}
 
   let regexQuery = buildQuery(query)
@@ -1597,7 +1605,7 @@ function exportToExcel(req, res){
 }
 
 function buildExcelStream(movimientos, query, req, res){
-
+		let includesIntervenciones = false;
     let today = Date.now();
     let filename = 'migracion_cetec_'+today+'.xlsx';
 
@@ -1623,17 +1631,17 @@ function buildExcelStream(movimientos, query, req, res){
     	let basicArr = [ 1, fe_alta, estado, hasLocacion, hasInfection, hasFollowUp, hasNovedades, hasLaboratorio, hasEncuesta, isCasoCovid, isSospechoso, isContactoEstrecho, actualState, nro_doc, apellido, nombre, sexo, fecha_nacimiento, domicilio, localidad_id, telefono, obra_social, fecha_diagnostico, fecha_alta_definitiva, origen_id, clasificacion_id, estado_id, qFollowUp, qHisopados, qInvestig, qCovid];
       
       worksheet.addRow([...basicArr ]).commit()
+      if(includesIntervenciones){
+	      let intervenciones = row.intervenciones;
+	      if(intervenciones && intervenciones.length){
+	    		worksheet.addRow([ 2,'','','FechaSeguim','idTipoSeguim', 'idEstablecimiento', 'idEvolucion', 'Fecha_papel', 'idGrupoEvento', 'idEvento','idClasifManual', 'Clasificacion (leyenda)']).commit();
+	      	intervenciones.forEach(evento => {
+		  	  		const {fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual } = evento;
+	  	  			let eventoArr = [ 2,"", "", fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual ];
+	      			worksheet.addRow([...eventoArr ]).commit()
 
-      let intervenciones = row.intervenciones;
-      if(intervenciones && intervenciones.length){
-    		worksheet.addRow([ 2,'','','FechaSeguim','idTipoSeguim', 'idEstablecimiento', 'idEvolucion', 'Fecha_papel', 'idGrupoEvento', 'idEvento','idClasifManual', 'Clasificacion (leyenda)']).commit();
-      	intervenciones.forEach(evento => {
-	  	  		const {fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual } = evento;
-  	  			let eventoArr = [ 2,"", "", fecha_seguimiento, tipo_seg_id, establecimiento_cod, evolucion_id, fecha_papel, grupo_evento_id, evento_id, clasificacion_manual_id, clasificacion_manual ];
-      			worksheet.addRow([...eventoArr ]).commit()
-
-      	})
-
+	      	})
+	      }
       }
 
     })
