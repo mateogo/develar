@@ -683,3 +683,91 @@ exports.createInitialData = function (){
 }
 
 
+/**
+{ "_id" : ObjectId("5f8042e315715608a940049b"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "11696730" } }
+{ "_id" : ObjectId("5f8042e715715608a94004e3"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "29018829" } }
+{ "_id" : ObjectId("5f80431c15715608a9401203"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "23085683" } }
+{ "_id" : ObjectId("5f80435415715608a9401e0b"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "92069115" } }
+{ "_id" : ObjectId("5f80439515715608a9402cbc"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "31595274" } }
+{ "_id" : ObjectId("5f8043a815715608a9403357"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "20484464" } }
+{ "_id" : ObjectId("5f8043d615715608a9403863"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "26283849" } }
+{ "_id" : ObjectId("5f80445415715608a9405727"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "95011702" } }
+{ "_id" : ObjectId("5f8044e815715608a9408624"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "6185127" } }
+{ "_id" : ObjectId("5f80451915715608a9408cb4"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "16049405" } }
+{ "_id" : ObjectId("5f80454615715608a9409c9b"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "30027373" } }
+{ "_id" : ObjectId("5f80457215715608a940a59e"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "35394492" } }
+{ "_id" : ObjectId("5f80459f15715608a940acf1"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "18887009" } }
+{ "_id" : ObjectId("5f8046fc15715608a940e971"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "28174758" } }
+{ "_id" : ObjectId("5f80472515715608a940f3fe"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "8425310" } }
+{ "_id" : ObjectId("5f80478f15715608a9410cf2"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "33119106" } }
+{ "_id" : ObjectId("5f8047f815715608a9411f25"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "44691783" } }
+{ "_id" : ObjectId("5f80480115715608a9411fff"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "25145640" } }
+{ "_id" : ObjectId("5f80483715715608a94126f7"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "20423865" } }
+{ "_id" : ObjectId("5f80485a15715608a9412cf9"), "slug" : "DEL DON ORIONE 09:30 hs", "requeridox" : { "ndoc" : "35993618" } }
+
+
+{ "_id" : ObjectId("5f8043ac15715608a94034ff"), "requeridox" : { "ndoc" : "13322111" } }
+{ "_id" : ObjectId("5f8043c115715608a9403632"), "requeridox" : { "ndoc" : "30625133" } }
+{ "_id" : ObjectId("5f80472915715608a940f55c"), "requeridox" : { "ndoc" : "16482612" } }
+{ "_id" : ObjectId("5f80479b15715608a9410e74"), "requeridox" : { "ndoc" : "30133802" } }
+{ "_id" : ObjectId("5f8048dd15715608a9414af4"), "requeridox" : { "ndoc" : "36924076" } }
+{ "_id" : ObjectId("5f804c7315715608a941f8bc"), "requeridox" : { "ndoc" : "13460900" } }
+{ "_id" : ObjectId("5f804da215715608a9422389"), "requeridox" : { "ndoc" : "11774591" } }
+{ "_id" : ObjectId("5f804dd115715608a9422a0e"), "requeridox" : { "ndoc" : "13460069" } }
+{ "_id" : ObjectId("5f804efa15715608a9425e5b"), "requeridox" : { "ndoc" : "34355244" } }
+{ "_id" : ObjectId("5f805405dd57ef5a8ca6e9f9"), "requeridox" : { "ndoc" : "18734891" } }
+{ "_id" : ObjectId("5f80581bdd57ef5a8ca7d428"), "requeridox" : { "ndoc" : "27649250" } }
+{ "_id" : ObjectId("5f8058acdd57ef5a8ca7f4ae"), "requeridox" : { "ndoc" : "37180072" } }
+{ "_id" : ObjectId("5f805be1dd57ef5a8ca88512"), "requeridox" : { "ndoc" : "17403261" } }
+{ "_id" : ObjectId("5f805f70dd57ef5a8ca92cdf"), "requeridox" : { "ndoc" : "46626963" } }
+{ "_id" : ObjectId("5f806266dd57ef5a8ca9b4f8"), "requeridox" : { "ndoc" : "12529670" } }
+{ "_id" : ObjectId("5f8066fedd57ef5a8caa84b8"), "requeridox" : { "ndoc" : "34614009" } }
+{ "_id" : ObjectId("5f8067e5dd57ef5a8caab9f2"), "requeridox" : { "ndoc" : "20119825" } }
+{ "_id" : ObjectId("5f806a86dd57ef5a8cab2c81"), "requeridox" : { "ndoc" : "36741243" } }
+
+
+DNI  TURNOS DE DON ORIONE
+11696730  Les salió el turno 9:30
+29018829  Les salió el turno 9:30
+23085683  Les salió el turno 9:30
+92069115  Les salió el turno 9:30
+31595274  Les salió el turno 9:30
+20484464  Les salió el turno 9:30
+26283849  Les salió el turno 9:30
+95011702  Les salió el turno 9:30
+6185127  Les salió el turno 9:30
+16049405  Les salió el turno 9:30
+30027373  Les salió el turno 9:30
+35394492  Les salió el turno 9:30
+18887009  Les salió el turno 9:30
+28174758  Les salió el turno 9:30
+8425310  Les salió el turno 9:30
+33119106  Les salió el turno 9:30
+44691783  Les salió el turno 9:30
+25145640  Les salió el turno 9:30
+20423865  Les salió el turno 9:30
+35993618  Les salió el turno 9:30
+33202649  Les salió el turno 9:
+
+
+13322111  Les salió el turno para  el 12/10
+30625133  Les salió el turno para  el 12/10
+16482612  Les salió el turno para  el 12/10
+30133802  Les salió el turno para  el 12/10
+36924076  Les salió el turno para  el 12/10
+13460900  Les salió el turno para  el 12/10
+11774591  Les salió el turno para  el 12/10
+13460069  Les salió el turno para  el 12/10
+34355244  Les salió el turno para  el 12/10
+18734891  Les salió el turno para  el 12/10
+27649250  Les salió el turno para  el 12/10
+37180072  Les salió el turno para  el 12/10
+17403261  Les salió el turno para  el 12/10
+46626963  Les salió el turno para  el 12/10
+12529670  Les salió el turno para  el 12/10
+34614009  Les salió el turno para  el 12/10
+20119825  Les salió el turno para  el 12/10
+36741243  Les salió el turno para  el 12/10
+
+**/
+

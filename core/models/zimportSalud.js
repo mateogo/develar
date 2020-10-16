@@ -380,6 +380,12 @@ function buildCovid(asis, token){
 		}else if (novedad === 'nexo'){
 			infeccion.avance = 'nexo';
 
+
+		}else if (novedad === 'criterio clinico'){
+			infeccion.avance = 'clinica';
+
+
+
 		}else if (novedad === 'geriatrico'){
 			infeccion.institucion = 'geriatrico';
 			infeccion.institucionTxt = 'Geriátrico';
