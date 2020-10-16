@@ -504,7 +504,7 @@ const estadoActualTableroOptList = [
 const mdiagnosticoOptList = [
 	{ val: 'noconfirmado', label: 'EN MONITOREO'},
 	{ val: 'laboratorio',  label: 'LABORATORIO'},
-	{ val: 'nexo',         label: 'NEXO EPIDEMIOLÓGICO'},
+	{ val: 'nexo',         label: 'NEXO'},
 	{ val: 'clinica',      label: 'CLÍNICA'},
 	{ val: 'descartado',   label: 'DESCARTADO'},
 ];

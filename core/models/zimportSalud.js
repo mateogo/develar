@@ -357,6 +357,7 @@ function buildCovid(asis, token){
 	infeccion.isActive = true;
 	infeccion.hasCovid = true;
 	infeccion.actualState = 1;
+	infeccion.mdiagnostico = 'laboratorio';
 
 	if(token.fesintoma){
 		infeccion.fe_inicio = token.fesintoma;
@@ -379,10 +380,12 @@ function buildCovid(asis, token){
 
 		}else if (novedad === 'nexo'){
 			infeccion.avance = 'nexo';
+			infeccion.mdiagnostico = 'nexo';
 
 
 		}else if (novedad === 'criterio clinico'){
-			infeccion.avance = 'clinica';
+			infeccion.avance = 'comunitario';
+			infeccion.mdiagnostico = 'clinica';
 
 
 
@@ -1071,6 +1074,7 @@ class InfectionFollowUp {
 	isInternado = false;
 	isExtradistrito = false;
 	hasCovid = true;
+	mdiagnostico = 'laboratorio';
 
 	actualState = 1 // 0:sano; 1:COVID; 2:Recuperado; 3: Descartado; 4: Fallecido; 5: alta
 													//estadoActualAfectadoOptList

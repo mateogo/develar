@@ -484,7 +484,7 @@ export class VigilanciaViewComponent implements OnInit {
 
     if(token){
       covidBadgeToken.hasData = true;
-      covidBadgeToken.label = AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', token.avance);
+      covidBadgeToken.label = AsistenciaHelper.getPrefixedOptionLabel('metodoDiagnostico', '', token.mdiagnostico) + '::' +  AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '', token.avance);
       covidBadgeToken.toolTip = `Internado: [${token.locacionSlug}] sintoma:${token.sintoma} ${token.slug}`;
 
       if(     token.actualState === 0 ){
