@@ -383,7 +383,7 @@ function buildCovid(asis, token){
 			infeccion.mdiagnostico = 'nexo';
 
 
-		}else if (novedad === 'criterio clinico'){
+		}else if (novedad === 'criterio clinico' || novedad === 'criterio clínico'){
 			infeccion.avance = 'comunitario';
 			infeccion.mdiagnostico = 'clinica';
 

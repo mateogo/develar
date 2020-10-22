@@ -335,30 +335,50 @@ export class RegistroPageComponent implements OnInit {
   	this.description = this.record.description;
   	this.mainimage = this.record.mainimage;
 
-  	this.record.relatedcards.forEach(s => {
-      let link:string , navigate:string , noLink = true;
-      
-      if(s.linkTo){
-        noLink = false;
+    if(this.record.relatedcards && this.record.relatedcards.length){
+      this.record.relatedcards.forEach(s => {
+        let link:string , navigate:string , noLink = true;
+        
+        if(s.linkTo){
+          noLink = false;
 
-        if(s.linkTo.indexOf('http') === -1){
-          navigate = s.linkTo;
-        }else{
-          link = s.linkTo;
+          if(s.linkTo.indexOf('http') === -1){
+            navigate = s.linkTo;
+          }else{
+            link = s.linkTo;
+          }
         }
-      }
 
-  		this.nodes.push({
-        title: s.slug,
-  			imageUrl: s.mainimage,
-        flipImage: null,
-  			description: s.description,
-        linkTo: link,
-        navigateTo: navigate,
-        noLink: noLink,
-        state: 'inactive'
-  		} as Servicios)
-  	})
+        this.nodes.push({
+          title: s.slug,
+          imageUrl: s.mainimage,
+          flipImage: null,
+          description: s.description,
+          linkTo: link,
+          navigateTo: navigate,
+          noLink: noLink,
+          state: 'inactive'
+        } as Servicios)
+      })
+    }else{
+      // error: la ficha no tiene sub-fichas.
+      
+
+        this.nodes.push({
+          title: 'Error al cargar la ficha',
+          imageUrl: this.record.mainimage,
+          flipImage: null,
+          description: this.record.description,
+          linkTo: '',
+          navigateTo: '',
+          noLink: true,
+          state: 'inactive'
+        } as Servicios)
+
+
+    }
+
+
 
   }
 

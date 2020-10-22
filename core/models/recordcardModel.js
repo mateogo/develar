@@ -262,7 +262,7 @@ function buildQuery(query, user){
         }
 
         if(query['publish.publishOrder']){
-            q["publish.topics"] = query['publish.topics'];
+            q["publish.publishOrder"] = query['publish.publishOrder'];
         }
 
         if(query['publish.template']){
@@ -362,10 +362,12 @@ exports.createRecordCardFromPerson = function(token, person, cb){
  * @param errcb
  */
 exports.findByQuery = function (req, errcb, cb) {
+    console.log('findByQuery to BEGIN ========')
     let query = req.query;
     let user = req.user;
 
     let regexQuery = buildQuery(query, user);
+    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
@@ -386,6 +388,7 @@ exports.findByQuery = function (req, errcb, cb) {
 exports.fetchNext = function (req, errcb, cb) {
     let query = req.query;
     let user = req.user;
+    console.log('fetchNext')
     let nquery = buildQuery(query, user);
     let order;
 
