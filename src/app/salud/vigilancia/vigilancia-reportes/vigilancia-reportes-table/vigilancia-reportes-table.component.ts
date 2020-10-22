@@ -81,7 +81,7 @@ export class VigilanciaReportesTableComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "ndoc", "personSlug", "telefono", "edad", "qcontactos", "asignadoSlug", "fup_fe_inicio",  "faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "covidAcutalSate", "covidSintoma", "covidAvance", "covid", "action","covidTxt", "reportadoPor", "fe_reportado", "lab_laboratorio", "lab_fe_toma", "lab_estado","slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
+  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "ndoc", "personSlug", "telefono", "edad", "qcontactos", "asignadoSlug", "fup_fe_inicio",  "faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "mdiagnostico", "covidAcutalSate", "covidSintoma", "covidAvance", "covid", "action","covidTxt", "reportadoPor", "fe_reportado", "lab_laboratorio", "lab_fe_toma", "lab_estado","slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
 
   private table_columns_sel = {
     'select':     false,
@@ -97,6 +97,7 @@ export class VigilanciaReportesTableComponent implements OnInit {
     'locacion':   false,
     'osocial':    false,
     'covid':      false,
+    'mdiagnostico': false,
     'slug':       false,
     'description':false,
     'sector':     false,

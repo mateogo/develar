@@ -891,6 +891,7 @@ function buildTableData(list: Asistencia[]): AsistenciaTable[]{
 				td.covidActualState = AsistenciaHelper.getActualStateOptionLabel('estadoActualInfection', '',sol.infeccion.actualState);
 				td.covidAvance = AsistenciaHelper.getPrefixedOptionLabel('avanceInfection', '',sol.infeccion.avance);
 				td.covidSintoma = AsistenciaHelper.getPrefixedOptionLabel('sintomaInfection', '',sol.infeccion.sintoma);
+				td.mdiagnostico = AsistenciaHelper.getPrefixedOptionLabel('metodoDiagnostico', '',sol.infeccion.mdiagnostico);
 			}
 
 			td.lab_laboratorio = '';
@@ -1030,6 +1031,7 @@ export class AsistenciaTable {
 
 		covidActualState: string = '';
 		covidSintoma: string = '';
+		mdiagnostico: string = '';
 		covidAvance: string = '';
 		reportadoPor: string = '';
 		fe_reportado: string = '';

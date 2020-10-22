@@ -137,6 +137,11 @@
       <mat-cell *matCellDef="let element"> {{element.covid}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="mdiagnostico">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Diagnóstico </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.mdiagnostico}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="osocial">
       <mat-header-cell *matHeaderCellDef mat-sort-header> O/Social </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.osocial}} </mat-cell>
