@@ -15,6 +15,7 @@ import { AuditPageComponent } from './auditoria/audit-page/audit-page.component'
 import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alimentar-dashboard.component';
 import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
 import { RegistroPageComponent } from './delegaciones/turnos/registro-page/registro-page.component';
+import { AlimentarConsultaComponent } from './tsocial/alimentar-consulta/alimentar-consulta.component';
 
 const routes: Routes = [
 	{
@@ -36,6 +37,10 @@ const routes: Routes = [
 	{
 		path:'tableroalimentar',
 		component: AlimentarDashboardComponent
+	},
+	{
+		path:'alimentar',
+		component: AlimentarConsultaComponent
 	},
 	{
 		path:'exportaralmacen',
