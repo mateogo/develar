@@ -14,9 +14,10 @@ const config = require('../config/config')
 const fs = require('fs');
 const path = require('path');
 const utils = require('../services/commons.utils');
-const person = require('./personModel');
+const personModule = require('./personModel');
 
 const csv = require('csvtojson')
+const Person = personModule.getRecord();
 
 
 const master = {};
@@ -79,6 +80,10 @@ exports.load = function (errcb, cb) {
 
 exports.importarnacion = function (errcb, cb) {
     processDatosBancoArchive(cb);
+}
+
+exports.importarpadron = function (errcb, cb) {
+    processDatosPadronAlimentar(cb);
 }
 
 exports.buildcontactdata = function (errcb, cb) {
@@ -250,9 +255,9 @@ const processAlimentarArchive = function(master, cb){
 
     csv({delimiter: ';'})
     .fromFile(arch)
-    .then((persons) => {
+    .then((records) => {
 
-        persons.forEach(per => {
+        records.forEach(per => {
 
             master[per['ndoc']] = per;
             master[per['ncuil']] = per;
@@ -309,6 +314,183 @@ async function upsertBeneficiario(beneficiario, today){
 }
 
 
+/*****************************************/
+/*   /api/alimentar/importarpadron     * /
+/***************************************/
+/*
+    Columnas: caja; orden; displayName; ndoc; ncuil; dia; hora; entregada; editCaja; editEntrega
+    Columnas: displayName; ndoc; ncuil; prov; city; calle; callenro; dia; hora;
+
+**/
+
+const processDatosPadronAlimentar = function(cb ){
+    const today = new Date();
+    //deploy
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+
+    //local
+    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    let count = 0;
+
+    console.log('processDatosPadronAlimentar BEGIN [%s]', arch);
+    csv({delimiter: ';'})
+    .fromFile(arch)
+    .then((records) => {
+        _upsertBeneficiarioOctubre2020(records, cb)
+
+
+                    
+
+    });
+}
+
+
+
+async function _upsertBeneficiarioOctubre2020(beneficiarios, cb){
+    const today = new Date();
+    const fealta = utils.dateToStr(today);
+    const fets = today.getTime();
+    if(!beneficiarios || !beneficiarios.length){
+        cb({process: 'Error de lecutura del archivo cvs'})
+        return;
+    }
+    console.log('upsertBeneficiariosOctubre 2020 BEGIN [%s]', beneficiarios.length);
+
+    for(let index = 0; index < beneficiarios.length; index++){
+        let record = beneficiarios[index];
+        console.log('Processing: [%s] [%s] [%s]', record.nombre, record.apellido, record.ndoc);
+        let beneficiario = _buildBeneficiarioAlimentar(record, index, fealta, fets);
+
+        await beneficiario.save();
+
+        let person  = await Person.findOne({ndoc: record.ndoc}).exec(); 
+        if(person){
+            person = _buildCoberturaData(person, record);
+            await Person.findByIdAndUpdate(person._id, person).exec();
+
+        }else{
+            person = _buildNewPerson(record);
+            await Person.create(person);
+
+        }
+
+
+    }
+
+    cb({process: 'OK ' + beneficiarios.length });
+}
+
+function _buildCoberturaData(person, record){
+    person.idBrown = 'tarjeta_alimentar_20201022';
+
+    let coberturas = person.cobertura;
+    let cobertura = {
+        type: 'auh',
+        tingreso: 'talimentar',
+        slug: 'Recibe tarjeta alimentar Octubre 2020',
+        monto:0,
+        observacion: 'fecha entrega: ' + record.fentrega + ' ' + record.horaentrega,
+        fechafe_ts: 0,
+        estado:'pendiente',
+    }
+
+    if(coberturas && coberturas.length ){
+        let talimentar = coberturas.find(t => t.tingreso === 'talimentar');
+        if(talimentar) {
+            talimentar.observacion = 'Recibe tarjeta alimentar en Oct 2020: ' + record.fentrega + ' ' + record.horaentrega;
+        }else{
+            coberturas.push(cobertura);
+
+        }
+
+    }else {
+        person.cobertura = [cobertura];
+    }
+
+    return person;
+}
+
+function _buildNewPerson(data){
+    let person = new Person();
+    person.nombre = data.nombre;
+    person.apellido = data.apellido;
+
+    person.displayName = data.apellido + ', ' + data.nombre;
+    person.personType = 'fisica'
+    person.email = '';
+    person.tdoc = 'DNI';
+    person.ndoc =  data.ndoc;
+    person.ambito = '';
+    person.isImported = true;
+    person.idBrown = 'tarjeta_alimentar_20201022';
+    person.alerta = 'Recibe tarjeta alimentar Oct-2020';
+
+
+    let locacion = {
+        estado: 'activa',
+        addType: 'principal',
+        street1: data.calle,
+        city: data.city,
+        state: 'buenosaires',
+        estado: 'activo',
+        country: 'AR'
+    }
+    person.locaciones = [locacion];
+
+    let cobertura = {
+        type: 'auh',
+        tingreso: 'talimentar',
+        slug: 'Recibe tarjeta alimentar Octubre 2020',
+        monto:0,
+        observacion: 'fecha entrega: ' + data.fentrega + ' ' + data.horaentrega,
+        fechafe_ts: 0,
+        estado:'pendiente',
+    }
+    person.cobertura = [cobertura];
+
+
+    return person;
+
+}
+
+
+function _buildBeneficiarioAlimentar(data, index, fealta, fets){
+    let beneficiario = new Beneficiario();
+    beneficiario.ndoc = data.ndoc;
+    beneficiario.cuil = data.cuil;
+    beneficiario.displayName = data.apellido + ', ' + data.nombre;
+    beneficiario.prov = 'BUENOS AIRES';
+    beneficiario.city = data.city;
+    beneficiario.calle = data.calle;
+    beneficiario.callenro = '';
+    beneficiario.dia = data.fentrega;
+    beneficiario.hora = data.horaentrega;
+    beneficiario.slug = '';
+    beneficiario.orden = index + '';
+    beneficiario.estado = 'pendiente';
+    beneficiario.fecha = fealta;
+    beneficiario.fe_ts = fets;
+    beneficiario.celular = '';
+    beneficiario.email = '';
+
+    return beneficiario;
+}
+
+
+
+
+/*****************************************/
+/*   /api/alimentar/importarnacion     * /
+/***************************************/
 const processDatosBancoArchive = function(cb ){
 
     const today = new Date();
@@ -330,9 +512,9 @@ const processDatosBancoArchive = function(cb ){
 
     csv({delimiter: ';'})
     .fromFile(arch)
-    .then((persons) => {
+    .then((records) => {
 
-        persons.forEach(per => {
+        records.forEach(per => {
             count +=1;
             if(true) {
                 upsertBeneficiario(per, today);
@@ -348,7 +530,7 @@ const processDatosBancoArchive = function(cb ){
 const processContactData = function(cb){
     const today = new Date();
 
-    person.buildInvertedTreeForContactData().then(pTree =>{
+    personModule.buildInvertedTreeForContactData().then(pTree =>{
 
         Beneficiario.find().lean().exec(function(err, entities) {
             if (err) {

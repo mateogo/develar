@@ -1,0 +1,28 @@
+$color-destacado: #0645f5;
+
+.content-box {
+	font-size: 2.0em;
+
+}
+
+.text-destacado {
+		margin: 15px, 0 0 20px;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 2rem;
+
+}
+
+.text-resaltado {
+		margin: 15px, 0 0 20px;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 2rem;
+
+}
+
+.text-normal {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: 1rem;
+}

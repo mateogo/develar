@@ -55,6 +55,21 @@ router.get('/importarnacion', function (req, res) {
 /**
  * Retrieve Entity by ID
  */
+router.get('/importarpadron', function (req, res) {
+    console.log('importar padron ROUTE BEGINS')
+    service.importarpadron(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
+
+/**
+ * Retrieve Entity by ID
+ */
 router.get('/buildcontactdata', function (req, res) {
     service.buildcontactdata(function(err) {
         res.status(400).json(err);
