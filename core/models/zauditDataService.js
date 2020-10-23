@@ -466,6 +466,16 @@ async function changeEstadoToPerson(token){
 
 }
 
+ /**
+ * Para procesar y limpiar duplicados:
+ * (a) /api/auditodatos/auditpersonduplices
+ * (b) /api/auditodatos/processduplices
+ **/
+
+/********************************************************************/
+/***** DUPLICES DDSS: 1/3 Revisar la base y detectar duplices  *****/
+/***   RUTA: /api/auditodatos/auditpersonduplices          */
+/******************************************************************/
 
 exports.auditPersonDuplices = function (errcb, cb) {
   console.log('AUDIT PERSON DUPLICES TO-BEGIN');

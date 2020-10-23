@@ -371,8 +371,12 @@ async function _upsertBeneficiarioOctubre2020(beneficiarios, cb){
         let beneficiario = _buildBeneficiarioAlimentar(record, index, fealta, fets);
 
         await beneficiario.save();
+        let query = {
+            estado: {$not: {$in: [ 'baja', 'bajaxduplice' ]} },
+            ndoc: record.ndoc
+        }
 
-        let person  = await Person.findOne({ndoc: record.ndoc}).exec(); 
+        let person  = await Person.findOne(query).exec(); 
         if(person){
             person = _buildCoberturaData(person, record);
             await Person.findByIdAndUpdate(person._id, person).exec();
