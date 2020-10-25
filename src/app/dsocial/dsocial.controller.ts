@@ -439,7 +439,8 @@ export class DsocialController {
 
   updateBeneficiario(beneficiario: BeneficiarioAlimentar){
     let hoy = new Date();
-    let hoy_tx = devutils.txDayFormatFromDate(Date.now()).toLowerCase();
+    //let hoy_tx = devutils.txDayFormatFromDate(Date.now()).toLowerCase();
+    let hoy_tx = devutils.txFromDate(hoy);
 
 
 

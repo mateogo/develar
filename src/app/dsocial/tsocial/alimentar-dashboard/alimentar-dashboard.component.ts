@@ -40,6 +40,9 @@ export class AlimentarDashboardComponent implements OnInit {
   public showList = false;
   public searchDay = '';
   public beneficiariosList: BeneficiarioAlimentar[] = [];
+  public showDumpData = false;
+  public dumpData:any;
+
 
 
   constructor(
@@ -72,6 +75,12 @@ export class AlimentarDashboardComponent implements OnInit {
 
     let sscrp2 = this.dsCtrl.fetchTarjetasPorDiaDashboard(fecharef).subscribe(master => {
       this.masterData = master;
+      
+      console.log('fetchTarjetasPorDiaDashboard', this.masterData? true: false)
+      this.dumpData = master;
+      this.showDumpData = true;
+
+
 
       Object.keys(this.masterData).forEach(t => {
         let token = this.masterData[t] as EntregasDia;

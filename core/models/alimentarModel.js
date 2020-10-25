@@ -365,7 +365,7 @@ async function _upsertBeneficiarioOctubre2020(beneficiarios, cb){
     }
     console.log('upsertBeneficiariosOctubre 2020 BEGIN [%s]', beneficiarios.length);
 
-    for(let index = 0; index < beneficiarios.length; index++){
+    for(let index = 0; index < index < beneficiarios.length; index++){
         let record = beneficiarios[index];
         console.log('Processing: [%s] [%s] [%s]', record.nombre, record.apellido, record.ndoc);
         let beneficiario = _buildBeneficiarioAlimentar(record, index, fealta, fets);

@@ -1,7 +1,7 @@
 <mat-card >
 	<mat-card-header>
-		<mat-card-title>Entregas de la Tarjeta ALIMENTAR</mat-card-title>
-    <mat-card-subtitle>MUNICIPIO Almte Brown - Banco Nación - {{ hoy }}</mat-card-subtitle>
+		<mat-card-title>Tarjeta ALIMENTAR</mat-card-title>
+    <mat-card-subtitle>Secretaría de Desarrollo Social - Lote OCT/NOV 2020 - {{ hoy }}</mat-card-subtitle>
     <mat-card-subtitle>{{ fecharef_label}}</mat-card-subtitle>
 	</mat-card-header>
   <mat-card-content>
@@ -63,7 +63,7 @@
               <td class="{{token.estado}}">{{ token.displayName}}</td>
               <td class="{{token.estado}}">{{ token.estado || 'pendiente'}}</td>
               <td class="{{token.estado}}">{{ token.hora }}</td>
-              <td class="{{token.estado}}">{{ token.caja }}</td>
+              <td class="{{token.estado}}">{{ token.caja || 'ÚNICA' }}</td>
               <td class="{{token.estado}}">{{ token.orden }}</td>
               <td class="{{token.estado}}">{{ token.celular }}</td>
               <td class="{{token.estado}}">{{ token.email }}</td>
@@ -73,8 +73,13 @@
 
       </table>
       </div>
+
     </mat-card-content>
   </mat-card>
+</ng-container>
+
+<ng-container *ngIf="showDumpData">
+  <pre class="dump-tests">{{ dumpData | json }}</pre>
 </ng-container>
 
 
