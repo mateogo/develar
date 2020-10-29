@@ -44,6 +44,30 @@
   flex: 0 0 60px;
 }
 
+.mat-column-fecha {
+  flex: 0 0 80px;
+}
+
+.mat-column-username {
+  flex: 0 0 200px;
+}
+
+.mat-column-llamados_qty {
+  flex: 0 0 130px;
+  justify-content: flex-end;
+}
+
+.mat-column-llamados_covid_qty {
+  flex: 0 0 130px;
+  justify-content: flex-end;
+}
+
+.mat-column-llamados_nocovid_qty {
+  flex: 0 0 130px;
+  justify-content: flex-end;
+}
+
+
 .mat-column-lab_estado {
   flex: 0 0 120px;
 }
@@ -115,6 +139,9 @@
   flex: 0 0 90px;
 }
 
+.mat-column-covidTxt {
+  flex: 0 0 150px;
+}
 
 .mat-column-covid {
   flex: 1 2 300px;

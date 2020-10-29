@@ -85,6 +85,13 @@
       <mat-cell *matCellDef="let element"> {{element.compNum}} </mat-cell>
     </ng-container>
 
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+    </ng-container>
+
+
     <ng-container matColumnDef="fecomp_txa">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.fecomp_txa}} </mat-cell>
@@ -103,6 +110,26 @@
     <ng-container matColumnDef="city">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Ciudad </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="llamados_covid_qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #COVID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.llamados_covid_qty}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="llamados_nocovid_qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #NO-COVID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.llamados_nocovid_qty}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="llamados_qty">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #Llamados </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.llamados_qty}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="qty">

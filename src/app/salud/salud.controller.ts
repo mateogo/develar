@@ -889,6 +889,14 @@ export class SaludController {
     return this.daoService.fetchSeguimientoDashboard(ASIS_PREVENCION_RECORD, query);
   }
 
+  fetchResultFromAsistenciaByQuery<T>(query:any): Observable<T>{
+    return this.daoService.searchOne<T>(ASIS_PREVENCION_RECORD, query);
+  }
+
+  fetchResultListFromAsistenciaByQuery<T>(query:any): Observable<T[]>{
+    return this.daoService.search<T>(ASIS_PREVENCION_RECORD, query);
+  }
+
 
   fetchAsistenciaByQuery(query:any){
 
@@ -983,6 +991,14 @@ export class SaludController {
     
     this.emitAsistenciaDataSource.next(tableData);
   }
+
+  updateLlamadosTableData(list: Array<any>){
+    let tableData = AsistenciaHelper.buildLlamadosDataTable(list);
+    
+    this.emitAsistenciaDataSource.next(tableData);
+  }
+
+
 
   triggerAsistenciaEmitter(list: Asistencia[]){
     this.asistenciaListener.next(list);

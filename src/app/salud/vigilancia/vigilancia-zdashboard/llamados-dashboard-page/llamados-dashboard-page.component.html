@@ -1,20 +1,52 @@
-<mat-card>
-	<mat-card-header>
-		<mat-card-title>CONTROL DE SEGUIMIENTO DE AFECTADOS/AS</mat-card-title>
-	</mat-card-header>
-</mat-card>
-
 <llamados-browse 		[query]="query" 
 										[export]='true'
+										[title]="browseTitle"
 										(updateQuery)="refreshSelection($event)"></llamados-browse>
 
-<mat-card>
-	<mat-card-content>								 
+
+<ng-container *ngIf='showChart'>
+	<mat-card class="chart-card">
+	  <mat-card-content>
+	    <div class="container" >
+	      <!--h3>{{ graphTitle }}</h3 -->
+
+	      <div class="row doughnut-chart">
+	        <div class="col-md-8 col-sm-12">
+	            <canvas
+	              baseChart
+	              [chartType]="chartType"
+	              [datasets]="[ 
+	              					{  
+	              						data:  covidDataSet, 
+	                        	label: 'COVID'
+	                        },
+	              					{
+	              						data:  nocovidDataSet, 
+	                        	label: 'NO-COVID'
+	                        }]"
+
+	              [labels]="fechasDataSet"
+	              [options]="chartOptions"
+	              [legend]="true">
+	            </canvas>
+	        </div>
+	      </div>
+
+	    </div>
+	  </mat-card-content>
+	</mat-card>
+</ng-container>
+
+
+<ng-container *ngIf='showData'>
+	<vigilancia-reportes-table [displayedColumns]='tableActualColumns' 
+								(actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
+</ng-container>
+
+<ng-container *ngIf='dumpData'>
 
 	<dump-data  [title]="'MasterData'"
 	            [data$]='data$'
 	            [showTests]='true'></dump-data>
 
-	</mat-card-content>
-</mat-card>
-
+</ng-container>

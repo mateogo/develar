@@ -25,6 +25,7 @@ const UPDATE_MULTIPLE = 'update_multiple';
 
 const R_DOMICILIOS = 'DOMICILIOS'
 const R_IVR = 'LLAMADOSIVR'
+const R_LLAMADOS = 'LLAMADOSEPIDEMIO'
 const R_LABORATORIO = 'LABORATORIO'
 const R_CONTACTOS = 'REDCONTACTOS'
 const R_ASIGNACION = 'ASIGNACIONCASOS'
@@ -191,20 +192,85 @@ export class VigilanciaReportesPageComponent implements OnInit {
     this.renderGraph = false;
     this.showAsignacionUsuarios = false;
     this.dumpData = false;
-    
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length > 0){
-        this.asistenciasList = list;
-        
-        this.initTableData(this.asistenciasList);
 
-      }else {
-        this.asistenciasList = [];
+    if(this.query && this.query.reporte === R_LLAMADOS){
 
-        this.showData = false;
+      this.dsCtrl.fetchResultListFromAsistenciaByQuery<any>(query).subscribe(records => {
+        if(records && records.length){
+          let dateRecords = this._buildSumByDate(records);
+
+          this.sortLlamados(dateRecords)
+
+          this.dsCtrl.updateLlamadosTableData(dateRecords);
+          this.tableActualColumns = LLAMADO_EPIDEMIO;
+          this.showData = true;
+
+        }
+
+      })
+
+    }else {
+      
+      this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
+        if(list && list.length > 0){
+          this.asistenciasList = list;
+          this.initTableData(this.asistenciasList);
+
+        }else {
+          this.asistenciasList = [];
+
+          this.showData = false;
+
+        }
+      })
+    }
+
+  }
+
+  private _buildSumByDate(records){
+    let sumByDate = new Map();
+
+    records.forEach(record => {
+      let indexTx = record.fecha; 
+
+      if(sumByDate.has(indexTx)){
+        if(record.covid){
+          sumByDate.get(indexTx).llamados_covid_qty += 1;
+        }else {
+          sumByDate.get(indexTx).llamados_nocovid_qty += 1;
+        }
+
+      }else{
+        let token = {
+              fets_llamado: record.fets_llamado,
+              fecha: record.fecha,
+              index: indexTx,
+              llamados_covid_qty: 0,
+              llamados_nocovid_qty: 0,
+            }
+
+          if(record.covid){
+            token.llamados_covid_qty += 1;
+          }else {
+            token.llamados_nocovid_qty += 1;
+          }
+
+         sumByDate.set(indexTx, token);
 
       }
     })
+
+    return Array.from(sumByDate, ( [name, value]) => (value)  )
+  }
+
+
+  private reviver(key, value) {
+    if(typeof value === 'object' && value !== null) {
+      if (value.dataType === 'Map') {
+        return new Map(value.value);
+      }
+    }
+    return value;
   }
 
   private initTableData(list: Asistencia[]){
@@ -215,6 +281,10 @@ export class VigilanciaReportesPageComponent implements OnInit {
     }else if(this.query && this.query.reporte === R_CONTACTOS){
 
     }else if(this.query && this.query.reporte === R_ASIGNACION){
+      this.asignacionReportList = list;
+      this.usersMapArray = this.groupByUsers(list);
+
+    }else if(this.query && this.query.reporte === R_LLAMADOS){
       this.asignacionReportList = list;
       this.usersMapArray = this.groupByUsers(list);
 
@@ -251,10 +321,25 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
     }
 
-
     this.showData = true;
+
   }
 
+  private sortLlamados(records: Array<any>){
+
+    records.sort((fel, sel)=> {
+
+      if(fel.fets_llamado < sel.fets_llamado ) return -1;
+
+      else if(fel.fets_llamado > sel.fets_llamado ) return 1;
+
+      else{
+        return 0;
+      }
+
+
+    });
+  }
 
   private sortProperly(records: Asistencia[]){
 
@@ -477,10 +562,18 @@ export class VigilanciaReportesPageComponent implements OnInit {
 
 }
 
+const LLAMADO_EPIDEMIO = [
+          'select',
+          'fecha',
+          'llamados_covid_qty',
+          'llamados_nocovid_qty',
+]
+
+
 const DOMICILIO = [
           'select',
           'ndoc',
-          'personSlug',
+          'username',
           'telefono',
           'nucleo',
           'qty',

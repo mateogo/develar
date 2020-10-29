@@ -61,9 +61,6 @@ const removeRelation = {
   }
 };
 
-
-
-
 /**
  * @title Asitencia Table Componet
  */
@@ -81,7 +78,7 @@ export class VigilanciaReportesTableComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select',  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "ndoc", "personSlug", "telefono", "edad", "qcontactos", "asignadoSlug", "fup_fe_inicio",  "faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "mdiagnostico", "covidAcutalSate", "covidSintoma", "covidAvance", "covid", "action","covidTxt", "reportadoPor", "fe_reportado", "lab_laboratorio", "lab_fe_toma", "lab_estado","slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
+  private table_columns = ['select',"fecha",  "asistenciaId", "compName", "compNum", "avance", "prioridad", "personId", "ndoc", "personSlug", "llamados_covid_qty", "llamados_nocovid_qty", "username", "llamados_qty", "telefono", "edad", "qcontactos", "asignadoSlug", "fup_fe_inicio",  "faudit_alta","faudit_um", "fecomp_tsa", "fecomp_txa", "mdiagnostico", "covidAcutalSate", "covidSintoma", "covidAvance", "covid", "action","covidTxt", "reportadoPor", "fe_reportado", "lab_laboratorio", "lab_fe_toma", "lab_estado","slug", "locacion", "osocial",  "description", "sector", "estado", "ts_alta"];
 
   private table_columns_sel = {
     'select':     false,
@@ -91,6 +88,11 @@ export class VigilanciaReportesTableComponent implements OnInit {
     'fecomp_tsa': false,
     'fecomp_txa': false,
     'action':     false,
+    'username':    false,
+    'fecha':       false,
+    'llamados_qty': false,
+    'llamados_covid_qty': false,
+    'llamados_nocovid_qty': false,
     "qcontactos":    false,
     "asignadoSlug":  false,
     "fup_fe_inicio": false,
@@ -123,7 +125,7 @@ export class VigilanciaReportesTableComponent implements OnInit {
 			private dsCtrl: SaludController,
 			public dialogService: MatDialog
     ){
-    this.displayedColumns = LABORATORIO;
+
     this.dataRecordsSource = this.dsCtrl.asistenciasDataSource;
   }
 
@@ -278,8 +280,3 @@ export class TableDataSource extends DataSource<any> {
 }
 
 
-const LABORATORIO = [
-          'select',
-          'personSlug',
-
-]

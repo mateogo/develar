@@ -1,12 +1,12 @@
 <mat-card >
   <mat-card-content>
-  <form [formGroup]="form">
 
 	<mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
-        <mat-panel-title><span class="text-resaltado">PARÁMETROS DEL REPORTE</span></mat-panel-title>
+        <mat-panel-title><span class="text-resaltado">{{ title }}</span></mat-panel-title>
     </mat-expansion-panel-header>
 
+    <form [formGroup]="form">
     <div class='vigilancia-box'>
 
 	    <div class="row" >
@@ -29,14 +29,14 @@
       	<div class="col-md-3">
 	        <mat-form-field>
 					  <mat-label>Fecha seguimiento desde...</mat-label>
-  	    		<input matInput [formControl]="form.controls.feDesde">
+  	    		<input matInput [formControl]="form.controls.fenovd">
     	    </mat-form-field>
       	</div>
 
       	<div class="col-md-3">
 	        <mat-form-field>
 					  <mat-label>Fecha seguimiento hasta...</mat-label>
-  	    		<input matInput [formControl]="form.controls.feHasta">
+  	    		<input matInput [formControl]="form.controls.fenovh">
     	    </mat-form-field>
       	</div>
       </div>
@@ -188,28 +188,18 @@
       </div>
 
     </div>
+    <div class="d-md-flex justify-content-start align-items-center additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+          (click)="onSubmit('search')"
+          [disabled]="!form.valid" >Buscar</button>
 
+       <!--button *ngIf='export' mat-button type="button" color="warning"
+        (click)="onExport('export')" >Exportar datos</button -->
+    </div>
+
+    </form>
   </mat-expansion-panel>
 
-  <div class="d-md-flex justify-content-start align-items-center" 
-        title="Se mostrarán solo los casos índice">
 
-      <p class="text-resaltado m-2" >MODO DE VISUALIZACIÓN: </p>
-      <mat-checkbox class="mat-checkbox-wrap"
-               [formControl]="form.controls['casosIndice']" >
-                mostrar sólo casos índice</mat-checkbox>
-  </div>
-
-	<div class="d-md-flex justify-content-start align-items-center additional-info">
-	  <button mat-raised-button color="primary" type="submit" 
-	      (click)="onSubmit('search')"
-	      [disabled]="!form.valid" >Buscar</button>
-
-     <button *ngIf='export' mat-button type="button" color="warning"
-      (click)="onExport('export')" >Exportar datos</button>
-
-	</div>
-
-</form>
 </mat-card-content>
 </mat-card>

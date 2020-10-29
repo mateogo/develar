@@ -54,7 +54,7 @@ export class TalimentarPageComponent implements OnInit {
   public  isBeneficiarioTxt = '';
   private numeroCaja = '';
   public  registroBancario: BeneficiarioAlimentar;
-
+ 
   constructor(
   		private dsCtrl: DsocialController,
   		private fb: FormBuilder,

@@ -788,6 +788,19 @@ export class Morbilidad {
 }
 
 
+
+function buildLlamadosData(list: Array<any>): AsistenciaTable[]{
+		return list.map(token => {
+			let td = new AsistenciaTable();
+			td.fecha = token.fecha;
+			td.username = token.username;
+			td.llamados_covid_qty = token.llamados_covid_qty;
+			td.llamados_nocovid_qty = token.llamados_nocovid_qty;
+
+			return td;
+		}) as AsistenciaTable[];
+}
+
 function buildDomiciliosData(list: Array<any>): AsistenciaTable[]{
 		return list.map(token => {
 			let td = new AsistenciaTable();
@@ -1022,6 +1035,13 @@ export class AsistenciaTable {
 		nucleo: string = '';
 		qty: number = 0; 
 
+		fecha: string = '';
+		username: string = '';
+		llamados_qty: number = 0;
+		llamados_covid_qty: number = 0;
+		llamados_nocovid_qty: number = 0;
+
+
 		faudit_alta:  string = '';
 		faudit_um:    string = '';
 
@@ -1098,6 +1118,7 @@ export class VigilanciaBrowse {
 		compName:    string = 'S/Asistencia';
 		compNum_d:   string;
 		requirenteId: string;
+		asistidoId: string;
 		compNum_h:   string;
 		actualState: string|number;
 		rebuildLatLon: boolean = false;
@@ -1799,6 +1820,7 @@ const reportesVigilanciaOptList: Array<any> = [
     {val: 'REDCONTACTOS',     label: 'Grafo de contactos' },
     {val: 'CONTACTOS',        label: 'Vigilancia de contactos' },
     {val: 'ASIGNACIONCASOS',  label: 'Asignación de casos por usuario' },
+    {val: 'LLAMADOSEPIDEMIO', label: 'Reporte de llamados de Epidemio' },
     {val: 'SINSEGUIMIENTO',   label: 'Afectados COVID sin resp seguimiento' },
     {val: 'GEOLOCALIZACION',  label: 'Geolocalización de contactos' },
    // {val: 'SEGUIMIENTO',      label: 'Reporte de seguimiento entre fechas' },
@@ -2572,6 +2594,8 @@ export class AsistenciaHelper {
 
       if(key === 'isVigilado'       && !query[key]) delete query[key];
       if(key === 'hasPrexistentes'  && !query[key]) delete query[key];
+      if(key === 'requirenteId'     && !query[key]) delete query[key];
+      if(key === 'asistidoId'       && !query[key]) delete query[key];
       if(key === 'hasParent'        && !query[key]) delete query[key];
       if(key === 'hasCovid'         && !query[key]) delete query[key];
       if(key === 'casoCovid'        && !query[key]) delete query[key];
@@ -2968,6 +2992,9 @@ export class AsistenciaHelper {
 
 	static buildDomiciliosDataTable(list: Array<any>):AsistenciaTable[]{
 		return buildDomiciliosData(list);
+	}
+	static buildLlamadosDataTable(list: Array<any>):AsistenciaTable[]{
+		return buildLlamadosData(list);
 	}
 
 }

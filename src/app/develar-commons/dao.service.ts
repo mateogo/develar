@@ -314,6 +314,16 @@ export class DaoService {
                  );
   }
 
+  searchOne<T>(type:string, query): Observable<T> {
+    let searchUrl = `${this.dao[type].searchURL}`;
+    let params = this.buildParams(query);
+    return this.http
+               .get<T>(searchUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<T>('search'))
+                 );
+  }
+
   nextSerial<T>(type:string, query): Observable<T> {
     let searchUrl = `${this.dao[type].nextItemURL}`;
     let params = this.buildParams(query);

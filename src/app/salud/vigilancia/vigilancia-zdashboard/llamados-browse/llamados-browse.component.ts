@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
-import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../../entities/person/person';
 import { VigilanciaBrowse,  OptList, AsistenciaHelper } from '../../../asistencia/asistencia.model';
@@ -24,6 +23,7 @@ const SEARCH_NEXT = 'search_next';
 export class LlamadosBrowseComponent implements OnInit {
 	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
   @Input() export = false;
+  @Input() title = 'Parametros del reporte'
 	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
 
   public actionOptList =       [];
@@ -116,7 +116,7 @@ export class LlamadosBrowseComponent implements OnInit {
     let fe = this.form.value.fecharef;
     this.updateFechaFromTo(fe);
 
-    this.form.controls.feDesde.setValue(this.query.feDesde);
+    this.form.controls.fenovd.setValue(this.query.fenovd);
     this.form.controls.feHasta.setValue(this.query.feHasta);
   }
 
@@ -129,8 +129,8 @@ export class LlamadosBrowseComponent implements OnInit {
 
     let dateFromTo = devutils.dateWeekFromTo(this.fecharef_date);
 
-    this.query.feDesde = dateFromTo.feDesde;
-    this.query.feHasta = dateFromTo.feHasta;
+    this.query.fenovd = dateFromTo.feDesde;
+    this.query.fenovh = dateFromTo.feHasta;
 
   }
 
@@ -140,7 +140,7 @@ export class LlamadosBrowseComponent implements OnInit {
 
   deSelectPerson(e:MatCheckboxChange){
     delete this.currentPerson;
-    delete this.query.requirenteId;
+    delete this.query.asistidoId;
   }
 
 	deSelectTrabajador(e: MatCheckboxChange){
@@ -163,34 +163,20 @@ export class LlamadosBrowseComponent implements OnInit {
   	let form: FormGroup;
 
     form = this.fb.group({
-      compPrefix:   [{value: "", disabled: true}],
-      compName:     [{value: "", disabled: true}],
-      compNum_d:       [null],
-      compNum_h:       [null],
-      isVigilado:      [null],
+
       hasCovid:        [null],
       casoCovid:       [null],
       vigiladoCovid:   [null],
-      necesitaLab:     [null],
-      pendLaboratorio: [null],
       actualState:     [null],
       isSeguimiento:   [null],
       reporte:         [null],   
 
-      isActiveSisa:     [null],
-      avanceSisa:       [null],
-      qDaysSisa:        [null],
-      qNotConsultaSisa: [null],
-
       tipoSeguimiento: [null],
-      qIntents:        [null],
-      qNotSeguimiento: [null],
       asignadoId:      [null],
-      casosIndice:     [null],
       avanceCovid:     [null],
       sintomaCovid:    [null],
-      feDesde:      [null], 
-      feHasta:      [null], 
+      fenovd:      [null, Validators.required], 
+      fenovh:      [null, Validators.required], 
       fecharef:     [null],
 
     });
@@ -200,42 +186,24 @@ export class LlamadosBrowseComponent implements OnInit {
 
   private initForEdit(form: FormGroup, query: VigilanciaBrowse): FormGroup {
 		form.reset({
-        compPrefix:  query.compPrefix,
-        compName:    query.compName,
-        compNum_d:   query.compNum_d,
-        compNum_h:   query.compNum_h,
 
-        isVigilado: query.isVigilado,
-        pendLaboratorio: query.pendLaboratorio,
-        actualState: query.actualState,
-        reporte: query.reporte,
         hasCovid:   query.hasCovid,
         casoCovid:   query.casoCovid,
         vigiladoCovid:   query.vigiladoCovid,
-        necesitaLab:   query.necesitaLab,
+        actualState: query.actualState,
         isSeguimiento:  query.isSeguimiento,
+        reporte: query.reporte,
         tipoSeguimiento:  query.tipoSeguimiento,
-        qIntents:   query.qIntents,
-        qNotSeguimiento:   query.qNotSeguimiento,
-        casosIndice:  query.casosIndice ? true: false,
-
-        sintomaCovid:   query.sintomaCovid,
         asignadoId:    query.asignadoId,
         avanceCovid:   query.avanceCovid,
-
-        feDesde:    query.feDesde,
-        feHasta:    query.feHasta,
+        sintomaCovid:   query.sintomaCovid,
+        fenovd:    query.fenovd,
+        fenovh:    query.fenovh,
         fecharef:   this.fecharef,
-
-        isActiveSisa: query.isActiveSisa,
-        avanceSisa: query.avanceSisa,
-        qDaysSisa: query.qDaysSisa,
-        qNotConsultaSisa: query.qNotConsultaSisa,
-
 		});
 
-    if(query.requirenteId && !this.currentPerson) {
-      this.dsCtrl.fetchPersonById(query.requirenteId).then(p => {
+    if(query.asistidoId && !this.currentPerson) {
+      this.dsCtrl.fetchPersonById(query.asistidoId).then(p => {
         this.currentPerson = p;
       })
     }
@@ -247,57 +215,35 @@ export class LlamadosBrowseComponent implements OnInit {
 		const fvalue = form.value;
 		const entity = new VigilanciaBrowse();
 
-    let dateD = devutils.dateFromTx(fvalue.fecomp_d);
-    let dateH = devutils.dateFromTx(fvalue.fecomp_h);
-
-    entity.compPrefix =  fvalue.compPrefix;
-    entity.compName =    fvalue.compName;
-
-    entity.compNum_d =   fvalue.compNum_d;
-    entity.compNum_h =   fvalue.compNum_h;
-
-    entity.isVigilado =   fvalue.isVigilado;
-    entity.pendLaboratorio =   fvalue.pendLaboratorio;
-    entity.actualState  = fvalue.actualState;
-    entity.reporte = fvalue.reporte;
     entity.hasCovid =     fvalue.hasCovid;
     entity.casoCovid =   fvalue.casoCovid,
-
-    entity.necesitaLab =     fvalue.necesitaLab;
-
+    entity.vigiladoCovid =   fvalue.vigiladoCovid,
+    entity.actualState  = fvalue.actualState;
     entity.isSeguimiento =   fvalue.isSeguimiento;
+    entity.reporte = fvalue.reporte;
     entity.tipoSeguimiento =   fvalue.tipoSeguimiento;
-    entity.qIntents =   fvalue.qIntents;
-    entity.qNotSeguimiento =   fvalue.qNotSeguimiento;
-    entity.asignadoId = fvalue.asignadoId;
 
-    entity.casosIndice =   fvalue.casosIndice ? 1: 0;
+
+    entity.asignadoId = this.currentTrabajador ? fvalue.asignadoId : null;
 
     entity.avanceCovid =   fvalue.avanceCovid;
     entity.sintomaCovid =   fvalue.sintomaCovid;
-		entity.feDesde =     fvalue.feDesde;
-		entity.feHasta =     fvalue.feHasta;
 
-    entity.isActiveSisa = fvalue.isActiveSisa;
-    entity.avanceSisa = fvalue.avanceSisa;
-    entity.qDaysSisa = fvalue.qDaysSisa;
-    entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
+    entity.fenovd = devutils.txFormatted(fvalue.fenovd);
+    entity.fenovh = devutils.txFormatted(fvalue.fenovh);
 
-    entity.feDesde = devutils.txFormatted(entity.feDesde);
-    entity.feHasta = devutils.txFormatted(entity.feHasta);
-
-    entity.feDesde_ts = entity.feDesde ? devutils.dateNumFromTx(entity.feDesde) : 0;
-    entity.feHasta_ts = entity.feHasta ? devutils.dateNumPlusOneFromTx(entity.feHasta) : 0;
+    entity.fenovd_ts = entity.fenovd ? devutils.dateNumFromTx(entity.fenovd) : 0;
+    entity.fenovh_ts = entity.fenovh ? devutils.dateNumPlusOneFromTx(entity.fenovh) : 0;
 
     if(this.currentPerson){
-      entity.requirenteId = this.currentPerson._id;
+      entity.asistidoId = this.currentPerson._id;
 
-      this.dsCtrl.fetchPersonById(entity.requirenteId).then(p => {
-        this.dsCtrl.updateCurrentPerson(p);
-      })
+      // this.dsCtrl.fetchPersonById(entity.asistidoId).then(p => {
+      //   this.dsCtrl.updateCurrentPerson(p);
+      // })
 
     }else {
-      delete entity.requirenteId;
+      delete entity.asistidoId;
     }
 
     AsistenciaHelper.cleanQueryToken(entity, true);

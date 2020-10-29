@@ -550,6 +550,64 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['reporte'] && query['reporte']==="LLAMADOSEPIDEMIO"){
+      q = {
+            isVigilado: true,
+            avance: {$ne: 'anulado'},
+          }
+
+      if(query['fenovd_ts'] && query['fenovh_ts']){
+        let fedesde = parseInt(query['fenovd_ts'], 10);
+        let fehasta = parseInt(query['fenovh_ts'], 10);
+        q['seguimEvolucion.fets_llamado'] = { $gte: fedesde, $lt: fehasta };
+      }
+
+      if(query['asignadoId']){
+          q["followUp.asignadoId"] = query['asignadoId'];
+      }
+
+      if(query['hasCovid']){
+        q["infeccion.hasCovid"] = true;
+      }
+
+      if(query['casoCovid']){
+        q['infeccion.actualState'] = {$in: [1, 4, 5]}; 
+      }
+
+      if(query['vigiladoCovid']){
+        q["infeccion.isActive"] = true;
+      }
+
+      if(query['actualState']){
+        q["infeccion.actualState"] = parseInt(query['actualState'], 10);
+      }
+
+      if(query['isSeguimiento']){
+        q["followUp.isActive"] = true;
+        q['followUp.altaVigilancia'] =  {$ne: true};
+      }
+
+      if(query['tipoSeguimiento']){
+        q["followUp.tipo"] = query['tipoSeguimiento'];
+      }
+
+      if(query['avanceCovid']){
+        q["infeccion.avance"] = query['avanceCovid'];
+      }
+
+      if(query['sintomaCovid']){
+        q["infeccion.sintoma"] = query['sintomaCovid'];
+      }
+
+      if(query['asistidoId']){
+          q["requeridox.id"] = query['asistidoId'];
+          return q;
+      }
+
+
+      return q;
+  }
+
   if(query['reporte'] && query['reporte']==="LLAMADOSIVR"){
       let feha = Date.now();
       let fede = feha - (1000 * 60 * 60 * 24 * 15);
@@ -954,7 +1012,6 @@ function buildQuery(query, today){
 
     q['$and'] = condition;
   }
-  //console.dir(q)
 
   return q; 
 }
@@ -1267,7 +1324,8 @@ const findByQueryProcessFunction = {
   'ASIGNACIONCASOS' : buildCasosPorUsuario, // Cuántos afectados tiene asignado cada usuario
   'CONTACTOS'       : buildContactosMaster, // Selecciona los casos índices + huérfanos
   'SINSEGUIMIENTO'  : afectadosSinResponsableSeguimiento, // Selecciona los casos índices + huérfanos
-  'GEOLOCALIZACION' : geolocalizacionContactos // Reporte adaptado para renderizar mapa
+  'GEOLOCALIZACION' : geolocalizacionContactos, // Reporte adaptado para renderizar mapa
+  'LLAMADOSEPIDEMIO' : buildLlamadosEpidemio // Estadística de llamados realizados por EPIDEMIO a los afectados/a e/fechas
 };
 
 /**
@@ -1678,10 +1736,104 @@ function afectadosSinResponsableSeguimiento(movimientos, query, errcb, cb){
 
   // cb(filteredList);
 
-
 }
 
 
+
+/******************************************************/
+/**   CASOS LLAMADOS EPIDEMIO   LLAMADOSEPIDEMIO     */
+/****************************************************/
+function buildLlamadosEpidemio(movimientos, query, errcb, cb){
+
+  let movXfecha = agruparMovimientosPorFechaLlamado(movimientos, query); // Map(fecha: casos)
+
+  cb( Array.from(movXfecha, ( [name, value]) => (value)  ));
+
+
+}
+
+function agruparMovimientosPorFechaLlamado(movimientos, query){
+      let groupByFecha = new Map();
+      let fedesde = 0;
+      let fehasta = 0;
+      console.dir(query)
+
+      if(query['fenovd_ts'] && query['fenovh_ts']){
+        fedesde = parseInt(query['fenovd_ts'], 10);
+        fehasta = parseInt(query['fenovh_ts'], 10);
+      }
+
+      if(movimientos && movimientos.length){
+          movimientos.forEach(asis => {
+           let covid = isCovidTotal(asis);
+
+           let llamados = asis.seguimEvolucion;
+
+           if(llamados && llamados.length){
+             llamados.forEach(fUp => {
+               _buildLlamadoToken(groupByFecha, fUp, covid, fedesde, fehasta);
+
+             })
+           }
+          });
+      }
+      return groupByFecha;  
+}
+
+function _buildLlamadoToken(groupByFecha, fUp, covid,  fedesde, fehasta){
+  //fdesde <= fets_llamado  < fehasta
+  if(!(fedesde <= fUp.fets_llamado && fUp.fets_llamado < fehasta )) return;
+
+  let audit = fUp.audit;
+  let userId = 'user_unknown';
+  let username = 'no_establecido'; 
+  let fecha_llamado = utils.dateToStr(new Date(fUp.fets_llamado));
+
+  if(audit){
+    userId =  audit.userId;
+    username =  audit.username;
+  }
+
+  let indexTx = fecha_llamado + ':' + userId  + ':' + (covid ? 'covid':'nocovid')
+
+  if(groupByFecha.has(indexTx)){
+    groupByFecha.get(indexTx).qty  += 1;
+
+  }else{
+    let token = {
+                  fets_llamado: fUp.fets_llamado,
+                  fecha: utils.dateToStr(new Date(fUp.fets_llamado)),
+                  index: indexTx,
+                  covid: covid,
+                  qty: 1,
+                  userId: userId,
+                  username: username 
+                }
+
+    groupByFecha.set(indexTx, token);
+  }
+
+}
+
+function mapReplacer(key, value) {
+  const originalObject = this[key];
+  if(originalObject instanceof Map) {
+    return {
+      dataType: 'Map',
+      value: [...originalObject]
+    };
+  } else {
+    return value;
+  }
+}
+
+
+/**  END:  CASOS LLAMADOS EPIDEMIO   LLAMADOSEPIDEMIO     */
+
+
+/******************************************************/
+/**   CASOS POR USUARIO          ASIGNACIONCASOS     */
+/****************************************************/
 function buildCasosPorUsuario(movimientos, query, errcb, cb){
   let contactosMap = agruparCasosIndices(movimientos);
   let targetMap = sumarCasosPorUsuario(movimientos, contactosMap);
