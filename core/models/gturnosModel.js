@@ -639,7 +639,8 @@ exports.createInitialData = function (){
     //      db.turnosdisponibles.updateMany({'recurso.lugarId': 'longchamps', hora: 12},{$set: {'capacidad.qty':35 }})
     //      db.turnosdisponibles.find({'recurso.lugarId': 'longchamps', hora: 12})
 
-    //      db.turnosdisponibles.updateMany({'recurso.lugarId':'claypole', hora:9},{ $set: {'capacidad.qty': 40}  })
+    //      db.turnosdisponibles.updateMany({'recurso.lugarId':'claypole', hora:9},{ $set: {'capacidad.qty': 40}  }) // actualiza #5 registros
+    //      db.turnosdisponibles.updateMany({'recurso.lugarId':'burzaco', hora:12},{ $set: {'capacidad.qty': 35}  }) // actualiza #10 registros
 
 
     let capacidad = {
