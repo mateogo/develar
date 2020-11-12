@@ -548,16 +548,16 @@ exports.createInitialData = function (){
 
 
       //cicburzaco Pasa a 9:30
-      {recurso: 'cicburzaco', dow: 1, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
-      {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
-      {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
-      {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
-      {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
-      {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      // {recurso: 'cicburzaco', dow: 1, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      // {recurso: 'cicburzaco', dow: 1, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      // {recurso: 'cicburzaco', dow: 2, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      // {recurso: 'cicburzaco', dow: 2, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      // {recurso: 'cicburzaco', dow: 3, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      // {recurso: 'cicburzaco', dow: 3, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      // {recurso: 'cicburzaco', dow: 4, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      // {recurso: 'cicburzaco', dow: 4, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
+      // {recurso: 'cicburzaco', dow: 5, hora:  9, slug: 'CIC BURZACO 09:30 hs' },
+      // {recurso: 'cicburzaco', dow: 5, hora: 10, slug: 'CIC BURZACO 10:00 hs' },
 
 
       //rcalzada
@@ -638,6 +638,9 @@ exports.createInitialData = function (){
     //      esto se corrigió por update en la base de datos:
     //      db.turnosdisponibles.updateMany({'recurso.lugarId': 'longchamps', hora: 12},{$set: {'capacidad.qty':35 }})
     //      db.turnosdisponibles.find({'recurso.lugarId': 'longchamps', hora: 12})
+
+    //      db.turnosdisponibles.updateMany({'recurso.lugarId':'claypole', hora:9},{ $set: {'capacidad.qty': 40}  })
+
 
     let capacidad = {
       qty: 30,

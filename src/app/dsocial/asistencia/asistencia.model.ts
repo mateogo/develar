@@ -381,7 +381,7 @@ const entregaDesdeOptList: Array<any> = [
 				{val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
 				{val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
 				{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',     locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
-				{val: 'cicburzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
+				//{val: 'ci cburzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
 
         {val: 'secretaria',   type:'Secretaría',       label: 'Secretaría'      , locacion: 'erezcano',  telefono: '11 2222 3333'},
         {val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' , locacion: 'erezcano',  telefono: '11 2222 3333'},
@@ -422,7 +422,7 @@ const delegacionesOptList = [
 {val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
 {val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
 {val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',     locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
-{val: 'cicburzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
+//{val: 'cic burzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
 
 ];
 
