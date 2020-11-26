@@ -835,6 +835,40 @@ class Devutils {
         return this.txFromDate(this.dateFromTx(datex))
     }
 
+    datePickerToTx(datepickerTx: string){
+        return dateToStr(new Date(datepickerTx));
+    }
+
+    datePickerToDate(datepickerTx){
+        let date:Date|typeof NaN;
+ 
+        try {
+            date = new Date(datepickerTx);
+            return (date instanceof Date && !isNaN(date.getTime())) ? date: null;
+        } catch(error) {
+
+            return null;
+        }
+    }
+
+    datePickerToNumPlusOne(datepickerTx){
+        //let fecha = parseDateStr(dateToStr(new Date(datepickerTx)) );
+        let fecha = new Date(datepickerTx);
+       // c onsole.log('fecha: [%s]',fecha.getTime())
+        if (fecha) {
+            fecha.setDate(fecha.getDate() + 1);
+            return fecha.getTime();
+        }
+        else return 0;
+
+
+        return new Date(datepickerTx).getTime();
+    }
+
+    datePickerToNum(datepickerTx){
+        return new Date(datepickerTx).getTime();
+    }
+
 }
 
 export const devutils = new Devutils();

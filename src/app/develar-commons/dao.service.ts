@@ -199,6 +199,10 @@ export class DaoService {
       geocode: {
         backendURL: 'api/utils/geocode'
       },
+      userweb : {
+        backendURL : 'api/userweb',
+        searchURL : 'api/userweb/search'
+      }
     };
   }
 

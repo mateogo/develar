@@ -95,6 +95,8 @@ import { MapService } from './mapbox/services/map.api';
 
 import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.component';
 import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
+import { InstructivoNumTramiteModalComponent } from './instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
+import { TermscondModalComponent } from './termscond-modal/termscond-modal.component';
 
 
 @NgModule({
@@ -179,7 +181,9 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     PieChartComponent,
     ForceDirectedGraphComponent,
     MapBoxComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    InstructivoNumTramiteModalComponent,
+    TermscondModalComponent
   ],
   exports:[
     DevelarMaterialModule,
@@ -249,7 +253,9 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     PieChartComponent,
     ForceDirectedGraphComponent,
     MapBoxComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    InstructivoNumTramiteModalComponent,
+    TermscondModalComponent
   ],
   providers: [
     AssetService,
