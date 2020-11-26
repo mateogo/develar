@@ -4,6 +4,7 @@ import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 import { DaoService }    from '../develar-commons/dao.service';
 import { devutils } from '../develar-commons/utils';
 import { Person, PersonContactData, Address, UpdatePersonEvent }        from '../entities/person/person';
+import { UserWeb } from '../entities/user-web/user-web.model';
 
 import { Asistencia, Requirente, AsistenciaSig } from './asistencia/asistencia.model';
 import { Turno }         from './turnos/turnos.model';
@@ -382,6 +383,14 @@ export class PersonService {
     }
 
     return sigList$
+  }
+
+  ///////////////// INTRODUCIMOS LA POSIBILIDAD DE BUSCAR UNA PERSONAS A PARTIR DE UN USUARIO /////////////
+  fetchPersonByUserAGN(user: UserWeb): Observable<Person[]>{
+    let query = {
+      userwebId: user['_id']
+    }
+    return this.daoService.search<Person>('person', query);
   }
 
 

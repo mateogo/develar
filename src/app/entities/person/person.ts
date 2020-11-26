@@ -26,7 +26,7 @@ export interface UpdateEventEmitter {
 export interface UpdateItemListEvent {
       action: string;
       type: string;
-      items: Array<PersonContactData|Address|FamilyData|BusinessMembersData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental|CardGraph>;
+      items: Array<PersonContactData|Address|FamilyData|BusinessMembersData|OficiosData|SaludData|CoberturaData|EncuestaAmbiental|CardGraph | PersonVinculosData>;
 };
 
 export interface UpdatePersonEvent {
@@ -95,6 +95,26 @@ export interface Geocoder {
   lng: number;
   label: string;
 }
+
+export class PersonVinculosData {
+  nombre: string;
+  apellido: string;
+  tdoc: string = 'DNI';
+  ndoc: string;
+  personId: string;
+  vinculo : string;
+  estado  : string;
+  desde : string;
+  hasta : string;
+  assets: Array<CardGraph> = [];
+
+}
+
+export interface UpdatePersonVinculosEvent {
+  action: string;
+  type: string;
+  token: PersonVinculosData;
+};
 
 
 export class Address {
@@ -381,6 +401,7 @@ export class Person {
   habilitaciones: Array<DocumentData>;
   permisos: Array<DocumentData>;
 
+  vinculos : Array<PersonVinculosData>;
   salud: Array<SaludData>;
   cobertura: Array<CoberturaData>;
 	messages: Array<NotificationMessage>
@@ -1983,6 +2004,19 @@ class PersonModel {
       member.ocupacion = p.especialidad;
 
       member.hasOwnPerson = true;
+      member.personId = p._id;
+
+      return member;
+    }
+
+    buildPersonVinculosFromPerson(p:Person, member:PersonVinculosData): PersonVinculosData{
+      if(!member) member = new PersonVinculosData();
+
+      member.nombre = p.nombre;
+      member.apellido = p.apellido;
+      member.tdoc = p.tdoc;
+      member.ndoc = p.ndoc;
+
       member.personId = p._id;
 
       return member;

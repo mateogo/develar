@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserWebFormRegistroEditComponent } from '../entities/user-web/user-web-form-registro-edit/user-web-form-registro-edit.component';
 import { DashboardMainComponent } from './dashboard/dashboard-main/dashboard-main.component';
 import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-page.component';
+import { PersonasPageComponent } from './personas-industriales/personas-page/personas-page.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
     {
       path: 'usuario/:id',
       component : UserWebFormRegistroEditComponent
+    },
+    {
+      path : 'personas/:id',
+      component : PersonasPageComponent
     },
     {
       path : '',

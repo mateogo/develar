@@ -848,15 +848,18 @@ function assetAlreadyInArray(asset, target){
     return target.find(t => t.entityId === asset.entityId)
 }
 
+const primeraMayuscula = function (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const initPersonFromUser = function(user ){
     let person = new Person();
 
-    person.displayName = user.username;
+    person.displayName = (user.isUsuarioWeb) ? (primeraMayuscula(user.nombre) + ' ' + primeraMayuscula(user.apellido)) : user.username;
     person.personType = 'fisica'
     person.email = user.email;
-    person.tdoc = 'DNI';
-    person.ndoc = '';
+    person.tdoc = (user.tdoc && user.tdoc !== '') ? user.tdoc : 'DNI';
+    person.ndoc = (user.ndoc && user.ndoc !== '') ? user.ndoc : '';
     person.ambito = 'cliente';
     person.user = {
         userid: user._id,
@@ -865,11 +868,41 @@ const initPersonFromUser = function(user ){
     return person;
 }
 
-const updatePersonFromUser = function(person, user){
-    person.user = {
-        userid: user._id,
-        username: user.username
+const updatePersonFromUser = function (person, user) {
+
+    if(user.isUsuarioWeb){
+        person.userweb = {
+            userid: user._id,
+            username: user.username
+        }
+        person.fenac = (user.tsFechaNacimiento) ? user.tsFechaNacimiento : '';
+        person.fenactx = (user.fechaNacimiento) ? user.fechaNacimiento : null;
+        person.nombre = (user.nombre && user.nombre !== '') ? user.nombre : '';
+        person.apellido = (user.apellido && user.apellido !== '') ? user.apellido : '';
+
+
+    }else{
+        person.user = {
+            userid: user._id,
+            username: user.username
+        }
     }
+    if (user.telefono) {
+        let contactdata = person.contactdata || [];
+        let tel = contactdata.find(t => t.data === user.telefono);
+        if(!tel){
+            contactdata.push({
+                tdato: 'TEL',
+                data: user.telefono,
+                type: 'PER',
+                slug: 'Teléfono de contacto',
+                isPrincipal: true
+            })
+            person.contactdata = contactdata;
+        }
+        
+    }
+
     return person;
 }
 
