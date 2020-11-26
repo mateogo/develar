@@ -5,7 +5,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -28,7 +28,8 @@ import {MatBadgeModule}     from '@angular/material/badge';
 import {MatTableModule}     from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule}      from '@angular/material/sort';
-import {MatTooltipModule}   from '@angular/material/tooltip'
+import {MatTooltipModule}   from '@angular/material/tooltip';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
 @NgModule({
 	imports: [
@@ -90,7 +91,16 @@ import {MatTooltipModule}   from '@angular/material/tooltip'
 		MatPaginatorModule,
 		MatSortModule,
 		MatTooltipModule
-	]
+	],
+	providers : [	
+		{provide : MAT_DATE_LOCALE, useValue: 'es-AR'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+	{provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
+]
 })
 export class DevelarMaterialModule {}
 
