@@ -10,6 +10,7 @@ import * as io from 'socket.io-client';
 import { User, CurrentCommunity } from './user';
 import { Person } from '../person/person';
 import { Community } from '../../develar-commons/community/community.model';
+import { UserWebService } from '../user-web/user-web.service';
 
 
 const estados = [
@@ -63,28 +64,30 @@ export class UserService {
 
 	private _currentUser: User;
 	private _userEmitter: BehaviorSubject<User>;
-	
+
 	private isLogIn = false;
 	private hasLogout = false;
 
-	constructor(private http: HttpClient) { 
+	constructor(private http: HttpClient,
+		private _userService: UserWebService) {
 		this.currentUser = new User('invitado', 'invitado@develar')
 		this._userEmitter = new BehaviorSubject<User>(this.currentUser);
 		this._socket = io();
 	}
-	
+
 
 	/**************
 		DAO FUNCTIONS
 	******************/
 	getUsers(): Promise<User[]> {
 		return this.http.get(this.usersUrl)
-		           .toPromise()
-		           .catch(this.handleError);
+			.toPromise()
+			.catch(this.handleError);
 	}
 
 	private handleError(error: any): Promise<any> {
-		console.error('handleError: Ocurrió un error [%s] [%s]',error, arguments.length);
+		console.error('handleError: Ocurrió un error [%s] [%s]', error, arguments.length);
+		console.dir(error)
 
 		return Promise.reject(error.message || error);
 	}
@@ -92,7 +95,7 @@ export class UserService {
 	create(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'signup'}`;
 		return this.http
-			.post(url, JSON.stringify(user), {headers: this.headers})
+			.post(url, JSON.stringify(user), { headers: this.headers })
 			.toPromise()
 			.catch(this.handleError);
 	}
@@ -100,7 +103,7 @@ export class UserService {
 	update(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'signup'}/${user._id}`;
 		return this.http
-			.put(url, JSON.stringify(user), {headers: this.headers})
+			.put(url, JSON.stringify(user), { headers: this.headers })
 			.toPromise()
 			.catch(this.handleError);
 	}
@@ -108,7 +111,7 @@ export class UserService {
 	credentials(user: User): Promise<User> {
 		const url = `${this.usersUrl}/${'credentials'}/${user._id}`;
 		return this.http
-			.put(url, JSON.stringify(user), {headers: this.headers})
+			.put(url, JSON.stringify(user), { headers: this.headers })
 			.toPromise()
 			.catch(this.handleError);
 	}
@@ -118,38 +121,38 @@ export class UserService {
 		let id = this._currentUser.personId;
 		const url = `${this.personUrl}/${id}`;
 		return this.http.get(url)
-				.toPromise()
-				.catch(this.handleError);
+			.toPromise()
+			.catch(this.handleError);
 	}
 
 
 	getUser(id: string): Promise<User> {
 		const url = `${this.usersUrl}/${id}`;
 		return this.http.get(url)
-				.toPromise()
-				.catch(this.handleError);
+			.toPromise()
+			.catch(this.handleError);
 	}
 
 	delete(id: string): Promise<void> {
 		const url = `${this.usersUrl}/${id}`;
-		return this.http.delete(url, {headers: this.headers})
+		return this.http.delete(url, { headers: this.headers })
 			.toPromise()
 			.then(() => null)
 			.catch(this.handleError);
 	}
-	
+
 
 	/**************
 		COMMUNITY MANAGEMENT
 	******************/
-	changeCurrentCommunity(community: Community){
+	changeCurrentCommunity(community: Community) {
 		let move_to: CurrentCommunity = {
 			id: community.id,
 			name: community.name,
 			slug: community.slug,
 			displayAs: community.displayAs
 		}
-		let user:User = this._currentUser;
+		let user: User = this._currentUser;
 		user.communityId = community._id;
 		user.communityUrlpath = community.urlpath;
 		user.currentCommunity = move_to;
@@ -158,7 +161,7 @@ export class UserService {
 
 	}
 
-	changeUserCommunity(user: User, community: Community){
+	changeUserCommunity(user: User, community: Community) {
 		let move_to: CurrentCommunity = {
 			id: community.id,
 			name: community.name,
@@ -179,7 +182,7 @@ export class UserService {
 		const url = `${this.usersUrl}/${'login'}`;
 		this.hasLogout = false;
 		return this.http
-			.post(url, JSON.stringify(user), {headers: this.headers})
+			.post(url, JSON.stringify(user), { headers: this.headers })
 			.toPromise()
 			.catch(this.loginError);
 	}
@@ -193,52 +196,53 @@ export class UserService {
 			.catch(this.loginError);
 	}
 
-	logout(){
+	logout(): Promise<any> {
 
 		let url = `${this.usersUrl}/closesession`;
 		this.isLogIn = false;
 		this.hasLogout = true;
+		this._userService.logout();
 		this._currentUser = new User('invitado', 'invitado@develar');
 		this._userEmitter.next(this._currentUser);
-		this.http.get(url)
-				.toPromise()
-				.catch(this.handleError);
+		return this.http.get(url)
+			.toPromise()
+			.catch(this.handleError);
 
 	}
 
 	private loginError(error: any): Promise<any> {
 		this.isLogIn = false;
 		this.hasLogout = false;
-		return Promise.reject({message: 'loginError: fallo en la autenticación, el usuario o la clave son incorrectas'});
+		return Promise.reject({ message: 'loginError: fallo en la autenticación, el usuario o la clave son incorrectas' });
 	}
 
 	/**************
 		MAIL NOTIFICATION
 	**********************/
-	sendMailFactory(opt?: Object): SendMail{
+	sendMailFactory(opt?: Object): SendMail {
 		return new SendMail(opt);
 	}
 
 	send(mail: SendMail): Promise<any> {
 		return this.http
-			.post(mail.url, JSON.stringify(mail.content), {headers: this.headers})
+			.post(mail.url, JSON.stringify(mail.content), { headers: this.headers })
 			.toPromise()
 			.catch(this.handleError);
 	}
 
 
-	initCurrentUser(){
+	initCurrentUser() {
 		// OjO esto es solo para desarrollo
 		this.currentUser.password = "abc1234";
 		this.login(this.currentUser)
 			.then(user => {
 				this.currentUser = user;
-				if(!this.currentUser.currentCommunity){
+				if (!this.currentUser.currentCommunity) {
 					this.currentUser.currentCommunity = {
 						id: null,
-						name:'develar',
-						slug:'develar',
-						displayAs:'develar'
+						name: 'develar',
+						slug: 'develar',
+						displayAs: 'develar'
 					}
 				}
 				this._userEmitter.next(this.currentUser);
@@ -249,29 +253,28 @@ export class UserService {
 		API UTILS
 	******************/
 
-	get userEmitter():BehaviorSubject<User>{
+	get userEmitter(): BehaviorSubject<User> {
 		return this._userEmitter;
 	}
 
-	get socket(): any{
+	get socket(): any {
 		return this._socket;
 	}
 
-	get userlogged(): boolean{
+	get userlogged(): boolean {
 		return this.isLogIn;
 	}
 
 
 	/***** CURRENT USER     **********/
-	get currentUser():User{
-		if(this._currentUser.username === 'invitado' && !this.hasLogout){
+	get currentUser(): User {
+		if (this._currentUser.username === 'invitado' && !this.hasLogout) {
 			this.updateCurrentUser();
 		}
-		
 		return this._currentUser;
 	}
 
-	set currentUser(user: User){
+	set currentUser(user: User) {
 		this._currentUser = user;
 	}
 
@@ -281,46 +284,46 @@ export class UserService {
 		let loggedIn = false;
 		let loginUser = new Subject<User>();
 
-		this.loadLoginUser().then(res =>{
-				fetchedUser = res as User;
-				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+		this.loadLoginUser().then(res => {
+			fetchedUser = res as User;
+			loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
 
-				if(!loggedIn ){
-					setTimeout(() =>{
+			if (!loggedIn) {
+				setTimeout(() => {
 
-						this.loadLoginUser().then(res =>{
-										fetchedUser = res as User;
-										loggedIn = (fetchedUser && fetchedUser._id) ? true: false;
+					this.loadLoginUser().then(res => {
+						fetchedUser = res as User;
+						loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
 
-										if(!loggedIn ){
-											fetchedUser = new User('invitado', 'invitado@develar');
-											this.setAnonimousUser(fetchedUser, loginUser);
+						if (!loggedIn) {
+							fetchedUser = new User('invitado', 'invitado@develar');
+							this.setAnonimousUser(fetchedUser, loginUser);
 
-										}else{
-											this.setLoginUser(fetchedUser, loginUser);
-										}
-						})
-					},2000)
+						} else {
+							this.setLoginUser(fetchedUser, loginUser);
+						}
+					})
+				}, 2000)
 
-				}else {
-					this.setLoginUser(fetchedUser, loginUser);
-				}
+			} else {
+				this.setLoginUser(fetchedUser, loginUser);
+			}
 
-			})
-			.catch(this.handleError);	
+		})
+			.catch(this.handleError);
 
 		return loginUser;
 	}
 
 
-	loadLoginUser(){
+	loadLoginUser() {
 		const url = `${this.usersUrl}/${'currentuser'}`;
 		return this.http
 			.get(url)
-			.toPromise()	
+			.toPromise()
 	}
 
-	setAnonimousUser(user: User, loginUser: Subject<User>){
+	setAnonimousUser(user: User, loginUser: Subject<User>) {
 		this._currentUser = user;
 		this.isLogIn = false;
 		this.hasLogout = false;
@@ -328,7 +331,7 @@ export class UserService {
 		this.userEmitter.next(this._currentUser);
 	}
 
-	setLoginUser(user: User, loginUser: Subject<User>){
+	setLoginUser(user: User, loginUser: Subject<User>) {
 		this._currentUser = user;
 		this.isLogIn = true;
 		this.hasLogout = false;
@@ -343,15 +346,14 @@ export class UserService {
 		return this.http
 			.get(url)
 			.toPromise()
-			.then(res =>{
+			.then(res => {
 				let fetchedUser = res as User;
-				this.isLogIn = (fetchedUser && fetchedUser._id) ? true: false;
-
-				if(!this.isLogIn ){
+				this.isLogIn = (fetchedUser && fetchedUser._id) ? true : false;
+				if (!this.isLogIn) {
 					this.hasLogout = true;
 					this.currentUser = new User('invitado', 'invitado@develar');
 
-				}else {
+				} else {
 					this.hasLogout = false;
 					this.currentUser = fetchedUser;
 				}
@@ -362,42 +364,39 @@ export class UserService {
 			.catch(this.handleError);
 	}
 
-	getEstados(){
+	getEstados() {
 		return estados;
 	}
 
-	getAvances(){
+	getAvances() {
 		return avances;
 	}
 
-	getRoles(){
+	getRoles() {
 		return roles;
 	}
 
-	isAdminUser(){
-		let user = this.currentUser;
-		let roles = user.moduleroles;
+	isAdminUser() {
+		let user = this.currentUser || this._userService.currentUser;
 		let admin = false;
-		if(roles && roles.length){
-			if(roles.indexOf('core:admin') !== -1){
-				admin = true;
-			}
+		if (user && !user['isUsuarioWeb'] && (user.username !== 'invitado')) {
+			admin = true;
 		}
 		return admin;
 	}
 
-	getVigilanciaRole(){
+	getVigilanciaRole() {
 		let user = this.currentUser;
 		let roles = user.moduleroles;
 		let vigilancia = '';
-		if(roles && roles.length){
-			vigilancia = roles.find(t => t.substr(0,10)=== 'vigilancia');
+		if (roles && roles.length) {
+			vigilancia = roles.find(t => t.substr(0, 10) === 'vigilancia');
 
 		}
 		return vigilancia;
 	}
 
-	getModulos(){
+	getModulos() {
 		return modulos;
 	}
 
@@ -408,16 +407,16 @@ export class UserService {
 
 
 
-class SendMail{
+class SendMail {
 	private urlRoot = '/api/utils/sendmail';
-	private httpHeaders = new Headers({'Content-Type': 'application/json'});
+	private httpHeaders = new Headers({ 'Content-Type': 'application/json' });
 
 	private mailData = {
-		from:  '',
-		to:    '',
-		cc:    '',
-		subject:  '',
-		body:  '',
+		from: '',
+		to: '',
+		cc: '',
+		subject: '',
+		body: '',
 	}
 
 	private handleError(error: any): Promise<any> {
@@ -426,36 +425,36 @@ class SendMail{
 		return Promise.reject(error.message || error);
 	}
 
-	constructor (options?: Object){
-		if(options) Object.assign(this.mailData, options);
+	constructor(options?: Object) {
+		if (options) Object.assign(this.mailData, options);
 	}
 
 
-	set mailFrom(data){
+	set mailFrom(data) {
 		this.mailData.from = data;
 	}
 
-	set mailTo(data){
+	set mailTo(data) {
 		this.mailData.to = data;
 	}
 
-	set mailSubject(data){
+	set mailSubject(data) {
 		this.mailData.subject = data;
 	}
 
-	set mailBody(data){
+	set mailBody(data) {
 		this.mailData.body = data;
 	}
 
-	get content(){
+	get content() {
 		return this.mailData;
 	}
-	
-	get url(){
+
+	get url() {
 		return this.urlRoot;
 	}
 
-	get headers(){
+	get headers() {
 		return this.httpHeaders;
 	}
 
@@ -463,13 +462,12 @@ class SendMail{
 }
 
 export class UserToken {
-  isLogged: boolean = false;
-  hasCommunity: boolean = false;
-  username: string = "";
-  email:string = "";
-  id: string = "";
-  communityId: string = "";
-  userCommunity: Community;
-  data: User;
+	isLogged: boolean = false;
+	hasCommunity: boolean = false;
+	username: string = "";
+	email: string = "";
+	id: string = "";
+	communityId: string = "";
+	userCommunity: Community;
+	data: User;
 }
-

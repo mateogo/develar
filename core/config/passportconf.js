@@ -121,7 +121,7 @@ passport.deserializeUser(function(objuser, done) {
   // console.log(objuser);
 
   if (objuser.source && objuser.source === 'webuser') {
-      userAgn.findById(objuser._id, function(error, user) {
+    userWeb.findById(objuser._id, function(error, user) {
           done(error, user);
       });
   } else {
