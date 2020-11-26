@@ -54,6 +54,7 @@ import { RegistroIngresoComponent } from './registracion/registro-ingreso/regist
 import { RegistroClaveComponent } from './registracion/registro-clave/registro-clave.component';
 import { RegistroAltaComponent } from './registracion/registro-alta/registro-alta.component';
 import { RegistroAltapfComponent } from './registracion/registro-altapf/registro-altapf.component';
+import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
 
 
 
@@ -106,7 +107,8 @@ import { RegistroAltapfComponent } from './registracion/registro-altapf/registro
   	RegistroIngresoComponent,
   	RegistroClaveComponent,
   	RegistroAltaComponent,
-  	RegistroAltapfComponent
+  	RegistroAltapfComponent,
+  	WebuserNavbarComponent
   ],
   providers:[
     HighlightService
