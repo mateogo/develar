@@ -15,6 +15,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const whoami = 'core/config/passportconf: '
 const user = require('../models/userModel.js');
+const userWeb = require('../models/usuarioswebModel.js');
 
 const CALLBACK_URL = config.googleCbUrl
 
@@ -52,6 +53,31 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
   })
 );
 
+/**
+ * Estrategica local de inicio de sesión para la vista pública de UsuarioWeb
+ *
+ */
+passport.use('usuarioweb-local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' },
+    function(username, password, done) {
+        userWeb.findByUsername(username, function(error, user) {
+            if (error) {
+                return done(error);
+            }
+
+            if (!user) {
+                return done(null, false);
+            }
+
+            userWeb.verifyPassword(password, user.password, function(error, isMatch) {
+                if (isMatch) {
+                    return done(null, user);
+                } else {
+                    return done(null, false, { error: 'Contraseña incorrecta' });
+                }
+            });
+        })
+    }));
+
 passport.use(new GoogleStrategy({
     clientID: '197765753575-do7v040q2smrad7ekof1ilncjbm4lef3.apps.googleusercontent.com',
     clientSecret: 'GM6hXdmZ8dbldbgnaHx1BEr7',
@@ -80,13 +106,29 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user._id);
+  // 17-9-2020 :: No serializar todo el objeto, solo lo necesario
+  // done(null, objUser._id);
+  const userToSave = {
+      _id: user._id,
+      source: (user.isUsuarioWeb === true ? 'webuser' : 'adminuser')
+  };
+
+  // done(null, { _id: objUser._id, source: objUser.isUsuarioWeb })
+  done(null, userToSave);
 });
 
-passport.deserializeUser(function(id, done) {
-  user.fetchById(id, function(err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function(objuser, done) {
+  // console.log(objuser);
+
+  if (objuser.source && objuser.source === 'webuser') {
+      userAgn.findById(objuser._id, function(error, user) {
+          done(error, user);
+      });
+  } else {
+      user.fetchById(objuser._id, function(err, user) {
+          done(err, user);
+      });
+  }
 });
 
 module.exports = function(app){

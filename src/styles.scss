@@ -21,3 +21,30 @@ mat-slider{
 .sinpadding [class*="col-"] {
     padding: 0;
 }
+
+.error-notification-overlay {
+    background-color: red;
+    color: black;
+    font-size: medium;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+.warning-notification-overlay {
+    background-color: orange;
+    color: black;
+    font-size: medium;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+.success-notification-overlay {
+    background-color: green;
+    color: white;
+    font-size: medium;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+.info-notification-overlay{
+    background-color: rgba(192, 218, 100, 0.85);
+    color : black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}

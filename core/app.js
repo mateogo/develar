@@ -50,6 +50,7 @@ const crawlRoutes = require('./routes/crawlerRoutes');
 const uploadRoutes = require('./services/uploadfs');
 const downloadRoutes = require('./routes/downloadRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
+const userWebRoutes = require('./routes/usuarioswebRoutes');
 
 const app = express();
 
@@ -104,6 +105,7 @@ app.use('/api/asisprevencion', asisprevencionRoutes);
 app.use('/api/integracioncovid', integracioncovidRoutes);
 app.use('/api/solinternacion', solinternacionRoutes);
 app.use('/api/censoindustrias', censoRoutes);
+app.use('/api/usuariosweb', userWebRoutes);
 app.use('/api/eventosculturales', pculturalRoutes);
 app.use('/api/presupuestos', budgetRoutes);
 app.use('/api/auditentregas', auditentregasRoutes);

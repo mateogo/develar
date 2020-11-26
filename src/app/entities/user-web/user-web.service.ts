@@ -14,10 +14,10 @@ export class UserWebService {
 
     private isLogIn = false;
     private hasLogout = false;
-    private usersUrl = "api/userweb"; // URL to web api
-    private userUrlExtra = "api/userweb/"; //URL CON /
+    private usersUrl = "api/usuariosweb"; // URL to web api
+    private userUrlExtra = "api/usuariosweb/"; //URL CON /
   
-    private userApiFetchPerson = 'api/userweb/%s/persona';
+    private userApiFetchPerson = 'api/usuariosweb/%s/persona';
   
     private headers = new HttpHeaders().set("Content-Type", "application/json");
     private _currentUser: UserWeb;
