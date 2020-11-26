@@ -102,7 +102,7 @@ const globals = {
 	industrias: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo-publico.png',
+		logoCompany: 'logo_publico.png',
 		logoCompany2: 'logo-publico.png',
 		company: 'MAB',
 		mainmenu: 'INDUSTRIAS',

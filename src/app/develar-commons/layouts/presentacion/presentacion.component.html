@@ -1,8 +1,17 @@
-<div class="site-sidebar">
+<!-- <div class="site-sidebar">
     <logo></logo>
-</div>
+</div> -->
 
 <div class="site-container">
+  <ng-container *ngIf="userWebNavbar">
+    <webuser-navbar [title]="pageTitle" ></webuser-navbar>
+  </ng-container>
+  
+  <ng-container *ngIf="noNavbar">
+    <div class="site-sidebar">
+        <logo></logo>
+    </div>
+  </ng-container>
   <main class="main-content">
     <div class="main-content-wrap">
       <router-outlet></router-outlet>

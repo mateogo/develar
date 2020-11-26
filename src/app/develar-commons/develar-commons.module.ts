@@ -97,6 +97,7 @@ import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.compo
 import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
 import { InstructivoNumTramiteModalComponent } from './instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
 import { TermscondModalComponent } from './termscond-modal/termscond-modal.component';
+import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
 
 
 @NgModule({
@@ -108,7 +109,6 @@ import { TermscondModalComponent } from './termscond-modal/termscond-modal.compo
     ReactiveFormsModule,
     NgxDatatableModule,
     FileUploadModule,
-
     AgmCoreModule.forRoot({
       // ant: apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
       apiKey: 'AIzaSyAJpFOgoCTiLudPL1lChcn-kIm-zlses0w'
@@ -183,7 +183,8 @@ import { TermscondModalComponent } from './termscond-modal/termscond-modal.compo
     MapBoxComponent,
     MapPopupComponent,
     InstructivoNumTramiteModalComponent,
-    TermscondModalComponent
+    TermscondModalComponent,
+    WebuserNavbarComponent
   ],
   exports:[
     DevelarMaterialModule,
@@ -197,7 +198,6 @@ import { TermscondModalComponent } from './termscond-modal/termscond-modal.compo
     ExtraLayoutComponent,
     PresentacionLayoutComponent,
     WorkgroupLayoutComponent,
-
     Page404Component,
     Page500Component,
     BadgeComponent,
@@ -255,7 +255,8 @@ import { TermscondModalComponent } from './termscond-modal/termscond-modal.compo
     MapBoxComponent,
     MapPopupComponent,
     InstructivoNumTramiteModalComponent,
-    TermscondModalComponent
+    TermscondModalComponent,
+    WebuserNavbarComponent,
   ],
   providers: [
     AssetService,

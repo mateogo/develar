@@ -11,6 +11,8 @@ import { TermscondModalComponent } from '../../../develar-commons/termscond-moda
 import { devutils } from '../../../develar-commons/utils';
 import { Person, personModel } from '../../person/person';
 import { PersonService } from '../../person/person.service';
+import { User } from '../../user/user';
+import { UserService } from '../../user/user.service';
 import { PreguntaSecreta, UserWebHelper } from '../user-web.helper';
 import { UserWeb } from '../user-web.model';
 import { UserWebService } from '../user-web.service';
@@ -45,15 +47,17 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     private _notificacionService: NotificationService,
     private _router: Router,
     private _activatedRouter: ActivatedRoute,
-    private _personService: PersonService
+    private _personService: PersonService,
+    private _userService : UserService
     ) {
     this.preguntasSecretas = UserWebHelper.getPreguntasSecretasOptList();
 
   }
 
   ngOnInit(): void {
-    
     let id = this._activatedRouter.snapshot.params.id;
+
+    console.log("renderizando componente : "+id)
     if (id) {
       this.initUser(id);
     } else {
@@ -70,9 +74,12 @@ export class UserWebFormRegistroEditComponent implements OnInit {
         this.initGroup();
         this.title = 'Perfil de usuario/a';
         this.button_label = 'Editar';
-        this.ruta = ['web', 'usuario', 'dashboard'];
+        this.ruta = ['dashboard'];
       }
     })
+    let usuario = this._userWebService.currentUser;
+
+    
   }
 
   private initGroup(): void {

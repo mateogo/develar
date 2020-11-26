@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { gldef } from '../../../develar-commons/develar.config';
-import { MainMenuItem } from '../../../develar-commons/menu/main-menu/main-menu-item';
 import { UserWeb } from '../../../entities/user-web/user-web.model';
 import { UserWebService } from '../../../entities/user-web/user-web.service';
 import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
 import { MessageToPrint } from '../../../notifications/notification.model';
-import { SocialMediaItem } from '../../menu-helper';
-import { MinimalMenuService } from '../../minimal-menu.service';
+import { SocialMediaItem } from '../../../site-minimal/menu-helper';
+import { MinimalMenuService } from '../../../site-minimal/minimal-menu.service';
+import { gldef } from '../../develar.config';
+import { MainMenuItem } from '../../menu/main-menu/main-menu-item';
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 const DEFAULT_LOGO = 'assets/img/' + gldef.logoCompany;
@@ -220,11 +220,8 @@ export class WebuserNavbarComponent implements OnInit {
   logout(e){
     e.stopPropagation();
     e.preventDefault();
-    this.userService.logout().then( () => {
-      this._userWebService.logout().then( () => {
-        this.loggedIn = false;
-      });
-    });
+    this.userService.logout();
+    this.router.navigate(['']);
     
     
   }
@@ -295,11 +292,11 @@ export class WebuserNavbarComponent implements OnInit {
   }
 
   goToMisConsultasYSolicitudes(){
-    this.router.navigate(['web','usuario','dashboard']);
+    this.router.navigate(['dashboard']);
   }
 
-  goToHistorial(){
-    this.router.navigate(['web','historial']);
-  }
+  // goToHistorial(){
+  //   this.router.navigate(['web','historial']);
+  // }
 
 }

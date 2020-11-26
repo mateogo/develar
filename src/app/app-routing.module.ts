@@ -172,6 +172,14 @@ const cckGestionRoutes: Routes = [
   }
 ];
 
+const dashboardRoutes : Routes = [
+  {
+    path : '',
+    component : PresentacionLayoutComponent,
+    loadChildren : () => import ('./industriales/industriales.module').then( m => m.IndustrialesModule)
+  }
+]
+
 const webRoutes: Routes = [
   {
     path: 'gestion',
@@ -242,6 +250,8 @@ const alimentarRoutes: Routes = [
     children: dsocialModuleRoutes
   },
 ];
+
+
 
 
 const adminRoutes: Routes = [
@@ -331,6 +341,10 @@ const routes: Routes = [
     path: 'ingresar',
     component: ExtraLayoutComponent,
     children: loginRoutes
+  },
+  {
+    path: 'dashboard',
+    children : dashboardRoutes
   },
   {
     path: 'usuariosweb', 
