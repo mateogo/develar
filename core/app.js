@@ -50,7 +50,7 @@ const crawlRoutes = require('./routes/crawlerRoutes');
 const uploadRoutes = require('./services/uploadfs');
 const downloadRoutes = require('./routes/downloadRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
-const userWebRoutes = require('./routes/usuarioswebRoutes');
+const userWebRoutes = require('./routes/usuarioswebRoutes.js');
 
 const app = express();
 

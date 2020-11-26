@@ -51,7 +51,7 @@ export class UserWebService {
     }
   
     logout(): Promise<any> {
-      let url = `${this.usersUrl}/logout`;
+      let url = `${this.usersUrl}/${"logout"}`;
       this.isLogIn = false;
       this.hasLogout = true;
       this._currentUser = null;

@@ -15,46 +15,45 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const whoami = 'core/config/passportconf: '
 const user = require('../models/userModel.js');
-const userWeb = require('../models/usuarioswebModel.js');
+const userWeb = require('../models/usuarioswebModel');
 
 const CALLBACK_URL = config.googleCbUrl
 
-passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
-  function(usermail, password, done){
-    //console.log('passport verify: usermail[%s] pass[%s] ',usermail,password);
-    // VERIFY CALLBACK
-    //  return done(null, user); // ok
-    //  return done(null, false, { message: 'Incorrect usermail.' }); // ToDo: implementar FLASH
-    //  return done(err); // server error
-    //  return (new Error('User ' + id + ' does not exist'));
-    //  process.nextTick(function () {
+passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'password' },
+    function(usermail, password, done) {
+        //console.log('passport verify: usermail[%s] pass[%s] ',usermail,password);
+        // VERIFY CALLBACK
+        //  return done(null, user); // ok
+        //  return done(null, false, { message: 'Incorrect usermail.' }); // ToDo: implementar FLASH
+        //  return done(err); // server error
+        //  return (new Error('User ' + id + ' does not exist'));
+        //  process.nextTick(function () {
 
-    user.findOne(usermail, function (err, userdao) {
-      if (err) {
-        console.log('passport error');
-        return done(err);
-      }
-      if (!userdao) {
-        //return done(null, false, { message: 'Incorrect usermail.' });
-        return done(null, false);
-      }
+        user.findOne(usermail, function(err, userdao) {
+            if (err) {
+                console.log('passport error');
+                return done(err);
+            }
+            if (!userdao) {
+                //return done(null, false, { message: 'Incorrect usermail.' });
+                return done(null, false);
+            }
 
-      user.verifyPassword(userdao.password, password, function(err, isMatch) {
-        if (isMatch) {
-          return done(null, userdao);
+            user.verifyPassword(userdao.password, password, function(err, isMatch) {
+                if (isMatch) {
+                    return done(null, userdao);
 
-        } else {
+                } else {
 
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-      });
-    });
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+            });
+        });
 
-  })
-);
+    }));
 
 /**
- * Estrategica local de inicio de sesión para la vista pública de UsuarioWeb
+ * Estrategica local de inicio de sesión para la vista pública de AGN
  *
  */
 passport.use('usuarioweb-local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' },
@@ -79,59 +78,85 @@ passport.use('usuarioweb-local', new LocalStrategy({ usernameField: 'username', 
     }));
 
 passport.use(new GoogleStrategy({
-    clientID: '197765753575-do7v040q2smrad7ekof1ilncjbm4lef3.apps.googleusercontent.com',
-    clientSecret: 'GM6hXdmZ8dbldbgnaHx1BEr7',
-    callbackURL: CALLBACK_URL
-  },
+        clientID: '197765753575-do7v040q2smrad7ekof1ilncjbm4lef3.apps.googleusercontent.com',
+        clientSecret: 'GM6hXdmZ8dbldbgnaHx1BEr7',
+        callbackURL: CALLBACK_URL
+    },
 
-  function(accessToken, refreshToken, profile, done){
-    // console.log('[%s] callback CALLED ******************** PASS', whoami);
+    function(accessToken, refreshToken, profile, done) {
+        // console.log('[%s] callback CALLED ******************** PASS', whoami);
 
-    // console.log('ACCESS TOKEN: ');
-    // console.dir(accessToken);
+        // console.log('ACCESS TOKEN: ');
+        // console.dir(accessToken);
 
-    // console.log('USER PROFILE: ');
-    // console.dir(profile);
+        // console.log('USER PROFILE: ');
+        // console.dir(profile);
 
-    let emails = profile.emails;
+        let emails = profile.emails;
 
-    // console.log('MAILS PROFILE: ');
-    // console.dir(emails);
+        // console.log('MAILS PROFILE: ');
+        // console.dir(emails);
 
-    user.findOrCreateGoogle(profile, accessToken, function(err, user){
-      return done(err, user);
-    });
+        user.findOrCreateGoogle(profile, accessToken, function(err, user) {
+            return done(err, user);
+        });
 
-  }
+    }
 ));
 
+// passport.serializeUser(function(user, done) {
+//   done(null, user._id);
+// });
 passport.serializeUser(function(user, done) {
-  // 17-9-2020 :: No serializar todo el objeto, solo lo necesario
-  // done(null, objUser._id);
-  const userToSave = {
-      _id: user._id,
-      source: (user.isUsuarioWeb === true ? 'webuser' : 'adminuser')
-  };
+    // 17-9-2020 :: No serializar todo el objeto, solo lo necesario
+    // done(null, objUser._id);
+    const userToSave = {
+        _id: user._id,
+        source: (user.isUsuarioWeb === true ? 'webuser' : 'adminuser')
+    };
 
-  // done(null, { _id: objUser._id, source: objUser.isUsuarioWeb })
-  done(null, userToSave);
+    // done(null, { _id: objUser._id, source: objUser.isUsuarioWeb })
+    done(null, userToSave);
 });
+
+
+// passport.deserializeUser(function(id, done) {
+//     user.fetchById(id, function(err, user) {
+//         done(err, user);
+//     });
+// });
 
 passport.deserializeUser(function(objuser, done) {
-  // console.log(objuser);
+    // console.log(objuser);
 
-  if (objuser.source && objuser.source === 'webuser') {
-    userWeb.findById(objuser._id, function(error, user) {
-          done(error, user);
-      });
-  } else {
-      user.fetchById(objuser._id, function(err, user) {
-          done(err, user);
-      });
-  }
+    if (objuser.source && objuser.source === 'webuser') {
+        userWeb.findById(objuser._id, function(error, user) {
+            done(error, user);
+        });
+    } else {
+        user.fetchById(objuser._id, function(err, user) {
+            done(err, user);
+        });
+    }
 });
+// passport.deserializeUser(function(id, done) {
 
-module.exports = function(app){
-  app.use(passport.initialize());
-  app.use(passport.session());
+//     user.fetchById(id, function(err, user) {
+//         done(err, user);
+//     });
+
+//     // if (objUser.isUsuarioWeb) {
+
+//     //     userAgn.findByUsername(objUser.username, function(error, user) {
+//     //         done(error, user);
+//     //     });
+//     // } else {
+//     // }
+// });
+
+
+
+module.exports = function(app) {
+    app.use(passport.initialize());
+    app.use(passport.session());
 };

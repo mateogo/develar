@@ -61,13 +61,14 @@ export class UserWebIngresarComponent implements OnInit {
   }
 
   private loadLoginUser(): void {
-    this.userListener = this._userWebService.initLoginUser();
+    //this.userListener = this._userWebService.initLoginUser();
 
-    this.userListener.subscribe((user) => {
-      if (user) {
-        // this.goHome();
-      }
-    });
+    // this.userListener.subscribe((user) => {
+    //   console.log(user)
+    //   if (user) {
+    //     // this.goHome();
+    //   }
+    // });
   }
 }
 

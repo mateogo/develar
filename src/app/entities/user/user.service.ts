@@ -69,7 +69,7 @@ export class UserService {
 	private hasLogout = false;
 
 	constructor(private http: HttpClient,
-		private _userService: UserWebService) {
+		private _userWebService: UserWebService) {
 		this.currentUser = new User('invitado', 'invitado@develar')
 		this._userEmitter = new BehaviorSubject<User>(this.currentUser);
 		this._socket = io();
@@ -201,7 +201,7 @@ export class UserService {
 		let url = `${this.usersUrl}/closesession`;
 		this.isLogIn = false;
 		this.hasLogout = true;
-		this._userService.logout();
+		this._userWebService.logout();
 		this._currentUser = new User('invitado', 'invitado@develar');
 		this._userEmitter.next(this._currentUser);
 		return this.http.get(url)
@@ -377,7 +377,7 @@ export class UserService {
 	}
 
 	isAdminUser() {
-		let user = this.currentUser || this._userService.currentUser;
+		let user = this.currentUser || this._userWebService.currentUser;
 		let admin = false;
 		if (user && !user['isUsuarioWeb'] && (user.username !== 'invitado')) {
 			admin = true;
