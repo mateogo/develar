@@ -52,6 +52,8 @@ const uploadRoutes = require('./services/uploadfs');
 const downloadRoutes = require('./routes/downloadRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
 const userWebRoutes = require('./routes/usuarioswebRoutes.js');
+const turnosPresencialesRoutes = require('./routes/turnosPresencialesRoutes.js');
+
 
 const app = express();
 
@@ -108,6 +110,7 @@ app.use('/api/solinternacion', solinternacionRoutes);
 app.use('/api/censoindustrias', censoRoutes);
 app.use('/api/usuariosweb', userWebRoutes);
 app.use('/api/consultas', consultasRoutes);
+app.use('/api/turnospresenciales', turnosPresencialesRoutes);
 app.use('/api/eventosculturales', pculturalRoutes);
 app.use('/api/presupuestos', budgetRoutes);
 app.use('/api/auditentregas', auditentregasRoutes);

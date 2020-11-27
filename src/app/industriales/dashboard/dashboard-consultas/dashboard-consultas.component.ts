@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ConsultaHelper } from '../../../entities/consultas/consulta.helper';
 import { Consulta } from '../../../entities/consultas/consulta.model';
 import { ConsultasService } from '../../../entities/consultas/consultas.service';
-import { UserWeb } from '../../../entities/user-web/user-web.model';
+import { UserService } from '../../../entities/user/user.service';
 
 @Component({
   selector: 'dashboard-consultas',
@@ -13,10 +13,7 @@ import { UserWeb } from '../../../entities/user-web/user-web.model';
 })
 export class DashboardConsultasComponent implements OnInit {
 
-  public user$: BehaviorSubject<UserWeb>; 
   public consultasList$: Observable<Consulta[]>;
-
-  private user: UserWeb;
 
   public showData = false;
 
@@ -27,7 +24,8 @@ export class DashboardConsultasComponent implements OnInit {
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
-    private _service: ConsultasService
+    private _service: ConsultasService,
+    private _userService : UserService
   ) { }
 
   ngOnInit(): void {
@@ -36,10 +34,9 @@ export class DashboardConsultasComponent implements OnInit {
   }
 
   private initOnce(){
-    this._service.user$.subscribe(user => {
+    this._userService.userEmitter.subscribe(user => {
       if(user && user._id){
-        this.user = user;
-        this.consultasList$ = this._service.fetchConsultaFromUser(this.user, {estado: 'activo'});        
+        this.consultasList$ = this._service.fetchConsultaFromUser(user, {estado: 'activo'});        
         this.showData = true;
 
       }else {

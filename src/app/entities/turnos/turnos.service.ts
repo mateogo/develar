@@ -3,7 +3,9 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Turno, TurnoDisponible, TurnoTable, TurnoQuery } from './turno.model';
 import { TurnoHelper } from './turno.helper';
+import { DaoService } from '../../develar-commons/dao.service';
 
+const RECORD = 'turnospresenciales';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,8 +38,15 @@ export class TurnosService {
   private turnosList: Turno[];
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _dao : DaoService
   ) { }
+
+  public fetchTurnoFromUser(user: any, query?: any): Observable<Turno[]> {
+    query = query || {};
+    Object.assign(query, { userId: user._id });
+    return this._dao.search<Turno>(RECORD, query);
+  }
 
   public fetchAll(): Observable<Turno[]> {
     return this._http.get<Turno[]>(this.urlMap.findAll, { headers: this.headers });
@@ -99,6 +108,24 @@ export class TurnosService {
                  .reduce((p, key) => p.append(key, query[key]), new HttpParams());
   }
 
+  public deleteTurno(id: string): Promise<Turno> {
+    return this._http.delete<Turno>(this.urlMap.delete.replace('%s', id), { headers: this.headers }).toPromise();
+  }
+
+  public fetchTurnoById(id: string): Promise<Turno> {
+    return this._http.get<Turno>(this.urlMap.findOne.replace('%s', id), { headers: this.headers }).toPromise();
+  }
+
+
+  public createTurno(turno: Turno): Promise<Turno> {
+    return this._http.post<Turno>(this.urlMap.create, turno, { headers: this.headers }).toPromise();
+  }
+
+  public editTurno(id: string, turno: Turno): Promise<Turno> {
+    return this._http.put<Turno>(this.urlMap.update.replace('%s', id), turno, { headers: this.headers }).toPromise();
+  }
+
+
 
 
   /**
@@ -129,5 +156,13 @@ export class TurnosService {
   public updateTableData(): void {
     const turnoTableData = TurnoHelper.buildTurneraBrowseDataTable(this.turnosList);
     this._turnosDataSource.next(turnoTableData);
+  }
+
+  async fetchAllAvailableSlots(sede: string): Promise<TurnoDisponible[]> {
+    const query = { sede: sede };
+    const params = this.buildParams(query);
+
+    return await this._http.get<TurnoDisponible[]>(this.urlMap.findAllDisponibles, { params })
+      .toPromise();
   }
 }

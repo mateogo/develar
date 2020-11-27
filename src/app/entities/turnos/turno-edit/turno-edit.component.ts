@@ -7,13 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { TurnosService } from '../turnos.service';
 import { TurnoHelper } from '../turno.helper';
-import { Turno, RequirenteTurno, TurnoDisponible } from '../turno.model';
-// TODO: Crear entidad UsuarioWeb (en vez de UsuarioAGN)
-import { UsuarioAGN } from '../../../agn/models/usuario-agn';
-// TODO: Crear servicio para entidad UsuarioWeb (en vez de AGNUserService)
-import { AGNUserService } from '../../../agn/agn-user.service';
+import { Turno } from '../turno.model';
 import { devutils } from '../../../develar-commons/utils';
-import * as moment from 'moment';
+import { UserWeb } from '../../user-web/user-web.model';
+import { UserWebService } from '../../user-web/user-web.service';
 
 @Component({
   selector: 'app-turno-edit',
@@ -31,7 +28,7 @@ export class TurnoEditComponent implements OnInit {
 
   public availableSlots = [];
 
-  public user: UsuarioAGN;
+  public user: UserWeb;
 
   private idTurno: string;
   private turno: Turno;
@@ -39,7 +36,7 @@ export class TurnoEditComponent implements OnInit {
 
   constructor(
     private _turnoService: TurnosService,
-    private _userService: AGNUserService,
+    private _userService: UserWebService,
     private _fb: FormBuilder,
     private _router: Router,
     private _route: ActivatedRoute,

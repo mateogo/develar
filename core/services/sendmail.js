@@ -13,67 +13,83 @@ const whoami = 'sendmail:';
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        //user: 'intranet.mcn.2@gmail.com',
-        user: 'intranet.develar@gmail.com',
-        pass: 'd3v3l4r*+'
-       }
+        user: 'agnmailingtest@gmail.com',
+        pass: 'NHIgW$Y%fiOLuDs@'
+    }
 });
 
 
 
-
+/**
+ * Mailing por defecto
+ *
+ */
 const subject_default_tpl = _.template("[<%= prefix %>] <%= subject %>");
 const body_default_tpl = _.template(
-            "<br>"+
-            "<div><%= body %></div>"+
-            "<br>"+
-            "<br>"+
-            "<br>"+
-            "<div>"+
-            "<p>Si usted esta recibiendo este mail en forma indebida, por favor contáctese con el administrador</p>"+
-            "<p>Buenos Aires - Argentina</p>"
-        );
+    "<br>" +
+    "<div><%= body %></div>"
+);
 
 
+/**
+ * Mail de confirmación de turno
+ */
+const subject_confirmarturno_tpl = _.template("[<%= prefix %>] <%= subject %>");
+const body_confirmation_tpl = _.template(
+    "<div><%= body %></div>" +
+    "<br>" +
+    "<div>" +
+    "<p>Si usted esta recibiendo este mail en forma indebida, por favor contáctese con el administrador</p>" +
+    "<p>Buenos Aires - Argentina</p>"
+);
+
+
+
+
+/**
+ * Mapea todos los tipos de correo electrónico disponibles
+ */
 const mailTemplates = {
-        default: {
-            prefix: 'develar',
-            subject: subject_default_tpl,
-            body: body_default_tpl
-        }
-    };
+    default: {
+        prefix: 'develar',
+        subject: subject_default_tpl,
+        body: body_default_tpl
+    },
+    confirmarturno: {
+        prefix: 'Confirmación de Turno',
+        subject: subject_confirmarturno_tpl,
+        body: body_confirmation_tpl
+    }
+};
 
 
 
 
-
-//            "<p><a href='http://www.cultura.gob.ar'>Ministerio de Cultura</a></p>"
-
-exports.sendMail = function (mailOptions, errorcb, cb){
+exports.sendMail = function(mailOptions, errorcb, cb) {
     let tpl;
 
-    if(mailOptions.template){
+    if (mailOptions.template) {
         tpl = mailTemplates[mailOptions.template]
         delete mailOptions.template;
 
-    }else{
+    } else {
         tpl = mailTemplates['default']
     }
 
-    if(mailOptions.prefix) {
+    if (mailOptions.prefix) {
         tpl.prefix = mailOptions.prefix;
         delete mailOptions.prefix;
     }
 
 
-    mailOptions.subject = tpl.subject({prefix: tpl.prefix, subject:mailOptions.subject});
-    mailOptions.html = tpl.body({body:mailOptions.body});
+    mailOptions.subject = tpl.subject({ prefix: tpl.prefix, subject: mailOptions.subject });
+    mailOptions.html = tpl.body({ body: mailOptions.body });
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error){
-      
-            if(errorcb){
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+
+            if (errorcb) {
                 console.log("sendMail ERROR");
                 let message = {
                     message: 'Message error: ' + error.response,
@@ -82,18 +98,18 @@ exports.sendMail = function (mailOptions, errorcb, cb){
 
             }
 
-            throw error;  
+            throw error;
 
-      } 
+        }
 
-      if(info){
-        if(cb){
-            let message = {
-                message: 'Message sent: ' + info.response,
-            };
-            cb(message);
-        }        
-      }
+        if (info) {
+            if (cb) {
+                let message = {
+                    message: 'Message sent: ' + info.response,
+                };
+                cb(message);
+            }
+        }
 
     });
 };
@@ -101,63 +117,60 @@ exports.sendMail = function (mailOptions, errorcb, cb){
 
 
 
-class MailModel{
+class MailModel {
 
-  constructor (options){
-    this.mailData = {
-        template: 'default',
-        prefix: 'develar',
-        from:  '',
-        to:    '',
-        cc:    '',
-        subject:  '',
-        body:  '',
+    constructor(options) {
+        this.mailData = {
+            template: 'default',
+            prefix: 'develar',
+            from: '',
+            to: '',
+            cc: '',
+            subject: '',
+            body: '',
+        }
+        if (options) Object.assign(this.mailData, options);
     }
-    if(options) Object.assign(this.mailData, options);
-  }
 
-  set bodyTemplate(tmpl){
-    this.mailData.template = tmpl;
-  }
+    set bodyTemplate(tmpl) {
+        this.mailData.template = tmpl;
+    }
 
-  get bodyTemplate(){
-    return this.mailData.template;
-  }
+    get bodyTemplate() {
+        return this.mailData.template;
+    }
 
-  set subjectPrefix(txt){
-    this.mailData.prefix = txt;
-  }
+    set subjectPrefix(txt) {
+        this.mailData.prefix = txt;
+    }
 
-  get subjectPrefix(){
-    return this.mailData.prefix;
-  }
+    get subjectPrefix() {
+        return this.mailData.prefix;
+    }
 
-  set mailFrom(data){
-    this.mailData.from = data;
-  }
+    set mailFrom(data) {
+        this.mailData.from = data;
+    }
 
-  set mailTo(data){
-    this.mailData.to = data;
-  }
+    set mailTo(data) {
+        this.mailData.to = data;
+    }
 
-  set mailSubject(data){
-    this.mailData.subject = data;
-  }
+    set mailSubject(data) {
+        this.mailData.subject = data;
+    }
 
-  set mailBody(data){
-    this.mailData.body = data;
-  }
+    set mailBody(data) {
+        this.mailData.body = data;
+    }
 
 
-  get content(){
-    return this.mailData;
-  }
-  
+    get content() {
+        return this.mailData;
+    }
+
 }
 
-exports.mailFactory = function (mailOptions){
+exports.mailFactory = function(mailOptions) {
     return new MailModel(mailOptions);
 }
-
-
-

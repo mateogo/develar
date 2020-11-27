@@ -1,0 +1,62 @@
+<div class="container">
+    <h2 mat-dialog-title>VISITA PRESENCIAL AL MUNICIPIO DE ALMIRANTE BROWN</h2>
+
+    <mat-dialog-content>
+    <p>En este momento no están habilitadas las visitas presenciales, en virtud de las restricciones que impone la pandemia.</p>
+    <!-- <p>AGN se encuentra en un proceso de mudanza hacia el nuevo edificio sito en Parque Patricios, por lo que es necesario que indiques el objetivo de tu visita para que nuestros orientadores te indiquen en qué sede encontrarás lo buscado</p>
+    <p>Si aún no conoces la organización del acervo te invitamos a consultar las secciones de argentina.gob.ar que se indican a continuación</p>
+
+        <p>
+            Fondos documentales en soporte audiovisual <a target="_blank" href="https://www.argentina.gob.ar/interior/archivo-general/cine-audio-y-video">consulte aquí</a>
+        </p>
+        <p>
+            Fondos documentales en soporte papel <a target="_blank" href="https://www.argentina.gob.ar/interior/archivo-general/documentos-escritos">consulte aquí</a>
+        </p>
+        <p>
+            Fondos documentales en soporte fotográfico <a target="_blank" href="https://www.argentina.gob.ar/interior/archivo-general/documentos-fotograficos">consulte aquí</a>
+        </p>
+        <p>
+            Departamento de archivo intermedio <a target="_blank" href="https://www.argentina.gob.ar/interior/archivo-general/intermedio-paseocolon">consulte aquí</a>
+        </p> -->
+
+        <mat-divider></mat-divider>
+
+        <p class="mt-3">
+            Ingresa aquí el objetivo de tu visita al municipio de Almirante Brown. <!-- Indica fondo documental que quieres consultar, 
+                en que rango de fechas y qué tipo de soporte físico estás buscando.--> De esta forma podremos 
+                ofrecerte un turno de visita en la sede que sea más ajustada a tu necesidad.
+            Recibirás nuestra respuesta en este mismo espacio en un plazo no mayor a 48hs. Gracias.
+        </p>
+
+        <div class="row">
+            <div class="col-12">
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-form-field>
+                                <mat-label>Tipo de consulta: </mat-label>
+                                <mat-select formControlName="type">
+                                    <mat-option *ngFor="let item of consultaTypeList" [value]="item.val">
+                                        {{ item.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-9">
+                            <mat-form-field>
+                                <mat-label>Descripción: </mat-label>
+                                <input matInput formControlName="description" placeholder="Describa su consulta" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-dialog-actions>
+                        <button mat-flat-button color="primary" (click)="closeDialog()" cdkFocusInitial>
+                                Alta Solicitud de Turno</button>
+                        <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+                    </mat-dialog-actions>
+                </form>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+</div>

@@ -1,0 +1,6 @@
+<ng-container *ngIf="showForm">
+	<turnos-industriales-edit-form [turno]="turno" [isEdit]="isEdit" 
+												(cancelEdit)="gotoTurneraBrowse()" 
+												(upsertTurno)="upsertTurno($event)">
+	</turnos-industriales-edit-form>
+</ng-container>

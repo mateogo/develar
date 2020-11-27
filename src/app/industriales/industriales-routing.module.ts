@@ -24,6 +24,10 @@ const routes: Routes = [
       loadChildren : () => import('./consultas-industriales/consultas-industriales.module').then(m => m.ConsultasIndustrialesModule)
     },
     {
+      path: 'turnospresenciales',
+      loadChildren : () => import('./turnos-industriales/turnos-industriales.module').then(m => m.TurnosIndustrialesModule)
+    },
+    {
       path : '',
       component : DashboardMainComponent
     }]
