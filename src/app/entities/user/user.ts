@@ -107,7 +107,7 @@ export class User {
 	externalProfile:boolean;
 	avatarUrl: string;
 	googleProfile:GoogleProfile;
-
+	isUsuarioWeb? : boolean;
 
 	constructor(
 		usuario: string,

@@ -98,6 +98,7 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
 import { InstructivoNumTramiteModalComponent } from './instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
 import { TermscondModalComponent } from './termscond-modal/termscond-modal.component';
 import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
+import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 
 
 @NgModule({
@@ -123,6 +124,7 @@ import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.
     ExtraLayoutComponent,
     PresentacionLayoutComponent,
     WorkgroupLayoutComponent,
+    SanitizeHtmlPipe,
 
     Page404Component,
     Page500Component,
@@ -257,6 +259,7 @@ import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.
     InstructivoNumTramiteModalComponent,
     TermscondModalComponent,
     WebuserNavbarComponent,
+    SanitizeHtmlPipe
   ],
   providers: [
     AssetService,

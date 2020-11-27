@@ -20,6 +20,10 @@ const routes: Routes = [
       component : PersonasPageComponent
     },
     {
+      path: 'consultas',
+      loadChildren : () => import('./consultas-industriales/consultas-industriales.module').then(m => m.ConsultasIndustrialesModule)
+    },
+    {
       path : '',
       component : DashboardMainComponent
     }]

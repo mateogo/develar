@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <turnos-browse (lookUpModels)="fetchTurno($event)"></turnos-browse>
+                    <turnos-browse-table *ngIf="showData"></turnos-browse-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

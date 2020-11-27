@@ -9,6 +9,7 @@ import { catchError }     from 'rxjs/operators';
 import { DaoService }    from '../../develar-commons/dao.service';
 
 import { Person, Address, NotificationMessage } from './person';
+import { UserWeb } from '../user-web/user-web.model';
 
 
 
@@ -176,5 +177,13 @@ export class PersonService {
       }
     })
   }
+
+    ///////////////// INTRODUCIMOS LA POSIBILIDAD DE BUSCAR UNA PERSONAS A PARTIR DE UN USUARIO /////////////
+    fetchPersonByUserWeb(user: UserWeb): Observable<Person[]>{
+      let query = {
+        userwebId: user['_id']
+      }
+      return this.daoService.search<Person>('person', query);
+    }
 
 }

@@ -869,6 +869,26 @@ class Devutils {
         return new Date(datepickerTx).getTime();
     }
 
+    txFromHora(date) {
+        let horario = {
+            hora: date.getHours(),
+            minutos:
+                date.getMinutes() < 10
+                    ? '0' + date.getMinutes()
+                    : date.getMinutes().toString()
+        }
+
+        return horario.hora + ':' + horario.minutos;
+    }
+
+    getPreviousWeek(fecharef: Date): { feDesde: string, feHasta: string } {
+
+        let fecha_origen : Date = new Date(fecharef.getTime());
+        let fech_aux = new Date(fecharef.getTime());
+        let ts_desde = fech_aux.setDate(fech_aux.getDate()-7);
+        return { feDesde: dateToStr(new Date(ts_desde)), feHasta: dateToStr(fecha_origen) }
+    }
+
 }
 
 export const devutils = new Devutils();

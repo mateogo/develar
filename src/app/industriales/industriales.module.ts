@@ -25,6 +25,7 @@ import { PersonasVinculosBaseComponent } from './personas-industriales/personas-
 import { PersonasVinculosEditComponent } from './personas-industriales/personas-vinculos/personas-vinculos-edit/personas-vinculos-edit.component';
 import { PersonasVinculosPanelComponent } from './personas-industriales/personas-vinculos/personas-vinculos-panel/personas-vinculos-panel.component';
 import { PersonasVinculosViewComponent } from './personas-industriales/personas-vinculos/personas-vinculos-view/personas-vinculos-view.component';
+import { DashboardConsultasComponent } from './dashboard/dashboard-consultas/dashboard-consultas.component';
 @NgModule({
   declarations: [DashboardMainComponent, DashboardPageComponent,
      UserDatosDashboardComponent, PersonasDashboardComponent,
@@ -43,7 +44,8 @@ import { PersonasVinculosViewComponent } from './personas-industriales/personas-
       PersonasVinculosBaseComponent,
       PersonasVinculosEditComponent,
       PersonasVinculosPanelComponent,
-      PersonasVinculosViewComponent
+      PersonasVinculosViewComponent,
+      DashboardConsultasComponent
     ],
   imports: [
     CommonModule,

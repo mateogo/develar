@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <consultas-browse (lookUpModels)="fetchConsultas($event)"></consultas-browse>
+
+                    <consultas-browse-table *ngIf="showData"></consultas-browse-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

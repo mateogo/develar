@@ -1,0 +1,49 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-label>Desde: </mat-label>
+                <input matInput [matDatepicker]="fechaDesde" [max]="minDate" formControlName="txFechaDesde" >
+                <mat-datepicker-toggle matSuffix [for]="fechaDesde"></mat-datepicker-toggle>
+                <mat-datepicker #fechaDesde color="accent" disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-label>Hasta: </mat-label>
+                <input matInput [matDatepicker]="fechaHasta"  formControlName="txFechaHasta">
+                <mat-datepicker-toggle matSuffix [for]="fechaHasta"></mat-datepicker-toggle>
+                <mat-datepicker #fechaHasta color="accent" disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-select #selEstado formControlName="estado" placeholder="Estado" (selectionChange)="onSelectionChange('estado', selEstado.value)" >
+                    <mat-option *ngFor="let item of estadosList" [value]="item.val">{{ item.label }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-select #selSector formControlName="sector" placeholder="Sector" (selectionChange)="onSelectionChange('sector', selSector.value)" >
+                    <mat-option *ngFor="let item of sectoresList" [value]="item.val">{{ item.label }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-select #selEjecucion formControlName="ejecucion" placeholder="Ejecución" (selectionChange)="onSelectionChange('ejecucion', selEjecucion.value)">
+                    <mat-option *ngFor="let item of ejecucionesList" [value]="item.val">{{ item.slug }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-toolbar>
+        <div class="row">
+            <div class="col-12">
+                <button mat-flat-button type="submit" color="primary">Buscar</button>
+                <!-- <button mat-flat-button class="ml-3" type="button" color="primary" (click)="doDownloadResults()">Exportar resultados</button> -->
+            </div>
+        </div>
+    </mat-toolbar>
+</form>
