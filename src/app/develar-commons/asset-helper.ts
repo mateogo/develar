@@ -9,6 +9,7 @@ export interface CardGraph {
 	description: string;
 	avatar: string;
 	entityId: string;
+	mimetype? : string;
 }
 
 class CardGraphBasae implements CardGraph {
@@ -19,6 +20,7 @@ class CardGraphBasae implements CardGraph {
 	description: string = "";
 	avatar: string = "";
 	entityId: string = "";
+	mimetype? : string = "";
 	constructor( type){
 		this.entity = type;
 	}	
@@ -32,6 +34,7 @@ class CardGraphPerson extends CardGraphBasae {
 	description: string = "";
 	avatar: string = "";
 	entityId: string = "";
+	mimetype? : string = "";
 	constructor(name?, predicate?){
 		super('person');
 		this.displayAs = name || this.displayAs;
@@ -77,6 +80,7 @@ class CardGraphResource extends CardGraphBasae {
 	description: string = "";
 	avatar: string = "";
 	entityId: string = "";
+	mimetype? : string = "";
 	constructor(link?, predicate?){
 		super('resource');
 		this.entityId = link || this.entityId;
@@ -92,6 +96,7 @@ class CardGraphAsset extends CardGraphBasae {
 	description: string = "";
 	avatar: string = "";
 	entityId: string = "";
+	mimetype? : string = "";
 	constructor(link?, predicate?){
 		super('asset');
 		this.entityId = link || this.entityId;
@@ -107,6 +112,7 @@ class CardGraphImage extends CardGraphBasae {
 	description: string = "";
 	avatar: string = "";
 	entityId: string = "";
+	mimetype? : string = "";
 	constructor(link?, predicate?){
 		super('image');
 		this.entityId = link || this.entityId;
@@ -364,12 +370,15 @@ function googleAdapter(model, data, entity, predicate){
 }
 
 function assetAdapter(model, data, entity, predicate){
+	//c onsole.log("asset adapter [model : %o] \n [data : %o]",model,data)
     model.slug = data.slug;
     model.description = data.description;
     model.displayAs = data.assetId;
     model.entityId = data._id || data.assetId;
     model.predicate = predicate || 'documento'
-    model.entity = entity || 'asset';
+	model.entity = entity || 'asset';
+	//////
+	model.mimetype = data.mimetype;
     return model;
 }
 

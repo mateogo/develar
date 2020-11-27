@@ -11,7 +11,6 @@ export class MinimalProvider {
     return new Promise((resolve, reject) => {
 
       this.userService.updateCurrentUser().then(then => {
-        console.log(then)
         resolve();
       });
     });

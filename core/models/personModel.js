@@ -79,7 +79,7 @@ const assetSch = new mongoose.Schema({
     description: {type: String, required: false,  default: ""},
     avatar:      {type: Number, required: false,  default: ""},
     entityId:    {type: String, required: false,  default: ""},
-
+    mimetype : {type : String, required: false, default: ""}
 });
 
 

@@ -28,6 +28,10 @@ const routes: Routes = [
       loadChildren : () => import('./turnos-industriales/turnos-industriales.module').then(m => m.TurnosIndustrialesModule)
     },
     {
+      path: 'documentacion',
+      loadChildren : () => import('./industriales-documentacion/industriales-documentacion.module').then(m => m.IndustrialesDocumentacionModule)
+    },
+    {
       path : '',
       component : DashboardMainComponent
     }]

@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-card-title class="d-flex align-items-center">
+        <mat-icon>snippet_folder</mat-icon>
+        {{ documentacionDashboardTitle }}
+        <span class="flex-grow-1"></span>
+        <mat-icon class="clickeable" (click)="gotoDocumentacionPage()">keyboard_arrow_right</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-0">
+        {{ documentacionDashboardSubtitle }}
+        <mat-divider></mat-divider>
+    </mat-card-subtitle>
+
+    <mat-card-content>
+        <mat-list class="pt-0">
+            <!-- <ng-container *ngFor="let item of turnosList$ | async">
+                <mat-divider></mat-divider>
+                <mat-list-item class="align-items-center">
+                    <p class="mb-0"><strong>{{ item.txFecha  }} {{ item.txHora }} </strong></p>
+                    <p class="mb-0"> :: Sede {{ item.sede }}</p>
+                    <p class="mb-0"> :: {{ item.detalle }}</p>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+
+            </ng-container> -->
+        </mat-list>
+    </mat-card-content>
+</mat-card>

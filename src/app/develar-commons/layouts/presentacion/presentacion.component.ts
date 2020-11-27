@@ -26,7 +26,6 @@ export class PresentacionLayoutComponent implements OnInit {
 
   constructor( private _sharedService: SharedService ) {
     
-    console.log("navbar")
     _sharedService.changeEmitted$.subscribe(
       title => {
         this.pageTitle = title;
@@ -38,7 +37,6 @@ export class PresentacionLayoutComponent implements OnInit {
     if(_sharedService.gldef.mainmenutpl){
 
        this.navbarTmpl = _sharedService.gldef.mainmenutpl;
-       console.log(this.navbarTmpl)
     }
   }
 

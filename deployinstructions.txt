@@ -1,0 +1,11 @@
+============= 2020-11-27 ===========
+1) ejecutar en la terminal, parado en la carpeta del proyecto, "npm install"
+para instalar las nuevas dependencias instaladas.
+
+2) Tenemos que regenerar los turnos nominales para los turnos en cuestión:
+
+En PRODUCCIÓN:
+agnserver.com/api/turnospresenciales/initdata
+
+En DESARROLLO:
+localhost:8080/api/turnospresenciales/initdata

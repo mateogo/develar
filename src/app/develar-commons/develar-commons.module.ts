@@ -99,7 +99,7 @@ import { InstructivoNumTramiteModalComponent } from './instructivo-num-tramite-m
 import { TermscondModalComponent } from './termscond-modal/termscond-modal.component';
 import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -110,6 +110,7 @@ import { SanitizeHtmlPipe } from './sanitize-html.pipe';
     ReactiveFormsModule,
     NgxDatatableModule,
     FileUploadModule,
+    PdfViewerModule,
     AgmCoreModule.forRoot({
       // ant: apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
       apiKey: 'AIzaSyAJpFOgoCTiLudPL1lChcn-kIm-zlses0w'
@@ -192,7 +193,7 @@ import { SanitizeHtmlPipe } from './sanitize-html.pipe';
     DevelarMaterialModule,
     AgmCoreModule,
     FileUploadModule,
-
+    PdfViewerModule,
     NavbarComponent,
     MainMenuComponent,
     WorkgroupMenuComponent,

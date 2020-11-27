@@ -1,0 +1,14 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+          Documentación cargada
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="assets && assets.length">
+      <documentacion-card *ngFor="let token of assets" style="display: inline-block;" [token]="token" (onDeleteCard)="deleteCard($event)"></documentacion-card>
+      </ng-container>
+      <ng-container *ngIf="!assets || !assets.length">
+          <p>No tiene documentación cargada para visualizar</p>
+      </ng-container>
+      
+    </mat-expansion-panel>
