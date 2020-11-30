@@ -461,7 +461,7 @@ exports.create = function (rtype, record, errcb, cb) {
 exports.createInitialData = function (){
   function fetchInitialData(){
 
-    if(true){
+    if(false){
       return  [
 
       // donorione Pasa a 12 y 12:30
@@ -623,8 +623,100 @@ exports.createInitialData = function (){
       ]
     }
 
+
+    if(true){
+        return  [
+
+        // secretaria Cupo 100 Inicia 10:00
+        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+  
+        // CIC Glew Cupo 100 Inicia 09:00
+        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
+        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
+        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
+        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
+        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
+        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+
+        // CIC Glew Cupo 100 Inicia 11:00 CUPO 200
+        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:00 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:30 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:30 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:00 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:30 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:30 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:00 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:30 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:30 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:00 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:30 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:30 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:00 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'CEN INTEG COMUNITARIA BURZACO 11:30 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'CEN INTEG COMUNITARIA BURZACO 12:30 hs' },
+        
+        // Don Orione Inicia 13:00 INICIA 13:00 CUPO 150
+        {recurso: 'donorione', dow: 1, hora: 13, slug: 'DELEG DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 1, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 1, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 2, hora: 13, slug: 'DELEG DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 2, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 2, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 3, hora: 13, slug: 'DELEG DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 3, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 3, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 4, hora: 13, slug: 'DELEG DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 4, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 4, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 5, hora: 13, slug: 'DELEG DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 5, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 5, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
+
+        // CIC Mármol Cupo 200 Inicia 15:00 CUPO 200
+        {recurso: 'cicmarmol', dow: 1, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
+        {recurso: 'cicmarmol', dow: 1, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
+        {recurso: 'cicmarmol', dow: 1, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
+        {recurso: 'cicmarmol', dow: 1, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        ]
+    }
+
     return []
   }
+  
   function insertRecord(token){
     let turno = new Turno();
 
@@ -644,7 +736,7 @@ exports.createInitialData = function (){
 
 
     let capacidad = {
-      qty: 30,
+      qty: 50,
       ume: 'KIT-ALIM-STD'
     }
 
@@ -656,8 +748,8 @@ exports.createInitialData = function (){
     turno.recurso = recurso;
     turno.capacidad = capacidad;
     turno.estado = 'activo';
-    turno.vigenciad = utils.parseDateStr('01/10/2020').getTime();
-    turno.vigenciah = utils.parseDateStr('25/03/2021').getTime();
+    turno.vigenciad = utils.parseDateStr('01/12/2020').getTime();
+    turno.vigenciah = utils.parseDateStr('31/12/2021').getTime();
 
     turno.tfecha = 2;
     turno.fep_ts = 0;

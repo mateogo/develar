@@ -101,6 +101,11 @@
       <mat-cell *matCellDef="let element"> {{element.dni}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="deposito">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Depósito </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.deposito}} </mat-cell>
+    </ng-container>
+
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>

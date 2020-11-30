@@ -69,19 +69,20 @@ const removeRelation = {
   styleUrls: ['./remitoalmacen-table.component.scss']
 })
 export class RemitoalmacenTableComponent implements OnInit {
-  @Input()  public  displayedColumns = ['select', 'compNum','dni', 'person', 'slug', "fecomp_txa"];
+  @Input()  public  displayedColumns = ['select', 'compNum','deposito','dni', 'person', 'slug', "fecomp_txa"];
   @Input()  public  isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private table_columns = ['select', 'asistenciaId', 'compName', 'compNum', 'action', 'kitEntrega','dni', 'person', 'slug', "sector","avance", "fecomp_txa"];
+  private table_columns = ['select', 'asistenciaId', 'compName', 'compNum','deposito', 'action', 'kitEntrega','dni', 'person', 'slug', "sector","avance", "fecomp_txa"];
   private table_columns_sel = {
     'select': false,
     'asistenciaId': false,
     'compName': false,
     'compNum': false,
+    'deposito': false,
     'action': false,
     'slug': false,
     "sector": false,
