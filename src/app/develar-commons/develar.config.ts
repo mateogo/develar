@@ -107,7 +107,7 @@ const globals = {
 		company: 'MAB',
 		mainmenu: 'INDUSTRIAS',
 		mainmenutpl: 'webUser-navbar',
-		admintarget: '/develar/fichas/lista',
+		admintarget: '/develar/consultas',
 		dashboard: '/mab/empresas/registro',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',

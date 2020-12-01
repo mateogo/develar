@@ -27,6 +27,7 @@ import { Page404Component } from './develar-commons/errorpages/page-404.componen
 // Components 
 import { CommunityCreateComponent } from './develar-commons/community/community-create/community-create.component';
 import { EnterSiteComponent } from './develar-commons/enter-site/enter-site.component';
+import { AdminScriptsComponent } from './develar-commons/admin-scripts/admin-scripts.component';
 
 
 const defaultAdminRoute: Routes = [
@@ -63,6 +64,20 @@ const userWebRoutes: Routes = [
     path: '',
     loadChildren: () => import('./entities/user-web/user-web.module').then(m => m.UserWebModule)
   },
+];
+
+const turnoModuleRoutes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./entities/turnos/turnos.module').then(m => m.TurnosModule)
+  }
+];
+
+const consultaModuleRoutes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./entities/consultas/consultas.module').then(m => m.ConsultasModule)
+}
 ];
 
 const locacionRoutes: Routes = [
@@ -251,6 +266,14 @@ const alimentarRoutes: Routes = [
   },
 ];
 
+const adminScriptsRoutes : Routes = [
+  {
+    path: '',
+    pathMatch : 'full',
+    component : AdminScriptsComponent
+  }
+]
+
 
 
 
@@ -269,6 +292,21 @@ const adminRoutes: Routes = [
     path: 'entidades',
     component: DefaultLayoutComponent,
     children: entityRoutes
+  },
+  {
+    path: 'turnos',
+    component: DefaultLayoutComponent,
+    children: turnoModuleRoutes
+  },
+  {
+    path: 'consultas',
+    component: DefaultLayoutComponent,
+    children: consultaModuleRoutes
+  },
+  {
+    path : 'adminscripts',
+    component : DefaultLayoutComponent,
+    children : adminScriptsRoutes
   },
   {
     path: 'proyectos',

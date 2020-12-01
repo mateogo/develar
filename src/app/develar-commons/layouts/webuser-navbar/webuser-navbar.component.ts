@@ -46,7 +46,7 @@ export class WebuserNavbarComponent implements OnInit {
   public mainMenuItems: MainMenuItem[];
   public socialItems: SocialMediaItem[];
 
-  private socket: any; 
+  private socket: any;
   private connected = false;
   private username: string = "";
   private messageList: Array<MessageToPrint> = [];
@@ -67,33 +67,33 @@ export class WebuserNavbarComponent implements OnInit {
     private mainMenuService: MinimalMenuService,
     private route: ActivatedRoute,
     private router: Router,
-    private _userWebService : UserWebService) {
+    private _userWebService: UserWebService) {
 
     mainMenuService.menuListener$.subscribe(
-        items => {
-          this.mainMenuItems = items;
-        }
-      );
+      items => {
+        this.mainMenuItems = items;
+      }
+    );
 
     mainMenuService.socialListener$.subscribe(
-        items => {
-          this.socialItems = items;
-        }
-      );
+      items => {
+        this.socialItems = items;
+      }
+    );
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.initSocket();
     this.mainMenuService.loadDefaultMenuItems(gldef.mainmenu);
     this.mainMenuService.loadSocialItems(gldef.socialmedia);
 
     this.initUser()
 
-    this.route.url.subscribe(url=> {
+    this.route.url.subscribe(url => {
       this.actualUrl = this.router.routerState.snapshot.url;
       this.actualUrl = this.actualUrl ? this.actualUrl.split('?')[0] : this.actualUrl;
 
-      if(!this.actualUrl || this.actualUrl === "/"){
+      if (!this.actualUrl || this.actualUrl === "/") {
         this.setupHomeView(true);
 
       } else {
@@ -111,7 +111,7 @@ export class WebuserNavbarComponent implements OnInit {
   }
 
 
-  initSocket(){
+  initSocket() {
     let that = this;
     this.socket = this.userService.socket;
     this.socket.on('notification:message', function (msj: MessageToPrint) {
@@ -120,16 +120,19 @@ export class WebuserNavbarComponent implements OnInit {
 
   }
 
-  initUser(){
-      this.currentUser = this.userService.currentUser;
-      this.loggedIn = this.userService.userlogged || this._userWebService.userlogged ;
+  initUser() {
+    this.userService.userEmitter.subscribe(user => {
+      this.currentUser = user;
+      this.loggedIn = this.userService.userlogged || this._userWebService.userlogged;
       this.avatar = this.currentUser.avatarUrl || DEFAULT_AVATAR;
-      this.emitLogin();    
+      this.emitLogin();
+    });
+
   }
 
 
-  emitLogin () {
-    if(!this.loggedIn) return;
+  emitLogin() {
+    if (!this.loggedIn) return;
     this.username = this.currentUser.username;
 
     let usr = {
@@ -139,10 +142,10 @@ export class WebuserNavbarComponent implements OnInit {
     this.socket.emit('user:connect', usr);
   }
 
-  addNotificationMessage(data:MessageToPrint){
+  addNotificationMessage(data: MessageToPrint) {
     this.messageList.unshift(data);
     this.messageLength = this.messageList.length;
-    this.messageList = this.messageList.sort((a, b)=>  (b.fe - a.fe))
+    this.messageList = this.messageList.sort((a, b) => (b.fe - a.fe))
     this.messageNew = true;
   }
 
@@ -176,80 +179,80 @@ export class WebuserNavbarComponent implements OnInit {
     }
   }
 
-  isActiveUser(user: User){
+  isActiveUser(user: User) {
     let logged = false;
-    if(user && user.username !== 'invitado')
+    if (user && user.username !== 'invitado')
       logged = true;
 
     return logged;
   }
 
-  isAdminUser(){
+  isAdminUser() {
     return this.userService.isAdminUser();
   }
 
-  editProfile(){
+  editProfile() {
     this.router.navigate(['/develar/entidades/usuarios', this.currentUser._id])
   }
 
-  editUser(e){
+  editUser(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.router.navigate([ '/develar/entidades/usuarios', this.currentUser._id])
+    this.router.navigate(['/develar/entidades/usuarios', this.currentUser._id])
   }
 
-  refreshUser(e){
+  refreshUser(e) {
     e.stopPropagation();
     e.preventDefault();
     this.userService.updateCurrentUser();
   }
 
-  navigateAdmin(e){
+  navigateAdmin(e) {
     e.stopPropagation();
     e.preventDefault();
-    let path = gldef.admintarget ||  "/develar/fichas/lista" ;
+    let path = gldef.admintarget || "/develar/fichas/lista";
     this.router.navigate([path]);
   }
 
-  changeCommunity(e){
+  changeCommunity(e) {
     e.stopPropagation();
     e.preventDefault();
     this.router.navigate(['/develar/comunidades'])
   }
 
-  logout(e){
+  logout(e) {
     e.stopPropagation();
     e.preventDefault();
     this.userService.logout();
     this.router.navigate(['']);
-    
-    
+
+
   }
 
-  changePasswd(e){
+  changePasswd(e) {
     e.stopPropagation();
     e.preventDefault();
     this.router.navigate(['/ingresar/clave', this.currentUser._id])
 
   }
 
-  searchAssetsForm(e){
+  searchAssetsForm(e) {
     e.stopPropagation();
     e.preventDefault();
     this.router.navigate(['/web/fichatecnica'])
   }
 
-  searchPage(e){
+  searchPage(e) {
     e.stopPropagation();
     e.preventDefault();
     this.router.navigate(['/trabajan/red'])
 
   }
 
-  loginUser(e){
+  loginUser(e) {
     e.stopPropagation();
     e.preventDefault();
-    if(this.hideLogin) return;
+    if (this.hideLogin) return;
     this.router.navigate(['/ingresar/login'])
   }
 
@@ -268,9 +271,9 @@ export class WebuserNavbarComponent implements OnInit {
     }
   }
 
-  setupHomeView(isHome){
+  setupHomeView(isHome) {
 
-    if(isHome){
+    if (isHome) {
       this.isHomeView = true;
       this.navbarStyle = {
         background: BG_COLOR_DEFAULT
@@ -279,7 +282,7 @@ export class WebuserNavbarComponent implements OnInit {
         color: NAVBAR_ITEM_COLOR_DEFAULT
       }
 
-    }else{
+    } else {
       this.isHomeView = false;
       this.navbarStyle = {
         background: BG_COLOR_DEFAULT
@@ -291,7 +294,7 @@ export class WebuserNavbarComponent implements OnInit {
 
   }
 
-  goToMisConsultasYSolicitudes(){
+  goToMisConsultasYSolicitudes() {
     this.router.navigate(['dashboard']);
   }
 

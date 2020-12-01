@@ -100,6 +100,7 @@ import { TermscondModalComponent } from './termscond-modal/termscond-modal.compo
 import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
 
 @NgModule({
   imports: [
@@ -187,7 +188,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     MapPopupComponent,
     InstructivoNumTramiteModalComponent,
     TermscondModalComponent,
-    WebuserNavbarComponent
+    WebuserNavbarComponent,
+    AdminScriptsComponent
   ],
   exports:[
     DevelarMaterialModule,
@@ -260,7 +262,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     InstructivoNumTramiteModalComponent,
     TermscondModalComponent,
     WebuserNavbarComponent,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    AdminScriptsComponent
   ],
   providers: [
     AssetService,

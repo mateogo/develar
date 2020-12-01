@@ -14,6 +14,7 @@ import { PasesFromConsultaComponent } from './pases-from-consulta/pases-from-con
 import { PasesFromConsultaModalComponent } from './pases-from-consulta-modal/pases-from-consulta-modal.component';
 import { DevelarMaterialModule } from '../../develar-commons/develar-materials.module';
 import { ConsultaBrowseTableComponent } from './consulta-browse-table/consulta-browse-table.component';
+import { PersonModule } from '../person/person.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ConsultaBrowseTableComponent } from './consulta-browse-table/consulta-b
     DevelarMaterialModule,
     NgxDatatableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PersonModule
   ]
 })
 export class ConsultasModule { }

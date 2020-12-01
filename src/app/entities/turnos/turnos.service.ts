@@ -165,4 +165,11 @@ export class TurnosService {
     return await this._http.get<TurnoDisponible[]>(this.urlMap.findAllDisponibles, { params })
       .toPromise();
   }
+
+   /*  HELPER SCRIPTS  */
+
+
+   public regenerarTurnosNominales(): Observable<any> {
+    return this._http.get<any>('/api/turnospresenciales/initdata');
+  }
 }

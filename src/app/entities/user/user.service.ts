@@ -201,7 +201,7 @@ export class UserService {
 		let url = `${this.usersUrl}/closesession`;
 		this.isLogIn = false;
 		this.hasLogout = true;
-		this._userWebService.logout();
+		this._userWebService.logout().then();
 		this._currentUser = new User('invitado', 'invitado@develar');
 		this._userEmitter.next(this._currentUser);
 		return this.http.get(url)

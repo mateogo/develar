@@ -414,7 +414,7 @@ const requirenteTurnoSch = new Schema({
     ndoc: { type: String, required: false }
 });
 
-const agnTurnoSch = new Schema({
+const TurnoPresencialSch = new Schema({
     // ID del slot donde se asignará este turno
     turnoId: { type: String, required: false },
     sede: { type: String, required: true },
@@ -448,8 +448,20 @@ function buildQuery(query) {
         q['tipoConsulta'] = query.tipoConsulta;
     }
 
+    // if (query.fechaDesde && query.fechaHasta) {
+    //     q['tsFechaHora'] = { "$gte": parseInt(query.fechaDesde, 10), "$lte": parseInt(query.fechaHasta, 10) };
+    // }
+
     if (query.fechaDesde && query.fechaHasta) {
-        q['tsFechaHora'] = { "$gte": parseInt(query.fechaDesde, 10), "$lte": parseInt(query.fechaHasta, 10) };
+        q['$and'] = [{ 'tsFechaHora': { '$gte': parseInt(query.fechaDesde, 10), '$lt': parseInt(query.fechaHasta, 10) } }];
+    } else {
+        if (query.fechaDesde) {
+            q['tsFechaHora'] = { "$gte": parseInt(query.fechaDesde, 10) };
+        }
+
+        if (query.fechaHasta) {
+            q['tsFechaHora'] = { "$lt": parseInt(query.fechaHasta, 10) };
+        }
     }
 
     if (query.estado) {
@@ -467,14 +479,14 @@ function buildQuery(query) {
     return q;
 }
 
-agnTurnoSch.pre('save', function(next) {
+TurnoPresencialSch.pre('save', function(next) {
     next();
 });
 
 
 
-const Turno = mongoose.model('AgnTurnoWeb', agnTurnoSch, 'turnosasignados');
-const TurnoNominal = mongoose.model('AgnTurnoWebDisponible', turnoNominalSch, 'turnosnominales');
+const Turno = mongoose.model('TurnoWeb', TurnoPresencialSch, 'turnosasignados');
+const TurnoNominal = mongoose.model('TurnoWebDisponible', turnoNominalSch, 'turnosnominales');
 
 /******************************************************************************
  * Métodos públicos

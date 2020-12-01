@@ -146,6 +146,7 @@ export class ConsultaEditComponent implements OnInit {
   }
 
   doCrearTurno(): void {
+    console.log("disparando crear turno")
     let consulta = new ConsultaTable();
     consulta.descripcion = this.consulta.description;
 
@@ -154,13 +155,14 @@ export class ConsultaEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log("cerrando modal --> %o",result)
       // result contiene los datos cargados en el formulario del
       // popup, con los que se creará el turno
       if (result && result.data) {
         const turno = new Turno();
         turno.requirente = new RequirenteTurno();
 
-        //c onsole.log(result.data);
+        console.log(result.data);
 
         turno.estado = 'activo';
         turno.avance = 'noconfirmado';
@@ -175,9 +177,12 @@ export class ConsultaEditComponent implements OnInit {
 
         // Para completar correctamente el turno, obtengo los datos de la persona
         const usuarioAgn = new UserWeb();
+        console.log(this.consulta.requirente);
         usuarioAgn._id = this.consulta.requirente.userId;
         this._personService.fetchPersonByUserWeb(usuarioAgn).subscribe(person => {
+          console.log("person --> %o",person)
           if (person && person.length > 0) {
+            console.log("ingreso en la condicion de person")
             turno.requirente.userId = this.consulta.requirente.userId;
             turno.requirente.personId = person[0]._id;
             turno.requirente.ndoc = person[0].ndoc;
@@ -185,6 +190,7 @@ export class ConsultaEditComponent implements OnInit {
 
             this._turnoService.create(turno).then(turnoResult => {
               if (turnoResult) {
+                console.log("creo el turno satisfactoriamente")
                 this.consulta.estado = ESTADO_END;
                 this.consulta.sector = SOLICITANTE;
                 this.consulta.ejecucion = GENERO_TURNO;

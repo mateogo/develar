@@ -8,6 +8,7 @@ import { UserService } from '../../../entities/user/user.service';
 import { gldef } from '../../develar.config';
 
 import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
+import { NotificationService } from '../../notifications.service';
 
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
@@ -35,7 +36,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router) {
+    private router: Router,
+    private _notificationService : NotificationService) {
 
   }
 
@@ -95,6 +97,17 @@ export class NavbarComponent implements OnInit {
     for (let i = 0; i < items.length; i++) {
       items[i].classList.remove('opened');
     }
+  }
+
+  logout(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.userService.logout().then( () => {
+      this.router.navigate(['']);
+      this._notificationService.success("Se ha cerrado sesión éxitosamente");
+    }).catch( () => {
+      this._notificationService.error("Se ha producido un error al intentar cerrar sesión")
+    });
   }
 
   openSidebar() {

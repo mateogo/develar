@@ -1700,6 +1700,51 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
   {
+
+    title: 'Turnos',
+    icon: 'fa fa-address-card',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar turnos',
+        routing: '/develar/turnos'
+      },
+      {
+        title: 'Alta turno',
+        routing: '/develar/turnos/alta'
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+
+  {
+
+    title: 'Consultas',
+    icon: 'fa fa-address-card',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar consultas',
+        routing: '/develar/consultas'
+      },
+      // {
+      //   title: 'Alta turno',
+      //   routing: '/develar/turnos/alta'
+      // }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+  {
     title: 'Nocturnidad',
     icon: 'fa fa-user-circle',
     active: false,
@@ -1895,6 +1940,22 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     externalLink: '',
     budge: '',
     budgeColor: ''
+  },
+  {
+    title: 'Tablas generales',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Regenerar turnos nominales',
+        routing: '/develar/adminscripts'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
   }
 
 ];
@@ -1907,7 +1968,7 @@ export const COMPANY_MENU = {
   salud:     SALUD_ITEMS,
   cck:       CCK_ITEMS,
   comercios: COMERCIO_ITEMS,
-  industrias:  INDUSTRIAS_ITEMS
+  INDUSTRIAS:  INDUSTRIAS_ITEMS
 };
 
 /****
