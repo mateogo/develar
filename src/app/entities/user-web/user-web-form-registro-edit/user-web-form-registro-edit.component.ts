@@ -56,8 +56,6 @@ export class UserWebFormRegistroEditComponent implements OnInit {
 
   ngOnInit(): void {
     let id = this._activatedRouter.snapshot.params.id;
-
-    console.log("renderizando componente : "+id)
     if (id) {
       this.initUser(id);
     } else {
