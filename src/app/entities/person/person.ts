@@ -390,7 +390,14 @@ export class Person {
   user: {
     userid: string;
     username: string;
-  }
+  };
+
+
+  userweb: {
+    userid: string;
+    username: string;
+  };
+
   communitylist: Array<string>;
 
   contactdata: Array<PersonContactData>;
