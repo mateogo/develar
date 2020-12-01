@@ -28,6 +28,8 @@ import { Page404Component } from './develar-commons/errorpages/page-404.componen
 import { CommunityCreateComponent } from './develar-commons/community/community-create/community-create.component';
 import { EnterSiteComponent } from './develar-commons/enter-site/enter-site.component';
 import { AdminScriptsComponent } from './develar-commons/admin-scripts/admin-scripts.component';
+import { MustNotBeAWebUserGuard } from './develar-commons/guards/mustnotbeawebuser-guard';
+import { MustBeLoggedInGuard } from './develar-commons/guards/mustbeloggedin-guard';
 
 
 const defaultAdminRoute: Routes = [
@@ -373,6 +375,7 @@ const routes: Routes = [
   },
   {
     path: 'develar',
+    canActivate : [MustNotBeAWebUserGuard],
     children: develarRoutes
   },
   {
@@ -382,6 +385,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate : [MustBeLoggedInGuard],
     children : dashboardRoutes
   },
   {
