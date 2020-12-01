@@ -280,6 +280,20 @@ const habilitacionesSch = new mongoose.Schema({
 
 })
 
+const vinculosDataSch = new mongoose.Schema({
+    nombre: { type: String, required: false },
+    apellido: { type: String, required: false },
+    tdoc: { type: String, required: true },
+    ndoc: { type: String, required: true },
+    personId: { type: String, required: false },
+    vinculo: { type: String, required: false },
+    estado: { type: String, required: false },
+    desde: { type: String, required: false },
+    hasta: { type: String, required: false },
+    assets: [assetSch]
+
+})
+
 
 
 const personSch = new mongoose.Schema({
@@ -322,6 +336,7 @@ const personSch = new mongoose.Schema({
 
     persontags:     { type: Array, required: false },
     user:           { type: userSch, required: false },
+    userweb:        { type: userSch, required: false },
     communitylist:  { type: Array,   required: false },
     contactdata:    [ contactDataSch ],
     oficios:        [ oficiosSch ],
@@ -335,7 +350,8 @@ const personSch = new mongoose.Schema({
     fichas:         [ recordCardSch ],
     permisos:       [ permisosSch],
     habilitaciones: [ habilitacionesSch],
-    assets:         [ assetSch ]
+    assets:         [ assetSch ],
+    vinculos: [vinculosDataSch]
 });
 
 personSch.pre('save', function (next) {
@@ -449,6 +465,10 @@ function buildQuery(query){
 
     if(query.userId){
         q["user.userid"] = query.userId;
+    }
+
+    if (query.userwebId) {
+        q["userweb.userid"] = query.userwebId;
     }
 
     if(query.familiar){
@@ -861,10 +881,10 @@ const initPersonFromUser = function(user ){
     person.tdoc = (user.tdoc && user.tdoc !== '') ? user.tdoc : 'DNI';
     person.ndoc = (user.ndoc && user.ndoc !== '') ? user.ndoc : '';
     person.ambito = 'cliente';
-    person.user = {
-        userid: user._id,
-        username: user.username
-    }
+    // person.user = {
+    //     userid: user._id,
+    //     username: user.username
+    // }
     return person;
 }
 

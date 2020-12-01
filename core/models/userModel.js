@@ -84,6 +84,7 @@ const userSch = new mongoose.Schema({
     displayName:    { type: String, required: true },
     description:    { type: String, required: false },
     cellphone:      { type: String, required: false },
+    isUsuarioWeb:   { type: Boolean, required: false, default: false },
 
     communityId:    { type: String, required: false },
     communityUrlpath: { type: String, required: false },
