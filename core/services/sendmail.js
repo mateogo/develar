@@ -13,8 +13,8 @@ const whoami = 'sendmail:';
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'agnmailingtest@gmail.com',
-        pass: 'NHIgW$Y%fiOLuDs@'
+        user: 'webmastermabnoreply@gmail.com',
+        pass: 'aBwp4E7mcTn7CZGP'
     }
 });
 

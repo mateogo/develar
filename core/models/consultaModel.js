@@ -270,11 +270,11 @@ function buildConsultaEmail(data) {
   <p>Puedes ver todas tus solicitudes ingresando a tu panel de gestión de turnos y solicitudes.</p>
 
   <h2>Los datos de tu consulta son:</h2>
-  <p><strong>Tipo de consulta: </strong> ${data.txFecha}</p>
+  <p><strong>Fecha de emisión: </strong> ${data.txFecha}</p>
   <p><strong>Descripción: </strong> ${data.description}</p>
 
   <h4>Te responderemos a la brevedad.</h4>
-  <h4>El equipo de AGN</h4>
+  <h4>El equipo de MAB</h4>
   <h5>Correo enviado en forma automática; por favor, no responder.</h5>
   `;
 
@@ -286,23 +286,23 @@ function buildAndSendConsultaEmail(consulta) {
         if (error) {
 
         } else {
-            // console.log('buildAndSendConsultaEmail[user=%o]', user);
-            // const body = buildConsultaEmail({
-            //     displayName: user.nombre + ' ' + user.apellido,
-            //     email: user.email,
-            //     txFecha: consulta.fecomp_txa,
-            //     description: consulta.description
-            // });
+            console.log('buildAndSendConsultaEmail[user=%o]', user);
+            const body = buildConsultaEmail({
+                displayName: user.nombre + ' ' + user.apellido,
+                email: user.email,
+                txFecha: consulta.fecomp_txa,
+                description: consulta.description
+            });
 
-            // const mailOpt = {
-            //     from: 'agnmailingtest@gmail.com',
-            //     body: body,
-            //     to: user.email,
-            //     prefix: 'Archivo General de la Nación',
-            //     subject: 'Generación de consulta'
-            // };
-            // console.log('buildAndSendConsultaEmail[mailOpt=%o]', mailOpt);
-            // sendNotificationEmail(mailOpt);
+            const mailOpt = {
+                from: 'webmastermabnoreply@gmail.com',
+                body: body,
+                to: user.email,
+                prefix: 'Municipalidad de Almirante Brown',
+                subject: 'Generación de consulta'
+            };
+            console.log('buildAndSendConsultaEmail[mailOpt=%o]', mailOpt);
+            sendNotificationEmail(mailOpt);
         }
     });
 }

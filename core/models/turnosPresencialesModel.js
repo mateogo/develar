@@ -654,7 +654,7 @@ function buildConfirmacionTurnoEmail(data) {
     const template = `
     <p>Estimado/a  ${data.displayName}: </p>
     <p>Te acercamos los datos del turno que se te ha asignado.</p>
-    <p>Recuerda que debes confirmarlo accediento a tu panel de gestión de turnos y solicitudes, haciendo click en <a href="https://agnbicentenario.mininterior.gob.ar">AGN Bicentenario - Ministerio del Interior</a>.</p>
+    <p>Recuerda que debes confirmarlo accediento a tu panel de gestión de turnos y solicitudes, haciendo click en <a href="https://industrias.brown.gob.ar">MAB Industrias - Modernización</a>.</p>
 
     <h2>Los datos de tu turno son:</h2>
     <p><strong>Día: </strong> ${data.txFecha}</p>
@@ -662,7 +662,7 @@ function buildConfirmacionTurnoEmail(data) {
     <p><strong>Sede: </strong> ${data.sede}</p>
 
     <h4>Recuerda concurrir con barbijo y tu DNI. El mismo te será solicitado al ingreso.</h4>
-    <h4>El equipo de AGN</h4>
+    <h4>El equipo de MAB</h4>
     <h5>Correo enviado en forma automática; por favor, no responder.</h5>
     `;
 
@@ -684,10 +684,10 @@ function buildAndSendTurnoEmail(turno) {
             });
 
             const mailOpt = {
-                from: 'agnmailingtest@gmail.com',
+                from: 'webmastermabnoreply@gmail.com',
                 body: body,
                 to: user.email,
-                prefix: 'Archivo General de la Nación',
+                prefix: 'Municipalidad de Almirante Brown',
                 subject: 'Asignación de turno'
             };
             //c onsole.log('buildAndSendTurnoEmail[mailOpt=%o]', mailOpt);
