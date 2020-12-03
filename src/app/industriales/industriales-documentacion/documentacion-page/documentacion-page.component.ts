@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-documentacion-page',
@@ -11,14 +11,13 @@ export class DocumentacionPageComponent implements OnInit {
   
   
   constructor(private _router : Router,
-    private _route : ActivatedRoute,
     public _matDialog : MatDialog) { }
 
   ngOnInit(): void {
   }
 
   goToDashboard() : void {
-    this._router.navigate(['..'], { relativeTo: this._route });
+    this._router.navigate(['dashboard']);
   }
 
   cargarDocumento() : void {
