@@ -1,0 +1,25 @@
+<mat-card class="detail-card">
+    <mat-card-content>
+        <ng-container *ngIf="showView">
+            <div class="row">
+                <div class="col-md-1">
+                    <div>
+                        <span class="edit-control" (click)='editToken()' matTooltip="Editar datos">
+                          <i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'"
+                          aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-11">
+                    <app-vinculos-agregar-view [token]='token'></app-vinculos-agregar-view>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="showEdit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <app-vinculos-agregar-edit [token]='token' (updateToken)='manageToken($event)'></app-vinculos-agregar-edit>
+                </div>
+            </div>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

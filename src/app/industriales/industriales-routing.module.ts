@@ -5,41 +5,57 @@ import { DashboardMainComponent } from './dashboard/dashboard-main/dashboard-mai
 import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-page.component';
 import { PersonasPageComponent } from './personas-industriales/personas-page/personas-page.component';
 
-
 const routes: Routes = [
   {
     path: '',
-    component : DashboardPageComponent,
-    children : [
-    {
-      path: 'usuario/:id',
-      component : UserWebFormRegistroEditComponent
-    },
-    {
-      path : 'personas/:id',
-      component : PersonasPageComponent
-    },
-    {
-      path: 'consultas',
-      loadChildren : () => import('./consultas-industriales/consultas-industriales.module').then(m => m.ConsultasIndustrialesModule)
-    },
-    {
-      path: 'turnospresenciales',
-      loadChildren : () => import('./turnos-industriales/turnos-industriales.module').then(m => m.TurnosIndustrialesModule)
-    },
-    {
-      path: 'documentacion',
-      loadChildren : () => import('./industriales-documentacion/industriales-documentacion.module').then(m => m.IndustrialesDocumentacionModule)
-    },
-    {
-      path : '',
-      component : DashboardMainComponent
-    }]
-  }
+    component: DashboardPageComponent,
+    children: [
+      {
+        path: 'usuario/:id',
+        component: UserWebFormRegistroEditComponent,
+      },
+      {
+        path: 'personas/:id',
+        component: PersonasPageComponent,
+      },
+      {
+        path: 'consultas',
+        loadChildren: () =>
+          import('./consultas-industriales/consultas-industriales.module').then(
+            (m) => m.ConsultasIndustrialesModule
+          ),
+      },
+      {
+        path: 'turnospresenciales',
+        loadChildren: () =>
+          import('./turnos-industriales/turnos-industriales.module').then(
+            (m) => m.TurnosIndustrialesModule
+          ),
+      },
+      {
+        path: 'documentacion',
+        loadChildren: () =>
+          import(
+            './industriales-documentacion/industriales-documentacion.module'
+          ).then((m) => m.IndustrialesDocumentacionModule),
+      },
+      {
+        path: 'vinculos',
+        loadChildren: () =>
+          import('./vinculos-industriales/vinculos-industriales.module').then(
+            (m) => m.VinculosIndustrialesModule
+          ),
+      },
+      {
+        path: '',
+        component: DashboardMainComponent,
+      }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class IndustrialesRoutingModule { }
+export class IndustrialesRoutingModule {}

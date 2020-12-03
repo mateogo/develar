@@ -30,7 +30,7 @@ export class PersonasVinculosPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdatePersonVinculosEvent){
-    
+
     if(event.action === DELETE){
       this.deleteItem(event.token);
     }
@@ -40,13 +40,13 @@ export class PersonasVinculosPanelComponent implements OnInit {
 
 
   deleteItem(t:PersonVinculosData){
-    
+
     let index = this.items.indexOf(t);
 
     if(index !== -1){
       this.items.splice(index, 1)
     }
-    
+
   }
 
   addItem(){

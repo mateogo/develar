@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			<p class='text-destacado'>{{ pname }} {{edadTxt}}  ({{ vinculoTxt }})</p>
+			<p class='text-normal'>{{ pdoc }}</p>
+			<p class='text-normal'>Vínculo: {{ estado }} - 
+					<strong>Ocupación:</strong> {{ ocupacion }} - 
+					<strong>{{ neducativo }}</strong> </p>
+
+		</div>
+		<div  *ngIf="hasImage" class="col-md-4"> 
+				<a rel="noopener noreferrer" target="_blank"
+								href="/download/{{ imageUrl }}" >
+					<img  class="imagepreview" src="download/{{ imageUrl }}"  alt="{{ imageTitle }}" 
+								title="{{ imageTitle }}"></a>
+
+		</div>
+
+	</div>
+</div>
+
+

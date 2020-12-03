@@ -5,7 +5,7 @@ import { IndustrialesRoutingModule } from './industriales-routing.module';
 import { DashboardMainComponent } from './dashboard/dashboard-main/dashboard-main.component';
 import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-page.component';
 import { DevelarCommonsModule } from '../develar-commons/develar-commons.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserDatosDashboardComponent } from './dashboard/user-datos-dashboard/user-datos-dashboard.component';
 import { UserWebModule } from '../entities/user-web/user-web.module';
 import { PersonasDashboardComponent } from './dashboard/personas-dashboard/personas-dashboard.component';
@@ -28,6 +28,7 @@ import { PersonasVinculosViewComponent } from './personas-industriales/personas-
 import { DashboardConsultasComponent } from './dashboard/dashboard-consultas/dashboard-consultas.component';
 import { DashboardTurnosComponent } from './dashboard/dashboard-turnos/dashboard-turnos.component';
 import { DashboardDocumentacionComponent } from './dashboard/dashboard-documentacion/dashboard-documentacion.component';
+import { DashboardIndustriasComponent } from './dashboard/dashboard-industrias/dashboard-industrias.component';
 @NgModule({
   declarations: [DashboardMainComponent, DashboardPageComponent,
      UserDatosDashboardComponent, PersonasDashboardComponent,
@@ -49,12 +50,14 @@ import { DashboardDocumentacionComponent } from './dashboard/dashboard-documenta
       PersonasVinculosViewComponent,
       DashboardConsultasComponent,
       DashboardTurnosComponent,
-      DashboardDocumentacionComponent
+      DashboardDocumentacionComponent,
+      DashboardIndustriasComponent
     ],
   imports: [
     CommonModule,
     DevelarCommonsModule,
     ReactiveFormsModule,
+    FormsModule,
     IndustrialesRoutingModule,
     UserWebModule,
   ]
