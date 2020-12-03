@@ -35,9 +35,7 @@
                         </div>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select #fldNucleoHabitacional placeholder="Núcleo habitacional" formControlName="nucleo" (selectionChange)="changeSelectionValue('nucleo',fldNucleoHabitacional.value)">
-                                    <mat-option *ngFor="let item of nucleoOptList" [value]="item.val">{{ item.label }}</mat-option>
-                                </mat-select>
+                                <input matInput formControlName="displayName" placeholder="Razón social">
                             </mat-form-field>
                         </div>
                     </div>
@@ -55,47 +53,22 @@
                             <mat-form-field>
                                 <mat-placeholder>Número de documento</mat-placeholder>
                                 <input matInput formControlName="ndoc">
-                                <button mat-button matSuffix mat-stroked-button title="Asignar número de documento provisorio" (click)="documProvisorio()" aria-label="número provisorio de documento">
-            <mat-icon>cached</mat-icon></button>
-                                <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
                             </mat-form-field>
 
                         </div>
 
                         <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-select #fldTipoVinculo placeholder="Vínculo familiar" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
-                                    <mat-option *ngFor="let item of vinculosOptList" [value]="item.val">{{ item.label }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+
                         </div>
                     </div>
 
                     <!---nestudios; fenac; sexo --->
                     <div class="row">
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <mat-select #fldSexo placeholder="Sexo" formControlName="sexo" (selectionChange)="changeSelectionValue('sexo',fldSexo.value)">
-                                    <mat-option *ngFor="let item of sexoOptList" [value]="item.val">{{ item.label }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <input matInput formControlName="fenactx" placeholder="Fecha de nacimiento">
-                                <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
-                                <mat-error *ngIf="hasVinculoError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
-                            </mat-form-field>
-                        </div>
-
                         <div class="col">
                             <mat-form-field>
-                                <input matInput formControlName="telefono" placeholder="Teléfono de contacto">
+                                <input matInput formControlName="telefono" placeholder="Teléfono">
                             </mat-form-field>
                         </div>
-
                     </div>
                     <!---nestudios; fenac; sexo --->
                     <div class="row">

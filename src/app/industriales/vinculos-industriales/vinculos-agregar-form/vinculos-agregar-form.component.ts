@@ -219,7 +219,7 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.result.action = CANCEL;
+    // this.result.action = CANCEL;
     this.dialogRef.close();
   }
 
@@ -643,15 +643,16 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.vinculoForm = this.fb.group({
       nombre: [null, Validators.compose([Validators.required])],
       apellido: [null],
+      displayName: [null],
       tdoc: [null, Validators.compose([Validators.required])],
 
       ndoc: [null],
 
       telefono: [null],
-      nucleo: [null],
+
       vinculo: [null],
-      sexo: [null],
-      fenactx: [null],
+
+
       estado: [null],
       comentario: [null],
     });
@@ -745,7 +746,7 @@ export class VinculosAgregarFormComponent implements OnInit {
       | Promise<ValidationErrors | null>
       | Observable<ValidationErrors | null> => {
       let value = control.value;
-      let tdoc = form.controls['tdoc'].value || 'DNI';
+      let tdoc = form.controls['tdoc'].value || 'CUIT';
       message['error'] = '';
 
       return service.testPersonByDNI(tdoc, value).pipe(
