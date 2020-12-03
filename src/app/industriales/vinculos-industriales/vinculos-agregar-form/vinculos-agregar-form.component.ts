@@ -638,6 +638,8 @@ export class VinculosAgregarFormComponent implements OnInit {
       vinculo: [null],
       estado: [null],
       comentario: [null],
+      desde: [null],
+      hasta: [null]
     });
 
     this.form = this.fb.group({
@@ -661,7 +663,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     let syncValidators = [
       Validators.required,
       Validators.minLength(6),
-      Validators.maxLength(10),
+      Validators.maxLength(11),
       Validators.pattern('[0-9]*'),
     ];
 

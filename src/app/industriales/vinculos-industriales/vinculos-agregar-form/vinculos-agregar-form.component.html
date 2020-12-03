@@ -57,18 +57,28 @@
 
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select #fldTipoVinculo placeholder="Tipo de vínculo" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
-                                    <mat-option *ngFor="let item of vinculosOptList" [value]="item.val">{{ item.label }}</mat-option>
-                                </mat-select>
+                                <input matInput formControlName="telefono" placeholder="Teléfono">
                             </mat-form-field>
                         </div>
                     </div>
 
                     <!---nestudios; fenac; sexo --->
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-4">
                             <mat-form-field>
-                                <input matInput formControlName="telefono" placeholder="Teléfono">
+                                <mat-select #fldTipoVinculo placeholder="Tipo de vínculo" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
+                                    <mat-option *ngFor="let item of vinculosOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="desde" placeholder="Fecha de inicio del vínculo">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="hasta" placeholder="Fecha de finalización del vínculo">
                             </mat-form-field>
                         </div>
                     </div>

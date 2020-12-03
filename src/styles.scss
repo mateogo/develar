@@ -1,23 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+
 /* You can add global styles to this file, and also import other style files */
+
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import '~@fullcalendar/common/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 @import '~@fullcalendar/timegrid/main.css';
 @import '~mapbox-gl/dist/mapbox-gl.css';
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+html,
+body {
+    height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-
-mat-slider{
+mat-slider {
     min-width: 182px !important;
 }
+
 
 /* .mat-expansion-panel-header {
     background-color: #888888;
 } */
+
 .sinpadding [class*="col-"] {
     padding: 0;
 }
@@ -43,8 +52,8 @@ mat-slider{
     font-family: Georgia, Times, 'Times New Roman', serif;
 }
 
-.info-notification-overlay{
+.info-notification-overlay {
     background-color: rgba(192, 218, 100, 0.85);
-    color : black;
+    color: black;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
