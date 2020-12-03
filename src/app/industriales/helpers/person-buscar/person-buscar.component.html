@@ -1,5 +1,5 @@
 <mat-form-field>
-    <input #searchBox matInput id="search-box" name="displayName" [(ngModel)]='displayNameFld' [matAutocomplete]="displayName" (keyup)="search(searchBox.value)" placeholder="buscar persona/organización por nombre ó DNI..." />
+    <input #searchBox matInput id="search-box" name="displayName" [(ngModel)]='displayNameFld' [matAutocomplete]="displayName" (keyup)="search(searchBox.value)" placeholder="Buscar industria por nombre o CUIT">
     <span matSuffix (click)='showEntity()'>
 			<i [class]="openEditor ? 'far fa-edit' : 'fas fa-pen-square'" aria-hidden="true"></i>
 		</span>
