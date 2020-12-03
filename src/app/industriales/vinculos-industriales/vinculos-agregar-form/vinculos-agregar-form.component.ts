@@ -33,7 +33,7 @@ import {
 
 import {
   Person,
-  FamilyData,
+  BusinessMembersData,
   PersonContactData,
   NucleoHabitacional,
   Address,
@@ -64,9 +64,9 @@ export class VinculosAgregarFormComponent implements OnInit {
   public isNewLocacion = false;
   private locacionSourceTxt = '';
 
-  public vinculo: FamilyData;
+  public vinculo: BusinessMembersData;
   public locacion: Locacion;
-  public familyList: Array<FamilyData> = [];
+  public bussinessMembers: Array<BusinessMembersData> = [];
   public locaciones: Array<Address> = [];
 
   public estadoOptList = AsistenciaHelper.getOptionlist('estadoVinculosFam');
@@ -104,8 +104,11 @@ export class VinculosAgregarFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.initForm();
     this.initOnce();
+
+    console.log(this.person);
   }
 
   private initOnce() {
@@ -113,9 +116,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.isNewLocacion = true;
 
     this.person = this.data.person;
-
     this.currentNumDoc = '';
-
     this.initVinculo();
     // this.initLocacion();
 
@@ -129,11 +130,12 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
   private initVinculo() {
-    this.familyList = this.person.familiares || [];
+    this.bussinessMembers = this.person.integrantes || [];
     if (this.vinculo) {
       this.isNewVinculo = false;
 
-      let labToken = this.familyList.find((t) => t._id === this.vinculo._id);
+      const labToken = this.bussinessMembers.find((t) => t._id === this.vinculo._id);
+
       if (labToken) {
         this.vinculo = labToken;
         this.tDoc = this.vinculo.tdoc || 'CUIT';
@@ -143,9 +145,9 @@ export class VinculosAgregarFormComponent implements OnInit {
     } else {
       this.tDoc = 'CUIT';
       this.isNewVinculo = true;
-      this.vinculo = new FamilyData();
-      this.familyList.push(this.vinculo);
-      this.person.familiares = this.familyList;
+      this.vinculo = new BusinessMembersData();
+      this.bussinessMembers.push(this.vinculo);
+      this.person.integrantes = this.bussinessMembers;
     }
   }
 
@@ -223,21 +225,21 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onDeleteContact() {
-    let content = this.buildWarningMessage(
-      '<strong>Se desvinculará este CONTACTO del caso índice.</strong> <br>No afecta el estado de seguimiento del propio contacto, sólo su relación con este ancestro.<br> Debe confirmar la operación '
-    );
-    this.openDialog(content).subscribe((result) => {
-      if (result === 'accept') {
-        this.processBajaDeVinculo();
-      } else {
-        this.ctrl.openSnackBar(
-          'CANCELADO: La operación fue cancelada',
-          'CERRAR'
-        );
-      }
-    });
-  }
+  // onDeleteContact() {
+  //   let content = this.buildWarningMessage(
+  //     '<strong>Se desvinculará este CONTACTO del caso índice.</strong> <br>No afecta el estado de seguimiento del propio contacto, sólo su relación con este ancestro.<br> Debe confirmar la operación '
+  //   );
+  //   this.openDialog(content).subscribe((result) => {
+  //     if (result === 'accept') {
+  //       this.processBajaDeVinculo();
+  //     } else {
+  //       this.ctrl.openSnackBar(
+  //         'CANCELADO: La operación fue cancelada',
+  //         'CERRAR'
+  //       );
+  //     }
+  //   });
+  // }
 
   changeSelectionValue(type, val) {
     //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
@@ -306,18 +308,27 @@ export class VinculosAgregarFormComponent implements OnInit {
   handlePerson(p: Person) {
     this.errorMessage = '';
     if (this.isValidRetrievedPerson(p)) {
-      this.acceptPersonaAsFamilyMember(p);
+      //this.acceptPersonaAsFamilyMember(p);
+      this.acceptPersonAsBusinessMember(p);
     } else {
       this.ctrl.openSnackBar(this.errorMessage, 'ACEPTAR');
     }
   }
 
-  private acceptPersonaAsFamilyMember(p: Person) {
-    // validate
-    // caso: OK
-    this.vinculo = personModel.buildFamilyDataFromPerson(p, this.vinculo);
+  // private acceptPersonaAsFamilyMember(p: Person) {
+  //   // validate
+  //   // caso: OK
+  //   this.vinculo = personModel.buildFamilyDataFromPerson(p, this.vinculo);
+  //   this.vPerson = p;
+  //   // this.initLocacion();
+  //   this.currentNumDoc = this.vinculo.ndoc;
+  //   this.initForEdit();
+  // }
+
+
+  private acceptPersonAsBusinessMember(p: Person) {
+    this.vinculo = personModel.buildBusinessMemberFromPerson(p, this.vinculo);
     this.vPerson = p;
-    // this.initLocacion();
     this.currentNumDoc = this.vinculo.ndoc;
     this.initForEdit();
   }
@@ -340,7 +351,7 @@ export class VinculosAgregarFormComponent implements OnInit {
       }
     }
 
-    const check = this.familyList.find((fam) => fam.ndoc === per.ndoc);
+    const check = this.bussinessMembers.find((fam) => fam.ndoc === per.ndoc);
 
     if (check) {
       this.errorMessage =
@@ -606,30 +617,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     return dialogRef.afterClosed();
   }
 
-  private processBajaDeVinculo() {
-    let familyList = this.person.familiares || [];
-
-    familyList = familyList.filter((t) => t._id !== this.vinculo._id);
-    this.person.familiares = familyList;
-
-    if (this.vPerson) {
-      this.ctrl.fetchAsistenciaByPerson(this.vPerson).subscribe((list) => {
-        if (list && list.length) {
-          const asistencia = list[0];
-
-          // this.ctrl.deleteCasoIndice(asistencia).then((asis) => {
-          //   this.saveMainPerson();
-          // });
-        } else {
-          // this.saveMainPerson();
-        }
-      });
-    } else {
-      // this.saveMainPerson();
-    }
-  }
-
-  private initForm() {
+    private initForm() {
     this.addressForm = this.fb.group({
       street1: [null],
       street2: [null],
@@ -641,18 +629,13 @@ export class VinculosAgregarFormComponent implements OnInit {
     });
 
     this.vinculoForm = this.fb.group({
-      nombre: [null, Validators.compose([Validators.required])],
+      nombre: ["pepe", Validators.compose([Validators.required])],
       apellido: [null],
       displayName: [null],
       tdoc: [null, Validators.compose([Validators.required])],
-
       ndoc: [null],
-
       telefono: [null],
-
       vinculo: [null],
-
-
       estado: [null],
       comentario: [null],
     });
@@ -663,37 +646,11 @@ export class VinculosAgregarFormComponent implements OnInit {
     });
   }
 
-  fechaNacimientoValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      let validAge = devutils.validAge(control.value);
-      return validAge ? null : { invalidAge: true };
-    };
-  }
-
-  currentAge() {
-    let edad = '';
-    let value = this.vinculoForm.value.fenactx;
-    let validAge = devutils.validAge(value);
-    if (validAge) {
-      edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
-    }
-    this.edadActual = edad;
-    return edad;
-  }
-
-  documProvisorio() {
-    this.ctrl.fetchSerialDocumProvisorio().subscribe((serial) => {
-      let prox = serial.pnumero + serial.offset;
-      this.vinculoForm.get('tdoc').setValue('PROV');
-      this.vinculoForm.get('ndoc').setValue(prox);
-    });
-  }
-
   private initForEdit() {
     this.whiteList = this.currentNumDoc ? [this.currentNumDoc] : [];
     this.blackList = [this.person.ndoc];
 
-    this.familyList.forEach((t) => {
+    this.bussinessMembers.forEach((t) => {
       if (t.ndoc !== this.currentNumDoc) {
         this.blackList.push(t.ndoc);
       }

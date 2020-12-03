@@ -1,6 +1,6 @@
 /****************************
        PERSON MODEL
-=============================       
+=============================
  exports:
  	Person
  	Address
@@ -186,7 +186,7 @@ export class EncuestaAmbiental {
       _id: string;
       id_address: string;
       id_person: string;
-      
+
       street1: string;
       city: string;
       barrio: string;
@@ -235,7 +235,7 @@ class PersonTableData implements PersonTable {
     this.personType = data.personType;
     this.displayName = data.displayName;
     this.email = data.email;
-  }  
+  }
 }
 
 export class PersonContactData {
@@ -272,7 +272,7 @@ export interface NucleoHabitacional {
 }
 
 export class FamilyData {
-    _id?: string; 
+    _id?: string;
     nombre: string = '';
     apellido: string = '';
     tdoc: string = 'DNI';
@@ -298,6 +298,7 @@ export class FamilyData {
 }
 
 export class BusinessMembersData {
+    _id?: string;
     nombre: string;
     apellido: string;
     tdoc: string = 'DNI';
@@ -306,7 +307,7 @@ export class BusinessMembersData {
     fenactx: string;
     ecivil: string;
     email: string;
-    phone: string;
+    telefono: string;
     nestudios: string;
     tocupacion: string = 'seguridad';
     ocupacion: string = 'personal de prevención';
@@ -314,6 +315,7 @@ export class BusinessMembersData {
     hasOwnPerson: boolean;
     personId: string;
     hasParentAddress: boolean = false;
+  sexo: string;
 
     vinculo: string = 'seguridad';
     estado: string = 'activo';
@@ -512,10 +514,10 @@ const estados_viv: Array<any> = [
 
         {val: 'insuficiente',   type:'suficiente',  label: 'Insuficiente'  },
         {val: 'suficiente',     type:'suficiente',  label: 'Suficiente'  },
-        
+
         {val: 'adecuado',       type:'adecuado',  label: 'Adecuado'  },
         {val: 'inadecuado',     type:'adecuado',  label: 'Inadecuado'  },
-        
+
         {val: 'bueno',          type:'calificacion',  label: 'Bueno'  },
         {val: 'regular',        type:'calificacion',  label: 'Regular'  },
         {val: 'malo',           type:'calificacion',  label: 'Malo'  },
@@ -532,19 +534,19 @@ const tipos_viv: Array<any> = [
         {val: 'cocinaelec',    type:'cocina',  label: 'Eléctrica' },
         {val: 'anafe',         type:'cocina',  label: 'Anafe'  },
         {val: 'noposee',       type:'cocina',  label: 'No posee'  },
-        
+
 
         {val: 'insuficiente', type:'suficiente',  label: 'Insuficiente'  },
         {val: 'basico',       type:'suficiente',  label: 'Básico' },
         {val: 'suficiente',   type:'suficiente',  label: 'Suficiente'  },
-        
+
         {val: 'propio',       type:'terreno', label: 'Propio' },
         {val: 'alquilado',    type:'terreno', label: 'Alquilado' },
         {val: 'cedido',       type:'terreno', label: 'Cedido' },
         {val: 'sindocum',     type:'terreno', label: 'SinDocum' },
         {val: 'credhipo',     type:'terreno', label: 'Crédito Hipot' },
 
-        {val: 'casa',         type:'tvivienda', label: 'Casa' }, 
+        {val: 'casa',         type:'tvivienda', label: 'Casa' },
         {val: 'depto',        type:'tvivienda', label: 'Departamento' },
         {val: 'casilla',      type:'tvivienda', label: 'Casilla' },
         {val: 'otro',         type:'tvivienda', label: 'Otro' },
@@ -600,7 +602,7 @@ const oficios_estado: Array<any> = [
         {val: 'otro',         label: 'Otro',         slug:'Otro' },
 ];
 
-const followUpOptList: Array<any> = [  
+const followUpOptList: Array<any> = [
         {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
         {val: 'tsocial',       label: 'TS',           slug:'TS' },
         {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
@@ -1603,7 +1605,7 @@ class PersonModel {
       let arr = estados_viv.filter(t => token === t.type );
       return arr;
     }
-    getEstadoVivLabel(item, token):string {      
+    getEstadoVivLabel(item, token):string {
       return getLabel(item, estados_viv.filter(t => token === t.type ));
     }
 
@@ -1819,7 +1821,7 @@ class PersonModel {
       let address: Address;
       if(list && list.length) {
         address = this.fetchDefaultAddress(list);
-        data = address.street1 + ' ' + this.getCiudadLabel(address.city); 
+        data = address.street1 + ' ' + this.getCiudadLabel(address.city);
 
       }
 
@@ -1877,7 +1879,7 @@ class PersonModel {
         return estado_vinculo;
     }
     getEstadoVinculo(item): string {
-        return getLabel(item, estado_vinculo);       
+        return getLabel(item, estado_vinculo);
     }
 
     get vinculosLaborales(): Array<any>{
@@ -1922,7 +1924,7 @@ class PersonModel {
     get ciudades():Array<any>{
       return ciudadesBrown;
     }
-  
+
     getCiudadLabel(item):string{
       return getLabel(item, ciudadesBrown);
     }
@@ -1935,7 +1937,7 @@ class PersonModel {
     getBarrioLabel(type, item):string {
       return getLabel(item, (barriosOptList[type] || barriosNotDefined));
     }
-    
+
     personType(code):string {
     	if(!code) return ''
     	return ptypes.find(item => item.val === code).label;
