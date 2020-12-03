@@ -2,14 +2,14 @@
     <mat-card class="mat-elevation-z0 p-0">
         <mat-card-content>
             <div class="row">
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-3">
                     <mat-form-field>
                         <mat-select #fldTdocAlta placeholder="Tipo de documento" [(ngModel)]='tDoc' (selectionChange)="changeSelectionValue('tdoc',fldTdocAlta.value)">
                             <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-sm-12 col-md-7">
+                <div class="col-sm-12 col-md-9">
                     <persona-buscar [tdoc]='tDoc' (person$)=handlePerson($event)></persona-buscar>
                 </div>
             </div>
