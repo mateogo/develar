@@ -1,0 +1,18 @@
+$color-destacado: #0645f5;
+
+.view-port {
+	max-height: 620px;
+}
+
+.form-control {
+	margin-left: 15px;
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
