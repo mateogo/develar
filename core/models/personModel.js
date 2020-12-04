@@ -477,6 +477,11 @@ function buildQuery(query) {
         q['familiares.personId'] = query.familiar;
     }
 
+    /** Búsqueda por array de integrantes */
+    if (query.integrantes) {
+        q['integrantes.personId'] = query.integrantes;
+    }
+
     if (query.mismalocacion) {
         q['_id'] = { $ne: query.personId };
         q['locaciones.street1'] = { "$regex": query.street1, "$options": "i" };
