@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { VinculosAgregarFormComponent } from '../vinculos-agregar-form/vinculos-agregar-form.component';
 import { Person } from '../../../entities/person/person';
@@ -16,6 +16,7 @@ export class VinculosBrowseComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private dialog: MatDialog,
     private user: UserService,
     private userWeb: UserWebService
@@ -41,7 +42,12 @@ export class VinculosBrowseComponent implements OnInit {
       }
     );
 
-    dialogRef.afterClosed().subscribe(res => console.log(res));
+    dialogRef.afterClosed().subscribe(res => {
+      // console.log('Volviendo del modal [res=%o]', res);
+      if (res.data && res.data.token) {
+        this.router.navigate(['editar', res.data.token._id], { relativeTo: this.route });
+      }
+    });
   }
 
   public navigateToDashboard(): void {
