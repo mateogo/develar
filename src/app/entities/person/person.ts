@@ -298,31 +298,35 @@ export class FamilyData {
 }
 
 export class BusinessMembersData {
-    _id?: string;
-    nombre: string;
-    apellido: string;
-    tdoc: string = 'DNI';
-    ndoc: string;
-    fenac: number = 0;
-    fenactx: string;
-    ecivil: string;
-    email: string;
-    telefono: string;
-    nestudios: string;
-    tocupacion: string = 'seguridad';
-    ocupacion: string = 'personal de prevención';
-    ingreso: string;
-    hasOwnPerson: boolean;
-    personId: string;
-    hasParentAddress: boolean = false;
-  sexo: string;
+  _id?: string;
+  nombre: string;
+  apellido: string;
+  tdoc: string = 'DNI';
+  ndoc: string;
+  fenac: number = 0;
+  fenactx: string;
+  ecivil: string;
+  email: string;
+  telefono: string;
+  nestudios: string;
+  tocupacion: string = 'seguridad';
+  ocupacion: string = 'personal de prevención';
+  ingreso: string;
+  hasOwnPerson: boolean;
+  personId: string;
+  hasParentAddress: boolean = false;
 
-    vinculo: string = 'seguridad';
-    estado: string = 'activo';
-    desde: string;
-    hasta: string;
-    comentario: string;
-    assets: Array<CardGraph> = [];
+  // Determina si es el "master" o "responsable" de una industria
+  isMaster = false;
+
+  sexo: string;
+  displayName: string;
+  vinculo: string = 'seguridad';
+  estado: string = 'activo';
+  desde: string;
+  hasta: string;
+  comentario: string;
+  assets: Array<CardGraph> = [];
 }
 
 export class BeneficiarioAlimentar {
@@ -1999,10 +2003,13 @@ class PersonModel {
     }
 
     buildBusinessMemberFromPerson(p:Person, member:BusinessMembersData): BusinessMembersData{
-      if(!member) member = new BusinessMembersData();
+      if (!member) {
+        member = new BusinessMembersData();
+      }
 
       member.nombre = p.nombre;
       member.apellido = p.apellido;
+      member.displayName = p.displayName;
       member.tdoc = p.tdoc;
       member.ndoc = p.ndoc;
       member.fenactx = p.fenactx;
@@ -2031,6 +2038,20 @@ class PersonModel {
       return member;
     }
 
+  buildPersonFromBusinessMember(member: BusinessMembersData, p?: Person): Person {
+    if (!p) {
+      p = new Person("");
+    }
+
+    p.nombre = member.nombre;
+    p.apellido = member.apellido;
+    p.tdoc = member.tdoc;
+    p.ndoc = member.ndoc;
+    p.personType = 'juridica';
+    p.displayName = member.displayName;
+
+    return p;
+  }
 }
 
 export const personModel = new PersonModel();

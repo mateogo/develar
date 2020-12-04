@@ -2,10 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { VinculosAgregarFormComponent } from '../vinculos-agregar-form/vinculos-agregar-form.component';
-import { Person } from '../../../entities/person/person';
-import { UserService } from '../../../entities/user/user.service';
-import { UserWeb } from '../../../entities/user-web/user-web.model';
 import { UserWebService } from '../../../entities/user-web/user-web.service';
+
+import { Subject, Observable } from 'rxjs';
+
+import { ConsultasService } from '../../../entities/consultas/consultas.service';
+import { UserService } from '../../../entities/user/user.service';
+import { EmpresasController } from '../../../empresas/empresas.controller';
+import { CensoIndustriasController } from '../../../empresas/censo.controller';
+
+import { CensoIndustrias } from '../../../empresas/censo.model';
+import { Consulta } from '../../../entities/consultas/consulta.model';
+import { ConsultaHelper } from '../../../entities/consultas/consulta.helper';
+import { Person } from '../../../entities/person/person';
+
+
 
 @Component({
   selector: 'app-vinculos-browse',
@@ -13,32 +24,81 @@ import { UserWebService } from '../../../entities/user-web/user-web.service';
   styleUrls: ['./vinculos-browse.component.scss']
 })
 export class VinculosBrowseComponent implements OnInit {
+
+  public consultasList$: Observable<Consulta[]>;
+  public censosList$: Observable<CensoIndustrias[]>;
+  private activeCenso: CensoIndustrias;
+  public currentIndustry: Person;
+
   public showData = false;
+
+
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private user: UserService,
+    private empCtrl: EmpresasController,
+    private censoCtrl: CensoIndustriasController,
+    private _userService : UserService,
     private userWeb: UserWebService
-  ) { }
+
+    ) { }
 
   ngOnInit(): void {
+    this.fetchCompaniaVinculada();
   }
 
+  private fetchCompaniaVinculada(){
+    console.log('lookUpActive Censo - TO BEGIN')
+    this.showData = false;
+
+
+    this._userService.userEmitter.subscribe(user => {
+      if(user && user._id){
+        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
+        this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
+          if(industria){
+            this.currentIndustry = industria;
+            this.showData = true;
+
+            this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
+            console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
+
+            this.censosList$.subscribe(censos =>{
+              console.log('Censo-subscribe [%s]', censos && censos.length)
+              if(censos && censos.length){
+                this.activeCenso = censos[0];
+                this.showData = true;
+              }else {
+                this.showData = false;
+                //this.empCtrl.openSnackBar('No ')
+              }
+        
+            })
+ 
+          }else{
+            console.log('Industria no hallada, debe cargar una')
+            this.showData = false;
+          }
+        })
+
+
+      }else {
+        // todo
+      }
+    })
+
+  }
+
+
+  public navigateToIndustry(){
+    console.log('navigate to industry')
+    this.router.navigate(['/mab/empresas/editar/', this.currentIndustry._id]);
+
+  }
+  
   public nuevoVinculo(): void {
-    // this.dialog
-    //   .open(VinculosAgregarFormComponent)
-    //   .afterClosed()
-    //   .subscribe(result => {
-    //   console.log(result);
-    // });
-    // this.user.currentUser.subscribe(userweb => {
-    //   console.log(userweb);
-    // });
-
-    //console.log(this.user.currentUser);
-
-    this.userWeb.fetchPersonByUserId(this.user.currentUser._id).then(person => {
+    this.userWeb.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
       this.openModalDialog(person);
     });
   }
@@ -55,7 +115,6 @@ export class VinculosBrowseComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe(res => console.log(res));
-
   }
 
   public navigateToDashboard(): void {

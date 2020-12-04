@@ -360,6 +360,11 @@ const develarRoutes: Routes = [
     children: communityRoutes
   },
   {
+    path: 'empresas',
+    component: DefaultLayoutComponent,
+    loadChildren: () => import('./empresas/empresas.module').then(m => m.EmpresasModule)
+  },
+  {
     path: '',
     children: adminRoutes
   },

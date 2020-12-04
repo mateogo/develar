@@ -43,23 +43,8 @@ export class DashboardCensosComponent implements OnInit {
   ngOnInit(): void {
     console.log('************** dashboard censo ************')
     this.lookUpActiveCenso();
-    this.initOnce();
 
     
-  }
-
-  private initOnce(){
-    this._userService.userEmitter.subscribe(user => {
-      if(user && user._id){
-        this.consultasList$ = this._service.fetchConsultaFromUser(user, {estado: 'activo'});        
-        this.showData = true;
-
-      }else {
-        // todo
-      }
-    })
-
-
   }
 
   private lookUpActiveCenso(){

@@ -12,16 +12,14 @@
 
     <mat-card-content>
         <mat-list class="pt-0">
-            <!-- <ng-container *ngFor="let item of turnosList$ | async">
+            <ng-container *ngIf=showData >
               <mat-divider></mat-divider>
               <mat-list-item class="align-items-center">
-                  <p class="mb-0"><strong>{{ item.txFecha  }} {{ item.txHora }} </strong></p>
-                  <p class="mb-0"> :: Sede {{ item.sede }}</p>
-                  <p class="mb-0"> :: {{ item.detalle }}</p>
+                  <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
                   <mat-divider></mat-divider>
               </mat-list-item>
 
-          </ng-container> -->
+          </ng-container>
         </mat-list>
     </mat-card-content>
 </mat-card>

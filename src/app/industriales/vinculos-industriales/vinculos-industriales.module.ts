@@ -8,10 +8,10 @@ import { VinculosAgregarDialogComponent } from './vinculos-agregar-dialog/vincul
 import { VinculosAgregarPanelComponent } from './vinculos-agregar-panel/vinculos-agregar-panel.component';
 import { VinculosAgregarBaseComponent } from './vinculos-agregar-base/vinculos-agregar-base.component';
 import { VinculosAgregarEditComponent } from './vinculos-agregar-edit/vinculos-agregar-edit.component';
-import { VinculosAgregarViewComponent } from './vinculos-agregar-view/vinculos-agregar-view.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { VinculosAgregarFormComponent } from './vinculos-agregar-form/vinculos-agregar-form.component';
 import { PersonBuscarComponent } from '../helpers/person-buscar/person-buscar.component';
+import { EmpresasModule } from '../../empresas/empresas.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,6 @@ import { PersonBuscarComponent } from '../helpers/person-buscar/person-buscar.co
     VinculosAgregarPanelComponent,
     VinculosAgregarBaseComponent,
     VinculosAgregarEditComponent,
-    VinculosAgregarViewComponent,
     VinculosAgregarFormComponent,
     PersonBuscarComponent
   ],
@@ -31,6 +30,7 @@ import { PersonBuscarComponent } from '../helpers/person-buscar/person-buscar.co
     ReactiveFormsModule,
     FormsModule,
     VinculosIndustrialesRoutingModule,
+    EmpresasModule
   ],
 })
 export class VinculosIndustrialesModule {}

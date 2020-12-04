@@ -18,9 +18,11 @@
 
             <form [formGroup]="form">
                 <fieldset formGroupName="vinculoForm">
+
+
                     <!---nombre; apellido--->
                     <div class="row">
-                        <div class="col-md-4">
+                        <!-- div class="col-md-4">
                             <mat-form-field>
                                 <input matInput formControlName="nombre" placeholder="Nombre">
                             </mat-form-field>
@@ -30,16 +32,19 @@
                             <mat-form-field>
                                 <input matInput formControlName="apellido" placeholder="Apellido">
                             </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
+                        </div-->
+                        <div class="col-md-8">
                             <mat-form-field>
-                                <input matInput formControlName="displayName" placeholder="Razón social">
+                                <input matInput formControlName="displayName" placeholder="Nombre o denominación">
                             </mat-form-field>
                         </div>
                     </div>
-                    <!--- tdoc, ndoc, vinculo--->
+
+
+
+
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <mat-form-field>
                                 <mat-select #fldTdoc placeholder="Tipo de documento" formControlName="tdoc" (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
                                     <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}</mat-option>
@@ -47,7 +52,7 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <mat-form-field>
                                 <mat-placeholder>Número de documento</mat-placeholder>
                                 <input matInput formControlName="ndoc">
@@ -62,8 +67,8 @@
                         </div>
                     </div>
 
-                    <!---nestudios; fenac; sexo --->
-                    <div class="row">
+
+                    <!-- <div class="row">
                         <div class="col-md-4">
                             <mat-form-field>
                                 <mat-select #fldTipoVinculo placeholder="Tipo de vínculo" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
@@ -82,7 +87,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <!---nestudios; fenac; sexo --->
+
+
                     <div class="row">
                         <div class="col-md-3">
                             <mat-form-field>
@@ -98,10 +104,10 @@
                             </mat-form-field>
                         </div>
 
-                    </div>
+                    </div> -->
                 </fieldset>
 
-                <fieldset formGroupName="addressForm">
+                <!-- <fieldset formGroupName="addressForm">
                     <div class="row">
                         <div class="col-md-4">
                             <mat-form-field>
@@ -151,10 +157,10 @@
                             </mat-form-field>
                         </div>
                     </div>
-                </fieldset>
+                </fieldset> -->
                 <hr>
                 <div class="d-md-flex justify-content-start">
-                    <button mat-raised-button color="primary" class='m-1' [disabled]="!form.valid || formClosed" (click)="onSubmit()">Aceptar</button>
+                    <button mat-raised-button color="primary" class='m-1' [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
                     <button mat-raised-button color="warn" class='m-1' (click)="onCancel()">Cancelar</button>
                 </div>
             </form>

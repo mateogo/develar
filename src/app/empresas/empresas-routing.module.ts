@@ -12,6 +12,7 @@ import { Page404Component }          from '../develar-commons/errorpages/page-40
 import { CensoCoreEditComponent } from './censo/censo-data/censo-core/censo-core-edit/censo-core-edit.component';
 import { CensoNavigateComponent } from './censo-crud/censo-navigate/censo-navigate.component';
 
+import { CompanyBrowseComponent } from './company-page/company-browse/company-browse.component';
 
 const routes: Routes = [
   {path: 'panel',
@@ -19,6 +20,15 @@ const routes: Routes = [
 
   },
 
+  {path: 'recepcion',
+    component: CompanyBrowseComponent,
+
+  },
+
+  {path: 'editar/:id',
+    component: RegistroEmpresaPageComponent,
+
+  },
 
   {
     path: 'gestion',

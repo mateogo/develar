@@ -6,7 +6,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 
-import { BehaviorSubject ,  Subject ,  Observable } from 'rxjs';
+import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 
 import { SharedService } from '../develar-commons/shared-service';
 import { DaoService } from '../develar-commons/dao.service';
@@ -576,6 +576,48 @@ export class EmpresasController {
     return this.daoService.search<Person>('person', query);
   }
 
+  /******* Fetch PERSON Person person *******/
+  fetchPersonByDNI(tdoc:string, ndoc:string ): Subject<Person[]>{
+    let listener = new Subject<Person[]>();
+
+    this.loadPersonByDNI(listener, tdoc,ndoc);
+    return listener;
+  }  
+
+  private loadPersonByDNI(recordEmitter:Subject<Person[]>, tdoc, ndoc){
+    let query = {
+      tdoc: tdoc,
+      ndoc: ndoc
+    }
+
+    this.daoService.search<Person>('person', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+  searchPerson(tdoc: string, term: string): Observable<Person[]> {
+    let query = {};
+    let test = Number(term);
+
+    if(!(term && term.trim())){
+      return of([] as Person[]);
+    }
+
+    if(isNaN(test)){
+      query['displayName'] = term.trim();
+    }else{
+      query['tdoc'] = tdoc;
+      query['ndoc'] = term;
+    }
+    
+    return this.daoService.search<Person>('person', query);
+}
 
 
   ////************* create new notification ************////
