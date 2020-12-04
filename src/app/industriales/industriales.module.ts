@@ -29,6 +29,7 @@ import { DashboardConsultasComponent } from './dashboard/dashboard-consultas/das
 import { DashboardTurnosComponent } from './dashboard/dashboard-turnos/dashboard-turnos.component';
 import { DashboardDocumentacionComponent } from './dashboard/dashboard-documentacion/dashboard-documentacion.component';
 import { DashboardIndustriasComponent } from './dashboard/dashboard-industrias/dashboard-industrias.component';
+import { DashboardCensosComponent } from './dashboard/dashboard-censos/dashboard-censos.component';
 @NgModule({
   declarations: [DashboardMainComponent, DashboardPageComponent,
      UserDatosDashboardComponent, PersonasDashboardComponent,
@@ -51,7 +52,8 @@ import { DashboardIndustriasComponent } from './dashboard/dashboard-industrias/d
       DashboardConsultasComponent,
       DashboardTurnosComponent,
       DashboardDocumentacionComponent,
-      DashboardIndustriasComponent
+      DashboardIndustriasComponent,
+      DashboardCensosComponent
     ],
   imports: [
     CommonModule,

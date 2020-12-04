@@ -475,6 +475,11 @@ function buildQuery(query){
         q['familiares.personId'] = query.familiar;
     }
 
+    if(query.integrante){
+        q['integrantes.personId'] = query.integrante;
+        q['integrantes.estado'] = 'activo';
+    }
+
     if(query.mismalocacion){
         q['_id'] = {$ne: query.personId};
         q['locaciones.street1'] =  {"$regex": query.street1, "$options": "i"};
@@ -532,6 +537,7 @@ function updateData(model, data){
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query);
+    console.dir(regexQuery);
 
     Person.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {

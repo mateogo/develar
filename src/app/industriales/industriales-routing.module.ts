@@ -19,6 +19,13 @@ const routes: Routes = [
         component: PersonasPageComponent,
       },
       {
+        path: 'censos',
+        loadChildren: () =>
+          import('../empresas/empresas.module').then(
+            (m) => m.EmpresasModule
+          ),
+      },
+      {
         path: 'consultas',
         loadChildren: () =>
           import('./consultas-industriales/consultas-industriales.module').then(

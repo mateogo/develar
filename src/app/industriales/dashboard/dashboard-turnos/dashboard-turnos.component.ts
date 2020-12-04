@@ -18,7 +18,7 @@ export class DashboardTurnosComponent implements OnInit {
   private user: UserWeb;
   public turnosList$: Observable<Turno[]>;
 
-  public turnoDashboardTitle = 'Turnos presenciales';
+  public turnoDashboardTitle = 'Turnos asistencia / trámites presenciales';
   public turnoDashboardSubtitle = 'Sólo se muestran los turnos vigentes';
 
   public turnosList: Turno[];

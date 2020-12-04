@@ -1,4 +1,4 @@
-import { CensoIndustrias, CensoActividad, CensoBienes, Empresa } from './censo.model';
+import { CensoIndustrias, CensoIndustriasTable, CensoActividad, CensoBienes, Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
 import { Person, DocumentData }      from '../entities/person/person';
 import { nomencladorList } from './nomenclador-data';
@@ -126,6 +126,19 @@ export class CensoIndustriasService {
 
 		return label;
 
+	}
+
+	static buildCensoTableData(list: CensoIndustrias[]):CensoIndustriasTable[]{
+		return list.map(token => {
+			let tableCell = new CensoIndustriasTable();
+			tableCell._id = token._id;
+			tableCell.compNum = token.compNum;
+			tableCell.fecomp = token.fecomp_txa;
+			tableCell.slug = token.censo.slug;
+			tableCell.navance = this.getOptionLabel("avance", token.estado.navance)
+
+			return tableCell;
+		})
 	}
 
 	static getOptionlist(type){

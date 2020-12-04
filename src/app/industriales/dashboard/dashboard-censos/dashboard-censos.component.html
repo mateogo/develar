@@ -1,0 +1,34 @@
+<mat-card>
+    <mat-card-title class="d-flex align-items-center">
+        <mat-icon>home_work</mat-icon>
+        {{ title }}
+        <span class="flex-grow-1"></span>
+        <mat-icon class="clickeable" (click)="navigateBrowse()">keyboard_arrow_right</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-0">{{ subtitle }}
+        <mat-divider></mat-divider>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <ng-container *ngIf='showData'>
+            <div class="container-fluid p-0">
+                <mat-list class="pt-0">
+                    <ng-container *ngFor="let item of censosList$ | async">
+                        <div class="row">
+                            <mat-list-item class="align-items-center">
+                                <div class="col-12">
+                                    <p class="mb-0">
+                                        <strong>Censo Nro: {{ item.compNum }}:: {{ item.fecomp_txa }}</strong> &nbsp;                                    
+                                  <span [innerHtml]="item.censo.slug | sanitizeHtml"></span> :: {{ item.estado.navance}}</p>
+                                </div>
+
+                                <mat-divider></mat-divider>
+                            </mat-list-item>
+                        </div>
+
+                    </ng-container>
+                </mat-list>
+            </div>
+
+        </ng-container>
+    </mat-card-content>
+</mat-card>

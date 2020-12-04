@@ -10,9 +10,16 @@ import { RegistroEmpresaPageComponent } from './master-data/empresa-page/registr
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
 import { CensoCoreEditComponent } from './censo/censo-data/censo-core/censo-core-edit/censo-core-edit.component';
+import { CensoNavigateComponent } from './censo-crud/censo-navigate/censo-navigate.component';
 
 
 const routes: Routes = [
+  {path: 'panel',
+    component: CensoNavigateComponent,
+
+  },
+
+
   {
     path: 'gestion',
     component: EmpresasLayoutComponent,

@@ -50,6 +50,8 @@ import { EmpresaDocumentosEditComponent } from './master-data/empresa-documentos
 import { EmpresaDocumentosViewComponent } from './master-data/empresa-documentos/empresa-documentos-view/empresa-documentos-view.component';
 import { EmpresaDocumentosPanelComponent } from './master-data/empresa-documentos/empresa-documentos-panel/empresa-documentos-panel.component';
 import { CensoAssetsPanelComponent } from './censo/censo-data/censo-assets/censo-assets-panel/censo-assets-panel.component';
+import { CensoTableComponent } from './censo-crud/censo-table/censo-table.component';
+import { CensoNavigateComponent } from './censo-crud/censo-navigate/censo-navigate.component';
 
 
 
@@ -101,7 +103,9 @@ import { CensoAssetsPanelComponent } from './censo/censo-data/censo-assets/censo
     EmpresaDocumentosEditComponent,
     EmpresaDocumentosViewComponent,
     EmpresaDocumentosPanelComponent,
-    CensoAssetsPanelComponent
+    CensoAssetsPanelComponent,
+    CensoTableComponent,
+    CensoNavigateComponent
   ],
 
 })

@@ -712,42 +712,42 @@ function sendNotificationEmail(mailOptions) {
  */
 exports.buildTurnoSlots = function() {
     const slots = [
-        { sede: 'rondeau', dow: 1, hora: 9, slug: '09:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 2, hora: 9, slug: '09:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 3, hora: 9, slug: '09:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 4, hora: 9, slug: '09:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 5, hora: 9, slug: '09:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 1, hora: 9, slug: '09:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 2, hora: 9, slug: '09:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 3, hora: 9, slug: '09:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 4, hora: 9, slug: '09:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 5, hora: 9, slug: '09:00', capacidad: 10 },
 
-        { sede: 'rondeau', dow: 1, hora: 12, slug: '12:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 2, hora: 12, slug: '12:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 3, hora: 12, slug: '12:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 4, hora: 12, slug: '12:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 5, hora: 12, slug: '12:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 1, hora: 12, slug: '12:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 2, hora: 12, slug: '12:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 3, hora: 12, slug: '12:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 4, hora: 12, slug: '12:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 5, hora: 12, slug: '12:00', capacidad: 10 },
 
-        { sede: 'rondeau', dow: 1, hora: 15, slug: '15:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 2, hora: 15, slug: '15:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 3, hora: 15, slug: '15:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 4, hora: 15, slug: '15:00', capacidad: 10 },
-        { sede: 'rondeau', dow: 5, hora: 15, slug: '15:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 1, hora: 15, slug: '15:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 2, hora: 15, slug: '15:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 3, hora: 15, slug: '15:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 4, hora: 15, slug: '15:00', capacidad: 10 },
+        { sede: 'secretaria', dow: 5, hora: 15, slug: '15:00', capacidad: 10 },
 
 
-        { sede: 'paseocolon', dow: 1, hora: 9, slug: '09:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 2, hora: 9, slug: '09:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 3, hora: 9, slug: '09:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 4, hora: 9, slug: '09:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 5, hora: 9, slug: '09:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 1, hora: 9, slug: '09:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 2, hora: 9, slug: '09:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 3, hora: 9, slug: '09:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 4, hora: 9, slug: '09:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 5, hora: 9, slug: '09:00', capacidad: 2 },
 
-        { sede: 'paseocolon', dow: 1, hora: 12, slug: '12:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 2, hora: 12, slug: '12:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 3, hora: 12, slug: '12:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 4, hora: 12, slug: '12:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 5, hora: 12, slug: '12:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 1, hora: 12, slug: '12:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 2, hora: 12, slug: '12:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 3, hora: 12, slug: '12:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 4, hora: 12, slug: '12:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 5, hora: 12, slug: '12:00', capacidad: 2 },
 
-        { sede: 'paseocolon', dow: 1, hora: 15, slug: '15:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 2, hora: 15, slug: '15:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 3, hora: 15, slug: '15:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 4, hora: 15, slug: '15:00', capacidad: 2 },
-        { sede: 'paseocolon', dow: 5, hora: 15, slug: '15:00', capacidad: 2 }
+        { sede: 'pindustrial', dow: 1, hora: 15, slug: '15:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 2, hora: 15, slug: '15:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 3, hora: 15, slug: '15:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 4, hora: 15, slug: '15:00', capacidad: 2 },
+        { sede: 'pindustrial', dow: 5, hora: 15, slug: '15:00', capacidad: 2 }
     ];
 
     function buildSlotRecord(token) {
