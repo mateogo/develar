@@ -10,6 +10,8 @@ import {
   AsyncValidatorFn,
 } from '@angular/forms';
 
+import { Router, ActivatedRoute } from '@angular/router';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -89,7 +91,7 @@ export class VinculosAgregarFormComponent implements OnInit {
   private whiteList: Array<string>;
   private blackList: Array<string>;
 
-  private result: UpdateAsistenciaEvent;
+  private result;
 
   constructor(
     public dialogRef: MatDialogRef<VinculosAgregarFormComponent>,
@@ -97,7 +99,9 @@ export class VinculosAgregarFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ctrl: SaludController,
     private perSrv: PersonService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -105,7 +109,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.initForm();
     this.initOnce();
 
-    console.log(this.person);
+    // console.log(this.person);
   }
 
   private initOnce() {
@@ -121,7 +125,7 @@ export class VinculosAgregarFormComponent implements OnInit {
       action: UPDATE,
       type: VINCULO_ESTADO,
       token: null,
-    } as UpdateAsistenciaEvent;
+    };
 
     this.initForEdit();
   }
@@ -209,25 +213,11 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
   onCancel() {
-    // this.result.action = CANCEL;
-    this.dialogRef.close();
+    this.result.action = CANCEL;
+    this.dialogRef.close({
+     result: this.result
+    });
   }
-
-  // onDeleteContact() {
-  //   let content = this.buildWarningMessage(
-  //     '<strong>Se desvinculará este CONTACTO del caso índice.</strong> <br>No afecta el estado de seguimiento del propio contacto, sólo su relación con este ancestro.<br> Debe confirmar la operación '
-  //   );
-  //   this.openDialog(content).subscribe((result) => {
-  //     if (result === 'accept') {
-  //       this.processBajaDeVinculo();
-  //     } else {
-  //       this.ctrl.openSnackBar(
-  //         'CANCELADO: La operación fue cancelada',
-  //         'CERRAR'
-  //       );
-  //     }
-  //   });
-  // }
 
   changeSelectionValue(type, val) {
     //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
@@ -358,18 +348,11 @@ export class VinculosAgregarFormComponent implements OnInit {
   }*/
 
   private saveToken() {
-    // (0) Actualiza el contador de contactos estrechos;
-    // (a) Actualiza los datos del vínculo;
-    // (b) Busca / actualiza la S/Asistencia, si la hay
-    // (c) Actualiza la mainPerson, la que hostea el vinculo
-    // this.updateContactosEstrechos(); // (a)
-    //this.updateVinculos();
-
     /**
       1. miro si existe la persona jurídica (aquí es this.vinculo);
         si no existe la creo
     */
-    console.log("saveToken[this.vinculo=%o]", this.vinculo);
+    // console.log("saveToken[this.vinculo=%o]", this.vinculo);
 
     // Siempre busco persona jurídica por tratarse de una industria
     const bussinessExistsQuery = {
@@ -379,7 +362,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     };
 
     this.perSrv.fetch(bussinessExistsQuery).subscribe(person => {
-      console.log('this.person.fetch[person=%o]', person);
+      // console.log('this.person.fetch[person=%o]', person);
 
       if (person && person.length > 0) {
         /*
@@ -399,7 +382,13 @@ export class VinculosAgregarFormComponent implements OnInit {
           personItem.integrantes.push(newBusinessMember);
 
           this.perSrv.updatePersonPromise(personItem).then(updatedPerson => {
-            console.log('Actualizando integrates[updatedPerson=%o]', updatedPerson);
+            // console.log('Actualizando integrates[updatedPerson=%o]', updatedPerson);
+
+            this.result.token = updatedPerson;
+
+            this.dialogRef.close({
+              data: this.result
+             });
           });
         }
       } else {
@@ -412,14 +401,20 @@ export class VinculosAgregarFormComponent implements OnInit {
         const personToCreate = personModel.buildPersonFromBusinessMember(this.vinculo);
 
         this.perSrv.createPerson(personToCreate).then(createdPerson => {
-          console.log('createPerson[createdPerson=%o]', createdPerson);
+          // console.log('createPerson[createdPerson=%o]', createdPerson);
 
           const newBusinessMember = personModel.buildBusinessMemberFromPerson(this.person, null);
           newBusinessMember.isMaster = true;
           createdPerson.integrantes.push(newBusinessMember);
 
           this.perSrv.updatePersonPromise(createdPerson).then(updatedPerson => {
-            console.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
+            // console.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
+            //this.router.navigate(['editar/', updatedPerson._id], { relativeTo: this.route });
+            this.result.token = updatedPerson;
+
+            this.dialogRef.close({
+              data: this.result
+             });
           });
         });
       }
@@ -605,7 +600,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     // this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
 
-    console.log('initForSave[this.person=%o][this.vinculo=%o][this.locacion=%o]', this.person, this.vinculo, this.locacion);
+    // console.log('initForSave[this.person=%o][this.vinculo=%o][this.locacion=%o]', this.person, this.vinculo, this.locacion);
   }
 
   private openDialog(config) {
