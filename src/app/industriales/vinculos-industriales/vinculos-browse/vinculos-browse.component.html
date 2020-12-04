@@ -7,26 +7,24 @@
         </mat-toolbar>
     </div>
     <div class="col-12">
-    <mat-card>
+        <mat-card>
 
-        <mat-card-content>
-            <mat-list class="pt-0">
-                <ng-container *ngIf=showData >
-                  <mat-divider></mat-divider>
-                  <mat-list-item class="align-items-center">
-                      <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
-                      <button type="button" mat-flat-button color="accent"
-                      (click)="navigateToIndustry()"
-                    >Editar Compañía</button>
+            <mat-card-content>
+                <mat-list class="pt-0">
+                    <ng-container *ngIf=showData>
+                        <mat-divider></mat-divider>
+                        <mat-list-item class="align-items-center">
+                            <p class="mb-0"><strong>N° de CUIT {{ currentIndustry.ndoc  }}</strong> :: {{currentIndustry.displayName }} / Integrantes: {{ currentIndustry.integrantes.length }}</p>
+                            <p class="flex-spacer">&nbsp;</p>
+                            <!-- <button type="button" mat-flat-button color="accent" (click)="navigateToIndustry()">Editar Compañía</button> -->
+                            <mat-icon matTooltip="Editar esta compañía" class="mx-1" (click)="navigateToIndustry()">edit</mat-icon>
+                            <mat-divider></mat-divider>
+                        </mat-list-item>
+                    </ng-container>
+                </mat-list>
+            </mat-card-content>
 
-                      <mat-divider></mat-divider>
-                  </mat-list-item>
-    
-              </ng-container>
-            </mat-list>
-        </mat-card-content>
-
-    </mat-card>
+        </mat-card>
     </div>
 </div>
 <div class="row mt-3">

@@ -60,6 +60,9 @@ export class VinculosBrowseComponent implements OnInit {
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
           if(industria){
             this.currentIndustry = industria;
+
+            //c onsole.log('fetchCompaniaVinculada [%o]', this.currentIndustry);
+
             this.showData = true;
 
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
@@ -74,9 +77,9 @@ export class VinculosBrowseComponent implements OnInit {
                 this.showData = false;
                 //this.empCtrl.openSnackBar('No ')
               }
-        
+
             })
- 
+
           }else{
             console.log('Industria no hallada, debe cargar una')
             this.showData = false;
@@ -97,7 +100,7 @@ export class VinculosBrowseComponent implements OnInit {
     this.router.navigate(['/mab/empresas/editar/', this.currentIndustry._id]);
 
   }
-  
+
   public nuevoVinculo(): void {
     this.userWeb.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
       this.openModalDialog(person);

@@ -59,6 +59,7 @@ export class DashboardIndustriasComponent implements OnInit {
             this.currentIndustry = industria;
             this.showData = true;
 
+            console.log('currentIndustry [%o]', this.currentIndustry);
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
             console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
 
