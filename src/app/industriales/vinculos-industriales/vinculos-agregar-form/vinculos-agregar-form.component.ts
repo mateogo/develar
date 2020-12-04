@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 
 import {
   AbstractControl,
-  ValidatorFn,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -25,7 +24,6 @@ import { devutils } from '../../../develar-commons/utils';
 import { GenericDialogComponent } from '../../../develar-commons/generic-dialog/generic-dialog.component';
 
 import {
-  Asistencia,
   UpdateAsistenciaEvent,
   Locacion,
   AsistenciaHelper,
@@ -35,7 +33,6 @@ import {
   Person,
   BusinessMembersData,
   PersonContactData,
-  NucleoHabitacional,
   Address,
   personModel,
 } from '../../../entities/person/person';
@@ -201,7 +198,6 @@ export class VinculosAgregarFormComponent implements OnInit {
   }*/
 
   onSubmit() {
-    //this.formClosed = true;
     this.result.action = UPDATE;
     this.initForSave();
     this.saveToken();
@@ -387,29 +383,57 @@ export class VinculosAgregarFormComponent implements OnInit {
 
       if (person && person.length > 0) {
         /*
-          2. existe; asociamos
+          2. existe:
+          2.1. asociamos?
+          2.2. informamos que solo master hace la asociación?
         */
         const personItem = person[0];
-        personItem.integrantes.push(personModel.buildBusinessMemberFromPerson(this.person, null));
-        this.perSrv.updatePersonPromise(personItem).then(updatedPerson => {
-          console.log("Actualizando integrates[updatedPerson=%o]", updatedPerson);
-        });
+
+        // Tiene master?
+        if (this.hasBusinessMemberMaster(personItem)) {
+          this.ctrl.openSnackBar('Se requiere autorización para asociarse a esta industria', 'CERRAR');
+        } else {
+          const newBusinessMember = personModel.buildBusinessMemberFromPerson(this.person, null);
+
+          newBusinessMember.isMaster = true;
+          personItem.integrantes.push(newBusinessMember);
+
+          this.perSrv.updatePersonPromise(personItem).then(updatedPerson => {
+            console.log('Actualizando integrates[updatedPerson=%o]', updatedPerson);
+          });
+        }
       } else {
         /*
-          3. no existe; creamos la empresa ("persona jurídica") con los datos mínimos,
-              asociamos y enviamos a vista de edición
+          3. no existe:
+          3.1. creamos la empresa ("persona jurídica") con los datos mínimos
+          3.2. asociamos
+          3.3. enviamos a vista de edición
         */
         const personToCreate = personModel.buildPersonFromBusinessMember(this.vinculo);
 
         this.perSrv.createPerson(personToCreate).then(createdPerson => {
           console.log('createPerson[createdPerson=%o]', createdPerson);
-          createdPerson.integrantes.push(personModel.buildBusinessMemberFromPerson(this.person, null));
+
+          const newBusinessMember = personModel.buildBusinessMemberFromPerson(this.person, null);
+          newBusinessMember.isMaster = true;
+          createdPerson.integrantes.push(newBusinessMember);
+
           this.perSrv.updatePersonPromise(createdPerson).then(updatedPerson => {
-            console.log("Creando y actualizando integrates[updatedPerson=%o]", updatedPerson);
+            console.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
           });
         });
       }
     });
+  }
+
+  private hasBusinessMemberMaster(p: Person): boolean {
+    let hasMaster = false;
+
+    if (p.integrantes.find(member => member.isMaster === true)) {
+      hasMaster = true;
+    }
+
+    return hasMaster;
   }
 
   private updateVinculos() {
@@ -601,7 +625,7 @@ export class VinculosAgregarFormComponent implements OnInit {
     // });
 
     this.vinculoForm = this.fb.group({
-      nombre: ["pepe", Validators.compose([Validators.required])],
+      nombre: [null, Validators.compose([Validators.required])],
       apellido: [null],
       displayName: [null],
       tdoc: [null, Validators.compose([Validators.required])],
@@ -701,27 +725,4 @@ export class VinculosAgregarFormComponent implements OnInit {
       );
     };
   }
-
-  private closeDialogSuccess() {
-    this.dialogRef.close(this.result);
-  }
 }
-
-const warningMessageTpl = {
-  width: '350px',
-  height: '300px',
-  hasBackdrop: true,
-  backdropClass: 'yellow-backdrop',
-  data: {
-    caption: 'Atención',
-    body: 'La persona seleccionada es: ',
-    accept: {
-      action: 'accept',
-      label: 'Aceptar',
-    },
-    cancel: {
-      action: 'cancel',
-      label: 'Cancelar',
-    },
-  },
-};

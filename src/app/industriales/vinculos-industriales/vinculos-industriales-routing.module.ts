@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { VinculosBrowseComponent } from './vinculos-browse/vinculos-browse.component';
+import { RegistroEmpresaPageComponent } from '../../empresas/master-data/empresa-page/registro-empresa-page.component';
 
 const routes: Routes = [
   {
-    path: 'alta',
-    // component : TurnosIndustrialesEditComponent
+    path: '',
+    component: VinculosBrowseComponent
   },
   {
     path: 'editar/:id',
-    // component : TurnosIndustrialesEditComponent
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-  component: VinculosBrowseComponent
-}];
+    component: RegistroEmpresaPageComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

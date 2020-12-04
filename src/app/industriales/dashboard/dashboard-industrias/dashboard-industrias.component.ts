@@ -19,6 +19,6 @@ export class DashboardIndustriasComponent implements OnInit {
   }
 
   public gotoIndustriasPage(): void {
-    this.router.navigate(['vinculos'], { relativeTo: this.route });
+    this.router.navigate(['industrias'], { relativeTo: this.route });
   }
 }

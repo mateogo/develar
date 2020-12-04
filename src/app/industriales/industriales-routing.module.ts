@@ -40,7 +40,7 @@ const routes: Routes = [
           ).then((m) => m.IndustrialesDocumentacionModule),
       },
       {
-        path: 'vinculos',
+        path: 'industrias',
         loadChildren: () =>
           import('./vinculos-industriales/vinculos-industriales.module').then(
             (m) => m.VinculosIndustrialesModule

@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { VinculosAgregarFormComponent } from '../vinculos-agregar-form/vinculos-agregar-form.component';
 import { Person } from '../../../entities/person/person';
 import { UserService } from '../../../entities/user/user.service';
-import { UserWeb } from '../../../entities/user-web/user-web.model';
 import { UserWebService } from '../../../entities/user-web/user-web.service';
 
 @Component({
@@ -26,18 +25,6 @@ export class VinculosBrowseComponent implements OnInit {
   }
 
   public nuevoVinculo(): void {
-    // this.dialog
-    //   .open(VinculosAgregarFormComponent)
-    //   .afterClosed()
-    //   .subscribe(result => {
-    //   console.log(result);
-    // });
-    // this.user.currentUser.subscribe(userweb => {
-    //   console.log(userweb);
-    // });
-
-    //console.log(this.user.currentUser);
-
     this.userWeb.fetchPersonByUserId(this.user.currentUser._id).then(person => {
       this.openModalDialog(person);
     });
@@ -55,7 +42,6 @@ export class VinculosBrowseComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe(res => console.log(res));
-
   }
 
   public navigateToDashboard(): void {

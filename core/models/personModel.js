@@ -5,7 +5,7 @@
  * Load module dependencies
  */
 
-const whoami =  "models/personModel: ";
+const whoami = "models/personModel: ";
 
 const mongoose = require('mongoose');
 
@@ -33,7 +33,7 @@ function encrypt(text){
   crypted += cipher.final('hex');
   return crypted;
 }
- 
+
 function decrypt(text){
   let decipher = crypto.createDecipher(algorithm,password)
   let dec = decipher.update(text,'hex','utf8')
@@ -50,7 +50,7 @@ function comparePasswd (passwd, actualpasswd, cb){
 }
 **/
 
- 
+
 
 /**
  * Creación de un Schema
@@ -58,225 +58,227 @@ function comparePasswd (passwd, actualpasswd, cb){
 
 
 const oficiosSch = new mongoose.Schema({
-    tdato:         {type: String, required: false,  default: "formal"},
-    tocupacion:    {type: String, required: false,  default: "empleadx"},
-    ocupacion:     {type: String, required: false,  default: "Empleado"},
-    lugar:         {type: String, required: false,  default: ""},
-    qdiasmes:      {type: String, required: false,  default: ""},
-    remuneracion:  {type: Number, required: false,  default: ""},
-    ume_remun:     {type: String, required: false,  default: ""},
-    estado:        {type: String, required: false,  default: ""},
-    desde:         {type: String, required: false,  default: ""},
-    hasta:         {type: String, required: false,  default: ""},
-    comentario:    {type: String, required: false,  default: ""},
+    tdato: { type: String, required: false, default: "formal" },
+    tocupacion: { type: String, required: false, default: "empleadx" },
+    ocupacion: { type: String, required: false, default: "Empleado" },
+    lugar: { type: String, required: false, default: "" },
+    qdiasmes: { type: String, required: false, default: "" },
+    remuneracion: { type: Number, required: false, default: "" },
+    ume_remun: { type: String, required: false, default: "" },
+    estado: { type: String, required: false, default: "" },
+    desde: { type: String, required: false, default: "" },
+    hasta: { type: String, required: false, default: "" },
+    comentario: { type: String, required: false, default: "" },
 });
 
 const assetSch = new mongoose.Schema({
-    entity:      {type: String, required: false,  default: ""},
-    displayAs:   {type: String, required: false,  default: ""},
-    predicate:   {type: String, required: false,  default: ""},
-    slug:        {type: String, required: false,  default: ""},
-    description: {type: String, required: false,  default: ""},
-    avatar:      {type: Number, required: false,  default: ""},
-    entityId:    {type: String, required: false,  default: ""},
-    mimetype : {type : String, required: false, default: ""}
+    entity: { type: String, required: false, default: "" },
+    displayAs: { type: String, required: false, default: "" },
+    predicate: { type: String, required: false, default: "" },
+    slug: { type: String, required: false, default: "" },
+    description: { type: String, required: false, default: "" },
+    avatar: { type: Number, required: false, default: "" },
+    entityId: { type: String, required: false, default: "" },
+    mimetype: { type: String, required: false, default: "" }
 });
 
 
 const businessSch = new mongoose.Schema({
-    nombre:      {type: String, required: true,  default: ""},
-    apellido:    {type: String, required: false, default: ""},
-    tdoc:        {type: String, required: false, default: ""},
-    ndoc:        {type: String, required: false, default: ""},
-    fenac:       {type: Number, required: false, default: 0 },
-    fenactx:     {type: String, required: false, default: ""},
-    ecivil:      {type: String, required: false, default: ""},
-    email:       {type: String, required: false, default: ""},
-    phone:       {type: String, required: false, default: ""},
-    nestudios:   {type: String, required: false, default: ""},
-    tocupacion:  {type: String, required: false, default: ""},
-    ocupacion:   {type: String, required: false, default: ""},
-    ingreso:     {type: String, required: false, default: ""},
-    hasOwnPerson:{type: Boolean, required: false, default: false},
-    personId:    {type: String, required: false, default: ""},
-    vinculo:     {type: String, required: true,  default: ""},
-    estado:      {type: String, required: false, default: ""},
-    desde:       {type: String, required: false, default: ""},
-    hasta:       {type: String, required: false, default: ""},
-    comentario:  {type: String, required: false, default: ""},
-    assets:      [ assetSch ]
+    nombre: { type: String, required: true, default: "" },
+    apellido: { type: String, required: false, default: "" },
+    tdoc: { type: String, required: false, default: "" },
+    ndoc: { type: String, required: false, default: "" },
+    fenac: { type: Number, required: false, default: 0 },
+    fenactx: { type: String, required: false, default: "" },
+    ecivil: { type: String, required: false, default: "" },
+    email: { type: String, required: false, default: "" },
+    phone: { type: String, required: false, default: "" },
+    nestudios: { type: String, required: false, default: "" },
+    tocupacion: { type: String, required: false, default: "" },
+    ocupacion: { type: String, required: false, default: "" },
+    ingreso: { type: String, required: false, default: "" },
+    hasOwnPerson: { type: Boolean, required: false, default: false },
+    personId: { type: String, required: false, default: "" },
+    vinculo: { type: String, required: true, default: "" },
+    estado: { type: String, required: false, default: "" },
+    desde: { type: String, required: false, default: "" },
+    hasta: { type: String, required: false, default: "" },
+    comentario: { type: String, required: false, default: "" },
+    isMaster: { type: Boolean, required: false, default: false },
+    displayName: { type: String, required: false },
+    assets: [assetSch]
 });
 
 const familySch = new mongoose.Schema({
-    nombre:      {type: String, required: true,  default: ""},
-    apellido:    {type: String, required: false, default: ""},
-    tdoc:        {type: String, required: false, default: ""},
-    ndoc:        {type: String, required: false, default: ""},
-    sexo:        {type: String, required: false, default: ""},
-    telefono:    {type: String, required: false, default: ""},
+    nombre: { type: String, required: true, default: "" },
+    apellido: { type: String, required: false, default: "" },
+    tdoc: { type: String, required: false, default: "" },
+    ndoc: { type: String, required: false, default: "" },
+    sexo: { type: String, required: false, default: "" },
+    telefono: { type: String, required: false, default: "" },
 
-    fenac:       {type: Number, required: false, default: 0 },
-    fenactx:     {type: String, required: false, default: ""},
-    vinculo:     {type: String, required: false,  default: ""},
-    estado:      {type: String, required: false, default: ""},
+    fenac: { type: Number, required: false, default: 0 },
+    fenactx: { type: String, required: false, default: "" },
+    vinculo: { type: String, required: false, default: "" },
+    estado: { type: String, required: false, default: "" },
 
-    hasOwnPerson:{type: Boolean, required: false, default: false},
-    personId:    {type: String, required: false, default: ""},
-    nucleo:      {type: String, required: false, default: ""},
+    hasOwnPerson: { type: Boolean, required: false, default: false },
+    personId: { type: String, required: false, default: "" },
+    nucleo: { type: String, required: false, default: "" },
 
 
-    ecivil:      {type: String, required: false, default: ""},
-    nestudios:   {type: String, required: false, default: ""},
-    ocupacion:   {type: String, required: false, default: ""},
-    tocupacion:  {type: String, required: false, default: ""},
-    ingreso:     {type: String, required: false, default: ""},
-    desde:       {type: String, required: false, default: ""},
-    hasta:       {type: String, required: false, default: ""},
-    comentario:  {type: String, required: false, default: ""},
+    ecivil: { type: String, required: false, default: "" },
+    nestudios: { type: String, required: false, default: "" },
+    ocupacion: { type: String, required: false, default: "" },
+    tocupacion: { type: String, required: false, default: "" },
+    ingreso: { type: String, required: false, default: "" },
+    desde: { type: String, required: false, default: "" },
+    hasta: { type: String, required: false, default: "" },
+    comentario: { type: String, required: false, default: "" },
 });
 
 const encuestaSch = new mongoose.Schema({
-    id_address:   {type: String, required: false, default: ''},
-    id_person:    {type: String, required: false, default: ''},
+    id_address: { type: String, required: false, default: '' },
+    id_person: { type: String, required: false, default: '' },
 
-    street1:     {type: String,  required: false, defalut: ''}, //OjO
-    city:        {type: String,  required: false, defalut: ''},
-    barrio:      {type: String,  required: false, defalut: ''},
+    street1: { type: String, required: false, defalut: '' }, //OjO
+    city: { type: String, required: false, defalut: '' },
+    barrio: { type: String, required: false, defalut: '' },
 
-    estado:       {type: String, required: false, default: 'activo'},
-    ferel:        {type: String, required: false, default: ''},
-    fereltxt:     {type: String, required: false, default: ''},
-    tsocial:      {type: String, required: false, default: ''},
+    estado: { type: String, required: false, default: 'activo' },
+    ferel: { type: String, required: false, default: '' },
+    fereltxt: { type: String, required: false, default: '' },
+    tsocial: { type: String, required: false, default: '' },
 
-    tipoviv:      {type: String, required: false, default: ''},
-    domterreno:   {type: String, required: false, default: ''}, // tenencia    
-    aniosresid:   {type: Number, required: false, default: 0 },
-    qvivxlote:    {type: Number, required: false, default: 0 }, //cant_modulos
-    qhabitantes:  {type: Number, required: false, default: 0 }, //habitantes OjO
-    matviv:       {type: String, required: false, default: ''},
-    techoviv:     {type: String, required: false, default: ''},
-    pisoviv:      {type: String, required: false, default: ''},  //piso
-    qdormitorios: {type: Number, required: false, default: 1 }, // habitaciones
-    tventilacion: {type: String, required: false, default: ''},
-    tcocina:      {type: String, required: false, default: ''},
-    ecocina:      {type: String, required: false, default: ''},
-    tbanio:       {type: String, required: false, default: ''},
-    ebanio:       {type: String, required: false, default: ''},
-    tmobiliario:  {type: String, required: false, default: ''},
-    emobiliario:  {type: String, required: false, default: ''},
-    agua:         {type: String, required: false, default: ''},
-    electricidad: {type: String, required: false, default: ''},
-    cloaca:       {type: String, required: false, default: ''},
-    gas:          {type: String, required: false, default: ''},
-    iluminacion:  {type: String, required: false, default: ''},
-    observacion:  {type: String, required: false, default: ''},
+    tipoviv: { type: String, required: false, default: '' },
+    domterreno: { type: String, required: false, default: '' }, // tenencia
+    aniosresid: { type: Number, required: false, default: 0 },
+    qvivxlote: { type: Number, required: false, default: 0 }, //cant_modulos
+    qhabitantes: { type: Number, required: false, default: 0 }, //habitantes OjO
+    matviv: { type: String, required: false, default: '' },
+    techoviv: { type: String, required: false, default: '' },
+    pisoviv: { type: String, required: false, default: '' }, //piso
+    qdormitorios: { type: Number, required: false, default: 1 }, // habitaciones
+    tventilacion: { type: String, required: false, default: '' },
+    tcocina: { type: String, required: false, default: '' },
+    ecocina: { type: String, required: false, default: '' },
+    tbanio: { type: String, required: false, default: '' },
+    ebanio: { type: String, required: false, default: '' },
+    tmobiliario: { type: String, required: false, default: '' },
+    emobiliario: { type: String, required: false, default: '' },
+    agua: { type: String, required: false, default: '' },
+    electricidad: { type: String, required: false, default: '' },
+    cloaca: { type: String, required: false, default: '' },
+    gas: { type: String, required: false, default: '' },
+    iluminacion: { type: String, required: false, default: '' },
+    observacion: { type: String, required: false, default: '' },
 
 });
 
 const addressSch = new mongoose.Schema({
-    slug:        {type: String,  required: false,  defalut: ''},
-    estado:      {type: String,  required: false, defalut: 'activo'},
-    description: {type: String,  required: false, defalut: ''},
-    isDefault:   {type: Boolean, required: false, defalut: false},
-    addType:     {type: String,  required: false, defalut: 'principal'},
-    street1:     {type: String,  required: false, defalut: ''},
-    street2:     {type: String,  required: false, defalut: ''},
-    streetIn:    {type: String,  required: false, defalut: ''},
-    streetOut:   {type: String,  required: false, defalut: ''},
-    city:        {type: String,  required: false, defalut: ''},
-    barrio:      {type: String,  required: false, defalut: ''},
-    state:       {type: String,  required: false, defalut: ''},
-    statetext:   {type: String,  required: false, defalut: ''},
-    zip:         {type: String,  required: false, defalut: ''},
-    hasBanio:      {type: Boolean, required: false, defalut: false},
-    hasHabitacion: {type: Boolean, required: false, defalut: false},
-    estadoviv:     {type: String,  required: false, defalut: 'activa'},
-    cualificacionviv: {type: String,  required: false, defalut: 'buena'},
-    encuesta:    {type: encuestaSch, required: false},
-    country:     {type: String,  required: false, defalut: 'AR'},
-    lat:         {type: Number,  required: false, defalut: -34.59},
-    lng:         {type: Number,  required: false, defalut: -58.41}
+    slug: { type: String, required: false, defalut: '' },
+    estado: { type: String, required: false, defalut: 'activo' },
+    description: { type: String, required: false, defalut: '' },
+    isDefault: { type: Boolean, required: false, defalut: false },
+    addType: { type: String, required: false, defalut: 'principal' },
+    street1: { type: String, required: false, defalut: '' },
+    street2: { type: String, required: false, defalut: '' },
+    streetIn: { type: String, required: false, defalut: '' },
+    streetOut: { type: String, required: false, defalut: '' },
+    city: { type: String, required: false, defalut: '' },
+    barrio: { type: String, required: false, defalut: '' },
+    state: { type: String, required: false, defalut: '' },
+    statetext: { type: String, required: false, defalut: '' },
+    zip: { type: String, required: false, defalut: '' },
+    hasBanio: { type: Boolean, required: false, defalut: false },
+    hasHabitacion: { type: Boolean, required: false, defalut: false },
+    estadoviv: { type: String, required: false, defalut: 'activa' },
+    cualificacionviv: { type: String, required: false, defalut: 'buena' },
+    encuesta: { type: encuestaSch, required: false },
+    country: { type: String, required: false, defalut: 'AR' },
+    lat: { type: Number, required: false, defalut: -34.59 },
+    lng: { type: Number, required: false, defalut: -58.41 }
 })
 
 const notif_messageSch = new mongoose.Schema({
-    type:       {type: String,  required: false, defalut: 'webmessage'},
-    from:       {type: String,  required: false, defalut: ''},
-    fe:         {type: Number,  required: false, defalut: 0},
-    content:    {type: String,  required: true,  defalut: ''},
+    type: { type: String, required: false, defalut: 'webmessage' },
+    from: { type: String, required: false, defalut: '' },
+    fe: { type: Number, required: false, defalut: 0 },
+    content: { type: String, required: true, defalut: '' },
 })
 
 const recordCardSch = new mongoose.Schema({
-    slug:         {type: String,  required: false, defalut: ''},
-    subtitle:     {type: String,  required: false, defalut: ''},
-    cardId:       {type: String,  required: false, defalut: ''},
-    topic:        {type: String,  required: false, defalut: ''},
-    cardType:     {type: String,  required: false, defalut: ''},
-    cardCategory: {type: String,  required: false, defalut: ''},
+    slug: { type: String, required: false, defalut: '' },
+    subtitle: { type: String, required: false, defalut: '' },
+    cardId: { type: String, required: false, defalut: '' },
+    topic: { type: String, required: false, defalut: '' },
+    cardType: { type: String, required: false, defalut: '' },
+    cardCategory: { type: String, required: false, defalut: '' },
 });
 
 const userSch = new mongoose.Schema({
-    userid:       {type: String,  required: false, defalut: ''},
-    username:     {type: String,  required: false, defalut: ''},
+    userid: { type: String, required: false, defalut: '' },
+    username: { type: String, required: false, defalut: '' },
 })
 
 
-const contactDataSch = new mongoose.Schema( {
-    tdato:       { type: String, required: true },
-    data:        { type: String, required: true },
-    type:        { type: String, required: false },
-    slug:        { type: String, required: false },
+const contactDataSch = new mongoose.Schema({
+    tdato: { type: String, required: true },
+    data: { type: String, required: true },
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
     isPrincipal: { type: String, required: false },
 });
 
-const saludSch = new mongoose.Schema( {
-    type:       { type: String, required: true },
-    tproblema:  { type: String, required: true },
-    problema:   { type: String, required: false },
-    fecha:      { type: String, required: false},
-    fe_ts:      { type: Number, required: false },
+const saludSch = new mongoose.Schema({
+    type: { type: String, required: true },
+    tproblema: { type: String, required: true },
+    problema: { type: String, required: false },
+    fecha: { type: String, required: false },
+    fe_ts: { type: Number, required: false },
     lugaratencion: { type: String, required: false },
-    slug:       { type: String, required: false },
+    slug: { type: String, required: false },
 });
 
 //type: ingreso|auh|plan|osocial
 const coberturaSch = new mongoose.Schema({
-    type:          { type: String, required: true },
-    tingreso:      { type: String, required: true },
-    slug:          { type: String, required: false },
-    fecha:         { type: String, required: false },
-    fe_ts:         { type: Number, required: false },
-    estado:        { type: String, required: false, default: 'pendiente' },
-    monto:         { type: Number, required: false },
-    observacion:   { type: String, required: false }
+    type: { type: String, required: true },
+    tingreso: { type: String, required: true },
+    slug: { type: String, required: false },
+    fecha: { type: String, required: false },
+    fe_ts: { type: Number, required: false },
+    estado: { type: String, required: false, default: 'pendiente' },
+    monto: { type: Number, required: false },
+    observacion: { type: String, required: false }
 });
 
 const permisosSch = new mongoose.Schema({
-    type:             { type: String,  required: false},  
-    slug:             { type: String,  required: false},  
-    observacion:      { type: String,  required: false},  
-    isTramitacionMAB: { type: Boolean, required: false},  
-    expedidopor:      { type: String,  required: false},  
-    fechaexpe:        { type: String,  required: false},  
-    tramitacionURL:   { type: String,  required: false},  
-    tramitacionNro:   { type: String,  required: false},  
-    fechavigencia:    { type: String,  required: false},  
-    fechavigencia_ts: { type: Number,  required: false},  
-    estado:           { type: String,  required: false},  
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+    observacion: { type: String, required: false },
+    isTramitacionMAB: { type: Boolean, required: false },
+    expedidopor: { type: String, required: false },
+    fechaexpe: { type: String, required: false },
+    tramitacionURL: { type: String, required: false },
+    tramitacionNro: { type: String, required: false },
+    fechavigencia: { type: String, required: false },
+    fechavigencia_ts: { type: Number, required: false },
+    estado: { type: String, required: false },
 
 })
 
 const habilitacionesSch = new mongoose.Schema({
-    type:             { type: String,  required: false},  
-    slug:             { type: String,  required: false},  
-    observacion:      { type: String,  required: false},  
-    isTramitacionMAB: { type: Boolean, required: false},  
-    expedidopor:      { type: String,  required: false},  
-    fechaexpe:        { type: String,  required: false},  
-    tramitacionURL:   { type: String,  required: false},  
-    tramitacionNro:   { type: String,  required: false},  
-    fechavigencia:    { type: String,  required: false},  
-    fechavigencia_ts: { type: Number,  required: false},  
-    estado:           { type: String,  required: false},  
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+    observacion: { type: String, required: false },
+    isTramitacionMAB: { type: Boolean, required: false },
+    expedidopor: { type: String, required: false },
+    fechaexpe: { type: String, required: false },
+    tramitacionURL: { type: String, required: false },
+    tramitacionNro: { type: String, required: false },
+    fechavigencia: { type: String, required: false },
+    fechavigencia_ts: { type: Number, required: false },
+    estado: { type: String, required: false },
 
 })
 
@@ -297,64 +299,64 @@ const vinculosDataSch = new mongoose.Schema({
 
 
 const personSch = new mongoose.Schema({
-    displayName:    { type: String, required: true },
-    idbrown:        { type: String, required: false },
+    displayName: { type: String, required: true },
+    idbrown: { type: String, required: false },
     grupo_familiar: { type: Number, required: false },
-    isImported:     { type: Boolean, required: false, default: false },
-    personType:     { type: String, required: false, default: 'fisica' },
+    isImported: { type: Boolean, required: false, default: false },
+    personType: { type: String, required: false, default: 'fisica' },
 
-    email:          { type: String, required: false },
-    locacion:       { type: String, required: false },
+    email: { type: String, required: false },
+    locacion: { type: String, required: false },
 
-    nombre:         { type: String, required: false },
-    apellido:       { type: String, required: false },
-    tdoc:           { type: String, required: false },
-    ndoc:           { type: String, required: false },
-    cuil:           { type: String, required: false },
-    alerta:         { type: String, required: false },
+    nombre: { type: String, required: false },
+    apellido: { type: String, required: false },
+    tdoc: { type: String, required: false },
+    ndoc: { type: String, required: false },
+    cuil: { type: String, required: false },
+    alerta: { type: String, required: false },
 
-    facetas:        { type: Array,  required: false },
-    tprofesion:     { type: String, required: false },
-    especialidad:   { type: String, required: false },
-    ambito:         { type: String, required: false },
-    nestudios:      { type: String, required: false },
-    followUp:       { type: String, required: false },
+    facetas: { type: Array, required: false },
+    tprofesion: { type: String, required: false },
+    especialidad: { type: String, required: false },
+    ambito: { type: String, required: false },
+    nestudios: { type: String, required: false },
+    followUp: { type: String, required: false },
 
-    nacionalidad:   { type: String, required: false },
-    fenac:          { type: Number, required: false },
-    fenactx:        { type: String, required: false },
-    ecivil:         { type: String, required: false },
-    sexo:           { type: String, required: false },
+    nacionalidad: { type: String, required: false },
+    fenac: { type: Number, required: false },
+    fenactx: { type: String, required: false },
+    ecivil: { type: String, required: false },
+    sexo: { type: String, required: false },
 
-    ts_alta:        { type: Number, required: false },
-    ts_umodif:      { type: Number, required: false },
-    estado:         { type: String, required: false, default: 'activo'},
+    ts_alta: { type: Number, required: false },
+    ts_umodif: { type: Number, required: false },
+    estado: { type: String, required: false, default: 'activo' },
 
 
-    user_alta:        { type: String, required: false },
-    user_umodif:      { type: String, required: false },
+    user_alta: { type: String, required: false },
+    user_umodif: { type: String, required: false },
 
-    persontags:     { type: Array, required: false },
-    user:           { type: userSch, required: false },
-    userweb:        { type: userSch, required: false },
-    communitylist:  { type: Array,   required: false },
-    contactdata:    [ contactDataSch ],
-    oficios:        [ oficiosSch ],
-    locaciones:     [ addressSch ],
-    familiares:     [ familySch ],
-    integrantes:    [ businessSch ],
-    salud:          [ saludSch ],
-    cobertura:      [ coberturaSch ],
-    messages:       [ notif_messageSch ],
-    ambiental:      [ encuestaSch ],
-    fichas:         [ recordCardSch ],
-    permisos:       [ permisosSch],
-    habilitaciones: [ habilitacionesSch],
-    assets:         [ assetSch ],
+    persontags: { type: Array, required: false },
+    user: { type: userSch, required: false },
+    userweb: { type: userSch, required: false },
+    communitylist: { type: Array, required: false },
+    contactdata: [contactDataSch],
+    oficios: [oficiosSch],
+    locaciones: [addressSch],
+    familiares: [familySch],
+    integrantes: [businessSch],
+    salud: [saludSch],
+    cobertura: [coberturaSch],
+    messages: [notif_messageSch],
+    ambiental: [encuestaSch],
+    fichas: [recordCardSch],
+    permisos: [permisosSch],
+    habilitaciones: [habilitacionesSch],
+    assets: [assetSch],
     vinculos: [vinculosDataSch]
 });
 
-personSch.pre('save', function (next) {
+personSch.pre('save', function(next) {
     return next();
 });
 
@@ -374,8 +376,8 @@ const Person = mongoose.model('Persona', personSch, 'personas');
 
 
 
-exports.getRecord = function(){
-  return Person;
+exports.getRecord = function() {
+    return Person;
 }
 
 
@@ -386,11 +388,11 @@ exports.getRecord = function(){
  * @param cb
  * @param errcb
  */
-exports.findAll = function (errcb, cb) {
+exports.findAll = function(errcb, cb) {
     Person.find().lean().exec(function(err, persons) {
         if (err) {
             errcb(err);
-        }else{
+        } else {
             cb(persons);
         }
     });
@@ -403,36 +405,36 @@ exports.findAll = function (errcb, cb) {
  * @param cb
  * @param errcb
  */
-exports.findById = function (id, errcb, cb) {
+exports.findById = function(id, errcb, cb) {
 
     Person.findById(id, function(err, entity) {
-        if (err){
+        if (err) {
 
             err.itsme = whoami;
             errcb(err);
-        
-        }else{
+
+        } else {
             cb(entity);
         }
     });
 
 };
 
-exports.fetchById = function(id){
+exports.fetchById = function(id) {
     return Person.findById(id);
 }
 
-exports.fetchByRelatives = function(id){
+exports.fetchByRelatives = function(id) {
     let query = {
         'familiares.personId': id
     }
     return Person.find(query);
 }
 
-exports.fetchByAddress = function(id, address){
+exports.fetchByAddress = function(id, address) {
     let query = {
-        '_id': {$ne: id},
-        'locaciones.street1':  {"$regex": address.street1, "$options": "i"},
+        '_id': { $ne: id },
+        'locaciones.street1': { "$regex": address.street1, "$options": "i" },
         'locaciones.city': address.city,
     }
     return Person.find(query);
@@ -440,30 +442,30 @@ exports.fetchByAddress = function(id, address){
 
 
 
-function buildQuery(query){
-    let q = {estado: {$not: {$in: [ 'baja', 'bajaxduplice' ]} }  };
+function buildQuery(query) {
+    let q = { estado: { $not: { $in: ['baja', 'bajaxduplice'] } } };
 
-    if(query.displayName){
-        q["displayName"] = {"$regex": query.displayName, "$options": "i"};
+    if (query.displayName) {
+        q["displayName"] = { "$regex": query.displayName, "$options": "i" };
     }
 
-    if(query.email){
+    if (query.email) {
         q["email"] = query.email;
     }
 
-    if(query.tdoc){
+    if (query.tdoc) {
         q["tdoc"] = query.tdoc;
     }
 
-    if(query.ndoc){
+    if (query.ndoc) {
         q["ndoc"] = query.ndoc;
     }
 
-    if(query.facetas){
+    if (query.facetas) {
         q["facetas"] = query.facetas;
     }
 
-    if(query.userId){
+    if (query.userId) {
         q["user.userid"] = query.userId;
     }
 
@@ -471,22 +473,22 @@ function buildQuery(query){
         q["userweb.userid"] = query.userwebId;
     }
 
-    if(query.familiar){
+    if (query.familiar) {
         q['familiares.personId'] = query.familiar;
     }
 
-    if(query.mismalocacion){
-        q['_id'] = {$ne: query.personId};
-        q['locaciones.street1'] =  {"$regex": query.street1, "$options": "i"};
+    if (query.mismalocacion) {
+        q['_id'] = { $ne: query.personId };
+        q['locaciones.street1'] = { "$regex": query.street1, "$options": "i" };
         q['locaciones.city'] = query.city;
 
     }
 
-    if(query.list){
+    if (query.list) {
 
         let ids = query.list.split(',');
         let new_ids = ids.map(t => mongoose.Types.ObjectId(t));
-        q["_id"] = { $in: new_ids}
+        q["_id"] = { $in: new_ids }
     }
 
     return q;
@@ -499,12 +501,12 @@ function buildQuery(query){
  * @param cb
  * @param errcb
  */
-exports.upsert = function (req, errcb, cb) {
+exports.upsert = function(req, errcb, cb) {
     let regexQuery = buildQuery(req.query);
     let data = req.body;
 
-    Person.findOne(regexQuery).then(token =>{
-        if(!token) token = new Person();
+    Person.findOne(regexQuery).then(token => {
+        if (!token) token = new Person();
         token = updateData(token, data);
         token.save().then(err => {
             cb(token);
@@ -513,13 +515,13 @@ exports.upsert = function (req, errcb, cb) {
 
 };
 
-function updateData(model, data){
-    if(data.displayName) model.displayName = data.displayName;
-    if(data.email)  model.email = data.email;
-    if(data.locacion) model.locacion = data.locacion;
-    if(data.persontags)  model.persontags = data.persontags;
-    if(data.messages && data.messages.length){
-      model.messages.push(data.messages[0]);
+function updateData(model, data) {
+    if (data.displayName) model.displayName = data.displayName;
+    if (data.email) model.email = data.email;
+    if (data.locacion) model.locacion = data.locacion;
+    if (data.persontags) model.persontags = data.persontags;
+    if (data.messages && data.messages.length) {
+        model.messages.push(data.messages[0]);
     }
 
     return model;
@@ -530,14 +532,14 @@ function updateData(model, data){
  * @param cb
  * @param errcb
  */
-exports.findByQuery = function (query, errcb, cb) {
+exports.findByQuery = function(query, errcb, cb) {
     let regexQuery = buildQuery(query);
 
     Person.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
-            console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
+            console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
-        }else{
+        } else {
 
             cb(entities);
         }
@@ -550,16 +552,16 @@ exports.findByQuery = function (query, errcb, cb) {
  * @param cb
  * @param errcb
  */
-exports.update = function (id, person, errcb, cb) {
+exports.update = function(id, person, errcb, cb) {
     validatePersonBeforeUpdate(person)
 
     Person.findByIdAndUpdate(id, person, { new: true }, function(err, entity) {
-        if (err){
+        if (err) {
             console.log('[%s]validation error as validate() argument ', whoami)
             err.itsme = whoami;
             errcb(err);
-        
-        }else{
+
+        } else {
             updateRelatedEntities(entity)
             checkForPersonToPersonRelation(entity);
             cb(entity);
@@ -568,32 +570,32 @@ exports.update = function (id, person, errcb, cb) {
 
 };
 
-function validatePersonBeforeUpdate(person){
+function validatePersonBeforeUpdate(person) {
 
     let familiares = person.familiares;
-    if(familiares && familiares.length){
+    if (familiares && familiares.length) {
         let filtered = familiares.filter(fam => (fam.nombre && fam.apellido && fam.vinculo));
         person.familiares = filtered
     }
 
     let locaciones = person.locaciones;
-    if(locaciones && locaciones.length){
+    if (locaciones && locaciones.length) {
         let filtered = locaciones.filter(token => (token.street1 && token.city));
         person.locaciones = filtered
     }
 
 }
 
-function updateRelatedEntities(entity){
-    if(entity){
-        asisprevencion.findAsistenciaFromPerson(entity).then(asis =>{
-            if(asis){
+function updateRelatedEntities(entity) {
+    if (entity) {
+        asisprevencion.findAsistenciaFromPerson(entity).then(asis => {
+            if (asis) {
                 asis.ndoc = entity.ndoc;
                 asis.tdoc = entity.tdoc;
                 asis.sexo = entity.sexo
 
                 let requerido = asis.requeridox;
-                if(requerido){
+                if (requerido) {
                     requerido.slug = entity.displayName;
                     requerido.tdoc = entity.tdoc;
                     requerido.ndoc = entity.ndoc;
@@ -601,7 +603,7 @@ function updateRelatedEntities(entity){
 
                 }
                 let contactdata = entity.contactdata;
-                if(contactdata && contactdata.length){
+                if (contactdata && contactdata.length) {
                     asis.telefono = asis.telefono ? asis.telefono : contactdata[0].data;
                 }
 
@@ -612,27 +614,27 @@ function updateRelatedEntities(entity){
 }
 
 
-const createNewRecordcarRelation = function (person, errcb, cb){
+const createNewRecordcarRelation = function(person, errcb, cb) {
     const ficha = person.fichas[0];
     const id = person._id;
 
     recordCardModel.createRecordCardFromPerson(ficha, person,
-        function(err, recordCard){
-            if(err){
+        function(err, recordCard) {
+            if (err) {
                 console.log('[%s]createRecordardFromPerson error ', whoami)
                 err.itsme = whoami;
                 errcb(err);
 
-            }else{
+            } else {
                 ficha.cardId = recordCard._id;
 
                 Person.findByIdAndUpdate(id, person, { new: true }, function(err, entity) {
-                    if (err){
+                    if (err) {
                         console.log('[%s] person update error  in createNewRecordardRelation', whoami)
                         err.itsme = whoami;
                         errcb(err);
-                    
-                    }else{
+
+                    } else {
                         cb(entity);
                     }
                 });
@@ -642,19 +644,19 @@ const createNewRecordcarRelation = function (person, errcb, cb){
 }
 
 
-const createNewPerson = function(person, errcb,cb){
+const createNewPerson = function(person, errcb, cb) {
     // FASE-1: Alta de la Persona
     Person.create(person, function(err, entity) {
-        if (err){
-            console.log('[%s] validation error as validate() argument ',whoami)
+        if (err) {
+            console.log('[%s] validation error as validate() argument ', whoami)
             err.itsme = whoami;
             errcb(err);
-        
-        }else{
-            if(entity.fichas && entity.fichas.length){
+
+        } else {
+            if (entity.fichas && entity.fichas.length) {
                 createNewRecordcarRelation(entity, errcb, cb)
 
-            }else{
+            } else {
                 checkForPersonToPersonRelation(entity);
 
                 cb(entity);
@@ -672,7 +674,7 @@ const createNewPerson = function(person, errcb,cb){
 //     });
 // }
 
-function checkForPersonToPersonRelation(sourcePerson){
+function checkForPersonToPersonRelation(sourcePerson) {
     let promiseArray = [];
 
     // let fakePromise = new Promise((resolve, reject) => {
@@ -680,23 +682,23 @@ function checkForPersonToPersonRelation(sourcePerson){
     //                             });
     // promiseArray.push(fakePromise);
 
-    if(sourcePerson && sourcePerson.integrantes && sourcePerson.integrantes.length){
+    if (sourcePerson && sourcePerson.integrantes && sourcePerson.integrantes.length) {
         updateBusinessMembers(sourcePerson, promiseArray);
         updateSourcePerson(sourcePerson, promiseArray);
     }
-    if(sourcePerson && sourcePerson.familiares && sourcePerson.familiares.length){
+    if (sourcePerson && sourcePerson.familiares && sourcePerson.familiares.length) {
         updateFamilyMembers(sourcePerson, promiseArray);
         updateSourcePerson(sourcePerson, promiseArray);
     }
 
 }
 
-function updateSourcePerson(sourcePerson, promiseArray){
+function updateSourcePerson(sourcePerson, promiseArray) {
     Promise.all(promiseArray).then(values => {
 
         let id = sourcePerson.id;
 
-        Person.findByIdAndUpdate(id, sourcePerson, { new: true }).then( token =>{
+        Person.findByIdAndUpdate(id, sourcePerson, { new: true }).then(token => {
             //c onsole.log('SourcePerson UPDATED: [%s] [%s]',token.displayName, token.familiares[0].personId);
         })
 
@@ -705,35 +707,35 @@ function updateSourcePerson(sourcePerson, promiseArray){
 
 }
 
-function updateBusinessMembers(sourcePerson, promiseArray){
+function updateBusinessMembers(sourcePerson, promiseArray) {
     let businessMembers = sourcePerson.integrantes || [];
 
     businessMembers.forEach((member, index) => {
-        if(member.hasOwnPerson){
+        if (member.hasOwnPerson) {
             promiseArray.push(updateRelatedPersonMember('integrantes', sourcePerson, member, index));
         }
     })
 }
 
-function updateFamilyMembers(sourcePerson, promiseArray){
+function updateFamilyMembers(sourcePerson, promiseArray) {
     let familyMembers = sourcePerson.familiares || [];
 
     familyMembers.forEach((member, index) => {
-        if(member.hasOwnPerson){
+        if (member.hasOwnPerson) {
             promiseArray.push(updateRelatedPersonMember('familiares', sourcePerson, member, index));
         }
     })
 }
 
 
-function addFaceta(facetas, token){
+function addFaceta(facetas, token) {
     facetas = facetas || [];
     let index = facetas.indexOf(token);
-    if(index === -1) facetas.push(token);
+    if (index === -1) facetas.push(token);
     return facetas;
 }
 
-async function updateVinculoPerson(resolve, person, member, key){
+async function updateVinculoPerson(resolve, person, member, key) {
     updatePersonFromVinculo(person, member, key);
 
     await Person.findByIdAndUpdate(person.id, person, { new: true }).exec();
@@ -741,12 +743,12 @@ async function updateVinculoPerson(resolve, person, member, key){
     return null;
 }
 
-async function createVinculoPerson(resolve, key, sourcePerson, member, index){
+async function createVinculoPerson(resolve, key, sourcePerson, member, index) {
     let nueva_person = initNewPerson(member);
     updatePersonFromVinculo(nueva_person, member, key);
 
-    return await Person.create(nueva_person).then(person =>{
-        if(person){
+    return await Person.create(nueva_person).then(person => {
+        if (person) {
             sourcePerson[key][index].personId = person.id;
         }
         resolve(true);
@@ -754,24 +756,24 @@ async function createVinculoPerson(resolve, key, sourcePerson, member, index){
     })
 }
 
-function updateRelatedPersonMember(key, sourcePerson, member, index){
+function updateRelatedPersonMember(key, sourcePerson, member, index) {
     let query;
     let personQuery;
     let via;
 
-    let promise = new Promise((resolve, reject)=> {
-        if(member.personId){
+    let promise = new Promise((resolve, reject) => {
+        if (member.personId) {
 
             personQuery = Person.findById(member.personId).exec();
             personQuery.then(tperson => {
-                if(tperson){
+                if (tperson) {
                     return updateVinculoPerson(resolve, tperson, member, key)
 
-                }else{
+                } else {
                     return createVinculoPerson(resolve, key, sourcePerson, member, index)
                 }
             })
-        }else {
+        } else {
             query = buildQuery({
                 tdoc: member.tdoc,
                 ndoc: member.ndoc
@@ -779,13 +781,13 @@ function updateRelatedPersonMember(key, sourcePerson, member, index){
 
             personQuery = Person.findOne(query).exec()
 
-            personQuery.then(tperson =>{
+            personQuery.then(tperson => {
 
-                if(tperson){
+                if (tperson) {
                     member.personId = tperson.id;
                     return updateVinculoPerson(resolve, tperson, member, key)
 
-                }else{
+                } else {
                     return createVinculoPerson(resolve, key, sourcePerson, member, index)
                 }
             })
@@ -796,7 +798,7 @@ function updateRelatedPersonMember(key, sourcePerson, member, index){
 }
 
 
-function initNewPerson(member){
+function initNewPerson(member) {
     let person = new Person();
     let today = Date.now();
     person.isImported = false;
@@ -808,71 +810,71 @@ function initNewPerson(member){
     return person;
 }
 
-function updatePersonFromVinculo(tperson, member, key){
+function updatePersonFromVinculo(tperson, member, key) {
     tperson.nombre = member.nombre;
     tperson.apellido = member.apellido;
-    
-    if(!tperson.displayName ){
+
+    if (!tperson.displayName) {
         tperson.displayName = member.apellido + ', ' + member.nombre;
     }
 
     tperson.tdoc = member.tdoc;
     tperson.ndoc = member.ndoc;
     tperson.fenactx = member.fenactx || tperson.fenactx;
-    tperson.fenac = member.fenac ||tperson.fenac || utils.dateNumFromTx(tperson.fenactx);
+    tperson.fenac = member.fenac || tperson.fenac || utils.dateNumFromTx(tperson.fenactx);
     tperson.ecivil = member.ecivil || tperson.ecivil;
-    
+
     tperson.nestudios = member.nestudios || tperson.nestudios;
     tperson.tprofesion = member.tocupacion || tperson.tprofesion;
-    tperson.especialidad = member.ocupacion|| tperson.especialidad;
+    tperson.especialidad = member.ocupacion || tperson.especialidad;
 
-    if(key === 'integrantes'){
+    if (key === 'integrantes') {
         tperson.email = member.email || tperson.email;
         tperson.phone = member.phone || tperson.phone;
         tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
 
-        if(member.vinculo === "seguridad"){
+        if (member.vinculo === "seguridad") {
             tperson.facetas = addFaceta(tperson.facetas, member.vinculo);
         }
 
-    } else if(key === 'familiares') {
+    } else if (key === 'familiares') {
         tperson.facetas = addFaceta(tperson.facetas, 'familiar');
     }
 
     return tperson;
 }
 
-function updateMemberAssetsArray(target, source){
-    if(source && source.length){
-        if(!(target && target.length)) return source;
+function updateMemberAssetsArray(target, source) {
+    if (source && source.length) {
+        if (!(target && target.length)) return source;
         source.forEach(asset => {
-            if(!assetAlreadyInArray(asset, target)) target.push(asset)
+            if (!assetAlreadyInArray(asset, target)) target.push(asset)
         });
         crossCheckAssetInArray(target, source);
         return target;
 
     } else {
-        if(target && target.length) source.assets = target.assets;
+        if (target && target.length) source.assets = target.assets;
         return target;
     }
 }
 
-function crossCheckAssetInArray(target, source){
+function crossCheckAssetInArray(target, source) {
     target.forEach(asset => {
-            if(!assetAlreadyInArray(asset, source)) source.push(asset)
+        if (!assetAlreadyInArray(asset, source)) source.push(asset)
     });
 }
 
 
-function assetAlreadyInArray(asset, target){
+function assetAlreadyInArray(asset, target) {
     return target.find(t => t.entityId === asset.entityId)
 }
 
-const primeraMayuscula = function (string) {
+const primeraMayuscula = function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const initPersonFromUser = function(user ){
+const initPersonFromUser = function(user) {
     let person = new Person();
 
     person.displayName = (user.isUsuarioWeb) ? (primeraMayuscula(user.nombre) + ' ' + primeraMayuscula(user.apellido)) : user.username;
@@ -888,9 +890,9 @@ const initPersonFromUser = function(user ){
     return person;
 }
 
-const updatePersonFromUser = function (person, user) {
+const updatePersonFromUser = function(person, user) {
 
-    if(user.isUsuarioWeb){
+    if (user.isUsuarioWeb) {
         person.userweb = {
             userid: user._id,
             username: user.username
@@ -901,7 +903,7 @@ const updatePersonFromUser = function (person, user) {
         person.apellido = (user.apellido && user.apellido !== '') ? user.apellido : '';
 
 
-    }else{
+    } else {
         person.user = {
             userid: user._id,
             username: user.username
@@ -910,7 +912,7 @@ const updatePersonFromUser = function (person, user) {
     if (user.telefono) {
         let contactdata = person.contactdata || [];
         let tel = contactdata.find(t => t.data === user.telefono);
-        if(!tel){
+        if (!tel) {
             contactdata.push({
                 tdato: 'TEL',
                 data: user.telefono,
@@ -920,22 +922,22 @@ const updatePersonFromUser = function (person, user) {
             })
             person.contactdata = contactdata;
         }
-        
+
     }
 
     return person;
 }
 
-exports.createPersonFromUser = function(user, cb){
-    let personByEmail = buildQuery({email: user.email});
+exports.createPersonFromUser = function(user, cb) {
+    let personByEmail = buildQuery({ email: user.email });
 
-    Person.findOne(personByEmail).then(token =>{
-        if(!token) token = initPersonFromUser(user);
+    Person.findOne(personByEmail).then(token => {
+        if (!token) token = initPersonFromUser(user);
         token = updatePersonFromUser(token, user);
         token.save().then(t => {
             cb(token);
-        }).catch(err => {console.log(err);});
-    });    
+        }).catch(err => { console.log(err); });
+    });
 }
 
 
@@ -946,9 +948,9 @@ exports.createPersonFromUser = function(user, cb){
  * @param cb
  * @param errcb
  */
-exports.create = function (person, errcb, cb) {
+exports.create = function(person, errcb, cb) {
     delete person._id;
-    
+
     validatePersonBeforeUpdate(person);
 
     createNewPerson(person, errcb, cb);
@@ -959,338 +961,338 @@ exports.create = function (person, errcb, cb) {
 /************* MIGRACIÓN BEGINS ***************/
 //http://localhost:8080/api/persons/import
 const estadoCivil = [
-        {val: 'solterx',       brown:'Soltero/a',         },
-        {val: 'casadx',        brown:'Casado/a',         },
-        {val: 'divorciadx',    brown:'Divorciado/a',         },
-        {val: 'conviviendx',   brown:'Concubinato',         },
-        {val: 'viudx',         brown:'Viudo/a',         },
-        {val: 'otra',          brown:'otra',         },
+    { val: 'solterx', brown: 'Soltero/a', },
+    { val: 'casadx', brown: 'Casado/a', },
+    { val: 'divorciadx', brown: 'Divorciado/a', },
+    { val: 'conviviendx', brown: 'Concubinato', },
+    { val: 'viudx', brown: 'Viudo/a', },
+    { val: 'otra', brown: 'otra', },
 ];
 
 const sexoOptList = [
-    {val: 'M',        brown: 'Masculino', label: 'Masculino',     slug:'Masculino' },
-    {val: 'F',        brown: 'Femenino', label: 'Femenino',      slug:'Femenino' },
-    {val: 'GAP',      brown: 'Auto percibido', label: 'Auto percibido',slug:'Auto percibido' },
+    { val: 'M', brown: 'Masculino', label: 'Masculino', slug: 'Masculino' },
+    { val: 'F', brown: 'Femenino', label: 'Femenino', slug: 'Femenino' },
+    { val: 'GAP', brown: 'Auto percibido', label: 'Auto percibido', slug: 'Auto percibido' },
 ];
 
 const nacionalidadOptList = [
-    {val: 'AR',          brown: 'Argentino',     slug:'Argentino' },
-    {val: '_EXT',        brown: 'Extranjero ',   slug:'Extranjero' },
-    {val: '_NAT',        brown: 'Naturalizado ', slug:'Naturalizado' },
+    { val: 'AR', brown: 'Argentino', slug: 'Argentino' },
+    { val: '_EXT', brown: 'Extranjero ', slug: 'Extranjero' },
+    { val: '_NAT', brown: 'Naturalizado ', slug: 'Naturalizado' },
 
 ];
 
 
 const ciudadesBrown = [
-    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',brown:'Seleccione opción' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',   brown:'adrogué' },
-    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',   brown:'burzaco' },
-    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',   brown:'calzada' },
-    {val: 'claypole',            cp:'1849', label: 'Claypole',   brown:'claypole' },
-    {val: 'donorione',           cp:'1850', label: 'Don Orione', brown:'orione' },
-    {val: 'glew',                cp:'1856', label: 'Glew',       brown:'glew' },
-    {val: 'longchamps',          cp:'1854', label: 'Longchamps', brown:'longchamps' },
-    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',brown:'argentinas' },
-    {val: 'marmol',              cp:'1845', label: 'J.Mármol',   brown:'rmol' },
-    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia',brown:'rivadavia' },
-    {val: 'solano',              cp:'1846', label: 'San Fco Solano',   brown:'solano' },
-    {val: 'sanjose',             cp:'1846', label: 'San José',   brown:'san jos' },
+    { val: 'no_definido', cp: '1800', label: 'Seleccione opción', brown: 'Seleccione opción' },
+    { val: 'adrogue', cp: '1846', label: 'Adrogué ', brown: 'adrogué' },
+    { val: 'burzaco', cp: '1852', label: 'Burzaco ', brown: 'burzaco' },
+    { val: 'calzada', cp: '1847', label: 'Rafael Calzada ', brown: 'calzada' },
+    { val: 'claypole', cp: '1849', label: 'Claypole', brown: 'claypole' },
+    { val: 'donorione', cp: '1850', label: 'Don Orione', brown: 'orione' },
+    { val: 'glew', cp: '1856', label: 'Glew', brown: 'glew' },
+    { val: 'longchamps', cp: '1854', label: 'Longchamps', brown: 'longchamps' },
+    { val: 'malvinasargentinas', cp: '1846', label: 'Malvinas Argentinas', brown: 'argentinas' },
+    { val: 'marmol', cp: '1845', label: 'J.Mármol', brown: 'rmol' },
+    { val: 'ministrorivadavia', cp: '1852', label: 'Ministro Rivadavia', brown: 'rivadavia' },
+    { val: 'solano', cp: '1846', label: 'San Fco Solano', brown: 'solano' },
+    { val: 'sanjose', cp: '1846', label: 'San José', brown: 'san jos' },
 ];
 
 const ciudadesTalimentar = [
-    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  brown:'Seleccione opción' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           brown:'adrogu' },
-    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           brown:'burzaco' },
-    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    brown:'calzada' },
-    {val: 'claypole',            cp:'1849', label: 'Claypole',           brown:'claypole' },
-    {val: 'donorione',           cp:'1850', label: 'Don Orione',         brown:'orione' },
-    {val: 'glew',                cp:'1856', label: 'Glew',               brown:'glew' },
-    {val: 'longchamps',          cp:'1854', label: 'Longchamps',         brown:'longchamps' },
-    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',brown:'argentinas' },
-    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           brown:'rmol' },
-    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', brown:'rivadavia' },
-    {val: 'solano',              cp:'1846', label: 'San Fco Solano',     brown:'solano' },
-    {val: 'sanjose',             cp:'1846', label: 'San José',           brown:'san jos' },
+    { val: 'no_definido', cp: '1800', label: 'Seleccione opción', brown: 'Seleccione opción' },
+    { val: 'adrogue', cp: '1846', label: 'Adrogué ', brown: 'adrogu' },
+    { val: 'burzaco', cp: '1852', label: 'Burzaco ', brown: 'burzaco' },
+    { val: 'calzada', cp: '1847', label: 'Rafael Calzada ', brown: 'calzada' },
+    { val: 'claypole', cp: '1849', label: 'Claypole', brown: 'claypole' },
+    { val: 'donorione', cp: '1850', label: 'Don Orione', brown: 'orione' },
+    { val: 'glew', cp: '1856', label: 'Glew', brown: 'glew' },
+    { val: 'longchamps', cp: '1854', label: 'Longchamps', brown: 'longchamps' },
+    { val: 'malvinasargentinas', cp: '1846', label: 'Malvinas Argentinas', brown: 'argentinas' },
+    { val: 'marmol', cp: '1845', label: 'J.Mármol', brown: 'rmol' },
+    { val: 'ministrorivadavia', cp: '1852', label: 'Ministro Rivadavia', brown: 'rivadavia' },
+    { val: 'solano', cp: '1846', label: 'San Fco Solano', brown: 'solano' },
+    { val: 'sanjose', cp: '1846', label: 'San José', brown: 'san jos' },
 ];
 
 
 
 const barriosOptList = {
-  adrogue: [
-    {val: 'adrogue',    label: 'Adrogué Ctro' },
-    {val: 'vattuone',   label: 'Vattuone'     },
-  ],
+    adrogue: [
+        { val: 'adrogue', label: 'Adrogué Ctro' },
+        { val: 'vattuone', label: 'Vattuone' },
+    ],
 
-  burzaco: [
-    {val: 'burzaco',    label: 'Burzaco Ctro' },
-    {val: 'elhornero',    label: 'El Hornero' },
-    {val: 'lapilarica',    label: 'La Pilarica' },
-    {val: 'elcanario',    label: 'El Canario' },
-    {val: 'barriolindo',    label: 'Barrio Lindo' },
-    {val: 'lacumbre',    label: 'La Cumbre' },
-    {val: 'arzano',    label: 'Arzano' },
-    {val: 'elencuentro',    label: 'El Encuentro' },
-    {val: 'betharran',    label: 'Betharrán' },
-    {val: 'lalucy',    label: 'La Lucy' },
-    {val: 'solis',    label: 'Solís' },
-    {val: 'sanpablo',    label: 'San Pablo' },
-    {val: 'almafuerte',    label: 'Almafuerte' },
-    {val: 'elrecuerdo',    label: 'El Recuerdo' },
-    {val: 'laciudadoculta',    label: 'La Ciudad Oculta' },
-    {val: 'laprimavera',    label: 'La Primavera' },
-    {val: 'donalejandro',    label: 'Don Alejandro' },
-    {val: 'lacarlota',    label: 'La Carlota' },
-    {val: 'sakura',    label: 'Sakura' },
-    {val: 'eltriangulo',    label: 'El Triángulo' },
-    {val: 'viplastic',    label: 'Viplastic' },
-    {val: 'parqueroma',    label: 'Parque Roma' },
-    {val: 'ibañez',    label: 'Ibañez' },
-    {val: 'sanjuandecorimayo',    label: 'San Juan de Corimayo' },
-    {val: 'parquedecorimayo',    label: 'Parque Corimayo' },
-    {val: 'corimayo',    label: 'Corimayo' },
-    {val: 'primerajunta',    label: 'Primera Junta' },
-    {val: 'lasrosas',    label: 'Las Rosas' },
-    {val: 'elgaucho',    label: 'El Gaucho' },
-    {val: 'lomasdeburzaco',    label: 'Lomas de Burzaco' },
-    {val: 'luzyfuerza',    label: 'Luz y Fuerza' },
-  ],
+    burzaco: [
+        { val: 'burzaco', label: 'Burzaco Ctro' },
+        { val: 'elhornero', label: 'El Hornero' },
+        { val: 'lapilarica', label: 'La Pilarica' },
+        { val: 'elcanario', label: 'El Canario' },
+        { val: 'barriolindo', label: 'Barrio Lindo' },
+        { val: 'lacumbre', label: 'La Cumbre' },
+        { val: 'arzano', label: 'Arzano' },
+        { val: 'elencuentro', label: 'El Encuentro' },
+        { val: 'betharran', label: 'Betharrán' },
+        { val: 'lalucy', label: 'La Lucy' },
+        { val: 'solis', label: 'Solís' },
+        { val: 'sanpablo', label: 'San Pablo' },
+        { val: 'almafuerte', label: 'Almafuerte' },
+        { val: 'elrecuerdo', label: 'El Recuerdo' },
+        { val: 'laciudadoculta', label: 'La Ciudad Oculta' },
+        { val: 'laprimavera', label: 'La Primavera' },
+        { val: 'donalejandro', label: 'Don Alejandro' },
+        { val: 'lacarlota', label: 'La Carlota' },
+        { val: 'sakura', label: 'Sakura' },
+        { val: 'eltriangulo', label: 'El Triángulo' },
+        { val: 'viplastic', label: 'Viplastic' },
+        { val: 'parqueroma', label: 'Parque Roma' },
+        { val: 'ibañez', label: 'Ibañez' },
+        { val: 'sanjuandecorimayo', label: 'San Juan de Corimayo' },
+        { val: 'parquedecorimayo', label: 'Parque Corimayo' },
+        { val: 'corimayo', label: 'Corimayo' },
+        { val: 'primerajunta', label: 'Primera Junta' },
+        { val: 'lasrosas', label: 'Las Rosas' },
+        { val: 'elgaucho', label: 'El Gaucho' },
+        { val: 'lomasdeburzaco', label: 'Lomas de Burzaco' },
+        { val: 'luzyfuerza', label: 'Luz y Fuerza' },
+    ],
 
-  calzada: [
-    {val: 'calzada',    label: 'Calzada Ctro' },
-    {val: '14denoviembre',    label: '14 de Noviembre' },
-    {val: '2deabril',    label: '2 de Abril' },
-    {val: 'sangeronimo',    label: 'San Gerónimo' },
-    {val: 'asuncion',    label: 'Asunción' },
-    {val: 'zabala',    label: 'Zabala' },
-    {val: 'sanjavier',    label: 'San Javier' },
-  ],
+    calzada: [
+        { val: 'calzada', label: 'Calzada Ctro' },
+        { val: '14denoviembre', label: '14 de Noviembre' },
+        { val: '2deabril', label: '2 de Abril' },
+        { val: 'sangeronimo', label: 'San Gerónimo' },
+        { val: 'asuncion', label: 'Asunción' },
+        { val: 'zabala', label: 'Zabala' },
+        { val: 'sanjavier', label: 'San Javier' },
+    ],
 
-  claypole: [
-    {val: 'claypole',    label: 'Claypole Centro' },
-    {val: 'laesther',    label: 'La Esther' },
-    {val: 'elcastillo',    label: 'El Castillo' },
-    {val: 'donorione',    label: 'Don Orione' },
-    {val: 'suther',    label: 'Suther' },
-    {val: 'martinfierro',    label: 'Martín Fierro' },
-    {val: 'cerrito',    label: 'Cerrito' },
-    {val: 'conjhabitdonorione',    label: 'Conj Habit Don Orione' },
-    {val: 'sideco',    label: 'Sideco' },
-    {val: 'eltriangulo',    label: 'El Triángulo' },
-    {val: 'lajovita',    label: 'La Jovita' },
-    {val: 'lastunas',    label: 'Las Tunas' },
-    {val: 'horizonte',    label: 'Horizonte' },
-    {val: 'santaclara',    label: 'Santa Clara' },
-    {val: 'barrioparque',    label: 'Barrio Parque' },
-    {val: 'eltrebol',    label: 'El Trébol' },
-    {val: 'saenz',    label: 'Sáenz' },
-    {val: 'medallamilagrosa',    label: 'Medalla Milagrosa' },
-    {val: 'pintemar',    label: 'Pintemar' },
-    {val: 'sanlucas',    label: 'San Lucas' },
-    {val: 'marianomoreno',    label: 'Mariano Moreno' },
-    {val: 'monteverde',    label: 'Monteverde' },
-    {val: 'sanluis',    label: 'San Luis' },
-  ],
+    claypole: [
+        { val: 'claypole', label: 'Claypole Centro' },
+        { val: 'laesther', label: 'La Esther' },
+        { val: 'elcastillo', label: 'El Castillo' },
+        { val: 'donorione', label: 'Don Orione' },
+        { val: 'suther', label: 'Suther' },
+        { val: 'martinfierro', label: 'Martín Fierro' },
+        { val: 'cerrito', label: 'Cerrito' },
+        { val: 'conjhabitdonorione', label: 'Conj Habit Don Orione' },
+        { val: 'sideco', label: 'Sideco' },
+        { val: 'eltriangulo', label: 'El Triángulo' },
+        { val: 'lajovita', label: 'La Jovita' },
+        { val: 'lastunas', label: 'Las Tunas' },
+        { val: 'horizonte', label: 'Horizonte' },
+        { val: 'santaclara', label: 'Santa Clara' },
+        { val: 'barrioparque', label: 'Barrio Parque' },
+        { val: 'eltrebol', label: 'El Trébol' },
+        { val: 'saenz', label: 'Sáenz' },
+        { val: 'medallamilagrosa', label: 'Medalla Milagrosa' },
+        { val: 'pintemar', label: 'Pintemar' },
+        { val: 'sanlucas', label: 'San Lucas' },
+        { val: 'marianomoreno', label: 'Mariano Moreno' },
+        { val: 'monteverde', label: 'Monteverde' },
+        { val: 'sanluis', label: 'San Luis' },
+    ],
 
-  donorione: [
-    {val: 'donorione',    label: 'Don Orione' },
-  ],
+    donorione: [
+        { val: 'donorione', label: 'Don Orione' },
+    ],
 
-  glew: [
-    {val: 'glew',    label: 'Glew Centro' },
-    {val: 'gorriti',    label: 'Gorriti' },
-    {val: 'uocra',    label: 'UOCRA' },
-    {val: 'parqueroma',    label: 'Parque Roma' },
-    {val: 'progreso',    label: 'Progreso' },
-    {val: 'cotepa',    label: 'Cotepa' },
-    {val: 'eltrebol',    label: 'El Trébol' },
-    {val: 'losalamos',    label: 'Los Alamos' },
-    {val: 'quintacastillo',    label: 'Quinta del Castillo' },
-    {val: 'upcn',    label: 'UPCN' },
-    {val: 'telepostal',    label: 'Telepostal' },
-    {val: 'losaromos',    label: 'Los Aromos' },
-    {val: 'ipona',    label: 'Ipona' },
-    {val: 'villaparís',    label: 'Villa París' },
-    {val: 'amancay',    label: 'Amancay' },
-    {val: 'altosdeglew',    label: 'Los Altos de Glew' },
-    {val: 'supa',    label: 'Supa' },
-    {val: 'almafuerte',    label: 'Almafuerte' },
-    {val: 'kanmar',    label: 'Kanmar' },
-  ],
+    glew: [
+        { val: 'glew', label: 'Glew Centro' },
+        { val: 'gorriti', label: 'Gorriti' },
+        { val: 'uocra', label: 'UOCRA' },
+        { val: 'parqueroma', label: 'Parque Roma' },
+        { val: 'progreso', label: 'Progreso' },
+        { val: 'cotepa', label: 'Cotepa' },
+        { val: 'eltrebol', label: 'El Trébol' },
+        { val: 'losalamos', label: 'Los Alamos' },
+        { val: 'quintacastillo', label: 'Quinta del Castillo' },
+        { val: 'upcn', label: 'UPCN' },
+        { val: 'telepostal', label: 'Telepostal' },
+        { val: 'losaromos', label: 'Los Aromos' },
+        { val: 'ipona', label: 'Ipona' },
+        { val: 'villaparís', label: 'Villa París' },
+        { val: 'amancay', label: 'Amancay' },
+        { val: 'altosdeglew', label: 'Los Altos de Glew' },
+        { val: 'supa', label: 'Supa' },
+        { val: 'almafuerte', label: 'Almafuerte' },
+        { val: 'kanmar', label: 'Kanmar' },
+    ],
 
-  longchamps: [
-    {val: 'longchamps',    label: 'Longchamps Centro' },
-    {val: 'rayodesol',    label: 'Rayo de Sol' },
-    {val: 'ampliacionsantarita',    label: 'Ampl. Santa Rita' },
-    {val: 'santarita',    label: 'Santa Rita' },
-    {val: 'jorgenewber',    label: 'Jorge Newber' },
-    {val: 'lacarmen',    label: 'La Carmen' },
-    {val: 'ferroviario',    label: 'Ferroviario' },
-    {val: 'losfrutales',    label: 'Los Frutales' },
-    {val: 'santaadela',    label: 'Santa Adela' },
-    {val: 'camporamos',    label: 'Campo Ramos' },
-    {val: 'doñasol',    label: 'Doña Sol' },
-    {val: 'santamaria',    label: 'Santa María' },
-    {val: 'sakura',    label: 'Sakura' },
-    {val: 'laesperanza',    label: 'La Esperanza' },
-    {val: 'eltriángulo',    label: 'El Triángulo' },
-    {val: 'longchampseste',    label: 'Longchamps Este' },
-    {val: 'casasblancas',    label: 'Casas Blancas' },
-    {val: 'amutun1',    label: 'Amutun 1' },
-    {val: 'amutun2',    label: 'Municipal' },
-    {val: 'municipal',    label: 'Amutun 2' },
-    {val: 'losstud',    label: 'Los Stud' },
-    {val: 'donluis',    label: 'Don Luis' },
-    {val: 'villaparis',    label: 'Villa París' },
-    {val: 'amancay',    label: 'Amancay' },
-  ],
+    longchamps: [
+        { val: 'longchamps', label: 'Longchamps Centro' },
+        { val: 'rayodesol', label: 'Rayo de Sol' },
+        { val: 'ampliacionsantarita', label: 'Ampl. Santa Rita' },
+        { val: 'santarita', label: 'Santa Rita' },
+        { val: 'jorgenewber', label: 'Jorge Newber' },
+        { val: 'lacarmen', label: 'La Carmen' },
+        { val: 'ferroviario', label: 'Ferroviario' },
+        { val: 'losfrutales', label: 'Los Frutales' },
+        { val: 'santaadela', label: 'Santa Adela' },
+        { val: 'camporamos', label: 'Campo Ramos' },
+        { val: 'doñasol', label: 'Doña Sol' },
+        { val: 'santamaria', label: 'Santa María' },
+        { val: 'sakura', label: 'Sakura' },
+        { val: 'laesperanza', label: 'La Esperanza' },
+        { val: 'eltriángulo', label: 'El Triángulo' },
+        { val: 'longchampseste', label: 'Longchamps Este' },
+        { val: 'casasblancas', label: 'Casas Blancas' },
+        { val: 'amutun1', label: 'Amutun 1' },
+        { val: 'amutun2', label: 'Municipal' },
+        { val: 'municipal', label: 'Amutun 2' },
+        { val: 'losstud', label: 'Los Stud' },
+        { val: 'donluis', label: 'Don Luis' },
+        { val: 'villaparis', label: 'Villa París' },
+        { val: 'amancay', label: 'Amancay' },
+    ],
 
-  malvinasargentinas: [
-    {val: 'malvinasargentinas',    label: 'Malvinas Argentinas' },
-    {val: 'elcanario',    label: 'El Canario' },
-    {val: 'barriolindo',    label: 'Barrio Lindo' },
-    {val: 'lomaverde',    label: 'Loma Verde' },
-    {val: 'elencuentro',    label: 'El Encuentro' },
-    {val: 'betharran',    label: 'Betharrán' },
-   ],
+    malvinasargentinas: [
+        { val: 'malvinasargentinas', label: 'Malvinas Argentinas' },
+        { val: 'elcanario', label: 'El Canario' },
+        { val: 'barriolindo', label: 'Barrio Lindo' },
+        { val: 'lomaverde', label: 'Loma Verde' },
+        { val: 'elencuentro', label: 'El Encuentro' },
+        { val: 'betharran', label: 'Betharrán' },
+    ],
 
-  marmol: [
-    {val: 'marmol',    label: 'Mármol Ctro' },
-    {val: 'martinarin',    label: 'Martín Arín' },
-    {val: 'arca',    label: 'Arca' },
-   ],
+    marmol: [
+        { val: 'marmol', label: 'Mármol Ctro' },
+        { val: 'martinarin', label: 'Martín Arín' },
+        { val: 'arca', label: 'Arca' },
+    ],
 
-  ministrorivadavia: [
-    {val: 'ministrorivadavia',    label: 'Ministro Rivadavia Ctro' },
-    {val: 'tsuji',    label: 'Tsuje' },
-    {val: 'parquerivadavia',    label: 'Parque Rivadavia' },
-    {val: 'lujan',    label: 'Luján' },
-    {val: 'gralbelgrano',    label: 'Gral Belgrano' },
-    {val: 'lospinos',    label: 'Los Pinos' },
-    {val: 'gendarmeria',    label: 'Gendarmería' },
-  ],
-  solano: [
-    {val: 'solano',    label: 'Solano' },
-    {val: 'nuevapompeya',    label: 'Nueva Pompeya' },
-    {val: 'loschalet',    label: 'Los Chalet' },
-    {val: 'loseucaliptus',    label: 'Los Eucaliptus' },
-    {val: 'losmonoblock',    label: 'Los Monoblock' },
-    {val: 'lastunas',    label: 'Las Tunas' },
-    {val: 'zabala',    label: 'Zabala' },
-    {val: 'villalaura',    label: 'Villa Laura' },
-    {val: 'guadalupe',    label: 'Guadalupe' },
-    {val: 'santacatalina',    label: 'Santa Catalina' },
-    {val: 'sangustin',    label: 'San Agustín' },
-    {val: 'lomasdesolano',    label: 'Las Lomas de Solano' },
-    {val: 'santaisabel',    label: 'Santa Isabel' },
+    ministrorivadavia: [
+        { val: 'ministrorivadavia', label: 'Ministro Rivadavia Ctro' },
+        { val: 'tsuji', label: 'Tsuje' },
+        { val: 'parquerivadavia', label: 'Parque Rivadavia' },
+        { val: 'lujan', label: 'Luján' },
+        { val: 'gralbelgrano', label: 'Gral Belgrano' },
+        { val: 'lospinos', label: 'Los Pinos' },
+        { val: 'gendarmeria', label: 'Gendarmería' },
+    ],
+    solano: [
+        { val: 'solano', label: 'Solano' },
+        { val: 'nuevapompeya', label: 'Nueva Pompeya' },
+        { val: 'loschalet', label: 'Los Chalet' },
+        { val: 'loseucaliptus', label: 'Los Eucaliptus' },
+        { val: 'losmonoblock', label: 'Los Monoblock' },
+        { val: 'lastunas', label: 'Las Tunas' },
+        { val: 'zabala', label: 'Zabala' },
+        { val: 'villalaura', label: 'Villa Laura' },
+        { val: 'guadalupe', label: 'Guadalupe' },
+        { val: 'santacatalina', label: 'Santa Catalina' },
+        { val: 'sangustin', label: 'San Agustín' },
+        { val: 'lomasdesolano', label: 'Las Lomas de Solano' },
+        { val: 'santaisabel', label: 'Santa Isabel' },
 
-  ],
-  sanjose: [
-    {val: 'sanjose',    label: 'San José Ctro' },
-    {val: 'tierradejerusalen',    label: 'Tierra de Jerusalén' },
-    {val: '27demarzo',    label: '27 de marzo' },
-    {val: 'sanmarcos',    label: 'San Marcos' },
-    {val: 'lagloria',    label: 'La Gloria' },
-    {val: '8denoviembre',    label: '8 de Noviembre' },
-    {val: 'sanramon',    label: 'San Ramón' },
-    {val: '8dediciembre',    label: '8 de Diciembre' },
-    {val: 'latablada',    label: 'La Tablada' },
-    {val: 'evita',    label: 'Evita' },
-    {val: 'puertoargentino',    label: 'Puerto Argentino' },
-    {val: 'launion',    label: 'La Unión' },
-    {val: 'sanagustin',    label: 'San Agustín' },
-    {val: 'virgendelujan',    label: 'Vírgen de Luján' },
-    {val: 'elombu',    label: 'El Ombú' },
-  ],
+    ],
+    sanjose: [
+        { val: 'sanjose', label: 'San José Ctro' },
+        { val: 'tierradejerusalen', label: 'Tierra de Jerusalén' },
+        { val: '27demarzo', label: '27 de marzo' },
+        { val: 'sanmarcos', label: 'San Marcos' },
+        { val: 'lagloria', label: 'La Gloria' },
+        { val: '8denoviembre', label: '8 de Noviembre' },
+        { val: 'sanramon', label: 'San Ramón' },
+        { val: '8dediciembre', label: '8 de Diciembre' },
+        { val: 'latablada', label: 'La Tablada' },
+        { val: 'evita', label: 'Evita' },
+        { val: 'puertoargentino', label: 'Puerto Argentino' },
+        { val: 'launion', label: 'La Unión' },
+        { val: 'sanagustin', label: 'San Agustín' },
+        { val: 'virgendelujan', label: 'Vírgen de Luján' },
+        { val: 'elombu', label: 'El Ombú' },
+    ],
 
 };
 
 const nivelEstudios = [
-    {val: 'primario',       brown: 'Primario',          slug:'Primario' },
-    {val: 'primariox',      brown: 'Primario incompleto',          slug:'Primario (incompleto)' },
-    {val: 'secundario',     brown: 'Secundario',        slug:'Secundario' },
-    {val: 'secundariox',    brown: 'Secundario incompleto',    slug:'Secundario (incompleto)' },
-    {val: 'terciario',      brown: 'Terciario',         slug:'Terciario' },
-    {val: 'terciariox',     brown: 'Terciario incompleto',     slug:'Terciario (incompleto)' },
-    {val: 'universitario',  brown: 'Universitario',     slug:'Universitario' },
-    {val: 'universitariox', brown: 'Universitario incompleto', slug:'Universitario (incompleto)' },
-    {val: 'posgrado',       brown: 'Posgrado',          slug:'Posgrado' },
-    {val: 'posgradox',      brown: 'Posgrado incompleto',      slug:'Posgrado (incompleto)' },
-    {val: 'doctorado',      brown: 'Doctorado',         slug:'Doctorado' },
-    {val: 'doctoradox',     brown: 'Doctorado incompleto',     slug:'Doctorado (incompleto)' },
-    {val: 'noposee',        brown: 'Analfabeto',              slug:'No Posee' },
-    {val: 'otra',           brown: 'Otra',              slug:'Otra' },
+    { val: 'primario', brown: 'Primario', slug: 'Primario' },
+    { val: 'primariox', brown: 'Primario incompleto', slug: 'Primario (incompleto)' },
+    { val: 'secundario', brown: 'Secundario', slug: 'Secundario' },
+    { val: 'secundariox', brown: 'Secundario incompleto', slug: 'Secundario (incompleto)' },
+    { val: 'terciario', brown: 'Terciario', slug: 'Terciario' },
+    { val: 'terciariox', brown: 'Terciario incompleto', slug: 'Terciario (incompleto)' },
+    { val: 'universitario', brown: 'Universitario', slug: 'Universitario' },
+    { val: 'universitariox', brown: 'Universitario incompleto', slug: 'Universitario (incompleto)' },
+    { val: 'posgrado', brown: 'Posgrado', slug: 'Posgrado' },
+    { val: 'posgradox', brown: 'Posgrado incompleto', slug: 'Posgrado (incompleto)' },
+    { val: 'doctorado', brown: 'Doctorado', slug: 'Doctorado' },
+    { val: 'doctoradox', brown: 'Doctorado incompleto', slug: 'Doctorado (incompleto)' },
+    { val: 'noposee', brown: 'Analfabeto', slug: 'No Posee' },
+    { val: 'otra', brown: 'Otra', slug: 'Otra' },
 ];
 
 
 const tipos_viv = [
-        {val: 'interno',      type:'interno', label: 'Interno' },
-        {val: 'externo',      type:'interno', label: 'Externo' },
-        {val: 'otro',         type:'interno', label: 'Otro' },
+    { val: 'interno', type: 'interno', label: 'Interno' },
+    { val: 'externo', type: 'interno', label: 'Externo' },
+    { val: 'otro', type: 'interno', label: 'Otro' },
 
-        {val: 'cocinagas',     type:'cocina',  label: 'A gas'  },
-        {val: 'cocinaelec',    type:'cocina',  label: 'Eléctrica' },
-        {val: 'anafe',         type:'cocina',  label: 'Anafe'  },
-        
+    { val: 'cocinagas', type: 'cocina', label: 'A gas' },
+    { val: 'cocinaelec', type: 'cocina', label: 'Eléctrica' },
+    { val: 'anafe', type: 'cocina', label: 'Anafe' },
 
-        {val: 'insuficiente', type:'suficiente',  label: 'Insuficiente'  },
-        {val: 'basico',       type:'suficiente',  label: 'Básico' },
-        {val: 'suficiente',   type:'suficiente',  label: 'Suficiente'  },
-        
-        {val: 'propio',       type:'terreno', btype:'tenencia' ,brown: 'Propia' },
-        {val: 'alquilado',    type:'terreno', btype:'tenencia' ,brown: 'Alquilada' },
-        {val: 'cedido',       type:'terreno', btype:'tenencia' ,brown: 'Cedida' },
-        {val: 'usurpada',     type:'terreno', btype:'tenencia' ,brown: 'Usurpada' },
-        {val: 'sindocum',     type:'terreno', btype:'tenencia' ,brown: 'SinDocum' },
-        {val: 'credhipo',     type:'terreno', btype:'tenencia' ,brown: 'Crédito Hipot' },
 
-        {val: 'casa',         type:'tvivienda', label: 'Casa' }, 
-        {val: 'depto',        type:'tvivienda', label: 'Departamento' },
-        {val: 'casilla',      type:'tvivienda', label: 'Casilla' },
-        {val: 'otro',         type:'tvivienda', label: 'Otro' },
+    { val: 'insuficiente', type: 'suficiente', label: 'Insuficiente' },
+    { val: 'basico', type: 'suficiente', label: 'Básico' },
+    { val: 'suficiente', type: 'suficiente', label: 'Suficiente' },
 
-        {val: 'chapa',        type:'mvivienda', btype:'paredes_ext', brown: 'Chapa' },
-        {val: 'adobe',        type:'mvivienda', btype:'paredes_ext', brown: 'Adobe' },
-        {val: 'ladrillo',     type:'mvivienda', btype:'paredes_ext', brown: 'Ladrillos' },
-        {val: 'madera',       type:'mvivienda', btype:'paredes_ext', brown: 'Madera' },
-        {val: 'otro',         type:'mvivienda', btype:'paredes_ext', brown: 'Otros' },
+    { val: 'propio', type: 'terreno', btype: 'tenencia', brown: 'Propia' },
+    { val: 'alquilado', type: 'terreno', btype: 'tenencia', brown: 'Alquilada' },
+    { val: 'cedido', type: 'terreno', btype: 'tenencia', brown: 'Cedida' },
+    { val: 'usurpada', type: 'terreno', btype: 'tenencia', brown: 'Usurpada' },
+    { val: 'sindocum', type: 'terreno', btype: 'tenencia', brown: 'SinDocum' },
+    { val: 'credhipo', type: 'terreno', btype: 'tenencia', brown: 'Crédito Hipot' },
 
-        {val: 'mampos',       type:'techo', btype:'techo', brown: 'Mampostería' },//techo
-        {val: 'chapacarton',  type:'techo', btype:'techo', brown: 'Chapa Cartón' },
-        {val: 'chapafibrocemento',   type:'techo', btype:'techo', brown: 'Chapa Fibrocemento' },
-        {val: 'chapazinc',    type:'techo', btype:'techo', brown: 'Chapa Zinc' },
-        {val: 'chapa',        type:'techo', btype:'techo', brown: 'chapa' },
-        {val: 'madera',       type:'techo', btype:'techo', brown: 'madera' },
-        {val: 'tejas',        type:'techo', btype:'techo', brown: 'tejas' },
-        {val: 'otro',         type:'techo', btype:'techo', brown: 'otro' },
+    { val: 'casa', type: 'tvivienda', label: 'Casa' },
+    { val: 'depto', type: 'tvivienda', label: 'Departamento' },
+    { val: 'casilla', type: 'tvivienda', label: 'Casilla' },
+    { val: 'otro', type: 'tvivienda', label: 'Otro' },
 
-        {val: 'mosaico',      type:'piso', btype:'piso', brown: 'Mosaico' },
-        {val: 'cemento',      type:'piso', btype:'piso', brown: 'Cemento' },
-        {val: 'ceramico',     type:'piso', btype:'piso', brown: 'Cerámicos' },
-        {val: 'ladrillo',     type:'piso', btype:'piso', brown: 'Ladrillo' },
-        {val: 'tierra',       type:'piso', btype:'piso', brown: 'Tierra' },
-        {val: 'otro',         type:'piso', btype:'piso', brown: 'Otro' },
+    { val: 'chapa', type: 'mvivienda', btype: 'paredes_ext', brown: 'Chapa' },
+    { val: 'adobe', type: 'mvivienda', btype: 'paredes_ext', brown: 'Adobe' },
+    { val: 'ladrillo', type: 'mvivienda', btype: 'paredes_ext', brown: 'Ladrillos' },
+    { val: 'madera', type: 'mvivienda', btype: 'paredes_ext', brown: 'Madera' },
+    { val: 'otro', type: 'mvivienda', btype: 'paredes_ext', brown: 'Otros' },
 
-        {val: 'red',          type:'agua', btype:'agua', brown: 'Red' },
-        {val: 'pozo',         type:'agua', btype:'agua', brown: 'Aljibe' },
-        {val: 'bombaelectrica', type:'agua', btype:'agua', brown: 'Motobombeador' },
-        {val: 'bombamanual',    type:'agua', btype:'agua', brown: 'Bomba manual' },
-        {val: 'otro',         type:'agua', btype:'agua', brown: 'Otro' },
+    { val: 'mampos', type: 'techo', btype: 'techo', brown: 'Mampostería' }, //techo
+    { val: 'chapacarton', type: 'techo', btype: 'techo', brown: 'Chapa Cartón' },
+    { val: 'chapafibrocemento', type: 'techo', btype: 'techo', brown: 'Chapa Fibrocemento' },
+    { val: 'chapazinc', type: 'techo', btype: 'techo', brown: 'Chapa Zinc' },
+    { val: 'chapa', type: 'techo', btype: 'techo', brown: 'chapa' },
+    { val: 'madera', type: 'techo', btype: 'techo', brown: 'madera' },
+    { val: 'tejas', type: 'techo', btype: 'techo', brown: 'tejas' },
+    { val: 'otro', type: 'techo', btype: 'techo', brown: 'otro' },
 
-        {val: 'red',          type:'electricidad', btype:'luz', brown: 'Eléctrica' },
-        {val: 'colgado',      type:'electricidad', btype:'luz', brown: 'Colgado' },
-        {val: 'otro',         type:'electricidad', btype:'luz', brown: 'Otro' },
+    { val: 'mosaico', type: 'piso', btype: 'piso', brown: 'Mosaico' },
+    { val: 'cemento', type: 'piso', btype: 'piso', brown: 'Cemento' },
+    { val: 'ceramico', type: 'piso', btype: 'piso', brown: 'Cerámicos' },
+    { val: 'ladrillo', type: 'piso', btype: 'piso', brown: 'Ladrillo' },
+    { val: 'tierra', type: 'piso', btype: 'piso', brown: 'Tierra' },
+    { val: 'otro', type: 'piso', btype: 'piso', brown: 'Otro' },
 
-        {val: 'cloaca',       type:'cloaca', btype:'desague', brown: 'Cloaca' },
-        {val: 'pozociego',    type:'cloaca', btype:'desague', brown: 'Pozo Negro' },
-        {val: 'otro',         type:'cloaca', btype:'desague', brown: 'Otro' },
+    { val: 'red', type: 'agua', btype: 'agua', brown: 'Red' },
+    { val: 'pozo', type: 'agua', btype: 'agua', brown: 'Aljibe' },
+    { val: 'bombaelectrica', type: 'agua', btype: 'agua', brown: 'Motobombeador' },
+    { val: 'bombamanual', type: 'agua', btype: 'agua', brown: 'Bomba manual' },
+    { val: 'otro', type: 'agua', btype: 'agua', brown: 'Otro' },
 
-        {val: 'red',          type:'gas', btype:'gas', brown: 'Gas de Red' },
-        {val: 'envasado',     type:'gas', btype:'gas', brown: 'Gas de Garrafa' },
-        {val: 'otro',         type:'gas', btype:'gas', brown: 'otro' },
+    { val: 'red', type: 'electricidad', btype: 'luz', brown: 'Eléctrica' },
+    { val: 'colgado', type: 'electricidad', btype: 'luz', brown: 'Colgado' },
+    { val: 'otro', type: 'electricidad', btype: 'luz', brown: 'Otro' },
 
-        {val: 'bueno',          type:'calificacion',  btype:'estado', brown: 'Bueno'  },
-        {val: 'regular',        type:'calificacion',  btype:'estado', brown: 'Regular'  },
-        {val: 'malo',           type:'calificacion',  btype:'estado', brown: 'Malo'  },
+    { val: 'cloaca', type: 'cloaca', btype: 'desague', brown: 'Cloaca' },
+    { val: 'pozociego', type: 'cloaca', btype: 'desague', brown: 'Pozo Negro' },
+    { val: 'otro', type: 'cloaca', btype: 'desague', brown: 'Otro' },
+
+    { val: 'red', type: 'gas', btype: 'gas', brown: 'Gas de Red' },
+    { val: 'envasado', type: 'gas', btype: 'gas', brown: 'Gas de Garrafa' },
+    { val: 'otro', type: 'gas', btype: 'gas', brown: 'otro' },
+
+    { val: 'bueno', type: 'calificacion', btype: 'estado', brown: 'Bueno' },
+    { val: 'regular', type: 'calificacion', btype: 'estado', brown: 'Regular' },
+    { val: 'malo', type: 'calificacion', btype: 'estado', brown: 'Malo' },
 
 
 
@@ -1307,41 +1309,41 @@ const optList = {
     estudios: nivelEstudios,
 }
 
-const translate = function(type, value){
-    if(!value) return '';
+const translate = function(type, value) {
+    if (!value) return '';
     let token = optList[type].find(t => t.brown === value);
-    if(token) return token.val;
+    if (token) return token.val;
     else return value;
 }
 
-const normalize = function(type, value){
-    if(!value) return '';
+const normalize = function(type, value) {
+    if (!value) return '';
     let token = optList[type].find(t => value.indexOf(t.brown) !== -1);
 
-    if(token) return token.val;
+    if (token) return token.val;
     else return value;
 }
-const normalizeSubData = function(type, subtype, value){
+const normalizeSubData = function(type, subtype, value) {
     let list = optList[type][subtype];
 
-    if(value && list) {
+    if (value && list) {
         let token = list.find(t => t.val === value);
-        if(token) return token.val;
+        if (token) return token.val;
     }
     return value;
 }
 
-const hasEncuesta = function(token){
+const hasEncuesta = function(token) {
     let hasEncuesta = false;
-    if(token.id45 && token.id45!=="NULL"){
+    if (token.id45 && token.id45 !== "NULL") {
         hasEncuesta = true;
     }
 
     return hasEncuesta;
 }
-const getAddress = function(person){
+const getAddress = function(person) {
     let address = person && person.locaciones && person.locaciones[0];
-    if(!address){
+    if (!address) {
         address = {
             street1: 'sin dato',
             city: 'sin dato',
@@ -1351,50 +1353,50 @@ const getAddress = function(person){
     return address;
 }
 
-const translateEncuesta = function(type, value){
-    if(!value) return '';
-    let token = tipos_viv.find(t => t.btype=type && t.brown === value);
-    if(token) return token.val;
+const translateEncuesta = function(type, value) {
+    if (!value) return '';
+    let token = tipos_viv.find(t => t.btype = type && t.brown === value);
+    if (token) return token.val;
     else return value;
 }
 
-const ventilacionType = function(value){
-    if(value === 'Bueno') return 'adecuado';
-    if(value === 'Malo' || value ==="Regular")return 'inadecuado';
+const ventilacionType = function(value) {
+    if (value === 'Bueno') return 'adecuado';
+    if (value === 'Malo' || value === "Regular") return 'inadecuado';
 
     return '';
 }
 
-const cocinaType = function(cocina, heladera){
-    if(cocina === 'Si' && heladera === "Si") return 'bueno';
-    if(cocina === 'No' || heladera === "No") return 'regular';
+const cocinaType = function(cocina, heladera) {
+    if (cocina === 'Si' && heladera === "Si") return 'bueno';
+    if (cocina === 'No' || heladera === "No") return 'regular';
 
     return 'malo';
 }
 
-const banioType = function(banio){
-    if(!banio || banio === "NULL") return '';
-    if(banio === 'Otro') return 'otro';
+const banioType = function(banio) {
+    if (!banio || banio === "NULL") return '';
+    if (banio === 'Otro') return 'otro';
 
-    if(banio.indexOf('Interno')!== -1) return 'interno';
+    if (banio.indexOf('Interno') !== -1) return 'interno';
     return 'externo';
 }
 
-const banioEval = function(baniera, lavatorio, ducha, grifo){
-    if(baniera==="Si" && lavatorio==="Si" && ducha==="Si" ) return 'completo';
-    if(lavatorio==="Si" && ducha==="Si" ) return 'basico';
+const banioEval = function(baniera, lavatorio, ducha, grifo) {
+    if (baniera === "Si" && lavatorio === "Si" && ducha === "Si") return 'completo';
+    if (lavatorio === "Si" && ducha === "Si") return 'basico';
     return 'incompleto';
 }
 
 
-    // street1:     {type: String,  required: false, defalut: ''}, //OjO
-    // city:        {type: String,  required: false, defalut: ''},
-    // barrio:      {type: String,  required: false, defalut: ''},
+// street1:     {type: String,  required: false, defalut: ''}, //OjO
+// city:        {type: String,  required: false, defalut: ''},
+// barrio:      {type: String,  required: false, defalut: ''},
 /**
     tenencia:[domterreno] [terreno]=> Alquilada, Cedida, NULL, Propia, Usurpada
     tipo: [???] Compartido, Unifamiliar
     sup_terreno|sup_edificada: no está en uso
-    cant_modulos:[qvivxlote]? 1, 2, 3  
+    cant_modulos:[qvivxlote]? 1, 2, 3
     habitaciones:[qdormitorios] 1,2, 3, 4, 5
     habitantes:       1-10 numerico
     paredes_ext
@@ -1426,7 +1428,7 @@ const banioEval = function(baniera, lavatorio, ducha, grifo){
     tsocial:      {type: String, required: false, default: ''},
 
     tipoviv:      {type: String, required: false, default: ''},
-    domterreno:   {type: String, required: false, default: ''}, // tenencia    
+    domterreno:   {type: String, required: false, default: ''}, // tenencia
     aniosresid:   {type: Number, required: false, default: 0 },
     qvivxlote:    {type: Number, required: false, default: 0 }, //cant_modulos
     matviv:       {type: String, required: false, default: ''},
@@ -1453,11 +1455,11 @@ const banioEval = function(baniera, lavatorio, ducha, grifo){
 
 
 
-const buildEncuesta = function(person, token){
+const buildEncuesta = function(person, token) {
     let ambiental = [];
     let encuesta = {};
 
-    if(!hasEncuesta(token)){
+    if (!hasEncuesta(token)) {
         return;
     }
 
@@ -1495,10 +1497,10 @@ const buildEncuesta = function(person, token){
     encuesta.ebanio = banioEval(token.baniera, token.lavatorio, token.ducha, token.grifo)
     encuesta.tmobiliario = '';
     encuesta.emobiliario = '';
-    encuesta.agua = translateEncuesta('agua', token.agua); 
-    encuesta.electricidad = translateEncuesta('luz', token.luz); 
-    encuesta.cloaca = translateEncuesta('desague', token.desague); 
-    encuesta.gas = translateEncuesta('gas', token.gas); 
+    encuesta.agua = translateEncuesta('agua', token.agua);
+    encuesta.electricidad = translateEncuesta('luz', token.luz);
+    encuesta.cloaca = translateEncuesta('desague', token.desague);
+    encuesta.gas = translateEncuesta('gas', token.gas);
     encuesta.iluminacion = translateEncuesta('estado', token.iluminacion);
     encuesta.observacion = token['observaciones72'];
 
@@ -1549,14 +1551,14 @@ const buildEncuesta = function(person, token){
     observacion:   { type: String, required: false }
 ****/
 
-const buildDatosIngresos = function(person, token){
+const buildDatosIngresos = function(person, token) {
 
     let ingresosList = [];
     let ingreso1, ingreso2, ingreso3, ingreso4, ingreso5, ingreso6;
     let beneficiosTxt = token.beneficios ? token.beneficios.toLowerCase() : '';
     let _testIngresos = parseInt(token.ingresos, 10);
     let montoIngresos = 0;
-    if(!isNaN(_testIngresos)){
+    if (!isNaN(_testIngresos)) {
         montoIngresos = _testIngresos;
     }
 
@@ -1564,7 +1566,7 @@ const buildDatosIngresos = function(person, token){
 
     let no_beneficios = ['no', 'aduce no recibir', 'infiere no', 'infiere no percibir', 'infiere no percibir', 'aduce no poseer', 'no posee', 'NULL']
 
-    if(token.ingresos){
+    if (token.ingresos) {
         ingreso1 = {
             type: 'ingreso',
             tingreso: 'ingreso',
@@ -1578,7 +1580,7 @@ const buildDatosIngresos = function(person, token){
         ingresosList.push(ingreso1);
     }
 
-    if(token.obra_social === 'Si'){
+    if (token.obra_social === 'Si') {
         ingreso2 = {
             type: 'cobertura',
             tingreso: 'osocial',
@@ -1592,11 +1594,11 @@ const buildDatosIngresos = function(person, token){
         ingresosList.push(ingreso2);
     }
 
-    if( beneficiosTxt && no_beneficios.indexOf(beneficiosTxt) === -1) {
+    if (beneficiosTxt && no_beneficios.indexOf(beneficiosTxt) === -1) {
 
         let claves = ['pensi', 'auh', 'plan'];
 
-        if(beneficiosTxt.indexOf('pensi') !== -1 ){
+        if (beneficiosTxt.indexOf('pensi') !== -1) {
             ingreso3 = {
                 type: 'pension',
                 tingreso: 'pension',
@@ -1608,9 +1610,9 @@ const buildDatosIngresos = function(person, token){
                 observacion: ''
             }
             ingresosList.push(ingreso3);
-        } 
+        }
 
-        if(beneficiosTxt.indexOf('auh') !== -1 ){
+        if (beneficiosTxt.indexOf('auh') !== -1) {
             ingreso4 = {
                 type: 'auh',
                 tingreso: 'auh',
@@ -1624,7 +1626,7 @@ const buildDatosIngresos = function(person, token){
             ingresosList.push(ingreso4);
         }
 
-        if(beneficiosTxt.indexOf('plan') !== -1 ){
+        if (beneficiosTxt.indexOf('plan') !== -1) {
             ingreso5 = {
                 type: 'asisprovincial',
                 tingreso: 'plan',
@@ -1638,7 +1640,7 @@ const buildDatosIngresos = function(person, token){
             ingresosList.push(ingreso5);
         }
 
-        if(!claves.find(t => beneficiosTxt.indexOf(t) !== -1 )){
+        if (!claves.find(t => beneficiosTxt.indexOf(t) !== -1)) {
             ingreso6 = {
                 type: 'otros',
                 tingreso: 'otros',
@@ -1651,21 +1653,21 @@ const buildDatosIngresos = function(person, token){
 
     }
 
-    if(ingresosList.length){
+    if (ingresosList.length) {
 
         person.cobertura = ingresosList;
-    }else{
+    } else {
         person.cobertura = [];
     }
 
 }
 
 
-const buildDatosSanitarios = function(person, token){
+const buildDatosSanitarios = function(person, token) {
     let salud = [];
     let enfermedad, discapacidad;
 
-    if(token.padece_enfermedad === "Si"){
+    if (token.padece_enfermedad === "Si") {
         enfermedad = {
             type: 'enfermedad',
             tproblema: 'inespecifica',
@@ -1676,7 +1678,7 @@ const buildDatosSanitarios = function(person, token){
         salud.push(enfermedad);
     }
 
-    if(token.tiene_discapacidad === "Si"){
+    if (token.tiene_discapacidad === "Si") {
         discacidad = {
             type: 'discapacidad',
             tproblema: 'inespecifica',
@@ -1707,7 +1709,7 @@ const buildDatosSanitarios = function(person, token){
 
 
 /**
-    tipo de cobertura médica: no; os, prepaga, pami, 
+    tipo de cobertura médica: no; os, prepaga, pami,
     prestador:
 
 
@@ -1728,57 +1730,58 @@ beneficios
 
 **/
 
-const buildDatosContacto = function(person, token){
-    let datos = [], dato;
-    if(token.telefono){
-        dato = {
-            tdato:       "TEL",
-            data:        token.telefono,
-            type:        "PER",
-            slug:        "",
-            isPrincipal: true,
+const buildDatosContacto = function(person, token) {
+        let datos = [],
+            dato;
+        if (token.telefono) {
+            dato = {
+                tdato: "TEL",
+                data: token.telefono,
+                type: "PER",
+                slug: "",
+                isPrincipal: true,
+            }
+            datos.push(dato);
         }
-        datos.push(dato);
-    }
 
-    if(token.telefono_celular){
-        dato = {
-            tdato:       "CEL",
-            data:        token.telefono_celular,
-            type:        "PER",
-            slug:        "",
-            isPrincipal: true,
+        if (token.telefono_celular) {
+            dato = {
+                tdato: "CEL",
+                data: token.telefono_celular,
+                type: "PER",
+                slug: "",
+                isPrincipal: true,
+            }
+            datos.push(dato);
         }
-        datos.push(dato);
-    }
 
-    if(token.email){
-        dato = {
-            tdato:       "CEL",
-            data:        token.email,
-            type:        "PER",
-            slug:        "",
-            isPrincipal: true,
+        if (token.email) {
+            dato = {
+                tdato: "CEL",
+                data: token.email,
+                type: "PER",
+                slug: "",
+                isPrincipal: true,
+            }
+            datos.push(dato);
         }
-        datos.push(dato);
+        person.contactdata = datos;
+
     }
-    person.contactdata = datos;
-
-}
-/*** 
-    tdato:       { type: String, required: true },
-    data:        { type: String, required: true },
-    type:        { type: String, required: false },
-    slug:        { type: String, required: false },
-    isPrincipal: { type: String, required: false },
+    /***
+        tdato:       { type: String, required: true },
+        data:        { type: String, required: true },
+        type:        { type: String, required: false },
+        slug:        { type: String, required: false },
+        isPrincipal: { type: String, required: false },
 
 
-***/
+    ***/
 
 
-const buildLocaciones = function(person, token){
+const buildLocaciones = function(person, token) {
     let locaciones = [];
-    let city = normalize ('city', (token.localidad ? token.localidad.toLowerCase() : ''));
+    let city = normalize('city', (token.localidad ? token.localidad.toLowerCase() : ''));
     let barrio = token.barrio ? token.barrio.toLowerCase() : '';
 
     let locacion = {
@@ -1788,7 +1791,7 @@ const buildLocaciones = function(person, token){
         "addType": "principal",
         "street1": token.calle + ' ' + token.numero,
         "street2": "",
-        "streetIn": token.entre1,       
+        "streetIn": token.entre1,
         "streetOut": token.entre2,
         "city": city,
         "state": "buenosaires",
@@ -1821,7 +1824,7 @@ const buildLocaciones = function(person, token){
 "barrio": "lapi
 **/
 
-const buildCoreData = function(person, token){
+const buildCoreData = function(person, token) {
     let nombre = token.nombre;
     let apellido = token.apellido;
     let fenac = utils.parsePHPDateStr(token.fecha_nacimiento);
@@ -1832,9 +1835,9 @@ const buildCoreData = function(person, token){
 
 
 
-    if(!isNaN(gf)){
+    if (!isNaN(gf)) {
         person.grupo_familiar = gf;
-    }else{
+    } else {
         person.grupo_familiar = 0;
     }
 
@@ -1855,15 +1858,15 @@ const buildCoreData = function(person, token){
     person.ts_alta = utils.parsePHPTimeStamp(token.timestamp);
     person.ts_umodif = person.ts_alta;
 
-    person.ecivil = translate('estadocivil', token.estado_civil) ;
-    person.sexo = translate('sexo', token.sexo) ;
+    person.ecivil = translate('estadocivil', token.estado_civil);
+    person.sexo = translate('sexo', token.sexo);
 
-    person.nestudios = translate('estudios',token.estudios);
+    person.nestudios = translate('estudios', token.estudios);
     person.persontags = [];
     person.tprofesion = token.profesion;
     person.especialidad = token.ocupacion;
     person.ambito = token.observaciones;
-    person.nacionalidad = translate('nacionalidad',token.nacionalidad);
+    person.nacionalidad = translate('nacionalidad', token.nacionalidad);
 
     // person.locaciones = token. ;
     // person.familiares = token. ;
@@ -1896,14 +1899,14 @@ const buildCoreData = function(person, token){
 
 
 ****/
-async function saveRecord(person, master){
-    if(master[person.idbrown]){
+async function saveRecord(person, master) {
+    if (master[person.idbrown]) {
         person._id = master[person.idbrown];
 
         await Person.findByIdAndUpdate(person._id, person, { new: true }).exec();
 
-    }else{
-        if(person.idbrown){
+    } else {
+        if (person.idbrown) {
             master[person.idbrown] = person._id;
         }
 
@@ -1912,7 +1915,7 @@ async function saveRecord(person, master){
 
 }
 
-const insertImportedPerson = function(token, master){
+const insertImportedPerson = function(token, master) {
     let person = new Person();
 
     buildCoreData(person, token);
@@ -1990,14 +1993,14 @@ const insertImportedPerson = function(token, master){
 
 ****/
 
-const processOnePerson = function(token, master){
+const processOnePerson = function(token, master) {
     let data = token.column,
         person = {};
 
-    data.forEach((el,index)=>{
-        if(!person[el.$.name]){
+    data.forEach((el, index) => {
+        if (!person[el.$.name]) {
             person[el.$.name] = (el._ === 'NULL') ? '' : el._;
-        }else{
+        } else {
             person[el.$.name + index] = (el._ === 'NULL') ? '' : el._;
 
         }
@@ -2009,7 +2012,7 @@ const processOnePerson = function(token, master){
 
 }
 
-const processImportedPersons = function(data, errcb, cb){
+const processImportedPersons = function(data, errcb, cb) {
     let table = data.database.table;
     const personMaster = {};
 
@@ -2024,40 +2027,40 @@ const processImportedPersons = function(data, errcb, cb){
 }
 
 
-const processArchive = function(req, errcb, cb){
+const processArchive = function(req, errcb, cb) {
     const arch = path.join(config.rootPath, 'www/dsocial/migracion/persona/persona.xml');
     //const arch = path.join(config.rootPath, 'public/migracion/persona/persona.xml');
 
 
-    function toLowerCase(name){
+    function toLowerCase(name) {
         return name.toLowerCase();
     }
 
-    function toUpperCase(name){
+    function toUpperCase(name) {
         return name.toUpperCase();
     }
 
 
     let parser = new xml2js.Parser();
 
-    fs.readFile(arch, function( err, data){
-        if(err){
+    fs.readFile(arch, function(err, data) {
+        if (err) {
             console.dir(err);
 
-        }else{
-            parser.parseString(data, 
+        } else {
+            parser.parseString(data,
 
-            function(err, jdata){
-                if(err){
-                    console.log('error*************')
-                    console.dir(err);
+                function(err, jdata) {
+                    if (err) {
+                        console.log('error*************')
+                        console.dir(err);
 
-                }else{
-                    cb({result: "ok"})
-                    processImportedPersons(jdata, errcb, cb);
+                    } else {
+                        cb({ result: "ok" })
+                        processImportedPersons(jdata, errcb, cb);
 
-                }
-            });
+                    }
+                });
         }
     });
 
@@ -2065,31 +2068,31 @@ const processArchive = function(req, errcb, cb){
 }
 
 
-async function saveAlimentarRecord(person, master){
-    if(master[person.ndoc]){
+async function saveAlimentarRecord(person, master) {
+    if (master[person.ndoc]) {
 
-        await Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).exec();
+        await Person.findByIdAndUpdate(person._id, { alerta: person.alerta, cobertura: person.cobertura }, { new: true }).exec();
 
-    }else{
+    } else {
 
         await person.save();
     }
 
 }
 
-function saveSaludRecord(person, master){
-    if(master[person.ndoc]){
+function saveSaludRecord(person, master) {
+    if (master[person.ndoc]) {
 
-        Person.findByIdAndUpdate(person._id, {alerta: person.alerta, cobertura: person.cobertura}, { new: true }).then( person =>  {
-            if(person && person._id){
+        Person.findByIdAndUpdate(person._id, { alerta: person.alerta, cobertura: person.cobertura }, { new: true }).then(person => {
+            if (person && person._id) {
                 //c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
             }
         })
 
-    }else{
+    } else {
 
-        person.save().then(person =>{
-            if(person && person._id){
+        person.save().then(person => {
+            if (person && person._id) {
                 //c onsole.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
             }
 
@@ -2098,7 +2101,7 @@ function saveSaludRecord(person, master){
 
 }
 
-const buildAlimentarCoreData = function(person, token){
+const buildAlimentarCoreData = function(person, token) {
     person.grupo_familiar = 0;
 
     person.displayName = token.displayName;
@@ -2106,9 +2109,9 @@ const buildAlimentarCoreData = function(person, token){
     let nombre = nombres && nombres.length && nombres[0];
 
     let apellido = nombres.reduce((acum, t, index) => {
-        if(index === 0 ) return "";
+        if (index === 0) return "";
         else return acum + " " + t;
-    },"");
+    }, "");
 
     personType = 'fisica';
     person.isImported = true;
@@ -2133,55 +2136,55 @@ const buildAlimentarCoreData = function(person, token){
     // person.contactdata = token. ;
     // person.oficios = token. ;
 }
-const buildSaludCoreData = function(person, token){
-    // familyref
-    // dniref
-    // telefono
+const buildSaludCoreData = function(person, token) {
+        // familyref
+        // dniref
+        // telefono
 
-    person.grupo_familiar = 0;
-    person.apellido = token.apellido
-    person.nombre = token.nombre
+        person.grupo_familiar = 0;
+        person.apellido = token.apellido
+        person.nombre = token.nombre
 
-    person.displayName = person.apellido + ', ' + person.nombre;
+        person.displayName = person.apellido + ', ' + person.nombre;
 
-    personType = 'fisica';
+        personType = 'fisica';
 
-    person.isImported = true;
+        person.isImported = true;
 
-    person.idbrown = "20140421-11:31";
-    person.alerta = token.alerta;
-    person.locacion = token.street1 + ' ' + token.city;
+        person.idbrown = "20140421-11:31";
+        person.alerta = token.alerta;
+        person.locacion = token.street1 + ' ' + token.city;
 
-    person.tdoc = 'DNI';
-    person.ndoc = token.ndoc;
-    //person.cuil = token.ncuil;
+        person.tdoc = 'DNI';
+        person.ndoc = token.ndoc;
+        //person.cuil = token.ncuil;
 
 
-    person.ts_alta = Date.now();
-    person.ts_umodif = person.ts_alta;
+        person.ts_alta = Date.now();
+        person.ts_umodif = person.ts_alta;
 
-    let contactdata = {
-        tdato: 'CEL',
-        data: token.telefono || 'sin dato',
-        type:  'PER',
-        slug: 'dato importado de excel',
-        isPrincipal: true,
+        let contactdata = {
+            tdato: 'CEL',
+            data: token.telefono || 'sin dato',
+            type: 'PER',
+            slug: 'dato importado de excel',
+            isPrincipal: true,
 
+        }
+        person.contactdata = [contactdata]
+
+        // person.locaciones = token. ;
+        // person.familiares = token. ;
+        // person.user = token. ;
+        // person.communitylist = token. ;
+        // person.contactdata = token. ;
+        // person.oficios = token. ;
     }
-    person.contactdata = [ contactdata]
-
-    // person.locaciones = token. ;
-    // person.familiares = token. ;
-    // person.user = token. ;
-    // person.communitylist = token. ;
-    // person.contactdata = token. ;
-    // person.oficios = token. ;
-}
-//http://localhost:8080/api/persons/saludimport
-const buildSaludLocaciones = function(person, token){
+    //http://localhost:8080/api/persons/saludimport
+const buildSaludLocaciones = function(person, token) {
     let locaciones = [];
     let city = token.city;
-    let barrio =  '';
+    let barrio = '';
 
     let locacion = {
         "slug": "domicilio informado",
@@ -2190,7 +2193,7 @@ const buildSaludLocaciones = function(person, token){
         "addType": "principal",
         "street1": token.street1 || 'sin dato',
         "street2": "",
-        "streetIn": "",       
+        "streetIn": "",
         "streetOut": "",
         "city": city || 'extradistrito',
         "state": "buenosaires",
@@ -2206,10 +2209,10 @@ const buildSaludLocaciones = function(person, token){
     person.locaciones = locaciones;
 }
 
-const buildAlimentarLocaciones = function(person, token){
+const buildAlimentarLocaciones = function(person, token) {
     let locaciones = [];
-    let city = normalize ('cityalimentar', (token.city ? token.city.toLowerCase() : ''));
-    let barrio =  '';
+    let city = normalize('cityalimentar', (token.city ? token.city.toLowerCase() : ''));
+    let barrio = '';
 
     let locacion = {
         "slug": "domicilio informado",
@@ -2218,7 +2221,7 @@ const buildAlimentarLocaciones = function(person, token){
         "addType": "principal",
         "street1": token.calle + ' ' + token.callenro,
         "street2": "",
-        "streetIn": "",       
+        "streetIn": "",
         "streetOut": "",
         "city": city,
         "state": "buenosaires",
@@ -2235,7 +2238,7 @@ const buildAlimentarLocaciones = function(person, token){
 }
 
 
-const buildAlimentarCobertura = function(person, token){
+const buildAlimentarCobertura = function(person, token) {
     let ingreso4 = {
         type: 'auh',
         tingreso: 'talimentar',
@@ -2256,10 +2259,10 @@ const buildAlimentarCobertura = function(person, token){
 
 
 
-const processOneAlimentarPerson = function(token, master){
+const processOneAlimentarPerson = function(token, master) {
     let person = new Person();
 
-    if(master[token.ndoc]){
+    if (master[token.ndoc]) {
         person._id = master[token.ndoc]._id;
     }
 
@@ -2271,19 +2274,19 @@ const processOneAlimentarPerson = function(token, master){
 }
 
 
-const processOneSaludPerson = function(token, master){
+const processOneSaludPerson = function(token, master) {
     // contactref: 1: peron  2: familiares
     let person = new Person();
 
-    if(master[token.ndoc]){
+    if (master[token.ndoc]) {
         person._id = master[token.ndoc]._id;
     }
 
-    if(token.familyref === "1" || token.familyref === 1){
+    if (token.familyref === "1" || token.familyref === 1) {
         //con sole.log('Es PERSON FULL [%s] [%s]', token.apellido, token.nombre)
-    }else if(token.familyref === "2" || token.familyref === 2){
+    } else if (token.familyref === "2" || token.familyref === 2) {
         //co nsole.log('Es FAMILIAR / CONTACTO  [%s] [%s]', token.apellido, token.nombre)
-    }else {
+    } else {
         //c onsole.log('NO TENGO DATO DE SI ES PERSON [%s]', token.familyref)
     }
 
@@ -2295,18 +2298,18 @@ const processOneSaludPerson = function(token, master){
 }
 
 
-const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
+const processAlimentarPersons = function(personArray, personMaster, errcb, cb) {
 
     let existentes = 0;
     personArray.forEach((token, index) => {
 
-        if(personMaster[token.ndoc]){
+        if (personMaster[token.ndoc]) {
 
             existentes += 1;
 
-        }else {
+        } else {
 
-        }   
+        }
         processOneAlimentarPerson(token, personMaster);
 
     });
@@ -2314,18 +2317,18 @@ const processAlimentarPersons = function(personArray, personMaster, errcb, cb){
 
 }
 
-const processSaludPersons = function(personArray, personMaster, errcb, cb){
+const processSaludPersons = function(personArray, personMaster, errcb, cb) {
 
     let existentes = 0;
     personArray.forEach((token, index) => {
 
-        if(personMaster[token.ndoc]){
+        if (personMaster[token.ndoc]) {
 
             existentes += 1;
 
-        }else {
+        } else {
 
-        }   
+        }
         processOneSaludPerson(token, personMaster);
 
     });
@@ -2333,57 +2336,57 @@ const processSaludPersons = function(personArray, personMaster, errcb, cb){
 
 }
 
-const processAlimentarArchive = function(master, req, errcb, cb){
+const processAlimentarArchive = function(master, req, errcb, cb) {
     //deploy
     //const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
 
     // local
-    const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
+    const arch = path.join(config.rootPath, 'public/migracion/personas/personasImportCsv.csv');
 
-    function toLowerCase(name){
+    function toLowerCase(name) {
         return name.toLowerCase();
     }
 
-    function toUpperCase(name){
+    function toUpperCase(name) {
         return name.toUpperCase();
     }
 
-    csv({delimiter: ';'})
-    .fromFile(arch)
-    .then((persons) => {
-                    
-        processAlimentarPersons(persons, master, errcb, cb)
-        cb({result: "ok"})
+    csv({ delimiter: ';' })
+        .fromFile(arch)
+        .then((persons) => {
 
-    });
+            processAlimentarPersons(persons, master, errcb, cb)
+            cb({ result: "ok" })
+
+        });
 }
 
 
-const processSaludArchive = function(master, req, errcb, cb){
+const processSaludArchive = function(master, req, errcb, cb) {
     //deploy
     const arch = path.join(config.rootPath, 'www/salud/migracion/personas/personasImportCsv.csv');
 
     // local
     //const arch = path.join(config.rootPath,        'public/migracion/personas/personasImportCsv.csv');
 
-    function toLowerCase(name){
+    function toLowerCase(name) {
         return name.toLowerCase();
     }
 
-    function toUpperCase(name){
+    function toUpperCase(name) {
         return name.toUpperCase();
     }
 
-    csv({delimiter: ','})
-    .fromFile(arch)
-    .then((persons) => {
+    csv({ delimiter: ',' })
+        .fromFile(arch)
+        .then((persons) => {
 
-        processSaludPersons(persons, master, errcb, cb)
-                    
-        //processAlimentarPersons(persons, master, errcb, cb)
-        cb({result: "ok"})
+            processSaludPersons(persons, master, errcb, cb)
 
-    });
+            //processAlimentarPersons(persons, master, errcb, cb)
+            cb({ result: "ok" })
+
+        });
 }
 
 //http://localhost:8080/api/persons/alimentar
@@ -2394,9 +2397,9 @@ const processSaludArchive = function(master, req, errcb, cb){
  * @param cb
  * @param errcb
  */
-exports.saludImport = function (req, errcb, cb) {
+exports.saludImport = function(req, errcb, cb) {
 
-    let promise = new Promise((resolve, reject)=> {
+    let promise = new Promise((resolve, reject) => {
         Person.find(null, '_id displayName tdoc ndoc cobertura').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
@@ -2418,7 +2421,7 @@ exports.saludImport = function (req, errcb, cb) {
 
         processSaludArchive(master, req, errcb, cb);
 
-    })        
+    })
 
 
 };
@@ -2433,45 +2436,45 @@ exports.saludImport = function (req, errcb, cb) {
  * @param cb
  * @param errcb
  */
-exports.import = function (req, errcb, cb) {
+exports.import = function(req, errcb, cb) {
 
     processArchive(req, errcb, cb);
 
 };
 
 
-exports.updateLocacion = function(personId, locacion){
+exports.updateLocacion = function(personId, locacion) {
     updateLocacionToken(personId, locacion);
 
 }
 
 //todoaca
-async function updateLocacionToken(personId, nlocacion){
+async function updateLocacionToken(personId, nlocacion) {
     let person = await Person.findById(personId).exec();
-    if(person){
+    if (person) {
         let vlocacion = person.locaciones && person.locaciones.length && person.locaciones[0];
-        if(!vlocacion){
-            person.locaciones = [ nuevoRegistroLocacion(nlocacion) ]
+        if (!vlocacion) {
+            person.locaciones = [nuevoRegistroLocacion(nlocacion)]
 
-        }else {
+        } else {
             updateRegistroLocacion(vlocacion, nlocacion)
         }
 
-        await person.save();    
+        await person.save();
 
     }
 }
 
-function updateRegistroLocacion(vlocacion, nlocacion){
-    vlocacion.street1  = nlocacion.street1;
-    vlocacion.city  = nlocacion.city;
-    vlocacion.cp  = nlocacion.cp;
-    vlocacion.lat  = nlocacion.lat;
-    vlocacion.lng  = nlocacion.lng;
-  
+function updateRegistroLocacion(vlocacion, nlocacion) {
+    vlocacion.street1 = nlocacion.street1;
+    vlocacion.city = nlocacion.city;
+    vlocacion.cp = nlocacion.cp;
+    vlocacion.lat = nlocacion.lat;
+    vlocacion.lng = nlocacion.lng;
+
 }
 
-function nuevoRegistroLocacion(nlocacion){
+function nuevoRegistroLocacion(nlocacion) {
     let locacion = Object.assign({}, nlocacion);
     locacion.desription = 'Alta por Epidemiología';
     locacion.estado = 'activo';
@@ -2508,8 +2511,8 @@ function nuevoRegistroLocacion(nlocacion){
 
 
 
-exports.buildIdTree = function(){
-    let promise = new Promise((resolve, reject)=> {
+exports.buildIdTree = function() {
+    let promise = new Promise((resolve, reject) => {
         Person.find(null, '_id displayName fenac fenactx sexo tdoc ndoc locaciones').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
@@ -2532,12 +2535,12 @@ exports.buildIdTree = function(){
     return promise;
 }
 
-exports.buildInvertedTree = function(){
-    let promise = new Promise((resolve, reject)=> {
+exports.buildInvertedTree = function() {
+    let promise = new Promise((resolve, reject) => {
         Person.find(null, '_id displayName idbrown tdoc ndoc').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
-                if(p.idbrown){
+                if (p.idbrown) {
                     master[p.idbrown] = {
                         _id: p._id,
                         tdoc: p.tdoc,
@@ -2560,12 +2563,12 @@ exports.buildInvertedTree = function(){
 }
 
 
-exports.buildInvertedTreeForContactData = function(){
-    let promise = new Promise((resolve, reject)=> {
+exports.buildInvertedTreeForContactData = function() {
+    let promise = new Promise((resolve, reject) => {
         Person.find(null, '_id displayName tdoc ndoc contactdata').lean().then(persons => {
             let master = {};
             persons.forEach(p => {
-                if(p.ndoc){
+                if (p.ndoc) {
                     master[p.ndoc] = {
                         _id: p._id,
                         tdoc: p.tdoc,
@@ -2595,7 +2598,7 @@ exports.buildInvertedTreeForContactData = function(){
 //db.personas.updateOne({ndoc: '49740447'}, {$pull:  {familiares: {_id: ObjectId("5ebc7770c4a3e454f4118880")}}   })
 
 // https://www.eldestapeweb.com/opinion/amado-boudou/-suenan-los-androides-con-salarios-pequenos--202051621160
-//Good tests kill flawed theories, we remain alive to guess again 
+//Good tests kill flawed theories, we remain alive to guess again
 
 
 // Some philosophers fail to distinguish propositions from judgments; … But in the real world it is more important that a proposition be interesting than that it be true.
