@@ -84,7 +84,7 @@ const assetSch = new mongoose.Schema({
 
 
 const businessSch = new mongoose.Schema({
-    nombre: { type: String, required: true, default: "" },
+    nombre: { type: String, required: false, default: "" },
     apellido: { type: String, required: false, default: "" },
     tdoc: { type: String, required: false, default: "" },
     ndoc: { type: String, required: false, default: "" },
@@ -477,9 +477,9 @@ function buildQuery(query) {
         q['familiares.personId'] = query.familiar;
     }
 
-    /** Búsqueda por array de integrantes */
-    if (query.integrantes) {
-        q['integrantes.personId'] = query.integrantes;
+    if (query.integrante) {
+        q['integrantes.personId'] = query.integrante;
+        q['integrantes.estado'] = 'activo';
     }
 
     if (query.mismalocacion) {
@@ -539,6 +539,7 @@ function updateData(model, data) {
  */
 exports.findByQuery = function(query, errcb, cb) {
     let regexQuery = buildQuery(query);
+    console.dir(regexQuery);
 
     Person.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {

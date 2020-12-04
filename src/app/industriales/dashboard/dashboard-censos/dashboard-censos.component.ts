@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 
 import { ConsultasService } from '../../../entities/consultas/consultas.service';
@@ -14,42 +14,41 @@ import { Person } from '../../../entities/person/person';
 
 
 @Component({
-  selector: 'app-dashboard-industrias',
-  templateUrl: './dashboard-industrias.component.html',
-  styleUrls: ['./dashboard-industrias.component.scss']
+  selector: 'app-dashboard-censos',
+  templateUrl: './dashboard-censos.component.html',
+  styleUrls: ['./dashboard-censos.component.scss']
 })
-export class DashboardIndustriasComponent implements OnInit {
-  public industriasDashboardTitle = 'Industrias';
-  public industriasDashboardSubtitle = 'Organizaciones que represento';
+export class DashboardCensosComponent implements OnInit {
 
   public consultasList$: Observable<Consulta[]>;
   public censosList$: Observable<CensoIndustrias[]>;
   private activeCenso: CensoIndustrias;
-  public currentIndustry: Person;
+  private currentIndustry: Person;
 
   public showData = false;
 
 
-
-  public industriasList = [];
-
+  public title = 'Censo INDUSTRIAL';
+  public subtitle = 'Censo 2020';
+  
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
+    private _router: Router,
+    private _route: ActivatedRoute,
+    private _service: ConsultasService,
     private empCtrl: EmpresasController,
     private censoCtrl: CensoIndustriasController,
     private _userService : UserService
-
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    this.fetchCompaniaVinculada()
+    console.log('************** dashboard censo ************')
+    this.lookUpActiveCenso();
+
+    
   }
 
-  private fetchCompaniaVinculada(){
+  private lookUpActiveCenso(){
     console.log('lookUpActive Censo - TO BEGIN')
-    this.showData = false;
-
 
     this._userService.userEmitter.subscribe(user => {
       if(user && user._id){
@@ -57,7 +56,6 @@ export class DashboardIndustriasComponent implements OnInit {
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
           if(industria){
             this.currentIndustry = industria;
-            this.showData = true;
 
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
             console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
@@ -71,12 +69,11 @@ export class DashboardIndustriasComponent implements OnInit {
                 this.showData = false;
                 //this.empCtrl.openSnackBar('No ')
               }
-
+        
             })
-
+ 
           }else{
             console.log('Industria no hallada, debe cargar una')
-            this.showData = false;
           }
         })
 
@@ -88,9 +85,12 @@ export class DashboardIndustriasComponent implements OnInit {
 
   }
 
-
-
-  public gotoIndustriasPage(): void {
-    this.router.navigate(['industrias'], { relativeTo: this.route });
+  getLabel(key : string) {
+    return ConsultaHelper.getOptionLabel('consultaType',key);
   }
+
+  navigateBrowse(): void {
+    this._router.navigate(['censos/panel'], { relativeTo: this._route });
+  }
+
 }

@@ -304,14 +304,14 @@ export class VinculosAgregarFormComponent implements OnInit {
     if (per.ndoc === this.vinculo.ndoc) { return ok; } // estoy recuperando la misma persona
 
     if (per.ndoc === this.person.ndoc) {
-      this.errorMessage = 'No puedes seleccionar el DNI del caso índice';
+      this.errorMessage = 'No puedes seleccionar el mismo documento que el del ancestro';
       return false; // es la parent person, daría vinculo circular;
     }
 
     if (!this.isNewVinculo) {
       if (per.ndoc !== this.vinculo.ndoc) {
         this.ctrl.openSnackBar(
-          'ATENCIÓN: ¡Se reemplazará el vínculo pre-existente por esta nueva persona!',
+          'ATENCIÓN: ¡Se reemplazará el vínculo pre-existente por esta nueva empresa!',
           'ACEPTAR'
         );
       }

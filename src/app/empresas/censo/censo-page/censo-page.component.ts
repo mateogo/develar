@@ -86,6 +86,7 @@ export class CensoPageComponent implements OnInit {
 
   public isAutenticated = false;
   private count = 0;
+  public openEditor = true;
   
   public audit: Audit;
   public parentEntity: ParentEntity;

@@ -27,7 +27,7 @@ const RECORD = 'person';
 })
 export class PersonService {
 
-  private currentPerson: Person;
+  private currentPerson: Person = new Person("");
   public personListener = new BehaviorSubject<Person>(this.currentPerson);
 
 	constructor(

@@ -2009,6 +2009,7 @@ class PersonModel {
 
       member.nombre = p.nombre;
       member.apellido = p.apellido;
+      member.displayName = p.displayName;
       member.tdoc = p.tdoc;
       member.ndoc = p.ndoc;
       member.fenactx = p.fenactx;

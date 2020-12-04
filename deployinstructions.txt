@@ -3,6 +3,7 @@
     - Ingresar como usuario administrativo.
     - En la barra lateral, hacer click en "Tablas Generales --> Regenerar turnos nominales" (/develar/adminscripts)
     - Clickear en el button "Generar turnos nominales"
+    NO REQUIERE VACIAR LA TABLA
 
 
 
@@ -10,3 +11,7 @@
 1) ejecutar en la terminal, parado en la carpeta del proyecto, "npm install"
 para instalar las nuevas dependencias instaladas.
 
+
+3) Verificar que los  usuarios administrativos tengan el atributo isUsuarioWeb === false:
+        En mongoshell:
+        db.usuarios.updateMany({}, {$set: {isUsuarioWeb: false} })

@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-sm-12 col-md-2">
+		<mat-form-field>
+		  <mat-select #fldTdoc placeholder="Tipo de documento" 
+		  		[(ngModel)]='tDoc'
+		    	(selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+		    <mat-option 
+		    			*ngFor="let item of tcompPersonaFisica" 
+		    			[value]="item.val">{{ item.label }}
+		  	</mat-option>
+		  </mat-select>
+		</mat-form-field>
+
+	</div>
+<!--
+	<div class="col-sm-12 col-md-3">
+		<mat-form-field>
+			<input matInput 
+				[(ngModel)]='nDoc' placeholder="Núm documento">
+		</mat-form-field>
+	</div>
+-->
+	<div class="col-sm-12 col-md-6">
+		<persona-buscar [tdoc]='tDoc'
+										(person$)=personFetched($event)
+										(searchTerms)=searchTerm($event)></persona-buscar>
+	</div>
+
+<!--
+	<div class="col-sm-12 col-md-2 person-search">
+		<button mat-flat-button color="primary"
+			(click)="fetchPerson()"
+			class="person-search-button" >Buscar</button>
+	</div>
+-->
+	<div class="col-sm-12 col-md-4 person-search">
+
+		<button mat-button color="accent"
+			(click)="altaEvento()"
+			class="person-raised-button" >Alta EVENTO</button>
+
+		<button mat-flat-button color="warning"
+			(click)="altaPerson()"
+			class="person-search-button" >Alta Persona</button>
+
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+    <ng-container *ngIf="altaPersona">
+      <person-alta [data]='datosDocumento'
+      						(person$)=personFetched($event)
+                   (cancel$)=cancelNewPerson($event)></person-alta>
+    </ng-container>
+	</div>
+</div>

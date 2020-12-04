@@ -1699,6 +1699,26 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
+
+
+  {
+    title: 'EmPRESAS',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Buscar compañía',
+        routing: '/develar/empresas/recepcion',
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+
   {
 
     title: 'Turnos',
@@ -1743,22 +1763,6 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
 
-  },
-  {
-    title: 'Nocturnidad',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Rol Nocturnidad',
-        routing: '/rol/nocturnidad/panel'
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
   },
   {
     title: 'Comunidades',

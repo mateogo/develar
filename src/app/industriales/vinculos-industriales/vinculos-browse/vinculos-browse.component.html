@@ -7,7 +7,26 @@
         </mat-toolbar>
     </div>
     <div class="col-12">
-        <app-vinculos-browse-table *ngIf="showData"></app-vinculos-browse-table>
+    <mat-card>
+
+        <mat-card-content>
+            <mat-list class="pt-0">
+                <ng-container *ngIf=showData >
+                  <mat-divider></mat-divider>
+                  <mat-list-item class="align-items-center">
+                      <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
+                      <button type="button" mat-flat-button color="accent"
+                      (click)="navigateToIndustry()"
+                    >Editar Compañía</button>
+
+                      <mat-divider></mat-divider>
+                  </mat-list-item>
+    
+              </ng-container>
+            </mat-list>
+        </mat-card-content>
+
+    </mat-card>
     </div>
 </div>
 <div class="row mt-3">

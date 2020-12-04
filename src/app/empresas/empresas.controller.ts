@@ -6,11 +6,13 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 
-import { BehaviorSubject ,  Subject ,  Observable } from 'rxjs';
+import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 
 import { SharedService } from '../develar-commons/shared-service';
 import { DaoService } from '../develar-commons/dao.service';
 import { UserService } from '../entities/user/user.service';
+import { PersonService } from '../salud/person.service';
+
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
 import { Person, Address, UpdatePersonEvent} from '../entities/person/person';
@@ -71,7 +73,8 @@ export class EmpresasController {
   private milestone: string;
   private _milestoneList: Array<SelectData>;
 
-  private currentPerson: Person;
+  private currentPerson: Person = new Person("");
+  private currentIndustry: Person = new Person("");
 
   private userListener: BehaviorSubject<User>;
   public timestamp;
@@ -87,7 +90,8 @@ export class EmpresasController {
     private dialogService: MatDialog,
     private sharedSrv:   SharedService,
     private snackBar:    MatSnackBar,
-		private userService: UserService,
+    private userService: UserService,
+    private personService: PersonService
 		) {
     this.timestamp = Date.now();
 
@@ -515,6 +519,42 @@ export class EmpresasController {
     }
   }
 
+  fetchIndustriaFromUser(user: User): Observable<Person>{
+    let query = {}
+    let industryListener = new Subject<Person>()
+    
+    if(user.isUsuarioWeb){
+      query['userwebId']=user._id
+
+    }else {
+      query['userId']=user._id
+
+    }
+
+    this.personService.fetchPersonByQuery(query).subscribe(persons =>{
+      if(persons && persons.length){
+        this.currentPerson = persons[0]
+        query={ integrante: this.currentPerson._id}
+        this.personService.fetchPersonByQuery(query).subscribe(industrias =>{
+          if(industrias && industrias.length){
+            this.currentIndustry= industrias[0]
+            industryListener.next(this.currentIndustry);
+
+          }else{
+            // todo, no encontré industria
+            industryListener.next(null)
+          }
+        })
+
+      }else{
+        //todo, no encontré personFromUser
+        industryListener.next(null)
+      }
+    })
+
+    return industryListener;
+  }
+
 
   setCurrentPersonFromId(id: string){
     if(!id) return;
@@ -536,6 +576,48 @@ export class EmpresasController {
     return this.daoService.search<Person>('person', query);
   }
 
+  /******* Fetch PERSON Person person *******/
+  fetchPersonByDNI(tdoc:string, ndoc:string ): Subject<Person[]>{
+    let listener = new Subject<Person[]>();
+
+    this.loadPersonByDNI(listener, tdoc,ndoc);
+    return listener;
+  }  
+
+  private loadPersonByDNI(recordEmitter:Subject<Person[]>, tdoc, ndoc){
+    let query = {
+      tdoc: tdoc,
+      ndoc: ndoc
+    }
+
+    this.daoService.search<Person>('person', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+  searchPerson(tdoc: string, term: string): Observable<Person[]> {
+    let query = {};
+    let test = Number(term);
+
+    if(!(term && term.trim())){
+      return of([] as Person[]);
+    }
+
+    if(isNaN(test)){
+      query['displayName'] = term.trim();
+    }else{
+      query['tdoc'] = tdoc;
+      query['ndoc'] = term;
+    }
+    
+    return this.daoService.search<Person>('person', query);
+}
 
 
   ////************* create new notification ************////

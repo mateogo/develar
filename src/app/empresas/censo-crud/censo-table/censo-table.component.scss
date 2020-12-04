@@ -1,0 +1,29 @@
+.mat-column-select {
+    max-width: 50px;
+}
+
+.mat-column-sede {
+    max-width: 150px;
+}
+
+.mat-column-tipo {
+    max-width: 150px;
+}
+
+.mat-column-descripcion {
+    flex: 1 0 20%;
+}
+
+.mat-column-txFecha {
+    max-width: 100px;
+}
+
+.mat-progress-spinner {
+    left: calc(50% - 50px);
+    top: calc(50% - 50px);
+    position: absolute;
+}
+
+.mat-cell {
+    font-size: 12px;
+}

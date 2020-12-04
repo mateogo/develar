@@ -7,11 +7,11 @@ const SOLICITANTE = 'solicitante';
 
 
 const estadosOptList = [
-  {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
-  {val: 'activo',      label: 'Activa',      slug:'Activa' },
-  {val: 'cerrado',     label: 'Cerrado',    slug:'Cerrado' },
-  {val: 'suspendido',  label: 'Suspendida',  slug:'Suspendida' },
-  {val: 'baja',        label: 'Baja',        slug:'Baja' },
+  {val: 'no_definido', label: 'Sin selección', slug:'Seleccione opción' },
+  {val: 'activo',      label: 'Activa',        slug:'Activa' },
+  {val: 'cerrado',     label: 'Cerrado',       slug:'Cerrado' },
+  {val: 'suspendido',  label: 'Suspendida',    slug:'Suspendida' },
+  {val: 'baja',        label: 'Baja',          slug:'Baja' },
 ]
 
 const ejecucionOptList = [
@@ -30,18 +30,16 @@ const ejecucionOptList = [
 const consultaTypeOptList: Array<any> = [
   {val: 'no_definido',   scope: 'public', label: 'Sin selección' },
   { val: 'consulta', scope: 'public', label: 'Consulta' },
-  {val: 'consultaturno',      scope: 'public', label: 'Consulta sobre turno' },
+  {val: 'consultaturno',      scope: 'public', label: 'Sol de atención presencial' },
   {val: 'asesoramiento', scope: 'public', label: 'Asesoramiento técnico' },
   {val: 'solmaterial',   scope: 'public', label: 'Solicitud de material' },
 ];
 
 const sectoresOptList = [
   {val: 'comunicacion',    serial:'consulta',       label: 'Comunicación',        style: {'background-color': "#f2cded"}},
-  {val: 'cineaudiovideo',  serial:'consulta',       label: 'Cine, audio, video',  style: {'background-color': "#f2cded"}},
-  {val: 'fotografia',      serial:'consulta',       label: 'Fotografía',          style: {'background-color': "#f2aded"}},
-  {val: 'documento',       serial:'consulta',       label: 'Documentos',          style: {'background-color': "#f2dded"}},
-  {val: 'digitalizacion',  serial:'consulta',       label: 'Digitalización',      style: {'background-color': "#f2dded"}},
-  {val: 'preservacion',    serial:'consulta',       label: 'Preservación',        style: {'background-color': "#f2dded"}},
+  {val: 'capacitacion',    serial:'consulta',       label: 'Capacitación',  style: {'background-color': "#f2cded"}},
+  {val: 'censo',           serial:'consulta',       label: 'Censo 2020',          style: {'background-color': "#f2aded"}},
+  {val: 'documentacion',   serial:'consulta',       label: 'Documentación',          style: {'background-color': "#f2dded"}},
   {val: 'administracion',  serial:'consulta',       label: 'Administración',      style: {'background-color': "#f2dded"}},
   {val: 'direccion',       serial:'consulta',       label: 'Dirección' ,          style: {'background-color': "#f2dded"}},
   {val: 'solicitante',     serial:'consulta',       label: 'Solicitante',         style: {'background-color': "#f2dded"}},

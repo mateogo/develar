@@ -5,17 +5,16 @@ import { devutils } from '../../develar-commons/utils';
 const sedesList = [
   { val: 'no_definido', label: 'Sin selección', slug: 'no_definido' },
   // { val: 'alem', label: 'Sede Alem', slug: 'alem' },
-  { val: 'paseocolon', label: 'Sede Paseo Colón', slug: 'paseocolon' },
+  { val: 'pindustrial', label: 'Sede Parque Industrial', slug: 'Parque Industrial' },
   // { val: 'pichincha', label: 'Sede Pichincha', slug: 'pichincha' },
-  { val: 'rondeau', label: 'Sede Rondeau', slug: 'rondeau' },
+  { val: 'secretaria', label: 'Secretaría de Producción', slug: 'Secretaría de Producción' },
 ];
 
 const tipoConsultaList = [
   { val: 'no_definido', label: 'Sin selección', slug: 'no_definido' },
-  { val: 'documental', label: 'Documental', slug: 'documental', sede: 'rondeau' },
-  { val: 'fotografia', label: 'Fotografía', slug: 'fotografia', sede: 'rondeau' },
-  { val: 'filmico', label: 'Fílmico', slug: 'filmico', sede: 'paseocolon' },
-  { val: 'sonoro', label: 'Sonoro', slug: 'sonoro' , sede: 'paseocolon' }
+  { val: 'documental', label: 'Documentación', slug: 'Documentación', sede: 'secretaria' },
+  { val: 'censo', label: 'Asistencia Censo 2020', slug: 'Censo', sede: 'secretaria' },
+  { val: 'capacitacion', label: 'Programa capacitaciones', slug: 'Capacitaciones', sede: 'pindustrial' },
 ];
 
 const turnoEstadosList = [
