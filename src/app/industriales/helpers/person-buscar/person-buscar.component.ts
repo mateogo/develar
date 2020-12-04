@@ -6,6 +6,7 @@ import {
   distinctUntilChanged,
   filter,
   switchMap,
+  tap
 } from 'rxjs/operators';
 
 import {
@@ -30,7 +31,7 @@ export class PersonBuscarComponent implements OnInit {
   @Input() entityId;
   @Input() entityName;
   @Input() browseTitle = 'buscar persona/organización por nombre ó DNI...';
-  @Input() tdoc = 'DNI';
+  @Input() tdoc = 'CUIT';
   @Input() query = {};
 
   @Output() person$ = new EventEmitter<Person>();
@@ -56,8 +57,18 @@ export class PersonBuscarComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
       filter((t) => t && t.length > 2 && !/[^a-z0-9,ñ\s]+/gi.test(t)),
-      switchMap((term) => this.dsCtrl.searchPerson(this.tdoc, term))
+      switchMap((term) => this.dsCtrl.searchPerson(this.tdoc, term)),
+      // FIXME
+      // tap(item => this.person$.emit(new Person('', null, null, this.tdoc, term)))
+      tap(item => this.ifNeededEmitEmptyPerson(item))
     );
+  }
+
+  private ifNeededEmitEmptyPerson(items, terms?) {
+    if (items && items.length === 0) {
+      const emptyPerson = new Person('', null, null, this.tdoc);
+      this.person$.emit(emptyPerson);
+    }
   }
 
   search(term: string): void {
