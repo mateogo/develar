@@ -5,4 +5,13 @@
         </div>
     </div>
     <router-outlet></router-outlet>
+
+    <div class="row mt-3" *ngIf="displayGoBackBtn">
+        <div class="col-12">
+            <button type="button" mat-flat-button color="primary" (click)="gotoIndustryBrowser()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        Volver
+      </button>
+        </div>
+    </div>
 </div>

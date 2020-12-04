@@ -74,7 +74,7 @@ export class VinculosBrowseComponent implements OnInit {
                 this.activeCenso = censos[0];
                 this.showData = true;
               }else {
-                this.showData = false;
+                //marca this.showData = false;
                 //this.empCtrl.openSnackBar('No ')
               }
 
@@ -82,7 +82,7 @@ export class VinculosBrowseComponent implements OnInit {
 
           }else{
             console.log('Industria no hallada, debe cargar una')
-            this.showData = false;
+            //marca this.showData = false;
           }
         })
 
@@ -97,7 +97,8 @@ export class VinculosBrowseComponent implements OnInit {
 
   public navigateToIndustry(){
     console.log('navigate to industry')
-    this.router.navigate(['/mab/empresas/editar/', this.currentIndustry._id]);
+    // this.router.navigate(['/mab/empresas/editar/', this.currentIndustry._id]);
+    this.router.navigate(['/dashboard/industrias/editar/', this.currentIndustry._id]);
 
   }
 
