@@ -1,147 +1,124 @@
 <div class="view-port">
-<mat-card>
-  <mat-card-content>
-  <div class="row" >
-    <div class="col-sm-12 col-md-5 d-md-flex align-items-center text-resaltado">
-      <span>{{ person.displayName }}</span>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      <mat-form-field>
-        <mat-select #fldTdocAlta placeholder="Tipo de documento" 
-            [(ngModel)]='tDoc'
-            (selectionChange)="changeSelectionValue('tdoc',fldTdocAlta.value)">
-          <mat-option 
-                *ngFor="let item of tdocOptList" 
-                [value]="item.val">{{ item.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <mat-card>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-12 col-md-5 d-md-flex align-items-center text-resaltado">
+                    <span>{{ person.displayName }}</span>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <mat-form-field>
+                        <mat-select #fldTdocAlta placeholder="Tipo de documento" [(ngModel)]='tDoc' (selectionChange)="changeSelectionValue('tdoc',fldTdocAlta.value)">
+                            <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-    <div class="col-sm-12 col-md-4">
-        <persona-buscar [tdoc]='tDoc'
-                      (person$)=handlePerson($event) ></persona-buscar>
-    </div>
-  </div>
-  <form [formGroup]="form">
+                <div class="col-sm-12 col-md-4">
+                    <persona-buscar [tdoc]='tDoc' (person$)=handlePerson($event)></persona-buscar>
+                </div>
+            </div>
+            <form [formGroup]="form">
 
 
-    <fieldset formGroupName="vinculoForm">
-    <!---nombre; apellido--->
-    <div class="row" >
-      <div class="col-md-4">
-        <mat-form-field>
-          <input  matInput formControlName="nombre" placeholder="Nombre" >
-        </mat-form-field>
-      </div>
+                <fieldset formGroupName="vinculoForm">
+                    <!---nombre; apellido--->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="nombre" placeholder="Nombre">
+                            </mat-form-field>
+                        </div>
 
-      <div class="col-md-4">
-        <mat-form-field>
-          <input  matInput formControlName="apellido" placeholder="Apellido" >
-        </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-form-field>
-          <mat-select #fldNucleoHabitacional placeholder="Núcleo habitacional"
-              formControlName="nucleo"
-              (selectionChange)="changeSelectionValue('nucleo',fldNucleoHabitacional.value)" >
-            <mat-option *ngFor="let item of nucleoOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <!--- tdoc, ndoc, vinculo--->
-    <div class="row" >
-      <div class="col-md-3">
-        <mat-form-field>
-          <mat-select #fldTdoc placeholder="Tipo de documento"
-              formControlName="tdoc"
-              (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
-            <mat-option *ngFor="let item of tdocOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="apellido" placeholder="Apellido">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select #fldNucleoHabitacional placeholder="Núcleo habitacional" formControlName="nucleo" (selectionChange)="changeSelectionValue('nucleo',fldNucleoHabitacional.value)">
+                                    <mat-option *ngFor="let item of nucleoOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!--- tdoc, ndoc, vinculo--->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select #fldTdoc placeholder="Tipo de documento" formControlName="tdoc" (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+                                    <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
-      <div class="col-md-5">
-        <mat-form-field>
-          <mat-placeholder>Número de documento</mat-placeholder>
-          <input  matInput formControlName="ndoc" >
-          <button mat-button matSuffix mat-stroked-button
-                  title="Asignar número de documento provisorio"
-                  (click)="documProvisorio()"
-                  aria-label="número provisorio de documento">
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-placeholder>Número de documento</mat-placeholder>
+                                <input matInput formControlName="ndoc">
+                                <button mat-button matSuffix mat-stroked-button title="Asignar número de documento provisorio" (click)="documProvisorio()" aria-label="número provisorio de documento">
             <mat-icon>cached</mat-icon></button>
-          <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
-        </mat-form-field>
+                                <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
+                            </mat-form-field>
 
-      </div>
+                        </div>
 
-      <div class="col-md-4">
-        <mat-form-field>
-          <mat-select #fldTipoVinculo placeholder="Vínculo familiar"
-              formControlName="vinculo"
-              (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
-            <mat-option *ngFor="let item of vinculosOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select #fldTipoVinculo placeholder="Vínculo familiar" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
+                                    <mat-option *ngFor="let item of vinculosOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
 
-    <!---nestudios; fenac; sexo --->
-    <div class="row" >
-      <div class="col-md-3">
-        <mat-form-field>
-          <mat-select #fldSexo placeholder="Sexo"
-              formControlName="sexo"
-              (selectionChange)="changeSelectionValue('sexo',fldSexo.value)" >
-            <mat-option *ngFor="let item of sexoOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+                    <!---nestudios; fenac; sexo --->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select #fldSexo placeholder="Sexo" formControlName="sexo" (selectionChange)="changeSelectionValue('sexo',fldSexo.value)">
+                                    <mat-option *ngFor="let item of sexoOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
 
-      <div class="col-md-3">
-        <mat-form-field>
-          <input  matInput formControlName="fenactx" placeholder="Fecha de nacimiento" >
-          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
-          <mat-error *ngIf="hasVinculoError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
-        </mat-form-field>
-      </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input matInput formControlName="fenactx" placeholder="Fecha de nacimiento">
+                                <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+                                <mat-error *ngIf="hasVinculoError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+                            </mat-form-field>
+                        </div>
 
-      <div class="col">
-        <mat-form-field>
-          <input  matInput formControlName="telefono" placeholder="Teléfono de contacto" >
-        </mat-form-field>
-      </div>
+                        <div class="col">
+                            <mat-form-field>
+                                <input matInput formControlName="telefono" placeholder="Teléfono de contacto">
+                            </mat-form-field>
+                        </div>
 
-    </div>
-    <!---nestudios; fenac; sexo --->
-    <div class="row" >
-      <div class="col-md-3">
-        <mat-form-field>
-          <mat-select #fldEstadoVinculo placeholder="Estado del vínculo"
-              formControlName="estado"
-              (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)" >
-            <mat-option *ngFor="let item of estadoOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+                    </div>
+                    <!---nestudios; fenac; sexo --->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select #fldEstadoVinculo placeholder="Estado del vínculo" formControlName="estado" (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)">
+                                    <mat-option *ngFor="let item of estadoOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
-      <div class="col-md-8">
-        <mat-form-field>
-          <input  matInput formControlName="comentario" placeholder="Observación / comentario" >
-        </mat-form-field>
-      </div>
+                        <div class="col-md-8">
+                            <mat-form-field>
+                                <input matInput formControlName="comentario" placeholder="Observación / comentario">
+                            </mat-form-field>
+                        </div>
 
-    </div>
-    </fieldset>
-      
-    <fieldset formGroupName="addressForm">
+                    </div>
+                </fieldset>
+
+                <!-- <fieldset formGroupName="addressForm">
     <div class="row" >
       <div class="col-md-4">
         <mat-form-field>
@@ -175,7 +152,7 @@
           <mat-select #fldCiudad placeholder="Ciudad"
               formControlName='city'
               (selectionChange)="changeSelectionValue('city', fldCiudad.value)" >
-            <mat-option *ngFor="let item of ciudadesList" 
+            <mat-option *ngFor="let item of ciudadesList"
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -186,12 +163,12 @@
           <mat-select #fldbarrio placeholder="Barrio"
               formControlName='barrio'
               (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
-            <mat-option *ngFor="let item of barrioList" 
+            <mat-option *ngFor="let item of barrioList"
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      
+
       <div class="col-md-3">
         <mat-form-field>
           <input matInput formControlName='zip' placeholder="Código Postal" >
@@ -199,37 +176,28 @@
       </div>
     </div>
 
-    </fieldset>
+    </fieldset> -->
 
 
-    <hr>
-    <div class="d-md-flex justify-content-start">
-      <button mat-raised-button color="primary" class='m-1'
-          [disabled]="!form.valid || formClosed"
-          (click)="onSubmit()">
+                <hr>
+                <div class="d-md-flex justify-content-start">
+                    <button mat-raised-button color="primary" class='m-1' [disabled]="!form.valid || formClosed" (click)="onSubmit()">
           Aceptar </button>
 
-      <button mat-raised-button color="primary" class='m-1'
-          title="Actualizar el seguimiento de esta persona, tomando como caso índice al caso base"
-          [disabled]="!form.valid || formClosed"
-          (click)="onCreateCasoIndice()">
+                    <button mat-raised-button color="primary" class='m-1' title="Actualizar el seguimiento de esta persona, tomando como caso índice al caso base" [disabled]="!form.valid || formClosed" (click)="onCreateCasoIndice()">
           Activar seguimiento bajo caso índice</button>
 
-      <button mat-raised-button color="primary" class='m-1'
-          [disabled]="!form.valid || formClosed"
-          (click)="geoLoopUp()">
+                    <button mat-raised-button color="primary" class='m-1' [disabled]="!form.valid || formClosed" (click)="geoLoopUp()">
           Obtener coordenadas geográficas </button>
 
-      <button mat-raised-button color="warn"   class='m-1'
-          (click)="onCancel()">
+                    <button mat-raised-button color="warn" class='m-1' (click)="onCancel()">
           Cancelar </button>
 
-      <button mat-raised-button color="warn"   class='m-1'
-          (click)="onDeleteContact()">
+                    <button mat-raised-button color="warn" class='m-1' (click)="onDeleteContact()">
           Baja </button>
-    </div>
-  
-  </form>
-  </mat-card-content>
-</mat-card>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>

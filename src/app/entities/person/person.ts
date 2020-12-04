@@ -315,8 +315,8 @@ export class BusinessMembersData {
     hasOwnPerson: boolean;
     personId: string;
     hasParentAddress: boolean = false;
-  sexo: string;
-
+    sexo: string;
+  displayName: string;
     vinculo: string = 'seguridad';
     estado: string = 'activo';
     desde: string;
@@ -2031,6 +2031,20 @@ class PersonModel {
       return member;
     }
 
+  buildPersonFromBusinessMember(member: BusinessMembersData, p?: Person): Person {
+    if (!p) {
+      p = new Person("");
+    }
+
+    p.nombre = member.nombre;
+    p.apellido = member.apellido;
+    p.tdoc = member.tdoc;
+    p.ndoc = member.ndoc;
+    p.personType = 'juridica';
+    p.displayName = member.displayName;
+
+    return p;
+  }
 }
 
 export const personModel = new PersonModel();

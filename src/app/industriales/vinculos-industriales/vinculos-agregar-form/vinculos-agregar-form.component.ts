@@ -115,16 +115,16 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.isNewVinculo = true;
     this.isNewLocacion = true;
 
-    this.person = this.data.person;
+    this.person = this.data.person[0];
     this.currentNumDoc = '';
     this.initVinculo();
     // this.initLocacion();
 
-    // this.result = {
-    //   action: UPDATE,
-    //   type: VINCULO_ESTADO,
-    //   token: this.asistencia,
-    // } as UpdateAsistenciaEvent;
+    this.result = {
+      action: UPDATE,
+      type: VINCULO_ESTADO,
+      token: null,
+    } as UpdateAsistenciaEvent;
 
     this.initForEdit();
   }
@@ -133,11 +133,10 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.bussinessMembers = this.person.integrantes || [];
     if (this.vinculo) {
       this.isNewVinculo = false;
+      const businessToken = this.bussinessMembers.find((t) => t._id === this.vinculo._id);
 
-      const labToken = this.bussinessMembers.find((t) => t._id === this.vinculo._id);
-
-      if (labToken) {
-        this.vinculo = labToken;
+      if (businessToken) {
+        this.vinculo = businessToken;
         this.tDoc = this.vinculo.tdoc || 'CUIT';
         this.currentNumDoc = this.vinculo.ndoc;
         this.isNewVinculo = false;
@@ -202,7 +201,7 @@ export class VinculosAgregarFormComponent implements OnInit {
   }*/
 
   onSubmit() {
-    this.formClosed = true;
+    //this.formClosed = true;
     this.result.action = UPDATE;
     this.initForSave();
     this.saveToken();
@@ -211,13 +210,6 @@ export class VinculosAgregarFormComponent implements OnInit {
   geoLoopUp() {
     this.initForSave();
     //this.lookUpGeoData();
-  }
-
-  onCreateCasoIndice() {
-    this.formClosed = true;
-    this.result.action = UPDATE;
-    this.initForSave();
-    this.updateSeguimientoBajoCasoIndice();
   }
 
   onCancel() {
@@ -251,12 +243,12 @@ export class VinculosAgregarFormComponent implements OnInit {
       this.vinculoForm.controls['ndoc'].setValue('');
     }
 
-    if (type === 'city') {
-      this.barrioList = personModel.getBarrioList(this.addressForm.value.city);
+    // if (type === 'city') {
+    //   this.barrioList = personModel.getBarrioList(this.addressForm.value.city);
 
-      let zip = personModel.fetchCP(this.addressForm.value.city);
-      this.addressForm.controls['zip'].setValue(zip);
-    }
+    //   let zip = personModel.fetchCP(this.addressForm.value.city);
+    //   this.addressForm.controls['zip'].setValue(zip);
+    // }
   }
 
   /*
@@ -308,23 +300,11 @@ export class VinculosAgregarFormComponent implements OnInit {
   handlePerson(p: Person) {
     this.errorMessage = '';
     if (this.isValidRetrievedPerson(p)) {
-      //this.acceptPersonaAsFamilyMember(p);
       this.acceptPersonAsBusinessMember(p);
     } else {
       this.ctrl.openSnackBar(this.errorMessage, 'ACEPTAR');
     }
   }
-
-  // private acceptPersonaAsFamilyMember(p: Person) {
-  //   // validate
-  //   // caso: OK
-  //   this.vinculo = personModel.buildFamilyDataFromPerson(p, this.vinculo);
-  //   this.vPerson = p;
-  //   // this.initLocacion();
-  //   this.currentNumDoc = this.vinculo.ndoc;
-  //   this.initForEdit();
-  // }
-
 
   private acceptPersonAsBusinessMember(p: Person) {
     this.vinculo = personModel.buildBusinessMemberFromPerson(p, this.vinculo);
@@ -362,56 +342,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     return ok;
   }
 
-  private updateSeguimientoBajoCasoIndice() {
-    if (this.isNewVinculo) {
-      this.ctrl.openSnackBar(
-        'Debe confirmar el alta del vínculo primero. No se puede actualizar',
-        'ATENCIÓN'
-      );
-      return;
-    }
-
-    // if (!this.asistencia) {
-    //   this.ctrl.openSnackBar(
-    //     'No se estableció el caso índice. No se puede actualizar',
-    //     'ATENCIÓN'
-    //   );
-    //   return;
-    // }
-    // if (!this.vinculo.personId) {
-    //   this.ctrl.openSnackBar(
-    //     'No se ha creado un nuevo afectado a partir de este vínculo. No se puede actualizar',
-    //     'ATENCIÓN'
-    //   );
-    //   return;
-    // }
-
-    //   this.perSrv.fetchPersonById(this.vinculo.personId).then((per) => {
-    //   if (per) {
-    //     // this.vPerson = per;
-    //     this.ctrl.updateCurrentPerson(per);
-    //     this.ctrl
-    //       .manageCovidRelation(this.vPerson, this.asistencia, this.vinculo)
-    //       .subscribe((sol) => {
-    //         if (sol) {
-    //           this.ctrl.openSnackBar('ACTUALIZACIÓN EXITOSA', 'CERRAR');
-    //           this.closeDialogSuccess();
-    //         } else {
-    //           this.ctrl.openSnackBar(
-    //             'No se puedo actualizar correctamente la vinculación del caso índice',
-    //             'ATENCIÓN'
-    //           );
-    //         }
-    //       });
-    //   } else {
-    //     this.ctrl.openSnackBar(
-    //       'No se pudo recuperar el registro de PERSONA. No se puede actualizar',
-    //       'ATENCIÓN'
-    //     );
-    //   }
-    // });
-  }
-
   /*private lookUpGeoData() {
     if (this.locacion.street1 && this.locacion.city) {
       this.ctrl.addressLookUp(this.locacion).then((geo) => {
@@ -437,6 +367,55 @@ export class VinculosAgregarFormComponent implements OnInit {
     // (b) Busca / actualiza la S/Asistencia, si la hay
     // (c) Actualiza la mainPerson, la que hostea el vinculo
     // this.updateContactosEstrechos(); // (a)
+    //this.updateVinculos();
+
+    /**
+      1. miro si existe la persona jurídica (aquí es this.vinculo);
+        si no existe la creo
+    */
+    console.log("saveToken[this.vinculo=%o]", this.vinculo);
+
+    // Siempre busco persona jurídica por tratarse de una industria
+    const bussinessExistsQuery = {
+      personType: 'juridica',
+      tdoc: this.vinculo.tdoc,
+      ndoc: this.vinculo.ndoc
+    };
+
+    this.perSrv.fetch(bussinessExistsQuery).subscribe(person => {
+      console.log('this.person.fetch[person=%o]', person);
+
+      if (person && person.length > 0) {
+        /*
+          2. existe; asociamos
+        */
+        const personItem = person[0];
+        personItem.integrantes.push(personModel.buildBusinessMemberFromPerson(this.person, null));
+        this.perSrv.updatePersonPromise(personItem).then(updatedPerson => {
+          console.log("Actualizando integrates[updatedPerson=%o]", updatedPerson);
+        });
+      } else {
+        /*
+          3. no existe; creamos la empresa ("persona jurídica") con los datos mínimos,
+              asociamos y enviamos a vista de edición
+        */
+        const personToCreate = personModel.buildPersonFromBusinessMember(this.vinculo);
+
+        this.perSrv.createPerson(personToCreate).then(createdPerson => {
+          console.log('createPerson[createdPerson=%o]', createdPerson);
+          createdPerson.integrantes.push(personModel.buildBusinessMemberFromPerson(this.person, null));
+          this.perSrv.updatePersonPromise(createdPerson).then(updatedPerson => {
+            console.log("Creando y actualizando integrates[updatedPerson=%o]", updatedPerson);
+          });
+        });
+      }
+    });
+  }
+
+  private updateVinculos() {
+    // this.ctrl.upsertAsistenciaToken(this.asistencia, contactos).then((asis) => {
+    //   this.saveVinculoRelation(); // (a)
+    // });
   }
 
   // private updateContactosEstrechos() {
@@ -594,22 +573,15 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
   private initForSave() {
-    let today = new Date();
-    //this.vinculo = {...this.vinculo, ...this.form.value} --->OjO... esto clona, no es lo buscado
     this.vinculo = Object.assign(this.vinculo, this.vinculoForm.value);
-    this.locacion = Object.assign(this.locacion, this.addressForm.value);
-
+    // this.locacion = Object.assign(this.locacion, this.addressForm.value);
     this.vinculo.hasOwnPerson = personModel.hasMinimumDataToBePerson(
       this.vinculo
     );
-
     // this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
-  }
 
-  private buildWarningMessage(name) {
-    warningMessageTpl.data.body = name;
-    return warningMessageTpl;
+    console.log('initForSave[this.person=%o][this.vinculo=%o][this.locacion=%o]', this.person, this.vinculo, this.locacion);
   }
 
   private openDialog(config) {
@@ -618,15 +590,15 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
     private initForm() {
-    this.addressForm = this.fb.group({
-      street1: [null],
-      street2: [null],
-      streetIn: [null],
-      streetOut: [null],
-      city: [null],
-      barrio: [null],
-      zip: [null],
-    });
+    // this.addressForm = this.fb.group({
+    //   street1: [null],
+    //   street2: [null],
+    //   streetIn: [null],
+    //   streetOut: [null],
+    //   city: [null],
+    //   barrio: [null],
+    //   zip: [null],
+    // });
 
     this.vinculoForm = this.fb.group({
       nombre: ["pepe", Validators.compose([Validators.required])],
@@ -644,7 +616,7 @@ export class VinculosAgregarFormComponent implements OnInit {
 
     this.form = this.fb.group({
       vinculoForm: this.vinculoForm,
-      addressForm: this.addressForm,
+      // addressForm: this.addressForm,
     });
   }
 
