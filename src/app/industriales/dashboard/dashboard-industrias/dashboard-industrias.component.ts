@@ -51,26 +51,12 @@ export class DashboardIndustriasComponent implements OnInit {
 
     this._userService.userEmitter.subscribe(user => {
       if(user && user._id){
-        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
+        console.log('User encontrado para buscar INDUSTRIA: [%s] [%s]', user.username, user.isUsuarioWeb);
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
+          console.log('Industria encontrada? [%s]', industria && industria.displayName)
           if(industria){
             this.currentIndustry = industria;
             this.showData = true;
-
-            this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
-            console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
-
-            this.censosList$.subscribe(censos =>{
-              console.log('Censo-subscribe [%s]', censos && censos.length)
-              if(censos && censos.length){
-                this.activeCenso = censos[0];
-                this.showData = true;
-              }else {
-                this.showData = false;
-                //this.empCtrl.openSnackBar('No ')
-              }
-        
-            })
  
           }else{
             console.log('Industria no hallada, debe cargar una')

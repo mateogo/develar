@@ -164,7 +164,7 @@ export class CensoIndustriasController {
   			this._currentCenso = null;
       }
       subject.next(this._censosList)
-      this._censoListener.next(this._currentCenso);
+      this.censoListener.next(this._currentCenso);
 
   	})
   }
@@ -186,7 +186,7 @@ export class CensoIndustriasController {
   			this._currentCenso = null;
         this._censosList = [];
       }
-      this._censoListener.next(this._currentCenso);
+      this.censoListener.next(this._currentCenso);
 
 
   	})
@@ -203,7 +203,7 @@ export class CensoIndustriasController {
   }
 
   get censoListener(): Subject<CensoIndustrias>{
-  	if(!this._censoListener){
+  	if(!this._censoListener || !this._currentCenso){
   		if(!this._currentCenso){
   			this._currentCenso = new CensoIndustrias();
 
