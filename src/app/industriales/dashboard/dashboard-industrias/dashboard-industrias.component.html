@@ -9,17 +9,16 @@
         {{ industriasDashboardSubtitle }}
         <mat-divider></mat-divider>
     </mat-card-subtitle>
-
     <mat-card-content>
         <mat-list class="pt-0">
-            <ng-container *ngIf=showData >
-              <mat-divider></mat-divider>
-              <mat-list-item class="align-items-center">
-                  <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
-                  <mat-divider></mat-divider>
-              </mat-list-item>
+            <ng-container *ngIf="showData">
+                <mat-divider></mat-divider>
+                <mat-list-item class="align-items-center">
+                    <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
 
-          </ng-container>
+            </ng-container>
         </mat-list>
     </mat-card-content>
 </mat-card>

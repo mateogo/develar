@@ -284,6 +284,7 @@ export class VinculosAgregarFormComponent implements OnInit {
   };
 
   handlePerson(p: Person) {
+    console.log('persona-buscar handlePerson [%o]', p);
     this.errorMessage = '';
     if (this.isValidRetrievedPerson(p)) {
       this.acceptPersonAsBusinessMember(p);

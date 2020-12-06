@@ -477,14 +477,14 @@ function buildQuery(query) {
         q['familiares.personId'] = query.familiar;
     }
 
-    if(query.integrante){
+    if (query.integrante) {
         q['integrantes.personId'] = query.integrante;
         q['integrantes.estado'] = 'activo';
     }
 
-    if(query.mismalocacion){
-        q['_id'] = {$ne: query.personId};
-        q['locaciones.street1'] =  {"$regex": query.street1, "$options": "i"};
+    if (query.mismalocacion) {
+        q['_id'] = { $ne: query.personId };
+        q['locaciones.street1'] = { "$regex": query.street1, "$options": "i" };
         q['locaciones.city'] = query.city;
 
     }

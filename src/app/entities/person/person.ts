@@ -321,7 +321,7 @@ export class BusinessMembersData {
 
   sexo: string;
   displayName: string;
-  vinculo: string = 'seguridad';
+  vinculo: string = 'apoderado';
   estado: string = 'activo';
   desde: string;
   hasta: string;

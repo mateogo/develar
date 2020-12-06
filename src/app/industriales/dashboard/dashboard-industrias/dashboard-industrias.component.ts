@@ -31,6 +31,8 @@ export class DashboardIndustriasComponent implements OnInit {
 
 
 
+  public industriasList = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

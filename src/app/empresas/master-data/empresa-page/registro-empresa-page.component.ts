@@ -21,7 +21,7 @@ import {  Person,
           UpdatePersonEvent,
           UpdateItemListEvent,
 
-          PersonContactData 
+          PersonContactData
         } from '../../../entities/person/person';
 
 const UPDATE =   'update';
@@ -62,7 +62,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
   private personId: string;
 
   public isAutenticated = false;
-  
+
 
   constructor(
     	private router: Router,
@@ -72,7 +72,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
   	) { }
 
   ngOnInit() {
-    let first = true;    
+    let first = true;
     this.personId = this.route.snapshot.paramMap.get('id')
 
     this.empCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
@@ -115,7 +115,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
       this.habilitacionesList =  p.habilitaciones || [];
 
       this.hasCurrentPerson = true;
-      
+
     }
     // todo: Search For S/Asistencias
   }
@@ -278,7 +278,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    
+
     this.empCtrl.updatePerson(update);
   }
 
@@ -297,7 +297,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    
+
     this.empCtrl.updatePerson(update);
   }
 
@@ -316,7 +316,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    
+
     this.empCtrl.updatePerson(update);
   }
 
