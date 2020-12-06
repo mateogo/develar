@@ -1073,7 +1073,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1299,7 +1299,7 @@ export const CCK_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1513,7 +1513,7 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1718,6 +1718,26 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budgeColor: ''
   },
 
+  {
+    title: 'Censos',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Alta censo',
+        routing: '/develar/censos/alta',
+      },
+      {
+        title: 'Navegar censos',
+        routing: '/develar/censos',
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
 
   {
 
@@ -1775,7 +1795,7 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
