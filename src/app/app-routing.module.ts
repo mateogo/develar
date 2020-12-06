@@ -24,7 +24,7 @@ import { Page404Component } from './develar-commons/errorpages/page-404.componen
 //import { Page500Component }             from './develar-commons/errorpages/page-500.component';
 
 
-// Components 
+// Components
 import { CommunityCreateComponent } from './develar-commons/community/community-create/community-create.component';
 import { EnterSiteComponent } from './develar-commons/enter-site/enter-site.component';
 import { AdminScriptsComponent } from './develar-commons/admin-scripts/admin-scripts.component';
@@ -277,7 +277,13 @@ const adminScriptsRoutes : Routes = [
 ]
 
 
-
+const censoRoutes: Routes = [
+  {
+    path: '',
+    component: PresentacionLayoutComponent,
+    loadChildren: () => import('./entities/censo-industrial/censo-industrial.module').then(m => m.CensoIndustrialModule)
+  }
+];
 
 const adminRoutes: Routes = [
   {
@@ -321,11 +327,17 @@ const adminRoutes: Routes = [
     children: notificationRoutes
   },
   {
+    path: 'censos',
+    component: DefaultLayoutComponent,
+    children: censoRoutes
+  },
+  {
     path: '',
     component: DefaultLayoutComponent,
     children: defaultAdminRoute
   },
 ];
+
 
 
 const mainRoutes: Routes = [
@@ -394,7 +406,7 @@ const routes: Routes = [
     children : dashboardRoutes
   },
   {
-    path: 'usuariosweb', 
+    path: 'usuariosweb',
     component: ExtraLayoutComponent,
     children: userWebRoutes
   },
