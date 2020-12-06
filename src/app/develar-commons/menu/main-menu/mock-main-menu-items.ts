@@ -1725,12 +1725,12 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     groupTitle: false,
     sub: [
       {
-        title: 'Alta censo',
-        routing: '/develar/censos/alta',
-      },
-      {
         title: 'Navegar censos',
         routing: '/develar/censos',
+      },
+      {
+        title: 'Alta censo',
+        routing: '/develar/censos/alta',
       }
     ],
     routing: '',
