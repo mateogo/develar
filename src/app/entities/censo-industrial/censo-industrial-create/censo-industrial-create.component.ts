@@ -15,7 +15,9 @@ export class CensoIndustrialCreateComponent implements OnInit {
 
   constructor(
     private censoService: CensoIndustrialService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.form = this.fb.group({
     });
@@ -25,6 +27,10 @@ export class CensoIndustrialCreateComponent implements OnInit {
   }
 
   public navigateBrowse(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
 
+  public createCenso(): void {
+    console.log(this.form.value);
   }
 }
