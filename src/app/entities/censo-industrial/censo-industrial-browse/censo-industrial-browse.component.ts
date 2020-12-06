@@ -55,7 +55,7 @@ export class CensoIndustrialBrowseComponent implements OnInit {
 
   public onSelectionChange(key: string, term: string): void {
     if (!this.query) {
-      this.query = new TurnoQuery();
+      this.query = new CensoIndustriasQuery();
     }
 
     if (key === 'fechaDesde' || key === 'fechaHasta') {

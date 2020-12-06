@@ -137,4 +137,6 @@ export class CensoIndustriasTable {
   fecomp_tsa: number;
   fecomp: string;
   navance: string;
+
+  empresa: string;
 }

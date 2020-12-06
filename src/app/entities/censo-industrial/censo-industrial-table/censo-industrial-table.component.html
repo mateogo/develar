@@ -1,1 +1,44 @@
-<p>censo-industrial-table works!</p>
+<mat-table #censoTable matSort [dataSource]="dataSource">
+
+    <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fecomp_txa">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de alta</mat-header-cell>
+        <mat-cell *matCellDef="let censo">{{ censo.fecomp }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="avance">
+        <mat-header-cell *matHeaderCellDef>Avance</mat-header-cell>
+        <mat-cell *matCellDef="let censo">{{ censo.navance }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="empresa">
+        <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
+        <mat-cell *matCellDef="let censo">{{ censo.empresa }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rowactions">
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let censo">
+            <mat-icon matTooltip="Editar este censo" class="mr-3" (click)="editItem(censo)">edit</mat-icon>
+            <!-- <mat-icon matTooltip="Cancelar este turno" *ngIf="turno.estado != 'Cancelado'" (click)="deleteItem(turno)">delete</mat-icon> -->
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>
+
+<mat-paginator #paginator [length]="10" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>

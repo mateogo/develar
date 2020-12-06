@@ -46,6 +46,10 @@ export class CensoIndustrialService {
       } else {
         this.censosIndustrialesList = [];
       }
+
+      console.log('censo industrial service censoIndustriasList --> %o', this.censosIndustrialesList);
+
+
       subject.next(this.censosIndustrialesList);
     });
   }
@@ -58,6 +62,8 @@ export class CensoIndustrialService {
 
   public updateTableData(): void {
     const censoTableData = CensoIndustriasHelper.buildCensoTableData(this.censosIndustrialesList);
+
+    console.log('censo industrial service censoIndustriasListTableData --> %o', censoTableData);
     this._censosIndustrialesDataSource.next(censoTableData);
   }
 }

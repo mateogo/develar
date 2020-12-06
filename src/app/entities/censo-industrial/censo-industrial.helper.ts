@@ -638,10 +638,12 @@ export class CensoIndustriasHelper {
     return list.map((token) => {
       let tableCell = new CensoIndustriasTable();
       tableCell._id = token._id;
+      tableCell.fecomp_tsa = token.fecomp_tsa;
       tableCell.compNum = token.compNum;
       tableCell.fecomp = token.fecomp_txa;
       tableCell.slug = token.censo.slug;
       tableCell.navance = this.getOptionLabel('avance', token.estado.navance);
+      tableCell.empresa = token.empresa.slug;
 
       return tableCell;
     });
