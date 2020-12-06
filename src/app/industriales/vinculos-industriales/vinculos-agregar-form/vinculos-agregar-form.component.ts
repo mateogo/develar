@@ -621,8 +621,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     // });
 
     this.vinculoForm = this.fb.group({
-      nombre: [null],
-      apellido: [null],
       displayName: [null],
       tdoc: [null, Validators.compose([Validators.required])],
       ndoc: [null],

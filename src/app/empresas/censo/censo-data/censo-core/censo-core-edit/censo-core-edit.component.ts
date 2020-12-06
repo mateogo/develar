@@ -102,6 +102,7 @@ export class CensoCoreEditComponent implements OnInit {
     this.form = this.buildForm();
 
     let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
+      console.log('Censolistener sin censo[%s]', censo)
       if(censo){
 
         this.loadOrInitCenso(censo);
