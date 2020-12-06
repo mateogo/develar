@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { CensoIndustrialService } from '../censo-industrial.service';
+
 
 @Component({
   selector: 'app-censo-industrial-create',
@@ -7,9 +11,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CensoIndustrialCreateComponent implements OnInit {
 
-  constructor() { }
+  public form: FormGroup;
+
+  constructor(
+    private censoService: CensoIndustrialService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+    });
+  }
 
   ngOnInit(): void {
   }
 
+  public navigateBrowse(): void {
+
+  }
 }
