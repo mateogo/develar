@@ -6,7 +6,6 @@ import { tap } from 'rxjs/operators';
 
 import { CensoIndustrias, CensoIndustriasQuery } from '../censo.model';
 import { CensoIndustriasHelper } from '../censo-industrial.helper';
-import { CensoIndustrialService } from '../censo-industrial.service';
 
 @Component({
   selector: 'app-censo-industrial-browse',
@@ -26,9 +25,10 @@ export class CensoIndustrialBrowseComponent implements OnInit {
 
   public query = null;
 
+  public isFilterByIndustriaActive = false;
+
   constructor(
     private fb: FormBuilder,
-    private censoService: CensoIndustrialService
   ) {
     const rangoFecha = devutils.getPreviousWeek(new Date());
 
@@ -64,6 +64,10 @@ export class CensoIndustrialBrowseComponent implements OnInit {
       this.query[key] = term;
     }
 
+    if (key === 'empresaId') {
+      this.isFilterByIndustriaActive = true;
+    }
+
     this.query = this.initQuery(this.form, this.query);
     this.query = CensoIndustriasHelper.cleanQueryToken(this.query);
     this.searchTerms.next(this.query);
@@ -83,5 +87,17 @@ export class CensoIndustrialBrowseComponent implements OnInit {
     query.estado = fvalue.estado;
     query.avance = fvalue.avance;
     return query;
+  }
+
+  public addFilterByIndustria(industria): void {
+    this.onSelectionChange('empresaId', industria._id);
+  }
+
+  public removeIndustriaFilter(): void {
+    // setteo a no_definido; luego el método cleanQueryToken() limpiará este campo
+    // atento a dicho valor
+    this.onSelectionChange('empresaId', 'no_definido');
+
+    this.isFilterByIndustriaActive = false;
   }
 }

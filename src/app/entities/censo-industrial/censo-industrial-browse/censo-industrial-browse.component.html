@@ -24,6 +24,12 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div class="col-md-4">
+            <app-censo-industrial-persona-buscar (person$)="addFilterByIndustria($event)"></app-censo-industrial-persona-buscar>
+        </div>
+        <div class="col-md-2">
+            <mat-checkbox (click)="removeIndustriaFilter()" *ngIf="isFilterByIndustriaActive" [checked]="true">Selección activa</mat-checkbox>
+        </div>
     </div>
     <mat-toolbar>
         <div class="row">
