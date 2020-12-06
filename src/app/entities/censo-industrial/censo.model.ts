@@ -82,6 +82,13 @@ export class CensoBienes {
   level: number; //porcentaje de la facturación o la inversión
 }
 
+export class CensoIndustriasQuery {
+  fechaDesde: number;
+  fechaHasta: number;
+  avance: string; // CensoIndustrias.estado.navance
+  empresa: string; // CensoIndustrias.empresa.slug ??
+}
+
 /**************************/
 /**   CENSO INDUSTRIAS  **/
 /************************/

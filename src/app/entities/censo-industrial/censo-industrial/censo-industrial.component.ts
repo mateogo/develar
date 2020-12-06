@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../../develar-commons/shared-service';
+import { CensoIndustriasQuery } from '../censo.model';
+import { CensoIndustrialService } from '../censo-industrial.service';
 
 @Component({
   selector: 'app-censo-industrial',
@@ -14,7 +16,7 @@ export class CensoIndustrialComponent implements OnInit {
 
   constructor(
     private shared: SharedService,
-    private censoService: CensoService,
+    private censoService: CensoIndustrialService,
   ) {
     this.shared.emitChange(this.pageTitle);
   }
@@ -22,10 +24,10 @@ export class CensoIndustrialComponent implements OnInit {
   ngOnInit(): void { }
 
 
-  public fetchCensos(query: TurnoQuery): void {
-    this._turnoService.fetchTurnosByQuery(query).subscribe(turnosList => {
+  public fetchCensos(query: CensoIndustriasQuery): void {
+    this.censoService.fetchCensosIndustrialesByQuery(query).subscribe(turnosList => {
       if (turnosList && turnosList.length > 0) {
-        this._turnoService.updateTableData();
+        this.censoService.updateTableData();
         this.showData = true;
       } else {
         this.showData = false;

@@ -1,1 +1,12 @@
-<p>censo-industrial works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <app-censo-industrial-browse (lookUpModels)="fetchCensos($event)"></app-censo-industrial-browse>
+                    <app-censo-industrial-table *ngIf="showData"></app-censo-industrial-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -559,7 +559,7 @@ function getPrefixedLabel(list, prefix, val) {
   return label;
 }
 
-export class CensoIndustriasService {
+export class CensoIndustriasHelper {
   static getSectionOptList() {
     let list = nomencladorList.filter((t) => t.isSeccion === 1);
     return list;

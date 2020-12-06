@@ -7,6 +7,7 @@ import { CensoIndustrialCreateComponent } from './censo-industrial-create/censo-
 import { CensoIndustrialEditComponent } from './censo-industrial-edit/censo-industrial-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CentroIndustrialRoutingModule } from './censo-industrial-routing.module';
+import { DevelarCommonsModule } from '../../develar-commons/develar-commons.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CentroIndustrialRoutingModule } from './censo-industrial-routing.module
   ],
   imports: [
     CommonModule,
+    DevelarCommonsModule,
     ReactiveFormsModule,
     CentroIndustrialRoutingModule
   ],
