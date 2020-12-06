@@ -1,1 +1,36 @@
-<p>censo-industrial-browse works!</p>
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-label>Fecha DESDE: </mat-label>
+                <input matInput [matDatepicker]="fechaDesde" formControlName="fechaDesde">
+                <mat-datepicker-toggle matSuffix [for]="fechaDesde"></mat-datepicker-toggle>
+                <mat-datepicker #fechaDesde color="accent" disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-label>Fecha HASTA: </mat-label>
+                <input matInput [matDatepicker]="fechaHasta" formControlName="fechaHasta">
+                <mat-datepicker-toggle matSuffix [for]="fechaHasta"></mat-datepicker-toggle>
+                <mat-datepicker #fechaHasta color="accent" disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-form-field>
+                <mat-select #selAvance formControlName="avance" placeholder="Avance" (selectionChange)="onSelectionChange('avance', selAvance.value)">
+                    <mat-option *ngFor="let item of estadoAvanceList" [value]="item.val">{{ item.label }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-toolbar>
+        <div class="row">
+            <div class="col-12">
+                <button mat-flat-button type="button" color="primary" (click)="doRefreshResults()">Refrescar búsqueda</button>
+                <!-- <button mat-flat-button class="ml-3" type="button" color="primary" (click)="doDownloadResults()">Exportar resultados</button> -->
+            </div>
+        </div>
+    </mat-toolbar>
+</form>

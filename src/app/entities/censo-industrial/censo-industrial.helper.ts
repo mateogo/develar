@@ -10,6 +10,7 @@ import { Person, DocumentData } from '../person/person';
 import { nomencladorList } from './nomenclador-data';
 import { CardGraph } from '../../develar-commons/asset-helper';
 import { Injectable } from '@angular/core';
+import { CensoIndustriasQuery } from './censo.model';
 
 export interface UpdateListEvent {
   action: string;
@@ -739,6 +740,16 @@ export class CensoIndustriasHelper {
     let x = new CensoIndustrias();
     Object.assign(x, base);
     return x;
+  }
+
+  static cleanQueryToken(query: CensoIndustriasQuery): CensoIndustriasQuery {
+    if (!query) { return null; }
+
+    Object.keys(query).forEach((key) => {
+      if (query[key] == null || query[key] === 'no_definido') { delete query[key]; }
+    });
+
+    return query;
   }
 }
 
