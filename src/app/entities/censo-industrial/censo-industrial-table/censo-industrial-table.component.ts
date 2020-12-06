@@ -123,4 +123,8 @@ export class CensoIndustrialTableComponent implements OnInit {
           this.selection.select(row)
         );
   }
+
+  public editItem(item: CensoIndustriasTable) {
+    this.router.navigate(['editar', item._id], { relativeTo: this.route });
+  }
 }
