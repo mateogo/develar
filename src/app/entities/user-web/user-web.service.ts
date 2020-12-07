@@ -55,6 +55,7 @@ export class UserWebService {
       this.isLogIn = false;
       this.hasLogout = true;
       this._currentUser = null;
+      console.log('#1 current_user [%s]', this._currentUser && this._currentUser._id)
       this._userEmitter.next(this._currentUser);
       return this.http.get(url)
         .toPromise()
@@ -121,9 +122,10 @@ export class UserWebService {
     }
   
     setLoginUser(user: UserWeb, loginUser: Subject<UserWeb>) {
-      this.currentUser = user;
+      this._currentUser = user;
       this.isLogIn = true;
       this.hasLogout = false;
+      console.log('#2 current_user [%s]', this._currentUser && this._currentUser._id)
       loginUser.next(this._currentUser);
       this._userEmitter.next(this._currentUser);
       this.endSetUser$.next(true);
@@ -145,12 +147,15 @@ export class UserWebService {
   
                   }else {
                       this.hasLogout = false;
-                      this.currentUser = fetchedUser;
+                      this._currentUser = fetchedUser;
+                      console.log('#3 current_user [%s]', this._currentUser && this._currentUser._id)
+                       
                   }
   
-          this.userEmitter.next(this._currentUser);
-          this.notFetchedMore = true;
-                  return this._currentUser;
+                this.userEmitter.next(this._currentUser);
+                this.notFetchedMore = true;
+                console.log('#4 current_user [%s]', this._currentUser && this._currentUser._id)
+                return this._currentUser;
               })
               .catch(this.handleError);
       }
@@ -165,6 +170,8 @@ export class UserWebService {
               this.updateCurrentUser();
           }
           //c onsole.log(this._currentUser)
+          console.log('#5 current_user [%s]', this._currentUser && this._currentUser._id)
+
           return this._currentUser;
   
   
@@ -172,7 +179,9 @@ export class UserWebService {
     }
   
     set currentUser(user: UserWeb){
-          this._currentUser = user;
+      console.log('#6 setter current_user [%s]', this._currentUser && this._currentUser._id)
+
+      this._currentUser = user;
     }
   
     createUserWeb(user: UserWeb): Promise<UserWeb> {
