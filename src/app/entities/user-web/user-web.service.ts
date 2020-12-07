@@ -55,7 +55,6 @@ export class UserWebService {
       this.isLogIn = false;
       this.hasLogout = true;
       this._currentUser = null;
-      console.log('#1 current_user [%s]', this._currentUser && this._currentUser._id)
       this._userEmitter.next(this._currentUser);
       return this.http.get(url)
         .toPromise()
@@ -87,14 +86,11 @@ export class UserWebService {
       let loggedIn = false;
       let loginUser = new Subject<UserWeb>();
  
-      console.log('initLoginUser: BEGIN')
       this.loadLoginUser().then((res) => {
         fetchedUser = res as UserWeb;
         loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
-        console.log('initLoginUser: THEN')
   
         if (!loggedIn) {
-          console.log('initLoginUser: REPECAHAJE')
           setTimeout(() => {
             this.loadLoginUser().then((res) => {
               fetchedUser = res as UserWeb;
@@ -128,7 +124,6 @@ export class UserWebService {
       this._currentUser = user;
       this.isLogIn = true;
       this.hasLogout = false;
-      console.log('#2 current_user [%s]', this._currentUser && this._currentUser._id)
       loginUser.next(this._currentUser);
       this._userEmitter.next(this._currentUser);
       this.endSetUser$.next(true);
@@ -151,17 +146,15 @@ export class UserWebService {
                   }else {
                       this.hasLogout = false;
                       this._currentUser = fetchedUser;
-                      console.log('#3 current_user [%s]', this._currentUser && this._currentUser._id)
                        
                   }
   
                 this.userEmitter.next(this._currentUser);
                 this.notFetchedMore = true;
-                console.log('#4 current_user [%s]', this._currentUser && this._currentUser._id)
                 return this._currentUser;
               })
               .catch(this.handleError);
-      }
+    }
   
     get userEmitter(): Subject<UserWeb> {
       return this._userEmitter;
@@ -173,7 +166,6 @@ export class UserWebService {
           this.updateCurrentUser();
       }
       //c onsole.log(this._currentUser)
-      console.log('#5 current_user [%s]', this._currentUser && this._currentUser._id)
       return this._currentUser;
   
     }
@@ -199,7 +191,6 @@ export class UserWebService {
                 }else {
                     this.hasLogout = false;
                     this._currentUser = fetchedUser;
-                    console.log('#11 current_user [%s]', this._currentUser && this._currentUser._id)
                     this.userEmitter.next(this._currentUser);
                     listener.next(this._currentUser);
                 }
@@ -211,7 +202,6 @@ export class UserWebService {
     }
   
     set currentUser(user: UserWeb){
-      console.log('#6 setter current_user [%s]', this._currentUser && this._currentUser._id)
 
       this._currentUser = user;
     }

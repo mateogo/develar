@@ -60,7 +60,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
 
   ngOnInit(): void {
     let id = this._activatedRouter.snapshot.params.id;
-    console.log('Registro Web LANDED [%s]', id)
+
     if (id) {
       this.initUser(id);
     } else {
@@ -69,9 +69,10 @@ export class UserWebFormRegistroEditComponent implements OnInit {
   }
 
   initUser(id: string): void {
-    console.log('init USER')
+    let usuario = this._userWebService.currentUser;
+    console.log('usuario: [%s]', usuario && usuario._id, usuario&& usuario.email )
+
     this._userWebService.userEmitter.subscribe(usuario => {
-      console.log('User Emitter [%s] [%s]',usuario && usuario._id, id) 
 
       if (usuario && usuario._id === id) {
         this.usuario = usuario;
@@ -83,13 +84,11 @@ export class UserWebFormRegistroEditComponent implements OnInit {
         this.ruta = ['dashboard'];
       }
     })
-    let usuario = this._userWebService.currentUser;
 
     
   }
 
   private initGroup(): void {
-    console.log('INITGROUP')
     this.form = this._fb.group({
       tipoDoc: [this.isEdit ? this.usuario.tipoDoc : 'DNI', Validators.required],
      
