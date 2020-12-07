@@ -1,0 +1,17 @@
+<mat-card>
+    <mat-card-title class="d-flex align-items-center">
+        <mat-icon>person</mat-icon>
+        {{ title }}
+        <span class="flex-grow-1"></span>
+        <mat-icon class="clickeable" (click)="goToEditUserData()" style="cursor: pointer;">keyboard_arrow_right</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-0">{{ subtitle }}
+        <mat-divider></mat-divider>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <ng-container *ngIf="(user$ | async) as user">
+            <p class="mt-3 mb-0"> <strong>{{user.nombre}} {{user.apellido}} ({{user.ndoc}})</strong></p>
+            <p class="mb-0">{{user.email}}</p>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

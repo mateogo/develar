@@ -1,5 +1,48 @@
 import { MainMenuItem, SocialMediaItem } from '../menu-helper';
 
+export const INDUSTRIAS: MainMenuItem[] = [
+  {
+    title: 'Industrias web',
+    icon: '',
+    active: false,
+    groupTitle : true,
+    sub: '',
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+  {
+    title : 'INGRESAR',
+    icon: 'fas fa-sign-in-alt',
+    active : false,
+    groupTitle : false,
+    sub : null, 
+    routing : '/usuariosweb',
+    externalLink : '',
+    budge : '',
+    budgeColor : ''
+  },
+  {
+    title: 'EQUIPO',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Ingresar',
+        routing: '/ingresar/login'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+
+];
+
 export const LASARGEN_SOCIAL_MEDIA: SocialMediaItem[] = [
   {
     title: 'Seguinos en Twitter',

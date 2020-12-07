@@ -1,0 +1,50 @@
+<mat-table matSort [dataSource]="dataSource">
+
+    <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fecomp">
+        <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.fecomp }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="compNum">
+        <mat-header-cell *matHeaderCellDef>Identificador</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.compNum }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="slug">
+        <mat-header-cell *matHeaderCellDef>Denominación</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <span [innerHtml]="element.slug | sanitizeHtml"></span></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="navance">
+        <mat-header-cell *matHeaderCellDef>Avance</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.navance }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rowactions" >
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <mat-icon class="mx-1" matTooltip="Editar este elemento" style="cursor: pointer;" *ngIf="element.isActive || element.estado !== 'Cerrado'" class="mr-3" (click)="editItem(element)">edit</mat-icon>
+            <!--mat-icon class="mx-1" matTooltip="Cancelar este elemento" style="cursor: pointer;"  *ngIf="element.estado !== 'Cerrado'" (click)="deleteItem(element)">delete</mat-icon -->
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>
+
+<mat-paginator #paginator [length]="10" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>

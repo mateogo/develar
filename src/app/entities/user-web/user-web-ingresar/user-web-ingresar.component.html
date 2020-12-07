@@ -1,0 +1,40 @@
+<div id="login-form-container">
+    <mat-card id="login-form">
+        <mat-card-title>
+            Ingrese al sitio
+        </mat-card-title>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+                <mat-label>Correo electrónico</mat-label>
+                <input #username matInput placeholder="abc@dominio.com" formControlName="username">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input matInput [type]="'password'" placeholder="abc1234" formControlName="password">
+                <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+
+            <mat-card-actions>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" id="btn-acceder" mat-raised-button color="primary"
+                            [disabled]="form.invalid">Ingresar</button>
+
+                        <button type="button" id="btn-volver" (click)="onNavigateHome()" mat-raised-button
+                            color="warn">Volver</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="display: flex; flex-direction: column; align-items: center;">
+                        <a class="btn-left" style="margin : 10px 0" [routerLink]="['/usuariosweb','recuperar-password']">¿Olvidaste tu contraseña?</a>
+                        <a class="btn-left" [routerLink]="['/usuariosweb','registrarse']">REGISTRATE</a>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </form>
+
+    </mat-card>
+</div>

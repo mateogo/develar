@@ -1073,7 +1073,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1299,7 +1299,7 @@ export const CCK_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1513,7 +1513,7 @@ export const COMERCIO_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1699,21 +1699,90 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
+
+
   {
-    title: 'Nocturnidad',
+    title: 'EmPRESAS',
     icon: 'fa fa-user-circle',
     active: false,
     groupTitle: false,
     sub: [
       {
-        title: 'Rol Nocturnidad',
-        routing: '/rol/nocturnidad/panel'
+        title: 'Buscar compañía',
+        routing: '/develar/empresas/recepcion',
       },
     ],
     routing: '',
     externalLink: '',
     budge: '',
     budgeColor: ''
+  },
+
+  {
+    title: 'Censos',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar censos',
+        routing: '/develar/censos',
+      },
+      {
+        title: 'Alta censo',
+        routing: '/develar/censos/alta',
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+  },
+
+  {
+
+    title: 'Turnos',
+    icon: 'fa fa-address-card',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar turnos',
+        routing: '/develar/turnos'
+      },
+      {
+        title: 'Alta turno',
+        routing: '/develar/turnos/alta'
+      }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
+  },
+
+  {
+
+    title: 'Consultas',
+    icon: 'fa fa-address-card',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Navegar consultas',
+        routing: '/develar/consultas'
+      },
+      // {
+      //   title: 'Alta turno',
+      //   routing: '/develar/turnos/alta'
+      // }
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
+
   },
   {
     title: 'Comunidades',
@@ -1726,7 +1795,7 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  
+
   {
     title: 'Fichas',
     icon: 'fa fa-user-circle',
@@ -1895,6 +1964,22 @@ export const INDUSTRIAS_ITEMS: MainMenuItem[] = [
     externalLink: '',
     budge: '',
     budgeColor: ''
+  },
+  {
+    title: 'Tablas generales',
+    icon: 'fa fa-user-circle',
+    active: false,
+    groupTitle: false,
+    sub: [
+      {
+        title: 'Regenerar turnos nominales',
+        routing: '/develar/adminscripts'
+      },
+    ],
+    routing: '',
+    externalLink: '',
+    budge: '',
+    budgeColor: ''
   }
 
 ];
@@ -1907,7 +1992,7 @@ export const COMPANY_MENU = {
   salud:     SALUD_ITEMS,
   cck:       CCK_ITEMS,
   comercios: COMERCIO_ITEMS,
-  industrias:  INDUSTRIAS_ITEMS
+  INDUSTRIAS:  INDUSTRIAS_ITEMS
 };
 
 /****

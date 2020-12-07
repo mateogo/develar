@@ -1,0 +1,172 @@
+<div class="view-port">
+    <mat-card class="mat-elevation-z0 p-0">
+        <mat-card-header>
+            <mat-card-subtitle>Buscar organización existente o crear nueva</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-12 col-md-3">
+                    <mat-form-field>
+                        <mat-select #fldTdocAlta placeholder="Tipo de documento" [(ngModel)]='tDoc' (selectionChange)="changeSelectionValue('tdoc',fldTdocAlta.value)">
+                            <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <persona-buscar [tdoc]='tDoc' (person$)=handlePerson($event)></persona-buscar>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <form [formGroup]="form">
+                <fieldset formGroupName="vinculoForm">
+
+
+                    <!---nombre; apellido--->
+                    <div class="row">
+                        <!-- div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="nombre" placeholder="Nombre">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="apellido" placeholder="Apellido">
+                            </mat-form-field>
+                        </div-->
+                        <div class="col">
+                            <mat-form-field>
+                                <input matInput formControlName="displayName" placeholder="Nombre o denominación">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select #fldTdoc placeholder="Tipo de documento" formControlName="tdoc" (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+                                    <mat-option *ngFor="let item of tdocOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-placeholder>Número de documento</mat-placeholder>
+                                <input matInput formControlName="ndoc">
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="telefono" placeholder="Teléfono">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select #fldTipoVinculo placeholder="Tipo de vínculo" formControlName="vinculo" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
+                                    <mat-option *ngFor="let item of vinculosOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="desde" placeholder="Fecha de inicio del vínculo">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="hasta" placeholder="Fecha de finalización del vínculo">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select #fldEstadoVinculo placeholder="Estado del vínculo" formControlName="estado" (selectionChange)="changeSelectionValue('estado',fldEstadoVinculo.value)">
+                                    <mat-option *ngFor="let item of estadoOptList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-9">
+                            <mat-form-field>
+                                <input matInput formControlName="comentario" placeholder="Observación / comentario">
+                            </mat-form-field>
+                        </div>
+
+                    </div> -->
+                </fieldset>
+
+                <!-- <fieldset formGroupName="addressForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="street1" placeholder="Calle y número">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="streetIn" placeholder="Entre calle...">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput formControlName="streetOut" placeholder="...y calle">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field>
+                                <input matInput formControlName="street2" placeholder="Información adicional">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select #fldCiudad placeholder="Ciudad" formControlName='city' (selectionChange)="changeSelectionValue('city', fldCiudad.value)">
+                                    <mat-option *ngFor="let item of ciudadesList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select #fldbarrio placeholder="Barrio" formControlName='barrio' (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)">
+                                    <mat-option *ngFor="let item of barrioList" [value]="item.val">{{ item.label }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input matInput formControlName='zip' placeholder="Código Postal">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </fieldset> -->
+                <hr>
+                <div class="d-md-flex justify-content-start">
+                    <button mat-raised-button color="primary" class='m-1' [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+                    <button mat-raised-button color="warn" class='m-1' (click)="onCancel()">Cancelar</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

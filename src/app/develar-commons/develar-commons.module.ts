@@ -95,7 +95,12 @@ import { MapService } from './mapbox/services/map.api';
 
 import { MapPopupComponent } from './mapbox/components/map-popup/map-popup.component';
 import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component';
-
+import { InstructivoNumTramiteModalComponent } from './instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
+import { TermscondModalComponent } from './termscond-modal/termscond-modal.component';
+import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.component';
+import { SanitizeHtmlPipe } from './sanitize-html.pipe';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
 
 @NgModule({
   imports: [
@@ -106,7 +111,7 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     ReactiveFormsModule,
     NgxDatatableModule,
     FileUploadModule,
-
+    PdfViewerModule,
     AgmCoreModule.forRoot({
       // ant: apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
       apiKey: 'AIzaSyAJpFOgoCTiLudPL1lChcn-kIm-zlses0w'
@@ -121,6 +126,7 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     ExtraLayoutComponent,
     PresentacionLayoutComponent,
     WorkgroupLayoutComponent,
+    SanitizeHtmlPipe,
 
     Page404Component,
     Page500Component,
@@ -179,13 +185,17 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     PieChartComponent,
     ForceDirectedGraphComponent,
     MapBoxComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    InstructivoNumTramiteModalComponent,
+    TermscondModalComponent,
+    WebuserNavbarComponent,
+    AdminScriptsComponent
   ],
   exports:[
     DevelarMaterialModule,
     AgmCoreModule,
     FileUploadModule,
-
+    PdfViewerModule,
     NavbarComponent,
     MainMenuComponent,
     WorkgroupMenuComponent,
@@ -193,7 +203,6 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     ExtraLayoutComponent,
     PresentacionLayoutComponent,
     WorkgroupLayoutComponent,
-
     Page404Component,
     Page500Component,
     BadgeComponent,
@@ -249,7 +258,12 @@ import { MapBoxComponent }   from './mapbox/components/map-box/map-box.component
     PieChartComponent,
     ForceDirectedGraphComponent,
     MapBoxComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    InstructivoNumTramiteModalComponent,
+    TermscondModalComponent,
+    WebuserNavbarComponent,
+    SanitizeHtmlPipe,
+    AdminScriptsComponent
   ],
   providers: [
     AssetService,

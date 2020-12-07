@@ -6,11 +6,13 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 
-import { BehaviorSubject ,  Subject ,  Observable } from 'rxjs';
+import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 
 import { SharedService } from '../develar-commons/shared-service';
 import { DaoService } from '../develar-commons/dao.service';
 import { UserService } from '../entities/user/user.service';
+import { PersonService } from '../salud/person.service';
+
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
 import { Person, Address, UpdatePersonEvent} from '../entities/person/person';
@@ -72,11 +74,12 @@ export class EmpresasController {
   private _milestoneList: Array<SelectData>;
 
   private currentPerson: Person;
+  private currentIndustry: Person;
 
   private userListener: BehaviorSubject<User>;
   public timestamp;
   
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+  public personListener = new Subject<Person>();
 
 
   //table browse
@@ -87,11 +90,12 @@ export class EmpresasController {
     private dialogService: MatDialog,
     private sharedSrv:   SharedService,
     private snackBar:    MatSnackBar,
-		private userService: UserService,
+    private userService: UserService,
+    private personService: PersonService
 		) {
     this.timestamp = Date.now();
 
-    this.userListener = this.userService.userEmitter;
+    this.userListener = this.userService.userEmitter as BehaviorSubject<User>;
 
     this.userListener.subscribe(user =>{
 
@@ -177,10 +181,12 @@ export class EmpresasController {
     this.actualUrlSegments = mRoute;
     this.navigationUrl = this.fetchNavigationUrl(this.actualUrl, this.actualUrlSegments.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
+    //this.onReady.next(true)
 
 
   }
 
+  
   navigateToUserCommunity():boolean{
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
@@ -485,12 +491,9 @@ export class EmpresasController {
   }
 
   updateCurrentPerson(person: Person){
-    console.log('UPDATE CURRENT PERSON')
     this.currentPerson = person;
     this.personListener.next(this.currentPerson);
-    this.personListener.subscribe(p => {
 
-    })
   }
 
   setCurrentPersonFromUser(){
@@ -515,6 +518,42 @@ export class EmpresasController {
     }
   }
 
+  fetchIndustriaFromUser(user: User): Observable<Person>{
+    let query = {}
+    let industryListener = new Subject<Person>()
+    
+    if(user.isUsuarioWeb){
+      query['userwebId']=user._id
+
+    }else {
+      query['userId']=user._id
+
+    }
+
+    this.personService.fetchPersonByQuery(query).subscribe(persons =>{
+      if(persons && persons.length){
+        this.currentPerson = persons[0]
+        query={ integrante: this.currentPerson._id}
+        this.personService.fetchPersonByQuery(query).subscribe(industrias =>{
+          if(industrias && industrias.length){
+            this.currentIndustry= industrias[0]
+            industryListener.next(this.currentIndustry);
+
+          }else{
+            // todo, no encontré industria
+            industryListener.next(null)
+          }
+        })
+
+      }else{
+        //todo, no encontré personFromUser
+        industryListener.next(null)
+      }
+    })
+
+    return industryListener;
+  }
+
 
   setCurrentPersonFromId(id: string){
     if(!id) return;
@@ -536,6 +575,48 @@ export class EmpresasController {
     return this.daoService.search<Person>('person', query);
   }
 
+  /******* Fetch PERSON Person person *******/
+  fetchPersonByDNI(tdoc:string, ndoc:string ): Subject<Person[]>{
+    let listener = new Subject<Person[]>();
+
+    this.loadPersonByDNI(listener, tdoc,ndoc);
+    return listener;
+  }  
+
+  private loadPersonByDNI(recordEmitter:Subject<Person[]>, tdoc, ndoc){
+    let query = {
+      tdoc: tdoc,
+      ndoc: ndoc
+    }
+
+    this.daoService.search<Person>('person', query).subscribe(tokens =>{
+      if(tokens){
+        recordEmitter.next(tokens)
+
+      }else{
+        recordEmitter.next([]);
+      }
+
+    });
+  }
+
+  searchPerson(tdoc: string, term: string): Observable<Person[]> {
+    let query = {};
+    let test = Number(term);
+
+    if(!(term && term.trim())){
+      return of([] as Person[]);
+    }
+
+    if(isNaN(test)){
+      query['displayName'] = term.trim();
+    }else{
+      query['tdoc'] = tdoc;
+      query['ndoc'] = term;
+    }
+    
+    return this.daoService.search<Person>('person', query);
+}
 
 
   ////************* create new notification ************////
@@ -736,11 +817,29 @@ export class EmpresasController {
   }
 
  // ********** USER MANAGEMENT *************
+ updateUserStatus(user:User){
+  this.userx.id = user._id;
+  this.userx.data = user;
+  this.userx.isLogged = true;
+  this.userx.username = user.username;
+  this.userx.email = user.email;
+  this.userx.hasCommunity = false;
+  this.isUserAdmin = this.userService.isAdminUser();
 
-  loadUserCommunity(){
+  if(user.communityId){
+    this.userx.communityId = user.communityId
+    this.loadUserCommunity()
+  }else{
+    this.userLoading = false;
+    this.onReady.next (true);
+  }
+
+}
+
+
+  private loadUserCommunity(){
     if(this.userx.communityId === 'develar') {
       this.userHasNoCommunity();
-
 
     }else{
         this.daoService.findById<Community>('community', this.userx.communityId).then(entity => {
@@ -769,7 +868,7 @@ export class EmpresasController {
   }
 
 
-  userHasNoCommunity(){
+  private userHasNoCommunity(){
       this.userx.userCommunity = null;
       this.userx.hasCommunity = false;
 
@@ -782,7 +881,6 @@ export class EmpresasController {
 
       this.userLoading = false;
       this.onReady.next (true);
-
   }
 
   pushCommunityFromUser(){
@@ -802,25 +900,6 @@ export class EmpresasController {
     //     this.naviCmty.userOwned = false;
     //   }
     // }
-  }
-
-  updateUserStatus(user:User){
-    this.userx.id = user._id;
-    this.userx.data = user;
-    this.userx.isLogged = true;
-    this.userx.username = user.username;
-    this.userx.email = user.email;
-    this.userx.hasCommunity = false;
-    this.isUserAdmin = this.userService.isAdminUser();
-
-    if(user.communityId){
-      this.userx.communityId = user.communityId
-      this.loadUserCommunity()
-    }else{
-      this.userLoading = false;
-      this.onReady.next (true);
-    }
-
   }
 
 
@@ -849,6 +928,20 @@ export class EmpresasController {
     let dialogRef = this.dialogService.open(GenericDialogComponent, config);
     return dialogRef.afterClosed()
   }
+  /***************************/
+  /** Notification HELPER ****/
+  /***************************/
+  openSnackBar(message: string, action: string, config?: any) {
+    config = config || {}
+    config = Object.assign({duration: 3000}, config)
+
+    let snck = this.snackBar.open(message, action, config);
+
+    snck.onAction().subscribe((e)=> {
+      //c onsole.log('action???? [%s]', e);
+    })
+  }
+
 
 
 }

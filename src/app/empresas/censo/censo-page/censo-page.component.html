@@ -1,28 +1,29 @@
 <mat-card class="detail-card">
 	<mat-card-header>
 		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
-	</mat-card-header>
+  </mat-card-header>
+</mat-card>
 
-  <mat-card-content>
-  	<div class="container-fluid search-panel">
+<div *ngIf='showData'>
 
-      <ng-container *ngIf="!hasCurrentCenso">
-        <div class="row">
-          <div class="col">
-            <card [bgColor]="'warning'" class="info-card">
-              <div class="title text-uppercase">{{ censoHeaderTitleTxt }}</div>
-              <div class="count">{{ censoBajada }}</div>
-              <badge (click)="editCensoHeader($event)"  
-                      [customColor]="'rgba(255,255,255,0.1)'" 
-                      [borderRadius]="false">{{ censoAltaTxt }}</badge> 
-              <mat-icon>donut_large</mat-icon>
-            </card>
-          </div>
-        </div>
-      </ng-container>
+  <ng-container *ngIf="!hasCurrentCenso">
+    <div class="row">
+      <div class="col">
+        <card [bgColor]="'warning'" class="info-card">
+          <div class="title text-uppercase">{{ censoHeaderTitleTxt }}</div>
+          <div class="count">{{ censoBajada }}</div>
+          <badge (click)="editCensoHeader($event)"  
+                  [customColor]="'rgba(255,255,255,0.1)'" 
+                  [borderRadius]="false">{{ censoAltaTxt }}</badge> 
+          <mat-icon>donut_large</mat-icon>
+        </card>
+      </div>
+    </div>
+  </ng-container>
 
-      <ng-container *ngIf="hasCurrentCenso">
-
+  <ng-container *ngIf="hasCurrentCenso">
+    <mat-card>
+      <mat-card-content>
         <div class="row">
           <div class="col-md-1">
             <div>
@@ -32,41 +33,40 @@
               aria-hidden="true"></i></span>
             </div>
           </div>
-
+    
           <div class="col-md-11">
             <censo-core-view [token]='currentCenso'></censo-core-view>
           </div>
         </div>
-  
+      </mat-card-content>
+    </mat-card>
 
-        <div  *ngIf="hasActividades" >
-          <censo-panel [items]='actividades'  [type]="'actividades'"
-                (updateItems)='updateActividadesList($event)' ></censo-panel>
-        </div>
+    <div  *ngIf="hasActividades" >
+      <censo-panel [items]='actividades'  [type]="'actividades'"
+            (updateItems)='updateActividadesList($event)' ></censo-panel>
+    </div>
 
-        <div  *ngIf="hasBienes" >
-          <censo-panel [items]='bienes'  [type]="'bienes'"
-                (updateItems)='updateBienesList($event)' ></censo-panel>
-        </div>
+    <div  *ngIf="hasBienes" >
+      <censo-panel [items]='bienes'  [type]="'bienes'"
+            (updateItems)='updateBienesList($event)' ></censo-panel>
+    </div>
 
-        <div  *ngIf="hasCurrentPerson" >
-          <censo-assets-panel  [assetList]='assetList' 
-                    (updateAssets)='updateAssetList($event)' ></censo-assets-panel>
-        </div>
+    <div  *ngIf="hasCurrentPerson" >
+      <censo-assets-panel  [assetList]='assetList' 
+                (updateAssets)='updateAssetList($event)' ></censo-assets-panel>
+    </div>
 
-        <div *ngIf="hasObservaciones" >
-          <observaciones-panel 
-                    [audit]='audit'
-                    [type]='observacionesOptListType'
-                    [parent]='parentEntity' ></observaciones-panel>
-        </div>
-  
-
+    <div *ngIf="hasObservaciones" >
+      <observaciones-panel 
+                [audit]='audit'
+                [type]='observacionesOptListType'
+                [parent]='parentEntity' ></observaciones-panel>
+    </div>
 
 
-      </ng-container>
 
-		</div>
 
- 	</mat-card-content>
-</mat-card>
+  </ng-container>
+
+</div>
+

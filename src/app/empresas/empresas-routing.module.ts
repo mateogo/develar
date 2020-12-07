@@ -10,28 +10,45 @@ import { RegistroEmpresaPageComponent } from './master-data/empresa-page/registr
 import { Page404Component }          from '../develar-commons/errorpages/page-404.component';
 
 import { CensoCoreEditComponent } from './censo/censo-data/censo-core/censo-core-edit/censo-core-edit.component';
+import { CensoNavigateComponent } from './censo-crud/censo-navigate/censo-navigate.component';
 
+import { CompanyBrowseComponent } from './company-page/company-browse/company-browse.component';
 
 const routes: Routes = [
+  {path: 'panel',
+    component: CensoNavigateComponent,
+
+  },
+
+  {path: 'recepcion',
+    component: CompanyBrowseComponent,
+
+  },
+
+  {path: 'editar/:id',
+    component: RegistroEmpresaPageComponent,
+
+  },
+
   {
-    path: 'gestion',
-    component: EmpresasLayoutComponent,
+    path: 'censo2020',
     children: [
       {
-        path: 'censo2020/core',
+        path: 'core',
         component: CensoCoreEditComponent,
       },
       {
-        path: 'censo2020/core/:id',
+        path: 'core/:id',
         component: CensoCoreEditComponent,
       },
 
       {
-        path: 'censo2020',
+        path: '',
+        pathMatch: 'full',
         component: CensoPageComponent,
       },
       {
-        path: 'censo2020/:id',
+        path: ':id',
         component: CensoPageComponent,
       },
     ]  

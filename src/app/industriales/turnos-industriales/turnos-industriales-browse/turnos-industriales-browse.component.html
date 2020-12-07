@@ -1,0 +1,41 @@
+<!-- El container ya está en agn-dashboard -->
+<div class="row">
+    <div class="col-12">
+        <mat-toolbar color="primary">
+            <div>Navegación de turnos</div>
+            <span class="flex-grow-1"></span>
+            <button mat-flat-button (click)="gotoTurneraAlta()">Nuevo turno</button>
+        </mat-toolbar>
+    </div>
+    <div class="col-12">
+        <turnos-industriales-browse-table [data$]="turneraTurnosList$" (cancelTurno)="doCancelTurno($event)"></turnos-industriales-browse-table>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <button type="button" mat-flat-button color="primary" (click)="gotoDashboard()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+      Volver
+    </button>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <p><strong>Reglamento para las visitas presenciales al Municipio de Almirante Brown</strong></p>
+        <p>Los turnos son personales e indelegables. Le será requerido su documento de identidad  y tapaboca al ingreso</p>
+        <p>Puede consultar el reglamento completo en este enlace.</p>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

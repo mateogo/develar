@@ -199,6 +199,20 @@ export class DaoService {
       geocode: {
         backendURL: 'api/utils/geocode'
       },
+      userweb : {
+        backendURL : 'api/usuariosweb',
+        searchURL : 'api/usuariosweb/search'
+      },
+      consultas:{
+        backendURL:  'api/consultas',
+        searchURL:   'api/consultas/search',
+        upsertURL:   'api/consultas/upsert',
+        workflowURL: 'api/consultas/updateprocess'
+      },
+      turnospresenciales: {
+        backendURL: 'api/turnospresenciales',
+        searchURL: 'api/turnospresenciales/search'
+      },
     };
   }
 

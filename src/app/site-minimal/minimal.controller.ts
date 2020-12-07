@@ -15,6 +15,8 @@ import { GenericDialogComponent } from '../develar-commons/generic-dialog/generi
 
 import { Person, Address, UpdatePersonEvent} from '../entities/person/person';
 import { User } from '../entities/user/user';
+import { UserWeb } from '../entities/user-web/user-web.model';
+
 import { Community } from '../develar-commons/community/community.model';
 
 import { MessageToken } from '../notifications/notification.model';
@@ -71,10 +73,10 @@ export class SiteMinimalController {
 
   private currentPerson: Person;
 
-  private userListener: BehaviorSubject<User>;
+  private userListener: BehaviorSubject<User|UserWeb>;
   public timestamp;
   
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+  public personListener = new BehaviorSubject<Person>(null);
 
 
   //table browse
@@ -91,7 +93,7 @@ export class SiteMinimalController {
 
     this.userListener = this.userService.userEmitter;
 
-    this.userListener.subscribe(user =>{
+    this.userListener.subscribe((user: User) =>{
 
       this.userLoading = true;
       this.updateUserStatus(user);

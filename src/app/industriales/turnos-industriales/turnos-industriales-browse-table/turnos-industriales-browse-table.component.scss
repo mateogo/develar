@@ -1,0 +1,33 @@
+.mat-column-select {
+    max-width: 50px;
+}
+
+.mat-column-sede {
+    max-width: 150px;
+}
+
+.mat-column-tipoMaterial {
+    max-width: 150px;
+}
+
+.mat-column-detalle {
+    flex: 1 0 20%;
+}
+
+.mat-column-rowactions {
+    justify-content: right;
+}
+
+.mat-progress-spinner {
+    left: calc(50% - 50px);
+    top: calc(50% - 50px);
+    position: absolute;
+}
+
+.mat-cell {
+    font-size: 12px;
+}
+
+.mat-cell .mat-icon {
+    cursor: pointer;
+}

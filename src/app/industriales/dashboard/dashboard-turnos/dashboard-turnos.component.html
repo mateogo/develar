@@ -1,0 +1,28 @@
+<mat-card>
+    <mat-card-title class="d-flex align-items-center">
+        <mat-icon>perm_contact_calendar</mat-icon>
+        {{ turnoDashboardTitle }}
+        <span class="flex-grow-1"></span>
+        <mat-icon class="clickeable" (click)="gotoTurneraBrowse()">keyboard_arrow_right</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-0">
+        {{ turnoDashboardSubtitle }}
+        <mat-divider></mat-divider>
+    </mat-card-subtitle>
+
+    <mat-card-content>
+        <mat-list class="pt-0">
+            <ng-container *ngFor="let item of turnosList">
+                <mat-divider></mat-divider>
+                <mat-list-item class="align-items-center">
+                    <div class="col-12 p-0">
+                        <p class="mb-0 ml-1"><strong>{{ item.txFecha  }} {{ item.txHora }} </strong>
+                            :: {{ item.sede }} :: {{ item.detalle }} </p>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+
+            </ng-container>
+        </mat-list>
+    </mat-card-content>
+</mat-card>

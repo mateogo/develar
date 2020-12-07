@@ -1,0 +1,141 @@
+<div [class.registro-form-container]="!isEdit"
+[class.edicion-form-container]="isEdit" *ngIf="showForm">
+    <mat-card class="my-3">
+        <mat-card-title>{{title}}</mat-card-title>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-card-content>
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-3 col-sm-4">
+                            <mat-form-field>
+                                <mat-label>Tipo Documento</mat-label>
+                                <mat-select formControlName="tipoDoc">
+                                    <mat-option *ngFor="let tipo of tcompPersonaFisica" [value]="tipo.val">
+                                        {{tipo.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field>
+                                <mat-label>Número Documento</mat-label>
+                                <input matInput formControlName="ndoc" required>
+                                <mat-error *ngIf="hasError('ndoc', 'ndocerror') && !isEdit">{{ docBelongsTo.error }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-5 col-sm-4">
+                            <mat-form-field>
+                                <mat-label>Número de tramite</mat-label>
+                                <input matInput formControlName="numTramite" required>
+                                <button mat-icon-button type="button" matSuffix (click)="showInstructivo()" matTooltip="Ver instructivo de número de trámite">
+                                <i class="far fa-question-circle"></i>
+                            </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="nombre" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Apellido</mat-label>
+                                <input matInput formControlName="apellido" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6" *ngIf="isEdit">
+                            <mat-form-field>
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="nombre" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6" *ngIf="isEdit">
+                            <mat-form-field>
+                                <mat-label>Apellido</mat-label>
+                                <input matInput formControlName="apellido" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Fecha de nacimiento</mat-label>
+                                <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker2" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2 color="primary" startView="multi-year" [startAt]="startDate"></mat-datepicker>
+                                <mat-hint align="end" *ngIf="form.value.fechaNacimiento">edad: {{ currentAge() }}</mat-hint>
+                                <mat-error *ngIf="hasError('fechaNacimiento', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-md-6 col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Teléfono</mat-label>
+                                <input matInput formControlName="telefono" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-md-6 col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Correo electrónico</mat-label>
+                                <input matInput formControlName="email" required>
+                                <mat-error *ngIf="hasError('email', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12" *ngIf="isEdit">
+                            <mat-form-field>
+                                <mat-label>Correo electrónico</mat-label>
+                                <input matInput formControlName="email" required>
+                                <mat-error *ngIf="hasError('email', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Contraseña</mat-label>
+                                <input class="password" type="password" matInput formControlName="password" autocomplete="off" required>
+                                <button mat-button type="button" *ngIf="!showPassword" matSuffix mat-icon-button (click)="verPassword()">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                                <button mat-button type="button" *ngIf="showPassword" matSuffix mat-icon-button (click)="verPassword()">
+                                <mat-icon>visibility_off</mat-icon>
+                            </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6" *ngIf="!isEdit">
+                            <mat-form-field>
+                                <mat-label>Reingrese la contraseña</mat-label>
+                                <input class="password" type="password" matInput formControlName="confirmPassword" autocomplete="off" required>
+                            </mat-form-field>
+                            <small *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched" class="form-message text-danger">Dato requerido</small>
+                            <small *ngIf="form.controls['confirmPassword'].errors?.equalTo" class="form-message text-danger">Las claves no coinciden</small>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-6">
+                            <mat-form-field>
+                                <mat-label>Pregunta de Seguridad</mat-label>
+                                <mat-select formControlName="preguntaSecreta" required>
+                                    <mat-option *ngFor="let item of preguntasSecretas" [value]="item.key">
+                                        {{item.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-12">
+                            <mat-form-field>
+                                <mat-label>Respuesta</mat-label>
+                                <input matInput autocomplete="off" formControlName="respuestaSecreta" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!isEdit">
+                        <div class="col-12">
+                            <mat-checkbox formControlName="termscond" (click)="openTermsCond()">
+                                He leido y acepto los términos y condiciones de uso.
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button class="mx-3" type='submit' mat-flat-button color="primary" [disabled]="form.invalid">{{button_label}}</button>
+                <button class="mx-3" type="button" color="warn" mat-flat-button (click)="volver()">Cancelar</button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

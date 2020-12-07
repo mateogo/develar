@@ -1,0 +1,48 @@
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-12">
+            <mat-dialog-content *ngIf="showView">
+                <div class="container-fluid p-0">
+                    <div class="row" >
+                        <div class="col-12" *ngIf="asset.mimetype.substring(0,5) === 'image'">
+                            <img mat-card-image src="download/{{asset.entityId}}" alt="Documentación" style="margin-top: 0;">
+                        </div>
+                        <ng-container *ngIf="asset.mimetype === 'application/pdf'">
+                        <div class="col-12">
+                            <pdf-viewer [src]="url" [textLayer]="true" height="80vh"></pdf-viewer>
+                        </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 col-sm-3">
+                        <button mat-flat-button type="button" color="warn" [mat-dialog-close]="true">Cerrar</button>
+                    </div>
+                </div>
+            </mat-dialog-content>
+            <mat-dialog-content *ngIf="showEditor">
+                <div class="container-fluid p-0">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Descripción</mat-label>
+                                    <input matInput formControlName="description" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="ml-2">
+                                <button mat-flat-button color="primary" type="submit">Confirmar</button>
+                            </div>
+                            <div class="ml-2">
+                                <button mat-flat-button color="warn" type="button" [mat-dialog-close]="true">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </mat-dialog-content>
+        </div>
+    </div>
+</div>

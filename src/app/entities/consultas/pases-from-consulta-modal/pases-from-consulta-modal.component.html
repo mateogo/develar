@@ -1,0 +1,22 @@
+<mat-card class="mat-elevation-z0 p-0">
+    <mat-card-title>
+        Detalle del pase
+    </mat-card-title>
+    <mat-card-subtitle>
+        {{pase.fe_nov}} : {{pase.ho_nov}} ({{pase.estado}})
+    </mat-card-subtitle>
+    <mat-card-content>
+        <div class="container-fluid p-0">
+            <p class="mb-0"><strong>Ejecución:</strong> {{ejecucion}}</p>
+            <p class="mb-0"><strong>Novedad</strong> {{pase.novedadTx}}</p>
+            <!-- <p class="mb-0"><strong>Estado:</strong> {{pase.estado}}</p> -->
+            <p class="mb-0" *ngIf="sector"><strong>Sector:</strong> {{sector}}</p>
+            <p class="mb-0" *ngIf="!isUserWeb"><strong>Texto de pase:</strong> {{pase.paseTx}}</p>
+            <p class="mb-0"><strong>Responsable:</strong> {{pase.atendidox.slug}}</p>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button type="button" color="primary" (click)="close()" mat-flat-button>Cerrar</button>
+    </mat-card-actions>
+    <mat-card-footer><p class="mb-0" style="color: grey;">{{pase._id}}</p></mat-card-footer>
+</mat-card>

@@ -1,6 +1,6 @@
 /****************************
        PERSON MODEL
-=============================       
+=============================
  exports:
  	Person
  	Address
@@ -96,6 +96,26 @@ export interface Geocoder {
   label: string;
 }
 
+// export class PersonVinculosData {
+//   nombre: string;
+//   apellido: string;
+//   tdoc: string = 'DNI';
+//   ndoc: string;
+//   personId: string;
+//   vinculo : string;
+//   estado  : string;
+//   desde : string;
+//   hasta : string;
+//   assets: Array<CardGraph> = [];
+
+// }
+
+// export interface UpdatePersonVinculosEvent {
+//   action: string;
+//   type: string;
+//   token: PersonVinculosData;
+// };
+
 
 export class Address {
     _id?: string;
@@ -121,6 +141,12 @@ export class Address {
     hasBanio?: boolean = true; // baño de uso exclusivo;
     hasHabitacion?: boolean = false; // Habitación de uso exclusivo;
     cualificacionviv: string = 'buena';
+    pcatastral: string = "";
+    supcubierta: number = 0;
+    supterreno: number = 0;
+    propiedad: string = 'no_definido' // 'propio'; 'alquiler'; 'comodato'; 'alquilersocios'
+    pindustrial: string = 'no_definido' // 'parque', 'fuera', 'ampliacion'
+
 }
 
 export class SaludData {
@@ -166,7 +192,7 @@ export class EncuestaAmbiental {
       _id: string;
       id_address: string;
       id_person: string;
-      
+
       street1: string;
       city: string;
       barrio: string;
@@ -215,7 +241,7 @@ class PersonTableData implements PersonTable {
     this.personType = data.personType;
     this.displayName = data.displayName;
     this.email = data.email;
-  }  
+  }
 }
 
 export class PersonContactData {
@@ -252,55 +278,65 @@ export interface NucleoHabitacional {
 }
 
 export class FamilyData {
-    _id?: string; 
+    _id?: string;
     nombre: string = '';
     apellido: string = '';
     tdoc: string = 'DNI';
     ndoc: string = '';
-    sexo: string = '';
-    telefono: string = '';
     fenac: number = 0;
     fenactx: string = '';
-    vinculo: string = 'contactx';
-    estado: string = 'activo';
+    sexo: string = '';
+    ecivil: string;
+
     hasOwnPerson: boolean = false;
     personId: string = '';
     nucleo: string = 'NUC-HAB-01';
 
-    ecivil: string;
+    telefono: string = '';
     nestudios: string;
     tocupacion: string;
     ocupacion: string;
     ingreso: string;
+
+    vinculo: string = 'contactx';
+    estado: string = 'activo';
     desde: string;
     hasta: string;
     comentario: string = '';
 }
 
 export class BusinessMembersData {
-    nombre: string;
-    apellido: string;
-    tdoc: string = 'DNI';
-    ndoc: string;
-    fenac: number = 0;
-    fenactx: string;
-    ecivil: string;
-    email: string;
-    phone: string;
-    nestudios: string;
-    tocupacion: string = 'seguridad';
-    ocupacion: string = 'personal de prevención';
-    ingreso: string;
-    hasOwnPerson: boolean;
-    personId: string;
-    hasParentAddress: boolean = false;
+  _id?: string;
+  nombre: string;
+  apellido: string;
+  tdoc: string = 'DNI';
+  ndoc: string;
+  fenac: number = 0;
+  fenactx: string;
+  sexo: string;
+  ecivil: string;
+  displayName: string;
 
-    vinculo: string = 'seguridad';
-    estado: string = 'activo';
-    desde: string;
-    hasta: string;
-    comentario: string;
-    assets: Array<CardGraph> = [];
+  hasOwnPerson: boolean;
+  personId: string;
+  hasParentAddress: boolean = false;
+
+  telefono: string;
+  email: string;
+  nestudios: string;
+  tocupacion: string = 'seguridad';
+  ocupacion: string = 'personal de prevención';
+  ingreso: string;
+  assets: Array<CardGraph> = [];
+
+  vinculo: string = 'apoderado';
+  // Determina si es el "master" o "responsable" de una industria
+  isMaster = false;
+  estado: string = 'activo';
+  desde: string;
+  hasta: string;
+  comentario: string;
+
 }
 
 export class BeneficiarioAlimentar {
@@ -370,7 +406,14 @@ export class Person {
   user: {
     userid: string;
     username: string;
-  }
+  };
+
+
+  userweb: {
+    userid: string;
+    username: string;
+  };
+
   communitylist: Array<string>;
 
   contactdata: Array<PersonContactData>;
@@ -381,6 +424,7 @@ export class Person {
   habilitaciones: Array<DocumentData>;
   permisos: Array<DocumentData>;
 
+  //vinculos : Array<PersonVinculosData>;
   salud: Array<SaludData>;
   cobertura: Array<CoberturaData>;
 	messages: Array<NotificationMessage>
@@ -484,10 +528,10 @@ const estados_viv: Array<any> = [
 
         {val: 'insuficiente',   type:'suficiente',  label: 'Insuficiente'  },
         {val: 'suficiente',     type:'suficiente',  label: 'Suficiente'  },
-        
+
         {val: 'adecuado',       type:'adecuado',  label: 'Adecuado'  },
         {val: 'inadecuado',     type:'adecuado',  label: 'Inadecuado'  },
-        
+
         {val: 'bueno',          type:'calificacion',  label: 'Bueno'  },
         {val: 'regular',        type:'calificacion',  label: 'Regular'  },
         {val: 'malo',           type:'calificacion',  label: 'Malo'  },
@@ -504,19 +548,19 @@ const tipos_viv: Array<any> = [
         {val: 'cocinaelec',    type:'cocina',  label: 'Eléctrica' },
         {val: 'anafe',         type:'cocina',  label: 'Anafe'  },
         {val: 'noposee',       type:'cocina',  label: 'No posee'  },
-        
+
 
         {val: 'insuficiente', type:'suficiente',  label: 'Insuficiente'  },
         {val: 'basico',       type:'suficiente',  label: 'Básico' },
         {val: 'suficiente',   type:'suficiente',  label: 'Suficiente'  },
-        
+
         {val: 'propio',       type:'terreno', label: 'Propio' },
         {val: 'alquilado',    type:'terreno', label: 'Alquilado' },
         {val: 'cedido',       type:'terreno', label: 'Cedido' },
         {val: 'sindocum',     type:'terreno', label: 'SinDocum' },
         {val: 'credhipo',     type:'terreno', label: 'Crédito Hipot' },
 
-        {val: 'casa',         type:'tvivienda', label: 'Casa' }, 
+        {val: 'casa',         type:'tvivienda', label: 'Casa' },
         {val: 'depto',        type:'tvivienda', label: 'Departamento' },
         {val: 'casilla',      type:'tvivienda', label: 'Casilla' },
         {val: 'otro',         type:'tvivienda', label: 'Otro' },
@@ -572,7 +616,7 @@ const oficios_estado: Array<any> = [
         {val: 'otro',         label: 'Otro',         slug:'Otro' },
 ];
 
-const followUpOptList: Array<any> = [  
+const followUpOptList: Array<any> = [
         {val: 'no_definido',  label: 'No definido',  slug:'Seleccione opción' },
         {val: 'tsocial',       label: 'TS',           slug:'TS' },
         {val: 'habitat',       label: 'Habitat',      slug:'Habitat' },
@@ -603,16 +647,19 @@ const oficios_umeremun: Array<any> = [
 ];
 
 const oficios_tocupacion: Array<any> = [
-       {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
+        {val: 'no_definido',     label: 'Seleccione opción',  slug:'Seleccione opción' },
         {val: 'empleadx',        label: 'Empleado/a',     slug:'Empleado/a' },
+        {val: 'empresarix',      label: 'Empresario/a',     slug:'Empresario/a' },
+        {val: 'funcionarix',     label: 'Funcionario/a',     slug:'Funcionario/a' },
+        {val: 'directivx',       label: 'Directivo/a',     slug:'Directivo/a' },
+        {val: 'profesional',     label: 'Profesional',    slug:'Profesional' },
+        {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
+        {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
         {val: 'tecnicx',         label: 'Tecnico/a',      slug:'Tecnico/a' },
         {val: 'seguridad',       label: 'Seguridad',      slug:'Seguridad' },
         {val: 'reciclador',      label: 'Reciclador urbano',  slug:'Reciclador urbano' },
         {val: 'microemprendim',  label: 'Microemprendimiento',  slug:'Microemprendimiento' },
-        {val: 'profesional',     label: 'Profesional',    slug:'Profesional' },
         {val: 'estudiante',      label: 'Estudiante',     slug:'Estudiante' },
-        {val: 'investigadxr',    label: 'Investigador/a', slug:'Investigador/a' },
-        {val: 'operarix',        label: 'Operario/a',     slug:'Operario/a' },
         {val: 'amadecasa',       label: 'AmaDeCasa',      slug:'AmaDeCasa' },
         {val: 'jubiladx',        label: 'Jubilado/a',     slug:'Jubilado/a' },
         {val: 'pensionadx',      label: 'Pensionado/a',   slug:'Pensionado/a' },
@@ -898,6 +945,7 @@ const barriosOptList = {
 
   burzaco: [
     {val: 'burzaco',    label: 'Burzaco Ctro' },
+    {val: 'pindustrial',  label: 'Parque Industrial AB' },
     {val: 'elhornero',    label: 'El Hornero' },
     {val: 'lapilarica',    label: 'La Pilarica' },
     {val: 'elcanario',    label: 'El Canario' },
@@ -1438,6 +1486,21 @@ const obrasSociales = [
       {val: 'otra',         label: 'Otra',      slug:'Otra' },
 ];
 
+const parqueOptList = [
+  {val: 'no_definido',  label: 'Seleccione opción',     slug:'Seleccione opción' },
+  {val: 'parque',       label: 'En parque industrial', slug:'Reside en el parque industrial' },
+  {val: 'ampliacion',   label: 'En zona ampliación',   slug:'Reside en zona periférica / ampliación del parque' },
+  {val: 'fuera',        label: 'Fuera del parque',     slug:'Reside fuera del parque industrial' },
+  {val: 'otra',         label: 'Otra',                 slug:'Otra' },
+];
+
+const propiedadOptList = [
+  {val: 'no_definido',     label: 'Seleccione opción',   slug:'Seleccione opción' },
+  {val: 'propietario',     label: 'Propietario',        slug:'propia' },
+  {val: 'alquilado',       label: 'Alquilado',          slug:'alquiler' },
+  {val: 'alquiladoocios',  label: 'Alquilado x Socios', slug:'alquilersocios' },
+  {val: 'comodato',        label: 'Comodato',           slug:'comodato' },
+];
 
 
 function initNewModel(displayName:string, email:string){
@@ -1466,6 +1529,26 @@ function getSubLabel(type, item, container): string {
     let slist = container[type] || [];
     return getLabel(item, slist);
 }
+
+
+function getOptLabel(list, val){
+  let t = list.find(item => item.val === val)
+  return t ? t.label : val;
+}
+
+function getOptListToken(list, val){
+  let t = list.find(item => item.val === val)
+  return t ? t : null;
+}
+
+function getPrefixedLabel(list, prefix, val){
+  let label = getOptLabel(list, val);
+  if(label) {
+    label = prefix ? prefix + ': ' + label : ' ' + label
+  }
+  return label;
+}
+
 
     // {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
     // {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
@@ -1525,6 +1608,18 @@ function getSubLabel(type, item, container): string {
     return address;
   }
 
+  const default_option_list: Array<any> = [
+    {val: 'nodefinido',   type:'nodefinido',    label: 'nodefinido' },
+  ];
+
+
+  const optionsLists = {
+    default: default_option_list,
+    parqueind: parqueOptList,
+    propiedad: propiedadOptList,
+  }
+ 
+ 
 
 
 class PersonModel {
@@ -1571,11 +1666,36 @@ class PersonModel {
       return sexoOptList;
     }
 
+    getOptionlist(type){
+      return optionsLists[type] || optionsLists['default'];
+    }
+
+    getOptionLabelFromList(list, val){
+      if(!val) return 'no-definido';
+      return getOptLabel(list, val);
+    }
+  
+    getOptionToken(type, val){
+      return getOptListToken(this.getOptionlist(type), val);
+    }
+  
+    getOptionLabel(type, val){
+      if(!val) return '';
+      if(!type) return val;
+      return getOptLabel(this.getOptionlist(type), val);
+    }
+  
+    getPrefixedOptionLabel(type, prefix, val){
+      if(!val) return 'no-definido';
+      if(!type) return prefix + '::' + val;
+      return getPrefixedLabel(this.getOptionlist(type), prefix, val);
+    }
+    
     getEstadosVivienda(token):Array<any>{
       let arr = estados_viv.filter(t => token === t.type );
       return arr;
     }
-    getEstadoVivLabel(item, token):string {      
+    getEstadoVivLabel(item, token):string {
       return getLabel(item, estados_viv.filter(t => token === t.type ));
     }
 
@@ -1791,7 +1911,7 @@ class PersonModel {
       let address: Address;
       if(list && list.length) {
         address = this.fetchDefaultAddress(list);
-        data = address.street1 + ' ' + this.getCiudadLabel(address.city); 
+        data = address.street1 + ' ' + this.getCiudadLabel(address.city);
 
       }
 
@@ -1849,7 +1969,7 @@ class PersonModel {
         return estado_vinculo;
     }
     getEstadoVinculo(item): string {
-        return getLabel(item, estado_vinculo);       
+        return getLabel(item, estado_vinculo);
     }
 
     get vinculosLaborales(): Array<any>{
@@ -1894,7 +2014,7 @@ class PersonModel {
     get ciudades():Array<any>{
       return ciudadesBrown;
     }
-  
+
     getCiudadLabel(item):string{
       return getLabel(item, ciudadesBrown);
     }
@@ -1907,7 +2027,7 @@ class PersonModel {
     getBarrioLabel(type, item):string {
       return getLabel(item, (barriosOptList[type] || barriosNotDefined));
     }
-    
+
     personType(code):string {
     	if(!code) return ''
     	return ptypes.find(item => item.val === code).label;
@@ -1969,10 +2089,13 @@ class PersonModel {
     }
 
     buildBusinessMemberFromPerson(p:Person, member:BusinessMembersData): BusinessMembersData{
-      if(!member) member = new BusinessMembersData();
+      if (!member) {
+        member = new BusinessMembersData();
+      }
 
       member.nombre = p.nombre;
       member.apellido = p.apellido;
+      member.displayName = p.displayName;
       member.tdoc = p.tdoc;
       member.ndoc = p.ndoc;
       member.fenactx = p.fenactx;
@@ -1988,6 +2111,33 @@ class PersonModel {
       return member;
     }
 
+    // buildPersonVinculosFromPerson(p:Person, member:PersonVinculosData): PersonVinculosData{
+    //   if(!member) member = new PersonVinculosData();
+
+    //   member.nombre = p.nombre;
+    //   member.apellido = p.apellido;
+    //   member.tdoc = p.tdoc;
+    //   member.ndoc = p.ndoc;
+
+    //   member.personId = p._id;
+
+    //   return member;
+    // }
+
+  buildPersonFromBusinessMember(member: BusinessMembersData, p?: Person): Person {
+    if (!p) {
+      p = new Person("");
+    }
+
+    p.nombre = member.nombre;
+    p.apellido = member.apellido;
+    p.tdoc = member.tdoc;
+    p.ndoc = member.ndoc;
+    p.personType = 'juridica';
+    p.displayName = member.displayName;
+
+    return p;
+  }
 }
 
 export const personModel = new PersonModel();

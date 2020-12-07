@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-title class="d-flex align-items-center">
+        <mat-icon>home_work</mat-icon>
+        {{ industriasDashboardTitle }}
+        <span class="flex-grow-1"></span>
+        <mat-icon class="clickeable" (click)="gotoIndustriasPage()">keyboard_arrow_right</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-0">
+        {{ industriasDashboardSubtitle }}
+        <mat-divider></mat-divider>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <mat-list class="pt-0">
+            <ng-container *ngIf="showData">
+                <mat-divider></mat-divider>
+                <mat-list-item class="align-items-center">
+                    <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+
+            </ng-container>
+        </mat-list>
+    </mat-card-content>
+</mat-card>

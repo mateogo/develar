@@ -1,0 +1,9 @@
+<mat-form-field>
+    <input #searchBox matInput id="search-box" name="displayName" [matAutocomplete]="displayName" (keyup)="search(searchBox.value)" placeholder="Buscar organización por nombre ó CUIT..." />
+</mat-form-field>
+
+<mat-autocomplete #displayName="matAutocomplete">
+    <mat-option *ngFor="let person of persons | async" (onSelectionChange)="selectEntity(person)" [value]='person.displayName'>
+        {{ showPersonData(person) }}
+    </mat-option>
+</mat-autocomplete>

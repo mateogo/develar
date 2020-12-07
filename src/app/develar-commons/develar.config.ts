@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'dsocial';
+const user = 'industrias';
 
 const globals = {
 
@@ -102,17 +102,17 @@ const globals = {
 	industrias: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo-publico.png',
+		logoCompany: 'logo_publico.png',
 		logoCompany2: 'logo-publico.png',
 		company: 'MAB',
-		mainmenu: 'industrias',
-		mainmenutpl: 'default-navbar',
-		admintarget: '/develar/fichas/lista',
+		mainmenu: 'INDUSTRIAS',
+		mainmenutpl: 'webUser-navbar',
+		admintarget: '/develar/consultas',
 		dashboard: '/mab/empresas/registro',
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - SEMANA #29 20.08.02-19:40',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - SEMANA #33 20.12.07-09:33',
 		version: '1.0 ',
 		url: 'industrias.brown.gob.ar'
 	},

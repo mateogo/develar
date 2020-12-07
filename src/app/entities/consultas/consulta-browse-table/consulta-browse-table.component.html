@@ -1,0 +1,63 @@
+<mat-table #consultaTable matSort [dataSource]="dataSource">
+
+    <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="displayName">
+        <mat-header-cell *matHeaderCellDef>Nombre / Razón social</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.displayName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="txFecha">
+        <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.txFecha }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.tipo }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ejecucion">
+        <mat-header-cell *matHeaderCellDef>Ejecución</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.ejecucion }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+        <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.descripcion }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="sector">
+        <mat-header-cell *matHeaderCellDef>Sector</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">{{ consulta.sector }}</mat-cell>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="rowactions">
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let consulta">
+            <!-- <mat-icon matTooltip="Crear turno a partir de consulta" *ngIf="consulta.estado != 'Cumplida' && consulta.estado != 'Cancelado'" (click)="turnoFromConsulta(consulta)">add</mat-icon> -->
+            <mat-icon class="mr-1" matTooltip="Editar consulta" (click)="editarItem(consulta)">edit</mat-icon>
+            <mat-icon class="mx-1" matTooltip="Cancelar esta consulta" *ngIf="consulta.isActive || consulta.estado !== 'Cerrado'" (click)="deleteItem(consulta)">delete</mat-icon>
+            <mat-icon class="mx-1" matBadge="{{consulta.pasesCount}}" matTooltip="Ver pases ({{consulta.pasesCount}})" (click)="showPases(consulta)"><i class="fa fa-tasks" aria-hidden="true"></i></mat-icon>
+
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>
+
+<mat-paginator #paginator [length]="10" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>

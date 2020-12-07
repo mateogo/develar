@@ -26,7 +26,7 @@ export class EnterSiteComponent implements OnInit {
     this.userListener = this.userService.initLoginUser();
 
     this.userListener.subscribe(user =>{
-
+  
       this.updateUserStatus(user);
       if(user.username === 'invitado' ){
       	this.router.navigate(['/'])

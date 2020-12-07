@@ -22,6 +22,10 @@ import { Product, KitProduct } from '../entities/products/product.model';
 
 import { Person, Address, BeneficiarioAlimentar, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
+import { UserWeb } from '../entities/user-web/user-web.model';
+
+//import { SharedService } from '../../develar-commons/shared-service';
+
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
@@ -66,9 +70,9 @@ export class DsocialController {
   private currentTurno: Turno;
   private currentPerson: Person;
   private _turnoEvent: Subject<TurnoAction> = new Subject();
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+  public personListener = new BehaviorSubject<Person>(null);
 
-  private userListener: BehaviorSubject<User>;
+  private userListener: BehaviorSubject<User|UserWeb>;
   private userLoading = false;
   private userx: UserToken = new UserToken();
   public  isUserAdmin = false;
@@ -103,7 +107,7 @@ export class DsocialController {
       this._encuestadores = tokens || [];
     })
 
-    this.userListener.subscribe(user =>{
+    this.userListener.subscribe((user: User )=>{
 
       this.userLoading = true;
       this.updateUserStatus(user);

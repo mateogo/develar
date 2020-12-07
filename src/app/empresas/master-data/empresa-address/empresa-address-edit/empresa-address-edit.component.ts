@@ -31,6 +31,9 @@ export class EmpresaAddressEditComponent implements OnInit {
   public estadoVivOptList = personModel.estadoVivOptList;
   public cualificacionVivOptList = personModel.cualificacionVivOptList;
 
+  public propiedadOptList = personModel.getOptionlist('propiedad')
+  public pindustrialOptList = personModel.getOptionlist('parqueind')
+
   public addTypeList = CensoIndustriasService.getOptionlist('address')
 
 
@@ -162,7 +165,14 @@ export class EmpresaAddressEditComponent implements OnInit {
 			estadoviv:   [null],
 			cualificacionviv:  [null],
 			country:     [null],
-    });
+			pcatastral:  [null],
+			supcubierta: [null],
+			supterreno:  [null],
+			propiedad:   [null],
+			pindustrial: [null],
+
+
+		});
 
     return form;
   }
@@ -185,6 +195,11 @@ export class EmpresaAddressEditComponent implements OnInit {
 			estadoviv:   token.estadoviv,
 			cualificacionviv: token.cualificacionviv,
 			country:     token.country || 'AR',
+			pcatastral:  token.pcatastral || '',
+			supcubierta: token.supcubierta || 0,
+			supterreno:  token.supterreno || 0,
+			propiedad:   token.propiedad || 'no_definido',
+			pindustrial: token.pindustrial || 'no_definido',
 		});
 
 		this.barrioList = personModel.getBarrioList(token.city);
@@ -204,12 +219,17 @@ export class EmpresaAddressEditComponent implements OnInit {
 		entity.streetIn =     fvalue.streetIn;
 		entity.streetOut =    fvalue.streetOut;
 		entity.city =         fvalue.city;
-    entity.barrio =       fvalue.barrio;
+    	entity.barrio =       fvalue.barrio;
 		entity.state =        fvalue.state;
 		entity.statetext =    fvalue.statetext;
 		entity.zip =          fvalue.zip;
 		entity.country =      fvalue.country;
-		entity.estadoviv =        fvalue.estadoviv,
+		entity.pcatastral =   fvalue.pcatastral;
+		entity.supcubierta =  fvalue.supcubierta;
+		entity.supterreno =   fvalue.supterreno;
+		entity.propiedad =    fvalue.propiedad;
+		entity.pindustrial =  fvalue.pindustrial;
+		entity.estadoviv =    fvalue.estadoviv,
 		entity.cualificacionviv = fvalue.cualificacionviv,
 
 		entity.estado = 'activo';

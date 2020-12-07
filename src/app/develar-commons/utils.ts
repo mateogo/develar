@@ -836,6 +836,60 @@ class Devutils {
         return this.txFromDate(this.dateFromTx(datex))
     }
 
+    datePickerToTx(datepickerTx: string){
+        return dateToStr(new Date(datepickerTx));
+    }
+
+    datePickerToDate(datepickerTx){
+        let date:Date|typeof NaN;
+ 
+        try {
+            date = new Date(datepickerTx);
+            return (date instanceof Date && !isNaN(date.getTime())) ? date: null;
+        } catch(error) {
+
+            return null;
+        }
+    }
+
+    datePickerToNumPlusOne(datepickerTx){
+        //let fecha = parseDateStr(dateToStr(new Date(datepickerTx)) );
+        let fecha = new Date(datepickerTx);
+       // c onsole.log('fecha: [%s]',fecha.getTime())
+        if (fecha) {
+            fecha.setDate(fecha.getDate() + 1);
+            return fecha.getTime();
+        }
+        else return 0;
+
+
+        return new Date(datepickerTx).getTime();
+    }
+
+    datePickerToNum(datepickerTx){
+        return new Date(datepickerTx).getTime();
+    }
+
+    txFromHora(date) {
+        let horario = {
+            hora: date.getHours(),
+            minutos:
+                date.getMinutes() < 10
+                    ? '0' + date.getMinutes()
+                    : date.getMinutes().toString()
+        }
+
+        return horario.hora + ':' + horario.minutos;
+    }
+
+    getPreviousWeek(fecharef: Date): { feDesde: string, feHasta: string } {
+
+        let fecha_origen : Date = new Date(fecharef.getTime());
+        let fech_aux = new Date(fecharef.getTime());
+        let ts_desde = fech_aux.setDate(fech_aux.getDate()-7);
+        return { feDesde: dateToStr(new Date(ts_desde)), feHasta: dateToStr(fecha_origen) }
+    }
+
 }
 
 export const devutils = new Devutils();

@@ -28,7 +28,6 @@ export class MinimalMenuService {
 
   loadDefaultMenuItems(token){
     let defaultMenu = Promise.resolve(itemList[token]);
-
     defaultMenu.then(mainMenuItems => this.loadMenu(mainMenuItems));
   }
 

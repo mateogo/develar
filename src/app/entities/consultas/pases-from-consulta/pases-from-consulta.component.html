@@ -1,0 +1,17 @@
+<div class="container-fluid p-0">
+    <div class="row p-0">
+        <div class="col-12 p-0">
+            <mat-selection-list #listPases dense [multiple]="false" >
+                <mat-list-option *ngFor="let pase of pases" style="height: 70px;" (click)="openModal(pase)" matTooltip="Click para vista detallada">
+                    <p><strong>{{pase.fecha}}</strong>&nbsp; {{pase.ejecucion}}&nbsp; {{pase.novedad}} </p>
+                    <p><strong>Pase a:</strong> {{pase.sector}}</p>
+                    <p><strong>Responsable:</strong> {{pase.responsable}} </p>
+                    <mat-divider></mat-divider>
+                </mat-list-option>
+            </mat-selection-list>
+        </div>
+    </div>
+    <div class="row">
+        <button class="my-3" mat-flat-button color="primary" (click)="volver()">Cerrar</button>
+    </div>
+</div>

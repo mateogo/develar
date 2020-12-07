@@ -1,0 +1,30 @@
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-12">
+            <mat-card class="m-2">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <img mat-card-lg-image src="{{url}}"  style="cursor: pointer;" alt="Documentación"
+                            (click)="showModal()">
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{token.description}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-5">
+                            <button class="mx-0" mat-icon-button (click)="onEdit()" matTooltip="Editar predicado">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="mx-0" mat-icon-button (click)="onDelete()" matTooltip="Borrar documentación">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

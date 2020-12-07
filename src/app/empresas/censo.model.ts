@@ -114,9 +114,30 @@ export class CensoIndustrias {
 		actividades: Array<CensoActividad>;
 		bienes: Array<CensoBienes>;
 
-    assets: Array<CardGraph> = [];
+    	assets: Array<CardGraph> = [];
 
 		censo: CensoData;
+
+
+};
+
+/**************************/
+/**   CENSO INDUSTRIAS  **/
+/************************/
+export class CensoIndustriasTable {
+	_id: string;
+	compNum:     string = '00000';
+
+	action:      string = 'censo';
+	sector:      string = 'produccion';
+	slug:        string = '';
+
+	categoriaEmp:   string;
+	rubroEmp:       string;
+
+	fecomp_tsa:  number;
+	fecomp:  string;
+	navance: string;
 
 
 };

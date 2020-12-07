@@ -9,8 +9,10 @@ import { catchError }     from 'rxjs/operators';
 import { DaoService }    from '../../develar-commons/dao.service';
 
 import { Person, Address, NotificationMessage } from './person';
+import { UserWeb } from '../user-web/user-web.model';
 
 
+const RECORD = 'person';
 
 @Injectable()
 export class PersonService {
@@ -89,7 +91,7 @@ export class PersonService {
       if(!(term && term.trim())){
         return of([] as Person[]);
       }
-      
+
       if(isNaN(test)){
         query['displayName'] = term;
       }else{
@@ -177,4 +179,41 @@ export class PersonService {
     })
   }
 
+    ///////////////// INTRODUCIMOS LA POSIBILIDAD DE BUSCAR UNA PERSONAS A PARTIR DE UN USUARIO /////////////
+    fetchPersonByUserWeb(user: UserWeb): Observable<Person[]>{
+      const query = {
+        userwebId: user['_id']
+      }
+      return this.daoService.search<Person>(RECORD, query);
+    }
+
+
+  /**
+   * Estos métodos provienen del person.service que estaba en salud
+   */
+    updatePersonPromise(person: Person): Promise<Person>{
+      if (!person._id) {
+        return null;
+      }
+
+      return this.daoService.partialUpdate<Person>(RECORD, person._id, person);
+    }
+
+    fetchPersonById(id: string): Promise<Person>{
+      return this.daoService.findById<Person>(RECORD, id);
+    }
+
+    /******* CREATE *******/
+    createPerson(person: Person): Promise<Person> {
+      return this.daoService.create<Person>(RECORD, person);
+    }
+
+    testPersonByDNI(tdoc: string, ndoc: string): Observable<Person[]> {
+      const query = {
+        tdoc: tdoc,
+        ndoc: ndoc
+      };
+
+      return this.daoService.search<Person>(RECORD, query);
+    }
 }

@@ -1,4 +1,4 @@
-import { CensoIndustrias, CensoActividad, CensoBienes, Empresa } from './censo.model';
+import { CensoIndustrias, CensoIndustriasTable, CensoActividad, CensoBienes, Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
 import { Person, DocumentData }      from '../entities/person/person';
 import { nomencladorList } from './nomenclador-data';
@@ -126,6 +126,19 @@ export class CensoIndustriasService {
 
 		return label;
 
+	}
+
+	static buildCensoTableData(list: CensoIndustrias[]):CensoIndustriasTable[]{
+		return list.map(token => {
+			let tableCell = new CensoIndustriasTable();
+			tableCell._id = token._id;
+			tableCell.compNum = token.compNum;
+			tableCell.fecomp = token.fecomp_txa;
+			tableCell.slug = token.censo.slug;
+			tableCell.navance = this.getOptionLabel("avance", token.estado.navance)
+
+			return tableCell;
+		})
 	}
 
 	static getOptionlist(type){
@@ -452,28 +465,34 @@ const habilitacionOptList: Array<any> = [
 			{val: 'habilitacion',  label: 'Habilitación',   slug:'Habilitación' },
 ];
 
-const optionsLists = {
-	 default: default_option_list,
-   actions: actionOptList,
-   comprobantes: comprobantesOptList,
-   tableactions: tableActions,
-   estado: estadosOptList,
-   avance: avanceOptList,
-   sectores: sectorOptList,
-   actividad: tipoActividadOptList,
-   tipoBienes: bienesTypeOptList,
-   origenBienes: origenOptList,
-   cadena: posCadenaProductivaOptList,
-   tipoEmp: categoriaEmpresasOptList,
-   contactos: contactOptList,
-   contactType: contactTypeOptList,
-   address: addressTypeOptList,
-   profesiones: profesionesOptList,
-   documentos: tipoDocumentosOptList,
-   habilitacion: habilitacionOptList,
-   competencia: competenciaTypeOptList,
-   
+const contact_tag: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'PER',    label: 'PER',      slug:'PER' },
+    {val: 'LAB',    label: 'LAB',      slug:'LAB' },
+];
 
+const optionsLists = {
+    default: default_option_list,
+    actions: actionOptList,
+    comprobantes: comprobantesOptList,
+    tableactions: tableActions,
+    estado: estadosOptList,
+    avance: avanceOptList,
+    sectores: sectorOptList,
+    actividad: tipoActividadOptList,
+    tipoBienes: bienesTypeOptList,
+    origenBienes: origenOptList,
+    cadena: posCadenaProductivaOptList,
+    tipoEmp: categoriaEmpresasOptList,
+    contactos: contactOptList,
+    contactType: contactTypeOptList,
+    contactTag: contact_tag,
+    address: addressTypeOptList,
+    profesiones: profesionesOptList,
+    documentos: tipoDocumentosOptList,
+    habilitacion: habilitacionOptList,
+    competencia: competenciaTypeOptList,
+   
 }
 
 

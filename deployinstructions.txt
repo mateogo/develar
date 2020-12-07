@@ -1,0 +1,17 @@
+============= 2020-12-02 ===========
+1) Para utilizar el circuito de consultas y turnos, previamente hay que seguir los siguientes pasos:
+    - Ingresar como usuario administrativo.
+    - En la barra lateral, hacer click en "Tablas Generales --> Regenerar turnos nominales" (/develar/adminscripts)
+    - Clickear en el button "Generar turnos nominales"
+    NO REQUIERE VACIAR LA TABLA
+
+
+
+============= 2020-11-27 ===========
+1) ejecutar en la terminal, parado en la carpeta del proyecto, "npm install"
+para instalar las nuevas dependencias instaladas.
+
+
+3) Verificar que los  usuarios administrativos tengan el atributo isUsuarioWeb === false:
+        En mongoshell:
+        db.usuarios.updateMany({}, {$set: {isUsuarioWeb: false} })

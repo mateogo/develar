@@ -25,9 +25,13 @@ export class EmpresaMembersViewComponent implements OnInit {
   public imageUrl = '';
   public imageTitle = '';
 
+  public isMaster = false;
+
   constructor() { }
 
   ngOnInit() {
+    //c onsole.log('empresa-members-view token [%o]', this.token);
+
   	this.pname = personModel.getPersonDisplayName(this.token);
   	this.pdoc = personModel.getPersonDocum(this.token);
     if(this.token.fenac){
@@ -39,11 +43,11 @@ export class EmpresaMembersViewComponent implements OnInit {
 
     this.vinculoTxt = personModel.getVinculoLaboral(this.token.vinculo);
     this.ocupacion = personModel.getProfesion(this.token.tocupacion)
-    
+
     this.estado = personModel.getEstadoVinculo(this.token.estado);
 
     this.neducativo = personModel.getNivelEducativo(this.token.nestudios);
-  
+
     if(this.token.assets && this.token.assets.length){
       this.token.assets.forEach(asset => {
         if(asset.entity === 'image' && asset.predicate === 'avatar'){
@@ -53,7 +57,7 @@ export class EmpresaMembersViewComponent implements OnInit {
         }
       })
     }
-
+    this.isMaster = this.token.isMaster;
   }
 
 }

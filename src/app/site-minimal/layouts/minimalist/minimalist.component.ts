@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class MinimalistLayoutComponent implements OnInit {
   pageTitle: any;
-  navbarTmpl = 'default-navbar';
+  navbarTmpl = 'webUser-navbar';
   isHomeView$: Observable<boolean>;
 
   get defaultNavbar(){
@@ -24,6 +24,9 @@ export class MinimalistLayoutComponent implements OnInit {
     return this.navbarTmpl === "utopias";
   }
 
+  get webUserNavbar(){
+    return this.navbarTmpl === "webUser-navbar";
+  }
 
   @Input() openedSidebar: boolean = false;
 

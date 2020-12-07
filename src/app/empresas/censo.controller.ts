@@ -19,7 +19,7 @@ import { EmpresasController } from './empresas.controller';
 
 import { Audit, ParentEntity } from '../develar-commons/observaciones/observaciones.model';
 
-import { CensoIndustrias } from './censo.model';
+import { CensoIndustrias, CensoIndustriasTable } from './censo.model';
 import { CensoIndustriasService } from './censo-service';
 
 const CENSO_TYPE = 'censoindustrias'
@@ -32,8 +32,11 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
 })
 export class CensoIndustriasController {
 
-	private _currentCenso: CensoIndustrias;
+  private _currentCenso: CensoIndustrias;
+  private _censosList: CensoIndustrias[] = [];
+  private _currentIndustry: Person;
 
+  private _consultasDataSource: BehaviorSubject<CensoIndustriasTable[]> = new BehaviorSubject<CensoIndustriasTable[]>([]);
 
   private _censoListener: BehaviorSubject<CensoIndustrias>;
 
@@ -145,6 +148,29 @@ export class CensoIndustriasController {
   /*********************************/
   /*  Censo Retrieve, fetch, load */
   /*******************************/
+  fetchCensoByQuery(query: any){
+    const subject = new BehaviorSubject<CensoIndustrias[]>([]);
+    this.loadCensoByQuery(subject, query);
+    return subject;
+  }
+
+  private loadCensoByQuery(subject: BehaviorSubject<CensoIndustrias[]>, query: any):void {
+  	this.daoService.search<CensoIndustrias>(CENSO_TYPE, query).subscribe(censos => {
+  		if(censos && censos.length){
+        this._censosList = censos;
+  			this._currentCenso = censos[0];
+
+      } else {
+        this._censosList = [];
+  			this._currentCenso = null;
+      }
+      subject.next(this._censosList)
+      this.censoListener.next(this._currentCenso);
+
+  	})
+  }
+
+
   fetchActiveCensoFromOrganisation(organisationId){
   	let query = {
   		search: 'actual:censo',
@@ -152,18 +178,33 @@ export class CensoIndustriasController {
   		codigo: ACTUAL_CENSO
   	}
 
-  	this.daoService.search<CensoIndustrias>('censoindustrias',query).subscribe(censos => {
+  	this.daoService.search<CensoIndustrias>(CENSO_TYPE, query).subscribe(censos => {
   		if(censos && censos.length){
+        this._censosList = censos;
   			this._currentCenso = censos[0];
-  			this._censoListener.next(this._currentCenso);
-  		}
+
+      } else {
+  			this._currentCenso = null;
+        this._censosList = [];
+      }
+      this.censoListener.next(this._currentCenso);
+
 
   	})
 
   }
 
+  fetchActiveCensos$(organisationId): Observable<CensoIndustrias[]>{
+  	let query = {
+  		search: 'actual:censo',
+  		empresaId: organisationId,
+  		codigo: ACTUAL_CENSO
+  	}
+  	return this.daoService.search<CensoIndustrias>(CENSO_TYPE, query);
+  }
+
   get censoListener(): Subject<CensoIndustrias>{
-  	if(!this._censoListener){
+  	if(!this._censoListener || !this._currentCenso){
   		if(!this._currentCenso){
   			this._currentCenso = new CensoIndustrias();
 
@@ -178,6 +219,13 @@ export class CensoIndustriasController {
   /*****************
     Person
   *****************/
+  get currentIndustry(): Person {
+    return this._currentIndustry;
+  }
+  set currentIndustry(industry: Person){
+    this._currentIndustry = industry;
+  }
+
   get currentPerson(): Person{
   	return this.empCtrl.activePerson;
   }
@@ -185,6 +233,7 @@ export class CensoIndustriasController {
   get personListener(): Subject<Person>{
   	return this.empCtrl.personListener;
   }
+
 
   loadPerson(id?){
   	this.empCtrl.loadPerson(id);
@@ -222,7 +271,7 @@ export class CensoIndustriasController {
   */
   getUserData(): Audit{
   	let user = this.userService.currentUser;
-  	console.log('audit: [%s]', user && user.displayName);
+  	console.log('audit: [%s]', user && user.username);
 
     if(!user) return null;
 
@@ -245,6 +294,33 @@ export class CensoIndustriasController {
   }
 
 
+  /***************************/
+  /** Notification HELPER ****/
+  /***************************/
+  openSnackBar(message: string, action: string, config?: any) {
+    config = config || {}
+    config = Object.assign({duration: 3000}, config)
+
+    let snck = this.snackBar.open(message, action, config);
+
+    snck.onAction().subscribe((e)=> {
+      //c onsole.log('action???? [%s]', e);
+    })
+  }
+
+
+  /************************/
+  /** table TABLE     ****/
+  /**********************/
+  get dataRecordsSource(): BehaviorSubject<CensoIndustriasTable[]> {
+    return this._consultasDataSource;
+  }
+
+  public updateTableData(): void {
+    console.log('udateTable Data [%s]', this._censosList && this._censosList.length)
+    const consultaTableData = CensoIndustriasService.buildCensoTableData(this._censosList);
+    this._consultasDataSource.next(consultaTableData);
+  }
 
 
 } // endService

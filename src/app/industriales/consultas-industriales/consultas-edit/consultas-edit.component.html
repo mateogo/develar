@@ -1,0 +1,145 @@
+<mat-card>
+    <mat-card-title>Consultas y Asesoramiento</mat-card-title>
+    <mat-card-subtitle>Alta de nueva consulta o solicitud de asesoramiento</mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="form">
+
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <mat-form-field>
+                        <mat-label>Tipo Solicitud: </mat-label>
+                        <mat-select #fldType formControlName="type" (selectionChange)="changeSelectionValue('type',fldType.value)">
+                            <mat-option *ngFor="let item of consultaOptList" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-md-8">
+                    <mat-form-field>
+                        <!-- <textarea matInput
+                      mediumEditor
+                      [formControl]="form.controls['description']"
+                      [(editorModel)]="meContent"
+                      [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline','pre', 'html', 'anchor', 'h1', 'h2','h3','removeFormat']}}"
+                      [editorplaceholder]="mePlaceholder"
+                      (modelValueChange)="descriptionUpdateContent($event)">
+                    </textarea> -->
+                        <input matInput formControlName="description" [placeholder]="mePlaceholder">
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <ng-container *ngIf='isAsesoramiento'>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Institución solicitante</mat-label>
+                            <input matInput formControlName="institucion">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Tipo de asesoramiento</mat-label>
+                            <input matInput formControlName="solicitud">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Datos de contacto</mat-label>
+                            <input matInput formControlName="contacto">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf='isMaterial'>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Tipo de material solicitado</mat-label>
+                            <input matInput formControlName="tmaterial">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Identificador</mat-label>
+                            <input matInput formControlName="identificador">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <mat-form-field>
+                            <mat-label>Objeto o destino del pedido</mat-label>
+                            <input matInput formControlName="destino">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+
+
+            <!--div class="row">
+                <div class="col-12 col-sm-6">
+                    <mat-form-field>
+                        <mat-label>Tipo de material: </mat-label>
+                        <mat-select #tipoMaterial formControlName="tipoMaterial" (selectionChange)="onTipoMaterialChange(tipoMaterial.value)" required>
+                            <mat-option *ngFor="let item of tipoMaterialList" [value]="item.val">
+                                {{ item.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <mat-form-field>
+                        <mat-label>Sede: </mat-label>
+                        <mat-select formControlName="sede" required>
+                            <mat-option *ngFor="let item of sedesList" [value]="item.val">
+                                {{ item.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <mat-form-field>
+                        <mat-label>Elija la fecha:</mat-label>
+                        <input matInput [matDatepicker]="fecha" formControlName="txFecha" required>
+                        <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+                        <mat-datepicker #fecha color="accent"></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <mat-form-field>
+                        <mat-label>Elija la hora:</mat-label>
+
+                        <mat-select formControlName="txHora" required>
+                            <mat-option [value]="08">08:00</mat-option>
+                            <mat-option [value]="09">09:00</mat-option>
+                            <mat-option [value]="10">10:00</mat-option>
+                            <mat-option [value]="11">11:00</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <mat-form-field>
+                        <mat-label>Detalle:</mat-label>
+                        <input matInput formControlName="detalle" required>
+                    </mat-form-field>
+                </div>
+            </div-->
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button type="button" class="mx-3" mat-flat-button (click)="upsertRecord()" color="primary" [disabled]="form.invalid">Alta solicitud</button>
+
+        <button type="button" mat-flat-button (click)="cancel()" color="warn">Cancelar</button>
+    </mat-card-actions>
+</mat-card>

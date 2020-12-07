@@ -38,7 +38,7 @@ export class CensoCoreEditComponent implements OnInit {
   private censoindustriaId: string;
   private censodata: CensoData;
 
-  private currentPerson: Person;
+  private currentIndustry: Person;
 
 	public form: FormGroup;
   public showForm = false;
@@ -102,6 +102,7 @@ export class CensoCoreEditComponent implements OnInit {
     this.form = this.buildForm();
 
     let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
+      console.log('Censolistener sin censo[%s]', censo)
       if(censo){
 
         this.loadOrInitCenso(censo);
@@ -127,9 +128,9 @@ export class CensoCoreEditComponent implements OnInit {
       this.censoindustriaId = censo._id;
       this.censodata = censo.censo;
 
-      this.currentPerson = this.censoCtrl.currentPerson;
+      this.currentIndustry = this.censoCtrl.currentIndustry;
 
-      //this.initPerson(this.currentPerson);
+      //this.initPerson(this.currentIndustry);
 
       this.initForEdit(this.form, this.censoindustria);
       this.showForm = true;
@@ -140,11 +141,11 @@ export class CensoCoreEditComponent implements OnInit {
       this.censoindustria = new CensoIndustrias();
       this.censoindustria.censo= this.censodata;
 
-      this.currentPerson = this.censoCtrl.currentPerson;
-      //this.initPerson(this.currentPerson);
+      this.currentIndustry = this.censoCtrl.currentIndustry;
+      //this.initPerson(this.currentIndustry);
 
       this.initForEdit(this.form, this.censoindustria);
-      this.nuevaAlta = new NuevaAlta(this.currentPerson);
+      this.nuevaAlta = new NuevaAlta(this.currentIndustry);
       this.isAlta = true;
 
     }
@@ -371,7 +372,7 @@ export class CensoCoreEditComponent implements OnInit {
     }
     this.censoindustria.censo= this.censodata;
 
-    let empresa = CensoIndustriasService.empresaFromPerson(this.currentPerson);
+    let empresa = CensoIndustriasService.empresaFromPerson(this.currentIndustry);
     this.censoindustria.empresa = empresa;
 
     return entity;
