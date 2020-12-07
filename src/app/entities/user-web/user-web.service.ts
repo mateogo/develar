@@ -34,7 +34,7 @@ export class UserWebService {
       private http: HttpClient,
       private daoService: DaoService
     ) {
-      this._userEmitter = new BehaviorSubject( new UserWeb());
+      this._userEmitter = new BehaviorSubject<UserWeb>(null);
       this.endSetUser$ = new Subject();
     }
   
@@ -86,12 +86,15 @@ export class UserWebService {
       let fetchedUser: UserWeb;
       let loggedIn = false;
       let loginUser = new Subject<UserWeb>();
-  
+ 
+      console.log('initLoginUser: BEGIN')
       this.loadLoginUser().then((res) => {
         fetchedUser = res as UserWeb;
         loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+        console.log('initLoginUser: THEN')
   
         if (!loggedIn) {
+          console.log('initLoginUser: REPECAHAJE')
           setTimeout(() => {
             this.loadLoginUser().then((res) => {
               fetchedUser = res as UserWeb;
@@ -160,22 +163,51 @@ export class UserWebService {
               .catch(this.handleError);
       }
   
-    get userEmitter(): BehaviorSubject<UserWeb> {
+    get userEmitter(): Subject<UserWeb> {
       return this._userEmitter;
     }
   
     get currentUser(): UserWeb {
   
       if(!this.hasLogout && !this.notFetchedMore){
-              this.updateCurrentUser();
-          }
-          //c onsole.log(this._currentUser)
-          console.log('#5 current_user [%s]', this._currentUser && this._currentUser._id)
+          this.updateCurrentUser();
+      }
+      //c onsole.log(this._currentUser)
+      console.log('#5 current_user [%s]', this._currentUser && this._currentUser._id)
+      return this._currentUser;
+  
+    }
 
-          return this._currentUser;
-  
-  
-  
+    fetchCurrentUser(): Observable<UserWeb>{
+      let listener = new Subject<UserWeb>();
+      if(this._currentUser && this._currentUser._id){
+        listener.next(this._currentUser);
+      }else {
+
+        const url = `${this.usersUrl}/${'currentuser'}`;
+        this.http
+            .get(url)
+            .toPromise()
+            .then(res =>{
+                let fetchedUser = res as UserWeb;
+                this.isLogIn = (fetchedUser && fetchedUser._id) ? true: false;
+
+                if(!this.isLogIn ){
+                    this.hasLogout = true;
+                    listener.next(null);
+
+                }else {
+                    this.hasLogout = false;
+                    this._currentUser = fetchedUser;
+                    console.log('#11 current_user [%s]', this._currentUser && this._currentUser._id)
+                    this.userEmitter.next(this._currentUser);
+                    listener.next(this._currentUser);
+                }
+            })
+            .catch(this.handleError)
+      }
+
+      return listener;
     }
   
     set currentUser(user: UserWeb){

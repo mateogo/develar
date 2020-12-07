@@ -73,7 +73,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     this._userWebService.userEmitter.subscribe(usuario => {
       console.log('User Emitter [%s] [%s]',usuario && usuario._id, id) 
 
-      if (usuario) {
+      if (usuario && usuario._id === id) {
         this.usuario = usuario;
         this.isEdit = true;
         this.emailOrigen = this.usuario.email;
