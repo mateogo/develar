@@ -27,7 +27,7 @@
           <mat-select #fldTypeContact placeholder="Tipo de contacto"
               [formControl]="form.controls['type']"
               (selectionChange)="changeSelectionValue('type',fldTypeContact.value)" >
-            <mat-option *ngFor="let item of contactTypeList" 
+            <mat-option *ngFor="let item of contactTag" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>

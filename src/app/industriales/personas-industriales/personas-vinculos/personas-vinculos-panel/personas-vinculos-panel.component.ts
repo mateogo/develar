@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { UpdatePersonVinculosEvent, UpdateItemListEvent, PersonVinculosData } from '../../../../entities/person/person';
+import { UpdateBusinessMemberEvent, UpdateItemListEvent, BusinessMembersData } from '../../../../entities/person/person';
 
 
 const TOKEN_TYPE = 'vinculos';
@@ -13,7 +13,7 @@ const UPDATE = 'update';
 })
 export class PersonasVinculosPanelComponent implements OnInit {
 
-  @Input() items: Array<PersonVinculosData>;
+  @Input() items: Array<BusinessMembersData>;
 	@Output() updateItems = new EventEmitter<UpdateItemListEvent>();
 
   public title = 'Vinculos';
@@ -29,7 +29,7 @@ export class PersonasVinculosPanelComponent implements OnInit {
 
   }
 
-  updateItem(event: UpdatePersonVinculosEvent){
+  updateItem(event: UpdateBusinessMemberEvent){
 
     if(event.action === DELETE){
       this.deleteItem(event.token);
@@ -39,7 +39,7 @@ export class PersonasVinculosPanelComponent implements OnInit {
   }
 
 
-  deleteItem(t:PersonVinculosData){
+  deleteItem(t:BusinessMembersData){
 
     let index = this.items.indexOf(t);
 
@@ -50,7 +50,7 @@ export class PersonasVinculosPanelComponent implements OnInit {
   }
 
   addItem(){
-    let item = new PersonVinculosData();
+    let item = new BusinessMembersData();
 
     if(this.items){
       this.items.push(item);
@@ -61,12 +61,12 @@ export class PersonasVinculosPanelComponent implements OnInit {
     this.showList = true;
   }
 
-  emitEvent(event:UpdatePersonVinculosEvent){
+  emitEvent(event:UpdateBusinessMemberEvent){
   	if(event.action !== CANCEL){
   		this.updateItems.next({
   		action: UPDATE,
   		type: TOKEN_TYPE,
-  		items: this.items as PersonVinculosData[]
+  		items: this.items as BusinessMembersData[]
   	});
   	}
   }

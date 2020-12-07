@@ -24,7 +24,7 @@ export class EmpresaContactdataEditComponent implements OnInit {
 	@Output() updateToken = new EventEmitter<UpdateContactEvent>();
 
   public tipoDeContactoList = CensoIndustriasService.getOptionlist('contactType')
-  public contactTypeList = CensoIndustriasService.getOptionlist('contactos')
+  public contactTag = CensoIndustriasService.getOptionlist('contactTag')
 
 	public form: FormGroup;
 

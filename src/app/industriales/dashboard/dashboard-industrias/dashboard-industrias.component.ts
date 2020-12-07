@@ -11,7 +11,7 @@ import { CensoIndustrias } from '../../../empresas/censo.model';
 import { Consulta } from '../../../entities/consultas/consulta.model';
 import { ConsultaHelper } from '../../../entities/consultas/consulta.helper';
 import { Person } from '../../../entities/person/person';
-
+import { User } from '../../../entities/user/user'
 
 @Component({
   selector: 'app-dashboard-industrias',
@@ -47,21 +47,17 @@ export class DashboardIndustriasComponent implements OnInit {
   }
 
   private fetchCompaniaVinculada(){
-    console.log('lookUpActive Censo - TO BEGIN')
     this.showData = false;
 
 
-    this._userService.userEmitter.subscribe(user => {
+    this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
-        console.log('User encontrado para buscar INDUSTRIA: [%s] [%s]', user.username, user.isUsuarioWeb);
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
-          console.log('Industria encontrada? [%s]', industria && industria.displayName)
           if(industria){
             this.currentIndustry = industria;
             this.showData = true;
  
           }else{
-            console.log('Industria no hallada, debe cargar una')
             this.showData = false;
           }
         })

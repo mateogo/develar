@@ -84,8 +84,9 @@ export class ConsultasTableComponent implements OnInit {
           consultaObj.ejecucion = pase.ejecucion;
           consultaObj.pases.push(pase);
           consultaObj.isActive = false;
+          
           this._service.edit(consulta._id, consultaObj).then(success => {
-            console.log(success)
+
             this.dataRecordsSource.value.map(item => {
               if (item._id === consulta._id) {
                 item.estado = ESTADO_END;

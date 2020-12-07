@@ -196,6 +196,13 @@ const addressSch = new mongoose.Schema({
     cualificacionviv: { type: String, required: false, defalut: 'buena' },
     encuesta: { type: encuestaSch, required: false },
     country: { type: String, required: false, defalut: 'AR' },
+
+    pcatastral:  { type: String, required: false },
+    supcubierta: { type: Number, required: false },
+    supterreno:  { type: Number, required: false },
+    propiedad:   { type: String, required: false },
+    pindustrial: { type: String, required: false },
+
     lat: { type: Number, required: false, defalut: -34.59 },
     lng: { type: Number, required: false, defalut: -58.41 }
 })
@@ -282,19 +289,19 @@ const habilitacionesSch = new mongoose.Schema({
 
 })
 
-const vinculosDataSch = new mongoose.Schema({
-    nombre: { type: String, required: false },
-    apellido: { type: String, required: false },
-    tdoc: { type: String, required: true },
-    ndoc: { type: String, required: true },
-    personId: { type: String, required: false },
-    vinculo: { type: String, required: false },
-    estado: { type: String, required: false },
-    desde: { type: String, required: false },
-    hasta: { type: String, required: false },
-    assets: [assetSch]
+// const vinculosDataSch = new mongoose.Schema({
+//     nombre: { type: String, required: false },
+//     apellido: { type: String, required: false },
+//     tdoc: { type: String, required: true },
+//     ndoc: { type: String, required: true },
+//     personId: { type: String, required: false },
+//     vinculo: { type: String, required: false },
+//     estado: { type: String, required: false },
+//     desde: { type: String, required: false },
+//     hasta: { type: String, required: false },
+//     assets: [assetSch]
 
-})
+// })
 
 
 
@@ -352,8 +359,8 @@ const personSch = new mongoose.Schema({
     fichas: [recordCardSch],
     permisos: [permisosSch],
     habilitaciones: [habilitacionesSch],
-    assets: [assetSch],
-    vinculos: [vinculosDataSch]
+    assets: [assetSch]
+    //vinculos: [vinculosDataSch]
 });
 
 personSch.pre('save', function(next) {

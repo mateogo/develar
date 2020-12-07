@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { UpdatePersonVinculosEvent, PersonVinculosData } from '../../../../entities/person/person';
+import { UpdateBusinessMemberEvent, BusinessMembersData } from '../../../../entities/person/person';
 
 
 
@@ -14,8 +14,8 @@ const UPDATE = 'update';
 })
 export class PersonasVinculosBaseComponent implements OnInit {
 
-  @Input() token: PersonVinculosData;
-	@Output() updateToken = new EventEmitter<UpdatePersonVinculosEvent>();
+  @Input() token: BusinessMembersData;
+	@Output() updateToken = new EventEmitter<UpdateBusinessMemberEvent>();
 
 	public showView = true;
 	public showEdit = false;
@@ -29,14 +29,14 @@ export class PersonasVinculosBaseComponent implements OnInit {
     }
   }
 
-  manageToken(event: UpdatePersonVinculosEvent){
+  manageToken(event: UpdateBusinessMemberEvent){
   	this.openEditor = false;
   	this.showEdit = false;
   	this.showView = true;
   	this.emitEvent(event);
   }
 
-  emitEvent(event: UpdatePersonVinculosEvent){
+  emitEvent(event: UpdateBusinessMemberEvent){
   	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}

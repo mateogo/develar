@@ -73,7 +73,7 @@ export class CensoTableComponent implements OnInit {
  }
 
   editItem(censo: CensoIndustrias): void {
-    this._router.navigate(['/mab/empresas/gestion/censo2020'], { relativeTo: this._route });
+    this._router.navigate(['../censo2020'], { relativeTo: this._route });
   }
 
  // http://develar-local.co:4200/mab/empresas/gestion/censo2020

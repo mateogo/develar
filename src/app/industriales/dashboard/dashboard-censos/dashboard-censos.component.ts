@@ -11,6 +11,7 @@ import { CensoIndustrias } from '../../../empresas/censo.model';
 import { Consulta } from '../../../entities/consultas/consulta.model';
 import { ConsultaHelper } from '../../../entities/consultas/consulta.helper';
 import { Person } from '../../../entities/person/person';
+import { User } from '../../../entities/user/user'
 
 
 @Component({
@@ -41,39 +42,35 @@ export class DashboardCensosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('************** dashboard censo ************')
     this.lookUpActiveCenso();
-
     
   }
 
   private lookUpActiveCenso(){
-    console.log('lookUpActive Censo - TO BEGIN')
 
-    this._userService.userEmitter.subscribe(user => {
+    this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
-        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
           if(industria){
             this.currentIndustry = industria;
 
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
-            console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
-
+ 
             this.censosList$.subscribe(censos =>{
-              console.log('Censo-subscribe [%s]', censos && censos.length)
               if(censos && censos.length){
                 this.activeCenso = censos[0];
                 this.showData = true;
               }else {
                 this.showData = false;
+                //this.empCtrl.openSnackBar('INFO: No hay un CENSO activo','CERRAR')
                 //this.empCtrl.openSnackBar('No ')
               }
         
             })
  
           }else{
-            console.log('Industria no hallada, debe cargar una')
+            // c onsole.log('Industria no hallada, debe cargar una')
+            //this.empCtrl.openSnackBar('Error: no fue posible recuperar la organización vinculada al usuario','ACEPTAR')
           }
         })
 

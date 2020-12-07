@@ -106,7 +106,7 @@ export class DocumentacionCardFilesComponent implements OnInit {
       this.person.assets.splice(this.person.assets.indexOf(cardG),1);
       this._personService.update(this.person).then(person => {
         // this.assetService.delete(card.entityId).then( x => {
-        //   console.log("Se borro con exito : "+x)
+        //   c onsole.log("Se borro con exito : "+x)
         // });
       })
     }

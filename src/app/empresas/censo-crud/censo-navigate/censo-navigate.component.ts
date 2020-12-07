@@ -11,6 +11,7 @@ import { CensoIndustriasService, UpdateListEvent } from '../../censo-service';
 import { CensoIndustrias, EstadoCenso, Empresa, CensoData } from '../../censo.model';
 
 import { Person } from '../../../entities/person/person';
+import { User } from '../../../entities/user/user';
 
 const ACTUAL_CENSO = "censo:industrias:2020:00";
 
@@ -62,7 +63,7 @@ export class CensoNavigateComponent implements OnInit {
     console.log('lookUpActive Censo - TO BEGIN')
     this.showData = false;
 
-    this._userService.userEmitter.subscribe(user => {
+    this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
 
         console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
@@ -98,7 +99,7 @@ export class CensoNavigateComponent implements OnInit {
 
 
   nuevoCenso(): void {
-    this._router.navigate(['/mab/empresas/gestion/censo2020']);
+    this._router.navigate(['../censo2020'],{relativeTo: this._route});
   }
 
   navigateDashboard(): void {

@@ -20,7 +20,7 @@ export class EmpresaAddressPanelComponent implements OnInit {
 	@Input() items: Array<Address>;
 	@Output() updateItems = new EventEmitter<UpdateItemListEvent>();
 
-  public title = 'Direcciones postales';
+  public title = 'Locación de facilidades';
 	public showList = false;
   public openEditor = true;
 

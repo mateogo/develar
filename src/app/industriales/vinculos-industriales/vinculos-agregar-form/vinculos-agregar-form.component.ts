@@ -109,7 +109,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     this.initForm();
     this.initOnce();
 
-    // console.log(this.person);
   }
 
   private initOnce() {
@@ -284,7 +283,6 @@ export class VinculosAgregarFormComponent implements OnInit {
   };
 
   handlePerson(p: Person) {
-    console.log('persona-buscar handlePerson [%o]', p);
     this.errorMessage = '';
     if (this.isValidRetrievedPerson(p)) {
       this.acceptPersonAsBusinessMember(p);
@@ -353,7 +351,6 @@ export class VinculosAgregarFormComponent implements OnInit {
       1. miro si existe la persona jurídica (aquí es this.vinculo);
         si no existe la creo
     */
-    // console.log("saveToken[this.vinculo=%o]", this.vinculo);
 
     // Siempre busco persona jurídica por tratarse de una industria
     const bussinessExistsQuery = {
@@ -363,7 +360,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     };
 
     this.perSrv.fetch(bussinessExistsQuery).subscribe(person => {
-      // console.log('this.person.fetch[person=%o]', person);
 
       if (person && person.length > 0) {
         /*
@@ -383,7 +379,6 @@ export class VinculosAgregarFormComponent implements OnInit {
           personItem.integrantes.push(newBusinessMember);
 
           this.perSrv.updatePersonPromise(personItem).then(updatedPerson => {
-            // console.log('Actualizando integrates[updatedPerson=%o]', updatedPerson);
 
             this.result.token = updatedPerson;
 
@@ -402,14 +397,13 @@ export class VinculosAgregarFormComponent implements OnInit {
         const personToCreate = personModel.buildPersonFromBusinessMember(this.vinculo);
 
         this.perSrv.createPerson(personToCreate).then(createdPerson => {
-          // console.log('createPerson[createdPerson=%o]', createdPerson);
 
           const newBusinessMember = personModel.buildBusinessMemberFromPerson(this.person, null);
           newBusinessMember.isMaster = true;
           createdPerson.integrantes.push(newBusinessMember);
 
           this.perSrv.updatePersonPromise(createdPerson).then(updatedPerson => {
-            // console.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
+            // c onsole.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
             //this.router.navigate(['editar/', updatedPerson._id], { relativeTo: this.route });
             this.result.token = updatedPerson;
 
@@ -601,7 +595,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     // this.result.token = this.asistencia;
     this.result.type = VINCULO_ESTADO;
 
-    // console.log('initForSave[this.person=%o][this.vinculo=%o][this.locacion=%o]', this.person, this.vinculo, this.locacion);
   }
 
   private openDialog(config) {

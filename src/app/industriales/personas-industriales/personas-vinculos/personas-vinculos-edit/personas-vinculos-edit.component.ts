@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { personModel, Person, PersonVinculosData, UpdatePersonVinculosEvent,  } from '../../../../entities/person/person';
 import { FormGroup, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, AsyncValidatorFn, Validators } from '@angular/forms';
-import { CardGraph, graphUtilities } from '../../../../develar-commons/asset-helper';
+
 import { Subject, Observable } from 'rxjs';
-import { devutils } from '../../../../develar-commons/utils';
 import { map } from 'rxjs/operators';
-import { __core_private_testing_placeholder__ } from '@angular/core/testing';
-import { PersonasController } from '../../personas-page/personas.controller';
+
+import { CardGraph, graphUtilities } from '../../../../develar-commons/asset-helper';
+
+import { personModel, Person, BusinessMembersData, UpdateBusinessMemberEvent,  } from '../../../../entities/person/person';
+//import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import { EmpresasController } from '../../../../empresas/empresas.controller';
 
 const TOKEN_TYPE = 'vinculos';
 const CANCEL = 'cancel';
@@ -20,8 +22,8 @@ const UPDATE = 'update';
 })
 export class PersonasVinculosEditComponent implements OnInit {
 
-  @Input() token: PersonVinculosData;
-	@Output() updateToken = new EventEmitter<UpdatePersonVinculosEvent>();
+  @Input() token: BusinessMembersData;
+	@Output() updateToken = new EventEmitter<UpdateBusinessMemberEvent>();
 
 	public form: FormGroup;
   public persontypes        = personModel.persontypes;
@@ -49,7 +51,7 @@ export class PersonasVinculosEditComponent implements OnInit {
 
   constructor(
   	private fb: FormBuilder,
-    private _prsCtrl: PersonasController,
+    private _empCtrl: EmpresasController,
   	) { 
   		this.form = this.buildForm();
 	}
@@ -97,7 +99,7 @@ export class PersonasVinculosEditComponent implements OnInit {
   private acceptPersonaAsBusinessMember(p: Person){
     // validate
     // caso: OK
-    this.token = personModel.buildPersonVinculosFromPerson(p, this.token);
+    this.token = personModel.buildBusinessMemberFromPerson(p, this.token);
     this.initForEdit(this.form, this.token);
 
   }
@@ -114,21 +116,21 @@ export class PersonasVinculosEditComponent implements OnInit {
   //     }) ;
   // }
  
-  currentAge(){
-       let edad = '';
-       let value = this.form.value.fenactx
-       let validAge = devutils.validAge(value);
-       if(validAge){
-           edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
-       }
-       return edad;
-   }
+  // currentAge(){
+  //      let edad = '';
+  //      let value = this.form.value.fenactx
+  //      let validAge = devutils.validAge(value);
+  //      if(validAge){
+  //          edad = devutils.edadActual(devutils.dateFromTx(value)) + '';
+  //      }
+  //      return edad;
+  //  }
 
   hasError = (controlName: string, errorName: string) =>{
     return this.form.controls[controlName].hasError(errorName);
   }
  
-  dniExistenteValidator(that:any, service: PersonasController, message: object): AsyncValidatorFn {
+  dniExistenteValidator(that:any, service: EmpresasController, message: object): AsyncValidatorFn {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
           let value = control.value;
           let tdoc = that.form.controls['tdoc'].value || 'DNI';
@@ -165,13 +167,14 @@ export class PersonasVinculosEditComponent implements OnInit {
     form = this.fb.group({
       nombre:       [null],
       apellido:     [null],
+      displayName:  [null],
       tdoc:         [null],
 
       ndoc: [null, [Validators.required, 
                     Validators.minLength(6),
-                    Validators.maxLength(10),
+                    Validators.maxLength(15),
                     Validators.pattern('[0-9]*')], 
-                    [this.dniExistenteValidator(this, this._prsCtrl, this.docBelongsTo)] ],
+                    [this.dniExistenteValidator(this, this._empCtrl, this.docBelongsTo)] ],
 
     	vinculo:      [null],
       // fenactx:      [null, [this.fechaNacimientoValidator()] ],
@@ -182,10 +185,11 @@ export class PersonasVinculosEditComponent implements OnInit {
     return form;
   }
 
-  initForEdit(form: FormGroup, token: PersonVinculosData): FormGroup {
+  initForEdit(form: FormGroup, token: BusinessMembersData): FormGroup {
 		form.reset({
       nombre:       token.nombre,
       apellido:     token.apellido,
+      displayName:  token.displayName,
       tdoc:         token.tdoc,
       ndoc:         token.ndoc,
       //fenactx:      devutils.dateFromTx(token.fenactx),
@@ -199,12 +203,13 @@ export class PersonasVinculosEditComponent implements OnInit {
 		return form;
   }
 
-	initForSave(form: FormGroup, token: PersonVinculosData): PersonVinculosData {
+	initForSave(form: FormGroup, token: BusinessMembersData): BusinessMembersData {
 		const fvalue = form.value;
 		const entity = token; 
 
 		entity.nombre =       fvalue.nombre;
-		entity.apellido =     fvalue.apellido;
+    entity.apellido =     fvalue.apellido;
+    entity.displayName =  fvalue.displayName;
 		entity.tdoc =         fvalue.tdoc;
 		entity.ndoc =         fvalue.ndoc;
 		entity.vinculo =      fvalue.vinculo;

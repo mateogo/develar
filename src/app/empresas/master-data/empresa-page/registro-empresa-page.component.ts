@@ -66,13 +66,14 @@ export class RegistroEmpresaPageComponent implements OnInit {
 
   constructor(
     	private router: Router,
-      private empCtrl: EmpresasController,
     	private route: ActivatedRoute,
+      private empCtrl: EmpresasController,
 
   	) { }
 
   ngOnInit() {
     let first = true;
+    this.hasCurrentPerson = false;
     this.personId = this.route.snapshot.paramMap.get('id')
 
     this.empCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
@@ -82,7 +83,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
       if(readyToGo && first){
         first = false;
 
-        this.initCurrentPage();
+        this.initCurrentPage(this.personId);
 
       }
     })
@@ -90,33 +91,51 @@ export class RegistroEmpresaPageComponent implements OnInit {
   }
 
 
-  initCurrentPage(){
-    this.empCtrl.personListener.subscribe(p => {
-      this.initCurrentPerson(p);
-    })
+  private initCurrentPage(personId: string){
+    console.log('empresa-page>initCurrentPage BEGIN')
+    if(!personId){
+      personId = this.empCtrl.activePerson._id;
+    }
 
-    this.loadPerson(this.personId);
+    this.loadPerson(personId);
 
   }
 
-  initCurrentPerson(p: Person){
-    if(p){
-      this.currentPerson = p;
+  private loadPerson(id){
+    if(id){
+      this.empCtrl.fetchPersonById(id).then(person => {
+        this.initCurrentPerson(person);
+      })
+    
+    }else{
+      this.empCtrl.openSnackBar('ERROR: No se pudo recuperar el registro de la organización (ref:#1)','ACEPTAR');
+    }
+    
+  }
+
+
+  initCurrentPerson(person: Person){
+    if(person){
+      this.currentPerson = person;
       //this.contactData = p.contactdata[0];
-      this.contactList =   p.contactdata || [];
-      this.addressList =   p.locaciones || [];
-      this.familyList  =   p.familiares || [];
-      this.businessList =  p.integrantes || [];
-      this.oficiosList =   p.oficios || [];
-      this.saludList =     p.salud || [];
-      this.coberturaList = p.cobertura || [];
-      this.ambientalList = p.ambiental || [];
-      this.permisosList =  p.permisos || [];
-      this.habilitacionesList =  p.habilitaciones || [];
+      this.contactList =   person.contactdata || [];
+      this.addressList =   person.locaciones || [];
+      this.familyList  =   person.familiares || [];
+      this.businessList =  person.integrantes || [];
+      this.oficiosList =   person.oficios || [];
+      this.saludList =     person.salud || [];
+      this.coberturaList = person.cobertura || [];
+      this.ambientalList = person.ambiental || [];
+      this.permisosList =  person.permisos || [];
+      this.habilitacionesList =  person.habilitaciones || [];
 
       this.hasCurrentPerson = true;
+      this.empCtrl.updateCurrentPerson(person)
 
+    }else {
+      this.empCtrl.openSnackBar('ERROR: No se pudo recuperar el registro de la organización (ref:#2)','ACEPTAR');
     }
+
     // todo: Search For S/Asistencias
   }
 
@@ -346,9 +365,6 @@ export class RegistroEmpresaPageComponent implements OnInit {
   /**********************/
   /*      Person        */
   /**********************/
-  loadPerson(id){
-    this.empCtrl.setCurrentPersonFromId(id);
-  }
 
 
 

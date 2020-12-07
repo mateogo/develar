@@ -34,6 +34,7 @@ export class CensoIndustriasController {
 
   private _currentCenso: CensoIndustrias;
   private _censosList: CensoIndustrias[] = [];
+  private _currentIndustry: Person;
 
   private _consultasDataSource: BehaviorSubject<CensoIndustriasTable[]> = new BehaviorSubject<CensoIndustriasTable[]>([]);
 
@@ -218,6 +219,13 @@ export class CensoIndustriasController {
   /*****************
     Person
   *****************/
+  get currentIndustry(): Person {
+    return this._currentIndustry;
+  }
+  set currentIndustry(industry: Person){
+    this._currentIndustry = industry;
+  }
+
   get currentPerson(): Person{
   	return this.empCtrl.activePerson;
   }
@@ -225,6 +233,7 @@ export class CensoIndustriasController {
   get personListener(): Subject<Person>{
   	return this.empCtrl.personListener;
   }
+
 
   loadPerson(id?){
   	this.empCtrl.loadPerson(id);
@@ -262,7 +271,7 @@ export class CensoIndustriasController {
   */
   getUserData(): Audit{
   	let user = this.userService.currentUser;
-  	console.log('audit: [%s]', user && user.displayName);
+  	console.log('audit: [%s]', user && user.username);
 
     if(!user) return null;
 

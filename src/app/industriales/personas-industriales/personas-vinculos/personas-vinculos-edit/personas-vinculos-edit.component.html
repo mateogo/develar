@@ -14,7 +14,15 @@
                         (person$)=handlePerson($event) ></utils-browse-person>
         </div>
       </div>
-  
+
+      <div class="row" >
+        <div class="col">
+          <mat-form-field>
+            <input  matInput [formControl]="form.controls['displayName']" placeholder="Razón Social / Denominación / Mostrar como..." >
+          </mat-form-field>
+        </div>
+      </div>
+
   
       <!---nombre; apellido--->
       <div class="row" >

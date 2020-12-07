@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Address, Geocoder, personModel, UpdateAddressEvent } from '../../../../entities/person/person';
-import { PersonasController } from '../../personas-page/personas.controller';
+import { EmpresasController } from '../../../../empresas/empresas.controller';
 
 const TOKEN_TYPE = 'address';
 const CANCEL = 'cancel';
@@ -63,7 +63,7 @@ export class PersonasAddressEditComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _prsCtrl: PersonasController
+    private _empCtrl: EmpresasController
   ) {
     this.form = this.buildForm();
   }
@@ -93,7 +93,7 @@ export class PersonasAddressEditComponent implements OnInit {
   }
 
   updateLatLngAndEmit(updateToken: UpdateAddressEvent) {
-    this._prsCtrl.addressLookUp(this.token)
+    this._empCtrl.addressLookUp(this.token)
       .then(data => {
         this.buildGeoData(this.token, data, false);
         this.updateToken.next(updateToken);
@@ -147,7 +147,7 @@ export class PersonasAddressEditComponent implements OnInit {
   }
 
   showMap(address: Address, fireMap: boolean) {
-    this._prsCtrl.addressLookUp(address)
+    this._empCtrl.addressLookUp(address)
       .then(data => {
         this.buildGeoData(address, data, fireMap);
 

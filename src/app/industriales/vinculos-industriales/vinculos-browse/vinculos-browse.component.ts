@@ -15,6 +15,7 @@ import { CensoIndustrias } from '../../../empresas/censo.model';
 import { Consulta } from '../../../entities/consultas/consulta.model';
 import { ConsultaHelper } from '../../../entities/consultas/consulta.helper';
 import { Person } from '../../../entities/person/person';
+import { User } from '../../../entities/user/user';
 
 
 
@@ -50,13 +51,11 @@ export class VinculosBrowseComponent implements OnInit {
   }
 
   private fetchCompaniaVinculada(){
-    console.log('lookUpActive Censo - TO BEGIN')
     this.showData = false;
 
 
-    this._userService.userEmitter.subscribe(user => {
+    this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
-        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
           if(industria){
             this.currentIndustry = industria;
@@ -66,10 +65,8 @@ export class VinculosBrowseComponent implements OnInit {
             this.showData = true;
 
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
-            console.log('bingo! Industria encontrada [%s] [%s] [%s]', industria._id, industria.displayName, industria.ndoc)
 
             this.censosList$.subscribe(censos =>{
-              console.log('Censo-subscribe [%s]', censos && censos.length)
               if(censos && censos.length){
                 this.activeCenso = censos[0];
                 this.showData = true;
@@ -81,7 +78,7 @@ export class VinculosBrowseComponent implements OnInit {
             })
 
           }else{
-            console.log('Industria no hallada, debe cargar una')
+            //c onsole.log('Industria no hallada, debe cargar una')
             //marca this.showData = false;
           }
         })
@@ -96,8 +93,6 @@ export class VinculosBrowseComponent implements OnInit {
 
 
   public navigateToIndustry(){
-    console.log('navigate to industry')
-    // this.router.navigate(['/mab/empresas/editar/', this.currentIndustry._id]);
     this.router.navigate(['/dashboard/industrias/editar/', this.currentIndustry._id]);
 
   }
@@ -120,7 +115,6 @@ export class VinculosBrowseComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe(res => {
-      // console.log('Volviendo del modal [res=%o]', res);
       if (res.data && res.data.token) {
         this.router.navigate(['editar', res.data.token._id], { relativeTo: this.route });
       }

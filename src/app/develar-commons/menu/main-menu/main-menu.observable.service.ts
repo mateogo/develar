@@ -26,7 +26,7 @@ export class MainMenuService {
         private userService: UserService,
       ) { 
 
-    this.userService.userEmitter.subscribe(user =>{
+    this.userService.userEmitter.subscribe((user: User) =>{
 
       this.updateUserStatus(user);
     })

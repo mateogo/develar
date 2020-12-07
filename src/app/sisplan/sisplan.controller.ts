@@ -24,6 +24,8 @@ import { UserService }   from '../entities/user/user.service';
 import { Serial }   from '../develar-commons/develar-entities';
 
 import { User }          from '../entities/user/user';
+import { UserWeb }       from '../entities/user-web/user-web.model';
+
 import { Community }     from '../develar-commons/community/community.model';
 import { Person }        from '../entities/person/person';
 
@@ -54,7 +56,7 @@ export class SisplanController {
 
   /******* User user *******/
   private _productores: User[];
-  private userListener: BehaviorSubject<User>;
+  private userListener: BehaviorSubject<User|UserWeb>;
   private userLoading = false;
   private userx: UserToken = new UserToken();
   public  isUserAdmin = false;
@@ -78,7 +80,7 @@ export class SisplanController {
   private _budgetsSelector: BudgetBrowse;
 
   private currentBudget: Budget;
-  private budgetListener = new BehaviorSubject<Budget>(this.currentBudget);
+  private budgetListener = new BehaviorSubject<Budget>(null);
   private emitBudgetsDataSource = new BehaviorSubject<BudgetTable[]>([]);
   private _budgetsSelectionModel: SelectionModel<BudgetTable>
   private budgetsList: Array<Budget> = [];
@@ -88,7 +90,7 @@ export class SisplanController {
   private _pculturalesSelector: PculturalBrowse;
 
   private currentPcultural: Pcultural;
-  private pculturalListener = new BehaviorSubject<Pcultural>(this.currentPcultural);
+  private pculturalListener = new BehaviorSubject<Pcultural>(null);
   private emitPculturalesDataSource = new BehaviorSubject<PculturalTable[]>([]);
   private _pculturalesSelectionModel: SelectionModel<PculturalTable>
   private pculturalesList: Array<Pcultural> = [];
@@ -107,7 +109,7 @@ export class SisplanController {
       this._productores = tokens || [];
     })
 
-    this.userListener.subscribe(user =>{
+    this.userListener.subscribe((user: User) =>{
 
       this.userLoading = true;
       this.updateUserStatus(user);

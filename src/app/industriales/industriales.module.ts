@@ -31,8 +31,11 @@ import { DashboardDocumentacionComponent } from './dashboard/dashboard-documenta
 import { DashboardIndustriasComponent } from './dashboard/dashboard-industrias/dashboard-industrias.component';
 import { DashboardCensosComponent } from './dashboard/dashboard-censos/dashboard-censos.component';
 @NgModule({
-  declarations: [DashboardMainComponent, DashboardPageComponent,
-     UserDatosDashboardComponent, PersonasDashboardComponent,
+  declarations: [
+      DashboardMainComponent, 
+      DashboardPageComponent,
+      UserDatosDashboardComponent,
+      PersonasDashboardComponent,
       PersonasPageComponent,
       PersonasCoreBaseComponent,
       PersonasCoreEditComponent,

@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
 
 
 
-    this.userService.userEmitter.subscribe(user =>{
+    this.userService.userEmitter.subscribe((user: User )=>{
       this.currentUser = user;
       this.loggedIn = this.isActiveUser(user);
       this.avatar = this.currentUser.avatarUrl || DEFAULT_AVATAR;

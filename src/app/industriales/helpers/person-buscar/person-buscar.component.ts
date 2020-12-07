@@ -139,7 +139,7 @@ export class PersonBuscarComponent implements OnInit {
     });
 
     snck.onAction().subscribe((e) => {
-      //console.log('action???? [%s]', e);
+      //c onsole.log('action???? [%s]', e);
     });
   }
 } /// End Person Buscar COmponent

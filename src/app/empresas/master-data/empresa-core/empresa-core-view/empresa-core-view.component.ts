@@ -25,6 +25,7 @@ export class EmpresaCoreViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('empresa-core-view person: [%s]', this.person)
     this.familyName = personModel.getPersonFamilyName(this.person);
   	this.pname = personModel.getPersonDisplayName(this.person);
   	this.pdoc = personModel.getPersonDocum(this.person);

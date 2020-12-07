@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Address, BusinessMembersData, CoberturaData, DocumentData, EncuestaAmbiental, FamilyData, OficiosData, Person, PersonContactData, PersonVinculosData, SaludData, UpdateItemListEvent, UpdatePersonEvent } from '../../../entities/person/person';
-import { PersonasController } from './personas.controller';
+import {  Address, 
+          BusinessMembersData, 
+          CoberturaData, 
+          DocumentData, 
+          EncuestaAmbiental, 
+          FamilyData, 
+          OficiosData, 
+          Person, 
+          PersonContactData, 
+          SaludData, UpdateItemListEvent, UpdatePersonEvent } from '../../../entities/person/person';
+
+import { EmpresasController } from '../../../empresas/empresas.controller';
 
 const UPDATE =   'update';
 const NAVIGATE = 'navigate';
@@ -31,55 +41,69 @@ export class PersonasPageComponent implements OnInit {
   
   constructor(
     private _activatedRouter: ActivatedRoute,
-    private _personCtrl : PersonasController,
+    private empCtrl : EmpresasController,
     private router: Router) { }
 
   ngOnInit(): void {
-
-    let first = true;    
+    let first = true;
+    this.hasCurrentPerson = false;
     this.personId = this._activatedRouter.snapshot.paramMap.get('id')
 
-    this._personCtrl.actualRoute(this.router.routerState.snapshot.url, this._activatedRouter.snapshot.url);
+    this.empCtrl.actualRoute(this.router.routerState.snapshot.url, this._activatedRouter.snapshot.url);
 
-    let sscrp2 = this._personCtrl.onReady.subscribe(readyToGo =>{
+    let sscrp2 = this.empCtrl.onReady.subscribe(readyToGo =>{
       if(readyToGo && first){
         first = false;
 
-        this.initCurrentPage();
+        this.initCurrentPage(this.personId);
 
       }
     })
     this.unBindList.push(sscrp2);
   }
 
-  initCurrentPage() {
-    this._personCtrl.personListener.subscribe(p => {
-      this.initCurrentPerson(p);
-    })
+  initCurrentPage(personId: string) {
+    if(!personId){
+      personId = this.empCtrl.activePerson._id;
+    }
 
-    this.loadPerson(this.personId);
+    this.loadPerson(personId);
 
   }
+  private loadPerson(id){
+    if(id){
+      this.empCtrl.fetchPersonById(id).then(person => {
+        this.initCurrentPerson(person);
+      })
+    
+    }else{
+      this.empCtrl.openSnackBar('ERROR: No se pudo recuperar el registro de la organización (ref:#1)','ACEPTAR');
+    }
+    
+  }
 
-  initCurrentPerson(p: Person) {
-    if (p) {
-      this.currentPerson = p;
-      //this.contactData = p.contactdata[0];
-      this.contactList = p.contactdata || [];
-      this.addressList = p.locaciones || [];
-      this.familyList = p.familiares || [];
-      this.businessList = p.integrantes || [];
-      this.oficiosList = p.oficios || [];
-      this.saludList = p.salud || [];
-      this.coberturaList = p.cobertura || [];
-      this.ambientalList = p.ambiental || [];
-      this.permisosList = p.permisos || [];
-      this.habilitacionesList = p.habilitaciones || [];
+
+  initCurrentPerson(person: Person) {
+    if (person) {
+      this.currentPerson = person;
+      //this.contactData = person.contactdata[0];
+      this.contactList = person.contactdata || [];
+      this.addressList = person.locaciones || [];
+      this.familyList = person.familiares || [];
+      this.businessList = person.integrantes || [];
+      this.oficiosList = person.oficios || [];
+      this.saludList = person.salud || [];
+      this.coberturaList = person.cobertura || [];
+      this.ambientalList = person.ambiental || [];
+      this.permisosList = person.permisos || [];
+      this.habilitacionesList = person.habilitaciones || [];
 
       this.hasCurrentPerson = true;
+      this.empCtrl.updateCurrentPerson(person)
 
+    }else {
+      this.empCtrl.openSnackBar('ERROR: No se pudo recuperar el registro de la organización (ref:#2)','ACEPTAR');
     }
-    // todo: Search For S/Asistencias
   }
 
   /**********************/
@@ -87,7 +111,7 @@ export class PersonasPageComponent implements OnInit {
   /**********************/
   updateCore(event: UpdatePersonEvent){
     if(event.action === UPDATE){
-      this._personCtrl.updatePerson(event);
+      this.empCtrl.updatePerson(event);
     }
 
   }
@@ -106,7 +130,7 @@ export class PersonasPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Address Data
@@ -124,7 +148,7 @@ export class PersonasPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Family Data
@@ -142,7 +166,7 @@ export class PersonasPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Business membres data
@@ -153,7 +177,6 @@ export class PersonasPageComponent implements OnInit {
   }
 
   private upsertBusinessList(event:UpdateItemListEvent){
-    this.currentPerson.vinculos = event.items as PersonVinculosData[];
 
     let update: UpdatePersonEvent = {
       action: event.action,
@@ -161,7 +184,7 @@ export class PersonasPageComponent implements OnInit {
       person: this.currentPerson
     };
 
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
 
@@ -181,7 +204,7 @@ export class PersonasPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Salud Data
@@ -200,7 +223,7 @@ export class PersonasPageComponent implements OnInit {
       person: this.currentPerson
     };
     
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Salud Data
@@ -219,7 +242,7 @@ export class PersonasPageComponent implements OnInit {
       person: this.currentPerson
     };
     
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
   // Encuesta ambiental Data
@@ -238,7 +261,7 @@ export class PersonasPageComponent implements OnInit {
       person: this.currentPerson
     };
     
-    this._personCtrl.updatePerson(update);
+    this.empCtrl.updatePerson(update);
   }
 
 
@@ -248,9 +271,6 @@ export class PersonasPageComponent implements OnInit {
   /**********************/
   /*      Person        */
   /**********************/
-  loadPerson(id){
-    this._personCtrl.setCurrentPersonFromId(id);
-  }
 
   /** VOLVER */
   goBack() : void {

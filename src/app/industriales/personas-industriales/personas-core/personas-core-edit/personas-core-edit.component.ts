@@ -4,7 +4,7 @@ import { Person, UpdatePersonEvent, personModel } from '../../../../entities/per
 import { devutils } from '../../../../develar-commons/utils';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PersonasController } from '../../personas-page/personas.controller';
+import { EmpresasController } from '../../../../empresas/empresas.controller';
 const CORE = 'core';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
@@ -58,7 +58,7 @@ export class PersonasCoreEditComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private minimalCtrl: PersonasController,
+    private _empCtrl: EmpresasController,
   ) {
   }
 
@@ -113,7 +113,7 @@ export class PersonasCoreEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
 
-  dniExistenteValidator(that: any, service: PersonasController, person: Person, message: object): AsyncValidatorFn {
+  dniExistenteValidator(that: any, service: EmpresasController, person: Person, message: object): AsyncValidatorFn {
     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       let value = control.value;
       let tdoc = that.form.controls['tdoc'].value || 'DNI';
@@ -162,7 +162,7 @@ export class PersonasCoreEditComponent implements OnInit {
       Validators.minLength(6),
       Validators.maxLength(11),
       Validators.pattern('[0-9]*')],
-        [this.dniExistenteValidator(this, this.minimalCtrl, this.person, this.docBelongsTo)]],
+        [this.dniExistenteValidator(this, this._empCtrl, this.person, this.docBelongsTo)]],
 
       sexo: [null],
     });

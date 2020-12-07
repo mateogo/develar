@@ -121,7 +121,7 @@ export class WebuserNavbarComponent implements OnInit {
   }
 
   initUser() {
-    this.userService.userEmitter.subscribe(user => {
+    this.userService.userEmitter.subscribe((user: User) => {
       this.currentUser = user;
       this.loggedIn = this.userService.userlogged || this._userWebService.userlogged;
       this.avatar = this.currentUser.avatarUrl || DEFAULT_AVATAR;

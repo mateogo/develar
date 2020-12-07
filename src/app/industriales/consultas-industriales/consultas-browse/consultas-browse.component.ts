@@ -60,7 +60,7 @@ export class ConsultasBrowseComponent implements OnInit {
   }
 
   onCancelEvent(event : string){
-    console.log(event)
+    //c onsole.log(event)
   }
 
 }

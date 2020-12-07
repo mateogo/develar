@@ -1,16 +1,16 @@
 import { Component, OnInit, Directive } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
-
 import { BehaviorSubject }       from 'rxjs';
 
-//import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 
-import { User } from '../../user';
 import { UserService } from '../../user.service';
 //import { SharedService } from '../../develar-commons/shared-service';
+
+import { User } from '../../user';
+import { UserWeb } from '../../../user-web/user-web.model';
+
 import { gldef } from '../../../../develar-commons/develar.config';
 
 
@@ -147,7 +147,7 @@ export class RegistrarUsuario implements OnInit {
 
 	users: User[];
 	model: User;
-  userlistener: BehaviorSubject<User>;
+  userlistener: BehaviorSubject<User|UserWeb>;
 
 
   constructor( 
@@ -166,7 +166,7 @@ export class RegistrarUsuario implements OnInit {
 
   ngOnInit() {
     this.userlistener = this.userService.userEmitter;
-    this.userlistener.subscribe(user =>{
+    this.userlistener.subscribe((user: User) =>{
       this.model = user;
       this.initForEdit()
     })

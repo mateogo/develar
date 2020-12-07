@@ -31,24 +31,24 @@ const routes: Routes = [
   },
 
   {
-    path: 'gestion',
-    component: EmpresasLayoutComponent,
+    path: 'censo2020',
     children: [
       {
-        path: 'censo2020/core',
+        path: 'core',
         component: CensoCoreEditComponent,
       },
       {
-        path: 'censo2020/core/:id',
+        path: 'core/:id',
         component: CensoCoreEditComponent,
       },
 
       {
-        path: 'censo2020',
+        path: '',
+        pathMatch: 'full',
         component: CensoPageComponent,
       },
       {
-        path: 'censo2020/:id',
+        path: ':id',
         component: CensoPageComponent,
       },
     ]  

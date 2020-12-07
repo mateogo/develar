@@ -22,6 +22,8 @@ import { Product, KitProduct } from '../entities/products/product.model';
 
 import { Person, PersonContactData,Address, FamilyData, BeneficiarioAlimentar, UpdatePersonEvent }        from '../entities/person/person';
 import { User }          from '../entities/user/user';
+import { UserWeb } from '../entities/user-web/user-web.model';
+
 import { Community }     from '../develar-commons/community/community.model';
 import { SaludModel, Serial, Ciudadano } from './salud.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
@@ -88,7 +90,7 @@ export class SaludController {
   private _turnoEvent: Subject<TurnoAction> = new Subject();
   public personListener = new BehaviorSubject<Person>(this.currentPerson);
 
-  private userListener: BehaviorSubject<User>;
+  private userListener: BehaviorSubject<User|UserWeb>;
   private userLoading = false;
   private userx: UserToken = new UserToken();
   public  isUserAdmin = false;
@@ -120,7 +122,7 @@ export class SaludController {
       this._trabajadorxs = tokens || [];
     })
 
-    this.userListener.subscribe(user =>{
+    this.userListener.subscribe((user: User) =>{
 
       this.userLoading = true;
       this.updateUserStatus(user);

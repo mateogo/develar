@@ -465,28 +465,34 @@ const habilitacionOptList: Array<any> = [
 			{val: 'habilitacion',  label: 'Habilitación',   slug:'Habilitación' },
 ];
 
-const optionsLists = {
-	 default: default_option_list,
-   actions: actionOptList,
-   comprobantes: comprobantesOptList,
-   tableactions: tableActions,
-   estado: estadosOptList,
-   avance: avanceOptList,
-   sectores: sectorOptList,
-   actividad: tipoActividadOptList,
-   tipoBienes: bienesTypeOptList,
-   origenBienes: origenOptList,
-   cadena: posCadenaProductivaOptList,
-   tipoEmp: categoriaEmpresasOptList,
-   contactos: contactOptList,
-   contactType: contactTypeOptList,
-   address: addressTypeOptList,
-   profesiones: profesionesOptList,
-   documentos: tipoDocumentosOptList,
-   habilitacion: habilitacionOptList,
-   competencia: competenciaTypeOptList,
-   
+const contact_tag: Array<any> = [
+    {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
+    {val: 'PER',    label: 'PER',      slug:'PER' },
+    {val: 'LAB',    label: 'LAB',      slug:'LAB' },
+];
 
+const optionsLists = {
+    default: default_option_list,
+    actions: actionOptList,
+    comprobantes: comprobantesOptList,
+    tableactions: tableActions,
+    estado: estadosOptList,
+    avance: avanceOptList,
+    sectores: sectorOptList,
+    actividad: tipoActividadOptList,
+    tipoBienes: bienesTypeOptList,
+    origenBienes: origenOptList,
+    cadena: posCadenaProductivaOptList,
+    tipoEmp: categoriaEmpresasOptList,
+    contactos: contactOptList,
+    contactType: contactTypeOptList,
+    contactTag: contact_tag,
+    address: addressTypeOptList,
+    profesiones: profesionesOptList,
+    documentos: tipoDocumentosOptList,
+    habilitacion: habilitacionOptList,
+    competencia: competenciaTypeOptList,
+   
 }
 
 

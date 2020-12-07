@@ -3,7 +3,9 @@
         <mat-toolbar color="primary">
             <div>Industrias vinculadas</div>
             <span class="flex-grow-1"></span>
-            <button mat-flat-button (click)="nuevoVinculo()">Vincular industria</button>
+            <button mat-flat-button 
+                matTooltip="Vincula aquella organización que Usted representa por ser titular, socio, apoderado, o funcionario."
+                (click)="nuevoVinculo()">Vincular nueva industria u organización</button>
         </mat-toolbar>
     </div>
     <div class="col-12">

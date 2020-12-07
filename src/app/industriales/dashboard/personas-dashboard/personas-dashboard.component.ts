@@ -6,7 +6,7 @@ import { Person } from '../../../entities/person/person';
 import { UserWeb } from '../../../entities/user-web/user-web.model';
 import { UserService } from '../../../entities/user/user.service';
 import { PersonService } from '../../../salud/person.service';
-import { PersonasController } from '../../personas-industriales/personas-page/personas.controller';
+import { EmpresasController } from '../../../empresas/empresas.controller';
 
 @Component({
   selector: 'personas-dashboard',
@@ -19,10 +19,11 @@ export class PersonasDashboardComponent implements OnInit {
   public subtitle: string = 'Mis datos personales'
   public person: Person;
   public showPersonData: boolean = false;
+  
   constructor(private _router: Router,
     private _usuarioService: UserService,
     private _personService: PersonService,
-    private _personCtrl: PersonasController) { }
+    private _empCtrl: EmpresasController) { }
 
   ngOnInit(): void {
 
@@ -33,7 +34,7 @@ export class PersonasDashboardComponent implements OnInit {
       if (persona[0]) {
         this.person = persona[0];
         this.showPersonData = true;
-        this._personCtrl.personListener.next(this.person);
+        this._empCtrl.personListener.next(this.person);
       }
     })
 
@@ -44,7 +45,7 @@ export class PersonasDashboardComponent implements OnInit {
     //       if (persona[0]) {
     //         this.person = persona[0];
     //         this.showPersonData = true;
-    //         this._personCtrl.personListener.next(this.person);
+    //         this._empCtrl.personListener.next(this.person);
     //       }
     //     })
 

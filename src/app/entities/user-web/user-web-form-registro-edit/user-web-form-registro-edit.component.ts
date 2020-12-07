@@ -2,20 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomValidators } from 'ng2-validation';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { InstructivoNumTramiteModalComponent } from '../../../develar-commons/instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
-import { NotificationService } from '../../../develar-commons/notifications.service';
-import { TermscondModalComponent } from '../../../develar-commons/termscond-modal/termscond-modal.component';
+
+import { CustomValidators } from 'ng2-validation';
+
 import { devutils } from '../../../develar-commons/utils';
-import { Person, personModel } from '../../person/person';
-import { PersonService } from '../../person/person.service';
-import { User } from '../../user/user';
+import { NotificationService } from '../../../develar-commons/notifications.service';
+import { UserWebService } from '../user-web.service';
 import { UserService } from '../../user/user.service';
+import { PersonService } from '../../person/person.service';
+
+import { InstructivoNumTramiteModalComponent } from '../../../develar-commons/instructivo-num-tramite-modal/instructivo-num-tramite-modal.component';
+import { TermscondModalComponent } from '../../../develar-commons/termscond-modal/termscond-modal.component';
+
+import { Person, personModel } from '../../person/person';
 import { PreguntaSecreta, UserWebHelper } from '../user-web.helper';
 import { UserWeb } from '../user-web.model';
-import { UserWebService } from '../user-web.service';
 
 @Component({
   selector: 'user-web-form-registro-edit',

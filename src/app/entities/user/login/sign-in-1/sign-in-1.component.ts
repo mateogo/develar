@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../user';
 import { UserService } from '../../user.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BehaviorSubject }       from 'rxjs';
-
+import { User } from '../../user';
+import { UserWeb } from '../../../user-web/user-web.model';
 @Component({
   selector: 'user-sign-in-1',
   templateUrl: './sign-in-1.component.html',
@@ -20,7 +20,7 @@ export class UserSignIn1Component implements OnInit {
   
   model: User;
   dialogRef: MatDialogRef<DialogUserComponent>;
-  userlistener: BehaviorSubject<User>;
+  userlistener: BehaviorSubject<User|UserWeb>;
 
   ngOnInit() {
     this.model = this.userService.currentUser;
@@ -28,7 +28,7 @@ export class UserSignIn1Component implements OnInit {
 
     this.userlistener = this.userService.userEmitter;
 
-    this.userlistener.subscribe(user =>{
+    this.userlistener.subscribe((user: User) =>{
       user.password = '';
       this.model = user;
       if(this.model.email === 'invitado@develar') this.model.email = "";

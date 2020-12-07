@@ -73,13 +73,13 @@ export class EmpresasController {
   private milestone: string;
   private _milestoneList: Array<SelectData>;
 
-  private currentPerson: Person = new Person("");
-  private currentIndustry: Person = new Person("");
+  private currentPerson: Person;
+  private currentIndustry: Person;
 
   private userListener: BehaviorSubject<User>;
   public timestamp;
   
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+  public personListener = new Subject<Person>();
 
 
   //table browse
@@ -95,7 +95,7 @@ export class EmpresasController {
 		) {
     this.timestamp = Date.now();
 
-    this.userListener = this.userService.userEmitter;
+    this.userListener = this.userService.userEmitter as BehaviorSubject<User>;
 
     this.userListener.subscribe(user =>{
 
@@ -181,10 +181,12 @@ export class EmpresasController {
     this.actualUrlSegments = mRoute;
     this.navigationUrl = this.fetchNavigationUrl(this.actualUrl, this.actualUrlSegments.toString())
     if(this.navigationUrl) this.hasActiveUrlPath = true;
+    //this.onReady.next(true)
 
 
   }
 
+  
   navigateToUserCommunity():boolean{
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
@@ -489,12 +491,9 @@ export class EmpresasController {
   }
 
   updateCurrentPerson(person: Person){
-    console.log('UPDATE CURRENT PERSON')
     this.currentPerson = person;
     this.personListener.next(this.currentPerson);
-    this.personListener.subscribe(p => {
 
-    })
   }
 
   setCurrentPersonFromUser(){
@@ -818,11 +817,29 @@ export class EmpresasController {
   }
 
  // ********** USER MANAGEMENT *************
+ updateUserStatus(user:User){
+  this.userx.id = user._id;
+  this.userx.data = user;
+  this.userx.isLogged = true;
+  this.userx.username = user.username;
+  this.userx.email = user.email;
+  this.userx.hasCommunity = false;
+  this.isUserAdmin = this.userService.isAdminUser();
 
-  loadUserCommunity(){
+  if(user.communityId){
+    this.userx.communityId = user.communityId
+    this.loadUserCommunity()
+  }else{
+    this.userLoading = false;
+    this.onReady.next (true);
+  }
+
+}
+
+
+  private loadUserCommunity(){
     if(this.userx.communityId === 'develar') {
       this.userHasNoCommunity();
-
 
     }else{
         this.daoService.findById<Community>('community', this.userx.communityId).then(entity => {
@@ -851,7 +868,7 @@ export class EmpresasController {
   }
 
 
-  userHasNoCommunity(){
+  private userHasNoCommunity(){
       this.userx.userCommunity = null;
       this.userx.hasCommunity = false;
 
@@ -864,7 +881,6 @@ export class EmpresasController {
 
       this.userLoading = false;
       this.onReady.next (true);
-
   }
 
   pushCommunityFromUser(){
@@ -884,25 +900,6 @@ export class EmpresasController {
     //     this.naviCmty.userOwned = false;
     //   }
     // }
-  }
-
-  updateUserStatus(user:User){
-    this.userx.id = user._id;
-    this.userx.data = user;
-    this.userx.isLogged = true;
-    this.userx.username = user.username;
-    this.userx.email = user.email;
-    this.userx.hasCommunity = false;
-    this.isUserAdmin = this.userService.isAdminUser();
-
-    if(user.communityId){
-      this.userx.communityId = user.communityId
-      this.loadUserCommunity()
-    }else{
-      this.userLoading = false;
-      this.onReady.next (true);
-    }
-
   }
 
 
@@ -931,6 +928,20 @@ export class EmpresasController {
     let dialogRef = this.dialogService.open(GenericDialogComponent, config);
     return dialogRef.afterClosed()
   }
+  /***************************/
+  /** Notification HELPER ****/
+  /***************************/
+  openSnackBar(message: string, action: string, config?: any) {
+    config = config || {}
+    config = Object.assign({duration: 3000}, config)
+
+    let snck = this.snackBar.open(message, action, config);
+
+    snck.onAction().subscribe((e)=> {
+      //c onsole.log('action???? [%s]', e);
+    })
+  }
+
 
 
 }

@@ -350,7 +350,7 @@ const mainRoutes: Routes = [
     loadChildren: () => import('./timebased/timebased.module').then(m => m.TimebasedModule)
   },
   {
-    path: 'empresas',
+    path: 'industrias',
     loadChildren: () => import('./empresas/empresas.module').then(m => m.EmpresasModule)
   },
   {
@@ -449,6 +449,7 @@ const routes: Routes = [
   },
   {
     path: 'mab',
+    component: PresentacionLayoutComponent,
     children: mainRoutes
   },
   {

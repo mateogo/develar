@@ -8,6 +8,7 @@ import { BehaviorSubject ,  Subject }       from 'rxjs';
 import * as io from 'socket.io-client';
 
 import { User, CurrentCommunity } from './user';
+import { UserWeb } from '../user-web/user-web.model';
 import { Person } from '../person/person';
 import { Community } from '../../develar-commons/community/community.model';
 import { UserWebService } from '../user-web/user-web.service';
@@ -63,7 +64,7 @@ export class UserService {
 	private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
 	private _currentUser: User;
-	private _userEmitter: BehaviorSubject<User>;
+	private _userEmitter: BehaviorSubject<User|UserWeb>;
 
 	private isLogIn = false;
 	private hasLogout = false;
@@ -253,7 +254,7 @@ export class UserService {
 		API UTILS
 	******************/
 
-	get userEmitter(): BehaviorSubject<User> {
+	get userEmitter(): BehaviorSubject<User|UserWeb> {
 		return this._userEmitter;
 	}
 

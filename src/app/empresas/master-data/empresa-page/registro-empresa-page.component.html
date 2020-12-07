@@ -3,40 +3,30 @@
 		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
 	</mat-card-header>
 
-  <mat-card-content>
-  	<div class="container-fluid search-panel">
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-core-base [person]='currentPerson'
-		 					(updatePerson)='updateCore($event)' ></empresa-core-base>
-			</div>
-	
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-contactdata-panel [items]='contactList'
-		 					(updateItems)='updateContactList($event)' ></empresa-contactdata-panel>
-			</div>
+  	<mat-card-content>
+		<ng-container *ngIf="hasCurrentPerson">
+			<div class="container-fluid search-panel">
+				<empresa-core-base [person]='currentPerson'
+							(updatePerson)='updateCore($event)' ></empresa-core-base>
 
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-address-panel [items]='addressList'
-		 					(updateItems)='updateAddressList($event)' ></empresa-address-panel>
+				<empresa-contactdata-panel [items]='contactList'
+							(updateItems)='updateContactList($event)' ></empresa-contactdata-panel>
+
+				<empresa-address-panel [items]='addressList'
+							(updateItems)='updateAddressList($event)' ></empresa-address-panel>
+
+				<empresa-documentos-panel 
+							[items]='habilitacionesList'
+							[isHabilitacion]='true'
+							(updateItems)='updateHabilitacionesList($event)' ></empresa-documentos-panel>
+
+				<empresa-documentos-panel 
+							[items]='permisosList'
+							[isHabilitacion]='false'
+							(updateItems)='updateDocumentsList($event)' ></empresa-documentos-panel>
+				<empresa-members-panel [items]='businessList'
+							(updateItems)='updateBusinessList($event)' ></empresa-members-panel>
 			</div>
-
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-documentos-panel 
-		 					[items]='habilitacionesList'
-		 					[isHabilitacion]='true'
-		 					(updateItems)='updateHabilitacionesList($event)' ></empresa-documentos-panel>
-
-		 		<empresa-documentos-panel 
-		 					[items]='permisosList'
-		 					[isHabilitacion]='false'
-		 					(updateItems)='updateDocumentsList($event)' ></empresa-documentos-panel>
-			</div>
-
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<empresa-members-panel [items]='businessList'
-		 					(updateItems)='updateBusinessList($event)' ></empresa-members-panel>
-			</div>
-
-		</div>
- 	</mat-card-content>
+		</ng-container>
+  	</mat-card-content>
 </mat-card>

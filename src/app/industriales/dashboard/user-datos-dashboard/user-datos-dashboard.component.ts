@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../../../entities/user/user';
+import { UserWeb } from "../../../entities/user-web/user-web.model"
 import { UserService } from '../../../entities/user/user.service';
 
 @Component({
@@ -13,14 +14,14 @@ export class UserDatosDashboardComponent implements OnInit {
 
   public title: string = "Usuario/a";
   public subtitle : string = "Información de usuario/a";
-  public user$: BehaviorSubject<User>; 
+  public user$: BehaviorSubject<UserWeb>; 
   id : string;
   constructor(
     private _router: Router,
     private _userService : UserService) { }
 
   ngOnInit(): void {
-    this.user$ = this._userService.userEmitter;
+    this.user$ = this._userService.userEmitter as BehaviorSubject<UserWeb>;
     this.id = this._userService.currentUser._id;
   }
 
