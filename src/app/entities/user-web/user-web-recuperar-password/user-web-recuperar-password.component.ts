@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { NotificationService } from '../../../develar-commons/notifications.service';
+import { UserService } from '../../user/user.service';
 import { PreguntaSecreta, UserWebHelper } from '../user-web.helper';
-import { UserWebService } from '../user-web.service';
 
 @Component({
   selector: 'user-web-recuperar-password',
@@ -20,7 +20,7 @@ export class UserWebRecuperarPasswordComponent implements OnInit {
   preguntasSecretas : PreguntaSecreta[];
   constructor(private _fb : FormBuilder,
     private _notificacionService : NotificationService,
-    private _userWebService : UserWebService,
+    private _userService : UserService,
     private _router : Router) {
     this.preguntasSecretas = UserWebHelper.getPreguntasSecretasOptList();
    }
@@ -71,7 +71,7 @@ export class UserWebRecuperarPasswordComponent implements OnInit {
   }
 
   private resetPassword(restore) : void {
-    this._userWebService.resetPassword(restore).then( user => {
+    this._userService.resetPassword(restore).then( user => {
       if(user){
         this._notificacionService.success("Contraseña actualizada con éxito")
         this._router.navigateByUrl('usuariosweb');

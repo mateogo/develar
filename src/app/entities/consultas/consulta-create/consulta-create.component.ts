@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { formatDate } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, filter, switchMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from '../../../develar-commons/shared-service';
-import { devutils } from '../../../develar-commons/utils';
-
-import { ConsultasService } from '../consultas.service';
 import { UserWeb } from '../../user-web/user-web.model';
-import { UserWebService } from '../../user-web/user-web.service';
+import { UserService } from '../../user/user.service';
 
 
 @Component({
@@ -33,8 +29,7 @@ export class ConsultaCreateComponent implements OnInit {
   public pageTitle = 'Gestión de turnos';
 
   constructor(
-    private _consultaService: ConsultasService,
-    private _userService: UserWebService,
+    private _userService: UserService,
     private _fb: FormBuilder,
     private _router: Router,
     private _route: ActivatedRoute,

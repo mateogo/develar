@@ -6,7 +6,6 @@ import { NotificationService } from '../../../develar-commons/notifications.serv
 import { Person } from '../../../entities/person/person';
 import { PersonService } from '../../../entities/person/person.service';
 import { UserWeb } from '../../../entities/user-web/user-web.model';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
 import { UserService } from '../../../entities/user/user.service';
 
 @Component({

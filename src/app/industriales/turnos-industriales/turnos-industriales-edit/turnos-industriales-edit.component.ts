@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RequirenteTurno, Turno } from '../../../entities/turnos/turno.model';
 import { TurnosService } from '../../../entities/turnos/turnos.service';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
+import { UserService } from '../../../entities/user/user.service';
 
 @Component({
   selector: 'app-turnos-industriales-edit',
@@ -19,7 +19,7 @@ export class TurnosIndustrialesEditComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _turnoService: TurnosService,
-    private _userService: UserWebService
+    private _userService: UserService
   ) {
 
   }

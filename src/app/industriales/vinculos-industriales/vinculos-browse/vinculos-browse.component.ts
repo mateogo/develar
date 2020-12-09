@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { VinculosAgregarFormComponent } from '../vinculos-agregar-form/vinculos-agregar-form.component';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
-
-import { Subject, Observable } from 'rxjs';
-
-import { ConsultasService } from '../../../entities/consultas/consultas.service';
+import { Observable } from 'rxjs';
 import { UserService } from '../../../entities/user/user.service';
 import { EmpresasController } from '../../../empresas/empresas.controller';
 import { CensoIndustriasController } from '../../../empresas/censo.controller';
@@ -41,8 +37,7 @@ export class VinculosBrowseComponent implements OnInit {
     private dialog: MatDialog,
     private empCtrl: EmpresasController,
     private censoCtrl: CensoIndustriasController,
-    private _userService : UserService,
-    private userWeb: UserWebService
+    private _userService : UserService
 
     ) { }
 
@@ -98,7 +93,7 @@ export class VinculosBrowseComponent implements OnInit {
   }
 
   public nuevoVinculo(): void {
-    this.userWeb.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
+    this._userService.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
       this.openModalDialog(person);
     });
   }

@@ -108,6 +108,17 @@ export class User {
 	avatarUrl: string;
 	googleProfile:GoogleProfile;
 	isUsuarioWeb? : boolean;
+	telefono? : number;
+	ndoc? : string;
+	tipoDoc?: string;
+    numTramite?: number;
+    fechaNacimiento?: string;
+	tsFechaNacimiento?: number;
+	preguntaSecreta?: string;
+	respuestaSecreta?: string;
+	nombre?: string;
+	apellido?: string;
+	isMayorEdad? : boolean;
 
 	constructor(
 		usuario: string,

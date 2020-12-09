@@ -7,7 +7,6 @@ import { Asset, AssetFile } from '../../../develar-commons/develar-entities';
 import { NotificationService } from '../../../develar-commons/notifications.service';
 import { Person } from '../../../entities/person/person';
 import { PersonService } from '../../../entities/person/person.service';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
 import { UserService } from '../../../entities/user/user.service';
 
 const URL = 'api/upload/assetupload';
@@ -30,15 +29,14 @@ export class DocumentacionCardFilesComponent implements OnInit {
   constructor(private assetService : AssetService,
     private _notificationService : NotificationService,
     private _userService : UserService,
-    private _personService : PersonService,
-    private _user : UserWebService) {}
+    private _personService : PersonService) {}
 
   ngOnInit(): void {
 
     let user = this._userService.currentUser;
     let isWeb = user.isUsuarioWeb ? true : false;
     if(isWeb){
-      this._user.fetchPersonByUserId(this._userService.currentUser._id).then(persona => {
+      this._userService.fetchPersonByUserId(this._userService.currentUser._id).then(persona => {
         this.person = persona[0];
         this.showPersonCard = true;
       });

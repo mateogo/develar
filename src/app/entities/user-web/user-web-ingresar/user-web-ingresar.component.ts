@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../../develar-commons/notifications.service';
+import { UserService } from '../../user/user.service';
 import { UserWeb } from '../user-web.model';
-import { UserWebService } from '../user-web.service';
 
 @Component({
   selector: 'user-web-ingresar',
@@ -17,7 +17,7 @@ export class UserWebIngresarComponent implements OnInit {
   public form : FormGroup;
   constructor(
     private _formBuilder: FormBuilder,
-    private _userWebService: UserWebService,
+    private _userService: UserService,
     private _notificacionService: NotificationService,
     private _router: Router,
   ) {}
@@ -45,7 +45,7 @@ export class UserWebIngresarComponent implements OnInit {
 
   login(datos: UserPassword): void {
 
-    this._userWebService.login(datos).then((user) => {
+    this._userService.loginWeb(datos).then((user) => {
       if (user) {
         // this._notificacionService.success("Inicio de sesión correcto");
         this.loadLoginUser();
@@ -61,7 +61,7 @@ export class UserWebIngresarComponent implements OnInit {
   }
 
   private loadLoginUser(): void {
-    this.userListener = this._userWebService.initLoginUser();
+    //this.userListener = this._userService.initLoginUser();
 
     // this.userListener.subscribe((user) => {
     //   console.log(user)

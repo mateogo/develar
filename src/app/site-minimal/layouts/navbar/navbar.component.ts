@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 //import * as io from 'socket.io-client';
@@ -7,8 +7,7 @@ import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
 import { gldef } from '../../../develar-commons/develar.config';
 
-import { Actor, Conversation, MessageToPrint, notificationModel } from '../../../notifications/notification.model';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
+import { MessageToPrint } from '../../../notifications/notification.model';
 
 const DEFAULT_AVATAR = 'assets/content/' + gldef.logoUser;
 const DASHBOARD = gldef.dashboard;
@@ -39,7 +38,6 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private _userWebService : UserWebService,
     private route: ActivatedRoute,
     private router: Router) {
   }
