@@ -3,8 +3,10 @@ import { DaoService } from '../../develar-commons/dao.service';
 import { CensoIndustrias, CensoIndustriasTable, CensoIndustriasQuery } from './censo.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CensoIndustriasHelper } from './censo-industrial.helper';
+import { HttpParams } from '@angular/common/http';
 
 const RECORD = 'censoindustrias';
+const EXPORTAR_URL = 'api/' + RECORD + '/exportarcensos';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,23 @@ export class CensoIndustrialService {
   }
 
 
+  /**
+   * Exportación a Excel
+   *
+   */
+  public excelExport(query: CensoIndustriasQuery): void {
+    console.log('[%s] INIT exportación a Excel - query --> %o', query);
 
+    const params = this.buildParams(query);
+    const url = EXPORTAR_URL + '?' + params.toString();
+
+    window.open(url, 'about: blank');
+  }
+
+  private buildParams(query) {
+    return Object.getOwnPropertyNames(query)
+                 .reduce((p, key) => p.append(key, query[key]), new HttpParams());
+  }
 
   /**
    * Navegador de censos industriales
