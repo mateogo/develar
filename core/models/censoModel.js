@@ -3,10 +3,10 @@
  */
 
 const whoami = "models/censoindustriaModel: ";
-
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
+const Excel = require('exceljs');
+const utils = require('../services/commons.utils');
 
 const self = this;
 
@@ -141,14 +141,6 @@ function buildQuery(query) {
     // Rango de fecha
     if (query.fechaDesde && query.fechaHasta) {
         q['$and'] = [{ 'fecomp_tsa': { '$gte': parseInt(query.fechaDesde, 10), '$lt': parseInt(query.fechaHasta, 10) } }];
-    } else {
-        if (query.fechaDesde) {
-            q['fecomp_tsa'] = { "$gte": parseInt(query.fechaDesde, 10) };
-        }
-
-        if (query.fechaHasta) {
-            q['fecomp_tsa'] = { "$lt": parseInt(query.fechaHasta, 10) };
-        }
     }
 
     // Nivel de avance
@@ -313,3 +305,59 @@ exports.create = function(record, errcb, cb) {
     });
 
 };
+
+exports.exportarMovimientos = function(query, req, res) {
+    fetchMovimientos(query, req, res);
+}
+
+function fetchMovimientos(query, req, res) {
+    const regexQuery = buildQuery(query);
+
+    console.log('fetchMovimientos regexQuery -> %o', regexQuery);
+
+    Record.find(regexQuery).lean().exec(function(error, results) {
+        if (error) {
+            console.log(error);
+        } else {
+            if (results && results.length) {
+                dispatchExcelStream(results, query, req, res);
+            }
+        }
+    })
+}
+
+function dispatchExcelStream(results, query, req, res) {
+    buildExcelStream(results, query, req, res);
+}
+
+function buildExcelStream(censos, query, req, res) {
+    let today = Date.now();
+    let filename = 'censosindustriales_' + today + '.xlsx'
+
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="' + filename + '"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('censosIndustriales')
+
+    worksheet.addRow(['Censos Industriales']).commit()
+    worksheet.addRow(['Fecha de emisión', utils.dateToStr(new Date())]).commit()
+    worksheet.addRow().commit()
+    worksheet.addRow(['Fecha Alta', 'Avance', 'Empresa']).commit();
+
+    censos.forEach((row, index) => {
+        const fechaAlta = row.fecomp_txa;
+        const avance = row.estado.navance;
+        const empresa = row.empresa.slug;
+
+        let censoArray = [fechaAlta, avance, empresa];
+
+        worksheet.addRow([...censoArray]).commit()
+    })
+
+    worksheet.commit()
+    workbook.commit()
+}
