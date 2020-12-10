@@ -1,163 +1,142 @@
-<mat-card >
-  <mat-card-content>
-  <form [formGroup]="form">
-    <div class="row" >
-      <div class="col-sm-12 col-md-6">
-        <span>Puede buscar por nombre o DNI antecedentes de persona:</span>
-        <div *ngIf='personError' class="person-error">
-          <span>{{ personErrorMsg }}</span>
-        </div>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <span>Puede buscar por nombre o DNI antecedentes de persona:</span>
+                    <div *ngIf='personError' class="person-error">
+                        <span>{{ personErrorMsg }}</span>
+                    </div>
 
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <utils-browse-person 
-                      (person$)=handlePerson($event) ></utils-browse-person>
-      </div>
-    </div>
-
-
-    <!---nombre; apellido--->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['nombre']" placeholder="Nombre" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['apellido']" placeholder="Apellido" >
-        </mat-form-field>
-      </div>
-    </div>
-    <!--- tdoc, ndoc, vinculo--->
-    <div class="row" >
-      
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldTdoc placeholder="Tipo de documento"
-              [formControl]="form.controls['tdoc']"
-              (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
-            <mat-option *ngFor="let item of tcompPersonaFisica" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
-          <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldTipoVinculo placeholder="Vínculo / Rol laboral"
-              [formControl]="form.controls['vinculo']"
-              (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)" >
-            <mat-option *ngFor="let item of vinculos" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <!---tocupacion; ocupación; ingreso --->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldTOcupacion placeholder="Ocupación/ Profesión"
-              [formControl]="form.controls['tocupacion']"
-              (selectionChange)="changeSelectionValue('tocupacion',fldTOcupacion.value)" >
-            <mat-option *ngFor="let item of tocupacionPersonaFisica" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['ocupacion']" placeholder="Ocupación" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['ingreso']" placeholder="Ingreso monetario" >
-        </mat-form-field>
-      </div>
-    </div>
-
-    <!---nestudios; fenac; sexo --->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldNestudios placeholder="Nivel educativo"
-              [formControl]="form.controls['nestudios']"
-              (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)" >
-            <mat-option *ngFor="let item of nivelEstudios" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento" >
-          <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
-          <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
-        </mat-form-field>
-      </div>
-
-    </div>
-    <!---nestudios; fenac; sexo --->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldNestudios placeholder="Estado del vínculo"
-              [formControl]="form.controls['estado']"
-              (selectionChange)="changeSelectionValue('estado',fldNestudios.value)" >
-            <mat-option *ngFor="let item of estados" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['desde']" placeholder="Fecha inicio del vínculo" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['hasta']" placeholder="Fecha finalización" >
-        </mat-form-field>
-      </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <utils-browse-person (person$)=handlePerson($event)></utils-browse-person>
+                </div>
+            </div>
 
 
-    </div>
+            <!---nombre; apellido--->
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['nombre']" placeholder="Nombre">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['apellido']" placeholder="Apellido">
+                    </mat-form-field>
+                </div>
+            </div>
+            <!--- tdoc, ndoc, vinculo--->
+            <div class="row">
+
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldTdoc placeholder="Tipo de documento" [formControl]="form.controls['tdoc']" (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)">
+                            <mat-option *ngFor="let item of tcompPersonaFisica" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['ndoc']" placeholder="Número documento">
+                        <mat-hint align="end">{{ docBelongsTo.error }}</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldTipoVinculo placeholder="Vínculo / Rol laboral" [formControl]="form.controls['vinculo']" (selectionChange)="changeSelectionValue('vinculo',fldTipoVinculo.value)">
+                            <mat-option *ngFor="let item of vinculos" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!---tocupacion; ocupación; ingreso --->
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldTOcupacion placeholder="Ocupación/ Profesión" [formControl]="form.controls['tocupacion']" (selectionChange)="changeSelectionValue('tocupacion',fldTOcupacion.value)">
+                            <mat-option *ngFor="let item of tocupacionPersonaFisica" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['ocupacion']" placeholder="Ocupación">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['ingreso']" placeholder="Ingreso monetario">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!---nestudios; fenac; sexo --->
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldNestudios placeholder="Nivel educativo" [formControl]="form.controls['nestudios']" (selectionChange)="changeSelectionValue('nestudios',fldNestudios.value)">
+                            <mat-option *ngFor="let item of nivelEstudios" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['fenactx']" placeholder="Fecha de nacimiento">
+                        <mat-hint align="end">edad: {{ currentAge() }}</mat-hint>
+                        <mat-error *ngIf="hasError('fenactx', 'invalidAge')">fecha de nacimiento inválida</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <!---nestudios; fenac; sexo --->
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldNestudios placeholder="Estado del vínculo" [formControl]="form.controls['estado']" (selectionChange)="changeSelectionValue('estado',fldNestudios.value)">
+                            <mat-option *ngFor="let item of estados" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['desde']" placeholder="Fecha inicio del vínculo">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['hasta']" placeholder="Fecha finalización">
+                    </mat-form-field>
+                </div>
 
 
-    <asset-page  [relatedList]='imageList' 
-                            [addCardToList]='addImageToList'
-                            [entityType]="'image'"  ></asset-page>
+            </div>
 
-    <asset-create (assetEmitted)='createCardGraphFromImage($event)' ></asset-create>
 
-    <hr>
-    <div class="additional-info">
-      <button mat-raised-button color="primary" type="submit" 
-      		(click)="onSubmit()"
-          [disabled]="!form.valid" >Aceptar</button>
-      
-      <button mat-button type="button" color="accent"
-      		(click)="onCancel()" >Cancelar</button>
+            <asset-page [relatedList]='imageList' [addCardToList]='addImageToList' [entityType]="'image'"></asset-page>
 
-      <button mat-button type="button" color="warning"
-          (click)="deleteToken()" >Borrar</button>          
-    </div>
+            <asset-create (assetEmitted)='createCardGraphFromImage($event)'></asset-create>
 
-  </form>
-  </mat-card-content>
+            <hr>
+            <div class="additional-info">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!form.valid">Aceptar</button>
+
+                <button mat-button type="button" color="accent" (click)="onCancel()">Cancelar</button>
+
+                <!-- <button mat-button type="button" color="warning" (click)="deleteToken()">Borrar</button> -->
+                <button mat-flat-button type="button" color="warn" (click)="deleteToken()">Desvincular</button>
+            </div>
+
+        </form>
+    </mat-card-content>
 </mat-card>
