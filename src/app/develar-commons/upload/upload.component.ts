@@ -51,4 +51,9 @@ export class UploadComponent implements OnInit {
   	this.externalAssetSubject.next(url);
   }
 
+  uploadFile() : void {
+    const fileInput = document.getElementById('fileupload') as HTMLInputElement;
+    fileInput.click();
+  }
+
 }
