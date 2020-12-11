@@ -54,11 +54,7 @@ export class VinculosBrowseComponent implements OnInit {
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
           if(industria){
             this.currentIndustry = industria;
-
-            //c onsole.log('fetchCompaniaVinculada [%o]', this.currentIndustry);
-
             this.showData = true;
-
             this.censosList$ = this.censoCtrl.fetchActiveCensos$(this.currentIndustry._id)
 
             this.censosList$.subscribe(censos =>{
@@ -93,9 +89,13 @@ export class VinculosBrowseComponent implements OnInit {
   }
 
   public nuevoVinculo(): void {
-    this._userService.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
-      this.openModalDialog(person);
-    });
+    if (this.currentIndustry) {
+      this.censoCtrl.openSnackBar('Usted ya posee una industria vinculada.', 'CERRAR');
+     } else {
+      this._userService.fetchPersonByUserId(this._userService.currentUser._id).then(person => {
+        this.openModalDialog(person);
+      });
+     }
   }
 
   private openModalDialog(person: Person) {
