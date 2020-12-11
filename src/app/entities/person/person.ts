@@ -233,6 +233,9 @@ class PersonTableData implements PersonTable {
 	displayName: string;
 	email: string;
 
+  tdoc: string;
+  ndoc: string;
+
   _id: string = "";
   editflds = [0,0,0,0,0,0,0,0]
 
@@ -241,6 +244,9 @@ class PersonTableData implements PersonTable {
     this.personType = data.personType;
     this.displayName = data.displayName;
     this.email = data.email;
+    this.tdoc = data.tdoc;
+    this.ndoc = data.ndoc;
+
   }
 }
 
@@ -1618,8 +1624,8 @@ function getPrefixedLabel(list, prefix, val){
     parqueind: parqueOptList,
     propiedad: propiedadOptList,
   }
- 
- 
+
+
 
 
 class PersonModel {
@@ -1674,23 +1680,23 @@ class PersonModel {
       if(!val) return 'no-definido';
       return getOptLabel(list, val);
     }
-  
+
     getOptionToken(type, val){
       return getOptListToken(this.getOptionlist(type), val);
     }
-  
+
     getOptionLabel(type, val){
       if(!val) return '';
       if(!type) return val;
       return getOptLabel(this.getOptionlist(type), val);
     }
-  
+
     getPrefixedOptionLabel(type, prefix, val){
       if(!val) return 'no-definido';
       if(!type) return prefix + '::' + val;
       return getPrefixedLabel(this.getOptionlist(type), prefix, val);
     }
-    
+
     getEstadosVivienda(token):Array<any>{
       let arr = estados_viv.filter(t => token === t.type );
       return arr;

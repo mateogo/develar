@@ -15,7 +15,7 @@ import { PersonService } from '../salud/person.service';
 
 import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
-import { Person, Address, UpdatePersonEvent} from '../entities/person/person';
+import { Person, Address, UpdatePersonEvent, PersonTable, personModel } from '../entities/person/person';
 import { User } from '../entities/user/user';
 import { Community } from '../develar-commons/community/community.model';
 
@@ -76,9 +76,17 @@ export class EmpresasController {
   private currentPerson: Person;
   private currentIndustry: Person;
 
+
+
+  // public dataRecordSource: PersonTable[];
+  private _industriasDataSource: BehaviorSubject<PersonTable[]> = new BehaviorSubject<PersonTable[]>([]);
+  private industriasList: PersonTable[];
+
+
+
   private userListener: BehaviorSubject<User>;
   public timestamp;
-  
+
   public personListener = new Subject<Person>();
 
 
@@ -111,7 +119,7 @@ export class EmpresasController {
   ////************* API ************////
   ////              API             ////
   ////************* API ************////
-  
+
 
   get homeResources(): Subject<RecordCard[]>{
     return this.homeResourcesEmitter
@@ -136,7 +144,7 @@ export class EmpresasController {
   //   if(user._id === this.userx.id && this.userx.isLogged === this.userService.userlogged){
   //     ready.next(true);
   //   }else{
-      
+
   //   }
 
 
@@ -150,7 +158,7 @@ export class EmpresasController {
 
   notifyUsers(contact: SolicitudDeContacto){
     let notif = new NotificationToken({
-      content: this.notifContent(contact), 
+      content: this.notifContent(contact),
       importance: 3,
       email: contact.email,
       name: contact.name,
@@ -162,7 +170,7 @@ export class EmpresasController {
   }
 
   setHomeView(isHome){
-    this.sharedSrv.homeView(isHome);    
+    this.sharedSrv.homeView(isHome);
   }
 
   get route():ActivatedRoute{
@@ -186,7 +194,7 @@ export class EmpresasController {
 
   }
 
-  
+
   navigateToUserCommunity():boolean{
     if(!this.userx.isLogged) return false;
     if(!this.userx.hasCommunity) return false;
@@ -329,17 +337,17 @@ export class EmpresasController {
 
   setPapersTitle(){
     //setTimeout(()=>{this.sharedSrv.emitChange('Portfolio');},300)
-    
+
   }
 
   setHomeTitle(){
-    //setTimeout(()=>{this.sharedSrv.emitChange(this.naviCmty.data.displayAs);},300)    
+    //setTimeout(()=>{this.sharedSrv.emitChange(this.naviCmty.data.displayAs);},300)
   }
 
 
   ////************* API-END ************////
 
-  
+
 
 
   ////************* RecordCard ************////
@@ -360,7 +368,7 @@ export class EmpresasController {
     }
 
     //this.sharedSrv.emitChange(this.recordCard.slug);
-    
+
     //this.loadRelatedPersons(this.recordCard.persons);
     //this.loadRelatedProducts(this.recordCard.products);
 
@@ -413,7 +421,7 @@ export class EmpresasController {
 
     return s;
   }
-  
+
   /***************************/
   /******* Person *******/
   /***************************/
@@ -444,7 +452,7 @@ export class EmpresasController {
     if(event.token === CORE){
       this.upsertPersonCore(event.person._id, event.person);
     }
-    
+
     if(event.token === CONTACT){
       this.upsertPersonCore(event.person._id, event.person);
     }
@@ -460,7 +468,7 @@ export class EmpresasController {
     if(event.token === ADDRESS){
       this.upsertPersonCore(event.person._id, event.person);
     }
-    
+
     if(event.token === FAMILY){
       this.upsertPersonCore(event.person._id, event.person);
     }
@@ -514,14 +522,14 @@ export class EmpresasController {
 
     }else{
       this.setCurrentPersonFromUser();
-      
+
     }
   }
 
   fetchIndustriaFromUser(user: User): Observable<Person>{
     let query = {}
     let industryListener = new Subject<Person>()
-    
+
     if(user.isUsuarioWeb){
       query['userwebId']=user._id
 
@@ -538,7 +546,6 @@ export class EmpresasController {
           if(industrias && industrias.length){
             this.currentIndustry= industrias[0]
             industryListener.next(this.currentIndustry);
-
           }else{
             // todo, no encontré industria
             industryListener.next(null)
@@ -552,6 +559,16 @@ export class EmpresasController {
     })
 
     return industryListener;
+  }
+
+  public updateTableData(): void {
+    const industryTableData = personModel.buildPersonTable(new Array(this.currentIndustry));
+    console.log('INDUSTRY updateTableData --> %o', industryTableData);
+    this._industriasDataSource.next(industryTableData);
+  }
+
+  get dataRecordsSource(): BehaviorSubject<PersonTable[]> {
+    return this._industriasDataSource;
   }
 
 
@@ -581,7 +598,7 @@ export class EmpresasController {
 
     this.loadPersonByDNI(listener, tdoc,ndoc);
     return listener;
-  }  
+  }
 
   private loadPersonByDNI(recordEmitter:Subject<Person[]>, tdoc, ndoc){
     let query = {
@@ -614,7 +631,7 @@ export class EmpresasController {
       query['tdoc'] = tdoc;
       query['ndoc'] = term;
     }
-    
+
     return this.daoService.search<Person>('person', query);
 }
 
@@ -634,14 +651,14 @@ export class EmpresasController {
     }
     return this.daoService.search<Person>('person', query)
 
-  }  
+  }
   public testUserByEmail(email ): Observable<User[]>{
     let query = {
       email: email,
     }
     return this.daoService.search<User>('user', query)
 
-  }  
+  }
 
 
   ////************* Person upsert with contact data  ************////
@@ -764,7 +781,7 @@ export class EmpresasController {
 
     }else{
       this.fetchDefaultCommunityFromDB(commtyListener);
-    } 
+    }
 
   }
 
@@ -780,7 +797,7 @@ export class EmpresasController {
       commtyListener.next(this.naviCmty);
     });
   }
- 
+
   loadCommunityFromDb(url:string, commtyListener: Subject<CommunityToken>){
     if(url){
       this.naviCmty.isActive = false;
@@ -854,7 +871,7 @@ export class EmpresasController {
             this.userCmty.isLoading = false;
             this.userCmty.userOwned = true;
             this.userCmty.url = entity.urlpath;
-    
+
             this.pushCommunityFromUser()
 
           }else{
@@ -885,11 +902,11 @@ export class EmpresasController {
 
   pushCommunityFromUser(){
 
-      Object.assign(this.naviCmty, this.userCmty);  
+      Object.assign(this.naviCmty, this.userCmty);
 
     // if(!this.naviCmty.isActive){
     //   // no hay una comunidad corriente activa
-    //   Object.assign(this.naviCmty, this.userCmty);  
+    //   Object.assign(this.naviCmty, this.userCmty);
 
     // }else{
 
@@ -915,10 +932,10 @@ export class EmpresasController {
     }
 
     if(urlpath){
-      let split = urlpath.split('/') 
+      let split = urlpath.split('/')
       urlpath = split[0];
     }
-    return urlpath 
+    return urlpath
   }
 
 
@@ -954,7 +971,7 @@ export class  SolicitudDeContacto {
   locacion: string;
   termsofuse: boolean = false;
   description: string;
-  
+
 }
 
 class NotificationToken {

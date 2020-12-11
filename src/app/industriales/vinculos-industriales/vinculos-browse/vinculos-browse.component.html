@@ -12,14 +12,14 @@
             <mat-card-content>
                 <mat-list class="pt-0">
                     <ng-container *ngIf=showData>
-                        <mat-divider></mat-divider>
+                        <!-- <mat-divider></mat-divider>
                         <mat-list-item class="align-items-center">
                             <p class="mb-0"><strong>N° de CUIT {{ currentIndustry.ndoc  }}</strong> :: {{currentIndustry.displayName }} / Integrantes: {{ currentIndustry.integrantes.length }}</p>
                             <span class="flex-grow-1">&nbsp;</span>
-                            <!-- <button type="button" mat-flat-button color="accent" (click)="navigateToIndustry()">Editar Compañía</button> -->
                             <mat-icon matTooltip="Editar esta compañía" class="mx-1" (click)="navigateToIndustry()">edit</mat-icon>
                             <mat-divider></mat-divider>
-                        </mat-list-item>
+                        </mat-list-item> -->
+                        <app-vinculos-browse-table></app-vinculos-browse-table>
                     </ng-container>
                 </mat-list>
             </mat-card-content>
