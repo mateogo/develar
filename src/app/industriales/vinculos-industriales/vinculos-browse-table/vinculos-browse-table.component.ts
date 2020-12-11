@@ -52,9 +52,9 @@ class IndustriasVinculadasDataSource extends DataSource<PersonTable> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        // case 'fecomp':
-        //   [propertyA, propertyB] = [a.fecomp_tsa, b.fecomp_tsa];
-        //   break;
+        case 'ndoc':
+          [propertyA, propertyB] = [a.ndoc, b.ndoc];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

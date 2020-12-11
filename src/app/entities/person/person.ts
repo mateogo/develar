@@ -13,7 +13,9 @@ import { CardGraph, predicateType, graphUtilities, predicateLabels } from '../..
 export interface PersonTable {
 	personType: string;
 	displayName: string;
-	email: string;
+  email: string;
+  tdoc: string;
+  ndoc: string;
 };
 
 export interface UpdateEventEmitter {

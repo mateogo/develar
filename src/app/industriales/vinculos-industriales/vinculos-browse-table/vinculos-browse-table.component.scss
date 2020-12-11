@@ -1,3 +1,12 @@
 .mat-column-rowactions {
     justify-content: end;
 }
+
+.mat-column-rowactions .mat-icon {
+    cursor: pointer;
+}
+
+.mat-column-tdoc,
+.mat-column-ndoc {
+    max-width: 150px;
+}
