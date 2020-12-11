@@ -41,7 +41,15 @@
 	          </mat-select>
 	        </mat-form-field>
 	      </div>
-	    </div>
+		</div>
+		
+		<div class="row">
+			<div class='col-md-12'>
+				<p class="text-normal"><span><strong>Direcciones de entrega disponibles</strong></span></p>
+				<p class="text-normal"  *ngFor="let item of delegacionOptList"><span><strong>{{ item.label }}: </strong> {{ item.locacion }}</span></p>
+			</div>
+		</div>
+	
 
       <div class="additional-info">
         <button mat-raised-button color="primary"
