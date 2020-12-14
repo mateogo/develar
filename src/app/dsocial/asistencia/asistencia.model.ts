@@ -433,7 +433,7 @@ const delegacionesOptList_old = [
 const delegacionesOptList = [
 
 	{val: 'secretaria',   type: 'secretaria', label: 'Secretaría Desarrollo Social', locacion:	'Erézcano 1252',                             telefono: '4293-4299'},
-	{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Beruti y Lestrade',    telefono: '3740-0875'},
+	{val: 'cicglew',      type: 'cic',        label: 'CIC GLEW - ENTREGAS SUSPENDIDAS',      locacion:	'Garibaldi 220, entre Beruti y Lestrade',    telefono: '3740-0875'},
 	{val: 'cicburzaco',   type: 'cid',        label: 'Centro Comunitario Burzaco',   locacion:	'Alsina y Martín Fierro - Barrio El Gaucho', telefono: '4299-2273'},
 	{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',        locacion:	'Manuel Araujo y Río Diamante',              telefono: '4268-5419'},
 	{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',                          telefono: '4291-1066'},
