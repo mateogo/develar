@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 20.12.14-15:53',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 20.12.15-17:17',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
