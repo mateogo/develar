@@ -51,6 +51,12 @@
             <div class="col-12">
                 <button mat-flat-button type="button" color="primary" (click)="doRefreshResults()">Refrescar búsqueda</button>
                 <button mat-flat-button class="ml-3" type="button" color="primary" (click)="doDownloadResults()">Exportar resultados</button>
+                <button mat-icon-button (click)="showHelp($event, 'ayuda1')" matTooltip="{{codigo.ayuda1}}">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+                <button mat-icon-button (click)="showHelp($event, 'ayuda2')" matTooltip="{{codigo.ayuda2}}">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
             </div>
         </div>
     </mat-toolbar>

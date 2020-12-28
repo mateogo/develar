@@ -242,6 +242,7 @@ const cardTypes: Array<any> = [
 		{val: 'presentacion', 	label: 'Presentación',       slug:'Presentación' },
 		{val: 'comercios',      label: 'Recurso Comercios',  slug:'Recurso Gestión Comercios MAB' },
 		{val: 'webresource',    label: 'Recurso Portal',     slug:'Recurso Portal' },
+		{val: 'en_linea',		label: 'Ayuda en línea',	 slug: 'Ayuda en línea'}
 
 
 
@@ -348,13 +349,18 @@ const cardCategory = {
 		{val: 'topabout',       label: 'Top about',          slug:'Top about' },
 		{val: 'topaboutlr',     label: 'Top about L-R',      slug:'Top about L-R'},
 		{val: 'topmission',     label: 'Top misión',         slug:'Top misión'},
-  	{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
+		{val: 'topservicios',   label: 'Top servicios',      slug:'Top servicios' },
 		{val: 'topportfolio',   label: 'Top portfolio',      slug:'Top portfolio' },
 		{val: 'destacado',      label: 'Top destacado',      slug:'Destacado' },
 		{val: 'portfolio',      label: 'Portfolio',          slug:'Portfolio' },
 		{val: 'registro',       label: 'Registro',           slug:'Registro' },
 		{val: 'footer',         label: 'Footer',             slug:'Footer' },
 		{val: 'formcontacto',   label: 'Form de contacto',   slug:'Formulario de contacto' },
+	],
+
+	en_linea : [
+		{val: 'no_definido', 	label: 'Seleccione opción',  slug:'Seleccione opción' },
+		{val : 'base',			label: 'Ayuda base',		 slug: 'Ayuda base'}
 	]
 };
 

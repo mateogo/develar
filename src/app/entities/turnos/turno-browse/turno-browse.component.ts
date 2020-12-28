@@ -8,6 +8,8 @@ import { Turno, TurnoQuery } from '../turno.model';
 import { TurnosService } from '../turnos.service';
 import { TurnoHelper } from '../turno.helper';
 import * as moment from 'moment';
+import { AyudaEnLineaService } from '../../../develar-commons/ayuda-en-linea.service';
+
 
 @Component({
   selector: "turnos-browse",
@@ -16,6 +18,11 @@ import * as moment from 'moment';
 })
 export class TurnoBrowseComponent implements OnInit {
   @Output() lookUpModels = new EventEmitter<TurnoQuery>();
+
+  public codigo = {
+      ayuda1: "app:turnos:turno-browse:query",
+      ayuda2: "app:turnos:turno-browse:query:dos"
+  }
 
   public form: FormGroup;
 
@@ -40,6 +47,7 @@ export class TurnoBrowseComponent implements OnInit {
     private _turnoService: TurnosService,
     private _fb: FormBuilder,
     public dialogService: MatDialog,
+    private _onlineHelpService : AyudaEnLineaService
   ) {
     const rangoFecha = devutils.getPreviousWeek(new Date());
 
@@ -110,5 +118,11 @@ export class TurnoBrowseComponent implements OnInit {
     query.estado = fvalue.estado;
     query.avance = fvalue.avance;
     return query;
+  }
+
+  showHelp(event : MouseEvent, key : string){
+    console.log(event.type)
+    console.log(this.codigo[key])
+    this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 }

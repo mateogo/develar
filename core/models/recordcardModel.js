@@ -249,6 +249,10 @@ function buildQuery(query, user){
         q["cardId"] = { $lt: token};
     }
 
+    if(query["cardId"]) {
+        q["cardId"] = query["cardId"];
+    }
+
 
     if(query['publish']){
         let actual = Date.now();
