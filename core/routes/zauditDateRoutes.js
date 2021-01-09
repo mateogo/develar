@@ -71,6 +71,7 @@ router.get('/contactosestrechos', function (req, res) {
  *     server: http://salud.brown.gob.ar/api/auditodatos/importsisa
  */
 router.get('/importsisa', function (req, res) {
+    console.log('IMPORTSISTA BEGIN')
     saludimport.importSisaArchive(req, function(err) {
         res.status(400).json(err);
 

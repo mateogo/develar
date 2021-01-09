@@ -235,7 +235,9 @@ const contextoCovidSch = new Schema({
     fe_investig:   { type: String, required: false },
     fets_investig: { type: Number, required: false },
     userInvestig:  { type: String, required: false },
+    userAsignado:  { type: String, required: false },
     userId:        { type: String, required: false },
+    hasInvestigacion: { type: Boolean, required: false, default: false },
 
 });
 

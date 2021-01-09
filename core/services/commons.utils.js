@@ -130,6 +130,14 @@ exports.safeAddress = function (name){
     return str;
 };
 
+exports.safeIdentifier = function(str){
+    return str
+            .toLowerCase()
+            .replace(/\s/g,'')
+            .replace(/[áÁéÉíÍóÓúÚñ]/g, function(c) { return es_cutoff[c]; });
+};
+  
+
 exports.moveFile = function(req, res, next,rootPath){
     var today = new Date();
     var times = today.getTime();

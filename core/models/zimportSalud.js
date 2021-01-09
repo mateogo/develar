@@ -62,42 +62,49 @@ function processSisaArchive(req, errcb, cb){
 
     function toUpperCase(name){
         return name.toUpperCase();
-    }
-
+	}
+	
     csv({delimiter: ';'})
     .fromFile(arch)
     .then((persons) => {
 
     		let compNumCounter = 0;
-    		if(!persons) persons = [];
 
+			if(!persons) persons = [];
 
-				testSerialRecord().then(oldSerial => {
-					if(oldSerial){
-				    oldSerial.fe_ult = Date.now();
-				    compNumCounter  = oldSerial.pnumero  + oldSerial.offset;
+			testSerialRecord().then(oldSerial => {
 
-				    oldSerial.pnumero += persons.length;
-				    let id = oldSerial._id;
+				if(oldSerial){
+					oldSerial.fe_ult = Date.now();
+					compNumCounter  = oldSerial.pnumero  + oldSerial.offset;
 
-				    SerialRecord.findByIdAndUpdate(id, oldSerial, {new: true }).then(serial =>{
-				  		//c onsole.log('UPDATED ASIS Serial Fetched [%s] [%s] [%s]', serial.compPrefix, serial.compName, serial.pnumero)
+					oldSerial.pnumero += persons.length;
+					let id = oldSerial._id;
+
+					SerialRecord.findByIdAndUpdate(id, oldSerial, {new: true }).then(serial =>{
+						//c onsole.log('UPDATED ASIS Serial Fetched [%s] [%s] [%s]', serial.compPrefix, serial.compName, serial.pnumero)
 						})
 
-				    persons.forEach((token, index) => {
-
-				        processOneSaludPerson(token, compNumCounter);
-				    		compNumCounter +=1;
-
-				    });
-
-		                    
-		        cb({result: "ok: " + persons.length})
-
+					for(let index = 0; index < persons.length; index++){
+						processOneSaludPerson(persons[index], compNumCounter);
+						compNumCounter +=1;
 
 					}
 
-				});
+					// persons.forEach((token, index) => {
+
+					// 	processOneSaludPerson(token, compNumCounter);
+					// 		compNumCounter +=1;
+
+					// });
+
+							
+					cb({result: "ok: " + persons.length})
+
+
+				}
+
+			});
 
     });
 }
@@ -105,9 +112,6 @@ function processSisaArchive(req, errcb, cb){
 
 async function processOneSaludPerson(token, compNum){
 		let tperson;
-
-		//c onsole.log('processOnePerson: [%s] [%s] [%s]', token.ndoc, token.apellido, token.nombre);
-
 
 		let query = personBuildQuery({
 		    tdoc: 'DNI',
@@ -122,7 +126,7 @@ async function processOneSaludPerson(token, compNum){
 }
 
 function processOnePerson(person, token, compNum){
-    //c onsole.log('processOnePerson [%s]', person && person.displayName);
+    //c onsole.log('processOnePerson [%s]', person && person.apellido);
     let isNew = false;
 
     if(!person){
@@ -155,12 +159,36 @@ const buildSaludCoreData = function(person, token, isNew){
     person.isImported = true;
 
     person.idbrown = 'sisa:' + token.fealta;
-    person.alerta = 'COVID - fecha inicio síntomas: ' + token.fesintoma;
-    person.locacion = token.direccion + ' ' + token.localidad;
+    person.alerta = 'COVID - fecha inicio síntomas: ' + (token.femuestra || token.fesintoma);
+    person.locacion = token.direccion + (token.callenro || '') + ' ' + token.localidad;
 
     person.tdoc = 'DNI';
-    person.ndoc = token.ndoc;
-    //person.cuil = token.ncuil;
+	person.ndoc = token.ndoc;
+	
+	//person.cuil = token.ncuil;
+	if(token.sexo === "M") person.sexo = 'F';
+	else if(token.sexo ==="V") person.sexo = 'M';
+	else person.sexo = "";
+	
+	// edad
+	if(token.edad){
+
+
+		try {
+			let year = new Date().getFullYear() - token.edad;
+			let fenac_date = new Date(year,0,1)
+			person.fenactx = utils.dateToStr(fenac_date);
+			person.fenac = utils.dateNumFromTx(person.fenactx);
+	
+		}
+		catch {
+			person.fenactx = '';
+			person.fenac = 0;
+		}
+
+
+
+	}
 
 
     person.ts_alta = Date.now();
@@ -216,7 +244,7 @@ const buildSaludLocaciones = function(person, token, isNew){
         "description": "Importado de excel",
         "isDefault": true,
         "addType": "principal",
-        "street1": token.direccion || 'sin dato',
+        "street1": (token.direccion + (token.callenro || '')) || 'sin dato',
         "street2": "",
         "streetIn": "",       
         "streetOut": "",
@@ -228,9 +256,12 @@ const buildSaludLocaciones = function(person, token, isNew){
         "estado": "activo",
         "barrio": "",
 
-    }
+	}
+	let already_exists = locaciones.find(l => l.street1 === locacion.street1);
+	if(!already_exists){
+		locaciones.push(locacion);
+	}
 
-    locaciones.push(locacion);
     person.locaciones = locaciones;
 }
 
@@ -275,8 +306,8 @@ async function processAsistenciaPrevencion(token, person, compNum){
 
 	let asis;
 
-	asis = await AsisprevencionRecord.findOne(regexQuery).exec()
-	//c onsole.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
+	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
+	console.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
 		await updateAsistenciaRecord(token, person, asis);
@@ -299,11 +330,11 @@ async function updateAsistenciaRecord(token, person, asis){
 		asis.avance = 'emitido';
 
 		updateCoreAsis(asis, person, token)
-
 		updateFollowUp(asis, token);
+		buildMuestrasLab(asis, token);
 		buildCovid(asis,token);
 
-		await AsisprevencionRecord.findByIdAndUpdate(asis.id, asis, { new: true }).exec();
+		await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
 }
 
 
@@ -312,6 +343,7 @@ async function createAsistenciaRecord(token, person, compNum){
 				buildCoreAsis(asis, person, compNum, token);
 				buildCovid(asis, token);
 				buildFollowUp(asis, token);
+				buildMuestrasLab(asis, token);
 				buildSisaEvent(asis, token);
 
 				asis.save();
@@ -359,14 +391,14 @@ function buildCovid(asis, token){
 	infeccion.actualState = 1;
 	infeccion.mdiagnostico = 'laboratorio';
 
-	if(token.fesintoma){
-		infeccion.fe_inicio = token.fesintoma;
-		infeccion.fets_inicio = utils.dateNumFromTx(token.fesintoma);
+	if(token.fesintoma || token.femuestra){
+		infeccion.fe_inicio = (token.femuestra || token.fesintoma);
+		infeccion.fets_inicio = utils.dateNumFromTx(infeccion.fe_inicio);
 	}
 
-	if(token.fealta){
-		infeccion.fe_confirma = token.fealta;
-		infeccion.fets_confirma = utils.dateNumFromTx(token.fealta);
+	if(token.fealta || token.feresultado){
+		infeccion.fe_confirma = token.feresultado || token.fealta;
+		infeccion.fets_confirma = utils.dateNumFromTx(infeccion.fe_confirma);
 	}
 
 	if(token['novedad']){
@@ -395,17 +427,34 @@ function buildCovid(asis, token){
 		}
 	}
 
-	asis.infeccion = infeccion
+	if(token['tecnica'] && (token['tecnica'] === 'criterio clinico' || token['tecnica'] === 'criterio clínico' ) ){
+		infeccion.avance = 'comunitario';
+		infeccion.mdiagnostico = 'clinica';
 
+	}
+
+	if(token['resultado']){
+		if(token['resultado'] === 'DESCARTADO'){
+			infeccion.actualState = 2
+			infeccion.hasCovid = false;
+			infeccion.fe_alta = token.fealta
+		}
+	}
+
+	asis.infeccion = infeccion
 }
 
 function buildSisaEvent(asis, token){
 	let sisaEvent = new SisaEvent();
-	sisaEvent.fe_reportado = token.fealta;
+
+	sisaEvent.fe_reportado = token.feresultado || token.fealta;
 	sisaEvent.fe_consulta = token.fealta;
 
-	sisaEvent.fets_reportado = utils.dateNumFromTx(token.fealta);
-	sisaEvent.fets_consulta = utils.dateNumFromTx(token.fealta);
+	sisaEvent.fets_reportado = utils.dateNumFromTx(sisaEvent.fe_reportado);
+	sisaEvent.fets_consulta = utils.dateNumFromTx(sisaEvent.fe_consulta);
+
+	sisaEvent.reportadoPor = token.reportadox;
+	sisaEvent.sisaId = token.sisaid || "";
 
 	asis.sisaevent = sisaEvent;
 
@@ -414,7 +463,7 @@ function buildSisaEvent(asis, token){
 function buildFollowUp(asis, token){
 	let followUp = new AfectadoFollowUp();
 	followUp.fe_inicio = token.fealta;
-	followUp.fets_inicio = utils.dateNumFromTx(token.fealta);
+	followUp.fets_inicio = utils.dateNumFromTx(followUp.fe_inicio);
 	asis.followUp = followUp;
 }
 
@@ -532,7 +581,7 @@ function updateCoreAsis(asis, person, data){
 		if(person){
 
 			let edad = getEdadFromPerson(person)
-  		requirente = buildCovidRequirente(person);
+  			requirente = buildCovidRequirente(person);
 
 			asis.idPerson = person._id;
 			asis.ndoc = (person.ndoc && person.ndoc !== asis.ndoc) ? person.ndoc: asis.ndoc;
@@ -566,12 +615,19 @@ function updateCoreAsis(asis, person, data){
 			asis.idPerson = null;
 		}
 
+		if(data.asignadoa){
+			let investigacion = asis.sintomacovid || new ContextoCovid();
+			investigacion.userAsignado = data.asignadoa;
+			asis.sintomacovid = investigacion;	
+		}
+
+
 		asis.fenotif_txa = fealta;
 		asis.fenotif_tsa = fealta_ts;
 
 		asis.tipo = 1;
 		asis.prioridad = 2;
-    asis.idbrown = 'sisa:' + data.fealta;
+    	asis.idbrown = 'sisa:' + data.fealta;
 
 		asis.action = 'epidemio';
 		asis.slug = 'Alta importacion SISA: ' + fealta;
@@ -628,10 +684,16 @@ function buildCoreAsis(asis, person, compNum, data){
 
 		novedades.push(novedad);
 
+		if(data.asignadoa){
+			let investigacion = new ContextoCovid();
+			investigacion.userAsignado = data.asignadoa;
+			asis.sintomacovid = investigacion;
+		}
+
 		if(person){
 
 			let edad = getEdadFromPerson(person)
-  		requirente = buildCovidRequirente(person);
+  			requirente = buildCovidRequirente(person);
 			asis.idPerson = person._id;
 			asis.ndoc = person.ndoc;
 			asis.tdoc = person.tdoc;
@@ -686,6 +748,35 @@ function buildCoreAsis(asis, person, compNum, data){
 			asis.idPerson = null;
 		}
 
+		if(data && data.resultado && data.resultado === 'DESCARTADO' ){
+			let descartado_to_notify = {
+				isActive: true,
+				tnovedad: "datos",
+				novedad: 'Notificar afectado/a de laboratorio NEGATIVO/ NO DETECTABLE',
+				sector: 'sistema',
+
+				intervencion: 'notifEstadoAlta',
+				urgencia: 1,
+
+				fecomp_txa: fealta,
+				fecomp_tsa: fealta_ts,
+
+				hasNecesidad: true,
+				fe_necesidad: fealta,
+				fets_necesidad: fealta_ts,
+
+				hasCumplimiento: true,
+				estado: 'activo',
+				avance: 'emitido',
+				ejecucion: 'emitido',
+
+				atendidox: null
+			}
+
+			novedades.push(descartado_to_notify);				
+		}
+
+
 		asis.fecomp_txa = fealta;
 		asis.fecomp_tsa = fealta_ts;
 
@@ -697,7 +788,7 @@ function buildCoreAsis(asis, person, compNum, data){
 		asis.tipo = 1;
 		asis.isCovid = true;
 		asis.prioridad = 2;
-    asis.idbrown = 'sisa:' + data.fealta;
+    	asis.idbrown = 'sisa:' + data.fealta;
 
 		asis.action = 'epidemio';
 		asis.slug = 'Alta importacion SISA: ' + fealta;
@@ -726,7 +817,96 @@ function buildCoreAsis(asis, person, compNum, data){
 
 
 
+function updatedMuestrasLab(laboratory, token){
+	laboratory.resultado = (!token.resultado || token.resultado === 'CONFIRMADO') ? 'confirmada' : 'descartada';
 
+	laboratory.fe_toma = token.femuestra || '';
+	laboratory.fets_toma = laboratory.fe_toma ? utils.dateNumFromTx(laboratory.fe_toma) : 0 ;
+
+	laboratory.fe_notificacion = token.fealta || '';
+	laboratory.fets_notificacion = laboratory.fe_notificacion ? utils.dateNumFromTx(laboratory.fe_notificacion) : 0 ;
+
+	laboratory.fe_resestudio = token.feresultado || token.fealta;
+	laboratory.fets_resestudio = laboratory.fe_resestudio ? utils.dateNumFromTx(laboratory.fe_resestudio) : 0 ;
+
+	laboratory.slug = 'Resultado importado de SISA el ' + token.fealta;
+	laboratory.laboratorio = token.reportadox || '';
+	laboratory.tipoMuestra = token.tecnica ? utils.safeIdentifier(token.tecnica) : laboratory.tipoMuestra || 'hisopadopcr';
+	return laboratory;
+}
+
+
+function buildMuestrasLab(asis, token){
+	let _laboratory = {
+		isActive: true,
+		secuencia: 'EN SISA', // labsequenceOptList
+		muestraId: '',
+		fe_toma: '',
+		tipoMuestra: 'hisopadopcr', // tipoMuestraLaboratorioOptList
+		locacionId: 'otro', // locMuestraOptList
+		locacionSlug: '',
+		laboratorio: '',
+		laboratorioTel: '',
+		metodo: 'pcr',
+		fe_resestudio: '', 
+		fe_notificacion: '', 
+		alerta: '', 
+		estado: 'presentada',   // estadoMuestraLaboratorioOptList
+		resultado: 'pendiente', //resultadoMuestraLaboratorioOptList
+		slug: '',
+		fets_toma: 0,
+		fets_resestudio: 0,
+		fets_notificacion: 0
+	}
+
+	let oldlab;
+	let muestras = (asis && asis.muestraslab) || [];
+	let femuestra = token.femuestra
+	let femuestra_ts = 0
+	if(femuestra){
+		try {
+			femuestra_ts = utils.dateNumFromTx(femuestra)
+		}
+		catch {
+			return null;
+		}
+	}
+	
+
+	if (muestras && muestras.length){
+		oldlab = muestras.find(lab => {
+			if(!lab.isActive || (lab.secuencia !== 'EN SISA' && lab.resultado !== 'pendiente') ){
+				return false;
+			}
+
+			if(lab.resultado === 'pendiente' && Math.abs(femuestra_ts - lab.fets_toma) < 1000 * 60 * 60 * 24 * 4){
+				return true;
+			}
+
+			if(lab.secuencia === 'EN SISA' && femuestra_ts === lab.fets_toma){
+				return true;
+			}
+
+			return false;
+		})
+
+		if(oldlab){
+			oldlab = updatedMuestrasLab(oldlab, token)
+
+		}else {
+			_laboratory = updatedMuestrasLab(_laboratory, token)
+			muestras.push(_laboratory);		
+			asis.muestraslab = muestras;
+		}
+
+	}else {
+		_laboratory = updatedMuestrasLab(_laboratory, token)
+		muestras.push(_laboratory);	
+		asis.muestraslab = muestras;
+	}
+
+
+}
 
 
 
@@ -961,7 +1141,7 @@ function testSerialRecord() {
 	  query.dia = fecha.getDate();
 
 
-    let regexQuery = serialBuildQuery(query);
+	let regexQuery = serialBuildQuery(query);
     return SerialRecord.findOne(regexQuery).exec()
 }
 
@@ -994,9 +1174,6 @@ function asistenciaSerial(){
 
 	return serial;
 }
-
-
-
 
 
 function getEdadFromPerson(person){
@@ -1069,6 +1246,7 @@ class Requirente {
 };
 
 
+
 class InfectionFollowUp {
 	isActive = true;
 	isInternado = false;
@@ -1100,6 +1278,88 @@ class InfectionFollowUp {
 	fets_inicio = 0; 
 	fets_confirma = 0;
 	fets_alta = 0;
+}
+
+
+class ContextoCovid {
+	constructor(){
+		this.hasFiebre = false;
+		this.fiebreTxt = 'cree';
+		this.fiebre = 37;
+		this.fiebreRB = 3;
+
+		this.hasViaje = false;
+		this.hasContacto = false;
+		this.hasEntorno = false;
+
+		this.hasTrabajoAdulMayores = false;
+		this.hasTrabajoHogares = false;
+		this.hasTrabajoPolicial = false;
+		this.hasTrabajoHospitales = false;
+		this.hasTrabajoSalud = false;
+		// sintomas
+		this.hasSintomas = false;
+		this.hasDifRespiratoria = false;
+		this.hasDolorGarganta = false;
+		this.hasTos = false;
+		this.hasNeumonia = false;
+		this.hasDolorCabeza = false;
+		this.hasFaltaGusto = false;
+		this.hasFaltaOlfato = false;
+		this.sintomas = '';
+
+		this.hasDiarrea = false;
+		this.hasDiabetes = false;
+		this.hasHta = false;
+		this.hasCardio = false;
+		this.hasPulmonar = false;
+		this.hasEmbarazo = false;
+		this.hasCronica = false;
+		this.hasFumador = false;
+		this.hasObesidad = false;
+		this.comorbilidad = "" // observaciones y otras comorbilidades
+
+		this.fe_inicio = '' // InfectionFollowUp.fe_inicio //fecha de inicio de síntomas
+		this.sintoma = "sindato" // estado general InfectionFollowUp.sintoma
+		this.fe_prevAlta = '' // InfectionFollowUp.fe_alta //fecha prevista de alta para el caso covid confirmado
+		this.isInternado = false; // InfectionFollowUp.isInternado;
+		this.tinternacion = 'nointernado' // tipo de internacion // tinternacionOptList
+		this.internacionSlug = ''; // lugar de internación
+		this.derivacion = ''; //si necesita derivación // derivacionOptList
+		this.derivaSaludMental = false;
+		this.derivaDesarrollo = false;
+		this.derivaHisopado = false;
+		this.derivaOtro = false;
+		this.derivacionSlug = ''; 
+
+		this.trabajo = '';   // InfectionFollowUp.trabajo
+		this.trabajoSlug = ''; // InfectionFollowUp.trabajoTxt
+
+		this.contexto = '';
+
+		this.esperaMedico = false;
+		this.vistoMedico = false;
+		this.indicacion = '';
+		this.problema = '';
+
+		this.necesitaSame = false;
+		this.esperaTraslado = false;
+		this.estaInternado = false;
+		this.estaEnDomicilio = false;
+
+		this.hasCOVID = false;
+		this.isCOVID = false;
+		//
+		this.fe_investig = '';
+		this.fets_investig = 0;
+		this.userInvestig = '';
+		this.userAsignado = '';
+		this.userId = '';
+		this.actualState =  0;
+		this.avanceCovid = '';
+		this.hasInvestigacion = false;
+	}
+
 }
 
 

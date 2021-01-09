@@ -264,9 +264,11 @@ export class ContextoCovid {
 	fe_investig: string = '';
 	fets_investig: number = 0;
 	userInvestig: string = '';
+	userAsignado: string = '';
 	userId: string = '';
 	actualState: number;
 	avanceCovid: string;
+	hasInvestigacion: boolean = false;
 }
 
 export class CasoIndice {
@@ -580,7 +582,13 @@ export class SisaEvolucion {
 }
 
 const tipoMuestraLaboratorioOptList = [
-	{ val: 'hisopadopcr', label: 'Hisopado:PCR' },
+	{ val: 'hisopadopcr',              label: 'Hisopado:PCR' },
+	{ val: 'rt-pcrentiemporeal',       label: 'RT-PCR en tiempo real' },
+	{ val: 'amplificacionisotermica',  label: 'Amplificación Isotérmica' },
+	{ val: 'inmunocromatografia',      label: 'Inmunocromatografía' },
+	{ val: 'inmunoensayofluorescente', label: 'Inmunoensayo Fluorescente' },
+	{ val: 'clinica',                  label: 'Clínica' },
+	{ val: 'otro',                     label: 'Otro' },
 ];
 
 const estadoMuestraLaboratorioOptList = [
@@ -620,7 +628,7 @@ export class MuestraLaboratorio {
 
 	muestraId: string = '';
 	fe_toma: string = '';
-	tipoMuestra: string = 'hisopado'; // tipoMuestraLaboratorioOptList
+	tipoMuestra: string = 'hisopadopcr'; // tipoMuestraLaboratorioOptList
 
 	locacionId: string = ''; // locMuestraOptList
 	locacionSlug: string = '';
@@ -1807,7 +1815,8 @@ const labsequenceOptList: Array<any> = [
     {val: '2DO LAB',      label: '2DO LAB' },
     {val: '3ER LAB',      label: '3ER LAB' },
     {val: '4TO LAB',      label: '4TO LAB' },
-    {val: '5TO LAB',      label: '5TO LAB' },
+	{val: '5TO LAB',      label: '5TO LAB' },
+	{val: 'EN SISA',      label: 'LAB-SISA' },
 ];
 
 const reportesVigilanciaOptList: Array<any> = [

@@ -690,27 +690,27 @@ exports.createInitialData = function (){
         {recurso: 'donorione', dow: 5, hora: 13, slug: 'DELEG DON ORIONE 13:30 hs' },
         {recurso: 'donorione', dow: 5, hora: 14, slug: 'DELEG DON ORIONE 14:00 hs' },
 
-        // CIC Mármol Cupo 200 Inicia 15:00 CUPO 200
+        // CIC Mármol Cupo 200 Inicia 14:00 CUPO 200
+        {recurso: 'cicmarmol', dow: 1, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:00 hs' },
+        {recurso: 'cicmarmol', dow: 1, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:30 hs' },
         {recurso: 'cicmarmol', dow: 1, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
         {recurso: 'cicmarmol', dow: 1, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
-        {recurso: 'cicmarmol', dow: 1, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
-        {recurso: 'cicmarmol', dow: 1, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:00 hs' },
+        {recurso: 'cicmarmol', dow: 2, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:30 hs' },
         {recurso: 'cicmarmol', dow: 2, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
         {recurso: 'cicmarmol', dow: 2, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
-        {recurso: 'cicmarmol', dow: 2, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
-        {recurso: 'cicmarmol', dow: 2, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:00 hs' },
+        {recurso: 'cicmarmol', dow: 3, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:30 hs' },
         {recurso: 'cicmarmol', dow: 3, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
         {recurso: 'cicmarmol', dow: 3, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
-        {recurso: 'cicmarmol', dow: 3, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
-        {recurso: 'cicmarmol', dow: 3, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:00 hs' },
+        {recurso: 'cicmarmol', dow: 4, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:30 hs' },
         {recurso: 'cicmarmol', dow: 4, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
         {recurso: 'cicmarmol', dow: 4, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
-        {recurso: 'cicmarmol', dow: 4, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
-        {recurso: 'cicmarmol', dow: 4, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:00 hs' },
+        {recurso: 'cicmarmol', dow: 5, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 14:30 hs' },
         {recurso: 'cicmarmol', dow: 5, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:00 hs' },
         {recurso: 'cicmarmol', dow: 5, hora: 15, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 15:30 hs' },
-        {recurso: 'cicmarmol', dow: 5, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:00 hs' },
-        {recurso: 'cicmarmol', dow: 5, hora: 16, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 16:30 hs' },
         ]
     }
 
