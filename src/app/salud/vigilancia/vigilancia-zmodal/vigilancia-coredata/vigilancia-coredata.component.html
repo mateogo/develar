@@ -60,7 +60,7 @@
       <div class="col">
         <mat-form-field>
           <mat-select #fldTipoDato placeholder="Tipo de Dato"
-              [formControl]="form.controls['tdato']"
+              formControlName="tdato" 
               (selectionChange)="changeSelectionValue('tdato',fldTipoDato.value)" >
             <mat-option *ngFor="let item of tipoDeContactoList" 
               [value]="item.val" >{{ item.label }}</mat-option>
@@ -70,7 +70,7 @@
   
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['tobservacion']" placeholder="Observación" >
+          <input  matInput formControlName="tobservacion" placeholder="Observación respecto teléfono" >
         </mat-form-field>
       </div>
 

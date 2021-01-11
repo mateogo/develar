@@ -118,6 +118,14 @@ export class VigilanciaCoredataComponent implements OnInit {
     this.tDoc = this.person.tdoc || 'DNI';
     this.currentNumDoc = this.person.ndoc;
 
+    let contactData = this.person.contactdata && this.person.contactdata.length && this.person.contactdata[0];
+    console.log('initPerson [%s]', contactData && contactData.slug)
+    if(contactData){
+      this.tdato = contactData.tdato;
+      this.tobservacion = contactData.slug;
+    }
+ 
+
   }
 
   private initLocacion(){
@@ -321,6 +329,8 @@ export class VigilanciaCoredataComponent implements OnInit {
         vAsistencia.ndoc = this.person.ndoc;
         vAsistencia.tdoc = this.person.tdoc;
         vAsistencia.telefono = this.telefono;
+        vAsistencia.tdato = this.tdato;
+        vAsistencia.tobservacion = this.tobservacion;
         vAsistencia.sexo = this.person.sexo;
         vAsistencia.edad = this.edadActual;
         vAsistencia.fenactx = this.person.fenactx;
@@ -436,6 +446,9 @@ export class VigilanciaCoredataComponent implements OnInit {
     setTimeout(()=>{
        this.vinculoForm.reset(this.person);
        this.vinculoForm.get('telefono').setValue(this.asistencia.telefono);
+       this.vinculoForm.get('tdato').setValue((this.asistencia.tdato || this.tdato));
+       console.log('initForEdit [%s] [%s]',this.asistencia.tobservacion, this.tobservacion )
+       this.vinculoForm.get('tobservacion').setValue((this.asistencia.tobservacion || this.tobservacion));
        this.addressForm.reset(this.locacion); 
     }, 100)
   }

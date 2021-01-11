@@ -458,6 +458,8 @@ const asisprevencionSch = new Schema({
     edad:        { type: String, required: false },
     fenactx:     { type: String, required: false },
     telefono:    { type: String, required: false },
+    tdato:       { type: String, required: false },
+    tobservacion:{ type: String, required: false },
     osocial:     { type: String, required: false },
     osocialTxt:  { type: String, required: false },
     contactosEstrechos: { type: Number, required: false },

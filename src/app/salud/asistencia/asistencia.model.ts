@@ -312,6 +312,8 @@ export class Asistencia {
 		fenactx:     string;
 		edad:        string;
 		telefono:    string;
+		tdato:       string;
+		tobservacion: string;
 		osocial:     string; // obrasSociales
 		osocialTxt:  string;
 
