@@ -1,0 +1,59 @@
+$color-destacado: #0645f5;
+$color-resaltado: #0755ff;
+.view-port {
+	max-height: 620px;
+	min-width: 1080px;
+}
+
+.panel-header-control {
+		margin: 0 35px 0 0;
+		font-weight: 400;
+		font-size: 1.4rem;
+		text-align: right;
+}
+
+.panel-header{
+		background-color: #f2eded;
+}
+
+.tab-container{
+		margin-top: 15px;
+}
+
+.panel-header-text {
+		margin: 0 0 0 15px;
+		font-weight: 700;
+		font-size: 1.2rem;
+}
+
+.novedades-container {
+		margin: 10px 0 15px 15px;
+		padding: 5px;
+
+}
+
+
+.text-destacado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 400;
+		font-size: 2rem;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-resaltado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.text-normal {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.2rem;
+		color: $color-destacado;
+}

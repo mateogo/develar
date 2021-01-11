@@ -27,7 +27,7 @@ export class VigilSeguimientoPanelComponent implements OnInit {
 	public showList = false;
 
   private asistenciaList: BehaviorSubject<Asistencia[]>;
-  private asistenciaDataSource: ArrayDataSource<Asistencia>;
+  public asistenciaDataSource: ArrayDataSource<Asistencia>;
 
   public itemsLength: number = 0;
 

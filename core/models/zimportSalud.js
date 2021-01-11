@@ -618,6 +618,7 @@ function updateCoreAsis(asis, person, data){
 		if(data.asignadoa){
 			let investigacion = asis.sintomacovid || new ContextoCovid();
 			investigacion.userAsignado = data.asignadoa;
+			investigacion.hasInvestigacion = investigacion.userId ? true: false;
 			asis.sintomacovid = investigacion;	
 		}
 
@@ -687,6 +688,7 @@ function buildCoreAsis(asis, person, compNum, data){
 		if(data.asignadoa){
 			let investigacion = new ContextoCovid();
 			investigacion.userAsignado = data.asignadoa;
+			investigacion.hasInvestigacion = investigacion.userId ? true: false;
 			asis.sintomacovid = investigacion;
 		}
 

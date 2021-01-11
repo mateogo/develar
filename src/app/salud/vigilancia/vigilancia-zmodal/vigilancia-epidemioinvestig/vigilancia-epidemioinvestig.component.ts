@@ -1,13 +1,12 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, Inject } from '@angular/core';
 import { FormBuilder, AbstractControl, ValidatorFn, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { SaludController } from '../../../salud/salud.controller';
-import { PersonService }   from '../../../salud/person.service';
+import { SaludController } from '../../../salud.controller';
+import { PersonService }   from '../../../person.service';
 
-import { Person, personModel } from '../../../entities/person/person';
-
-import { VigilanciaVinculosComponent }    from '../../../salud/vigilancia/vigilancia-zmodal/vigilancia-vinculos/vigilancia-vinculos.component';
+import { Person, personModel } from '../../../../entities/person/person';
 
 import {  Asistencia,
           Requirente,
@@ -16,106 +15,118 @@ import {  Asistencia,
           InfectionFollowUp,
           Novedad, 
           Locacion,
-          UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
+          UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
-import { devutils }from '../../../develar-commons/utils'
+import { devutils }from '../../../../develar-commons/utils'
 
 const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const DELETE = 'delete';
+const EPIDEMIO = 'epidemio:investig';
 const FIEBRE_TXT = [
               'Tuvo 38 o más grados de fiebre en los últimos 14 días',
               'Cree haber tenido fiebre en los últimos 14 días',
               'No tuvo fiebre en los últimos 14 días',
       ]
 
+      
 @Component({
-  selector: 'investig-epidemio-edit',
-  templateUrl: './investig-epidemio-edit.component.html',
-  styleUrls: ['./investig-epidemio-edit.component.scss']
+  selector: 'vigilancia-epidemioinvestig',
+  templateUrl: './vigilancia-epidemioinvestig.component.html',
+  styleUrls: ['./vigilancia-epidemioinvestig.component.scss']
 })
-export class InvestigEpidemioEditComponent implements OnInit {
-	@Input() token: Asistencia;
-  @Input() usersOptList: Array<any> = [];
-	@Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
+export class VigilanciaEpidemioinvestigComponent implements OnInit {
+	// @Input() token: Asistencia;
+  // @Input() usersOptList: Array<any> = [];
+	// @Output() updateToken = new EventEmitter<UpdateAsistenciaEvent>();
 
   //public actualStateOptList = AsistenciaHelper.getOptionlist('estadoActualInfection');
   //public avanceOptList = AsistenciaHelper.getOptionlist('avance');
   //public estadoOptList = AsistenciaHelper.getOptionlist('estado');
   //public novedadOptList = AsistenciaHelper.getOptionlist('novedades');
+  //public prioridadOptList = AsistenciaHelper.getOptionlist('prioridad');
+  //public avanceCovidOptList = AsistenciaHelper.getOptionlist('avanceInfection')
 
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection');
   public tinternacionOptList = AsistenciaHelper.getOptionlist('tinternacion')
   public derivacionOptList = AsistenciaHelper.getOptionlist('derivacion')
   public trabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
-  public avanceCovidOptList = AsistenciaHelper.getOptionlist('avanceInfection')
+  public usersOptList: Array<any> = [];
 
 	public form: FormGroup;
+  public formClosed = false;
 
-  private formAction = "";
-
-  public estadoActualCovid = '';
   public asignadoInicial = "";
+  public asistencia: Asistencia;
 
+  private result: UpdateAsistenciaEvent;
 
-  constructor(
-  	private fb: FormBuilder,
-  	) { 
-  		this.form = this.buildForm();
+  constructor(    
+    public dialogRef: MatDialogRef<VigilanciaEpidemioinvestigComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private ctrl: SaludController,
+    private fb : FormBuilder) {
+
+  		  this.form = this.buildForm();
 	}
 
 
 
-  ngOnInit() {
-    
-  	this.initForEdit(this.form, this.token);
+  ngOnInit() {    
+    this.usersOptList = this.ctrl.buildEncuestadoresOptList();
+  	this.asistencia = this.data.asistencia
+  	this.result = {
+							  		action: UPDATE,
+							  		type: EPIDEMIO,
+							  		token: this.asistencia
+  								} as  UpdateAsistenciaEvent;
 
+    this.initForEdit(this.form, this.asistencia);
+    
   }
 
   onSubmit(){
-  	this.initForSave(this.form, this.token);
-  	this.formAction = UPDATE;
-
-  	this.emitEvent(this.formAction);
+    this.formClosed = true;
+    this.result.action = UPDATE;
+  	this.initForSave(this.form, this.asistencia);
+  	this.saveToken();
   }
 
   onCancel(){
-  	this.formAction = CANCEL;
-  	this.emitEvent(this.formAction);
-  }
-
-  deleteToken(){
-    this.formAction = DELETE;
-    this.emitEvent(this.formAction);
-
-  }
-
-  emitEvent(action:string){
-  	this.updateToken.next({
-  		action: action,
-  		type: TOKEN_TYPE,
-      selected: true,
-  		token: this.token
-  	});
-
+    this.result.action = CANCEL;
+		this.dialogRef.close();
   }
 
   changeSelectionValue(type, val){
-
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
   }
 
-  changeActualState(estado){
-    //c onsole.log('Estado COVID: [%s]', estado);
+
+  private saveToken(){
+    this.ctrl.manageEpidemioState(this.result).subscribe(asistencia =>{
+    	if(asistencia){
+    		this.result.token = asistencia;
+    		this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
+    		this.closeDialogSuccess()
+    	}else {
+    		this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
+    	}
+    })
   }
 
-  buildForm(): FormGroup{
+  private closeDialogSuccess(){
+    this.dialogRef.close(this.result);
+  }
+
+
+
+
+  private buildForm(): FormGroup{
   	let form: FormGroup;
 
     form = this.fb.group({
 			description: [null],
-
-      prioridad:   [null],
 
       fiebre:           [null],
       fiebreRB:         [null],
@@ -138,6 +149,7 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasViaje:           [null],
       hasContacto:        [null],
       hasEntorno:         [null],
+
       hasDiabetes:        [null],
       hasHta:             [null],
       hasCardio:          [null],
@@ -153,10 +165,10 @@ export class InvestigEpidemioEditComponent implements OnInit {
       internacionSlug:     [null],
 
       derivacion:          [null],
+      derivacionSlug:      [null],
       trabajo:             [null],
       trabajoSlug:         [null],
 
-      derivacionSlug:      [null],
 
       hasTrabajoAdulMayores:  [null],
       hasTrabajoHogares:      [null],
@@ -165,12 +177,12 @@ export class InvestigEpidemioEditComponent implements OnInit {
       hasTrabajoSalud:        [null],
       contexto:               [null],
 
+
       fe_investig:        [null],
       userId:             [null, [Validators.required]],
       hasInvestigacion:   [null],
 
       //actualState:        [null],
-      avanceCovid:        [null],
 
     });
 
@@ -181,16 +193,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     let sintomaCovid = token.sintomacovid || new ContextoCovid();
     let requirente = token.requeridox || new Requirente();
 
-    let infeccion = token.infeccion;
-    if(infeccion){
-      this.estadoActualCovid = AsistenciaHelper.getOptionLabel('estadoActualInfection', infeccion.actualState);
-
-    }else {
-      infeccion = new InfectionFollowUp();
-      this.estadoActualCovid = 'Pendiente de evaluación';
-    }
-
-    let fiebreOptions = 1;
 
 		form.reset({
 			description: token.description,
@@ -254,59 +256,21 @@ export class InvestigEpidemioEditComponent implements OnInit {
       fiebre:             sintomaCovid.fiebre,
       fiebreRB:           sintomaCovid.fiebreRB,
 
-    	nombre:        requirente.nombre || requirente.slug,
-      apellido:      requirente.apellido,
-      //actualState:   infeccion.actualState,
-      avanceCovid:   infeccion.avance,
 
     });
 
     this.asignadoInicial = sintomaCovid.userAsignado ? sintomaCovid.userAsignado : '';
 
-
 		return form;
   }
 
-  private buildNovedades(novedades: Novedad[]){
-    novedades = novedades || [];
-    let novedadesFG = novedades.map(novedad => this.fb.group(novedad))
-    let novedadesFormArray = this.fb.array(novedadesFG);
-    this.form.setControl('novedades', novedadesFormArray);
-  }
 
-  get novedades(): FormArray{
-    return this.form.get('novedades') as FormArray;
-  }
-
-  addNovedad(){
-    let item = new Novedad();
-    let novedadFG = this.fb.group(item);
-    let formArray = this.form.get('novedades') as FormArray;
-    formArray.push(novedadFG);
-
-  }
-
-  removeItem(e, item){
-    e.preventDefault();
-    this.removeNovedadItem(item);
-  }
-
-  private removeNovedadItem(item){
-    
-    let formArray = this.form.get('novedades') as FormArray;
-    formArray.removeAt(item);
-  }
-
-
-	initForSave(form: FormGroup, token: Asistencia): Asistencia {
+	private initForSave(form: FormGroup, token: Asistencia): Asistencia {
 		const fvalue = form.value;
 
 		const entity = token;
 
 		entity.description =  fvalue.description;
-
-    entity.prioridad =  fvalue.prioridad;
-
 		entity.estado = entity.estado || 'activo';
 
     entity.sintomacovid = this.buildCovid(fvalue, entity);
@@ -314,17 +278,12 @@ export class InvestigEpidemioEditComponent implements OnInit {
 		return entity;
 	}
 
-  private leyendaFiebre(valor): string{
-    if(!valor || valor >3 || valor <1) valor = 3
-    return FIEBRE_TXT[valor-1]
-  }
-
   private buildCovid(fvalue, entity: Asistencia): ContextoCovid{
     let covid = entity.sintomacovid || new ContextoCovid();
     let infeccion = entity.infeccion || new InfectionFollowUp()
 
     covid.hasFiebre = fvalue.fiebreRB !== 3;
-    covid.fiebreTxt = this.leyendaFiebre(fvalue.fiebreRB);
+    covid.fiebreTxt = this._leyendaFiebre(fvalue.fiebreRB);
     covid.fiebre =    fvalue.fiebre;
     covid.fiebreRB =  fvalue.fiebreRB;
 
@@ -338,9 +297,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasNeumonia =     fvalue.hasNeumonia;
     covid.hasDolorCabeza =  fvalue.hasDolorCabeza;
     covid.hasDiarrea =      fvalue.hasDiarrea;
-    covid.hasFaltaGusto =   fvalue.hasFaltaGusto;
-    covid.hasFaltaOlfato =  fvalue.hasFaltaOlfato;
-    covid.sintomas =        fvalue.sintomas;
     covid.hasSintomas =     fvalue.hasSintomas;
     covid.fe_inicio =       fvalue.fe_inicio;
 
@@ -376,7 +332,6 @@ export class InvestigEpidemioEditComponent implements OnInit {
     covid.hasTrabajoSalud =        fvalue.hasTrabajoSalud;
 
     covid.contexto =               fvalue.contexto;
-    covid.avanceCovid = fvalue.avanceCovid;
 
     // Tomo el valor pre-existente, no se edita acá
     covid.actualState = infeccion.actualState;
@@ -394,6 +349,11 @@ export class InvestigEpidemioEditComponent implements OnInit {
     }
 
     return covid;
+  }
+
+  private _leyendaFiebre(valor): string{
+    if(!valor || valor >3 || valor <1) valor = 3
+    return FIEBRE_TXT[valor-1]
   }
 
 

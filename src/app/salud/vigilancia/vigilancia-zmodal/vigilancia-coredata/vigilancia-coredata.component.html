@@ -47,13 +47,36 @@
         </mat-form-field>
       </div>
 
+
+    </div>
+
+    <div class="row" >
       <div class="col">
         <mat-form-field>
           <input  matInput formControlName="telefono" placeholder="Teléfono de contacto" >
         </mat-form-field>
       </div>
 
+      <div class="col">
+        <mat-form-field>
+          <mat-select #fldTipoDato placeholder="Tipo de Dato"
+              [formControl]="form.controls['tdato']"
+              (selectionChange)="changeSelectionValue('tdato',fldTipoDato.value)" >
+            <mat-option *ngFor="let item of tipoDeContactoList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+      <div class="col">
+        <mat-form-field>
+          <input  matInput [formControl]="form.controls['tobservacion']" placeholder="Observación" >
+        </mat-form-field>
+      </div>
+
+
     </div>
+
     </fieldset>
       
     <fieldset formGroupName="addressForm">

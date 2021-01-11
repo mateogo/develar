@@ -422,7 +422,7 @@
 
 
       <div class="row" >
-        <div class="col-md-3 offset-md-4">
+        <div class="col-md-3 offset-md-1">
           <mat-form-field>
             <mat-select #fldUserId placeholder="Informe elaborado por:"
                 [formControl]="form.controls['userId']"
@@ -433,12 +433,24 @@
           </mat-form-field>
         </div>
 
-			  <div class="col-md-3">
-			    <mat-form-field>
-			      <input  matInput  
-			              formControlName="fe_investig" placeholder="Fecha elaboración informe" >
-			    </mat-form-field>
-			  </div>
+		<div class="col-md-3">
+		<mat-form-field>
+			<input  matInput  
+					formControlName="fe_investig" placeholder="Fecha elaboración informe" >
+		</mat-form-field>
+		</div>
+        <div class="col-md-2 d-md-flex justify-content-start align-items-center" 
+            title="¿Informe concluido?">
+            <mat-checkbox class="mat-checkbox-wrap"
+                  [checked]="true"
+                  [formControl]="form.controls['hasInvestigacion']" >
+                    Informe concluido</mat-checkbox>
+        </div>
+
+
+        <div class="col-md-3 d-flex align-items-center">
+                <p><span class="text-normal">Asignado inicial: {{ asignadoInicial }}</span></p>
+		</div>
 
       </div>
 

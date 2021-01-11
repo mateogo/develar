@@ -1723,14 +1723,7 @@ export class SaludController {
     let arr = []
     if(!this._trabajadorxs) return arr;
     
-    this._trabajadorxs.forEach(x => {
-      let t = {
-        val: x._id,
-        label: x.displayName
-      }
-      arr.push(t);
-
-    })
+    arr = this._trabajadorxs.map(x => ({val: x._id, label: x.displayName}) )
 
     arr.sort((f, s)=>{
       if(f.label < s.label )return -1;

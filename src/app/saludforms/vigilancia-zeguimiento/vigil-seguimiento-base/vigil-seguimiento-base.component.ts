@@ -21,6 +21,7 @@ import { FollowUpEsquemaModalService }    from '../../vigilancia-zmodal-managers
 import { FollowUpHistoriaModalService }   from '../../vigilancia-zmodal-managers/fup-historia-modal.service';
 
 import { CovidBaseModalService }          from '../../vigilancia-zmodal-managers/covid-base-modal.service';
+import { EpidemioInvestigModalService }   from '../../vigilancia-zmodal-managers/epidemio-investig-modal.service';
 import { LaboratorioNovedadService }      from '../../vigilancia-zmodal-managers/laboratorio-novedad-modal.service';
 
 
@@ -38,7 +39,8 @@ const ERROR =    'error';
   styleUrls: ['./vigil-seguimiento-base.component.scss'],
   providers: [ CoreEditModalService, 
   						FollowUpNovedadModalService, FollowUpCalendarioModalService, FollowUpEsquemaModalService, FollowUpHistoriaModalService,
-  						CovidBaseModalService,
+              CovidBaseModalService,
+              EpidemioInvestigModalService,
   						ContactoEstrechosModalService,
   						LaboratorioNovedadService ]
 })
@@ -88,6 +90,7 @@ export class VigilSeguimientoBaseComponent implements OnInit {
     private fupEsquema: FollowUpEsquemaModalService,
     private fupHistory: FollowUpHistoriaModalService,
     private covidEdit: CovidBaseModalService,
+    private epidemio: EpidemioInvestigModalService,
     private cEstrecho: ContactoEstrechosModalService,
     private labNovedad: LaboratorioNovedadService
   	) { 
@@ -171,14 +174,15 @@ export class VigilSeguimientoBaseComponent implements OnInit {
 
   private manageModalEditors(token: string){
 
-    if(token === 'seguimiento')           this.openSeguimientoModal()
-    if(token === 'seguimientofwup')       this.openSeguimientoFwUpModal()
-    if(token === 'calendarioseguimiento') this.openCalendarioModal()
-    if(token === 'historialseguimiento')  this.openSeguimientoHistoryModal()
+    if(token === 'seguimiento')           this.openSeguimientoModal();
+    if(token === 'seguimientofwup')       this.openSeguimientoFwUpModal();
+    if(token === 'calendarioseguimiento') this.openCalendarioModal();
+    if(token === 'historialseguimiento')  this.openSeguimientoHistoryModal();
 
-    if(token === 'infection')     this.openInfectionModal()
+    if(token === 'infection')            this.openInfectionModal();
+    if(token === 'epidemioinvestig')     this.openEpidemioModal();
 
-    if(token === 'laboratorio')   this.openLaboratorioModal(null)
+    if(token === 'laboratorio')   this.openLaboratorioModal(null);
     if(token === 'vinculofam')    this.openVinculosFam(this.asistencia, null);
 
   }
@@ -198,6 +202,16 @@ export class VigilSeguimientoBaseComponent implements OnInit {
   private openInfectionModal(){
 
 		this.covidEdit.openDialog(this.asistencia).subscribe(editEvent =>{
+			if(editEvent.action === UPDATE){
+        this.asistencia = editEvent.token;
+        this.manageAsistenciaView(this.viewList);				
+			}
+		})
+  }
+
+  private openEpidemioModal(){
+
+		this.epidemio.openDialog(this.asistencia).subscribe(editEvent =>{
 			if(editEvent.action === UPDATE){
         this.asistencia = editEvent.token;
         this.manageAsistenciaView(this.viewList);				

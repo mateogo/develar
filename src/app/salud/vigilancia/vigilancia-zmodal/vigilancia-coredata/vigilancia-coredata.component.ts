@@ -39,6 +39,8 @@ export class VigilanciaCoredataComponent implements OnInit {
   public asistencia: Asistencia;
   public person: Person;
   private telefono: string;
+  private tdato: string;
+  private tobservacion: string;
 
   public isNewLocacion = false;
   private isLocacionFromAsistencia = false;
@@ -69,7 +71,9 @@ export class VigilanciaCoredataComponent implements OnInit {
   public tDoc = "DNI";
   private currentNumDoc = '';
 
-  
+  public tipoDeContactoList = personModel.contactTipoList;
+  public contactTypeList = personModel.contactTypeList;
+
   private result: UpdateAsistenciaEvent;
 
   constructor(
@@ -264,6 +268,8 @@ export class VigilanciaCoredataComponent implements OnInit {
         this.person.contactdata = [contactData];
       }
       contactData.data = this.telefono;
+      contactData.tdato = this.tdato;
+      contactData.slug = this.tobservacion;
 
 
   }
@@ -341,6 +347,8 @@ export class VigilanciaCoredataComponent implements OnInit {
     //this.person = {...this.person, ...this.form.value} --->OjO... esto clona, no es lo buscado
     this.person = Object.assign(this.person, this.vinculoForm.value);
     this.telefono = this.vinculoForm.value.telefono;
+    this.tdato = this.vinculoForm.value.tdato;
+    this.tobservacion = this.vinculoForm.value.tobservacion;
 
     if(this.person.fenactx){
 	    let dateD = devutils.dateFromTx(this.person.fenactx);
@@ -384,6 +392,8 @@ export class VigilanciaCoredataComponent implements OnInit {
       apellido:     [null],
 
       telefono:     [null],
+      tdato:        [null],
+      tobservacion: [null],
       sexo:         [null],
       fenactx:      [null],
       estado:       [null],

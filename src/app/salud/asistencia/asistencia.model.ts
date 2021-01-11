@@ -587,7 +587,7 @@ const tipoMuestraLaboratorioOptList = [
 	{ val: 'amplificacionisotermica',  label: 'Amplificación Isotérmica' },
 	{ val: 'inmunocromatografia',      label: 'Inmunocromatografía' },
 	{ val: 'inmunoensayofluorescente', label: 'Inmunoensayo Fluorescente' },
-	{ val: 'clinica',                  label: 'Clínica' },
+	{ val: 'criterioclinico',          label: 'Criterio Clínico' },
 	{ val: 'otro',                     label: 'Otro' },
 ];
 
@@ -1192,6 +1192,7 @@ export class VigilanciaBrowse {
 		fenovd_ts: number = 0;
 		fenovh_ts: number = 0;
 		resultado: string = '';
+		userAsignado: string = '';
 		urgencia:  number;
 		trabajadorId: string;
 

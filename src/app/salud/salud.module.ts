@@ -128,6 +128,7 @@ import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdash
 import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
 import { LlamadosDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/llamados-dashboard-page/llamados-dashboard-page.component';
 import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llamados-browse/llamados-browse.component';
+import { VigilanciaEpidemioinvestigComponent } from './vigilancia/vigilancia-zmodal/vigilancia-epidemioinvestig/vigilancia-epidemioinvestig.component';
 
 @NgModule({
   imports: [
@@ -251,6 +252,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
     VigilanciaMappingPageComponent,
     LlamadosDashboardPageComponent,
     LlamadosBrowseComponent,
+    VigilanciaEpidemioinvestigComponent,
   ],
   entryComponents: 
   [
@@ -279,6 +281,7 @@ import { LlamadosBrowseComponent } from './vigilancia/vigilancia-zdashboard/llam
       VigilanciaSeguimientofwupComponent,
       VigilanciaSeguimientohistoryComponent,
       VigilanciaInfeccionComponent,
+      VigilanciaEpidemioinvestigComponent,
       VigilanciaLaboratorioComponent,
       VigilanciaVinculosComponent,
       VigilanciaSeguimientocalendarComponent,

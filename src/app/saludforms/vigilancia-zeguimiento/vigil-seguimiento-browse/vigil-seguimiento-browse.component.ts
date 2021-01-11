@@ -145,6 +145,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       qDaysSisa:        [null],
       qNotConsultaSisa: [null],
       resultado:        [null],
+      userAsignado:     [null],
 
       tipoSeguimiento: [null],
       qIntents:        [null],
@@ -206,6 +207,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
         qDaysSisa: query.qDaysSisa,
         qNotConsultaSisa: query.qNotConsultaSisa,
         resultado: query.resultado,
+        userAsignado: query.userAsignado,
 
         fenovd:      query.fenovd,
         fenovh:      query.fenovh,
@@ -271,6 +273,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     entity.qDaysSisa = fvalue.qDaysSisa;
     entity.qNotConsultaSisa = fvalue.qNotConsultaSisa;
     entity.resultado = fvalue.resultado;
+    entity.userAsignado = fvalue.userAsignado;
 
     entity.fenovd =        fvalue.fenovd;
     entity.fenovh =        fvalue.fenovh;

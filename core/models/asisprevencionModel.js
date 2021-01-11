@@ -941,6 +941,11 @@ function buildQuery(query, today){
     q["followUp.lastCall"] = query['resultado'];
   }
 
+  if(query['userAsignado']){
+    q["sintomacovid.userAsignado"] = query['userAsignado'];
+  }
+
+
   if(query['qIntents']){
     q["followUp.qIntents"] = { $gte: parseInt(query['qIntents'], 10) } ;
   }
