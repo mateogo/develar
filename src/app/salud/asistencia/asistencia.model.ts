@@ -617,6 +617,7 @@ const resultadoMuestraLaboratorioOptList = [
 	{ val: 'pendiente',   label: 'Pendiente resultado'  },
 	{ val: 'noanalizada', label: 'No apta para análisis'  },
 	{ val: 'invalidada',  label: 'No cumple criterio epidemio' },
+	{ val: 'anulada',     label: 'Anulada por error de carga' },
 ];
 
 		// estado: verificado|no_verificado|invalido
@@ -2623,7 +2624,7 @@ export class AsistenciaHelper {
       if(key === 'asistenciaId' && cleanAsistenciaId) delete query[key];
 
       if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key]; // estas keys solo se usan en el form
-      if(key === 'fenovd'   || key === 'fenovh')    delete query[key]; // estas keys solo se usan en el form
+      //if(key === 'fenovd'   || key === 'fenovh')    delete query[key]; // estas keys solo se usan en el form
 
       if(key === 'isVigilado'       && !query[key]) delete query[key];
       if(key === 'hasPrexistentes'  && !query[key]) delete query[key];

@@ -1662,7 +1662,8 @@ var once = 0;
 
 async function fetchLatLon(list){
   console.log('start:[%s] step: [%s] once:  [%s]', _start, _step, once)
-  for (let index = _start; index < _start + _step; index++) {
+  let maxvalue = list.length <= (_start + _step) ? list.length : (_start + _step);
+  for (let index = _start; index < maxvalue; index++) {
     const token = list[index];
     if(validToken(token)){
       let response = await mapUtils.fetchLatLonByAddress(token);

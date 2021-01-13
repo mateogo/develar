@@ -278,7 +278,7 @@ export class VigilSeguimientoBaseComponent implements OnInit {
 
 
   private buildMuestrasLaboratorio(token: Asistencia){
-    this.muestraslabList = token.muestraslab || [];
+    this.muestraslabList = (token.muestraslab || []).filter(t => t.resultado !== 'anulada');
 
   }
 
