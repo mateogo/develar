@@ -119,7 +119,6 @@ export class VigilanciaCoredataComponent implements OnInit {
     this.currentNumDoc = this.person.ndoc;
 
     let contactData = this.person.contactdata && this.person.contactdata.length && this.person.contactdata[0];
-    console.log('initPerson [%s]', contactData && contactData.slug)
     if(contactData){
       this.tdato = contactData.tdato;
       this.tobservacion = contactData.slug;
@@ -447,7 +446,6 @@ export class VigilanciaCoredataComponent implements OnInit {
        this.vinculoForm.reset(this.person);
        this.vinculoForm.get('telefono').setValue(this.asistencia.telefono);
        this.vinculoForm.get('tdato').setValue((this.asistencia.tdato || this.tdato));
-       console.log('initForEdit [%s] [%s]',this.asistencia.tobservacion, this.tobservacion )
        this.vinculoForm.get('tobservacion').setValue((this.asistencia.tobservacion || this.tobservacion));
        this.addressForm.reset(this.locacion); 
     }, 100)

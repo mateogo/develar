@@ -2595,7 +2595,27 @@ export class AsistenciaHelper {
 	}
 
 	static cleanQueryToken(query:VigilanciaBrowse, cleanAsistenciaId:boolean = true):VigilanciaBrowse{
-		if(!query) return null;
+    if(!query) return null;
+
+    if(query.fecomp_d && query.fecomp_h){
+      query.fecomp_ts_d = devutils.dateNumFromTx(query.fecomp_d);
+      query.fecomp_ts_h = devutils.dateNumPlusOneFromTx(query.fecomp_h);
+
+    }else{
+      query.fecomp_ts_d = null;
+      query.fecomp_ts_h = null;
+
+    }
+
+    if(query.fenovd && query.fenovh){
+      query.fenovd_ts = devutils.dateNumFromTx(query.fenovd);
+      query.fenovh_ts = devutils.dateNumPlusOneFromTx(query.fenovh);
+
+    }else{
+      query.fenovd_ts = null;
+      query.fenovh_ts = null;
+    }
+
 
     Object.keys(query).forEach(key =>{
       if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
@@ -2603,6 +2623,7 @@ export class AsistenciaHelper {
       if(key === 'asistenciaId' && cleanAsistenciaId) delete query[key];
 
       if(key === 'fecomp_h' || key === 'fecomp_d')  delete query[key]; // estas keys solo se usan en el form
+      if(key === 'fenovd'   || key === 'fenovh')    delete query[key]; // estas keys solo se usan en el form
 
       if(key === 'isVigilado'       && !query[key]) delete query[key];
       if(key === 'hasPrexistentes'  && !query[key]) delete query[key];

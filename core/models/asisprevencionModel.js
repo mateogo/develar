@@ -1594,6 +1594,7 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
     return true;
   })
 
+  console.log('GEOLOCALIZACION: Movim[%s] geoList[%s]', movimientos && movimientos.length, geoList && geoList.length)
 
   geoList = geoList.map(asis => {
     let locacion = asis.locacion;
@@ -1638,44 +1639,53 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
   })
 
   if(query.rebuildLatLon){
-    checkForLatLon(geoList);
+    fetchLatLon(geoList);
   }
 
   cb(geoList);
 }
 
+// function checkForLatLon(list){
+//   list.forEach(token => {
+//     if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
+//       if(once >= _start && once < (_start + _step)) fetchLatLon(token);
+//       once += 1;
+//     }
+//   })
+//   _start += _step;
+//   once = _start;
+// }
+
 var _start = 0;
 var _step = 100;
 var once = 0;
 
-function checkForLatLon(list){
-  list.forEach(token => {
-    if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
-      if(once >= _start && once < (_start + _step)) fetchLatLon(token);
-      once += 1;
+async function fetchLatLon(list){
+  console.log('start:[%s] step: [%s] once:  [%s]', _start, _step, once)
+  for (let index = _start; index < _start + _step; index++) {
+    const token = list[index];
+    if(validToken(token)){
+      let response = await mapUtils.fetchLatLonByAddress(token);
+      if(response.status === 'OK'){
+        await updateLatLon(response, token);
+        console.log('LatLon: ok [%s]', token.personSlug)
+    
+      }else {
+        console.log('LatLon: ERROR [%s]', token.ndoc)
+    
+      }    
 
     }
 
-  })
+  }
   _start += _step;
-  once = _start;
-
-
-
 }
 
-async function fetchLatLon(token){
-  let response = await mapUtils.fetchLatLonByAddress(token);
-  if(response.status === 'OK'){
-    await updateLatLon(response, token);
-    console.log('LatLon: ok [%s]', token.personSlug)
-
-  }else {
-    console.log('LatLon: ERROR')
-
+function validToken(token){
+  if((token.lat === -34.8112108487836 || token.lon ===  -58.3581617661068) && (token.citY !== 'S/D' && token.street1 !== 'S/D')){
+    return true
   }
-
-
+  return false;
 }
 
 async function updateLatLon(response, token){

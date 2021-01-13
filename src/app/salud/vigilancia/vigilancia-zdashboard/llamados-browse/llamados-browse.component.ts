@@ -14,6 +14,8 @@ const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
 const SEARCH = 'search';
 const SEARCH_NEXT = 'search_next';
+const INCORPORACION = 'INCORPORACION';
+const SEGUIMIENTO = 'SEGUIMIENTO';
 
 @Component({
   selector: 'llamados-browse',
@@ -23,6 +25,7 @@ const SEARCH_NEXT = 'search_next';
 export class LlamadosBrowseComponent implements OnInit {
 	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
   @Input() export = false;
+  @Input() fechatipo =  SEGUIMIENTO;
   @Input() title = 'Parametros del reporte'
 	@Output() updateQuery = new EventEmitter<VigilanciaBrowse>();
 
@@ -228,12 +231,21 @@ export class LlamadosBrowseComponent implements OnInit {
 
     entity.avanceCovid =   fvalue.avanceCovid;
     entity.sintomaCovid =   fvalue.sintomaCovid;
+    if(this.fechatipo === SEGUIMIENTO){
+      entity.fenovd = devutils.txFormatted(fvalue.fenovd);
+      entity.fenovh = devutils.txFormatted(fvalue.fenovh);
 
-    entity.fenovd = devutils.txFormatted(fvalue.fenovd);
-    entity.fenovh = devutils.txFormatted(fvalue.fenovh);
+      entity.fecomp_d = '';
+      entity.fecomp_h = '';
+  
+    }else if (this.fechatipo === INCORPORACION){
+      entity.fecomp_d = devutils.txFormatted(fvalue.fenovd);
+      entity.fecomp_h = devutils.txFormatted(fvalue.fenovh);
 
-    entity.fenovd_ts = entity.fenovd ? devutils.dateNumFromTx(entity.fenovd) : 0;
-    entity.fenovh_ts = entity.fenovh ? devutils.dateNumPlusOneFromTx(entity.fenovh) : 0;
+      entity.fenovd = '';
+      entity.fenovh = '';
+    }
+
 
     if(this.currentPerson){
       entity.asistidoId = this.currentPerson._id;

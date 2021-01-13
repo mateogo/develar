@@ -1,3 +1,10 @@
+
+<llamados-browse  [query]="query" 
+                  [export]='true'
+                  [title]="browseTitle"
+                  [fechatipo]="incorporacion"
+                  (updateQuery)="refreshSelection($event)"></llamados-browse>
+
 <ng-container *ngIf='showMap'>
 
 	<app-map-box [mapData]="mapData"></app-map-box>

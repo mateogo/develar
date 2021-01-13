@@ -18,6 +18,9 @@ import { 	Asistencia,
 
 import {SourceMapData, GeoMapBoxJSON, Geometry, GeoFeature, GeoJSON_Helper } from '../../../../develar-commons/mapbox/map-model';
 
+const SEARCH = 'search';
+const EXPORT = 'export';
+
 
 @Component({
   selector: 'app-vigilancia-mapping-page',
@@ -27,22 +30,33 @@ import {SourceMapData, GeoMapBoxJSON, Geometry, GeoFeature, GeoJSON_Helper } fro
 export class VigilanciaMappingPageComponent implements OnInit {
 	public mapData: SourceMapData[] = [];
 	public showMap = false;
+	public incorporacion = 'INCORPORACION';
+
+	public query: VigilanciaBrowse;
+	public browseTitle = 'Epidemiología: Geolocalización de afectados/as'
 
   constructor(
   		private dsCtrl: SaludController
   	) { }
 
   ngOnInit(): void {
-  	this.fetchData()
+	 this.query = new VigilanciaBrowse();
+
+  }
+
+  refreshSelection(query: VigilanciaBrowse){
+
+    this.fetchData(query);
 
   }
 
 
-  private fetchData(){
-  	let query = new VigilanciaBrowse();
-  	query.reporte = "GEOLOCALIZACION";
-  	query = AsistenciaHelper.cleanQueryToken(query);
-  	query.rebuildLatLon = true;
+  private fetchData(query: VigilanciaBrowse){
+    this.showMap = false;
+
+    query.rebuildLatLon = true;
+    query.reporte = "GEOLOCALIZACION";
+
   	
   	this.dsCtrl.fetchGeoDashboard<AsistenciaGeolocalizacion>(query).subscribe(list => {
   		if(list && list.length){

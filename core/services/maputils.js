@@ -212,6 +212,28 @@ function lookUpByLocationIQ(address, errcb, cb){
 
 
 }
+exports.fetchLatLonByAddress = function (address) {
+	return new Promise((resolve)=> {
+
+		let location = buildNominatimQueryAddress(address);
+		let path = buildLocationIQQueryPath(location);
+		let url = locationIQHost + path;
+		request(url, {json: true}, (err, res, body) =>{
+
+			if(err) {
+				resolve(err)
+			}else {
+	   		resolve(decodeLocationIQResponse(body));
+
+			}
+
+		});
+
+	})
+
+}
+
+
 
 
 function lookUpByNominatimOldTwo(address, errcb, cb){
@@ -273,27 +295,6 @@ function lookUpByNominatimOld(address, errcb, cb){
 		console.dir(e);
 		console.error(`GOT error: ${e.message}`);
 	});
-}
-
-exports.fetchLatLonByAddress = function (address) {
-	return new Promise((resolve)=> {
-
-		let location = buildNominatimQueryAddress(address);
-		let path = buildLocationIQQueryPath(location);
-		let url = locationIQHost + path;
-		request(url, {json: true}, (err, res, body) =>{
-
-			if(err) {
-				resolve(err)
-			}else {
-	   		resolve(decodeLocationIQResponse(body));
-
-			}
-
-		});
-
-	})
-
 }
 
 
