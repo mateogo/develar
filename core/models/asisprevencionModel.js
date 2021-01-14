@@ -1510,7 +1510,9 @@ exports.findByQuery = function (query, errcb, cb) {
       necesitaLab = true;
     }
 
+    console.log('findByQuery#1513')
     console.dir(regexQuery);
+    console.log('<<<<<<<<<<<<<<<<<')
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {
@@ -1776,7 +1778,9 @@ function agruparMovimientosPorFechaLlamado(movimientos, query){
       let groupByFecha = new Map();
       let fedesde = 0;
       let fehasta = 0;
+      console.log('query original: #1781 [%s]',movimientos && movimientos.length)
       console.dir(query)
+      console.log('<<<<<<<<<<<<<<<<<')
 
       if(query['fenovd_ts'] && query['fenovh_ts']){
         fedesde = parseInt(query['fenovd_ts'], 10);
@@ -1810,22 +1814,31 @@ function _buildLlamadoToken(groupByFecha, fUp, covid,  fedesde, fehasta){
   let fecha_llamado = utils.dateToStr(new Date(fUp.fets_llamado));
 
   if(audit){
-    userId =  audit.userId;
-    username =  audit.username;
+    userId =  audit.userId || userId;
+    username =  audit.username || username;
   }
 
-  let indexTx = fecha_llamado + ':' + userId  + ':' + (covid ? 'covid':'nocovid')
+  let indexTx = fecha_llamado + ':' + userId ; // + ':' + (covid ? 'covid':'nocovid')
 
   if(groupByFecha.has(indexTx)){
     groupByFecha.get(indexTx).qty  += 1;
+    groupByFecha.get(indexTx).qcovid += covid ? 1: 0;
+    groupByFecha.get(indexTx).qnocovid += covid ? 0: 1;
+    groupByFecha.get(indexTx).qlogrado += fUp.resultado === 'logrado' ? 1 : 0;
+    groupByFecha.get(indexTx).qnocontesta += fUp.resultado === 'nocontesta' ? 1 : 0;
+    groupByFecha.get(indexTx).qnotelefono += fUp.resultado === 'notelefono' ? 1 : 0;
 
   }else{
     let token = {
                   fets_llamado: fUp.fets_llamado,
                   fecha: utils.dateToStr(new Date(fUp.fets_llamado)),
                   index: indexTx,
-                  covid: covid,
                   qty: 1,
+                  qcovid: covid ? 1: 0,
+                  qnocovid: covid ? 0: 1,
+                  qlogrado: fUp.resultado === 'logrado' ? 1 : 0,
+                  qnocontesta: fUp.resultado === 'nocontesta' ? 1 : 0,
+                  qnotelefono: fUp.resultado === 'notelefono' ? 1 : 0,
                   userId: userId,
                   username: username 
                 }

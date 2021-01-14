@@ -11,7 +11,8 @@ import { 	Asistencia,
           AsistenciaSig, 
 					UpdateAsistenciaEvent, 
 					UpdateAlimentoEvent, 
-					UpdateAsistenciaListEvent,
+          UpdateAsistenciaListEvent,
+          OptList,
 					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 
 const SEGUIMIENTO = 'LLAMADOSEPIDEMIO';
@@ -39,8 +40,13 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   public chartOptions: any = {};
   public chartLabels: any = {};
 
+
   public data$ = new BehaviorSubject<any>({});
   public dumpData = false;
+
+  public usersOptList: OptList[];
+  public userTable: Array<UserFollowUp> = [];
+
 
   constructor(
       private dsCtrl: SaludController,
@@ -48,6 +54,8 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+
 		this.query = new VigilanciaBrowse();
 		this.query.reporte = SEGUIMIENTO;
 
@@ -75,7 +83,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   }
 
   tableAction(action){ 
-    console.log('table actions - todo')
+    // TODO c onsole.log('table actions - todo')
   }
 
 
@@ -132,14 +140,13 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   /*    Sol/Asistencia   */
   /**********************/
   private fetchSolicitudes(query: any){
-    this.data$.next(this.query)
     this.showData = false;
 
     this.dsCtrl.fetchResultListFromAsistenciaByQuery<any>(query).subscribe(records => {
       if(records && records.length){
-        this.data$.next(records)
-
+ 
         let sumByDate = this._buildSumByDate(records);
+        this.userTable = this._buildSumByUser(records, this.usersOptList);
 
         let dateRecords = Array.from(sumByDate, ( [name, value]) => (value)  )
         this.sortLlamados(dateRecords)
@@ -162,6 +169,58 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
 
   }
 
+  private _buildSumByUser(records:Array<any>, userList: OptList[]): Array<UserFollowUp>{
+    let sumByUserMap = new Map();
+    let sumRows = new UserFollowUp('zrowtotals','Totales')
+
+    userList.forEach(u =>{
+      sumByUserMap.set(JSON.stringify(u.val), new UserFollowUp(u.val, u.label));
+    })
+
+    records.forEach(token => {
+      let index  = JSON.stringify(token.userId);
+      let dow  = (new Date(token.fets_llamado)).getDay();
+
+      sumRows.qty += token.qty;
+      sumRows.qty_dow[dow] += token.qty;
+      sumRows.qcovid += token.qcovid;
+      sumRows.qnocovid += token.qnocovid;
+      sumRows.qlogrado += token.qlogrado;
+      sumRows.qnocontesta += token.qnocontesta;
+      sumRows.qnotelefono += token.qnotelefono;
+
+      if(sumByUserMap.has(index)){
+        sumByUserMap.get(index).qty += token.qty;
+        sumByUserMap.get(index).qty_dow[dow] += token.qty;
+
+        sumByUserMap.get(index).qcovid += token.qcovid;
+        sumByUserMap.get(index).qnocovid += token.qnocovid;
+        sumByUserMap.get(index).qlogrado += token.qlogrado;
+        sumByUserMap.get(index).qnocontesta += token.qnocontesta;
+        sumByUserMap.get(index).qnotelefono += token.qnotelefono;
+
+      }else {
+        let extra = new UserFollowUp(token.userId, token.username);
+        extra.qty += token.qty;
+        extra.qty_dow[dow] += token.qty;
+
+        extra.qcovid += token.qcovid;
+        extra.qnocovid += token.qnocovid;
+        extra.qlogrado += token.qlogrado;
+        extra.qnocontesta += token.qnocontesta;
+        extra.qnotelefono += token.qnotelefono;
+
+        sumByUserMap.set(index, extra);
+      }
+    });
+
+    let sumByUserList = Array.from(sumByUserMap.values());
+    sumByUserList.push(sumRows);
+
+    return sumByUserList;
+
+  }
+
   private _buildSumByDate(records){
     let sumByDate = new Map();
 
@@ -169,27 +228,19 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
       let indexTx = record.fecha; 
 
       if(sumByDate.has(indexTx)){
-        if(record.covid){
-          sumByDate.get(indexTx).llamados_covid_qty += record.qty;
-        }else {
-          sumByDate.get(indexTx).llamados_nocovid_qty += record.qty;
-        }
+        sumByDate.get(indexTx).llamados_covid_qty += record.qcovid;
+        sumByDate.get(indexTx).llamados_nocovid_qty += record.qnocovid;
 
       }else{
         let token = {
               fets_llamado: record.fets_llamado,
               fecha: record.fecha,
               index: indexTx,
-              llamados_covid_qty: 0,
-              llamados_nocovid_qty: 0,
+              llamados_covid_qty: record.qcovid,
+              llamados_nocovid_qty: record.qnocovid
             }
 
-        if(record.covid){
-          token.llamados_covid_qty  = record.qty;
-        }else {
-          token.llamados_nocovid_qty = record.qty;
-        }
-
+        
         sumByDate.set(indexTx, token);
 
       }
@@ -230,6 +281,22 @@ class ChartData {
   slug: string = "";
   error: string = "";
 
+}
+
+class UserFollowUp {
+  username: string = '';
+  userId: string = '';
+  qty = 0;
+  qcovid = 0;
+  qnocovid = 0;
+  qlogrado = 0;
+  qnocontesta = 0;
+  qnotelefono = 0;
+  qty_dow = [0, 0, 0, 0, 0, 0, 0];
+  constructor(uid, uname){
+    this.userId = uid;
+    this.username = uname;
+  }
 }
 
 const LLAMADO_EPIDEMIO = [

@@ -39,7 +39,12 @@
 <ng-container *ngIf='showData'>
 	<vigilancia-reportes-table [displayedColumns]='tableActualColumns' 
 								(actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
+
+								
+	<llamados-byuser-table [usertable]="userTable"></llamados-byuser-table>
+
 </ng-container>
+
 
 <ng-container *ngIf='dumpData'>
 

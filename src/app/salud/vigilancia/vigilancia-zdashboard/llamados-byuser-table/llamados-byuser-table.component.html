@@ -1,0 +1,84 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Llamados por usuario
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Usuario
+                        </th>
+                        <th scope="col">
+                            TOT
+                        </th>
+                        <th scope="col">
+                            CO+
+                        </th>
+                        <th scope="col">
+                            noCO
+                        </th>
+                        <th scope="col">
+                            LL-OK
+                        </th>
+                        <th scope="col">
+                            LL_NC
+                        </th>
+                        <th scope="col">
+                            LL-NTel
+                        </th>
+                        <th scope="col">
+                            Domingo
+                        </th>
+                        <th scope="col">
+                            Lunes
+                        </th>
+                        <th scope="col">
+                            Martes
+                        </th>
+                        <th scope="col">
+                            Miércoles
+                        </th>
+                        <th scope="col">
+                            Jueves
+                        </th>
+                        <th scope="col">
+                            Viernes
+                        </th>
+                        <th scope="col">
+                            Sábado
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let user of usertable">
+                        <tr scope="row">
+                            <td>{{user.username}}</td>
+
+                            <td>{{ user.qty }}</td>    
+                            <td>{{ user.qcovid }}</td>    
+                            <td>{{ user.qnocovid }}</td>    
+                            <td>{{ user.qlogrado }}</td>    
+                            <td>{{ user.qnocontesta }}</td>    
+                            <td>{{ user.qnotelefono }}</td>    
+                            <td>{{ user.qty_dow[0] }}</td>    
+                            <td>{{ user.qty_dow[1] }}</td>    
+                            <td>{{ user.qty_dow[2] }}</td>    
+                            <td>{{ user.qty_dow[3] }}</td>    
+                            <td>{{ user.qty_dow[4] }}</td>    
+                            <td>{{ user.qty_dow[5] }}</td>    
+                            <td>{{ user.qty_dow[6] }}</td>    
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>
+
