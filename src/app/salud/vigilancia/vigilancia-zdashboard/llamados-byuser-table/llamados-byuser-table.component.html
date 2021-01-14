@@ -15,19 +15,19 @@
                         <th scope="col">
                             TOT
                         </th>
-                        <th scope="col">
+                        <th  class="covid" scope="col">
                             CO+
                         </th>
-                        <th scope="col">
+                        <th class="covid" scope="col">
                             noCO
                         </th>
-                        <th scope="col">
+                        <th class="telefono" scope="col">
                             LL-OK
                         </th>
-                        <th scope="col">
+                        <th class="telefono" scope="col">
                             LL_NC
                         </th>
-                        <th scope="col">
+                        <th class="telefono" scope="col">
                             LL-NTel
                         </th>
                         <th scope="col">
@@ -58,12 +58,12 @@
                         <tr scope="row">
                             <td>{{user.username}}</td>
 
-                            <td>{{ user.qty }}</td>    
-                            <td>{{ user.qcovid }}</td>    
-                            <td>{{ user.qnocovid }}</td>    
-                            <td>{{ user.qlogrado }}</td>    
-                            <td>{{ user.qnocontesta }}</td>    
-                            <td>{{ user.qnotelefono }}</td>    
+                            <td class="totrow">{{ user.qty }}</td>    
+                            <td class="covid">{{ user.qcovid }}</td>    
+                            <td class="covid">{{ user.qnocovid }}</td>    
+                            <td class="telefono">{{ user.qlogrado }}</td>    
+                            <td class="telefono">{{ user.qnocontesta }}</td>    
+                            <td class="telefono">{{ user.qnotelefono }}</td>    
                             <td>{{ user.qty_dow[0] }}</td>    
                             <td>{{ user.qty_dow[1] }}</td>    
                             <td>{{ user.qty_dow[2] }}</td>    
