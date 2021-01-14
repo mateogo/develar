@@ -88,7 +88,7 @@ export class SaludController {
   private currentTurno: Turno;
   private currentPerson: Person;
   private _turnoEvent: Subject<TurnoAction> = new Subject();
-  public personListener = new BehaviorSubject<Person>(this.currentPerson);
+  public personListener = new BehaviorSubject<Person>(null);
 
   private userListener: BehaviorSubject<User|UserWeb>;
   private userLoading = false;

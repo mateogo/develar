@@ -215,6 +215,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
     });
 
     let sumByUserList = Array.from(sumByUserMap.values());
+    sumByUserList = sumByUserList.filter(t => t.qty !== 0);
     sumByUserList.push(sumRows);
 
     return sumByUserList;
