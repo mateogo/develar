@@ -50,7 +50,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
 
 
   public data$ = new BehaviorSubject<any>({});
-  public dumpData = true;
+  public dumpData = false;
 
   public usersOptList: OptList[];
   public userTable: Array<UserFollowUp> = [];
@@ -153,7 +153,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
 
       if(records && records.length){
         this.detalleAudit = this._buildAuditByPerson(records as InvestigacionAudit[], this.usersOptList);
-        this.data$.next(this.sumAuditByUser);
+        //this.data$.next(this.sumAuditByUser);
 
         this.showDetalle = true;
       }
