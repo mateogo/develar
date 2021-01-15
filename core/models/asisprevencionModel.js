@@ -611,6 +611,51 @@ function buildQuery(query, today){
 
       return q;
   }
+  if(query['reporte'] && query['reporte']==="INVESTIGACIONESREALIZADAS"){
+    q = {
+          isVigilado: true,
+          avance: {$ne: 'anulado'},
+        }
+
+    // OjO: este reporte se obtiene con llamados-browse y las fechas desde/hasta vienen en fenovd_ts/ fenovh_ts
+    if(query["fenovd_ts"] && query["fenovh_ts"] ){
+      q['fecomp_tsa'] = {$gte: parseInt(query["fenovd_ts"],10), $lt: parseInt(query["fenovh_ts"], 10)} ;
+  
+    }
+      
+    if(query['asignadoId']){
+        q["sintomacovid.userId"] = query['asignadoId'];
+    }
+
+    if(query['hasCovid']){
+      q["infeccion.hasCovid"] = true;
+    }
+
+    if(query['casoCovid']){
+      q['infeccion.actualState'] = {$in: [1, 4, 5]}; 
+    }
+
+    if(query['vigiladoCovid']){
+      q["infeccion.isActive"] = true;
+    }
+
+    if(query['actualState']){
+      q["infeccion.actualState"] = parseInt(query['actualState'], 10);
+    }
+
+    if(query['sintomaCovid']){
+      q["infeccion.sintoma"] = query['sintomaCovid'];
+    }
+
+    if(query['asistidoId']){
+        q["requeridox.id"] = query['asistidoId'];
+        return q;
+    }
+
+
+    return q;
+}
+
 
   if(query['reporte'] && query['reporte']==="LLAMADOSIVR"){
       let feha = Date.now();
@@ -1137,7 +1182,7 @@ function getRedContactos(query){
   if((ts - contactosManager.fets_actualizacion) > elapsed){
     buildContactosPromise()
     .then(master => {
-      console.log('**** Contactos manager REBUILDED!!');
+      //c onsole.log('**** Contactos manager REBUILDED!!');
     })
     .catch(error => console.log(error));
 
@@ -1334,7 +1379,8 @@ const findByQueryProcessFunction = {
   'CONTACTOS'       : buildContactosMaster, // Selecciona los casos índices + huérfanos
   'SINSEGUIMIENTO'  : afectadosSinResponsableSeguimiento, // Selecciona los casos índices + huérfanos
   'GEOLOCALIZACION' : geolocalizacionContactos, // Reporte adaptado para renderizar mapa
-  'LLAMADOSEPIDEMIO' : buildLlamadosEpidemio // Estadística de llamados realizados por EPIDEMIO a los afectados/a e/fechas
+  'LLAMADOSEPIDEMIO' : buildLlamadosEpidemio, // Estadística de llamados realizados por EPIDEMIO a los afectados/a e/fechas
+  'INVESTIGACIONESREALIZADAS': buildAuditoriaInvestig, // Auditoría de efectividad de llamados a nuevos pacientes.
 };
 
 /**
@@ -1357,7 +1403,6 @@ function exportarSeguimientos(query, req, res){
 function buildReporteSeguimiento(query, errcb, cb, req, res){
 
     let regexQuery = buildQuery(query, new Date())
-    console.dir(regexQuery);
 
     Record.find(regexQuery)
           .lean()
@@ -1509,10 +1554,8 @@ exports.findByQuery = function (query, errcb, cb) {
     if(query && query.necesitaLab ){
       necesitaLab = true;
     }
-
-    console.log('findByQuery#1513')
+    console.log('findByQuery#1557')
     console.dir(regexQuery);
-    console.log('<<<<<<<<<<<<<<<<<')
 
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {
@@ -1596,7 +1639,7 @@ function geolocalizacionContactos(movimientos, query, errcb, cb){
     return true;
   })
 
-  console.log('GEOLOCALIZACION: Movim[%s] geoList[%s]', movimientos && movimientos.length, geoList && geoList.length)
+  //c onsole.log('GEOLOCALIZACION: Movim[%s] geoList[%s]', movimientos && movimientos.length, geoList && geoList.length)
 
   geoList = geoList.map(asis => {
     let locacion = asis.locacion;
@@ -1663,7 +1706,6 @@ var _step = 100;
 var once = 0;
 
 async function fetchLatLon(list){
-  console.log('start:[%s] step: [%s] once:  [%s]', _start, _step, once)
   let maxvalue = list.length <= (_start + _step) ? list.length : (_start + _step);
   for (let index = _start; index < maxvalue; index++) {
     const token = list[index];
@@ -1671,10 +1713,8 @@ async function fetchLatLon(list){
       let response = await mapUtils.fetchLatLonByAddress(token);
       if(response.status === 'OK'){
         await updateLatLon(response, token);
-        console.log('LatLon: ok [%s]', token.personSlug)
     
       }else {
-        console.log('LatLon: ERROR [%s]', token.ndoc)
     
       }    
 
@@ -1754,11 +1794,105 @@ function afectadosSinResponsableSeguimiento(movimientos, query, errcb, cb){
   // let contactosMap = agruparCasosIndices(movimientos);
 
   // let filteredList = filtrarCasosSinSeguimiento(movimientos, contactosMap);
-  // console.log('afectados TO BEGIN');
+  // c onsole.log('afectados TO BEGIN');
 
   // cb(filteredList);
 
 }
+
+/******************************************************************************************/
+/**   AUDITORÍA DE SEGUIMIENTO DE NUEVOS PACIENTES, ESPECIALMENTE LA INVESTIG EPIDEMIO   */
+/****************************************************************************************/
+function buildAuditoriaInvestig(movimientos, query, errcb, cb){
+
+  let auditArray = _mapearInformeAuditoriaInvestig(movimientos, query); // Map(fecha: casos)
+
+  cb( auditArray);
+
+
+}
+
+function _mapearInformeAuditoriaInvestig(movimientos, query){
+  let auditArray = [];
+
+ 
+  if(movimientos && movimientos.length){
+
+    auditArray = movimientos.map(asis => _buildAuditToken(asis, query));
+
+  }
+  return auditArray;  
+
+}
+
+function _buildAuditToken(asis, query){
+  let covid = isCovidTotal(asis);
+  let llamados = {
+    qlogrado: 0,
+    qnocontesta: 0,
+    qnotelefono: 0
+  }
+
+
+  let fUp = asis.seguimEvolucion || [];
+  
+  llamados = fUp.reduce((acum, t) => {
+                        acum.qlogrado += t.resultado === 'logrado' ? 1 : 0;
+                        acum.qnocontesta += t.resultado === 'nocontesta' ? 1 : 0;
+                        acum.qnotelefono += t.resultado === 'notelefono' ? 1 : 0;
+                        return acum;
+                  }, llamados)
+
+  
+  let returnData = {
+    compNum: asis.compNum,
+    idPerson: asis.idPerson,
+    ndoc: asis.ndoc,
+    tdoc: asis.tdoc,
+    personSlug: asis.requeridox ? asis.requeridox.slug : '',
+    telefono: asis.telefono,
+    fecomp_txa: asis.fecomp_txa,
+    fecomp_tsa: asis.fecomp_tsa,
+    covid: covid,
+    actualState:  asis.infeccion ? asis.infeccion.actualState : 0,
+
+    llamados: llamados,
+    fe_investig: '',
+    fets_investig: 0,
+    userInvestig: '',
+    userAsignado: '',
+    userId: '',
+    hasInvestigacion: false,
+
+    isAsignado: false,
+    asignadoId: '',
+    asignadoSlug: '',
+  }
+
+  let investig = asis.sintomacovid;
+  if (investig){
+    returnData.fe_investig = investig.fe_investig;
+    returnData.fets_investig = investig.fets_investig;
+    returnData.userInvestig = investig.userInvestig;
+    returnData.userAsignado = investig.userAsignado;
+    returnData.userId = investig.userId;
+    returnData.hasInvestigacion = investig.hasInvestigacion;
+  }
+
+  let followUp = asis.followUp;
+  if(followUp){
+    returnData.isAsignado = followUp.isAsignado;
+    returnData.asignadoId = followUp.asignadoId;
+    returnData.asignadoSlug = followUp.asignadoSlug;
+  
+  }
+
+  return returnData;
+
+}
+
+
+
 
 
 
@@ -1778,9 +1912,6 @@ function agruparMovimientosPorFechaLlamado(movimientos, query){
       let groupByFecha = new Map();
       let fedesde = 0;
       let fehasta = 0;
-      console.log('query original: #1781 [%s]',movimientos && movimientos.length)
-      console.dir(query)
-      console.log('<<<<<<<<<<<<<<<<<')
 
       if(query['fenovd_ts'] && query['fenovh_ts']){
         fedesde = parseInt(query['fenovd_ts'], 10);
@@ -2840,9 +2971,9 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
     if(!fecomp){ 
 
       fecomp = new Date();
-      console.log('errror **************************')
-      console.log('asistencia: [%s]', asistencia.compNum)
-      console.log('errror **************************')
+      // c onsole.log('errror **************************')
+      // c onsole.log('asistencia: [%s]', asistencia.compNum)
+      // c onsole.log('errror **************************')
 
     }
 
@@ -2862,7 +2993,7 @@ function procesTableroEpidemio (ptree, entities, timeframe, errcb, cb){
       }
 
     }else{
-      console.log('AIUUUUDAAAAAAA No encontrado: [%s]', asistencia.requeridox && asistencia.requeridox.slug)
+      //c onsole.log('AIUUUUDAAAAAAA No encontrado: [%s]', asistencia.requeridox && asistencia.requeridox.slug)
     }
 
     let token = {

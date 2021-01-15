@@ -1,0 +1,60 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Seguimiento de Afectados/as (por rango de fechas de incorporación)
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Fe Alta
+                        </th>
+                        <th scope="col">
+                            Persona
+                        </th>
+                        <th scope="col">
+                            Documento
+                        </th>
+                        <th  class="telefono" scope="col">
+                            Telefono
+                        </th>
+                        <th scope="col">
+                            Asignado Inicial
+                        </th>
+                        <th scope="col">
+                            Investigacion
+                        </th>
+                        <th scope="col">
+                            LL-OK
+                        </th>
+                        <th scope="col">
+                            LL-NC
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let person of records">
+                        <tr scope="row">
+                            <td>{{ person.fealta }}</td>
+                            <td class="personname">{{ person.personname }}</td>
+                            <td>{{ person.ndoc}}</td>
+                            <td class="telefono">{{ person.telefono }}</td>
+                            <td>{{ person.userAsignadoInicial }}</td>
+                            <td>{{ person.username }}</td>
+                            <td class="totrow">{{ person.qllamados }}</td> 
+                            <td class="totrow">{{ person.qllamados_nc }}</td> 
+
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>
+

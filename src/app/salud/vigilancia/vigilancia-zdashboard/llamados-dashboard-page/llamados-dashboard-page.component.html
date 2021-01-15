@@ -35,17 +35,26 @@
 	</mat-card>
 </ng-container>
 
+	<!--vigilancia-reportes-table [displayedColumns]='tableActualColumns' 
+								(actionTriggered)="tableAction($event)"  ></vigilancia-reportes-tablev-->						
 
 <ng-container *ngIf='showData'>
-	<vigilancia-reportes-table [displayedColumns]='tableActualColumns' 
-								(actionTriggered)="tableAction($event)"  ></vigilancia-reportes-table>
 
-								
 	<llamados-byuser-table [usertable]="userTable"></llamados-byuser-table>
 
 </ng-container>
 
+<ng-container *ngIf='showDetalle'>
 
+	<llamados-auditbyuser-table [records]="sumAuditByUser"></llamados-auditbyuser-table>
+
+</ng-container>
+
+<ng-container *ngIf='showDetalle'>
+
+	<llamados-asis-table [records]="detalleAudit"></llamados-asis-table>
+
+</ng-container>
 
 
 <ng-container *ngIf='dumpData'>

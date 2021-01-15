@@ -1,0 +1,47 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Investigacion Epidemiológica de afectados/as (por rango de fechas de incorporación)
+        </mat-card-title>
+        <mat-card-subtitle>
+            Resumen por usuario
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Usuario
+                        </th>
+                        <th scope="col">
+                            INV OK
+                        </th>
+                        <th scope="col">
+                            NO-INV C/TEL
+                        </th>
+                        <th scope="col">
+                            NO-INV S/TEL
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let user of records">
+                        <tr scope="row">
+                            <td class="personname">{{ user.username }}</td>
+                            <td>{{ user.qinves_lograda }}</td>
+                            <td>{{ user.qinves_contel }}</td>
+                            <td>{{ user.qinves_sintel }}</td>
+
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>
+
