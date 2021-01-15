@@ -96,21 +96,6 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   }
 
 
-  private refreshView(query: VigilanciaBrowse){
-    //this.showChart = false;
-    this.showData = false;
-    this.showChart = false;
-    this.showDetalle = false;
-    this.buildChartData(query);
-
-    setTimeout(()=>{
-      this.showData = true;
-      this.showChart = true;
-
-    },200)
-
-  }
-
   private buildChartData(query?: VigilanciaBrowse){
 
     this.chartOptions = {
@@ -139,6 +124,8 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
         }
       }
     }
+    this.showChart = true;
+
   }
 
 
@@ -332,6 +319,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   /*****************************/
   private fetchLlamadosSeguimiento(query: any){
     this.showData = false;
+    this.showChart= false;
 		this.query.reporte = SEGUIMIENTO;
 
     this.dsCtrl.fetchResultListFromAsistenciaByQuery<any>(query).subscribe(records => {
@@ -351,7 +339,8 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
         this.dsCtrl.updateLlamadosTableData(dateRecords);
 
         this.tableActualColumns = LLAMADO_EPIDEMIO;
-        this.refreshView(query);
+        this.buildChartData(query);
+        this.showData = true;
 
       }
     })
