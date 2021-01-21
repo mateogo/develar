@@ -28,6 +28,9 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
   public infection: InfectionFollowUp;
   public displayAs = '';
+  public diasEvolucion = 0;
+  private genSolAltaAfectadoPDF = false;
+
 
   public avanceOptList = AsistenciaHelper.getOptionlist('avanceInfection')
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
@@ -60,9 +63,28 @@ export class VigilanciaInfeccionComponent implements OnInit {
   onSubmit(){
     this.formClosed = true;
     this.result.action = UPDATE;
+    this.genSolAltaAfectadoPDF = false;
   	this.initForSave()
   	this.saveToken();
   }
+
+  genSolicitudAltaAfectado(){
+    this.initForSave()
+    if(this.validateIfAlta()){
+      this.formClosed = true;
+      this.result.action = UPDATE;
+      this.genSolAltaAfectadoPDF = true;
+      this.genSolAltaEnPDF(this.asistencia);
+
+    }else {
+      this.ctrl.openSnackBar('El afectado/a no está dado de el ALTA ', 'ACEPTAR')
+    }
+  }
+
+  private validateIfAlta(){
+    return AsistenciaHelper.isActualStateAlta(this.asistencia);
+  }
+
 
   onCancel(){
     this.result.action = CANCEL;
@@ -115,9 +137,6 @@ export class VigilanciaInfeccionComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
-
-
-
   
     this.displayAs = this.asistencia.requeridox ? this.asistencia.requeridox.slug + ' ' + (this.asistencia.ndoc || '') + ' ' + (this.asistencia.telefono || ''): '';
     this.infection.isInternado = this.infection.isInternado || false;
@@ -128,6 +147,9 @@ export class VigilanciaInfeccionComponent implements OnInit {
     this.infection.institucion = this.infection.institucion || 'noinstitucionalidado';
     this.infection.trabajoTxt = this.infection.trabajoTxt || '';
     this.infection.institucionTxt = this.infection.institucionTxt || 'No institucionalizado';
+    console.log("validate [%s]  dias:[%s]", this.validateIfAlta(), Math.floor((this.infection.fets_inicio - Date.now()) / (1000 * 60 * 60 * 24)))
+
+    this.diasEvolucion = this.validateIfAlta() ? Math.floor((Date.now() - this.infection.fets_inicio) / (1000 * 60 * 60 * 24)) : 0;
 
     this.form = this.fb.group(this.infection);
     //this.form.controls.fe_confirma.disable();
@@ -137,5 +159,12 @@ export class VigilanciaInfeccionComponent implements OnInit {
   private closeDialogSuccess(){
     this.dialogRef.close(this.result);
   }
+
+  private genSolAltaEnPDF(asis: Asistencia){
+    this.genSolAltaAfectadoPDF = false;
+    this.ctrl.exportSolAltaAfectado(asis._id);
+  }
+
+
 
 }

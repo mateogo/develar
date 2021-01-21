@@ -1050,6 +1050,12 @@ export class SaludController {
 
   }
 
+  exportSolAltaAfectado(asisId:any){
+    console.log('EXPORT SOL ALTA BEGIN')
+    let url = `api/pdf/solaltaepidemioform/${asisId}`;
+    const windw = window.open(url, 'about:blank')
+  }
+  
   exportSequimientosByQuery(query:any){
     let params = this.daoService.buildParams(query);
     const Url = 'api/asisprevencion/exportarseguimientos?' + params.toString();

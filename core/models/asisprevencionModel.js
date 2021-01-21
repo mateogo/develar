@@ -1882,8 +1882,8 @@ function _buildAuditToken(asis, query){
   let followUp = asis.followUp;
   if(followUp){
     returnData.isAsignado = followUp.isAsignado;
-    returnData.asignadoId = followUp.asignadoId;
-    returnData.asignadoSlug = followUp.asignadoSlug;
+    returnData.asignadoId = followUp.asignadoId || followUp.derivadoId;
+    returnData.asignadoSlug = followUp.asignadoSlug || followUp.derivadoSlug;
   
   }
 

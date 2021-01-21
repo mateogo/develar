@@ -6,21 +6,36 @@
 
 const express = require('express');
 const router = express.Router();
-const service = require('../services/pdfhisopado.js');
+const hisopadoService = require('../services/pdfhisopado.js');
+const altaService = require('../services/pdfaltaepidemio.js');
 
 const whoami =  "Router:routes/zgenpdfRoutes.js: ";
 
 
 /**
- * Regenera el campo asisprevencion.casoIndice.nucleo
+ * Construye el PDF con la solicitud de hisopado del afectado
  */
 router.get('/solhisopadoform', function (req, res) {
-    service.genHispadoForm(req, res);
+    hisopadoService.genHispadoForm(req, res);
 });
 
 router.get('/solhisopadoform/:id', function (req, res) {
-    service.genHispadoForm(req, res);
+    hisopadoService.genHispadoForm(req, res);
 });
+
+
+/**
+ * Construye el PDF comprobante de ALTA del afectado COVID
+ * :id   identificador de la asisprevencion
+ */
+router.get('/solaltaepidemioform', function (req, res) {
+    altaService.genAltaEpidemioForm(req, res);
+});
+
+router.get('/solaltaepidemioform/:id', function (req, res) {
+    altaService.genAltaEpidemioForm(req, res);
+});
+
 
 router.get('/discover', function (req, res) {
 

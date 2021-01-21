@@ -26,7 +26,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
   public form: FormGroup;
   public formClosed = false;
-
+  private genSolAltaAfectadoPDF = false;
   public asistencia: Asistencia;
   public afectadoFollowUp: AfectadoFollowUp
   public seguimientoEvent: AfectadoUpdate;
@@ -67,13 +67,33 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   onSubmit(){
     this.formClosed = true;
     this.result.action = UPDATE;
-  	this.initForSave()
+    this.genSolAltaAfectadoPDF = false;
+
+    this.initForSave()
   	this.saveToken();
   }
 
   onCancel(){
     this.result.action = CANCEL;
+    this.genSolAltaAfectadoPDF = false;
 		this.dialogRef.close();
+  }
+
+  genSolicitudAltaAfectado(){
+    this.initForSave()
+    if(this.validateIfAlta()){
+      this.formClosed = true;
+      this.result.action = UPDATE;
+      this.genSolAltaAfectadoPDF = true;
+      this.genSolAltaEnPDF(this.asistencia);
+
+    }else {
+      this.ctrl.openSnackBar('El afectado/a no está dado de el ALTA ', 'ACEPTAR')
+    }
+  }
+
+  private validateIfAlta(){
+    return AsistenciaHelper.isActualStateAlta(this.asistencia);
   }
 
   changeSelectionValue(type, val){
@@ -106,12 +126,19 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
     	if(asistencia){
     		this.result.token = asistencia;
     		this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
-    		this.closeDialogSuccess()
+
+        this.closeDialogSuccess()
     	}else {
     		this.ctrl.openSnackBar('Se produjo un error al intentar guardar sus datos', 'ATENCIÓN');
     	}
     })
   }
+
+  private genSolAltaEnPDF(asis: Asistencia){
+    this.genSolAltaAfectadoPDF = false;
+    this.ctrl.exportSolAltaAfectado(asis._id);
+  }
+
 
   private initForSave(){
   	let today = new Date();

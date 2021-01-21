@@ -2466,6 +2466,33 @@ export class AsistenciaHelper {
 	  return false;
 	}
 
+	static isActualStateAlta(asistencia: Asistencia): boolean{
+		let valid = false;
+
+		let infeccion = asistencia.infeccion;
+		if(infeccion) {
+			if(infeccion.actualState !== 5 || !infeccion.fe_alta || !infeccion.fe_inicio ) return valid;
+			if( !infeccion.fets_alta || !infeccion.fets_inicio ) return valid;
+
+		}else {
+			return valid;			
+		}
+
+		let locacion = asistencia.locacion;
+		if(locacion){
+			if(! (locacion.street1 && locacion.city)) return valid;
+
+		}else {
+			return valid;
+		}
+
+		valid  = true;
+
+
+		return valid;
+	}
+  
+
 	static isActualStateCovid(actual){
 		if( actual === 1 ) return true;
 		return false;

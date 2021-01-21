@@ -248,7 +248,11 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
     audit.tdoc = record.tdoc;
     audit.ndoc = record.ndoc;
     audit.telefono = record.telefono;
+
     audit.isAsignado = record.isAsignado;
+    audit.asignadoId = record.asignadoId;
+    audit.asignadoSlug = record.asignadoSlug;
+  
     audit.userAsignadoInicial = record.userAsignado;
     audit.index = index;
     audit.hasTelefono = hasTelefono ? 1 : 2;
@@ -523,8 +527,11 @@ class UserAudit {
   tdoc: string = '';
   ndoc: string = '';
   telefono: string = '';
-  isAsignado: boolean = false;
   userAsignadoInicial: string;
+
+  isAsignado: boolean = false;
+  asignadoId: string;
+  asignadoSlug: string;
 
   index: string;
   hasTelefono: number = 0; // 2= no tiene teléfono 1: tiene telefono
