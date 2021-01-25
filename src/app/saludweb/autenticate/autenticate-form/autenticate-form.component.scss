@@ -1,0 +1,30 @@
+$color-destacado: #0645f5;
+
+.view-port {
+	max-height: 650px;
+}
+
+.submit-block {
+	margin-top: 25px;
+}
+
+.text-input {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.text-normal {
+    margin: 0 0 0 0;
+    color: $color-destacado;
+    font-weight: 400;
+    font-size: 1.0rem;
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}

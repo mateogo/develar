@@ -197,6 +197,16 @@ const dashboardRoutes : Routes = [
   }
 ]
 
+const saludwebRoutes: Routes = [
+  {
+    path : '',
+    component : PresentacionLayoutComponent,
+    loadChildren : () => import ('./saludweb/saludweb.module').then( m => m.SaludwebModule)
+  },
+];
+
+
+
 const webRoutes: Routes = [
   {
     path: 'gestion',
@@ -426,6 +436,10 @@ const routes: Routes = [
   {
     path: 'dsocial',
     children: dsocialRoutes
+  },
+  {
+    path: 'misconsultas',
+    children: saludwebRoutes
   },
   {
     path: 'web',

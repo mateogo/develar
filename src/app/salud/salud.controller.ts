@@ -1052,7 +1052,7 @@ export class SaludController {
 
   exportSolAltaAfectado(asisId:any){
     console.log('EXPORT SOL ALTA BEGIN')
-    let url = `api/pdf/solaltaepidemioform/${asisId}`;
+    let url = `api/pdf/solaltaepidemioform/${asisId}/constancia.pdf`;
     const windw = window.open(url, 'about:blank')
   }
   

@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center">Secretaría de Salud - MAB</h3>
+        </div>
+    </div>
+    <ng-container *ngIf="showAuthenticationForm">
+        <div class="row">
+            <div class="col-12">
+                <autenticate-form (event)="processData($event)"></autenticate-form>
+            </div>
+        </div>    
+    </ng-container>
+
+    <ng-container *ngIf="showEstado">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="text-resaltado"><span>SOLICITANTE: {{ displayName }}</span></p>
+                <p class="text-resaltado"><span>NRO DE DOCUMENTO: {{ displayNdoc }}</span></p>
+            </div>
+        </div>    
+
+        <div class="row mt-3" *ngIf="isCasoAlta">
+            <div class="col-12">
+                <button type="button" mat-flat-button color="primary" (click)="getCertificadoAlta()">
+                    Certificado de cumplimiento de aislamiento
+                </button>
+            </div>
+            <div class="col-12">
+                <button mat-raised-button color="warn"   class='m-1'
+                    (click)="onCancel()">
+                    Cancelar </button>
+            </div>
+
+        </div>
+    
+    </ng-container>
+    <ng-container *ngIf="showError">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="text-resaltado"><span>{{ errorMessage1 }}</span></p>
+                <p class="text-resaltado"><span>{{ errorMessage2 }}</span></p>
+                <button type="button" mat-flat-button color="primary" (click)="resetPage()">
+                    Cerrar
+                </button>
+
+            </div>
+        </div> 
+    </ng-container> 
+
+    <ng-container *ngIf="showCierre">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="text-cierre"><span>{{ cierreMessage1 }}</span></p>
+            </div>
+        </div> 
+    </ng-container> 
+
+</div>
+

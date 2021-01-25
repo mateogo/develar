@@ -2455,43 +2455,16 @@ export class AsistenciaHelper {
 		return epiw;
 	}
 
-	static isCovidActivo(asistencia){
-		if(asistencia && asistencia.infeccion && asistencia.infeccion.actualState === 1 ) return true;
-		return false;
-	}
-
 	static hasCovidVirus(asistencia){
 	  if(asistencia && asistencia.infeccion && 
 	    (asistencia.infeccion.actualState === 1 || asistencia.infeccion.actualState === 4 || asistencia.infeccion.actualState === 5)) return true;
 	  return false;
 	}
 
-	static isActualStateAlta(asistencia: Asistencia): boolean{
-		let valid = false;
-
-		let infeccion = asistencia.infeccion;
-		if(infeccion) {
-			if(infeccion.actualState !== 5 || !infeccion.fe_alta || !infeccion.fe_inicio ) return valid;
-			if( !infeccion.fets_alta || !infeccion.fets_inicio ) return valid;
-
-		}else {
-			return valid;			
-		}
-
-		let locacion = asistencia.locacion;
-		if(locacion){
-			if(! (locacion.street1 && locacion.city)) return valid;
-
-		}else {
-			return valid;
-		}
-
-		valid  = true;
-
-
-		return valid;
+	static isCovidActivo(asistencia){
+		if(asistencia && asistencia.infeccion && asistencia.infeccion.actualState === 1 ) return true;
+		return false;
 	}
-  
 
 	static isActualStateCovid(actual){
 		if( actual === 1 ) return true;
@@ -2502,6 +2475,73 @@ export class AsistenciaHelper {
 		if( actual === 1 || actual === 4 || actual === 5  ) return true;
 		return false;
 	}
+
+	static isActualStateSospechoso(actual){
+		if( actual === 0 || actual === 6  ) return true;
+		return false;
+	}
+
+	static isActualStateEstadoAlta(actual){
+		if( actual === 5 ) return true;
+		return false;
+	}
+
+	static fechaBaseParaCalculoAlta(asistencia:Asistencia){
+		let infeccion = asistencia.infeccion;
+		let followUp = asistencia.followUp;
+		let febase = '';
+		let febase_ts = 0;
+
+		if(infeccion) {
+			if(this.isActualStateEstadoAlta(infeccion.actualState)){
+				if( infeccion.fe_inicio && infeccion.fets_inicio){
+					febase = infeccion.fe_inicio;
+					febase_ts = infeccion.fets_inicio;
+				}
+			}
+
+			if(this.isActualStateSospechoso(infeccion.actualState)){
+				if(followUp){
+					if(followUp.fe_inicio && followUp.fets_inicio){
+						febase = followUp.fe_inicio;
+						febase_ts = followUp.fets_inicio;
+					}
+				}
+			}
+		}
+		return {fe_inicio: febase, fets_inicio: febase_ts};
+	}
+
+
+	static isActualStateAlta(asistencia: Asistencia): boolean{
+		let valid = false;
+
+		let infeccion = asistencia.infeccion;
+		if(infeccion) {
+			if(this.isActualStateEstadoAlta(infeccion.actualState)){
+				if( !infeccion.fe_alta || !infeccion.fe_inicio || !infeccion.fets_alta || !infeccion.fets_inicio) return valid;
+			}
+
+			if(this.isActualStateSospechoso(infeccion.actualState)){
+				if( !infeccion.fe_inicio || !infeccion.fets_inicio) return valid;
+			}
+
+		}else {
+			return valid;			
+		}
+
+		let locacion = asistencia.locacion;
+		if(locacion){
+			if(! (locacion.street1 && locacion.city)) return valid;
+		}else {
+			return valid;
+		}
+
+		valid  = true;
+
+		return valid;
+	}
+  
 
 	static buildCovidRequirente(person: Person): Requirente {
 		let req: Requirente;

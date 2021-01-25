@@ -32,7 +32,7 @@ router.get('/solaltaepidemioform', function (req, res) {
     altaService.genAltaEpidemioForm(req, res);
 });
 
-router.get('/solaltaepidemioform/:id', function (req, res) {
+router.get('/solaltaepidemioform/:id/constancia.pdf', function (req, res) {
     altaService.genAltaEpidemioForm(req, res);
 });
 
