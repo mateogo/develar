@@ -116,7 +116,7 @@ export class SaludwebDashboardComponent implements OnInit {
 
   private displayErrorData(){
     this.errorMessage1 = 'No se puede emitir la constancia de alta en forma automática.'
-    this.errorMessage2 = 'Para obtener mayor información sobre tu caso, comunicate al teléfono: 0800 222 7696 de 8:00 a 20:00hs'
+    this.errorMessage2 = 'Para obtener mayor información sobre tu caso, comunicate al teléfono: 0800 222 7696 de 8:00 a 20:00hs o enviando un correo electrónico a epidemioconsultasbrown@gmail.com. Gracias.'
     this.dashboardError();
   }
 
