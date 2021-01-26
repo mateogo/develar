@@ -20,7 +20,7 @@
             </div>
         </div>    
 
-        <div class="row mt-3" *ngIf="isCasoAlta">
+        <div class="row mt-3">
             <div class="col-12">
                 <button type="button" mat-flat-button color="primary" (click)="getCertificadoAlta()">
                     Certificado de cumplimiento de aislamiento
@@ -37,10 +37,23 @@
     </ng-container>
     <ng-container *ngIf="showError">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <p class="text-resaltado"><span>{{ errorMessage1 }}</span></p>
                 <p class="text-resaltado"><span>{{ errorMessage2 }}</span></p>
-                <button type="button" mat-flat-button color="primary" (click)="resetPage()">
+
+                <ng-container *ngIf="adminNavigation">
+                    <p class="text-validaciones-title"><span>Validaciones: </span></p>
+                    <ng-container *ngFor="let token of errorList">
+                        <p class="text-validaciones"><span>{{ token.messageId }} :: {{ token.messageTxt }} </span></p>
+                    </ng-container>
+
+                    <button type="button" mat-flat-button color="warn" (click)="altaNovedad()">
+                        Solicitar atención epidemiología
+                    </button>
+    
+                </ng-container>
+
+                <button class="ml-2" type="button" mat-flat-button color="primary" (click)="resetPage()">
                     Cerrar
                 </button>
 

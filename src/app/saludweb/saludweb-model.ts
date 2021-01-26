@@ -20,6 +20,7 @@ export class EventUpdate {
     errors: Array<ValidationError>;
     token: Asistencia;
     person: Person;
+    adminNavigation: boolean = false;
 }
 
 export class AccessData {

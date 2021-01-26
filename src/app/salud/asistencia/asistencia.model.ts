@@ -1308,6 +1308,12 @@ export class HisopadoYa {
 	isCovid = false;
 	needsHisopado = false;	
 }
+export class ValidationToken {
+	isValid: boolean = false;
+	statusMsg: string  = '';
+	errorType: string = '';
+	errorMsg: string = '';
+}
 
 export class OptList {
 	val: string;
@@ -2513,33 +2519,78 @@ export class AsistenciaHelper {
 	}
 
 
-	static isActualStateAlta(asistencia: Asistencia): boolean{
-		let valid = false;
+	static isActualStateAlta(asistencia: Asistencia): ValidationToken{
+		let validation = new ValidationToken();
+		let today = Date.now();
+
 
 		let infeccion = asistencia.infeccion;
 		if(infeccion) {
 			if(this.isActualStateEstadoAlta(infeccion.actualState)){
-				if( !infeccion.fe_alta || !infeccion.fe_inicio || !infeccion.fets_alta || !infeccion.fets_inicio) return valid;
+				if( !infeccion.fe_alta || !infeccion.fe_inicio || !infeccion.fets_alta || !infeccion.fets_inicio){
+					validation.statusMsg = 'CASO DE ALTA';
+					validation.errorType = 'Datos faltantes o incompletos';
+					validation.errorMsg = 'Error: Caso ALTA con error de fechas';
+					validation.isValid = false;
+					return validation;
+				}
 			}
 
 			if(this.isActualStateSospechoso(infeccion.actualState)){
-				if( !infeccion.fe_inicio || !infeccion.fets_inicio) return valid;
+				let febase = this.fechaBaseParaCalculoAlta(asistencia);
+				if(febase && febase.fets_inicio){
+					let offset = Math.floor((today - febase.fets_inicio) / (1000 * 60 * 60 * 24));
+					if(offset<14){
+						validation.statusMsg = 'MONITOREO / SOSPECHOSO';
+						validation.errorType = 'Incumple protocolo';
+						validation.errorMsg = 'Error: Aislamiento menor a 14 días';
+						validation.isValid = false;
+						return validation;
+	
+					}
+
+				}else {
+					validation.statusMsg = 'MONITOREO / SOSPECHOSO';
+					validation.errorMsg = 'Error: Error de fechas';
+					validation.errorType = 'Datos faltantes o incompletos';
+					validation.isValid = false;
+					return validation;
+				}
 			}
 
 		}else {
-			return valid;			
+			validation.statusMsg = 'SIN REGISTRO';
+			validation.errorType = 'Datos faltantes o incompletos';
+			validation.errorMsg = 'Error: Sin registro epidemilógico COVID';
+			validation.isValid = false;
+			return validation;
 		}
 
 		let locacion = asistencia.locacion;
+
 		if(locacion){
-			if(! (locacion.street1 && locacion.city)) return valid;
+			if(! (locacion.street1 && locacion.city)){
+				validation.statusMsg = 'LOCACIÓN';
+				validation.errorType = 'Datos faltantes o incompletos';
+				validation.errorMsg = 'Error: Domicilio incompleto';
+				validation.isValid = false;
+				return validation;
+		
+			}
 		}else {
-			return valid;
+			validation.statusMsg = 'LOCACIÓN';
+			validation.errorType = 'Datos faltantes o incompletos';
+			validation.errorMsg = 'Error: Sin datos domicilio';
+			validation.isValid = false;
+			return validation;
 		}
 
-		valid  = true;
+		validation.statusMsg = 'VALIDO';
+		validation.errorType = '';
+		validation.errorMsg = '';
+		validation.isValid = true;
+		return validation;
 
-		return valid;
 	}
   
 

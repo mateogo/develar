@@ -762,6 +762,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         routing: '/salud/formularios/seguimiento',
         rolesOut: ['ivr:operator'],
       },
+      {
+        title: 'Emisión constancia ALTA',
+        routing: '/tramites/misconsultas',
+        rolesOut: ['ivr:operator'],
+      },
     ],
     routing: '',
     externalLink: '',

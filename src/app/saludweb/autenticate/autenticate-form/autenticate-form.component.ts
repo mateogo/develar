@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BehaviorSubject ,  Subject ,  Observable, of } from 'rxjs';
 
@@ -23,8 +25,11 @@ export class AutenticateFormComponent implements OnInit {
   public title = 'Mis consultas - Bienvenido/a'
   public form: FormGroup;
   public formClosed = false;
+  public showForm = false;
   private isValidPerson = false;
   private errorMsgs:Array<ValidationError> = [];
+
+  private adminNavigation = false;
 
   private accessData: AccessData;
   private currentAsistencia: Asistencia;
@@ -32,11 +37,13 @@ export class AutenticateFormComponent implements OnInit {
   private eventUpdate: EventUpdate;
 
   constructor(
+          private router: Router,
           private fb: FormBuilder,
           private srv: SaludwebService
   ) { }
 
   ngOnInit(): void {
+    this.showForm = false;
     this.initOnce()
   }
 
@@ -90,7 +97,8 @@ export class AutenticateFormComponent implements OnInit {
               type: 'asistencia',
               token: this.currentAsistencia,
               person: this.currentPerson,
-              errors: this.errorMsgs
+              errors: this.errorMsgs,
+              adminNavigation: this.adminNavigation
             }
             this.emitEvent(this.eventUpdate);
 
@@ -119,6 +127,7 @@ export class AutenticateFormComponent implements OnInit {
     event.token = null;
     event.person = null
     event.errors = this.errorMsgs;
+    event.adminNavigation = this.adminNavigation;
     this.emitEvent(event);
 
   }
@@ -139,37 +148,46 @@ export class AutenticateFormComponent implements OnInit {
   }
 
   private updatePerson(person: Person, accessData: AccessData){
-    this.srv.updateBasicData(person, accessData.telefono, accessData.fenactx );
+    if(!this.adminNavigation){
+      this.srv.updateBasicData(person, accessData.telefono, accessData.fenactx );
+    }
   }
 
-  private validatePerson(person: Person, accessData: AccessData){
-    if(person.fenactx){
+  private validatePerson (person: Person, accessData: AccessData){
+    if(person.fenactx && accessData.fenactx){
       let person_fenactx = devutils.txNormalize(person.fenactx);
+      accessData.fenactx = devutils.txNormalize(accessData.fenactx);
 
       if(person_fenactx !== accessData.fenactx){
         this.pushError('person:fenac:nocoincide', 'Error al validar fecha de nacimiento: ' + person.fenactx + ' :: ' + accessData.fenactx)
       }
       
     }else {
-      this.pushError('person:fenac:noexiste', 'Error al validar fecha de nacimiento')
+      if(this.adminNavigation){
+        this.pushError('person:fenac:db', 'Fecha nacimiento: ' + person.fenactx || 'No existe dato' )
+        accessData.fenactx = person.fenactx ? person.fenactx : (accessData.fenactx ? accessData.fenactx : '');
+
+      }else{
+        this.pushError('person:fenac:noexiste', 'Error fecha de nacimiento: sin dato en el registro del paciente')
+      }
+
     }
+
     let contactdata = person.contactdata;
     if(contactdata && contactdata.length){
-      let telefono = contactdata.find(token => {
-        if(token.data === accessData.telefono) return true;
-        else return false;
-      })
+      let telefono = contactdata.find(token => token.data === accessData.telefono)
 
       if(!telefono){
         this.pushError('person:telefono:nocoincide', 'Error al validar el teléfono')
       }
 
     }else {
-      this.pushError('person:telefono:noexiste', 'Error al validar el teléfono')
+      this.pushError('person:telefono:noexiste', 'Telefono inexistente en registro paciente')
     }
 
 
   }
+
   private pushError(msgId, msgTx){
     let error = new ValidationError();
     error.messageId = msgId;
@@ -178,26 +196,45 @@ export class AutenticateFormComponent implements OnInit {
   }
 
   private initOnce(){
+    let actualURL = this.router.url;
+    this.adminNavigation = actualURL.startsWith('/tramites/misconsultas');
+
     this.initForEdit();
+  
   }
 
   private initForEdit(){
     this.accessData = new AccessData();
+    if(this.adminNavigation){
+      this.form = this.fb.group({
+        ndoc: [null,Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(6), Validators.maxLength(9), Validators.required]) ] ,
+        fenactx: [null],
+        telefono: [null],
+  
+      });
+  
+    }else {
+      this.form = this.fb.group({
+        ndoc: [null,Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(6), Validators.maxLength(9), Validators.required]) ] ,
+        fenactx: [null, Validators.required],
+        telefono: [null, Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(8), Validators.maxLength(13), Validators.required])],
+  
+      });
+  
+    }
 
-    this.form = this.fb.group({
-      ndoc: [null,Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(6), Validators.maxLength(9), Validators.required]) ] ,
-      fenactx: [null, Validators.required],
-      telefono: [null, Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(8), Validators.maxLength(13), Validators.required])],
-
-    });
     this.form.reset(this.accessData);
+    this.showForm = true;
   }
 
 
   private initForSave(): AccessData{
 
     let fvalue = this.form.value;
-    fvalue['fenactx'] = devutils.txFromDate(devutils.dateFromTx(fvalue['fenactx']));
+
+    if(fvalue['fenactx']){
+      fvalue['fenactx'] = devutils.txFromDate(devutils.dateFromTx(fvalue['fenactx']));
+    }
 
     Object.assign(this.accessData, fvalue);
     return this.accessData;

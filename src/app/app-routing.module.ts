@@ -205,12 +205,20 @@ const saludwebRoutes: Routes = [
   },
 ];
 
+const tramitesRoutes: Routes = [
+  {
+    path : 'misconsultas',
+    component : DefaultLayoutComponent,
+    loadChildren : () => import ('./saludweb/saludweb.module').then( m => m.SaludwebModule)
+  },
+];
+
 
 
 const webRoutes: Routes = [
   {
     path: 'gestion',
-    component: PresentacionLayoutComponent,
+    component: DefaultLayoutComponent,
     children: dsocialModuleRoutes
   },
   {
@@ -440,6 +448,10 @@ const routes: Routes = [
   {
     path: 'misconsultas',
     children: saludwebRoutes
+  },
+  {
+    path: 'tramites',
+    children: tramitesRoutes
   },
   {
     path: 'web',
