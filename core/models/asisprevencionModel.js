@@ -2536,7 +2536,7 @@ function buildExcelStream(movimientos, query, req, res){
     worksheet.addRow(['Fecha emisión', new Date().toString()]).commit()
 
     worksheet.addRow().commit()
-    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Teléfono','Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Síntoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Método diagnóstico','Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long', 'IngresoSistema']).commit();
+    worksheet.addRow(['Vigilancia','Secuencia', 'ContEstrech', 'Sexo', 'FeNacimiento', 'Teléfono', 'Edad', 'TDOC', 'NumDocumento', 'Nombre', 'Apellido', 'SeguidoPor', 'Fe Notificación', 'reportadoPor','COVID', 'Fe Inicio Síntoma', 'Fecha Confirmación', 'Fecha Ata/Fallecimiento', 'Tipo de caso', 'Método diagnóstico','Síntoma', 'Internación' , 'Es contacto de', 'Nucleo hab', 'SecuenciaLAB', 'Fe Muestra', 'Laboratorio', 'Fe Resultado', 'Estado LAB', 'Resultado LAB', 'Calle Nro', 'Localidad', 'Lat', 'Long', 'IngresoSistema']).commit();
 
     movimientos.forEach((row, index )=> {
  
@@ -2635,8 +2635,8 @@ function buildExcelStream(movimientos, query, req, res){
       const { tdoc, ndoc, nombre, apellido } = requeridox;
       let requeridoxArr = [ tdoc, (ndoc || row.ndoc), nombre, apellido];
 
-      const {compNum, telefono, edad } = row;
-      let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), telefono, edad ];
+      const {compNum, telefono, sexo, fenactx, edad } = row;
+      let basicArr = [ compNum, (index + 1), (row['contactosEstrechos'] || 0), sexo, fenactx, telefono, edad ];
       
       worksheet.addRow([...basicArr, ... requeridoxArr, ...followupArr, ...sisaArr, ...covidArr, ...casoindiceArr, ...laboratorioArr, ...locacionArr, row.fecomp_txa ]).commit()
 
