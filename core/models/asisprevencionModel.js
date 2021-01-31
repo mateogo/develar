@@ -1545,6 +1545,10 @@ function _buildReporteSeguimiento(movimientos, query, errcb, cb, req, res){
   }
 }
 
+
+/*******************************/
+/*   findByQuery QUERY FIND  */
+/****************************/
 exports.findByQuery = function (query, errcb, cb) {
     let reporte = query['reporte'];
 
@@ -1557,6 +1561,17 @@ exports.findByQuery = function (query, errcb, cb) {
     console.log('findByQuery#1557')
     console.dir(regexQuery);
 
+    if(reporte && reporte === 'ASIGNACIONCASOS'){
+      buildAsignacionDeCasos(regexQuery, query, errcb, cb);
+      return;
+    }
+
+    if(reporte && reporte === 'SINSEGUIMIENTO'){
+      buildSinSeguimientoReport(regexQuery, query, errcb, cb);
+      return;
+    }
+
+    
     if(regexQuery && regexQuery.asistenciaId){
       Record.findById(regexQuery.asistenciaId, function(err, entity) {
           if (err){
@@ -1779,6 +1794,29 @@ function filterContactosMaster(movimientos, contactMap, errcb, cb){
   cb(filteredList);
 
 }
+//ACAESTOY
+/******************************************************************************************/
+/**   CASOS SIN SEGUIMIENTO SINSEGUIMIENTO  */
+/****************************************************************************************/
+
+function buildSinSeguimientoReport(regexQuery, query, errcb, cb){
+
+    Record.find(regexQuery)
+      .select({ndoc: 1, telefono: 1, edad: 1, fenactx: 1, fenac: 1, casoIndice: 1, infeccion: 1, followUp: 1, ndoc: 1, requeridox: 1})
+      .lean()
+      .exec(function(err, entities) {
+          if (err) {
+              console.log('[%s] _agruparCasosIndices ERROR: [%s]', whoami, err)
+          }else{
+            if(entities && entities.length){
+              afectadosSinResponsableSeguimiento(entities, regexQuery, errcb, cb);
+            }
+          }
+    });
+
+
+
+}
 
 function afectadosSinResponsableSeguimiento(movimientos, query, errcb, cb){
 
@@ -1990,23 +2028,94 @@ function mapReplacer(key, value) {
     return value;
   }
 }
-
-
 /**  END:  CASOS LLAMADOS EPIDEMIO   LLAMADOSEPIDEMIO     */
 
 
 /******************************************************/
 /**   CASOS POR USUARIO          ASIGNACIONCASOS     */
 /****************************************************/
+
+function buildAsignacionDeCasos(regexQuery, query, errcb, cb){
+  let contactosMap;
+
+  _agruparCasosIndices().then(cMap => {
+    return _sumarCasosPorUsuario(cMap);
+  })
+  .then(targetMap => {
+    pushBackCasosPorUsuario(targetMap, cb);
+
+
+  })
+
+
+
+
+}
+// ACAESTOY
+function _agruparCasosIndices(){
+  let contactosMap = new Map();
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'},
+    'casoIndice.parentId': {$ne: null},
+  }
+
+  return new Promise((resolve)=>{
+          Record.find(regexQuery)
+            .select({casoIndice: 1})
+            .lean()
+            .exec(function(err, entities) {
+                if (err) {
+                    console.log('[%s] _agruparCasosIndices ERROR: [%s]', whoami, err)
+                }else{
+                  if(entities && entities.length){
+                    resolve(groupByCasosIndice(entities));                    
+                  }
+                }
+            });
+      }, 
+      (reject) => {
+        
+      })
+}
+
+function _sumarCasosPorUsuario(contactosMap){
+  let regexQuery = {
+    isVigilado: true,
+    avance: {$ne: 'anulado'},
+    'followUp.altaVigilancia': {$in: [null, false]},    
+  }
+
+  return new Promise((resolve)=>{
+          Record.find(regexQuery)
+            .select({casoIndice: 1, infeccion: 1,followUp: 1, ndoc: 1, requeridox: 1})
+            .lean()
+            .exec(function(err, entities) {
+                if (err) {
+                    console.log('[%s] _agruparCasosIndices ERROR: [%s]', whoami, err)
+                }else{
+                  if(entities && entities.length){
+                    resolve(sumarCasosPorUsuario(entities, contactosMap));                    
+                  }
+                }
+            });
+      }, 
+      (reject) => {
+        
+      })
+
+}
+
+
 function buildCasosPorUsuario(movimientos, query, errcb, cb){
-  let contactosMap = agruparCasosIndices(movimientos);
+  let contactosMap = groupByCasosIndice(movimientos);
   let targetMap = sumarCasosPorUsuario(movimientos, contactosMap);
-  pushBackCasosPorUsuario(targetMap, errcb, cb);
+  pushBackCasosPorUsuario(targetMap, cb);
 
 
 }
 
-function pushBackCasosPorUsuario(targetMap, errcb, cb){
+function pushBackCasosPorUsuario(targetMap, cb){
   let returnArray = Array.from(targetMap.values())
   cb(returnArray)
 }
@@ -2014,7 +2123,7 @@ function pushBackCasosPorUsuario(targetMap, errcb, cb){
 
 
 
-function agruparCasosIndices(movimientos){
+function groupByCasosIndice(movimientos){
       let contactosMap = new Map();
       if(movimientos && movimientos.length){
 
@@ -2083,6 +2192,7 @@ function filtrarCasosSinSeguimiento(movimientos, contactMap){
 
 
 function sumarCasosPorUsuario(movimientos, contactMap){
+
     let targetMap = new Map();
 
     movimientos.forEach(asis => {
@@ -2411,8 +2521,6 @@ function fetchMovimientos(query, req, res){
     let reporte = query['reporte'];
  
     let regexQuery = buildQuery(query, new Date())
-    console.log('EXPORT BEGIN: [%s] *********', reporte)
-    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
@@ -2445,11 +2553,16 @@ const reportProcessFunction = {
 
 };
 
+//ACAESTOY
 function getMapDeContactosEstrechos(){
  
-    let regexQuery = buildQuery({reporte: 'REDCONTACTOS'}, new Date())
+    let regexQuery = {
+      isVigilado: true,
+      avance: {$ne: 'anulado'},
+      'casoIndice.parentId': {$ne: null},
+    }
 
-    return Record.find(regexQuery).lean().exec().then(list => {
+    return Record.find(regexQuery).select({casoIndice: 1}).lean().exec().then(list => {
       let contactosMap = new Map();
       if(list && list.length){
 

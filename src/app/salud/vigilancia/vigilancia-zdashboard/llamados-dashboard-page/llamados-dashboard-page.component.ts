@@ -79,6 +79,7 @@ export class LlamadosDashboardPageComponent implements OnInit, OnDestroy {
   refreshSelection(query: VigilanciaBrowse){
 
     this.query = AsistenciaHelper.cleanQueryToken(query, false);
+    console.dir(this.query)
 
     if(query.searchAction === SEARCH){
     	this.fetchLlamadosSeguimiento(this.query);
