@@ -3,9 +3,7 @@
         <mat-toolbar color="primary">
             <div>Industrias vinculadas</div>
             <span class="flex-grow-1"></span>
-            <button mat-flat-button 
-                matTooltip="Vincula aquella organización que Usted representa por ser titular, socio, apoderado, o funcionario."
-                (click)="nuevoVinculo()">Vincular nueva industria u organización</button>
+            <button mat-flat-button matTooltip="Vincula aquella organización que Usted representa por ser titular, socio, apoderado, o funcionario." (click)="nuevoVinculo()">Vincular nueva industria u organización</button>
         </mat-toolbar>
     </div>
     <div class="col-12">
@@ -14,14 +12,14 @@
             <mat-card-content>
                 <mat-list class="pt-0">
                     <ng-container *ngIf=showData>
-                        <mat-divider></mat-divider>
+                        <!-- <mat-divider></mat-divider>
                         <mat-list-item class="align-items-center">
                             <p class="mb-0"><strong>N° de CUIT {{ currentIndustry.ndoc  }}</strong> :: {{currentIndustry.displayName }} / Integrantes: {{ currentIndustry.integrantes.length }}</p>
-                            <p class="flex-spacer">&nbsp;</p>
-                            <!-- <button type="button" mat-flat-button color="accent" (click)="navigateToIndustry()">Editar Compañía</button> -->
+                            <span class="flex-grow-1">&nbsp;</span>
                             <mat-icon matTooltip="Editar esta compañía" class="mx-1" (click)="navigateToIndustry()">edit</mat-icon>
                             <mat-divider></mat-divider>
-                        </mat-list-item>
+                        </mat-list-item> -->
+                        <app-vinculos-browse-table></app-vinculos-browse-table>
                     </ng-container>
                 </mat-list>
             </mat-card-content>

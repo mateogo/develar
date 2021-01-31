@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-
 import { TurnosService } from '../turnos.service';
 import { TurnoHelper } from '../turno.helper';
 import { Turno } from '../turno.model';
 import { devutils } from '../../../develar-commons/utils';
 import { UserWeb } from '../../user-web/user-web.model';
-import { UserWebService } from '../../user-web/user-web.service';
+import { UserService } from '../../user/user.service';
 
 @Component({
   selector: 'app-turno-edit',
@@ -36,7 +33,7 @@ export class TurnoEditComponent implements OnInit {
 
   constructor(
     private _turnoService: TurnosService,
-    private _userService: UserWebService,
+    private _userService: UserService,
     private _fb: FormBuilder,
     private _router: Router,
     private _route: ActivatedRoute,

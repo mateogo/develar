@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 
 import { CensoIndustrias, CensoIndustriasQuery } from '../censo.model';
 import { CensoIndustriasHelper } from '../censo-industrial.helper';
+import { CensoIndustrialService } from '../censo-industrial.service';
 
 @Component({
   selector: 'app-censo-industrial-browse',
@@ -29,6 +30,7 @@ export class CensoIndustrialBrowseComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private censoService: CensoIndustrialService
   ) {
     const rangoFecha = devutils.getPreviousWeek(new Date());
 
@@ -99,5 +101,14 @@ export class CensoIndustrialBrowseComponent implements OnInit {
     this.onSelectionChange('empresaId', 'no_definido');
 
     this.isFilterByIndustriaActive = false;
+  }
+
+  public doDownloadResults(): void {
+    console.log('Descargamos de Excel');
+
+    this.query = this.initQuery(this.form, this.query);
+    this.query = CensoIndustriasHelper.cleanQueryToken(this.query);
+    this.searchTerms.next(this.query);
+    this.censoService.excelExport(this.query);
   }
 }

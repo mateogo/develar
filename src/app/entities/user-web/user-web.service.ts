@@ -48,7 +48,7 @@ export class UserWebService {
         .post(url, JSON.stringify(user), { headers: this.headers })
         .toPromise()
         .catch(this.loginError);
-    }
+    }/********** */
   
     logout(): Promise<any> {
       let url = `${this.usersUrl}/${"logout"}`;
@@ -59,12 +59,12 @@ export class UserWebService {
       return this.http.get(url)
         .toPromise()
         .catch(this.handleError);
-    }
+    } /***** */
   
     private handleError(error: any): Promise<any> {
   
       return Promise.reject(error.message || error);
-    }
+    }/** */
   
     private loginError(error: any): Promise<any> {
       this.isLogIn = false;
@@ -75,11 +75,11 @@ export class UserWebService {
             "loginError: fallo en la autenticación, el usuario o la clave son incorrectas",
         },
       );
-    }
+    } /** */
   
     get userlogged(): boolean {
       return this.isLogIn;
-    }
+    } /** */
   
     initLoginUser() {
       let fetchedUser: UserWeb;

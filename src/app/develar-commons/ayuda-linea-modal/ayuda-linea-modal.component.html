@@ -1,0 +1,23 @@
+<mat-dialog-content>
+    <ng-container *ngFor="let recordCard of recordCards">
+        <div class="container-fluid p-0">
+
+            <h3 mat-dialog-title>{{recordCard.slug}}</h3>
+            <div class="row">
+                <div class="col-12">
+                    <p>{{recordCard.subtitle}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <img src="{{recordCard.mainimage}}" alt="">
+                </div>
+                <div class="col-12">
+                    <span [innerHtml]="recordCard.description | sanitizeHtml"></span>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </ng-container>
+    <span style="font-size: xx-small;">{{data.codigo}}</span>
+</mat-dialog-content>

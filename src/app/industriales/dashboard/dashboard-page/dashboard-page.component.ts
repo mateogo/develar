@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -9,21 +10,36 @@ import { Router, NavigationEnd } from '@angular/router';
 export class DashboardPageComponent implements OnInit {
   public displayGoBackBtn = false;
 
+  // URLs donde el responsable de mostrar el botón "Volver" es
+  // dashboard-page y no el componente propiamente dicho
+  private whitelistURLs = [
+    '/dashboard/censos/censo2020',
+    '/dashboard/personas',
+    '/dashboard/industrias/editar'
+  ];
+
   constructor(
     private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.displayGoBackBtn = this.router.url.startsWith('/dashboard/industrias/editar');
+        const currentRoute = event.url;
+
+        for (let k = 0; k < this.whitelistURLs.length; k++) {
+          this.displayGoBackBtn = false;
+          if (currentRoute.startsWith(this.whitelistURLs[k])) {
+            this.displayGoBackBtn = true;
+            break;
+          }
+        }
       }
     });
   }
 
-  public gotoIndustryBrowser(): void {
-    this.router.navigate(['/dashboard/industrias']).then(url => {
-      this.displayGoBackBtn = false;
-    });
+  public goBack(): void {
+    this.location.back();
   }
 }

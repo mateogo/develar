@@ -101,6 +101,7 @@ import { WebuserNavbarComponent } from './layouts/webuser-navbar/webuser-navbar.
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
+import { AyudaLineaModalComponent } from './ayuda-linea-modal/ayuda-linea-modal.component';
 
 @NgModule({
   imports: [
@@ -189,7 +190,8 @@ import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
     InstructivoNumTramiteModalComponent,
     TermscondModalComponent,
     WebuserNavbarComponent,
-    AdminScriptsComponent
+    AdminScriptsComponent,
+    AyudaLineaModalComponent
   ],
   exports:[
     DevelarMaterialModule,
@@ -263,7 +265,8 @@ import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
     TermscondModalComponent,
     WebuserNavbarComponent,
     SanitizeHtmlPipe,
-    AdminScriptsComponent
+    AdminScriptsComponent,
+    AyudaLineaModalComponent
   ],
   providers: [
     AssetService,

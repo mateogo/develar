@@ -5,9 +5,10 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Consulta, ConsultaTable, ConsultaQuery, Requirente } from './consulta.model';
 import { ConsultaHelper } from './consulta.helper';
 import { UserWeb } from '../user-web/user-web.model';
-import { UserWebService } from '../user-web/user-web.service';
 import { DaoService } from '../../develar-commons/dao.service';
 import { devutils } from '../../develar-commons/utils';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user';
 
 
 const RECORD = 'consultas';
@@ -54,7 +55,7 @@ export class ConsultasService {
     export: 'api/consultas/exportar'
   };
 
-  public _user$: BehaviorSubject<UserWeb>
+  public _user$: BehaviorSubject<User>
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   /**
@@ -66,7 +67,7 @@ export class ConsultasService {
 
   constructor(
     private _http: HttpClient,
-    private _user: UserWebService,
+    private _user: UserService,
     private _dao : DaoService
   ) { }
 

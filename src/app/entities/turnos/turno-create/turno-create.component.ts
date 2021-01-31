@@ -11,7 +11,7 @@ import { TurnosService } from '../turnos.service';
 import { TurnoHelper } from '../turno.helper';
 import { Turno, RequirenteTurno, TurnoDisponible } from '../turno.model';
 import { UserWeb } from '../../user-web/user-web.model';
-import { UserWebService } from '../../user-web/user-web.service';
+import { UserService } from '../../user/user.service';
 
 const ESTADO_NO_CONFIRM = 'noconfirmado';
 @Component({
@@ -35,7 +35,7 @@ export class TurnoCreateComponent implements OnInit {
 
   constructor(
     private _turnoService: TurnosService,
-    private _userService: UserWebService,
+    private _userService: UserService,
     private _fb: FormBuilder,
     private _router: Router,
     private _route: ActivatedRoute,

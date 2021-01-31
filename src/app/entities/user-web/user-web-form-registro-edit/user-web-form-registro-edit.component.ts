@@ -10,7 +10,6 @@ import { CustomValidators } from 'ng2-validation';
 
 import { devutils } from '../../../develar-commons/utils';
 import { NotificationService } from '../../../develar-commons/notifications.service';
-import { UserWebService } from '../user-web.service';
 import { UserService } from '../../user/user.service';
 import { PersonService } from '../../person/person.service';
 
@@ -20,6 +19,7 @@ import { TermscondModalComponent } from '../../../develar-commons/termscond-moda
 import { Person, personModel } from '../../person/person';
 import { PreguntaSecreta, UserWebHelper } from '../user-web.helper';
 import { UserWeb } from '../user-web.model';
+import { User } from '../../user/user';
 
 @Component({
   selector: 'user-web-form-registro-edit',
@@ -47,7 +47,6 @@ export class UserWebFormRegistroEditComponent implements OnInit {
   private emailOrigen : string;
   public startDate = new Date(1990, 0, 1);
   constructor(private _fb: FormBuilder, private _dialog: MatDialog,
-    private _userWebService: UserWebService,
     private _notificacionService: NotificationService,
     private _router: Router,
     private _activatedRouter: ActivatedRoute,
@@ -69,13 +68,12 @@ export class UserWebFormRegistroEditComponent implements OnInit {
   }
 
   initUser(id: string): void {
-    let usuario = this._userWebService.currentUser;
-    console.log('usuario: [%s]', usuario && usuario._id, usuario&& usuario.email )
+    let usuario = this._userService.currentUser;
+    //c onsole.log('usuario: [%s]', usuario && usuario._id, usuario&& usuario.email )
 
-    this._userWebService.userEmitter.subscribe(usuario => {
-
+    this._userService.userEmitter.subscribe(usuario => {
       if (usuario && usuario._id === id) {
-        this.usuario = usuario;
+        this.usuario = usuario as UserWeb;
         this.isEdit = true;
         this.emailOrigen = this.usuario.email;
         this.initGroup();
@@ -106,7 +104,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
         this.isEdit ? this.usuario.telefono : '',
         Validators.compose([Validators.required]),
       ],
-      email: [this.isEdit ? this.usuario.email : '', [Validators.email, Validators.required], [this.emailExistenteValidator(this, this._userWebService, this.docBelongsTo)]],
+      email: [this.isEdit ? this.usuario.email : '', [Validators.email, Validators.required], [this.emailExistenteValidator(this, this._userService, this.docBelongsTo)]],
       password: this.password,
       confirmPassword: this.confirmPassword,
       termscond: [null, Validators.requiredTrue],
@@ -120,7 +118,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
       this.removeControl();
     } else {
       this.showForm = true;
-      this.form.get('ndoc').setAsyncValidators(this.dniExistenteValidator(this, this._userWebService, this.docBelongsTo))
+      this.form.get('ndoc').setAsyncValidators(this.dniExistenteValidator(this, this._userService, this.docBelongsTo))
     }
   }
 
@@ -158,10 +156,9 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     let fvalue: RegistroUser = this.form.getRawValue();
     if (!this.isEdit) {
       // Primero seteamos la fecha
-      let date = new Date(this.form.get('fechaNacimiento').value)
-      let fecha_nacimiento_string = devutils.txFromDate(date);
+      let fecha_nacimiento_string = devutils.datePickerToTx(this.form.get('fechaNacimiento').value)
       fvalue.fechaNacimiento = fecha_nacimiento_string;
-      fvalue.tsFechaNacimiento = date.getTime();
+      fvalue.tsFechaNacimiento = new Date(this.form.get('fechaNacimiento').value).getTime();
 
     }
 
@@ -179,9 +176,9 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     //Verificamos si estamos en modo edición o modo alta
     if (!this.isEdit) {
       userWeb.isMayorEdad = parseInt(this.currentAge()) >= 18 ? true : false;
-      this._userWebService.createUserWeb(userWeb).then((user) => {
+      this._userService.createUserWeb(userWeb).then((user) => {
         this._notificacionService.success("Usuario registrado con éxito");
-        //this._localService.setItem(gldef.app_prefix,'navegante',{isRegistered : true});
+        
         this.volver();
       }).catch((err) => {
         this._notificacionService.error(
@@ -190,10 +187,11 @@ export class UserWebFormRegistroEditComponent implements OnInit {
       });
     }
     else {
-      this._userWebService.updateDataUser(this.usuario._id, userWeb).then(user => {
+      this._userService.updateDataUser(this.usuario._id, userWeb).then(user => {
         this._notificacionService.success("Usuario editado con éxito");
-        this._userWebService.userEmitter.next(user);
-        this._userWebService.fetchPersonByUserId(this.usuario._id).then(persona => {
+        this._userService.userEmitter.next(user as User);
+       
+        this._userService.fetchPersonByUserId(this.usuario._id).then(persona => {
 
           if (persona) {
             let personEdit: Person = persona[0];
@@ -252,7 +250,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     return this.form.controls[controlName].hasError(errorName);
   }
 
-    dniExistenteValidator(that:any, service: UserWebService, message: object): AsyncValidatorFn {
+    dniExistenteValidator(that:any, service: UserService, message: object): AsyncValidatorFn {
       return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
           let value = control.value;
           let tdoc = that.form.controls['tipoDoc'].value || 'DNI';
@@ -274,7 +272,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
       });
   }
 
-  emailExistenteValidator(that:any, service: UserWebService, message: object): AsyncValidatorFn {
+  emailExistenteValidator(that:any, service: UserService, message: object): AsyncValidatorFn {
     return ((control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
         let value = control.value;
 

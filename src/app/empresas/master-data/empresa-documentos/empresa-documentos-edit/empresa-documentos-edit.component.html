@@ -1,115 +1,97 @@
-<mat-card >
-  <mat-card-content>
-  <form [formGroup]="form">
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form">
 
-    <!---type;  tdoc, ndoc--->
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-        <mat-select #fldTipoTramitacion   formControlName='type' 
-            (change)="changeSelectionValue('type',fldTipoTramitacion )" 
-            placeholder="Tipo de Documento/ Tramitación">
-          <mat-option *ngFor="let item of documentos" [value]="item.val" >{{ item.label }}</mat-option>
-        </mat-select>
-        </mat-form-field>
-      </div>
-      
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['slug']" 
-                  placeholder="Denominación del documento/ tramitación" >
-        </mat-form-field>
-      </div>
-
-    </div>
-
-    <div class="row" >
-
-      <div class="col">
-        <mat-form-field >
-          <textarea  matInput [formControl]="form.controls['observacion']" 
-                  placeholder="Descripción/ observación o comentario" ></textarea>
-          <mat-hint>Describa el documento, permiso o tramitación</mat-hint>
-        </mat-form-field>
-      </div>
-
-    </div>
-
-    <div class="row" >
-      <div class="col-md-3 d-flex align-items-center">
-          <mat-checkbox [checked]="false" color="primary"
-                        [formControl]="form.controls['isTramitacionMAB']"
-                                      >Es una tramitación en AlmteBrown?</mat-checkbox>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['expedidopor']" 
-                  placeholder="Expedido por" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['tramitacionNro']" 
-                  placeholder="Número de tramitación" >
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['fechaexpe']" 
-                  placeholder="Fecha de otorgamiento" >
-        </mat-form-field>
-      </div>
-
-    </div>
+            <!---type;  tdoc, ndoc--->
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldTipoTramitacion formControlName='type' (change)="changeSelectionValue('type',fldTipoTramitacion )" placeholder="Tipo de Documento/ Tramitación">
+                            <mat-option *ngFor="let item of documentos" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
 
-    <div class="row" >
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['slug']" placeholder="Denominación del documento/ tramitación">
+                    </mat-form-field>
+                </div>
 
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['tramitacionURL']" 
-                  placeholder="URL del organismo otorgante o vínculo al trámite" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <input  matInput [formControl]="form.controls['fechavigencia']" 
-                  placeholder="Fecha de vigencia" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldEstado placeholder="Estado del trámite"
-              [formControl]="form.controls['estado']"
-              (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
-            <mat-option *ngFor="let item of estados" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    <mat-form-field>
+                        <textarea matInput [formControl]="form.controls['observacion']" placeholder="Descripción/ observación o comentario"></textarea>
+                        <mat-hint>Describa el documento, permiso o tramitación</mat-hint>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 d-flex align-items-center">
+                    <mat-checkbox [checked]="false" color="primary" [formControl]="form.controls['isTramitacionMAB']">Es una tramitación en AlmteBrown?</mat-checkbox>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['expedidopor']" placeholder="Expedido por">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['tramitacionNro']" placeholder="Número de tramitación">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['fechaexpe']" placeholder="Fecha de otorgamiento">
+                    </mat-form-field>
+                </div>
+
+            </div>
 
 
-    </div>
+            <div class="row">
 
-    <hr>
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['tramitacionURL']" placeholder="URL del organismo otorgante o vínculo al trámite">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['fechavigencia']" placeholder="Fecha de vigencia">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-select #fldEstado placeholder="Estado del trámite" [formControl]="form.controls['estado']" (selectionChange)="changeSelectionValue('estado',fldEstado.value)">
+                            <mat-option *ngFor="let item of estados" [value]="item.val">{{ item.label }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-    <!---nombre; apellido; sexo;--->
-    <div class="additional-info">
-      <button mat-raised-button color="primary" type="submit" 
-      		(click)="onSubmit()"
-          [disabled]="!form.valid" >Aceptar</button>
-      
-      <button mat-button type="button" color="accent"
-      		(click)="onCancel()" >Cancelar</button>
 
-      <button mat-button type="button" color="warning"
-          (click)="deleteToken()" >Borrar</button>          
+            </div>
 
-    </div>
+            <hr>
 
-  </form>
-  </mat-card-content>
+            <!---nombre; apellido; sexo;--->
+            <div class="additional-info">
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!form.valid">Aceptar</button>
+
+                <button mat-button type="button" color="accent" (click)="onCancel()">Cancelar</button>
+
+                <button mat-flat-button type="button" color="warn" (click)="deleteToken()">Borrar</button>
+
+            </div>
+
+        </form>
+    </mat-card-content>
 </mat-card>

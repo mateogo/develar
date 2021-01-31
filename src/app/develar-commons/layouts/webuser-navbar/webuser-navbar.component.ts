@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { UserWeb } from '../../../entities/user-web/user-web.model';
-import { UserWebService } from '../../../entities/user-web/user-web.service';
 import { User } from '../../../entities/user/user';
 import { UserService } from '../../../entities/user/user.service';
 import { MessageToPrint } from '../../../notifications/notification.model';
@@ -28,7 +26,7 @@ export class WebuserNavbarComponent implements OnInit {
 
   @Input() title: string;
 
-  currentUser: User | UserWeb;
+  currentUser: User;
   public loggedIn = false;
   public avatar: string = DEFAULT_AVATAR
   public avatar2 = gldef.logoAvatar;
@@ -66,8 +64,7 @@ export class WebuserNavbarComponent implements OnInit {
     private userService: UserService,
     private mainMenuService: MinimalMenuService,
     private route: ActivatedRoute,
-    private router: Router,
-    private _userWebService: UserWebService) {
+    private router: Router) {
 
     mainMenuService.menuListener$.subscribe(
       items => {
@@ -123,7 +120,7 @@ export class WebuserNavbarComponent implements OnInit {
   initUser() {
     this.userService.userEmitter.subscribe((user: User) => {
       this.currentUser = user;
-      this.loggedIn = this.userService.userlogged || this._userWebService.userlogged;
+      this.loggedIn = this.userService.userlogged;
       this.avatar = this.currentUser.avatarUrl || DEFAULT_AVATAR;
       this.emitLogin();
     });

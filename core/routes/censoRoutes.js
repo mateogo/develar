@@ -6,14 +6,14 @@ var express = require('express');
 var router = express.Router();
 var service = require('../models/censoModel.js');
 
-const whoami =  "Router:routes/censoRoutes: ";
+const whoami = "Router:routes/censoRoutes: ";
 
 
 
 /**
  * Retrieve all entities
  */
-router.get('/', function (req, res) {
+router.get('/', function(req, res) {
     service.findAll(function(err) {
         res.status(400).json(err);
 
@@ -23,11 +23,17 @@ router.get('/', function (req, res) {
     });
 });
 
+/**
+ * Exportación a Excel
+ */
+router.get('/exportarcensos', function(req, res) {
+    service.exportarMovimientos(req.query, req, res);
+});
 
 /**
  * Retrieve all entity
  */
-router.post('/nextitem', function (req, res) {
+router.post('/nextitem', function(req, res) {
     service.upsertNext(req.body, function(err) {
         res.status(400).json(err);
 
@@ -40,7 +46,7 @@ router.post('/nextitem', function (req, res) {
 /**
  * search entities
  */
-router.get('/search', function (req, res) {
+router.get('/search', function(req, res) {
     service.findByQuery(req.query, function(err) {
         res.status(400).json(err);
 
@@ -53,7 +59,7 @@ router.get('/search', function (req, res) {
 /**
  * Retrieve Entity by ID
  */
-router.get('/:id', function (req, res) {
+router.get('/:id', function(req, res) {
     service.findById(req.params.id, function(err) {
         res.status(400).json(err);
 
@@ -67,7 +73,7 @@ router.get('/:id', function (req, res) {
 /**
  * Create new entity
  */
-router.post('/', function (req, res) {
+router.post('/', function(req, res) {
     service.create(req.body, function(err) {
         res.status(400).json(err);
 
@@ -82,12 +88,13 @@ router.post('/', function (req, res) {
 /**
  * Update entity
  */
-router.put('/:id', function (req, res) {
-    service.update(req.params.id, req.body, 
-        function (err) {
+router.put('/:id', function(req, res) {
+    service.update(req.params.id, req.body,
+        function(err) {
             res.status(400).json(err);
 
-        }, function(entity) {
+        },
+        function(entity) {
             res.status(201).json(entity);
 
         });

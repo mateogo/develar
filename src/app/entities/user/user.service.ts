@@ -1,7 +1,7 @@
-import { Injectable }    from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { BehaviorSubject ,  Subject }       from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 
 
@@ -11,66 +11,74 @@ import { User, CurrentCommunity } from './user';
 import { UserWeb } from '../user-web/user-web.model';
 import { Person } from '../person/person';
 import { Community } from '../../develar-commons/community/community.model';
-import { UserWebService } from '../user-web/user-web.service';
+import { Router } from '@angular/router';
+import { DaoService } from '../../develar-commons/dao.service';
 
 
 const estados = [
-	{val: 'no_definido', 	label:'Seleccione opción'},
-	{val: 'pendiente', 		label:'Pendiente'},
-	{val: 'activo', 			label:'Activo'},
-	{val: 'suspendido',		label:'Suspendido'},
-	{val: 'baja', 				label:'Baja'},
+	{ val: 'no_definido', label: 'Seleccione opción' },
+	{ val: 'pendiente', label: 'Pendiente' },
+	{ val: 'activo', label: 'Activo' },
+	{ val: 'suspendido', label: 'Suspendido' },
+	{ val: 'baja', label: 'Baja' },
 
 ];
 
 const avances = [
-	{val: 'no_definido', 	label: 'Seleccione opción'},
-	{val: 'webform', 		  label: 'Alta por Webform'},
-	{val: 'lnocturno', 	  label: 'Alta por Webform Locales Nocturnos'},
-	{val: 'mailok', 			label: 'Correo verificado'},
-	{val: 'approved',		  label: 'Aprobado'},
-	{val: 'desafectado', 	label: 'Desafectado'},
+	{ val: 'no_definido', label: 'Seleccione opción' },
+	{ val: 'webform', label: 'Alta por Webform' },
+	{ val: 'lnocturno', label: 'Alta por Webform Locales Nocturnos' },
+	{ val: 'mailok', label: 'Correo verificado' },
+	{ val: 'approved', label: 'Aprobado' },
+	{ val: 'desafectado', label: 'Desafectado' },
 ];
 
 const modulos = [
-	{val: 'no_definido', 	label: 'Seleccione opción'},
-	{val: 'core', 		    label: 'General'},
-	{val: 'com',      	  label: 'COM'},
-	{val: 'ivr',      	  label: 'Servicio IVR'},
-	{val: 'medico',   	  label: 'Médico'},
-	{val: 'vigilancia',   label: 'Epidemio: Seguimiento'},
-	{val: 'same',     	  label: '107Same'},
-	{val: 'webmaster', 	  label: 'Webmaster'},
-	{val: 'marketing', 	  label: 'Marketing'},
-	{val: 'encuestador', 	label: 'Encuestador'},
-	{val: 'productor', 	  label: 'Productor'},
-	{val: 'qa', 		    	label: 'Calidad'},
+	{ val: 'no_definido', label: 'Seleccione opción' },
+	{ val: 'core', label: 'General' },
+	{ val: 'com', label: 'COM' },
+	{ val: 'ivr', label: 'Servicio IVR' },
+	{ val: 'medico', label: 'Médico' },
+	{ val: 'vigilancia', label: 'Epidemio: Seguimiento' },
+	{ val: 'same', label: '107Same' },
+	{ val: 'webmaster', label: 'Webmaster' },
+	{ val: 'marketing', label: 'Marketing' },
+	{ val: 'encuestador', label: 'Encuestador' },
+	{ val: 'productor', label: 'Productor' },
+	{ val: 'qa', label: 'Calidad' },
 ];
 
 const roles = [
-	{val: 'no_definido', 	label: 'Seleccione opción'},
-	{val: 'operator',     label: 'Operador'},
-	{val: 'admin', 	      label: 'Admin'},
-	{val: 'master', 	  	label: 'Master'},
+	{ val: 'no_definido', label: 'Seleccione opción' },
+	{ val: 'operator', label: 'Operador' },
+	{ val: 'admin', label: 'Admin' },
+	{ val: 'master', label: 'Master' },
 ];
 
 var nextUser = 40;
 
+const RECORD : string = "userweb"
 @Injectable()
 export class UserService {
 	private _socket: any;
 	private usersUrl = 'api/users';  // URL to web api
 	private personUrl = 'api/persons';  // URL to web api
+	private usersWebUrl = "api/usuariosweb"; // URL to web api
+	
+    private userWebUrlExtra = "api/usuariosweb/"; //URL CON /
+
+	private userApiFetchPerson = 'api/usuariosweb/%s/persona';
 	private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
 	private _currentUser: User;
-	private _userEmitter: BehaviorSubject<User|UserWeb>;
+	private _userEmitter: BehaviorSubject<User>;
 
 	private isLogIn = false;
 	private hasLogout = false;
 
 	constructor(private http: HttpClient,
-		private _userWebService: UserWebService) {
+		private _router: Router,
+		private daoService: DaoService) {
 		this.currentUser = new User('invitado', 'invitado@develar')
 		this._userEmitter = new BehaviorSubject<User>(this.currentUser);
 		this._socket = io();
@@ -180,7 +188,21 @@ export class UserService {
 		LOGIN MANAGEMENT
 	******************/
 	login(user: User): Promise<User> {
-		const url = `${this.usersUrl}/${'login'}`;
+
+		let url = `${this.usersUrl}/${'login'}`;
+
+		this.hasLogout = false;
+		return this.http
+			.post(url, JSON.stringify(user), { headers: this.headers })
+			.toPromise()
+			.catch(this.loginError);
+	}
+
+	//Logueo de usuario web//
+	loginWeb(user: any): Promise<UserWeb> {
+
+		let url = `${this.usersWebUrl}/${'login'}`;
+
 		this.hasLogout = false;
 		return this.http
 			.post(url, JSON.stringify(user), { headers: this.headers })
@@ -199,10 +221,10 @@ export class UserService {
 
 	logout(): Promise<any> {
 
-		let url = `${this.usersUrl}/closesession`;
+		let url: string = `${this.usersUrl}/closesession`;
+
 		this.isLogIn = false;
 		this.hasLogout = true;
-		this._userWebService.logout().then();
 		this._currentUser = new User('invitado', 'invitado@develar');
 		this._userEmitter.next(this._currentUser);
 		return this.http.get(url)
@@ -254,7 +276,7 @@ export class UserService {
 		API UTILS
 	******************/
 
-	get userEmitter(): BehaviorSubject<User|UserWeb> {
+	get userEmitter(): BehaviorSubject<User> {
 		return this._userEmitter;
 	}
 
@@ -282,39 +304,74 @@ export class UserService {
 	//****************** login management  *****************
 	initLoginUser() {
 		let fetchedUser: User;
+		let fetchedUserWeb: UserWeb;
 		let loggedIn = false;
 		let loginUser = new Subject<User>();
 
+
 		this.loadLoginUser().then(res => {
-			fetchedUser = res as User;
-			loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+			let isWeb = res['isUsuarioWeb']; //Lo utilizamos para distinguir tipos de usuarios 
+					
+			if (isWeb) {
+				fetchedUserWeb = res as UserWeb;
+				loggedIn = (fetchedUserWeb && fetchedUserWeb._id) ? true : false;
+			} else {
+				fetchedUser = res as User;
+				loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+			}
 
 			if (!loggedIn) {
 				setTimeout(() => {
 
 					this.loadLoginUser().then(res => {
-						fetchedUser = res as User;
-						loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
-
+							if (isWeb) {
+							fetchedUserWeb = res as UserWeb;
+							loggedIn = (fetchedUserWeb && fetchedUserWeb._id) ? true : false;
+						} else {
+							fetchedUser = res as User;
+							loggedIn = (fetchedUser && fetchedUser._id) ? true : false;
+						}
 						if (!loggedIn) {
 							fetchedUser = new User('invitado', 'invitado@develar');
 							this.setAnonimousUser(fetchedUser, loginUser);
 
+							// Lo redirigimos a la pantalla principal
+							this._router.navigateByUrl("");
+
 						} else {
-							this.setLoginUser(fetchedUser, loginUser);
+							if (isWeb) {
+								this.setLoginUserWeb(fetchedUserWeb, loginUser);
+							} else {
+								this.setLoginUser(fetchedUser, loginUser);
+							}
 						}
 					})
 				}, 2000)
 
 			} else {
-				this.setLoginUser(fetchedUser, loginUser);
+				if (isWeb) {
+					this.setLoginUserWeb(fetchedUserWeb, loginUser);
+				} else {
+					this.setLoginUser(fetchedUser, loginUser);
+				}
 			}
 
 		})
 			.catch(this.handleError);
-
+		
 		return loginUser;
 	}
+
+	setLoginUserWeb(user: UserWeb, loginUser: Subject<User>) {
+		this._currentUser = user as User;
+		this.isLogIn = true;
+		this.hasLogout = false;
+		loginUser.next(this.currentUser);
+		this._userEmitter.next(this._currentUser);
+		// this.endSetUser$.next(true);
+		// this.currentUserSubj.next(user);
+	}
+
 
 
 	loadLoginUser() {
@@ -378,7 +435,7 @@ export class UserService {
 	}
 
 	isAdminUser() {
-		let user = this.currentUser || this._userWebService.currentUser;
+		let user = this.currentUser;
 		let admin = false;
 		if (user && !user['isUsuarioWeb'] && (user.username !== 'invitado')) {
 			admin = true;
@@ -400,6 +457,49 @@ export class UserService {
 	getModulos() {
 		return modulos;
 	}
+
+	/*** MÉTODOS DE USER WEB */
+
+	createUserWeb(user: UserWeb): Promise<UserWeb> {
+		return this.daoService.create(RECORD, user);
+	}
+
+	resetPassword(datos : any) : Promise<any> {
+		const url = this.usersWebUrl+'/resetpassword';
+		return this.http.post(url, JSON.stringify(datos), {headers : this.headers}).toPromise().catch();
+	  }
+	
+	  updateDataUser(id : string, data : UserWeb) : Promise<UserWeb> {
+		return this.http.put<UserWeb>(this.userWebUrlExtra+id,data, {headers : this.headers}).toPromise().catch();
+	  }
+	
+	  public fetchPersonByUserId(id: string): Promise<Person> {
+		return this.http
+		  .get<Person>(this.userApiFetchPerson.replace('%s', id), { headers: this.headers })
+		  .toPromise();
+	  }
+	
+	  public fetchById(id: string): Promise<UserWeb> {
+		return this.http.get<UserWeb>(this.userWebUrlExtra + id, { headers: this.headers }).toPromise();
+	  }
+
+	  //TEST
+  
+	  public testUserByDNI(tdoc:string, ndoc:string ): Observable<UserWeb[]>{
+		let query = {
+		  tdoc: tdoc,
+		  ndoc: parseInt(ndoc)
+		}
+		return this.daoService.search<UserWeb>(RECORD, query);
+	  }
+
+	  public testUserByEmail(email ): Observable<UserWeb[]>{
+		let query = {
+		  email: email,
+		}
+		return this.daoService.search<UserWeb>(RECORD, query)
+	
+	  }
 
 }
 
@@ -458,6 +558,8 @@ class SendMail {
 	get headers() {
 		return this.httpHeaders;
 	}
+
+	 
 
 
 }

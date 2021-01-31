@@ -1,31 +1,27 @@
 <mat-card class="detail-card p-0">
-	<mat-card-header>
-		<mat-card-title><strong>{{ title }}</strong></mat-card-title>
-	</mat-card-header>
+    <mat-card-header>
+        <mat-card-title><strong>{{ title }}</strong></mat-card-title>
+    </mat-card-header>
 
-  <mat-card-content>
-  		<div class="container-fluid p-0 search-panel">
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<personas-core-base [person]='currentPerson'
-		 					(updatePerson)='updateCore($event)' ></personas-core-base>
-			</div>
-	
-		 	 <div 	*ngIf="hasCurrentPerson" >
-		 		<personas-contactdata-panel [items]='contactList'
-		 					(updateItems)='updateContactList($event)' ></personas-contactdata-panel>
-			</div>
-		 	<div 	*ngIf="hasCurrentPerson" >
-		 		<personas-address-panel [items]='addressList'
-		 					(updateItems)='updateAddressList($event)' ></personas-address-panel>
-			</div>
-			<div 	*ngIf="hasCurrentPerson" >
-				<personas-vinculos-panel [items]='businessList'
-							(updateItems)='updateBusinessList($event)' ></personas-vinculos-panel>
-		   </div>
+    <mat-card-content>
+        <div class="container-fluid p-0 search-panel">
+            <div *ngIf="hasCurrentPerson">
+                <personas-core-base [person]='currentPerson' (updatePerson)='updateCore($event)'></personas-core-base>
+            </div>
 
-		</div>
-	 </mat-card-content>
-	 <mat-card-actions>
+            <div *ngIf="hasCurrentPerson">
+                <personas-contactdata-panel [items]='contactList' (updateItems)='updateContactList($event)'></personas-contactdata-panel>
+            </div>
+            <div *ngIf="hasCurrentPerson">
+                <personas-address-panel [items]='addressList' (updateItems)='updateAddressList($event)'></personas-address-panel>
+            </div>
+            <div *ngIf="hasCurrentPerson">
+                <personas-vinculos-panel [items]='businessList' (updateItems)='updateBusinessList($event)'></personas-vinculos-panel>
+            </div>
+
+        </div>
+    </mat-card-content>
+    <!-- <mat-card-actions>
 		 <button mat-flat-button class="ml-3" type="button" (click)="goBack()" color="primary">Volver</button>
-	 </mat-card-actions>
+	 </mat-card-actions> -->
 </mat-card>
