@@ -118,65 +118,65 @@
                     </div>
                 </fieldset>
 
-                <!-- <fieldset formGroupName="addressForm">
-    <div class="row" >
-      <div class="col-md-4">
-        <mat-form-field>
-          <input matInput formControlName="street1" placeholder="Calle número" >
-          <mat-hint align="end">{{ nucleoHabitacionalSelected() }}</mat-hint>
-        </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-form-field>
-          <input matInput formControlName="street2" placeholder="Información adicional" >
-        </mat-form-field>
-      </div>
-    </div>
+                <fieldset formGroupName="addressForm">
+                    <div class="row" >
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <input matInput formControlName="street1" placeholder="Calle número" >
+                        <mat-hint align="end">{{ nucleoHabitacionalSelected() }}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <input matInput formControlName="street2" placeholder="Información adicional" >
+                        </mat-form-field>
+                    </div>
+                    </div>
 
-    <div class="row" >
-      <div class="col-md-4">
-        <mat-form-field>
-          <input matInput formControlName="streetIn" placeholder="Entre calle..." >
-        </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-form-field>
-          <input matInput formControlName="streetOut" placeholder="y calle..." >
-        </mat-form-field>
-      </div>
-    </div>
+                    <div class="row" >
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <input matInput formControlName="streetIn" placeholder="Entre calle..." >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <input matInput formControlName="streetOut" placeholder="y calle..." >
+                        </mat-form-field>
+                    </div>
+                    </div>
 
-    <div class="row" >
-      <div class="col-md-4">
-        <mat-form-field>
-          <mat-select #fldCiudad placeholder="Ciudad"
-              formControlName='city'
-              (selectionChange)="changeSelectionValue('city', fldCiudad.value)" >
-            <mat-option *ngFor="let item of ciudadesList"
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+                    <div class="row" >
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <mat-select #fldCiudad placeholder="Ciudad"
+                            formControlName='city'
+                            (selectionChange)="changeSelectionValue('city', fldCiudad.value)" >
+                            <mat-option *ngFor="let item of ciudadesList"
+                            [value]="item.val" >{{ item.label }}</mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                    </div>
 
-      <div class="col-md-4">
-        <mat-form-field>
-          <mat-select #fldbarrio placeholder="Barrio"
-              formControlName='barrio'
-              (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
-            <mat-option *ngFor="let item of barrioList"
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                        <mat-select #fldbarrio placeholder="Barrio"
+                            formControlName='barrio'
+                            (selectionChange)="changeSelectionValue('barrio',fldbarrio.value)" >
+                            <mat-option *ngFor="let item of barrioList"
+                            [value]="item.val" >{{ item.label }}</mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                    </div>
 
-      <div class="col-md-3">
-        <mat-form-field>
-          <input matInput formControlName='zip' placeholder="Código Postal" >
-        </mat-form-field>
-      </div>
-    </div>
+                    <div class="col-md-3">
+                        <mat-form-field>
+                        <input matInput formControlName='zip' placeholder="Código Postal" >
+                        </mat-form-field>
+                    </div>
+                    </div>
 
-    </fieldset> -->
+                </fieldset>
 
 
                 <hr>
