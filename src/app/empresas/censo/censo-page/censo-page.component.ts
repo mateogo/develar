@@ -30,6 +30,7 @@ import {  Person,
 
 import {  CensoIndustrias, 
           CensoActividad,
+          CensoComercializacion,
           CensoBienes } from '../../censo.model';
 
 import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
@@ -63,6 +64,11 @@ export class CensoPageComponent implements OnInit {
   //Actividades
   public hasBienes = false;
   public bienes: CensoBienes[] = [];
+
+  //Comercializacion
+  public hasComercializacion = false;
+  public comercializacion: CensoComercializacion[] = [];
+
 
 
   // Block SaludData
@@ -213,6 +219,7 @@ export class CensoPageComponent implements OnInit {
   private initCurrentCenso(censo: CensoIndustrias){
     this.hasActividades = false;
     this.hasBienes = false;
+    this.hasComercializacion = false;
 
     if(censo && censo._id){
       console.log('CurrentCenso LOADED: [%s] [%s]', censo.empresa && censo.empresa.slug, censo.compNum);
@@ -224,6 +231,9 @@ export class CensoPageComponent implements OnInit {
 
       this.bienes = censo.bienes || [];
       this.initBienes(this.bienes);
+
+      this.comercializacion = censo.comercializacion || [];
+      this.initComercializacion(this.comercializacion);
 
       this.refreshCenso(censo);
 
@@ -250,6 +260,12 @@ export class CensoPageComponent implements OnInit {
   private initBienes(bienes: CensoBienes[]){
     if(bienes ){
       this.hasBienes = true;
+    }
+  }
+
+  private initComercializacion(comercializacion: CensoComercializacion[]){
+    if(comercializacion ){
+      this.hasComercializacion = true;
     }
   }
 
@@ -336,6 +352,20 @@ export class CensoPageComponent implements OnInit {
     })
   }
 
+  updateComercializacionList(event: UpdateListEvent){
+    console.log('Comercializacion BUBBLED')
+
+    if(event.action === UPDATE){
+      this.updateComercializacion(event);
+    }
+  }
+
+  private updateComercializacion(event: UpdateListEvent){
+    this.currentCenso.comercializacion = event.items as CensoComercializacion[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
 
   /**********************/
   /*      Person        */

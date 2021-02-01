@@ -99,6 +99,57 @@ const assetSch = new mongoose.Schema({
 
 });
 
+const mercadosOptList = [
+	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
+	{val: 'pba',          isLocal: true,  label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
+	{val: 'nacional',     isLocal: true,  label: 'Nacional',         slug: 'Nacional' },
+	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
+	{val: 'mercosur',     isLocal: false, label: 'Mercosur',         slug: 'Mercosur' },
+	{val: 'america',      isLocal: false, label: 'Región América',   slug: 'Región América' },
+	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
+	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
+];
+
+const mercadoSch = new mongoose.Schema({
+	target:         { type: String,  required: false},
+	isLocal:        { type: Boolean, required: false},
+	propVentas:     { type: Number,  required: false},
+	propCompras:    { type: Number,  required: false},
+	montoVentas:    { type: Number,  required: false},
+	montoCompras:   { type: Number,  required: false},
+	slug:           { type: String,  required: false}
+});
+
+const censoComercializacionSch = new mongoose.Schema({
+	type:                { type: String,  required: false },
+	slug:                { type: String,  required: false },
+
+    balanzaComMonto:     { type: Number,  required: false },
+	balanzaComProp:      { type: Number,  required: false },
+	balanzaImpProp:      { type: Number,  required: false },
+	balanzaImpMonto:     { type: Number,  required: false },
+
+    isPlanAumentoExpo:   { type: Boolean, required: false },
+	isPlanSustiImpo:     { type: Boolean, required: false },
+
+    hasPlanPartFeriaInt: { type: Boolean, required: false },
+	hasPlanPartFeriaLoc: { type: Boolean, required: false },
+	hasPlanInvestigMerc: { type: Boolean, required: false },
+	hasPlanRepresExt:    { type: Boolean, required: false },
+	hasOtrosPlanes:      { type: Boolean, required: false },
+
+    planProExpo:         { type: String,  required: false },
+
+    hasPlanSustImpo:     { type: Boolean, required: false },
+	planSustImpo:        { type: String,  required: false },
+
+    propComerPropia:     { type: Number,  required: false },
+	propComerMayor:      { type: Number,  required: false },
+	propComerMinor:      { type: Number,  required: false },
+	propComerDigital:    { type: Number,  required: false },
+	mercados:          [ mercadoSch ]
+});
+
 
 /**************************/
 /**   CENSO INDUSTRIAS  **/
@@ -120,6 +171,7 @@ const censoindustriaSch = new Schema({
     censo: { type: censoDataSch, required: false },
     actividades: [censoActividadSch],
     bienes: [censoBienesSch],
+    comercializacion: [censoComercializacionSch],
     assets: [assetSch],
 });
 

@@ -74,12 +74,12 @@ export class PortfolioDetailComponent implements OnInit {
   private assetList: CardGraph[];
   private resourceList: CardGraph[];
   private tagList: Array<string>;
-  private mainImageUrl: string;
+  public mainImageUrl: string;
 
   private modelScrptn;
   private breadcrumb: BreadcrumbItem[] = breadcrumb;
   private isPrismed = false;
-  private carrousel = [];
+  public carrousel = [];
 
   public hasExcerpt = false;
   public showExcerpt = false;

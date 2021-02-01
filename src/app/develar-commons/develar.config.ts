@@ -39,9 +39,27 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #2 21.01.31-16:41',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #2 21.02.01-11:37',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
+	},
+
+	industrias: {
+		logoAvatar: 'avatar-develar.jpg',
+		logoUser: 'avatar-u-develar.jpg',
+		logoCompany: 'logo_publico.png',
+		logoCompany2: 'logo-publico.png',
+		company: 'MAB',
+		mainmenu: 'INDUSTRIAS',
+		mainmenutpl: 'webUser-navbar',
+		admintarget: '/develar/consultas',
+		dashboard: '/mab/empresas/registro',
+		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
+		emailsubject: '[MAB] Contacto',
+		emailbody: 'Formulario de contacto completado',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.01.31-17:13',
+		version: '1.0 ',
+		url: 'industrias.brown.gob.ar'
 	},
 
 	cck: {
@@ -97,24 +115,6 @@ const globals = {
 		copyright: '© Copyright 2019 - DGTS@modernización - Municipalidad de Almte. Brown ',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
-	},
-
-	industrias: {
-		logoAvatar: 'avatar-develar.jpg',
-		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo_publico.png',
-		logoCompany2: 'logo-publico.png',
-		company: 'MAB',
-		mainmenu: 'INDUSTRIAS',
-		mainmenutpl: 'webUser-navbar',
-		admintarget: '/develar/consultas',
-		dashboard: '/mab/empresas/registro',
-		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
-		emailsubject: '[MAB] Contacto',
-		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - SEMANA #33 20.12.08-17:01',
-		version: '1.0 ',
-		url: 'industrias.brown.gob.ar'
 	},
 
 	fundetec: {

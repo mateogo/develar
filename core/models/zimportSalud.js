@@ -51,10 +51,10 @@ exports.importSisaArchive = processSisaArchive;
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
     //deploy
-    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
 
     // local
-    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -112,6 +112,11 @@ function processSisaArchive(req, errcb, cb){
 
 async function processOneSaludPerson(token, compNum){
 		let tperson;
+
+		if(token.feresultado && !utils.dateNumFromTx(token.feresultado)){
+			token.feresultado = token.fealta;
+		}
+
 
 		let query = personBuildQuery({
 		    tdoc: 'DNI',
@@ -451,7 +456,7 @@ function buildSisaEvent(asis, token){
 	sisaEvent.fe_consulta = token.fealta;
 
 	sisaEvent.fets_reportado = utils.dateNumFromTx(sisaEvent.fe_reportado);
-	sisaEvent.fets_consulta = utils.dateNumFromTx(sisaEvent.fe_consulta);
+	sisaEvent.fets_consulta =  utils.dateNumFromTx(sisaEvent.fe_consulta);
 
 	sisaEvent.reportadoPor = token.reportadox;
 	sisaEvent.sisaId = token.sisaid || "";

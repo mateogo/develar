@@ -85,7 +85,7 @@ export class PortfolioTokenComponent implements OnInit {
     "max-width": "400px"
   }
 
-  private imgMaxSize = {
+  public imgMaxSize = {
     "max-width": "100%"
   }
 

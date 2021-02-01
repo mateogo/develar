@@ -51,6 +51,11 @@
             (updateItems)='updateBienesList($event)' ></censo-panel>
     </div>
 
+    <div  *ngIf="hasComercializacion" >
+      <censo-panel [items]='comercializacion'  [type]="'comercializacion'"
+            (updateItems)='updateComercializacionList($event)' ></censo-panel>
+    </div>
+
     <div  *ngIf="hasCurrentPerson" >
       <censo-assets-panel  [assetList]='assetList' 
                 (updateAssets)='updateAssetList($event)' ></censo-assets-panel>

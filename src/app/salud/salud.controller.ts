@@ -416,7 +416,7 @@ export class SaludController {
 
     let fecha_caso_notificado = asistencia && asistencia.sisaevent && asistencia.sisaevent.fe_reportado;
 
-    if(fecha_caso_notificado){
+    if(fecha_caso_notificado && devutils.dateFromTx(fecha_caso_notificado)){
 
       let fecha = devutils.dateFromTx(fecha_caso_notificado);
       asistencia.fenotif_txa = devutils.txFromDate(fecha);

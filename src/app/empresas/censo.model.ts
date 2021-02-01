@@ -50,6 +50,70 @@ export class CensoActividad {
 	anio: number;
 }
 
+export class Mercado {
+	target: string; // browr, pba, pais, brasil, mercosur, etc.
+	isLocal: boolean = true;
+	propVentas: number = 0; //proporción relativa de ventas
+	propCompras: number = 0; //proporción relativa de ventas
+	montoVentas: number = 0; //proporción relativa de ventas
+	montoCompras: number = 0; //proporción relativa de ventas
+	slug: string = ''; //proporción relativa de ventas
+}
+const mercadosOptList = [
+	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
+	{val: 'pba',          isLocal: true,  label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
+	{val: 'nacional',     isLocal: true,  label: 'Nacional',         slug: 'Nacional' },
+	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
+	{val: 'mercosur',     isLocal: false, label: 'Mercosur',         slug: 'Mercosur' },
+	{val: 'america',      isLocal: false, label: 'Región América',   slug: 'Región América' },
+	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
+	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
+]
+
+export class CensoComercializacion{
+	_id?: string;
+	type: string;
+	slug: string;
+
+	mercados: Array<Mercado> = [];
+	//exportaciones - importaciones || exportaciones/importaciones %
+	balanzaComMonto: number = 0;
+	balanzaComProp: number = 0;
+
+	//comprasLoc - comprasImport || comprasLoc/comprasImp %
+	balanzaImpProp: number = 0;
+	balanzaImpMonto: number = 0;
+
+	isPlanAumentoExpo: boolean = false;
+	isPlanSustiImpo: boolean = false;
+
+	hasPlanPartFeriaInt: boolean = false;
+	hasPlanPartFeriaLoc: boolean = false;
+	hasPlanInvestigMerc: boolean = false;
+	hasPlanRepresExt: boolean = false;
+	hasOtrosPlanes: boolean = false;
+	planProExpo: string = '';
+
+	hasPlanSustImpo: boolean = false;
+	planSustImpo: string = '';
+
+	// proporción canales comercialización
+	propComerPropia: number = 0;
+	propComerMayor: number = 0;
+	propComerMinor: number = 0;
+	propComerDigital: number = 0;
+	constructor(){
+		this.mercados = mercadosOptList.map(t => {
+			let m = new Mercado();
+			m.target = t.val;
+			m.isLocal = t.isLocal;
+			return m;
+		})
+	}
+
+	
+}
+
 export class CensoBienes {
 	_id?: string;
 	type: string;
@@ -113,6 +177,7 @@ export class CensoIndustrias {
 		estado: EstadoCenso;
 		actividades: Array<CensoActividad>;
 		bienes: Array<CensoBienes>;
+		comercializacion: Array<CensoComercializacion>;
 
     	assets: Array<CardGraph> = [];
 

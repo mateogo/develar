@@ -7,6 +7,8 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
+import { AyudaEnLineaService } from '../../../../../develar-commons/ayuda-en-linea.service';
+
 import { CensoIndustriasController } from '../../../../censo.controller';
 import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
 
@@ -53,11 +55,18 @@ export class CensoProductosEditComponent implements OnInit {
 
   private unBindList = [];
 
+  public codigo = {
+    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
+    ayuda2: "app:turnos:turno-browse:query:dos"
+  }
+
   constructor(
   	private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private censoCtrl: CensoIndustriasController,
+    private _onlineHelpService : AyudaEnLineaService
+
   	) { 
 	}
 
@@ -83,6 +92,12 @@ export class CensoProductosEditComponent implements OnInit {
     this.unBindList.push(sscrp2);
 
 
+  }
+
+  showHelp(event : MouseEvent, key : string){
+    console.log(event.type)
+    console.log(this.codigo[key])
+    this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
   private initComponent(){

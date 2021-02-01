@@ -19,7 +19,10 @@
 		 			<ng-container *ngIf="isBien">
 		 				<censo-productos-view [token]='token' ></censo-productos-view>
 		 			</ng-container>
-		 		</div>
+		 			<ng-container *ngIf="isComercializacion">
+						<censo-comercializacion-view [token]='token'></censo-comercializacion-view>
+					</ng-container>
+				</div>
 			</div>
 		 </ng-container>
 	
@@ -34,7 +37,11 @@
 			 			<censo-productos-edit [token]='token'
 			 								(updateToken)='manageToken($event)' ></censo-productos-edit>
 		 			</ng-container>
-		 		</div>
+		 			<ng-container *ngIf="isComercializacion">
+						<censo-comercializacion-edit [token]='token'
+											(updateToken)='manageToken($event)' ></censo-comercializacion-edit>
+					</ng-container>
+				</div>
 			</div>
 		 </ng-container>
 	

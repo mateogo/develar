@@ -8,10 +8,13 @@
   <ng-container *ngIf="showForm">
 
   <form [formGroup]="form">
-    <div class="row" >
-      <div class="col">
-      	<p class="text-normal">{{ texto1 }}</p>
-      </div>
+
+    <div class="d-flex align-items-center">
+      <span class="text-normal">{{ texto1 }}</span>
+      <span class="flex-grow-1"></span>
+      <mat-icon style="cursor: pointer;" 
+              matTooltip="{{codigo.ayuda1}}"
+              (click)="showHelp($event, 'ayuda1')">help_outline</mat-icon>
     </div>
 
     <div class="row" >

@@ -16,14 +16,11 @@ import { gldef } from '../../../develar-commons/develar.config';
   styleUrls: ['./post-token.component.scss']
 })
 export class PostTokenComponent implements OnInit {
-
-
 	@Input() customalign: string = 'center';
   @Input() title: string = "";
   @Input() imageType: string ="mainimage";
   @Input() viewMode: string = "colMode"
-
-
+  
   @Input()
   set model(entity: RecordCard){
     this.currentModel = entity;
@@ -31,7 +28,7 @@ export class PostTokenComponent implements OnInit {
   get model(){
     return this.currentModel;
   }
-
+  
   @Input()
   set relatedcards(models: SubCard[]){
     this.initSubCardData(models);
@@ -42,6 +39,9 @@ export class PostTokenComponent implements OnInit {
   }
   @Output() detailView = new EventEmitter<RecordCard>();
   
+  public imgMaxSize = {
+    "max-width": "100%"
+  }
 
   private currentModel: RecordCard;
   private currentSubcardList: SubCard[];

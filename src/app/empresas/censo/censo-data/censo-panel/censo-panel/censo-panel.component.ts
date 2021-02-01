@@ -8,7 +8,8 @@ import { CensoIndustrias,
           CensoBienes,
 					EstadoCenso, 
 					Empresa, 
-					CensoData } from '../../../../censo.model';
+					CensoData, 
+          CensoComercializacion} from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
 
@@ -26,6 +27,11 @@ const literales = {
   bienes: {
     title: 'Bienes, maquinaria y tecnología',
     token_type: 'bien'
+  },
+
+  comercializacion: {
+    title: 'Comercialización y Marketing',
+    token_type: 'comercializacion'
   }
 }
 
@@ -88,6 +94,11 @@ export class CensoPanelComponent implements OnInit {
       item = new CensoBienes();
     }
 
+    if(this.type === "comercializacion"){
+      console.log('nueva comercializacion')
+      item = new CensoComercializacion();
+    }
+
     if(this.items){
       this.items.push(item);
     }else{
@@ -115,7 +126,15 @@ export class CensoPanelComponent implements OnInit {
               items: this.items as CensoBienes[]
         });
       }
-  	}
+
+      if(this.type === "comercializacion"){
+        this.updateItems.next({
+              action: UPDATE,
+              type: this.token_type,
+              items: this.items as CensoBienes[]
+        });
+      }
+    }
   }
 
 }

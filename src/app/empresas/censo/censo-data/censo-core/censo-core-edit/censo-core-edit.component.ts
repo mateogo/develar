@@ -3,14 +3,14 @@ import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, Validators, Valid
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 import { CustomValidators } from 'ng2-validation';
-
 import { Observable } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
-import { Person, UpdatePersonEvent, Address, personModel } from '../../../../../entities/person/person';
+import { AyudaEnLineaService } from '../../../../../develar-commons/ayuda-en-linea.service';
 
 import { CensoIndustriasController } from '../../../../censo.controller';
 import { CensoIndustriasService, TipoEmpresa } from '../../../../censo-service';
+import { Person, UpdatePersonEvent, Address, personModel } from '../../../../../entities/person/person';
 
 import { CensoIndustrias, EstadoCenso, Empresa, CensoData } from '../../../../censo.model';
 
@@ -62,9 +62,13 @@ export class CensoCoreEditComponent implements OnInit {
   private empCategoria = "";
   private empRubro = "";
   private empTipoEmpresa: TipoEmpresa;
-  private categoryTemplateTxt1 = "";
-  private categoryTemplateTxt2 = "";
-  private categoryTemplateTxt3 = "";
+  public categoryTemplateTxt1 = "";
+  public categoryTemplateTxt2 = "";
+  public categoryTemplateTxt3 = "";
+  public codigo = {
+    ayuda1: "empresas:censo:censodata:censo-core-edit:01",
+    ayuda2: "app:turnos:turno-browse:query:dos"
+  }
 
 
 
@@ -73,6 +77,7 @@ export class CensoCoreEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private censoCtrl: CensoIndustriasController,
+    private _onlineHelpService : AyudaEnLineaService
   	) { 
 	}
 
@@ -97,6 +102,13 @@ export class CensoCoreEditComponent implements OnInit {
 
 
   }
+
+  showHelp(event : MouseEvent, key : string){
+    console.log(event.type)
+    console.log(this.codigo[key])
+    this._onlineHelpService.showOnlineHelp(this.codigo[key]);
+  }
+
 
   private initComponent(){
     this.form = this.buildForm();
@@ -426,9 +438,7 @@ export class CensoCoreEditComponent implements OnInit {
       return {'font-size':'1.2em', 'color':'#0645f5'}
     }else{
       return {};
-
-    }
-    
+    }    
   }
 
 }

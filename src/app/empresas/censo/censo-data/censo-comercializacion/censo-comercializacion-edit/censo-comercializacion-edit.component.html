@@ -1,0 +1,183 @@
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>{{ title }} </mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+
+  <ng-container *ngIf="showForm">
+
+  <form [formGroup]="form">
+
+    <div class="d-flex align-items-center">
+      <span class="text-normal">{{ texto1 }}</span>
+      <span class="flex-grow-1"></span>
+      <mat-icon style="cursor: pointer;" 
+              matTooltip="{{codigo.ayuda1}}"
+              (click)="showHelp($event, 'ayuda1')">help_outline</mat-icon>
+    </div>
+
+
+    <div class="row" >
+      <div class="col">
+        <table class="table table-bordered">
+          <thead class="thead-dark text-head">
+            <tr>
+              <th>Mercado</th>
+              <th title="Porcentaje relativo de ventas de cada mercado">%Ventas</th>
+              <th title="Monto de ventas anual en $ por mercado">MontoVentas</th>
+              <th title="Porcentaje relativo de compras en cada mcercado">%Compras</th>
+              <th title="Monto de compras anual en $ por mercado"> MontoCompras</th>
+              <th>Comentario</th>
+            </tr>
+          </thead>
+          <tbody  formArrayName='mercados'>
+            <ng-container *ngFor="let token of mercados.controls; let row=index"  [formGroupName]="row">
+              <tr [style]="tableRowStyle(row)">
+                <th style='max-width: 100px;'>
+                  <mat-form-field>
+                    <input matInput type="string" formControlName="target" placeholder="Mercado" >
+                  </mat-form-field>
+                </th>
+                <td style='max-width: 70px;'>
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="propVentas" placeholder="Porcentual ventas" >
+                  </mat-form-field>
+                </td>
+                <td style='max-width: 70px;'>
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="montoVentas" placeholder="Monto ventas" >
+                  </mat-form-field>
+                </td>
+                <td style='max-width: 70px;'>
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="propCompras" placeholder="Porcentual compras" >
+                  </mat-form-field>
+                </td>
+                <td style='max-width: 70px;'>
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="montoCompras" placeholder="Monto compras" >
+                  </mat-form-field>
+                </td>
+                <th style='max-width: 170px;'>
+                  <mat-form-field>
+                    <input matInput type="string" formControlName="slug" placeholder="Comentario" >
+                  </mat-form-field>
+
+                </th>
+
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col-md-5 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isPlanAumentoExpo']"
+                                      >Tiene planes activos para el aumento de exportaciones</mat-checkbox>
+      </div>
+      <div class="col-md-7">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['planProExpo']" 
+                  placeholder="Describa plan de aumento de exportaciones" ></textarea>
+          <mat-hint>Planes activos o previstos para el aumento de exportaciones</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-12 d-flex align-items-center">
+        <p>Marque si está interesado, realizó o realiza alguna de las siguientes acciones: </p>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col-md-4 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['hasPlanPartFeriaInt']"
+                                      >Participación en ferias internacionales</mat-checkbox>
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['hasPlanPartFeriaLoc']"
+                                      >Participación en ferias nacionales</mat-checkbox>
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox [checked]="false" color="primary"
+                      [formControl]="form.controls['hasPlanInvestigMerc']"
+                                    >Estudios de mercado</mat-checkbox>
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox [checked]="false" color="primary"
+                      [formControl]="form.controls['hasPlanRepresExt']"
+                                    >Incorporar representantes en el exterior</mat-checkbox>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-5 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['hasPlanSustImpo']"
+                                      >Tiene planes activos para la sustitución de importaciones</mat-checkbox>
+      </div>
+      <div class="col-md-7">
+        <mat-form-field >
+          <textarea  matInput [formControl]="form.controls['planSustImpo']" 
+                  placeholder="Describa plan de sustitución de importaciones" ></textarea>
+          <mat-hint>Planes activos o previstos para la sustitución de importaciones</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
+
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-12 d-flex align-items-center">
+        <p>Indique los porcentajes relativos de facturación por modo de comercialización </p>
+      </div>
+    </div>
+
+    <div class="row" >
+      <div class="col-md-3 d-flex align-items-center">
+        <mat-form-field>
+          <input matInput type="string" formControlName="propComerPropia" placeholder="% Fuerza de Venta propia" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 d-flex align-items-center">
+        <mat-form-field>
+          <input matInput type="string" formControlName="propComerMayor" placeholder="% Distribuidores mayoristas" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 d-flex align-items-center">
+        <mat-form-field>
+          <input matInput type="string" formControlName="propComerMinor" placeholder="% Distribuidores minoristas" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 d-flex align-items-center">
+        <mat-form-field>
+          <input matInput type="string" formControlName="propComerDigital" placeholder="% Comercio electrónico" >
+        </mat-form-field>
+      </div>
+    </div>
+
+
+
+    <div class="additional-info">
+      <button mat-raised-button color="primary" type="submit" 
+      		(click)="onSubmit()"
+          [disabled]="!form.valid" >Aceptar</button>
+      
+      <button mat-button type="button" color="accent"
+      		(click)="onCancel()" >Cancelar</button>
+    </div>
+  </form>
+
+  </ng-container>
+  </mat-card-content>
+</mat-card>

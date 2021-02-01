@@ -1,4 +1,4 @@
-import { CensoIndustrias, CensoIndustriasTable, CensoActividad, CensoBienes, Empresa } from './censo.model';
+import { CensoIndustrias, CensoIndustriasTable, CensoActividad, CensoBienes, CensoComercializacion, Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
 import { Person, DocumentData }      from '../entities/person/person';
 import { nomencladorList } from './nomenclador-data';
@@ -7,7 +7,7 @@ import { CardGraph } from '../develar-commons/asset-helper';
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<CensoActividad|CensoBienes|DocumentData|CardGraph>;
+  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|DocumentData|CardGraph>;
 };
 
 
@@ -29,7 +29,7 @@ export interface TipoEmpresa {
 export interface UpdateEvent {
   action:  string;
   token:   string;  
-  payload: CensoActividad|CensoBienes|DocumentData|CardGraph;
+  payload: CensoActividad|CensoBienes|CensoComercializacion|DocumentData|CardGraph;
 };
 
 function fetchAction(val, type){
@@ -112,13 +112,13 @@ export class CensoIndustriasService {
 
 		if(token){
 			if(type === 'seccion'){
-				label = token['seccion'] + ':' + token['label'];
+				label =  token['label'];
 
 			} else if(type === 'rubro'){
-				label = token['base'] + ':' + token['label'];
+				label = token['label'];
 
 			} else if(type === 'codigo'){
-				label = token['val'] + ':' + token['label'];
+				label = token['label'];
 
 			}
 
@@ -341,39 +341,74 @@ const posCadenaProductivaOptList = [
       {val: 'educacion',     label: 'Educación',     slug:'Educación' },
 ]
 
-/******** Categoría Empresa **********/
+/******** Categoría Empresa RES 69/2020 AFIP **********/
 const categoriaEmpresasOptList = [
 	[
-		{x:0, y:0 , categoria: "micro",    rubro: "construccion", categoria_lbl: "Micro",       rubro_lbl: "Construcción", tope:  15230000 },
-		{x:0, y:1 , categoria: "micro",    rubro: "servicios",    categoria_lbl: "Micro",       rubro_lbl: "Servicios",    tope:   8500000 },
-		{x:0, y:2 , categoria: "micro",    rubro: "comercio",     categoria_lbl: "Micro",       rubro_lbl: "Comercio",     tope:  29740000 },
-		{x:0, y:3 , categoria: "micro",    rubro: "industria",    categoria_lbl: "Micro",       rubro_lbl: "Industria",    tope:  26450000 },
-		{x:0, y:4 , categoria: "micro",    rubro: "mineria",      categoria_lbl: "Micro",       rubro_lbl: "Minería",      tope:  26540000 },
-		{x:0, y:5 , categoria: "micro",    rubro: "agropecuario", categoria_lbl: "Micro",       rubro_lbl: "Agropecuario", tope:  12890000 },
+		{x:0, y:0 , categoria: "micro",    rubro: "construccion", categoria_lbl: "Micro",       rubro_lbl: "Construcción", tope:  19450000 },
+		{x:0, y:1 , categoria: "micro",    rubro: "servicios",    categoria_lbl: "Micro",       rubro_lbl: "Servicios",    tope:   9900000 },
+		{x:0, y:2 , categoria: "micro",    rubro: "comercio",     categoria_lbl: "Micro",       rubro_lbl: "Comercio",     tope:  36320000 },
+		{x:0, y:3 , categoria: "micro",    rubro: "industria",    categoria_lbl: "Micro",       rubro_lbl: "Industria",    tope:  33920000 },
+		{x:0, y:4 , categoria: "micro",    rubro: "mineria",      categoria_lbl: "Micro",       rubro_lbl: "Minería",      tope:  33920000 },
+		{x:0, y:5 , categoria: "micro",    rubro: "agropecuario", categoria_lbl: "Micro",       rubro_lbl: "Agropecuario", tope:  17260000 },
 	],
 	[
-		{x:1, y:0 , categoria: "pequenia", rubro: "construccion", categoria_lbl: "Pequeña", rubro_lbl: "Construcción", tope:  90310000 },
-		{x:1, y:1 , categoria: "pequenia", rubro: "servicios",    categoria_lbl: "Pequeña", rubro_lbl: "Servicios",    tope:   5095000 },
-		{x:1, y:2 , categoria: "pequenia", rubro: "comercio",     categoria_lbl: "Pequeña", rubro_lbl: "Comercio",     tope: 178860000 },
-		{x:1, y:3 , categoria: "pequenia", rubro: "industria",    categoria_lbl: "Pequeña", rubro_lbl: "Industria",    tope: 190410000 },
-		{x:1, y:4 , categoria: "pequenia", rubro: "mineria",      categoria_lbl: "Pequeña", rubro_lbl: "Minería",      tope: 190410000 },
-		{x:1, y:5 , categoria: "pequenia", rubro: "agropecuario", categoria_lbl: "Pequeña", rubro_lbl: "Agropecuario", tope:  48480000 },
+		{x:1, y:0 , categoria: "pequenia", rubro: "construccion", categoria_lbl: "Pequeña", rubro_lbl: "Construcción", tope: 115370000 },
+		{x:1, y:1 , categoria: "pequenia", rubro: "servicios",    categoria_lbl: "Pequeña", rubro_lbl: "Servicios",    tope:  59710000 },
+		{x:1, y:2 , categoria: "pequenia", rubro: "comercio",     categoria_lbl: "Pequeña", rubro_lbl: "Comercio",     tope: 247200000 },
+		{x:1, y:3 , categoria: "pequenia", rubro: "industria",    categoria_lbl: "Pequeña", rubro_lbl: "Industria",    tope: 243290000 },
+		{x:1, y:4 , categoria: "pequenia", rubro: "mineria",      categoria_lbl: "Pequeña", rubro_lbl: "Minería",      tope: 243290000 },
+		{x:1, y:5 , categoria: "pequenia", rubro: "agropecuario", categoria_lbl: "Pequeña", rubro_lbl: "Agropecuario", tope:  71960000 },
 	],
 	[
-		{x:2, y:0 , categoria: "mediana1", rubro: "construccion", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Construcción", tope:  503880000 },
-		{x:2, y:1 , categoria: "mediana1", rubro: "servicios",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Servicios",    tope:  425170000 },
-		{x:2, y:2 , categoria: "mediana1", rubro: "comercio",     categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Comercio",     tope: 1502750000 },
-		{x:2, y:3 , categoria: "mediana1", rubro: "industria",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Industria",    tope: 1190330000 },
-		{x:2, y:4 , categoria: "mediana1", rubro: "mineria",      categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Minería",      tope: 1190330000 },
-		{x:2, y:5 , categoria: "mediana1", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Agropecuario", tope: 345343000 },
+		{x:2, y:0 , categoria: "mediana1", rubro: "construccion", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Construcción", tope:  643710000 },
+		{x:2, y:1 , categoria: "mediana1", rubro: "servicios",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Servicios",    tope:  494200000 },
+		{x:2, y:2 , categoria: "mediana1", rubro: "comercio",     categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Comercio",     tope: 1821760000 },
+		{x:2, y:3 , categoria: "mediana1", rubro: "industria",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Industria",    tope: 1651750000 },
+		{x:2, y:4 , categoria: "mediana1", rubro: "mineria",      categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Minería",      tope: 1651750000 },
+		{x:2, y:5 , categoria: "mediana1", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Agropecuario", tope:  426720000 },
 	],
 	[
-		{x:3, y:0 , categoria: "mediana2", rubro: "construccion", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Construcción", tope:  755740000 },
-		{x:3, y:1 , categoria: "mediana2", rubro: "servicios",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Servicios",    tope:  607210000 },
-		{x:3, y:2 , categoria: "mediana2", rubro: "comercio",     categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Comercio",     tope: 2146810000 },
-		{x:3, y:3 , categoria: "mediana2", rubro: "industria",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Industria",    tope: 1739590000 },
-		{x:3, y:4 , categoria: "mediana2", rubro: "mineria",      categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Minería",      tope: 1739590000 },
-		{x:3, y:5 , categoria: "mediana2", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Agropecuario", tope:  547890000 },
+		{x:3, y:0 , categoria: "mediana2", rubro: "construccion", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Construcción", tope:  965460000 },
+		{x:3, y:1 , categoria: "mediana2", rubro: "servicios",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Servicios",    tope:  705790000 },
+		{x:3, y:2 , categoria: "mediana2", rubro: "comercio",     categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Comercio",     tope: 2602540000 },
+		{x:3, y:3 , categoria: "mediana2", rubro: "industria",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Industria",    tope: 2540380000 },
+		{x:3, y:4 , categoria: "mediana2", rubro: "mineria",      categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Minería",      tope: 2540380000 },
+		{x:3, y:5 , categoria: "mediana2", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Agropecuario", tope:  676810000 },
+	]
+];
+
+const ocupacionEmpresasOptList = [
+	[
+		{x:0, y:0 , categoria: "micro",    rubro: "construccion", categoria_lbl: "Micro",       rubro_lbl: "Construcción", personal: 12 },
+		{x:0, y:1 , categoria: "micro",    rubro: "servicios",    categoria_lbl: "Micro",       rubro_lbl: "Servicios",    personal:  7 },
+		{x:0, y:2 , categoria: "micro",    rubro: "comercio",     categoria_lbl: "Micro",       rubro_lbl: "Comercio",     personal:  7 },
+		{x:0, y:3 , categoria: "micro",    rubro: "industria",    categoria_lbl: "Micro",       rubro_lbl: "Industria",    personal: 15 },
+		{x:0, y:4 , categoria: "micro",    rubro: "mineria",      categoria_lbl: "Micro",       rubro_lbl: "Minería",      personal: 15 },
+		{x:0, y:5 , categoria: "micro",    rubro: "agropecuario", categoria_lbl: "Micro",       rubro_lbl: "Agropecuario", personal:  5 },
+	],
+	[
+		{x:1, y:0 , categoria: "pequenia", rubro: "construccion", categoria_lbl: "Pequeña", rubro_lbl: "Construcción", personal: 45 },
+		{x:1, y:1 , categoria: "pequenia", rubro: "servicios",    categoria_lbl: "Pequeña", rubro_lbl: "Servicios",    personal: 30 },
+		{x:1, y:2 , categoria: "pequenia", rubro: "comercio",     categoria_lbl: "Pequeña", rubro_lbl: "Comercio",     personal: 35 },
+		{x:1, y:3 , categoria: "pequenia", rubro: "industria",    categoria_lbl: "Pequeña", rubro_lbl: "Industria",    personal: 60 },
+		{x:1, y:4 , categoria: "pequenia", rubro: "mineria",      categoria_lbl: "Pequeña", rubro_lbl: "Minería",      personal: 60 },
+		{x:1, y:5 , categoria: "pequenia", rubro: "agropecuario", categoria_lbl: "Pequeña", rubro_lbl: "Agropecuario", personal: 10 },
+	],
+	[
+		{x:2, y:0 , categoria: "mediana1", rubro: "construccion", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Construcción", personal: 200 },
+		{x:2, y:1 , categoria: "mediana1", rubro: "servicios",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Servicios",    personal: 165 },
+		{x:2, y:2 , categoria: "mediana1", rubro: "comercio",     categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Comercio",     personal: 125 },
+		{x:2, y:3 , categoria: "mediana1", rubro: "industria",    categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Industria",    personal: 235 },
+		{x:2, y:4 , categoria: "mediana1", rubro: "mineria",      categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Minería",      personal: 235 },
+		{x:2, y:5 , categoria: "mediana1", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo1", rubro_lbl: "Agropecuario", personal:  50 },
+	],
+	[
+		{x:3, y:0 , categoria: "mediana2", rubro: "construccion", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Construcción", personal: 590 },
+		{x:3, y:1 , categoria: "mediana2", rubro: "servicios",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Servicios",    personal: 535 },
+		{x:3, y:2 , categoria: "mediana2", rubro: "comercio",     categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Comercio",     personal: 345 },
+		{x:3, y:3 , categoria: "mediana2", rubro: "industria",    categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Industria",    personal: 655 },
+		{x:3, y:4 , categoria: "mediana2", rubro: "mineria",      categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Minería",      personal: 655 },
+		{x:3, y:5 , categoria: "mediana2", rubro: "agropecuario", categoria_lbl: "Mediana-Tramo2", rubro_lbl: "Agropecuario", personal: 215 },
 	]
 ];
 

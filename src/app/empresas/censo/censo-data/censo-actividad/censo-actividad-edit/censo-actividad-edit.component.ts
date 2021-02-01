@@ -7,6 +7,8 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
+import { AyudaEnLineaService } from '../../../../../develar-commons/ayuda-en-linea.service';
+
 import { CensoIndustriasController } from '../../../../censo.controller';
 import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
 
@@ -37,6 +39,10 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
 export class CensoActividadEditComponent implements OnInit {
 	@Input() token: CensoActividad;
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
+
+  public codigo = {
+    ayuda1: "empresas:censo:censodata:censo-actividad-edit:01",
+  }
 
 
 	public  censoindustria: CensoIndustrias;
@@ -75,6 +81,7 @@ export class CensoActividadEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private censoCtrl: CensoIndustriasController,
+    private _onlineHelpService : AyudaEnLineaService
   	) { 
 	}
 
@@ -103,6 +110,14 @@ export class CensoActividadEditComponent implements OnInit {
 
 
   }
+
+
+  showHelp(event : MouseEvent, key : string){
+    console.log(event.type)
+    console.log(this.codigo[key])
+    this._onlineHelpService.showOnlineHelp(this.codigo[key]);
+  }
+
 
   private initComponent(){
     this.form = this.buildForm();

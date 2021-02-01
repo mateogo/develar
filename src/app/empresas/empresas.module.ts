@@ -56,6 +56,8 @@ import { CompanyBrowseComponent } from './company-page/company-browse/company-br
 import { PersonFetchComponent } from './company-page/person-fetch/person-fetch.component';
 import { PersonAltaComponent } from './company-page/person-alta/person-alta.component';
 import { PersonaBuscarComponent } from './company-page/persona-buscar/persona-buscar.component';
+import { CensoComercializacionEditComponent } from './censo/censo-data/censo-comercializacion/censo-comercializacion-edit/censo-comercializacion-edit.component';
+import { CensoComercializacionViewComponent } from './censo/censo-data/censo-comercializacion/censo-comercializacion-view/censo-comercializacion-view.component';
 
 
 
@@ -113,7 +115,9 @@ import { PersonaBuscarComponent } from './company-page/persona-buscar/persona-bu
     CompanyBrowseComponent,
     PersonFetchComponent,
     PersonAltaComponent,
-    PersonaBuscarComponent
+    PersonaBuscarComponent,
+    CensoComercializacionEditComponent,
+    CensoComercializacionViewComponent
   ],
 
 })

@@ -5,6 +5,7 @@ import { 	CensoIndustrias,
 					Empresa, 
 					CensoActividad,
           CensoBienes,
+          CensoComercializacion,
 					CensoData } from '../../../../censo.model';
 
 import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
@@ -21,7 +22,7 @@ const UPDATE = 'update';
   styleUrls: ['./censo-base.component.scss']
 })
 export class CensoBaseComponent implements OnInit {
-	@Input() token: CensoActividad|CensoBienes;
+	@Input() token: CensoActividad|CensoBienes|CensoComercializacion;
   @Input() type: string = 'actividades'
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
@@ -31,7 +32,7 @@ export class CensoBaseComponent implements OnInit {
 
   public isActividad = false;
   public isBien = false;
-
+  public isComercializacion = false;
 
   constructor() { }
 
@@ -47,6 +48,9 @@ export class CensoBaseComponent implements OnInit {
     }
     if(this.type === 'bienes'){
       this.isBien = true;
+    }
+    if(this.type === 'comercializacion'){
+      this.isComercializacion = true;
     }
   }
 

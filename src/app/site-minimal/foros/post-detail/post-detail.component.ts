@@ -51,12 +51,12 @@ export class PostDetailComponent implements OnInit {
   private assetList: CardGraph[];
   private resourceList: CardGraph[];
   private tagList: Array<string>;
-  private mainImageUrl: string;
+  public  mainImageUrl: string;
 	public post_author = ''
 
   private modelScrptn;
   private isPrismed = false;
-  private carrousel = [];
+  public carrousel = [];
 
   public hasExcerpt = false;
   public showExcerpt = false;

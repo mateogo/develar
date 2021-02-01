@@ -11,14 +11,26 @@ export class AyudaLineaModalComponent implements OnInit {
 
   public recordCards : RecordCard[];
 
-  constructor(public dialogRef : MatDialogRef<AyudaLineaModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data : DataAyudaLinea) { 
-      this.recordCards = this.data.recordCards;
-      console.log(this.recordCards)
-    }
+  constructor(
+          public dialogRef : MatDialogRef<AyudaLineaModalComponent>,
+          @Inject(MAT_DIALOG_DATA) public data : DataAyudaLinea
+    ){ 
+    this.recordCards = this.data.recordCards;
+    console.log(this.recordCards)
+  }
 
   ngOnInit(): void {
   }
+
+  closeHelpModal(){
+		this.dialogRef.close();
+
+  }
+
+  public imgMaxSize = {
+    "max-width": "100%",
+  }
+
 
 }
 
