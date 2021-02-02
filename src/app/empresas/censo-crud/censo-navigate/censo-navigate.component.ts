@@ -60,13 +60,11 @@ export class CensoNavigateComponent implements OnInit {
   // }
 
   private lookUpActiveCenso(){
-    console.log('lookUpActive Censo - TO BEGIN')
     this.showData = false;
 
     this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
 
-        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
         this._empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
 
           if(industria){
@@ -79,7 +77,6 @@ export class CensoNavigateComponent implements OnInit {
             }
         
             this._censoCtrl.fetchCensoByQuery(query).subscribe(list => {
-              console.log('lookUpActiveCenso [%s]', list && list.length)
               this._censoCtrl.updateTableData()
               this.showData = true;
 
@@ -107,7 +104,7 @@ export class CensoNavigateComponent implements OnInit {
   }
 
   onCancelEvent(event : string){
-    console.log(event)
+    //c onsole.log(event)
   }
 
 

@@ -58,6 +58,18 @@ import { PersonAltaComponent } from './company-page/person-alta/person-alta.comp
 import { PersonaBuscarComponent } from './company-page/persona-buscar/persona-buscar.component';
 import { CensoComercializacionEditComponent } from './censo/censo-data/censo-comercializacion/censo-comercializacion-edit/censo-comercializacion-edit.component';
 import { CensoComercializacionViewComponent } from './censo/censo-data/censo-comercializacion/censo-comercializacion-view/censo-comercializacion-view.component';
+import { CensoInversionEditComponent } from './censo/censo-data/censo-inversion/censo-inversion-edit/censo-inversion-edit.component';
+import { CensoInversionViewComponent } from './censo/censo-data/censo-inversion/censo-inversion-view/censo-inversion-view.component';
+import { CensoMaquinariasEditComponent } from './censo/censo-data/censo-maquinarias/censo-maquinarias-edit/censo-maquinarias-edit.component';
+import { CensoMaquinariasViewComponent } from './censo/censo-data/censo-maquinarias/censo-maquinarias-view/censo-maquinarias-view.component';
+import { CensoExpectativasViewComponent } from './censo/censo-data/censo-expectativas/censo-expectativas-view/censo-expectativas-view.component';
+import { CensoExpectativasEditComponent } from './censo/censo-data/censo-expectativas/censo-expectativas-edit/censo-expectativas-edit.component';
+import { CensoPatentesEditComponent } from './censo/censo-data/censo-patentes/censo-patentes-edit/censo-patentes-edit.component';
+import { CensoPatentesViewComponent } from './censo/censo-data/censo-patentes/censo-patentes-view/censo-patentes-view.component';
+import { CensoRhumanosViewComponent } from './censo/censo-data/censo-rhumanos/censo-rhumanos-view/censo-rhumanos-view.component';
+import { CensoRhumanosEditComponent } from './censo/censo-data/censo-rhumanos/censo-rhumanos-edit/censo-rhumanos-edit.component';
+import { CensoBienesEditComponent } from './censo/censo-data/censo-bienes/censo-bienes-edit/censo-bienes-edit.component';
+import { CensoBienesViewComponent } from './censo/censo-data/censo-bienes/censo-bienes-view/censo-bienes-view.component';
 
 
 
@@ -117,7 +129,19 @@ import { CensoComercializacionViewComponent } from './censo/censo-data/censo-com
     PersonAltaComponent,
     PersonaBuscarComponent,
     CensoComercializacionEditComponent,
-    CensoComercializacionViewComponent
+    CensoComercializacionViewComponent,
+    CensoInversionEditComponent,
+    CensoInversionViewComponent,
+    CensoMaquinariasEditComponent,
+    CensoMaquinariasViewComponent,
+    CensoExpectativasViewComponent,
+    CensoExpectativasEditComponent,
+    CensoPatentesEditComponent,
+    CensoPatentesViewComponent,
+    CensoRhumanosViewComponent,
+    CensoRhumanosEditComponent,
+    CensoBienesEditComponent,
+    CensoBienesViewComponent
   ],
 
 })

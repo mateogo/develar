@@ -1,13 +1,25 @@
-import { CensoIndustrias, CensoIndustriasTable, CensoActividad, CensoBienes, CensoComercializacion, Empresa } from './censo.model';
+import {    CensoIndustrias,
+            CensoIndustriasTable,
+            CensoActividad,
+            CensoBienes, 
+            CensoMaquinarias,
+            CensoRecursosHumanos,
+            CensoPatentes,
+            CensoExpectativas,
+            CensoComercializacion,
+            Mercado,
+            MercadoSumario,
+            Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
 import { Person, DocumentData }      from '../entities/person/person';
 import { nomencladorList } from './nomenclador-data';
 import { CardGraph } from '../develar-commons/asset-helper';
+import { AcumuladoresPorArea } from '../salud/internacion/internacion.model';
 
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|DocumentData|CardGraph>;
+  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoExpectativas|DocumentData|CardGraph>;
 };
 
 
@@ -29,7 +41,7 @@ export interface TipoEmpresa {
 export interface UpdateEvent {
   action:  string;
   token:   string;  
-  payload: CensoActividad|CensoBienes|CensoComercializacion|DocumentData|CardGraph;
+  payload: CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoExpectativas|DocumentData|CardGraph;
 };
 
 function fetchAction(val, type){
@@ -60,7 +72,6 @@ export class CensoIndustriasService {
 	static getRubroOptList(seccion){
 		let list = [];
 
-		console.log('seccion [%s]', seccion)
 		let token = nomencladorList.find(t => t.val === seccion);
 		if(token){
 			list = nomencladorList.filter(t => t.seccion === token.seccion  && t.isTitulo === 1  && t.isSeccion === 0);
@@ -73,7 +84,6 @@ export class CensoIndustriasService {
 	}
 
 	static getCodigoOptList(rubro){
-		console.log('rubro [%s]', rubro)
 		let list = [];
 
 		list = nomencladorList.filter(t => t.titulo === rubro  && t.isTitulo === 0  && t.isSeccion === 0);
@@ -87,7 +97,6 @@ export class CensoIndustriasService {
 	static getActionOptList(val, type){
 		let list = [];
 		let token = fetchAction(val, type);
-		console.log('getActionOptList [%s] [%s] [%s]', val, type, token && token.val);
 
 		if(type === 'seccion'){
 			list = this.getSectionOptList();
@@ -230,10 +239,78 @@ export class CensoIndustriasService {
 		let x = new CensoIndustrias();
 		Object.assign(x, base);
 		return x;
+    }
+    
+    static planesActivosAmentoExportaciones(token: CensoComercializacion ){
+        let planes = planesActivosExportacion.reduce((txt, t)=> {
+            return txt + (token[t.val] ? t.label + ' :: ' : '');
+        }, '');
+
+        return planes;
+    }
+
+
+	static sumMercadeo(mercados: Array<Mercado>): MercadoSumario{
+        let sumario = new MercadoSumario();
+
+        sumario = mercados.reduce((acum, t) => {
+                acum.total.propVentas  += t.propVentas;
+                acum.total.propCompras += t.propCompras;
+
+                acum.total.montoVentas  += t.montoVentas;
+                acum.total.montoCompras += t.montoCompras;
+
+                if(t.isLocal){
+                    acum.local.montoVentas  += t.montoVentas;
+                    acum.local.montoCompras += t.montoCompras;
+    
+                } else {
+                    acum.externo.montoVentas  += t.montoVentas;
+                    acum.externo.montoCompras += t.montoCompras;
+                }
+                
+                acum.comprasLoc += t.isLocal  ? t.montoCompras : 0;
+                acum.ventasExt  += !t.isLocal ? t.montoVentas  : 0;
+                acum.comprasExt += !t.isLocal ? t.montoCompras : 0;
+                acum.ventasLoc  += t.isLocal  ? t.montoVentas  : 0;
+
+                return acum;
+            }, sumario);
+
+        
+
+        if(sumario.externo.montoCompras){
+            sumario.balanzaComMonto = (sumario.externo.montoVentas - sumario.externo.montoCompras)
+            sumario.balanzaComProp = Math.round(((sumario.externo.montoVentas - sumario.externo.montoCompras)/sumario.externo.montoCompras) * 10000)/100;
+            sumario.externo.propCompras = Math.round((sumario.externo.montoCompras / sumario.total.montoCompras) * 100) / 100;
+        }
+
+        if(sumario.externo.montoVentas){
+            sumario.externo.propVentas = Math.round((sumario.externo.montoVentas / sumario.total.montoVentas) * 100) / 100;
+        }
+
+        if(sumario.local.montoCompras){
+            sumario.balanzaImpProp = Math.round((sumario.externo.montoCompras / sumario.local.montoCompras) * 10000) / 100;
+            sumario.local.propCompras = Math.round((sumario.local.montoCompras / sumario.total.montoCompras) * 100) / 100;
+        }
+
+        if(sumario.local.montoVentas){
+            sumario.balanzaVtaProp = Math.round((sumario.externo.montoVentas  / sumario.local.montoVentas) * 10000) / 100;
+            sumario.local.propVentas = Math.round((sumario.local.montoVentas / sumario.total.montoVentas) * 100) / 100;
+        }
+        return sumario;
 	}
 
-
 }
+
+const planesActivosExportacion = [
+    {val: 'hasPlanPartFeriaInt',      label: 'Ferias internacionales' },
+    {val: 'hasPlanPartFeriaLoc',      label: 'Ferias locales' },
+    {val: 'hasPlanInvestigMerc',      label: 'Investigación de mercado' },
+    {val: 'hasPlanRepresExt',         label: 'Representaciones en el exterior' },
+    {val: 'hasOtrosPlanes',           label: 'Otros planes' },
+];
+
 
 const tipoActividadOptList = [
       {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
@@ -242,7 +319,7 @@ const tipoActividadOptList = [
       {val: 'investigacion',  label: 'Invertitación',  slug:'Invertitación' },
       {val: 'social',         label: 'Social',         slug:'Social' },
       {val: 'otra',           label: 'Otra',           slug:'Otra' },
-]
+];
 
 
 const default_option_list: Array<any> = [
@@ -301,15 +378,35 @@ const sectorOptList = [
 	// sustitucionTxt: string;
 	// innovacionTxt: string;
 
+const productosTypeOptList = [
+    {val: 'no_definido',  label: 'Seleccione opción',  slug: 'Seleccione opción' },
+    {val: 'pventa',     label: 'Producto de Venta',    slug: 'Producto de Venta' },
+];
+
 const bienesTypeOptList = [
-      {val: 'no_definido',  label: 'Seleccione opción',  slug: 'Seleccione opción' },
-      {val: 'pventa',     label: 'Producto de Venta',    slug: 'Producto de Venta' },
-      {val: 'matprima',   label: 'Mat prima/Semielab',   slug: 'Mat prima/Semielab' },
-      {val: 'insumo',     label: 'Insumo ppal',          slug: 'Insumo ppal' },
-      {val: 'maquinaria', label: 'Maquinaria o BUso',    slug: 'Maquinaria o BUso' },
-      {val: 'licencia',   label: 'Licencia/Derecho',     slug: 'Licencia/Derecho' },
-      {val: 'tecnologia', label: 'Tecnología',           slug: 'Tecnología' },
-]
+    {val: 'no_definido',   label: 'Seleccione opción', slug: 'Seleccione opción' },
+    {val: 'matprima',      label: 'Materia prima'   ,  slug: 'Materia prima' },
+    {val: 'semielaborado', label: 'Semielaborado'   ,  slug: 'Semielaborado' },
+    {val: 'insumo',        label: 'Insumo ',           slug: 'Insumo' },
+];
+
+const maquinariasTypeOptList = [
+    {val: 'no_definido',  label: 'Seleccione opción',          slug: 'Seleccione opción' },
+    {val: 'maquinaria',   label: 'Maquinas industriales',      slug: 'Maquinaria ' },
+    {val: 'maqnumérica',  label: 'Máquinas robóticas/digitales', slug: 'Maquinaria ' },
+    {val: 'instrumental', label: 'Instrumental',               slug: 'Instrumental ' },
+    {val: 'software',     label: 'Aplicaciones software',      slug: 'Aplicaciones software' },
+    {val: 'recursosit',   label: 'Infraestructura IT',         slug: 'Infraestructura IT' },
+    {val: 'tecnologia',   label: 'Otros activos tecnológicos', slug: 'Otros Tecnología' },
+];
+
+const patentesTypeOptList = [
+    {val: 'no_definido',   label: 'Seleccione opción',        slug: 'Seleccione opción' },
+    {val: 'licencia',      label: 'Licencia/Derecho',         slug: 'Licencia/Derecho' },
+    {val: 'patente',       label: 'Patente',                  slug: 'Patente' },
+    {val: 'marca',         label: 'Marca',                    slug: 'Marca' },
+    {val: 'certifcalidad', label: 'Certificación de calidad', slug: 'Certificación de calidad' },
+];
 
 const origenOptList = [
       {val: 'no_definido',  label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -325,7 +422,7 @@ const origenOptList = [
       {val: 'corea',        label: 'Corea del Sur',    slug: 'Corea del Sur' },
       {val: 'vietnam',      label: 'Vietnam',          slug: 'Vietnam' },
       {val: 'oriente',      label: 'Región Oriente',   slug: 'Región Oriente' },
-]
+];
 
 const posCadenaProductivaOptList = [
       {val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
@@ -339,7 +436,7 @@ const posCadenaProductivaOptList = [
       {val: 'servicios',     label: 'Servicios',     slug:'Servicios' },
       {val: 'investigacion', label: 'Investigación', slug:'Investigación' },
       {val: 'educacion',     label: 'Educación',     slug:'Educación' },
-]
+];
 
 /******** Categoría Empresa RES 69/2020 AFIP **********/
 const categoriaEmpresasOptList = [
@@ -516,6 +613,9 @@ const optionsLists = {
     sectores: sectorOptList,
     actividad: tipoActividadOptList,
     tipoBienes: bienesTypeOptList,
+    tipoProductos: productosTypeOptList,
+    tipoMaquinas: maquinariasTypeOptList,
+    tipoPatentes: patentesTypeOptList,
     origenBienes: origenOptList,
     cadena: posCadenaProductivaOptList,
     tipoEmp: categoriaEmpresasOptList,

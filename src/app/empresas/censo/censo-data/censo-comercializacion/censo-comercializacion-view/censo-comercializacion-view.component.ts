@@ -4,6 +4,8 @@ import { CensoIndustriasService } from '../../../../censo-service';
 
 import { 	CensoIndustrias, 
           CensoComercializacion,
+          Mercado,
+          MercadoSumario,
 					CensoBienes } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
@@ -20,15 +22,39 @@ export class CensoComercializacionViewComponent implements OnInit {
   public type = "";
   public origen = "";
   public slug = "";
+  public hasPlanAumentoExpo = '';
+  public planesActivos = '';
+
+  public mercados: Array<Mercado> = [];
+  public totales: MercadoSumario;
+  public total: Mercado = new Mercado();
+  public local: Mercado = new Mercado();
+  public externo: Mercado = new Mercado();
+
+  public showData = false;
 
   constructor() { }
 
   ngOnInit() {
-    this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
-    
+    this.buildView(this.token)
 
-    this.slug = this.token.slug;
-    //this.origen = this.token.origen;
   }
+
+  private buildView(token){
+    this.mercados = token.mercados || [];
+    this.totales = CensoIndustriasService.sumMercadeo(this.mercados);
+
+    this.total = this.totales.total;
+    this.local = this.totales.local;
+    this.externo = this.totales.externo;
+
+    this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
+    this.slug = this.token.slug;
+    this.showData = true;
+
+    this.hasPlanAumentoExpo = token.hasPlanAumentoExpo ? 'Plan activo de aumento de exportaciones' : 'No tiene plan activo de aumento de exportaciones'
+    this.planesActivos = CensoIndustriasService.planesActivosAmentoExportaciones(token);
+  }
+
 
 }

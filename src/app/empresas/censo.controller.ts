@@ -271,8 +271,6 @@ export class CensoIndustriasController {
   */
   getUserData(): Audit{
   	let user = this.userService.currentUser;
-  	console.log('audit: [%s]', user && user.username);
-
     if(!user) return null;
 
     return {
@@ -317,7 +315,6 @@ export class CensoIndustriasController {
   }
 
   public updateTableData(): void {
-    console.log('udateTable Data [%s]', this._censosList && this._censosList.length)
     const consultaTableData = CensoIndustriasService.buildCensoTableData(this._censosList);
     this._consultasDataSource.next(consultaTableData);
   }

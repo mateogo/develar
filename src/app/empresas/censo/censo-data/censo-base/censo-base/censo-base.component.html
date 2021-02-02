@@ -5,7 +5,7 @@
 		 	<div class="row">
 		 		<div class="col-md-1">
 		 			<div>
-					<span class="edit-control"
+					<span class="edit-control" style="cursor: pointer;"
 						(click)='editToken()' title="Editar datos">
 						<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
 						aria-hidden="true"></i></span>
@@ -16,12 +16,41 @@
 		 			<ng-container *ngIf="isActividad">
 		 				<censo-actividad-view [token]='token'></censo-actividad-view>
 		 			</ng-container>
-		 			<ng-container *ngIf="isBien">
-		 				<censo-productos-view [token]='token' ></censo-productos-view>
-		 			</ng-container>
-		 			<ng-container *ngIf="isComercializacion">
+
+					 <ng-container *ngIf="isProductos">
+						<censo-productos-view [token]='token' ></censo-productos-view>
+					</ng-container>
+					
+					<ng-container *ngIf="isBien">
+		 				<censo-bienes-view [token]='token' ></censo-bienes-view>
+					 </ng-container>
+					 
+					 <ng-container *ngIf="isMaquinarias">
+						<censo-maquinarias-view [token]='token'></censo-maquinarias-view>
+					</ng-container>
+
+					<ng-container *ngIf="isPatentes">
+						<censo-patentes-view [token]='token'></censo-patentes-view>
+					</ng-container>
+
+					 <ng-container *ngIf="isComercializacion">
 						<censo-comercializacion-view [token]='token'></censo-comercializacion-view>
 					</ng-container>
+
+					<ng-container *ngIf="isInversion">
+						<censo-inversion-view [token]='token'></censo-inversion-view>
+					</ng-container>
+
+					<ng-container *ngIf="isRhumanos">
+						<censo-rhumanos-view [token]='token'></censo-rhumanos-view>
+					</ng-container>
+
+					<ng-container *ngIf="isExpectativas">
+						<censo-expectativas-view [token]='token'></censo-expectativas-view>
+					</ng-container>
+
+
+
 				</div>
 			</div>
 		 </ng-container>
@@ -32,15 +61,44 @@
 		 			<ng-container *ngIf="isActividad">
 			 			<censo-actividad-edit [token]='token'
 			 								(updateToken)='manageToken($event)' ></censo-actividad-edit>
-		 			</ng-container>
-		 			<ng-container *ngIf="isBien">
+					 </ng-container>
+					 
+		 			<ng-container *ngIf="isProductos">
 			 			<censo-productos-edit [token]='token'
 			 								(updateToken)='manageToken($event)' ></censo-productos-edit>
-		 			</ng-container>
+					 </ng-container>
+
+					 <ng-container *ngIf="isBien">
+						<censo-bienes-edit [token]='token'
+											(updateToken)='manageToken($event)' ></censo-bienes-edit>
+					</ng-container>
+										
+					 <ng-container *ngIf="isMaquinarias">
+						<censo-maquinarias-edit [token]='token' (updateToken)='manageToken($event)' ></censo-maquinarias-edit>
+					</ng-container>
+
+					<ng-container *ngIf="isPatentes">
+						<censo-patentes-edit [token]='token'  (updateToken)='manageToken($event)' ></censo-patentes-edit>
+					</ng-container>
+					 
 		 			<ng-container *ngIf="isComercializacion">
 						<censo-comercializacion-edit [token]='token'
 											(updateToken)='manageToken($event)' ></censo-comercializacion-edit>
 					</ng-container>
+
+					<ng-container *ngIf="isInversion">
+						<censo-inversion-edit [token]='token'
+											(updateToken)='manageToken($event)' ></censo-inversion-edit>
+					</ng-container>
+
+					<ng-container *ngIf="isRhumanos">
+						<censo-rhumanos-edit [token]='token' (updateToken)='manageToken($event)' ></censo-rhumanos-edit>
+					</ng-container>
+
+					<ng-container *ngIf="isExpectativas">
+						<censo-expectativas-edit [token]='token'  (updateToken)='manageToken($event)' ></censo-expectativas-edit>
+					</ng-container>
+					 
 				</div>
 			</div>
 		 </ng-container>

@@ -4,7 +4,7 @@
  *
  *
 *************/
-const user = 'salud';
+const user = 'industrias';
 
 const globals = {
 
@@ -57,7 +57,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.01.31-17:13',
+		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.02.02-18:32',
 		version: '1.0 ',
 		url: 'industrias.brown.gob.ar'
 	},

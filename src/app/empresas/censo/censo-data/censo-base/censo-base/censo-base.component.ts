@@ -5,16 +5,20 @@ import { 	CensoIndustrias,
 					Empresa, 
 					CensoActividad,
           CensoBienes,
+          CensoProductos,
           CensoComercializacion,
+          CensoMaquinarias,
+          CensoPatentes,
+          CensoRecursosHumanos,
+          CensoExpectativas,
+          CensoInversion,
 					CensoData } from '../../../../censo.model';
 
 import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
 
-
 const CANCEL = 'cancel';
 const DELETE = 'delete';
 const UPDATE = 'update';
-
 
 @Component({
   selector: 'censo-base',
@@ -22,7 +26,7 @@ const UPDATE = 'update';
   styleUrls: ['./censo-base.component.scss']
 })
 export class CensoBaseComponent implements OnInit {
-	@Input() token: CensoActividad|CensoBienes|CensoComercializacion;
+	@Input() token: CensoActividad|CensoBienes|CensoProductos|CensoInversion|CensoMaquinarias|CensoPatentes|CensoRecursosHumanos|CensoExpectativas;
   @Input() type: string = 'actividades'
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
@@ -32,26 +36,58 @@ export class CensoBaseComponent implements OnInit {
 
   public isActividad = false;
   public isBien = false;
+  public isProductos = false;
   public isComercializacion = false;
+  public isInversion = false;
+  public isExpectativas = false;
+  public isRhumanos = false;
+  public isMaquinarias = false;
+  public isPatentes = false;
 
   constructor() { }
 
   ngOnInit() {
+    if(this.type === 'actividades'){
+      this.isActividad = true;
+    }
 
+    if(this.type === 'bienes'){
+      this.isBien = true;
+    }
 
+    if(this.type === 'productos'){
+      this.isProductos = true;
+    }
+
+    if(this.type === 'comercializacion'){
+      this.isComercializacion = true;
+    }
+
+    if(this.type === 'inversion'){
+      this.isInversion = true;
+    }
+
+    if(this.type === 'maquinarias'){
+      this.isMaquinarias = true;
+    }
+
+    if(this.type === 'patentes'){
+      this.isPatentes = true;
+    }
+    
+    if(this.type === 'rhumanos'){
+      this.isRhumanos = true;
+    }
+    
+    if(this.type === 'expectativas'){
+      this.isExpectativas = true;
+    }
+
+    // Show Editor
     if( !(this.token && this.token._id)){
       this.editToken();
     }
 
-    if(this.type === 'actividades'){
-      this.isActividad = true;
-    }
-    if(this.type === 'bienes'){
-      this.isBien = true;
-    }
-    if(this.type === 'comercializacion'){
-      this.isComercializacion = true;
-    }
   }
 
   manageToken(event: UpdateEvent){
@@ -66,7 +102,6 @@ export class CensoBaseComponent implements OnInit {
   		this.updateToken.next(event);
   	}
   }
-
 
 	editToken(){
 		this.openEditor = !this.openEditor;

@@ -57,7 +57,76 @@ const censoActividadSch = new Schema({
     rol: { type: String, required: false },
 })
 
+const censoProductosSch = new Schema({
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+    tactividad: { type: String, required: false },
+    actividadId: { type: String, required: false },
+    parancelaria: { type: String, required: false },
+
+    isProdpropia:  { type: Boolean, required: false },
+    cenproductivo: { type: String, required: false },
+
+    isImportada: { type: Boolean, required: false },
+    origen: { type: String, required: false },
+
+    isExportable: { type: Boolean, required: false },
+    exportableTxt: { type: String, required: false },
+
+    isSustituible: { type: Boolean, required: false },
+    sustituibleTxt: { type: String, required: false },
+
+    isInnovacion: { type: Boolean, required: false },
+    innovacionTxt: { type: String, required: false },
+    level: { type: Number, required: false },
+
+    anio: { type: Number, required: false },
+    destino: { type: String, required: false },
+    capainstalada: { type: String, required: false },
+    capautilizada: { type: String, required: false },
+
+    competencia: { type: String, required: false },
+    competenciaTxt: { type: String, required: false },
+    competenciaOrigen: { type: String, required: false },
+
+})
+
 const censoBienesSch = new Schema({
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+    tactividad: { type: String, required: false },
+    actividadId: { type: String, required: false },
+    parancelaria: { type: String, required: false },
+
+    isProdpropia:  { type: Boolean, required: false },
+    cenproductivo: { type: String, required: false },
+
+    isImportada: { type: Boolean, required: false },
+    origen: { type: String, required: false },
+
+    isExportable: { type: Boolean, required: false },
+    exportableTxt: { type: String, required: false },
+
+    isSustituible: { type: Boolean, required: false },
+    sustituibleTxt: { type: String, required: false },
+
+    isInnovacion: { type: Boolean, required: false },
+    innovacionTxt: { type: String, required: false },
+    level: { type: Number, required: false },
+
+    anio: { type: Number, required: false },
+    destino: { type: String, required: false },
+    capainstalada: { type: String, required: false },
+    capautilizada: { type: String, required: false },
+
+    competencia: { type: String, required: false },
+    competenciaTxt: { type: String, required: false },
+    competenciaOrigen: { type: String, required: false },
+
+})
+
+
+const censoMaquinariasSch = new Schema({
     type: { type: String, required: false },
     slug: { type: String, required: false },
     tactividad: { type: String, required: false },
@@ -79,12 +148,54 @@ const censoBienesSch = new Schema({
 
     anio: { type: Number, required: false },
     destino: { type: String, required: false },
-    capainstalada: { type: Number, required: false },
-    capautilizada: { type: Number, required: false },
+    capainstalada: { type: String, required: false },
+    capautilizada: { type: String, required: false },
 
     competencia: { type: String, required: false },
     competenciaTxt: { type: String, required: false },
     competenciaOrigen: { type: String, required: false },
+
+})
+const censoPatentesSch = new Schema({
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+    tactividad: { type: String, required: false },
+    actividadId: { type: String, required: false },
+
+    isImportada: { type: Boolean, required: false },
+    origen: { type: String, required: false },
+    parancelaria: { type: String, required: false },
+
+    isExportable: { type: Boolean, required: false },
+    exportableTxt: { type: String, required: false },
+
+    isSustituible: { type: Boolean, required: false },
+    sustituibleTxt: { type: String, required: false },
+
+    isInnovacion: { type: Boolean, required: false },
+    innovacionTxt: { type: String, required: false },
+    level: { type: Number, required: false },
+
+    anio: { type: Number, required: false },
+    destino: { type: String, required: false },
+    capainstalada: { type: String, required: false },
+    capautilizada: { type: String, required: false },
+
+    competencia: { type: String, required: false },
+    competenciaTxt: { type: String, required: false },
+    competenciaOrigen: { type: String, required: false },
+
+})
+
+const censoRecursosHumanosSch = new Schema({
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
+
+})
+
+const censoExpectativasSch = new Schema({
+    type: { type: String, required: false },
+    slug: { type: String, required: false },
 
 })
 
@@ -129,8 +240,8 @@ const censoComercializacionSch = new mongoose.Schema({
 	balanzaImpProp:      { type: Number,  required: false },
 	balanzaImpMonto:     { type: Number,  required: false },
 
-    isPlanAumentoExpo:   { type: Boolean, required: false },
-	isPlanSustiImpo:     { type: Boolean, required: false },
+    hasPlanAumentoExpo:  { type: Boolean, required: false },
+    planAumentoExpo:     { type: String,  required: false },
 
     hasPlanPartFeriaInt: { type: Boolean, required: false },
 	hasPlanPartFeriaLoc: { type: Boolean, required: false },
@@ -138,7 +249,6 @@ const censoComercializacionSch = new mongoose.Schema({
 	hasPlanRepresExt:    { type: Boolean, required: false },
 	hasOtrosPlanes:      { type: Boolean, required: false },
 
-    planProExpo:         { type: String,  required: false },
 
     hasPlanSustImpo:     { type: Boolean, required: false },
 	planSustImpo:        { type: String,  required: false },
@@ -170,7 +280,12 @@ const censoindustriaSch = new Schema({
     estado: { type: estadoCensoSch, required: false },
     censo: { type: censoDataSch, required: false },
     actividades: [censoActividadSch],
-    bienes: [censoBienesSch],
+    bienes:       [censoBienesSch],
+    productos:    [censoProductosSch],
+    maquinarias:  [censoMaquinariasSch],
+    patentes:     [censoPatentesSch],
+    rhumanos:     [censoRecursosHumanosSch],
+    expectativas: [censoExpectativasSch],
     comercializacion: [censoComercializacionSch],
     assets: [assetSch],
 });

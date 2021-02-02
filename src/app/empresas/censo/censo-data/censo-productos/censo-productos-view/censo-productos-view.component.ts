@@ -3,7 +3,7 @@ import { CensoIndustriasController } from '../../../../censo.controller';
 import { CensoIndustriasService } from '../../../../censo-service';
 
 import { 	CensoIndustrias, 
-					CensoBienes } from '../../../../censo.model';
+					CensoProductos } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
 
@@ -14,7 +14,7 @@ import { devutils }from '../../../../../develar-commons/utils'
   styleUrls: ['./censo-productos-view.component.scss']
 })
 export class CensoProductosViewComponent implements OnInit {
-	@Input() token: CensoBienes;
+	@Input() token: CensoProductos;
 
   public type = "";
   public origen = "";
@@ -23,11 +23,11 @@ export class CensoProductosViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
+    this.type = CensoIndustriasService.getOptionLabel('tipoProductos', this.token.type);
     
 
     this.slug = this.token.slug;
-    this.origen = this.token.origen;
+    this.origen = this.token.cenproductivo || this.token.origen;
 
 
   }

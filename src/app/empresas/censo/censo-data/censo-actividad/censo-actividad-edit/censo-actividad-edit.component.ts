@@ -86,17 +86,14 @@ export class CensoActividadEditComponent implements OnInit {
 	}
 
   ngOnDestroy(){
-    console.log('ACTIVIAD EDIT::onDestroy!!!')
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
 
 
   ngOnInit() {
-
     this.seccionOptList = CensoIndustriasService.getSectionOptList();
 
-    console.log('ACTIVIDAD-EDIT ON-INIT')
     let first = true;    
     let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
 
@@ -113,8 +110,6 @@ export class CensoActividadEditComponent implements OnInit {
 
 
   showHelp(event : MouseEvent, key : string){
-    console.log(event.type)
-    console.log(this.codigo[key])
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
@@ -123,18 +118,6 @@ export class CensoActividadEditComponent implements OnInit {
     this.form = this.buildForm();
     this.initForEdit(this.form, this.token);
     this.showForm = true;
-
-    // let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
-    //   if(censo){
-
-    //     this.loadOrInitCenso(censo);
-
-    //   }else{
-    //     // ToDo.... qué pasa si no hay una Person activa?
-    //   }
-    // })
-    // this.unBindList.push(sscrp4);
-
 
   }
 
@@ -178,7 +161,6 @@ export class CensoActividadEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
 
     if(type === "seccion"){
       this.rubroOptList = this.fetchRubroOptList(val);
@@ -189,8 +171,6 @@ export class CensoActividadEditComponent implements OnInit {
 
       this.form.get('rubro').setValue(rubro.val);
       this.form.get('codigo').setValue(codigo.val);
-
-
     }
 
     if(type === "rubro"){
@@ -248,8 +228,7 @@ export class CensoActividadEditComponent implements OnInit {
   }
 
   private loadOptList(token:CensoActividad){
-    //this.seccionOptList = CensoIndustriasService.getActionOptList(token.seccion, 'seccion');
-    console.log('loadOptList [%s] [%s]', token.rubro, token.codigo);
+
     if(token.rubro){
       this.rubroOptList =   CensoIndustriasService.getActionOptList(token.rubro,   'rubro');
     }

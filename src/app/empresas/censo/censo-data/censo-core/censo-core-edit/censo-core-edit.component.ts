@@ -82,13 +82,11 @@ export class CensoCoreEditComponent implements OnInit {
 	}
 
   ngOnDestroy(){
-    console.log('CORE EDIT::onDestroy!!!')
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
 
   ngOnInit() {
-    console.log('CORE-EDIT ON-INIT')
     let first = true;    
     let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
 
@@ -99,13 +97,9 @@ export class CensoCoreEditComponent implements OnInit {
       }
     })
     this.unBindList.push(sscrp2);
-
-
   }
 
   showHelp(event : MouseEvent, key : string){
-    console.log(event.type)
-    console.log(this.codigo[key])
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
@@ -114,7 +108,6 @@ export class CensoCoreEditComponent implements OnInit {
     this.form = this.buildForm();
 
     let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
-      console.log('Censolistener sin censo[%s]', censo)
       if(censo){
 
         this.loadOrInitCenso(censo);
@@ -133,8 +126,6 @@ export class CensoCoreEditComponent implements OnInit {
     this.isAlta = false;
     this.censodata = new CensoData();
 
-    console.log('LoadOrInitCenso [%s] [%s]', censo, this.showForm)
-
     if(censo && censo._id){
       this.censoindustria = censo;
       this.censoindustriaId = censo._id;
@@ -149,7 +140,6 @@ export class CensoCoreEditComponent implements OnInit {
 
 
     }else{
-      console.log('LOAD-OR-INIT: NOT CENSO')
       this.censoindustria = new CensoIndustrias();
       this.censoindustria.censo= this.censodata;
 
@@ -165,14 +155,12 @@ export class CensoCoreEditComponent implements OnInit {
 
   private initPersonDeprecatedToErase(person: Person){
 		let sscrp2 = this.censoCtrl.personListener.subscribe(p => {
-			console.log('person Listener')
 			if(p){
-				console.log('personListener YES!!')
 				let empresa = CensoIndustriasService.empresaFromPerson(person);
 				this.censoindustria.empresa = empresa;
 
 			}else{
-				console.log('merde... tampoco funciona el listener');
+				//c onsole.log('merde... tampoco funciona el listener');
 
 			}
 		})
@@ -202,10 +190,8 @@ export class CensoCoreEditComponent implements OnInit {
     e.preventDefault();
 
     this.toggleTipoEmpresa = !this.toggleTipoEmpresa;
-    console.log('TipoEmpresa TOGGLE', tipo.categoria);
 
     if(this.toggleTipoEmpresa){
-      console.log('1', this.empTipoEmpresa)
       if(!this.empTipoEmpresa){
         this.empCategoria  = tipo.categoria;
         this.empRubro  = tipo.rubro;
@@ -220,7 +206,6 @@ export class CensoCoreEditComponent implements OnInit {
       }
 
     }else{
-      console.log('2', this.empTipoEmpresa)
       if(this.empTipoEmpresa === tipo){
         this.empCategoria  = "";
         this.empRubro  = "";
@@ -246,7 +231,6 @@ export class CensoCoreEditComponent implements OnInit {
   private saveCensoCore(){
   	this.censoCtrl.manageCensoIndustriasRecord(this.censoindustria).subscribe(t => {
 
-  		console.log('Grabación exitosa: [%s]', t && t.compNum);
       this.navigateToDashboard();
 
   	})
@@ -293,7 +277,7 @@ export class CensoCoreEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{
@@ -308,8 +292,6 @@ export class CensoCoreEditComponent implements OnInit {
   }
 
   initForEdit(form: FormGroup, token: CensoIndustrias): FormGroup {
-  	console.log('initForEdit: [%s]', token && token.compNum);
-
   	let estado, navance;
   	estado = token.estado ? token.estado.estado : 'activo';
   	navance = token.estado ? token.estado.navance : 'caratulado';

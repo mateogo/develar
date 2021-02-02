@@ -1,6 +1,7 @@
 import { devutils } from '../develar-commons/utils';
 import { Person, CoberturaData }  from '../entities/person/person';
 import { CardGraph } from '../develar-commons/asset-helper';
+import { MaterialSolicitado } from '../entities/consultas/consulta.model';
 
 
 
@@ -50,6 +51,35 @@ export class CensoActividad {
 	anio: number;
 }
 
+export class MercadoSumario {
+	total: Mercado;
+	local: Mercado;
+	externo: Mercado;
+	ventasLoc: number = 0;
+	ventasExt: number = 0;
+	comprasLoc: number = 0;
+	comprasExt: number = 0;
+
+	balanzaComMonto: number =0;
+	balanzaComProp: number =0;
+
+	balanzaVtaProp: number =0;
+	balanzaImpProp: number =0;
+	constructor(){
+		this.total = new Mercado();
+        this.total.target = 'TOTAL:';
+        this.total.slug = 'Total compras y ventas'
+		this.local = new Mercado();
+		this.local.target = 'LOCAL';
+		this.local.slug = 'Total compras y ventas mercado local';
+		this.externo = new Mercado();
+		this.externo.target = 'EXTERIOR';
+		this.externo.slug = 'Total compras y ventas mercado externo';
+	}
+
+}
+
+
 export class Mercado {
 	target: string; // browr, pba, pais, brasil, mercosur, etc.
 	isLocal: boolean = true;
@@ -72,8 +102,8 @@ const mercadosOptList = [
 
 export class CensoComercializacion{
 	_id?: string;
-	type: string;
-	slug: string;
+	type: string = 'comercializacion';
+	slug: string = 'Modos de comercialización y marketing';
 
 	mercados: Array<Mercado> = [];
 	//exportaciones - importaciones || exportaciones/importaciones %
@@ -84,15 +114,14 @@ export class CensoComercializacion{
 	balanzaImpProp: number = 0;
 	balanzaImpMonto: number = 0;
 
-	isPlanAumentoExpo: boolean = false;
-	isPlanSustiImpo: boolean = false;
+	hasPlanAumentoExpo: boolean = false;
+	planAumentoExpo: string = '';
 
 	hasPlanPartFeriaInt: boolean = false;
 	hasPlanPartFeriaLoc: boolean = false;
 	hasPlanInvestigMerc: boolean = false;
 	hasPlanRepresExt: boolean = false;
 	hasOtrosPlanes: boolean = false;
-	planProExpo: string = '';
 
 	hasPlanSustImpo: boolean = false;
 	planSustImpo: string = '';
@@ -114,7 +143,144 @@ export class CensoComercializacion{
 	
 }
 
+export class CensoInversion{
+	_id?: string;
+	type: string = 'comercializacion';
+	slug: string = 'Modos de comercialización y marketing';
+
+	mercados: Array<Mercado> = [];
+	//exportaciones - importaciones || exportaciones/importaciones %
+	balanzaComMonto: number = 0;
+	balanzaComProp: number = 0;
+
+	//comprasLoc - comprasImport || comprasLoc/comprasImp %
+	balanzaImpProp: number = 0;
+	balanzaImpMonto: number = 0;
+
+	hasPlanAumentoExpo: boolean = false;
+	planAumentoExpo: string = '';
+
+	hasPlanPartFeriaInt: boolean = false;
+	hasPlanPartFeriaLoc: boolean = false;
+	hasPlanInvestigMerc: boolean = false;
+	hasPlanRepresExt: boolean = false;
+	hasOtrosPlanes: boolean = false;
+
+	hasPlanSustImpo: boolean = false;
+	planSustImpo: string = '';
+
+	// proporción canales comercialización
+	propComerPropia: number = 0;
+	propComerMayor: number = 0;
+	propComerMinor: number = 0;
+	propComerDigital: number = 0;
+	constructor(){
+		this.mercados = mercadosOptList.map(t => {
+			let m = new Mercado();
+			m.target = t.val;
+			m.isLocal = t.isLocal;
+			return m;
+		})
+	}
+	
+}
+
+export class CensoRecursosHumanos {
+	_id?: string;
+	type: string;
+	slug: string;
+}
+	
+
+export class CensoExpectativas {
+	_id?: string;
+	type: string;
+	slug: string;
+}
+	
+
+
+export class CensoProductos {
+	_id?: string;
+	type: string;
+	slug: string;
+	
+	tactividad: string;
+	actividadId: string;
+	parancelaria: string ;
+
+	isProdpropia: boolean = false;
+	cenproductivo: string ;
+
+	isImportada: boolean = false;
+	origen: string;
+
+	isExportable: boolean = false;
+	exportableTxt: string;
+	propExportada: number; // todo
+
+
+	isSustituible: boolean = false;
+	sustituibleTxt: string;
+
+	isInnovacion: boolean = false;
+	innovacionTxt: string;
+
+	anio: number;
+	destino: string; // destino de la produccion opciones ídem origen
+	capainstalada: string; // unidades año
+	capautilizada: string; // unidades año
+
+	competencia: string;
+	competenciaTxt: string;
+	competenciaOrigen: string;
+
+
+	level: number; //porcentaje de la facturación o la inversión
+
+}
+
 export class CensoBienes {
+	_id?: string;
+	type: string;
+	slug: string;
+	
+	tactividad: string;
+	actividadId: string;
+	parancelaria: string ;
+
+	isProdpropia: boolean = false;
+	cenproductivo: string ;
+
+	isImportada: boolean = false;
+	origen: string;
+
+	isExportable: boolean = false;
+	exportableTxt: string;
+	propExportada: number; // todo
+
+
+	isSustituible: boolean = false;
+	sustituibleTxt: string;
+
+	isInnovacion: boolean = false;
+	innovacionTxt: string;
+
+	anio: number;
+	destino: string; // destino de la produccion opciones ídem origen
+	capainstalada: string; // unidades año
+	capautilizada: string; // unidades año
+
+	competencia: string;
+	competenciaTxt: string;
+	competenciaOrigen: string;
+
+
+	level: number; //porcentaje de la facturación o la inversión
+
+}
+
+export class CensoMaquinarias {
 	_id?: string;
 	type: string;
 	slug: string;
@@ -139,8 +305,45 @@ export class CensoBienes {
 
 	anio: number;
 	destino: string; // destino de la produccion opciones ídem origen
-	capainstalada: number; // unidades año
-	capautilizada: number; // unidades año
+	capainstalada: string; // unidades año
+	capautilizada: string; // unidades año
+
+	competencia: string;
+	competenciaTxt: string;
+	competenciaOrigen: string;
+
+
+	level: number; //porcentaje de la facturación o la inversión
+
+}
+
+export class CensoPatentes {
+	_id?: string;
+	type: string;
+	slug: string;
+	
+	tactividad: string;
+	actividadId: string;
+
+	isImportada: boolean = false;
+	origen: string;
+	parancelaria: string ;
+
+	isExportable: boolean = false;
+	exportableTxt: string;
+	propExportada: number; // todo
+
+
+	isSustituible: boolean = false;
+	sustituibleTxt: string;
+
+	isInnovacion: boolean = false;
+	innovacionTxt: string;
+
+	anio: number;
+	destino: string; // destino de la produccion opciones ídem origen
+	capainstalada: string; // unidades año
+	capautilizada: string; // unidades año
 
 	competencia: string;
 	competenciaTxt: string;
@@ -176,8 +379,16 @@ export class CensoIndustrias {
 
 		estado: EstadoCenso;
 		actividades: Array<CensoActividad>;
-		bienes: Array<CensoBienes>;
+		bienes:     Array<CensoBienes>;
+		productos:     Array<CensoProductos>;
+		maquinarias: Array<CensoMaquinarias>;
+		patentes:  Array<CensoPatentes>;
+
+
 		comercializacion: Array<CensoComercializacion>;
+		inversiones: Array<CensoInversion>;
+		rhumanos: Array<CensoRecursosHumanos>;
+		expectativas: Array<CensoExpectativas>;
 
     	assets: Array<CardGraph> = [];
 

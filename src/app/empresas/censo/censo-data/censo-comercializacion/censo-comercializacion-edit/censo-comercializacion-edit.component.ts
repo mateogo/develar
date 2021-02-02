@@ -20,7 +20,7 @@ import { 	CensoIndustrias,
 					CensoData } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
-const TOKEN_TYPE = 'bienes';
+const TOKEN_TYPE = 'comercializacion';
 const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
@@ -73,15 +73,12 @@ export class CensoComercializacionEditComponent implements OnInit {
 	}
 
   ngOnDestroy(){
-    console.log('CENSO-COMERCIALIZACIÓN EDIT::onDestroy!!!')
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
 
 
   ngOnInit() {
-
-    console.log('CENSO-COMERCIALIZACIÓN-EDIT ON-INIT')
     let first = true;    
     let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
 
@@ -97,8 +94,6 @@ export class CensoComercializacionEditComponent implements OnInit {
   }
 
   showHelp(event : MouseEvent, key : string){
-    console.log(event.type)
-    console.log(this.codigo[key])
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
@@ -143,14 +138,13 @@ export class CensoComercializacionEditComponent implements OnInit {
       balanzaComProp: token.balanzaComProp,
       balanzaImpProp: token.balanzaImpProp,
       balanzaImpMonto: token.balanzaImpMonto,
-      isPlanAumentoExpo: token.isPlanAumentoExpo,
-      isPlanSustiImpo: token.isPlanSustiImpo,
+      hasPlanAumentoExpo: token.hasPlanAumentoExpo,
       hasPlanPartFeriaInt: token.hasPlanPartFeriaInt,
       hasPlanPartFeriaLoc: token.hasPlanPartFeriaLoc,
       hasPlanInvestigMerc: token.hasPlanInvestigMerc,
       hasPlanRepresExt: token.hasPlanRepresExt,
       hasOtrosPlanes: token.hasOtrosPlanes,
-      planProExpo: token.planProExpo,
+      planAumentoExpo: token.planAumentoExpo,
       hasPlanSustImpo: token.hasPlanSustImpo,
       planSustImpo: token.planSustImpo,
       propComerPropia: token.propComerPropia,
@@ -175,7 +169,7 @@ export class CensoComercializacionEditComponent implements OnInit {
   onSubmit(){
   	this.initForSave(this.form, this.token);
   	this.action = UPDATE;
-  	//this.emitEvent(this.action);
+  	this.emitEvent(this.action);
   }
 
   onCancel(){
@@ -200,7 +194,7 @@ export class CensoComercializacionEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
 
   }
 
@@ -216,14 +210,13 @@ export class CensoComercializacionEditComponent implements OnInit {
       balanzaComProp:     [],
       balanzaImpProp:     [],
       balanzaImpMonto:     [],
-      isPlanAumentoExpo:     [],
-      isPlanSustiImpo:     [],
+      hasPlanAumentoExpo:     [],
       hasPlanPartFeriaInt:     [],
       hasPlanPartFeriaLoc:     [],
       hasPlanInvestigMerc:     [],
       hasPlanRepresExt:     [],
       hasOtrosPlanes:     [],
-      planProExpo:     [],
+      planAumentoExpo:     [],
       hasPlanSustImpo:     [],
       planSustImpo:     [],
       propComerPropia:     [],
@@ -239,7 +232,7 @@ export class CensoComercializacionEditComponent implements OnInit {
 
  	private initForSave(form: FormGroup, entity: CensoComercializacion): CensoComercializacion {
 		const fvalue = form.value;
-		const today = new Date();
+
     const mercadosFlds: Mercado[] = fvalue.mercados.map(t => Object.assign({}, t ))
     entity.mercados = mercadosFlds;
 
@@ -252,23 +245,19 @@ export class CensoComercializacionEditComponent implements OnInit {
     entity.balanzaImpProp = fvalue.balanzaImpProp;
     entity.balanzaImpMonto = fvalue.balanzaImpMonto;
 
-    entity.isPlanAumentoExpo = fvalue.isPlanAumentoExpo;
-    entity.isPlanSustiImpo = fvalue.isPlanSustiImpo;
+    entity.hasPlanAumentoExpo = fvalue.hasPlanAumentoExpo;
     entity.hasPlanPartFeriaInt = fvalue.hasPlanPartFeriaInt;
     entity.hasPlanPartFeriaLoc = fvalue.hasPlanPartFeriaLoc;
     entity.hasPlanInvestigMerc = fvalue.hasPlanInvestigMerc;
     entity.hasPlanRepresExt = fvalue.hasPlanRepresExt;
     entity.hasOtrosPlanes = fvalue.hasOtrosPlanes;
-    entity.planProExpo = fvalue.planProExpo;
+    entity.planAumentoExpo = fvalue.planAumentoExpo;
     entity.hasPlanSustImpo = fvalue.hasPlanSustImpo;
     entity.planSustImpo = fvalue.planSustImpo;
     entity.propComerPropia = fvalue.propComerPropia;
     entity.propComerMayor = fvalue.propComerMayor;
     entity.propComerMinor = fvalue.propComerMinor;
     entity.propComerDigital = fvalue.propComerDigital;
-
-    console.dir(entity)
-  
 
 
 		return entity;

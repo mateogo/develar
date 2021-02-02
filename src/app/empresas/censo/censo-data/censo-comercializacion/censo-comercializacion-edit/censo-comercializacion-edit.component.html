@@ -76,12 +76,12 @@
     <div class="row" >
       <div class="col-md-5 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
-                        [formControl]="form.controls['isPlanAumentoExpo']"
+                        [formControl]="form.controls['hasPlanAumentoExpo']"
                                       >Tiene planes activos para el aumento de exportaciones</mat-checkbox>
       </div>
       <div class="col-md-7">
         <mat-form-field >
-          <textarea  matInput [formControl]="form.controls['planProExpo']" 
+          <textarea  matInput [formControl]="form.controls['planAumentoExpo']" 
                   placeholder="Describa plan de aumento de exportaciones" ></textarea>
           <mat-hint>Planes activos o previstos para el aumento de exportaciones</mat-hint>
         </mat-form-field>

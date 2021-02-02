@@ -46,14 +46,44 @@
             (updateItems)='updateActividadesList($event)' ></censo-panel>
     </div>
 
+    <div  *ngIf="hasProductos" >
+      <censo-panel [items]='productos'  [type]="'productos'"
+            (updateItems)='updateProductosList($event)' ></censo-panel>
+    </div>
+
     <div  *ngIf="hasBienes" >
       <censo-panel [items]='bienes'  [type]="'bienes'"
             (updateItems)='updateBienesList($event)' ></censo-panel>
     </div>
 
+    <div  *ngIf="hasMaquinarias" >
+      <censo-panel [items]='maquinarias'  [type]="'maquinarias'"
+            (updateItems)='updateMaquinariasList($event)' ></censo-panel>
+    </div>
+
+    <div  *ngIf="hasExpectativas" >
+      <censo-panel [items]='patentes'  [type]="'patentes'"
+            (updateItems)='updatePatentesList($event)' ></censo-panel>
+    </div>
+
     <div  *ngIf="hasComercializacion" >
       <censo-panel [items]='comercializacion'  [type]="'comercializacion'"
             (updateItems)='updateComercializacionList($event)' ></censo-panel>
+    </div>
+
+    <div  *ngIf="hasInversion" >
+      <censo-panel [items]='inversiones'  [type]="'inversion'"
+            (updateItems)='updateInversionList($event)' ></censo-panel>
+    </div>
+
+    <div  *ngIf="hasExpectativas" >
+      <censo-panel [items]='rhumanos'  [type]="'rhumanos'"
+            (updateItems)='updateRhumanosList($event)' ></censo-panel>
+    </div>
+
+    <div  *ngIf="hasExpectativas" >
+      <censo-panel [items]='expectativas'  [type]="'expectativas'"
+            (updateItems)='updateRhumanosList($event)' ></censo-panel>
     </div>
 
     <div  *ngIf="hasCurrentPerson" >
@@ -67,9 +97,6 @@
                 [type]='observacionesOptListType'
                 [parent]='parentEntity' ></observaciones-panel>
     </div>
-
-
-
 
   </ng-container>
 

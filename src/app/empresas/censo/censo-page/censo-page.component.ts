@@ -22,7 +22,6 @@ import {  Person,
           personModel,
 
           UpdatePersonEvent,
-          UpdateItemListEvent,
 
           PersonContactData 
         } from '../../../entities/person/person';
@@ -31,6 +30,12 @@ import {  Person,
 import {  CensoIndustrias, 
           CensoActividad,
           CensoComercializacion,
+          CensoInversion,
+          CensoMaquinarias,
+          CensoPatentes,
+          CensoRecursosHumanos,
+          CensoExpectativas,
+          CensoProductos,
           CensoBienes } from '../../censo.model';
 
 import { Audit, ParentEntity } from '../../../develar-commons/observaciones/observaciones.model';
@@ -61,15 +66,38 @@ export class CensoPageComponent implements OnInit {
   public hasActividades = false;
   public actividades: CensoActividad[] = [];
 
-  //Actividades
+  //Bienes
   public hasBienes = false;
   public bienes: CensoBienes[] = [];
 
+  //Productos
+  public hasProductos = false;
+  public productos: CensoProductos[] = [];
+
+  //Mquinarias
+  public hasMaquinarias = false;
+  public maquinarias: CensoMaquinarias[] = [];
+  
+  //Patentes
+  public hasPatentes = false;
+  public patentes: CensoPatentes[] = [];
+  
+  
   //Comercializacion
   public hasComercializacion = false;
   public comercializacion: CensoComercializacion[] = [];
 
+  //Inversiones
+  public hasInversion = false;
+  public inversiones: CensoInversion[] = [];
 
+  //RRHH
+  public hasRhumanos = false;
+  public rhumanos: CensoRecursosHumanos[] = [];
+
+  //Expectativs
+  public hasExpectativas = false;
+  public expectativas: CensoExpectativas[] = [];
 
   // Block SaludData
   public censoHeaderTitleTxt = "MUNICIPALIDAD DE ALMIRANTE BROWN - SECRETARÍA DE PRODUCCIÓN";
@@ -77,7 +105,6 @@ export class CensoPageComponent implements OnInit {
   public censoBajada = "CENSO INDUSTRIAL 2020";
 
   public censoEditHeaderTxt = "Edición de datos Básicos";
-
   private currentIndustry: Person;
   private contactList:   PersonContactData[];
   private addressList:   Address[];
@@ -92,9 +119,7 @@ export class CensoPageComponent implements OnInit {
   public personFound = false;
   public altaPersona = false;
   private personId: string;
-
   public isAutenticated = false;
-  private count = 0;
   public openEditor = false;
   public showData = false;
   
@@ -165,13 +190,11 @@ export class CensoPageComponent implements OnInit {
   }
 
   private lookUpActiveCenso(){
-    console.log('lookUpActive Censo - TO BEGIN')
     this.showData = false;
 
     this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
 
-        console.log('User encontrado: [%s] [%s]', user.username, user.isUsuarioWeb);
         this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
 
           if(industria){
@@ -187,7 +210,6 @@ export class CensoPageComponent implements OnInit {
             }
         
             this.censoCtrl.fetchCensoByQuery(query).subscribe(list => {
-              console.log('lookUpActiveCenso [%s]', list && list.length)
 
               if(list && list.length){
                 this.initCurrentCenso(list[0])
@@ -195,7 +217,12 @@ export class CensoPageComponent implements OnInit {
               }else{
                 this.hasActividades = false;
                 this.hasBienes = false;
+                this.hasProductos = false;
                 this.hasCurrentCenso = false;
+                this.hasMaquinarias = false;
+                this.hasPatentes = false;
+                this.hasExpectativas = false;
+                this.hasRhumanos = false;
                 this.showData = true;
               }
 
@@ -219,10 +246,15 @@ export class CensoPageComponent implements OnInit {
   private initCurrentCenso(censo: CensoIndustrias){
     this.hasActividades = false;
     this.hasBienes = false;
+    this.hasProductos = false;
     this.hasComercializacion = false;
+    this.hasInversion = false;
+    this.hasMaquinarias = false;
+    this.hasPatentes = false;
+    this.hasExpectativas = false;
+    this.hasRhumanos = false;
 
     if(censo && censo._id){
-      console.log('CurrentCenso LOADED: [%s] [%s]', censo.empresa && censo.empresa.slug, censo.compNum);
       this.censoId = censo._id;
       this.currentCenso = censo;
 
@@ -232,8 +264,26 @@ export class CensoPageComponent implements OnInit {
       this.bienes = censo.bienes || [];
       this.initBienes(this.bienes);
 
+      this.productos = censo.productos || [];
+      this.initProductos(this.productos);
+
       this.comercializacion = censo.comercializacion || [];
       this.initComercializacion(this.comercializacion);
+
+      this.inversiones = censo.inversiones || [];
+      this.initInversiones(this.inversiones);
+
+      this.maquinarias = censo.maquinarias || [];
+      this.initMaquinarias(this.maquinarias);
+
+      this.patentes = censo.patentes || [];
+      this.initPatentes(this.patentes);
+
+      this.rhumanos = censo.rhumanos || [];
+      this.initRhumanos(this.rhumanos);
+
+      this.expectativas = censo.expectativas || [];
+      this.initExpectativas(this.expectativas);
 
       this.refreshCenso(censo);
 
@@ -262,10 +312,45 @@ export class CensoPageComponent implements OnInit {
       this.hasBienes = true;
     }
   }
+  
+  private initProductos(productos: CensoProductos[]){
+    if(productos ){
+      this.hasProductos = true;
+    }
+  }
 
   private initComercializacion(comercializacion: CensoComercializacion[]){
     if(comercializacion ){
       this.hasComercializacion = true;
+    }
+  }
+
+  private initInversiones(inversiones: CensoInversion[]){
+    if(inversiones ){
+      this.hasInversion = true;
+    }
+  }
+
+  private initMaquinarias(resourceList: CensoMaquinarias[]){
+    if(resourceList ){
+      this.hasMaquinarias = true;
+    }
+  }
+  private initPatentes(resourceList: CensoPatentes[]){
+    if(resourceList ){
+      this.hasPatentes = true;
+    }
+  }
+
+  private initRhumanos(resourceList: CensoRecursosHumanos[]){
+    if(resourceList ){
+      this.hasRhumanos = true;
+    }
+  }
+
+  private initExpectativas(resourceList: CensoExpectativas[]){
+    if(resourceList ){
+      this.hasExpectativas = true;
     }
   }
 
@@ -276,7 +361,6 @@ export class CensoPageComponent implements OnInit {
 
   private initCurrentIndustry(p: Person){
     if(p){
-      console.log('initCurrentIndustry: [%s] [%s]', p.displayName, p._id);
       this.personId = p._id;
       this.currentIndustry = p;
       //this.contactData = p.contactdata[0];
@@ -322,13 +406,11 @@ export class CensoPageComponent implements OnInit {
   }
 
   updateActividadesList(event: UpdateListEvent){
-    console.log('Actividades BUBBLED')
 
     if(event.action === UPDATE){
       this.updateActividades(event);
     }
   }
-
   private updateActividades(event: UpdateListEvent){
     this.currentCenso.actividades = event.items as CensoActividad[];
     this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
@@ -338,13 +420,11 @@ export class CensoPageComponent implements OnInit {
 
 
   updateBienesList(event: UpdateListEvent){
-    console.log('Bienes BUBBLED')
 
     if(event.action === UPDATE){
       this.updateBienes(event);
     }
   }
-
   private updateBienes(event: UpdateListEvent){
     this.currentCenso.bienes = event.items as CensoBienes[];
     this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
@@ -352,16 +432,92 @@ export class CensoPageComponent implements OnInit {
     })
   }
 
+  updateProductosList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updateProductos(event);
+    }
+  }
+  private updateProductos(event: UpdateListEvent){
+    this.currentCenso.productos = event.items as CensoProductos[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
   updateComercializacionList(event: UpdateListEvent){
-    console.log('Comercializacion BUBBLED')
 
     if(event.action === UPDATE){
       this.updateComercializacion(event);
     }
   }
-
   private updateComercializacion(event: UpdateListEvent){
     this.currentCenso.comercializacion = event.items as CensoComercializacion[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+  updateInversionList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updateInversiones(event);
+    }
+  }
+  private updateInversiones(event: UpdateListEvent){
+    this.currentCenso.inversiones = event.items as CensoInversion[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+  updateMaquinariasList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updateMaquinarias(event);
+    }
+  }
+  private updateMaquinarias(event: UpdateListEvent){
+    this.currentCenso.maquinarias = event.items as CensoMaquinarias[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+  updatePatentesList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updatePatentes(event);
+    }
+  }
+  private updatePatentes(event: UpdateListEvent){
+    this.currentCenso.patentes = event.items as CensoPatentes[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+  updateRhumanosList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updateRhumanos(event);
+    }
+  }
+  private updateRhumanos(event: UpdateListEvent){
+    this.currentCenso.rhumanos = event.items as CensoRecursosHumanos[];
+    this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
+      if(censo) this.currentCenso = censo;
+    })
+  }
+
+  updateExpectativasList(event: UpdateListEvent){
+
+    if(event.action === UPDATE){
+      this.updateExpectativas(event);
+    }
+  }
+  private updateExpectativas(event: UpdateListEvent){
+    this.currentCenso.expectativas = event.items as CensoExpectativas[];
     this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
       if(censo) this.currentCenso = censo;
     })
@@ -385,12 +541,9 @@ export class CensoPageComponent implements OnInit {
   /**********************/
   private upsertCensoIndustrias(){
     if(this.currentCenso && this.censoId){
-      console.log('update')
-      ///dashboard/censos/censo2020/core
       this.router.navigate(['../core', this.censoId], {relativeTo: this.route})
 
     }else{
-      console.log('create: Ready to Navigate')
       this.router.navigate(['../core'], {relativeTo: this.route})
 
     }

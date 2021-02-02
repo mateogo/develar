@@ -15,11 +15,11 @@ import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
 import { 	CensoIndustrias, 
 					EstadoCenso, 
 					Empresa, 
-					CensoBienes,
+					CensoProductos,
 					CensoData } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
-const TOKEN_TYPE = 'bienes';
+const TOKEN_TYPE = 'productos';
 const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
@@ -37,7 +37,7 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
   styleUrls: ['./censo-productos-edit.component.scss']
 })
 export class CensoProductosEditComponent implements OnInit {
-	@Input() token: CensoBienes;
+	@Input() token: CensoProductos;
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
 	public form: FormGroup;
@@ -46,11 +46,11 @@ export class CensoProductosEditComponent implements OnInit {
   private action = "";
 
   public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
-  public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
+  public tipoOptList =   CensoIndustriasService.getOptionlist('tipoProductos');
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
 
-  public title = "Bienes estratégicos de la compañía";
-  public texto1 = "Identifique los productos, materias primas, insumos y/o maquinaria utilizada";
+  public title = "Principales productos producidos y/o comercializados";
+  public texto1 = "Ingrese la información de cada producto por separado, agregando bloques según sea necesario.";
   public texto2: string;
 
   private unBindList = [];
@@ -71,15 +71,12 @@ export class CensoProductosEditComponent implements OnInit {
 	}
 
   ngOnDestroy(){
-    console.log('CENSO-BIENES EDIT::onDestroy!!!')
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
 
 
   ngOnInit() {
-
-    console.log('CENSO-BIENES-EDIT ON-INIT')
     let first = true;    
     let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
 
@@ -90,13 +87,9 @@ export class CensoProductosEditComponent implements OnInit {
       }
     })
     this.unBindList.push(sscrp2);
-
-
   }
 
   showHelp(event : MouseEvent, key : string){
-    console.log(event.type)
-    console.log(this.codigo[key])
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
@@ -106,17 +99,20 @@ export class CensoProductosEditComponent implements OnInit {
     this.showForm = true;
   }
 
-  private initForEdit(form: FormGroup, token: CensoBienes): FormGroup {
+  private initForEdit(form: FormGroup, token: CensoProductos): FormGroup {
 
 		form.reset({
       type:            token.type,
 		  slug:            token.slug,
 
       tactividad:      token.tactividad,
+      parancelaria:    token.parancelaria,
+
+      isProdpropia:    token.isProdpropia,
+      cenproductivo:   token.cenproductivo,
 
       isImportada:     token.isImportada,
       origen:          token.origen,
-      parancelaria:    token.parancelaria,
 
       isExportable:    token.isExportable,
       exportableTxt:   token.exportableTxt,
@@ -174,7 +170,7 @@ export class CensoProductosEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
 
   }
 
@@ -187,14 +183,16 @@ export class CensoProductosEditComponent implements OnInit {
 		  slug:            [ null, Validators.compose([Validators.required]) ],
       type:            [ null ],
       tactividad:      [ null ],
+      parancelaria:    [ null ],
       level:           [ null ],
       origen:          [ null ],
+      cenproductivo:   [ null ],
       isExportable:    [ null ],
       exportableTxt:   [ null ],
       isImportada:     [ null ],
+      isProdpropia:    [ null ],
       isInnovacion:    [ null ],
       isSustituible:   [ null ],
-      parancelaria:    [ null ],
       sustituibleTxt:  [ null ],
       innovacionTxt:   [ null ],
 
@@ -212,7 +210,7 @@ export class CensoProductosEditComponent implements OnInit {
   }
 
 
- 	private initForSave(form: FormGroup, entity: CensoBienes): CensoBienes {
+ 	private initForSave(form: FormGroup, entity: CensoProductos): CensoProductos {
 		const fvalue = form.value;
 		const today = new Date();
 
@@ -221,14 +219,16 @@ export class CensoProductosEditComponent implements OnInit {
 		entity.slug =            fvalue.slug;
 		entity.type =            fvalue.type;
 		entity.tactividad =      fvalue.tactividad;
+		entity.parancelaria =    fvalue.parancelaria;
 		entity.level =           fvalue.level;
-		entity.origen =          fvalue.origen;
 		entity.isExportable =    fvalue.isExportable;
 		entity.exportableTxt =   fvalue.exportableTxt;
 		entity.isImportada =     fvalue.isImportada;
+		entity.origen =          fvalue.origen;
+		entity.isProdpropia =    fvalue.isProdpropia;
+		entity.cenproductivo =   fvalue.cenproductivo;
 		entity.isInnovacion =    fvalue.isInnovacion;
 		entity.isSustituible =   fvalue.isSustituible;
-		entity.parancelaria =    fvalue.parancelaria;
 		entity.sustituibleTxt =  fvalue.sustituibleTxt;
 		entity.innovacionTxt =   fvalue.innovacionTxt;
 
@@ -242,6 +242,7 @@ export class CensoProductosEditComponent implements OnInit {
     entity.competenciaOrigen =  fvalue.competenciaOrigen;
 
 
+		entity.isProdpropia =  entity.isProdpropia  || false;
 		entity.isImportada =   entity.isImportada   || false;
 		entity.isInnovacion =  entity.isInnovacion  || false;
 		entity.isExportable =  entity.isExportable  || false;

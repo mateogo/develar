@@ -18,18 +18,25 @@
     </div>
 
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
-          <mat-select #fldTipoBien placeholder="Tipo de bien"
+          <mat-select #fldTipoBien placeholder="Tipo de producto"
               [formControl]="form.controls['type']"
               (selectionChange)="changeSelectionValue('type',fldTipoBien.value)" >
             <mat-option *ngFor="let item of tipoOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
-          <mat-hint>Seleccione Producto, Materia prima, Maquinaria, etc.</mat-hint>
+          <mat-hint>Seleccione tipo de producto a describir</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['parancelaria']" 
+                  placeholder="Posición arancelaria" >
+          <mat-hint>Posición arancelaria del producto o bien</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['slug']" 
                   placeholder="Descripción ejecutiva" >
@@ -40,41 +47,29 @@
     <hr>
 
     <div class="row" >
-      <div class="col-md-2 d-flex align-items-center">
+      <div class="col-md-3 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
-                        [formControl]="form.controls['isImportada']"
-                                      >Es importado/a</mat-checkbox>
+                        [formControl]="form.controls['isProdpropia']"
+                                      >Es producción propia</mat-checkbox>
       </div>
-      <div class="col">
+      <div class="col-md-6">
         <mat-form-field>
-          <mat-select #fldOrigen placeholder="Origen del bien"
-              [formControl]="form.controls['origen']"
-              (selectionChange)="changeSelectionValue('origen',fldOrigen.value)" >
-            <mat-option *ngFor="let item of origenOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-          <mat-hint>Indique origen del producto según fabricación o tecnología dominante</mat-hint>
+          <input  matInput [formControl]="form.controls['cenproductivo']" 
+                  placeholder="Centro productivo" >
+          <mat-hint>Indique ubicación y descripción del centro productivo</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
-        <mat-form-field >
-          <input  matInput [formControl]="form.controls['parancelaria']" 
-                  placeholder="Posición arancelaria" >
-          <mat-hint>Posición arancelaria del producto o bien</mat-hint>
-        </mat-form-field>
-      </div>
-
     </div>
     <hr>
 
     <div class="row" >
-      <div class="col-md-2 d-flex align-items-center">
+      <div class="col-md-3 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
                         [formControl]="form.controls['isExportable']"
                                       >Es exportable</mat-checkbox>
       </div>
 
-      <div class="col">
+      <div class="col-md-6">
         <mat-form-field >
           <textarea  matInput [formControl]="form.controls['exportableTxt']" 
                   placeholder="Descripción de fortalezas u oportunidades" ></textarea>
@@ -83,17 +78,37 @@
       </div>
 
     </div>
-
     <hr>
 
     <div class="row" >
-      <div class="col-md-2 d-flex align-items-center">
+      <div class="col-md-3 d-flex align-items-center">
+          <mat-checkbox [checked]="false" color="primary"
+                        [formControl]="form.controls['isImportada']"
+                                      >Es importado/a</mat-checkbox>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-select #fldOrigen placeholder="Origen del producto"
+              [formControl]="form.controls['origen']"
+              (selectionChange)="changeSelectionValue('origen',fldOrigen.value)" >
+            <mat-option *ngFor="let item of origenOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Indique origen del producto según fabricación o tecnología dominante</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <hr>
+
+    <div class="row" >
+      <div class="col-md-3 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
                         [formControl]="form.controls['isSustituible']"
                                       >Puede sustituir importación?</mat-checkbox>
       </div>
 
-      <div class="col">
+      <div class="col-md-6">
         <mat-form-field >
           <textarea  matInput [formControl]="form.controls['sustituibleTxt']" 
                   placeholder="Descripción de fortalezas u oportunidades" ></textarea>
@@ -104,19 +119,18 @@
     </div>
     <hr>
 
-
     <div class="row" >
-      <div class="col-md-2 d-flex align-items-center">
+      <div class="col-md-3 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
                         [formControl]="form.controls['isInnovacion']"
                                       >Es factor de innovación?</mat-checkbox>
       </div>
 
-      <div class="col">
+      <div class="col-md-6">
         <mat-form-field >
           <textarea  matInput [formControl]="form.controls['innovacionTxt']" 
                   placeholder="Descripción de fortalezas u oportunidades" ></textarea>
-          <mat-hint>Describa las ventajas competitivas que asigna a la innovación relacionadas con este bien o producto</mat-hint>
+          <mat-hint>Describa las ventajas competitivas que asigna a la innovación relacionadas con este producto</mat-hint>
         </mat-form-field>
       </div>
 
@@ -124,7 +138,7 @@
     <hr>
 
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldDestinoBien placeholder="Destino de la producción "
               [formControl]="form.controls['destino']"
@@ -135,21 +149,21 @@
           <mat-hint>Aplica a productos de venta o maquinaria de fabricación</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['capainstalada']" 
                   placeholder="Capacidad instalada" >
           <mat-hint>Capacidad nominal de producción en UNIDADES/AÑO</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['capautilizada']" 
                   placeholder="Capacidad utilizada" >
           <mat-hint>Capacidad efectivamente utilizada promedio último año en UNIDADES/AÑO</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['anio']" 
                   placeholder="Año de lanzamiento" >
@@ -157,6 +171,7 @@
         </mat-form-field>
       </div>
     </div>
+    <hr>
 
     <p class="text-destacado" >Describa la COMPETENCIA (para el caso de tratarse de un producto de REVENTA)</p>
 

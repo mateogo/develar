@@ -134,7 +134,6 @@ export class CensoindustriasBannerComponent implements OnInit {
   }
 
   renderHomePage(records: RecordCard[]) {
-  	console.log('renderHomePage')
   	if(records && records.length){
   		this.record = records[0];
   	}else {
