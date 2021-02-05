@@ -19,8 +19,8 @@ import { User } from '../../../entities/user/user'
   styleUrls: ['./dashboard-industrias.component.scss']
 })
 export class DashboardIndustriasComponent implements OnInit {
-  public industriasDashboardTitle = 'Industrias';
-  public industriasDashboardSubtitle = 'Organizaciones que represento';
+  public industriasDashboardTitle = 'Empresa';
+  public industriasDashboardSubtitle = 'Vincular la organización que represento';
 
   public consultasList$: Observable<Consulta[]>;
   public censosList$: Observable<CensoIndustrias[]>;

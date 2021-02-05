@@ -143,47 +143,145 @@ export class CensoComercializacion{
 	
 }
 
+const fuenteRecursosInversionOptList = [
+	{val: 'propio',       label: 'Recursos propios'  },
+	{val: 'insfinan',     label: 'Colocación financiera'  },
+	{val: 'banco',        label: 'Crédito bancario'  },
+	{val: 'acciones',     label: 'Emisión acciones/Inversor'  },
+	{val: 'organismos',   label: 'Organismos internacionales'  },
+	{val: 'subsidionac',  label: 'Subsidio público'  },
+	{val: 'programas',    label: 'Programas incentivos públicos'  },
+	{val: 'crowd',        label: 'Crowd funding'  },
+	{val: 'fundraising',  label: 'Fund raising'  },
+	{val: 'venta',        label: 'Venta activos'  },
+]
+
+const tiposDeInversionOptList = [
+	{val: 'tecnologia',       label: 'Tecnología'  },
+	{val: 'maquinaria',       label: 'Maquinaria-Instalaciones'  },
+	{val: 'rodados',          label: 'Rodados'  },
+	{val: 'edilicia',         label: 'Edilicia'  },
+	{val: 'appinformatica',   label: 'App Informáticas'  },
+	{val: 'infrainformatica', label: 'Infraestructura Informática'  },
+	{val: 'gestion',          label: 'Mejora de Gestión'  },
+	{val: 'mercados',         label: 'Desarrollo mercados'  },
+	{val: 'otros',            label: 'Otras inversiones'  },
+];
+const subTipoInversionOptList = {
+	tecnologia: [
+		{ val:'desarrollo',    label: 'Desarrollo'},
+		{ val:'licencia',      label: 'Licenciamiento'},
+		{ val:'investigacion', label: 'Investigación'},
+	],
+	maquinaria: [
+		{ val:'maquinaria',    label: 'Maquinaria y equipos'},
+		{ val:'linea',         label: 'Línea de producción'},
+		{ val:'mejora',        label: 'Mejora capacidad existente'},
+		{ val:'mantenimiento', label: 'Mantenimiento capacidad existente'},
+	],
+	rodados: [
+		{ val:'automotor',     label: 'Automotor'},
+		{ val:'camion',        label: 'Camión'},
+		{ val:'utilitario',    label: 'Utilitario'},
+		{ val:'motos',         label: 'Motos'},
+		{ val:'mantenimiento', label: 'Mantenimiento'},
+	],
+	edilicia: [
+		{ val:'produccion', label: 'Producción'},
+		{ val:'deposito',   label: 'Depósito'},
+		{ val:'oficinas',   label: 'Oficinas'},
+		{ val:'comercial',  label: 'Comercial'},
+	],
+	appinformatica: [
+		{ val:'productividad', label: 'Productividad'},
+		{ val:'ecommerce',     label: 'E-commerce'},
+		{ val:'gestion',       label: 'Sist de Gestión'},
+		{ val:'crm',           label: 'Gestión clientes (CRM)'},
+		{ val:'paginaweb',     label: 'Página WEB'},
+		{ val:'digital',       label: 'Comunicación Digital'},
+		{ val:'bigdata',       label: 'Ciencia de datos'},
+	],
+	infrainformatica: [
+		{ val:'onpremise', label: 'On-premise'},
+		{ val:'cloud',     label: 'Cloud'},
+		{ val:'redes',     label: 'Redes'},
+		{ val:'seguridad', label: 'Seguridad informática'},
+		{ val:'storage',   label: 'Almacenamiento'},
+		{ val:'servidor',  label: 'Servidores'},
+	],
+	gestion: [
+		{ val:'humana',         label: 'Talento humano'},
+		{ val:'calidad',        label: 'Calidad'},
+		{ val:'ambiental',      label: 'Ambiental'},
+		{ val:'procesos',       label: 'Procesos'},
+		{ val:'certificacion',  label: 'Certificaciones'},
+		{ val:'logistica',      label: 'Logística'},
+		{ val:'mantenimiento',  label: 'Mantenimiento'},
+		{ val:'administrativa', label: 'Administrativo'},
+		{ val:'marketing',      label: 'Marketing'},
+		{ val:'digital',        label: 'Comunicación Digital'},
+	],
+	mercados: [
+		{ val:'investigacion', label: 'Investigación'},
+		{ val:'desarrollo',    label: 'Desarrollo'},
+		{ val:'promocion',     label: 'Promoción'},
+	],
+	otros: [
+		{ val:'otros',         label: 'Otras inversiones'},
+	],
+
+}
+const factoresAfectanInversionOptList = [
+	{ val: 'riesgo',          label: 'Riesgos económicos'  },
+	{ val: 'competencia',     label: 'Importación de bienes iguales o similares a menor costo'  },
+	{ val: 'capmprimas',      label: 'Capacidad de proveedores de insumos / materias primas'  },
+	{ val: 'capinsum',        label: 'Calidad de insumos / materias primas'  },
+	{ val: 'caprrhh',         label: 'Capacidad del personal'  },
+	{ val: 'capadap',         label: 'Capacidad de adaptación al cambio'  },
+	{ val: 'costomp',         label: 'Costos de materias primas '  },
+	{ val: 'costoinsum',      label: 'Costos de insumos'  },
+	{ val: 'costoprod',       label: 'Costos de generales de producciòn (incluìda la Mano de Obra)'  },
+	{ val: 'costobuso',       label: 'Costos de bienes de uso'  },
+	{ val: 'financiacion',    label: 'Condiciones de financiamiento'  },
+	{ val: 'economico',       label: 'Riesgos económicos'  },
+	{ val: 'plazorecupero',   label: 'Plazos de recuperación de inversión'  },
+	{ val: 'informacion',     label: 'Información de tecnología disponible'  },
+	{ val: 'infraestructura', label: 'Infraestructura de la empresa'  },
+	{ val: 'regulaciones',    label: 'Regulaciones'  },
+	{ val: 'empleo',          label: 'Niveles de empleo'  },
+	{ val: 'oferta',          label: 'Oferta de productos'  },
+	{ val: 'situaciongral',   label: 'Situación actual'  },
+	{ val: 'tamaniomercado',  label: 'Tamaño de mercado'  },
+	
+];
+
+export class FactoresInversion {
+	tipo: string = '';
+	alienta: boolean = false;
+	dificulta: boolean = false;
+	slug: string = '';
+}
+
+
+
 export class CensoInversion{
 	_id?: string;
 	type: string = 'comercializacion';
 	slug: string = 'Modos de comercialización y marketing';
 
-	mercados: Array<Mercado> = [];
-	//exportaciones - importaciones || exportaciones/importaciones %
-	balanzaComMonto: number = 0;
-	balanzaComProp: number = 0;
-
-	//comprasLoc - comprasImport || comprasLoc/comprasImp %
-	balanzaImpProp: number = 0;
-	balanzaImpMonto: number = 0;
-
-	hasPlanAumentoExpo: boolean = false;
-	planAumentoExpo: string = '';
-
-	hasPlanPartFeriaInt: boolean = false;
-	hasPlanPartFeriaLoc: boolean = false;
-	hasPlanInvestigMerc: boolean = false;
-	hasPlanRepresExt: boolean = false;
-	hasOtrosPlanes: boolean = false;
-
-	hasPlanSustImpo: boolean = false;
-	planSustImpo: string = '';
-
-	// proporción canales comercialización
-	propComerPropia: number = 0;
-	propComerMayor: number = 0;
-	propComerMinor: number = 0;
-	propComerDigital: number = 0;
-	constructor(){
-		this.mercados = mercadosOptList.map(t => {
-			let m = new Mercado();
-			m.target = t.val;
-			m.isLocal = t.isLocal;
-			return m;
-		})
-	}
+	tipoInversion: string = '';
+	stipoInversion: string = '';
+	hasRealizado: boolean = false;
+	isPrevisto: boolean = false;
+	fuentePpal: string = '';
+	fuenteSec: string = '';
+	factores: Array<FactoresInversion>;
 	
 }
+
+
+
+
 
 export class CensoRecursosHumanos {
 	_id?: string;

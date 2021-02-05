@@ -12,24 +12,24 @@
     </ng-container> -->
 
     <ng-container matColumnDef="tdoc">
-        <mat-header-cell *matHeaderCellDef>Tipo de DOC.</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>CUIT</mat-header-cell>
         <mat-cell *matCellDef="let industry">{{ industry.tdoc }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="ndoc">
-        <mat-header-cell *matHeaderCellDef>Número de DOC.</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Número</mat-header-cell>
         <mat-cell *matCellDef="let industry">{{ industry.ndoc }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="displayName">
-        <mat-header-cell *matHeaderCellDef>Nombre compañía</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Razón social</mat-header-cell>
         <mat-cell *matCellDef="let industry">{{ industry.displayName }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="rowactions">
         <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
         <mat-cell *matCellDef="let industry">
-            <mat-icon matTooltip="Editar esta compañía" class="mr-3" (click)="editItem(industry)">edit</mat-icon>
+            <mat-icon matTooltip="Editar datos de la empresa" class="mr-3" (click)="editItem(industry)">edit</mat-icon>
             <!-- <mat-icon matTooltip="Cancelar este turno" *ngIf="turno.estado != 'Cancelado'" (click)="deleteItem(turno)">delete</mat-icon> -->
         </mat-cell>
     </ng-container>

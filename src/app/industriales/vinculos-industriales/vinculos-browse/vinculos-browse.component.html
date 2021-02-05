@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-12">
         <mat-toolbar color="primary">
-            <div>Industrias vinculadas</div>
+            <div>{{ title }}</div>
             <span class="flex-grow-1"></span>
-            <button mat-flat-button matTooltip="Vincula aquella organización que Usted representa por ser titular, socio, apoderado, o funcionario." (click)="nuevoVinculo()">Vincular nueva industria u organización</button>
+            <button mat-flat-button matTooltip="{{ tooltipTx }}" (click)="nuevoVinculo()">{{ vincularTx }}</button>
         </mat-toolbar>
     </div>
     <div class="col-12">

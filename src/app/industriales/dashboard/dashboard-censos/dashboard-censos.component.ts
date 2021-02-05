@@ -29,8 +29,8 @@ export class DashboardCensosComponent implements OnInit {
   public showData = false;
 
 
-  public title = 'Censo INDUSTRIAL';
-  public subtitle = 'Censo 2020';
+  public title = 'Censo Empresarial 2021';
+  public subtitle = 'Alta de la información provista por la Empresa';
   
   constructor(
     private _router: Router,

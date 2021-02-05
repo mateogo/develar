@@ -35,7 +35,7 @@
     <ng-container matColumnDef="rowactions" >
         <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <mat-icon class="mx-1" matTooltip="Editar este elemento" style="cursor: pointer;" *ngIf="element.isActive || element.estado !== 'Cerrado'" class="mr-3" (click)="editItem(element)">edit</mat-icon>
+            <mat-icon class="mx-1" matTooltip="Editar datos de este CENSO" style="cursor: pointer;" *ngIf="element.isActive || element.estado !== 'Cerrado'" class="mr-3" (click)="editItem(element)">edit</mat-icon>
             <!--mat-icon class="mx-1" matTooltip="Cancelar este elemento" style="cursor: pointer;"  *ngIf="element.estado !== 'Cerrado'" (click)="deleteItem(element)">delete</mat-icon -->
         </mat-cell>
     </ng-container>

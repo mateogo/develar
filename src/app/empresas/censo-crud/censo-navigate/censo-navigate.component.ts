@@ -21,11 +21,15 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
   styleUrls: ['./censo-navigate.component.scss']
 })
 export class CensoNavigateComponent implements OnInit {
-  public censosList$: Observable<CensoIndustrias[]>;
-  private currentIndustry: Person;
-
+  public title = 'ALTA CENSO EMPRESARIAL 2021';
+  public nuevoCensoTx = 'Iniciar nuevo CENSO';
   public showData = false;
 
+  public censosList$: Observable<CensoIndustrias[]>;
+  private currentIndustry: Person;
+  
+
+  
   constructor(
     private _empCtrl: EmpresasController,
     private _censoCtrl: CensoIndustriasController,

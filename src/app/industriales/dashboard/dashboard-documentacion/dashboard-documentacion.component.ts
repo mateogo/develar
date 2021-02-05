@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DashboardDocumentacionComponent implements OnInit {
 
   public documentacionDashboardTitle : string = 'Documentación';
-  public documentacionDashboardSubtitle : string = 'Mis documentaciones'
+  public documentacionDashboardSubtitle : string = 'Mis archivos digitales'
   constructor(private _router : Router,  private _route: ActivatedRoute) { }
 
   ngOnInit(): void {

@@ -898,22 +898,33 @@ const coberturaSubtiposOptList = {
 
 }
 
-const addressTypes: Array<any> = [
-		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
-		{val: 'principal',      label: 'Principal',        slug:'Locación principal' },
-		{val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
-		{val: 'fiscal', 	      label: 'Fiscal',           slug:'Domicilio fiscal' },
-    {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
-		{val: 'comercial', 	    label: 'Comercial',        slug:'Domicilio comercial' },
-		{val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
-		{val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
-		{val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
-		{val: 'admin',          label: 'Administración',   slug:'Sede administración' },
-		{val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
-		{val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
-		{val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
-		{val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
-		{val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
+// ANTERIOR: const addressTypes: Array<any> = [
+// 		{val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+// 		{val: 'principal',      label: 'Principal',        slug:'Locación principal' },
+// 		{val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
+// 		{val: 'fiscal', 	      label: 'Fiscal',           slug:'Domicilio fiscal' },
+//     {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
+// 		{val: 'comercial', 	    label: 'Comercial',        slug:'Domicilio comercial' },
+// 		{val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
+// 		{val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
+// 		{val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
+// 		{val: 'admin',          label: 'Administración',   slug:'Sede administración' },
+// 		{val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
+// 		{val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
+// 		{val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
+// 		{val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
+// 		{val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
+// ];
+
+const addressTypeOptList: Array<any> = [
+  {val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
+  {val: 'fabrica',        label: 'Fábrica',          slug:'Sede fábrica' },
+  {val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
+  {val: 'admin',          label: 'Administración',   slug:'Sede administración' },
+  {val: 'fiscal', 	      label: 'Domicilio Fiscal', slug:'Domicilio fiscal' },
+  {val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
+  {val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
+  {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
 ];
 
 const countries: Array<any> = [
@@ -1399,7 +1410,18 @@ const paisesOL = [
       {val: "ZW", label:'Zimbabue'},
     ];
 
-
+const pJuridicos: Array<any> = [
+      {val: 'no_definido', label: 'Seleccione opción',slug:'Seleccione opción' },
+      {val: 'sa', 	   	    label: 'SA',   slug:'' },
+      {val: 'srl', 	  	    label: 'SRL',   slug:'' },
+      {val: 'sh', 	   	    label: 'SH',   slug:'' },
+      {val: 'ute', 	        label: 'UTE',   slug:'' },
+      {val: 'unipersonal', 	label: 'Unipersonal',   slug:'' },
+      {val: 'fisica', 	    label: 'Persona física',   slug:'' },
+      {val: 'cooperativa', 	label: 'cooperativa',    slug:'cooperativa' },
+      {val: 'osc', 	        label: 'OSC',    slug:'OSC' },
+];
+  
 const ptypes: Array<any> = [
 		{val: 'no_definido', label: 'Seleccione opción',slug:'Seleccione opción' },
 		{val: 'fisica', 	   label: 'Persona física',   slug:'' },
@@ -1419,6 +1441,10 @@ const entityTableActions = [
       {val: 'editone',      label: 'Editar registro',    slug:'editone' },
       {val: 'navigate',     label: 'Navegar comunidad',    slug:'Cambiar a esta comunidad' },
 ]
+
+const tiposCompPersonaJuridica: Array<any> = [
+  {val: 'CUIT',      label: 'CUIT',               slug:'CUIT' },
+];
 
 const tiposCompPersonaFisica: Array<any> = [
 		{val: 'DNI', 	     label: 'DNI',                slug:'DNI' },
@@ -1556,26 +1582,6 @@ function getPrefixedLabel(list, prefix, val){
   }
   return label;
 }
-
-
-    // {val: 'no_definido',     label: 'Seleccione opción',slug:'Seleccione opción' },
-    // {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
-    // {val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
-    // {val: 'fiscal',         label: 'Fiscal',           slug:'Domicilio fiscal' },
-    // {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
-    // {val: 'comercial',       label: 'Comercial',        slug:'Domicilio comercial' },
-    // {val: 'entrega',         label: 'Lugar entrega',    slug:'Lugar de entrega' },
-    // {val: 'sucursal',       label: 'Sucursal',         slug:'Sucursal' },
-    // {val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
-    // {val: 'admin',          label: 'Administración',   slug:'Sede administración' },
-    // {val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
-    // {val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
-    // {val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
-    // {val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
-    // {val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
-
-
-
 
   function defaultAddress(list: Address[]): Address {
     let address = list[0];
@@ -1877,7 +1883,7 @@ class PersonModel {
 
 
     get addressTypes():Array<any>{
-    	return addressTypes;
+    	return addressTypeOptList;
     }
 
     initAddress(data?):Address {
@@ -1894,7 +1900,7 @@ class PersonModel {
     }
 
     fetchAddrTypeLabel(value):string{
-    return addressTypes.find(item => item.val === value).slug;
+      return addressTypeOptList.find(item => item.val === value).slug;
     }
 
     fetchDefaultAddress(list: Address[]): Address {
@@ -1942,6 +1948,11 @@ class PersonModel {
     	return ptypes;
     }
 
+    get persontypesPJ():Array<any>{
+    	return pJuridicos;
+    }
+
+
     getPersonDisplayName(p: Person|FamilyData|BusinessMembersData):string{
       let token = (p as Person).displayName;
 
@@ -1963,6 +1974,10 @@ class PersonModel {
 
     get tipoDocumPF():Array<any>{
     	return tiposCompPersonaFisica;
+    }
+
+    get tipoDocumPJ():Array<any>{
+    	return tiposCompPersonaJuridica;
     }
 
     get paises(): Array<any> {
@@ -2039,6 +2054,11 @@ class PersonModel {
     personType(code):string {
     	if(!code) return ''
     	return ptypes.find(item => item.val === code).label;
+    }
+
+    personTypePJ(code):string {
+    	if(!code) return ''
+    	return this.persontypesPJ.find(item => item.val === code).label;
     }
 
     get provincias():Array<any>{

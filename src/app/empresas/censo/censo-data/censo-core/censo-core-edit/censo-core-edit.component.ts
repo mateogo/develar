@@ -51,8 +51,8 @@ export class CensoCoreEditComponent implements OnInit {
   public estadoOptList = CensoIndustriasService.getOptionlist('estado');
   public tipoEmpresaOptList = CensoIndustriasService.getOptionlist('tipoEmp');
 
-  public title = "Carátula del Censo 2020";
-  public texto1 = "Genere la carátula del Censo 2020 para iniciar el proceso";
+  public title = "Carátula del Censo Empresarial 2021";
+  public texto1 = "Identificación y estado de avance del formulario";
   public texto2: string;
 
   private unBindList = [];

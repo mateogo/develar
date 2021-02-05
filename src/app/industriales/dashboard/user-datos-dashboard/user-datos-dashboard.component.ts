@@ -13,7 +13,7 @@ import { UserService } from '../../../entities/user/user.service';
 export class UserDatosDashboardComponent implements OnInit {
 
   public title: string = "Usuario/a";
-  public subtitle : string = "Información de usuario/a";
+  public subtitle : string = "Mis datos de perfil";
   public user$: BehaviorSubject<UserWeb>; 
   id : string;
   constructor(

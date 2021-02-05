@@ -27,6 +27,10 @@ export class VinculosBrowseComponent implements OnInit {
   private activeCenso: CensoIndustrias;
   public currentIndustry: Person;
 
+  public title = 'Empresas representadas'
+  public vincularTx = 'Vincular una empresa'
+  public tooltipTx = 'Vincula a este perfil la organización que Usted representa por ser titular, socio, apoderado, o funcionario.'
+
   public showData = false;
 
 

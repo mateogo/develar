@@ -33,8 +33,8 @@ export class EmpresaCoreEditComponent implements OnInit {
   private personId: string;
 
 	public form: FormGroup;
-  public persontypes        = personModel.persontypes;
-  public tcompPersonaFisica = personModel.tipoDocumPF;
+  public persontypes        = personModel.persontypesPJ;
+  public tcompPersona       = personModel.tipoDocumPJ;
   public nivelEstudios      = personModel.nivelEstudios;
   public estadoCivil        = personModel.estadoCivilOL;
   public sexoOptList        = personModel.sexoList;

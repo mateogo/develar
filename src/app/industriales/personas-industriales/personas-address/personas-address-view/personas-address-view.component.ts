@@ -22,21 +22,14 @@ export class PersonasAddressViewComponent implements OnInit {
     
     this.type = this.getLabel([
       {val: 'no_definido', 	  label: 'Seleccione opción',slug:'Seleccione opción' },
-      {val: 'fabrica',        label: 'Fabrica',          slug:'Sede fábrica' },
+      {val: 'fabrica',        label: 'Fábrica',          slug:'Sede fábrica' },
       {val: 'deposito',       label: 'Depósito',         slug:'Depósito' },
       {val: 'admin',          label: 'Administración',   slug:'Sede administración' },
-      {val: 'fiscal', 	      label: 'Fiscal',           slug:'Domicilio fiscal' },
-      {val: 'comercial', 	    label: 'Comercial',        slug:'Domicilio comercial' },
+      {val: 'fiscal', 	      label: 'Domicilio Fiscal', slug:'Domicilio fiscal' },
       {val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
       {val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
-      {val: 'pagos',          label: 'Pagos',            slug:'Sede pagos' },
-      {val: 'rrhh',           label: 'Recursos humanos', slug:'Sede recursos humanos' },
-      {val: 'biblioteca',     label: 'Biblioteca',       slug:'Sede Biblioteca' },
-      {val: 'dependencia',    label: 'Dependencia',      slug:'Otras dependencias' },
       {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
-      {val: 'particular',     label: 'Particular',       slug:'Domicilio particular' },
-      {val: 'dni',            label: 'DNI',              slug:'Domicilio en el DNI' },
-  ],this.token.addType)
+    ],this.token.addType)
     this.data = personModel.displayAddress( [ this.token ] );
 
   	this.slug = this.token.slug;  

@@ -9,6 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class DashboardPageComponent implements OnInit {
   public displayGoBackBtn = false;
+  public titulo = "CENSO EMPRESARIAL 2021 - ALMIRANTE BROWN"
 
   // URLs donde el responsable de mostrar el botón "Volver" es
   // dashboard-page y no el componente propiamente dicho

@@ -36,7 +36,7 @@ export class RegistroEmpresaPageComponent implements OnInit {
   public unBindList = [];
 
   // template helper
-  public title = "Padrón de Comercio";
+  public title = "Datos de la Empresa";
   public subtitle = "Datos generales";
 
   public tDoc = "CUIT";

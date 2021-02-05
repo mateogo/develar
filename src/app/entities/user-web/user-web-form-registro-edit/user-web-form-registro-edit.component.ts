@@ -46,6 +46,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
   public isEdit: boolean = false;
   private emailOrigen : string;
   public startDate = new Date(1990, 0, 1);
+  
   constructor(private _fb: FormBuilder, private _dialog: MatDialog,
     private _notificacionService: NotificationService,
     private _router: Router,
@@ -67,7 +68,17 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     }
   }
 
-  initUser(id: string): void {
+  editPerson(){
+    let user = new UserWeb();
+    user._id = this._userService.currentUser._id;
+    this._personService.fetchPersonByUserWeb(user).subscribe(personas => {
+      if(personas && personas.length){
+        this._router.navigate(['dashboard', 'personas', personas[0]['_id']]);
+      }
+    })
+  }
+
+  private initUser(id: string): void {
     let usuario = this._userService.currentUser;
     //c onsole.log('usuario: [%s]', usuario && usuario._id, usuario&& usuario.email )
 
