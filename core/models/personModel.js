@@ -309,7 +309,7 @@ const habilitacionesSch = new mongoose.Schema({
 
 const personSch = new mongoose.Schema({
     displayName: { type: String, required: true },
-    brandName: { type: String, required: true },
+    brandName: { type: String, required: false },
     idbrown: { type: String, required: false },
     grupo_familiar: { type: Number, required: false },
     isImported: { type: Boolean, required: false, default: false },
