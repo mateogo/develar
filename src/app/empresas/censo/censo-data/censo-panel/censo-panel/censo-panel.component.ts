@@ -36,7 +36,7 @@ const literales = {
   },
 
   productos: {
-    title: 'Principales productos ',
+    title: 'Principales productos (Hasta 10 productos, en orden de relevancia)',
     token_type: 'productos'
   },
 

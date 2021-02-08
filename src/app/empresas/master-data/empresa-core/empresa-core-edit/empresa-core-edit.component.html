@@ -6,7 +6,7 @@
     <div class="row" >
       <div class="col">
         <mat-form-field>
-        <mat-select #fldPersonType   formControlName='personType' (change)="changeSelectionValue('personType',fldPersonType )" placeholder="Tipo de persona">
+        <mat-select #fldPersonType   formControlName='personType' (change)="changeSelectionValue('personType',fldPersonType )" placeholder="Forma jurídica">
           <mat-option *ngFor="let tper of persontypes" [value]="tper.val" >{{ tper.label }}</mat-option>
         </mat-select>
         </mat-form-field>
@@ -14,7 +14,7 @@
       
       <div class="col">
         <mat-form-field>
-          <mat-select #fldTdoc placeholder="Tipo de documento"
+          <mat-select #fldTdoc placeholder="Tipo de identificación"
               [formControl]="form.controls['tdoc']"
               (selectionChange)="changeSelectionValue('tdoc',fldTdoc.value)" >
             <mat-option *ngFor="let item of tcompPersona" 
@@ -25,14 +25,14 @@
 
       <div class="col">
         <mat-form-field>
-          <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número documento" >
+          <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número identificación" >
           <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
         </mat-form-field>
       </div>
 
     </div>
 
-    <!---displayName--->
+    <!---displayName brandName--->
     <div class="row" >
       <div class="col">
         <mat-form-field>
@@ -43,9 +43,16 @@
         </mat-form-field>
       </div>
     </div>
+    <div class="row" >
+      <div class="col">
+        <mat-form-field>
+          <input matInput [formControl]="form.controls['brandName']" placeholder="Nombre de fantasía, marca principal" >
+        </mat-form-field>
+      </div>
+    </div>
     <hr>
+ 
     <h5>Datos del Titular o Apoderado</h5>
-
     <!---nombre; apellido; sexo;--->
     <div class="row" >
       <div id="personafisica" class="col-md-4">

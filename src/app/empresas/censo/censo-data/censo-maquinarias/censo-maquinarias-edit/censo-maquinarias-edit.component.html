@@ -28,14 +28,21 @@
           <mat-hint>Seleccione opción</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['parancelaria']" 
                   placeholder="Posición arancelaria" >
           <mat-hint>Posición arancelaria del activo</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['anio']" 
+                  placeholder="Año de incorporación" >
+          <mat-hint>Año en que pone en marcha el recurso</mat-hint>
+        </mat-form-field>
+      </div>  
+      <div class="col-md-5">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['slug']" 
                   placeholder="Descripción ejecutiva" >

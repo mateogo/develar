@@ -125,6 +125,6 @@ export class CensoIndustrialTableComponent implements OnInit {
   }
 
   public editItem(item: CensoIndustriasTable) {
-    this.router.navigate(['/mab/empresas/gestion/censo2020/', item._id]);
+    this.router.navigate(['/mab/empresas/gestion/censo2021/', item._id]);
   }
 }

@@ -24,8 +24,8 @@ const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
-const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
-const CENSO_BIENES =      '/mab/empresas/gestion/censo2020/actividad/:id';
+const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
+const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
 const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 
@@ -217,7 +217,7 @@ export class CensoProductosEditComponent implements OnInit {
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);
 
 		entity.slug =            fvalue.slug;
-		entity.type =            fvalue.type;
+		entity.type =            fvalue.type || 'pventa';
 		entity.tactividad =      fvalue.tactividad;
 		entity.parancelaria =    fvalue.parancelaria;
 		entity.level =           fvalue.level;
@@ -232,14 +232,14 @@ export class CensoProductosEditComponent implements OnInit {
 		entity.sustituibleTxt =  fvalue.sustituibleTxt;
 		entity.innovacionTxt =   fvalue.innovacionTxt;
 
-    entity.destino =          fvalue.destino;
+    entity.destino =          fvalue.destino || '';
     entity.anio =             fvalue.anio;
     entity.capainstalada =    fvalue.capainstalada;
     entity.capautilizada =    fvalue.capautilizada;
 
-    entity.competencia =        fvalue.competencia;
-    entity.competenciaTxt =     fvalue.competenciaTxt;
-    entity.competenciaOrigen =  fvalue.competenciaOrigen;
+    entity.competencia =        fvalue.competencia || '';
+    entity.competenciaTxt =     fvalue.competenciaTxt  || '';
+    entity.competenciaOrigen =  fvalue.competenciaOrigen || '';
 
 
 		entity.isProdpropia =  entity.isProdpropia  || false;

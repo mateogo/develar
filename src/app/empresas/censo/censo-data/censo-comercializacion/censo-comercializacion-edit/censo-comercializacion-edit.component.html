@@ -25,9 +25,7 @@
             <tr>
               <th>Mercado</th>
               <th title="Porcentaje relativo de ventas de cada mercado">%Ventas</th>
-              <th title="Monto de ventas anual en $ por mercado">MontoVentas</th>
               <th title="Porcentaje relativo de compras en cada mcercado">%Compras</th>
-              <th title="Monto de compras anual en $ por mercado"> MontoCompras</th>
               <th>Comentario</th>
             </tr>
           </thead>
@@ -46,17 +44,7 @@
                 </td>
                 <td style='max-width: 70px;'>
                   <mat-form-field>
-                    <input matInput type="number" formControlName="montoVentas" placeholder="Monto ventas" >
-                  </mat-form-field>
-                </td>
-                <td style='max-width: 70px;'>
-                  <mat-form-field>
                     <input matInput type="number" formControlName="propCompras" placeholder="Porcentual compras" >
-                  </mat-form-field>
-                </td>
-                <td style='max-width: 70px;'>
-                  <mat-form-field>
-                    <input matInput type="number" formControlName="montoCompras" placeholder="Monto compras" >
                   </mat-form-field>
                 </td>
                 <th style='max-width: 170px;'>
@@ -72,25 +60,30 @@
         </table>
       </div>
     </div>
-
+    <hr>
+    <div class="row" >
+      <div class="col-md-12">
+        <p class="text-normal">¿Está interesado en promocionar sus productos en el exterior?</p>
+      </div>
+    </div>
     <div class="row" >
       <div class="col-md-5 d-flex align-items-center">
           <mat-checkbox [checked]="false" color="primary"
                         [formControl]="form.controls['hasPlanAumentoExpo']"
-                                      >Tiene planes activos para el aumento de exportaciones</mat-checkbox>
+                                      >Tiene planes activos para la promoción de exportaciones</mat-checkbox>
       </div>
       <div class="col-md-7">
         <mat-form-field >
           <textarea  matInput [formControl]="form.controls['planAumentoExpo']" 
-                  placeholder="Describa plan de aumento de exportaciones" ></textarea>
-          <mat-hint>Planes activos o previstos para el aumento de exportaciones</mat-hint>
+                  placeholder="Indique el mercado objetivo" ></textarea>
+          <mat-hint>Describa las iniciativas previstas</mat-hint>
         </mat-form-field>
       </div>
     </div>
     <hr>
 
     <div class="row" >
-      <div class="col-md-12 d-flex align-items-center">
+      <div class="col-md-12">
         <p>Marque si está interesado, realizó o realiza alguna de las siguientes acciones: </p>
       </div>
     </div>

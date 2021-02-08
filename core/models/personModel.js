@@ -264,6 +264,7 @@ const permisosSch = new mongoose.Schema({
     slug: { type: String, required: false },
     observacion: { type: String, required: false },
     isTramitacionMAB: { type: Boolean, required: false },
+    feInicioActividades: { type: String, required: false },
     expedidopor: { type: String, required: false },
     fechaexpe: { type: String, required: false },
     tramitacionURL: { type: String, required: false },
@@ -279,6 +280,7 @@ const habilitacionesSch = new mongoose.Schema({
     slug: { type: String, required: false },
     observacion: { type: String, required: false },
     isTramitacionMAB: { type: Boolean, required: false },
+    feInicioActividades: { type: String, required: false },
     expedidopor: { type: String, required: false },
     fechaexpe: { type: String, required: false },
     tramitacionURL: { type: String, required: false },
@@ -307,10 +309,12 @@ const habilitacionesSch = new mongoose.Schema({
 
 const personSch = new mongoose.Schema({
     displayName: { type: String, required: true },
+    brandName: { type: String, required: true },
     idbrown: { type: String, required: false },
     grupo_familiar: { type: Number, required: false },
     isImported: { type: Boolean, required: false, default: false },
     personType: { type: String, required: false, default: 'fisica' },
+    personPuesto: { type: String, required: false },
 
     email: { type: String, required: false },
     locacion: { type: String, required: false },
@@ -455,6 +459,11 @@ function buildQuery(query) {
     if (query.displayName) {
         q["displayName"] = { "$regex": query.displayName, "$options": "i" };
     }
+
+    if (query.brandName) {
+        q["brandName"] = { "$regex": query.brandName, "$options": "i" };
+    }
+
 
     if (query.email) {
         q["email"] = query.email;

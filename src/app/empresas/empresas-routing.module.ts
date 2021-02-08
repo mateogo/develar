@@ -31,7 +31,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'censo2020',
+    path: 'censo2021',
     children: [
       {
         path: 'core',

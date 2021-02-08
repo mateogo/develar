@@ -425,18 +425,32 @@ const origenOptList = [
       {val: 'oriente',      label: 'Región Oriente',   slug: 'Región Oriente' },
 ];
 
+const mercadosOptList = [
+	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
+	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
+	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
+	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
+	{val: 'mercosur',     isLocal: false, label: 'Mercosur (excluye Brasil)',         slug: 'Mercosur' },
+	{val: 'peru',         isLocal: false, label: 'Perú',   slug: 'Perú' },
+	{val: 'colombia',     isLocal: false, label: 'Colombia',   slug: 'Colombia' },
+	{val: 'mexico',       isLocal: false, label: 'México',   slug: 'México' },
+	{val: 'usa',          isLocal: false, label: 'USA',   slug: 'USA' },
+	{val: 'america',      isLocal: false, label: 'América',   slug: 'América' },
+	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
+	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
+]
+
+
 const posCadenaProductivaOptList = [
       {val: 'no_definido',   label: 'Seleccione opción',  slug:'Seleccione opción' },
       {val: 'primario',      label: 'Extracción; cultivo, criadero',  slug:'Extracción; cultivo, criadero' },
-      {val: 'intermedio',    label: 'Ind Bienes intermedios',         slug:'Ind Bienes intermedios' },
-      {val: 'insumos',       label: 'Ind Insumos indus/comerciales',  slug:'Ind Insumos indus/comerciales' },
+      {val: 'finales',       label: 'Manufactura de bienes finales',  slug:'Manufactura de bienes finales' },
+      {val: 'intermedio',    label: 'Manufactura de bienes intermedios', slug:'Manufactura de bienes intermedios' },
+      {val: 'consmasivo',    label: 'Manufactura de bienes consumo masivo', slug:'Manufactura de bienes consumo masivo' },
       {val: 'mayorista',     label: 'Distribuidor mayorista',         slug:'Distribuidor mayorista' },
-      {val: 'consmasivo',    label: 'Ind Bienes consumo masivo',      slug:'Ind Bienes consumo masivo' },
-      {val: 'retail',        label: 'Comercio - Retail',              slug:'Comercio - Retail' },
+      {val: 'retail',        label: 'Distribuidor minoristas - comercio - retail',              slug:'Comercio - Retail' },
       {val: 'transporte',    label: 'Transporte-logística',           slug:'Transporte-logística' },
       {val: 'servicios',     label: 'Servicios',     slug:'Servicios' },
-      {val: 'investigacion', label: 'Investigación', slug:'Investigación' },
-      {val: 'educacion',     label: 'Educación',     slug:'Educación' },
 ];
 
 /******** Categoría Empresa RES 69/2020 AFIP **********/
@@ -610,7 +624,8 @@ const optionsLists = {
     tipoProductos: productosTypeOptList,
     tipoMaquinas: maquinariasTypeOptList,
     tipoPatentes: patentesTypeOptList,
-    origenBienes: origenOptList,
+	origenBienes: origenOptList,
+	mercados: mercadosOptList,
     cadena: posCadenaProductivaOptList,
     tipoEmp: categoriaEmpresasOptList,
     contactos: contactOptList,

@@ -14,8 +14,8 @@ const ACTIVIDAD = 'actividad';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
-const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
-const CENSO_ACTIVIDAD =      '/mab/empresas/gestion/censo2020/actividad/:id';
+const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
+const CENSO_ACTIVIDAD =      '/mab/empresas/gestion/censo2021/actividad/:id';
 const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 @Component({
@@ -26,6 +26,7 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
 export class CensoActividadViewComponent implements OnInit {
 	@Input() token: CensoActividad;
 
+  public tactividad = "";
   public seccion = "";
   public rubro = "";
   public codigo = "";
@@ -34,6 +35,7 @@ export class CensoActividadViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.tactividad = CensoIndustriasService.getOptionLabel('actividad', this.token.type);
     this.seccion = CensoIndustriasService.getActividadOptionLabel(this.token.seccion, 'seccion');
     this.rubro = CensoIndustriasService.getActividadOptionLabel(this.token.rubro, 'rubro');
     this.codigo = CensoIndustriasService.getActividadOptionLabel(this.token.codigo, 'codigo');

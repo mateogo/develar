@@ -25,8 +25,8 @@ const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
-const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
-const CENSO_BIENES =      '/mab/empresas/gestion/censo2020/actividad/:id';
+const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
+const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
 const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 
@@ -231,9 +231,16 @@ export class CensoComercializacionEditComponent implements OnInit {
 
 
  	private initForSave(form: FormGroup, entity: CensoComercializacion): CensoComercializacion {
-		const fvalue = form.value;
+    const fvalue = form.value;
+    const monto_base = 1000;
 
-    const mercadosFlds: Mercado[] = fvalue.mercados.map(t => Object.assign({}, t ))
+    const mercadosFlds: Mercado[] = fvalue.mercados.map(t =>{
+        t.montoVentas = t.propVentas * monto_base;
+        t.montoCompras = t.propCompras * monto_base;
+
+        return Object.assign({}, t )
+      })
+
     entity.mercados = mercadosFlds;
 
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);

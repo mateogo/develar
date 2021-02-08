@@ -19,17 +19,6 @@
 
     <div class="row" >
       <div class="col-md-3">
-        <mat-form-field>
-          <mat-select #fldTipoBien placeholder="Tipo de producto"
-              [formControl]="form.controls['type']"
-              (selectionChange)="changeSelectionValue('type',fldTipoBien.value)" >
-            <mat-option *ngFor="let item of tipoOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-          <mat-hint>Seleccione tipo de producto a describir</mat-hint>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['parancelaria']" 
                   placeholder="Posición arancelaria" >
@@ -39,7 +28,7 @@
       <div class="col-md-6">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['slug']" 
-                  placeholder="Descripción ejecutiva" >
+                  placeholder="Denominación producto" >
           <mat-hint>Nombre del producto o descripción ejecutiva</mat-hint>
         </mat-form-field>
       </div>
@@ -138,7 +127,7 @@
     <hr>
 
     <div class="row" >
-      <div class="col-md-3">
+      <!--div class="col-md-3">
         <mat-form-field>
           <mat-select #fldDestinoBien placeholder="Destino de la producción "
               [formControl]="form.controls['destino']"
@@ -148,7 +137,7 @@
           </mat-select>
           <mat-hint>Aplica a productos de venta o maquinaria de fabricación</mat-hint>
         </mat-form-field>
-      </div>
+      </div-->
       <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['capainstalada']" 
@@ -173,8 +162,7 @@
     </div>
     <hr>
 
-    <p class="text-destacado" >Describa la COMPETENCIA (para el caso de tratarse de un producto de REVENTA)</p>
-
+    <!--p class="text-destacado" >Describa la COMPETENCIA (para el caso de tratarse de un producto de REVENTA)</p>
     <div class="row" >
       <div class="col">
         <mat-form-field>
@@ -207,7 +195,7 @@
           <mat-hint>Explique sus necesidades, debilidades o amenazas en relación con la competencia</mat-hint>
         </mat-form-field>
       </div>
-    </div>
+    </div -->
     <hr>
 
     <div class="additional-info">

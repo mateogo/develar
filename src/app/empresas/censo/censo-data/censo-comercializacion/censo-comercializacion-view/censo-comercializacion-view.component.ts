@@ -41,7 +41,12 @@ export class CensoComercializacionViewComponent implements OnInit {
   }
 
   private buildView(token){
-    this.mercados = token.mercados || [];
+    token.mercados = (token.mercados && token.mercados.length ) ? token.mercados : [];
+    this.mercados = token.mercados.map(t => {
+            t.target = CensoIndustriasService.getOptionLabel('mercados', t.target);
+            return t;
+    })
+
     this.totales = CensoIndustriasService.sumMercadeo(this.mercados);
 
     this.total = this.totales.total;

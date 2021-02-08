@@ -6,9 +6,9 @@
       <div class="row">
         <div class="col">
           <mat-form-field>
-            <mat-select #fldPersonType formControlName='personType'
-              (change)="changeSelectionValue('personType',fldPersonType )" placeholder="Tipo de persona">
-              <mat-option *ngFor="let tper of persontypes" [value]="tper.val">{{ tper.label }}</mat-option>
+            <mat-select #fldPersonType formControlName='personPuesto'
+              (change)="changeSelectionValue('personPuesto',fldPersonType )" placeholder="Cargo en la empresa">
+              <mat-option *ngFor="let tper of personPuestoOptList" [value]="tper.val">{{ tper.label }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -90,7 +90,7 @@
 
 
       <!---tprofesiion; especialidad; ambito --->
-      <div class="row">
+      <!-- div class="row">
         <div class="col">
           <mat-form-field>
             <mat-select #fldTProfesion placeholder="Profesión/ Actividad" [formControl]="form.controls['tprofesion']"
@@ -111,7 +111,7 @@
             <input matInput [formControl]="form.controls['ambito']" placeholder="Ámbito">
           </mat-form-field>
         </div>
-      </div>
+      </div -->
 
       <hr>
       <div class="additional-info">

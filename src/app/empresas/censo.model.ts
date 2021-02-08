@@ -91,11 +91,15 @@ export class Mercado {
 }
 const mercadosOptList = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
-	{val: 'pba',          isLocal: true,  label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
-	{val: 'nacional',     isLocal: true,  label: 'Nacional',         slug: 'Nacional' },
+	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
+	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
 	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
-	{val: 'mercosur',     isLocal: false, label: 'Mercosur',         slug: 'Mercosur' },
-	{val: 'america',      isLocal: false, label: 'Región América',   slug: 'Región América' },
+	{val: 'mercosur',     isLocal: false, label: 'Mercosur (excluye Brasil)',         slug: 'Mercosur' },
+	{val: 'peru',         isLocal: false, label: 'Perú',   slug: 'Perú' },
+	{val: 'colombia',     isLocal: false, label: 'Colombia',   slug: 'Colombia' },
+	{val: 'mexico',       isLocal: false, label: 'México',   slug: 'México' },
+	{val: 'usa',          isLocal: false, label: 'USA',   slug: 'USA' },
+	{val: 'america',      isLocal: false, label: 'América',   slug: 'América' },
 	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
 	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
 ]
@@ -262,8 +266,6 @@ export class FactoresInversion {
 	slug: string = '';
 }
 
-
-
 export class CensoInversion{
 	_id?: string;
 	type: string = 'comercializacion';
@@ -279,24 +281,17 @@ export class CensoInversion{
 	
 }
 
-
-
-
-
 export class CensoRecursosHumanos {
 	_id?: string;
 	type: string;
 	slug: string;
 }
-	
 
 export class CensoExpectativas {
 	_id?: string;
 	type: string;
 	slug: string;
 }
-	
-
 
 export class CensoProductos {
 	_id?: string;
@@ -375,7 +370,6 @@ export class CensoBienes {
 
 
 	level: number; //porcentaje de la facturación o la inversión
-
 }
 
 export class CensoMaquinarias {

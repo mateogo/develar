@@ -20,8 +20,8 @@ const CORE = 'core';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
-const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2020';
-const CENSO_CORE =      '/mab/empresas/gestion/censo2020/core/:id';
+const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
+const CENSO_CORE =      '/mab/empresas/gestion/censo2021/core/:id';
 const ACTUAL_CENSO = "censo:industrias:2020:00";
 
 

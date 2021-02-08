@@ -1,6 +1,7 @@
 <mat-card class="detail-card p-0">
     <mat-card-header>
         <mat-card-title><strong>{{ title }}</strong></mat-card-title>
+        <mat-card-subtitle><strong>{{ subtitle }}</strong></mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -12,9 +13,9 @@
             <div *ngIf="hasCurrentPerson">
                 <personas-contactdata-panel [items]='contactList' (updateItems)='updateContactList($event)'></personas-contactdata-panel>
             </div>
-            <div *ngIf="hasCurrentPerson">
+            <!--div *ngIf="hasCurrentPerson">
                 <personas-address-panel [items]='addressList' (updateItems)='updateAddressList($event)'></personas-address-panel>
-            </div>
+            </div -->
             <!-- div *ngIf="hasCurrentPerson">
                 <personas-vinculos-panel [items]='businessList' (updateItems)='updateBusinessList($event)'></personas-vinculos-panel>
             </div-->

@@ -194,7 +194,7 @@ export class CensoindustriasBannerComponent implements OnInit {
   gotoCensoPage(e, i, node){
     e.stopPropagation();
     e.preventDefault();
-    this.router.navigate(["/mab/empresas/gestion/censo2020"]);
+    this.router.navigate(["/mab/empresas/gestion/censo2021"]);
 
   }
 

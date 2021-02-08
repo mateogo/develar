@@ -180,6 +180,7 @@ export class DocumentData {
     isTramitacionMAB: boolean;
     expedidopor: string = '';
     fechaexpe: string = '';
+    feInicioActividades: string = '';
     tramitacionURL: string = '';
     tramitacionNro: string = '';
 
@@ -377,11 +378,13 @@ export class Person {
 	id: string;
 	_id: string;
 	displayName: string;
+	brandName: string = "";
   idbrown: string = "";// ojo
   isImported: boolean = false;// ojo
 
 	persontags: Array<any>;
-	personType: string;
+	personType: string = 'fisica';
+	personPuesto: string = '';
 
 	email: string;
   locacion: string;
@@ -1421,7 +1424,15 @@ const pJuridicos: Array<any> = [
       {val: 'cooperativa', 	label: 'cooperativa',    slug:'cooperativa' },
       {val: 'osc', 	        label: 'OSC',    slug:'OSC' },
 ];
-  
+
+const puestos: Array<any> = [
+  {val: 'no_definido', label: 'Seleccione opción',slug:'Seleccione opción' },
+  {val: 'gerente', 	  label: 'Gerente',   slug:'Gerente' },
+  {val: 'apoderado', 	label: 'Apoderado', slug:'Apoderado' },
+  {val: 'ceo', 	      label: 'CEO',       slug:'CEO' },
+
+];
+
 const ptypes: Array<any> = [
 		{val: 'no_definido', label: 'Seleccione opción',slug:'Seleccione opción' },
 		{val: 'fisica', 	   label: 'Persona física',   slug:'' },
@@ -1934,6 +1945,13 @@ class PersonModel {
 
     fetchProvinceLabel(value):string{
     return states.find(item => item.val === value).label;
+    }
+
+    get puestosOL():Array<any>{
+    	return puestos;
+    }
+    getPuestosLabel(item): string {
+    	return getLabel(item, puestos);
     }
 
     get estadoCivilOL():Array<any>{

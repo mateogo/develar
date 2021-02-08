@@ -100,7 +100,7 @@ export class CensoNavigateComponent implements OnInit {
 
 
   nuevoCenso(): void {
-    this._router.navigate(['../censo2020'],{relativeTo: this._route});
+    this._router.navigate(['../censo2021'],{relativeTo: this._route});
   }
 
   navigateDashboard(): void {

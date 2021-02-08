@@ -24,6 +24,7 @@ export class PersonasPageComponent implements OnInit {
 
   public unBindList = [];
   title : string = 'Mis datos personales'
+  subtitle : string = 'Referente a cargo del censo'
   currentPerson : Person;
   public contactList:   PersonContactData[];
   public addressList:   Address[];

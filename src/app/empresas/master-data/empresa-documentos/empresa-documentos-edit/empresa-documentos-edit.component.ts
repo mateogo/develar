@@ -117,6 +117,7 @@ export class EmpresaDocumentosEditComponent implements OnInit {
       slug:             [null],
       observacion:      [null],
       isTramitacionMAB: [null],
+      feInicioActividades: [null],
       expedidopor:      [null],
       fechaexpe:        [null],
       tramitacionNro:   [null],
@@ -132,7 +133,8 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 		form.reset({
 			type:             token.type,
 			slug:             token.slug,
-			observacion:      token.observacion,
+      observacion:      token.observacion,
+      feInicioActividades: token.feInicioActividades,
 			isTramitacionMAB: token.isTramitacionMAB,
 			expedidopor:      token.expedidopor,
 			fechaexpe:        token.fechaexpe,
@@ -151,7 +153,8 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 
 		entity.type =             fvalue.type;
 		entity.slug =             fvalue.slug;
-		entity.observacion =      fvalue.observacion;
+    entity.observacion =      fvalue.observacion;
+    entity.feInicioActividades = fvalue.feInicioActividades;
 		entity.isTramitacionMAB = fvalue.isTramitacionMAB;
 		entity.expedidopor =      fvalue.expedidopor;
 		entity.fechaexpe =        fvalue.fechaexpe;

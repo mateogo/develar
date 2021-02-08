@@ -4,21 +4,23 @@
 
             <!---type;  tdoc, ndoc--->
             <div class="row">
-                <div class="col">
+                <div class="col-md-3">
                     <mat-form-field>
                         <mat-select #fldTipoTramitacion formControlName='type' (change)="changeSelectionValue('type',fldTipoTramitacion )" placeholder="Tipo de Documento/ Tramitación">
                             <mat-option *ngFor="let item of documentos" [value]="item.val">{{ item.label }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-
-
+                <div class="col-md-3">
+                    <mat-form-field>
+                        <input matInput [formControl]="form.controls['feInicioActividades']" placeholder="Fecha inicio actividades">
+                    </mat-form-field>
+                </div>
                 <div class="col">
                     <mat-form-field>
                         <input matInput [formControl]="form.controls['slug']" placeholder="Denominación del documento/ tramitación">
                     </mat-form-field>
                 </div>
-
             </div>
 
             <div class="row">

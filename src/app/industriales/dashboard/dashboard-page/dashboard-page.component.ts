@@ -15,6 +15,7 @@ export class DashboardPageComponent implements OnInit {
   // dashboard-page y no el componente propiamente dicho
   private whitelistURLs = [
     '/dashboard/censos/censo2020',
+    '/dashboard/censos/censo2021',
     '/dashboard/personas',
     '/dashboard/industrias/editar'
   ];

@@ -1,15 +1,18 @@
 <ng-container *ngIf='showData'>
 <div class="container-fluid">
-    <div class="row" >
+  <div class="row" >
+    <div class="col">
+      <p class="text-normal">Distribución de ventas según mercado destino; Distribución de aprovisionamiento según mercado de origen. </p>
+    </div>
+  </div>
+  <div class="row" >
         <div class="col">
           <table class="table table-sm">
             <thead class="thead-dark text-head">
               <tr>
                 <th>Mercado</th>
-                <th class="number-normal" title="Porcentaje relativo de ventas de cada mercado">%Ventas</th>
-                <th class="number-normal" title="Monto de ventas anual en $ por mercado">MontoVentas</th>
+                <th class="number-normal" title="Porcentaje relativo de ventas en cada mercado">%Ventas</th>
                 <th class="number-normal" title="Porcentaje relativo de compras en cada mcercado">%Compras</th>
-                <th class="number-normal" title="Monto de compras anual en $ por mercado"> MontoCompras</th>
                 <th>Comentario</th>
               </tr>
             </thead>
@@ -18,54 +21,46 @@
                 <tr>
                   <th class="text-normal">{{ token.target }}</th>
                   <td class="number-normal">{{ token.propVentas }}%</td>
-                  <td class="number-normal">{{ token.montoVentas }}</td>
                   <td class="number-normal">{{ token.propCompras }}%</td>
-                  <td class="number-normal">{{ token.montoCompras }}</td>                
                   <td class="text-normal">{{ token.slug }}</td>
                 </tr>
               </ng-container>
               <tr>
                 <th class="text-normal"   >{{ total.target       }}</th>
                 <th class="number-normal" >{{ total.propVentas   }}%</th>
-                <th class="number-normal" >{{ total.montoVentas  }}</th>
                 <th class="number-normal" >{{ total.propCompras  }}%</th>
-                <th class="number-normal" >{{ total.montoCompras }}</th>                
                 <td class="text-normal"   >{{ total.slug }}</td>
               </tr>
               <tr>
                 <th class="text-normal"   >{{ local.target       }}</th>
                 <th class="number-normal" >{{ local.propVentas * 100 }}%</th>
-                <th class="number-normal" >{{ local.montoVentas  }}</th>
                 <th class="number-normal" >{{ local.propCompras * 100 }}%</th>
-                <th class="number-normal" >{{ local.montoCompras }}</th>                
                 <td class="text-normal"   >{{ local.slug }}</td>
               </tr>
               <tr>
                 <th class="text-normal"   >{{ externo.target       }}</th>
                 <th class="number-normal" >{{ externo.propVentas * 100 }}%</th>
-                <th class="number-normal" >{{ externo.montoVentas  }}</th>
                 <th class="number-normal" >{{ externo.propCompras  * 100 }}%</th>
-                <th class="number-normal" >{{ externo.montoCompras }}</th>                
                 <td class="text-normal"   >{{ externo.slug }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="row" >
-        <div class="col-md-4">
-          <p><span class="text-destacado">Divisas ((Export-Import)/Import):</span> {{totales.balanzaComProp}}%</p>
-        </div>
 
-        <div class="col-md-4">
+      <div class="row" >
+        <!--div class="col-md-4">
+          <p><span class="text-destacado">Divisas ((Export-Import)/Import):</span> {{totales.balanzaComProp}}%</p>
+        </div -->
+
+        <div class="col-md-5">
           <p><span class="text-destacado">Relación Ventas (Exterior/Locales):</span> {{totales.balanzaVtaProp}}%</p>
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
           <p><span class="text-destacado">Relación Compras (Exterior/Locales):</span> {{totales.balanzaImpProp}}%</p>
         </div>
-
       </div>
 
       <div class="row" >

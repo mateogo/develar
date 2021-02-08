@@ -142,6 +142,7 @@ export class EmpresaCoreEditComponent implements OnInit {
       displayName:  [null, Validators.compose([Validators.required])],
       personType:   [null, Validators.compose([Validators.required])],
       email:        [null, Validators.compose([Validators.email])],
+      brandName:    [null],
       locacion:     [null],
       nombre:       [null],
       apellido:     [null],
@@ -163,7 +164,8 @@ export class EmpresaCoreEditComponent implements OnInit {
 
   initForEdit(form: FormGroup, person: Person): FormGroup {
 		form.reset({
-		  displayName:  person.displayName,
+      displayName:  person.displayName,
+      brandName:    person.brandName,
 		  email:        person.email,
 		  locacion:     person.locacion,
 		  personType:   person.personType,
@@ -187,6 +189,7 @@ export class EmpresaCoreEditComponent implements OnInit {
 
 		const entity = person; 
 		entity.displayName = fvalue.displayName;
+		entity.brandName = fvalue.brandName;
 		entity.email = fvalue.email;
 		entity.locacion = fvalue.locacion;
 		entity.personType = fvalue.personType;

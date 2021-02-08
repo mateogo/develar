@@ -29,6 +29,7 @@ export class PersonasCoreEditComponent implements OnInit {
   public estadoCivil = personModel.estadoCivilOL;
   public sexoOptList = personModel.sexoList;
   public docBelongsTo = { error: '' };
+  public personPuestoOptList = personModel.puestosOL;
 
   public tprofPersonaFisica = [
     { val: 'no_definido', label: 'Seleccione opción', slug: 'Seleccione opción' },
@@ -148,7 +149,7 @@ export class PersonasCoreEditComponent implements OnInit {
 
     form = this.fb.group({
       displayName: [null, Validators.compose([Validators.required])],
-      personType: [null, Validators.compose([Validators.required])],
+      personPuesto: [null, Validators.compose([Validators.required])],
       // email:        [null, Validators.compose([Validators.email])],
       locacion: [null],
       nombre: [null],
@@ -174,7 +175,7 @@ export class PersonasCoreEditComponent implements OnInit {
       displayName: person.displayName,
       //email:        person.email,
       locacion: person.locacion,
-      personType: person.personType,
+      personPuesto: person.personPuesto,
       nombre: person.nombre,
       apellido: person.apellido,
       tdoc: person.tdoc,
@@ -200,7 +201,7 @@ export class PersonasCoreEditComponent implements OnInit {
     entity.displayName = fvalue.displayName;
     //entity.email = fvalue.email;
     entity.locacion = fvalue.locacion;
-    entity.personType = fvalue.personType;
+    entity.personPuesto = fvalue.personPuesto;
     entity.nombre = fvalue.nombre;
     entity.apellido = fvalue.apellido;
 		/*entity.tdoc = fvalue.tdoc;
