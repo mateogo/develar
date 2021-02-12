@@ -928,6 +928,7 @@ const addressTypeOptList: Array<any> = [
   {val: 'entrega', 	      label: 'Lugar entrega',    slug:'Lugar de entrega' },
   {val: 'sucursal', 	    label: 'Sucursal',         slug:'Sucursal' },
   {val: 'principal',      label: 'Principal',        slug:'Locación principal' },
+  {val: 'dni',            label: 'Domicilio en DNI', slug:'Domicilio legal' },
 ];
 
 const countries: Array<any> = [
@@ -1911,7 +1912,8 @@ class PersonModel {
     }
 
     fetchAddrTypeLabel(value):string{
-      return addressTypeOptList.find(item => item.val === value).slug;
+      let addType = addressTypeOptList.find(item => item.val === value);
+      return addType ? addType.label : value;
     }
 
     fetchDefaultAddress(list: Address[]): Address {

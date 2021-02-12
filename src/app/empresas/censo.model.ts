@@ -266,11 +266,8 @@ export class FactoresInversion {
 	slug: string = '';
 }
 
-export class CensoInversion{
-	_id?: string;
-	type: string = 'comercializacion';
-	slug: string = 'Modos de comercialización y marketing';
 
+export class InversionData {
 	tipoInversion: string = '';
 	stipoInversion: string = '';
 	hasRealizado: boolean = false;
@@ -278,6 +275,14 @@ export class CensoInversion{
 	fuentePpal: string = '';
 	fuenteSec: string = '';
 	factores: Array<FactoresInversion>;
+
+}
+
+export class CensoInversion{
+	_id?: string;
+	type: string = 'comercializacion';
+	slug: string = 'Modos de comercialización y marketing';
+	
 	
 }
 
