@@ -1,1 +1,135 @@
-<p>censo-Inversiones: PROXIMAMENTE</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <ng-container *ngIf="showForm">
+      <form [formGroup]="form" >
+
+        <div class="d-flex align-items-center">
+          <span class="text-normal">{{ texto1 }}</span>
+          <span class="flex-grow-1"></span>
+          <mat-icon style="cursor: pointer;"  matTooltip="{{codigo.ayuda1}}"
+                  (click)="showHelp($event, 'ayuda1')">help_outline
+          </mat-icon>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldType formControlName="type" placeholder="Tipo de inversión" 
+                    (selectionChange)="changeSelectionValue('type', fldType.value)">
+
+                <mat-option *ngFor='let item of typeOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldStype formControlName="stype" placeholder='Subtipo de inversión' 
+                  (selectionChange)="changeSelectionValue('stype', fldStype.value)">
+
+                <mat-option *ngFor='let item of stypeOptList' [value]="item.val">
+                    {{ item.label}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldFuentFinanciam formControlName='fuenteFinan' placeholder="Fuente principal de financiamiento"
+                      (selectionChange)="changeSelectionValue('fuenteFinan', fldFuentFinanciam.value)">
+                <mat-option *ngFor="let item of financiamientoOptList" [value]="item.val">
+                      {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class='col-md-4'>
+            <span >Indique si ha realizado y/o planifica realizar inversiones del tipo seleccionado en el corto plazo</span>
+          </div>
+          <div class='col-md-4'>
+            <mat-checkbox [checked]='false' formControlName="hasRealizado">Ha realizado en los últimos 3 años
+            </mat-checkbox>
+          </div>
+          <div class='col-md-4'>
+            <mat-checkbox [checked]='false' formControlName="isPrevisto">Planea realizar próximos 2 años
+            </mat-checkbox>
+          </div>
+        </div>
+        <hr>
+        
+        <div class="row">
+          <div class="col-md-8">
+            <mat-form-field>
+              <textarea matInput formControlName="slug" placeholder="Descripción ejecutiva del plan de inversión"></textarea>
+            </mat-form-field>  
+          </div>
+        </div>
+        <hr>
+
+        <p><span class="text-resaltado">Factores que inciden en la toma de decisión de inversión</span></p>
+        <p><span class="text-normal">Marque aquellos factores que alientan / desalientan la inversión en base a la siguiente lista de referencia. Agregue su comentario o valoración.</span></p>
+        <div class="row" >
+          <div class="col">
+            <table class="table table-bordered">
+              <thead class="thead-dark text-head">
+                <tr>
+                  <th>Factor de incidencia </th>
+                  <th title="Alienta la inversion">Alienta</th>
+                  <th title="Desalienta la inversión">Desalienta</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody  formArrayName='factores'>
+                <ng-container *ngFor="let token of factores.controls; let row=index"  [formGroupName]="row">
+                  <tr [style]="tableRowStyle(row)">
+                    <td>
+                      <mat-form-field>
+                        <input matInput type="string" formControlName="flabel"  >
+                      </mat-form-field>
+                    </td>
+                    <td style='max-width: 50px;' class="align-middle" >
+                      <mat-checkbox [checked]="false" color="primary" formControlName='alienta'>Alienta</mat-checkbox>
+                    </td>
+                    <td style='max-width: 50px;' class="align-middle" >
+                      <mat-checkbox [checked]="false" color="primary" formControlName='dificulta'>Desalienta</mat-checkbox>
+                    </td>
+                    <td style='max-width: 150px;'>
+                      <mat-form-field>
+                        <input matInput type="string" formControlName="slug" placeholder="Describa el tipo tipo de influencia" >
+                      </mat-form-field>
+                    </td>
+    
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <hr>
+
+        <div class="additional-info">
+          <button mat-raised-button color="primary" type="submit" 
+              (click)="onSubmit()"
+              [disabled]="!form.valid" >Aceptar</button>
+          
+          <button mat-button type="button" color="accent"
+              (click)="onCancel()" >Cancelar</button>
+        </div>
+    
+
+      </form>
+    </ng-container>
+
+  </mat-card-content>
+
+</mat-card>

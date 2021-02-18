@@ -18,6 +18,7 @@ export class CensoRhumanosViewComponent implements OnInit {
 
   public type = "";
   public slug = "";
+  public qempleados = 0;
 
   constructor() { }
 
@@ -25,6 +26,7 @@ export class CensoRhumanosViewComponent implements OnInit {
     this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
     
     this.slug = this.token.slug;
+    this.qempleados = this.token.qempleados
 
 
   }

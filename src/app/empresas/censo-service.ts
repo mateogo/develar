@@ -94,6 +94,23 @@ export class CensoIndustriasService {
 
 	}
 
+	static getSubOptList(type, option){
+		return  ( optionsSubLists[type] ? (optionsSubLists[type][option] || []) : [])
+	}
+
+	static populateSTypeOptList(type, val, form?){
+		let list = this.getSubOptList(type, val);
+
+		if(form){
+			let value = form.get(type).value
+			let test = list.find(t => t.val === value);
+			form.get(type).setValue( test ? test.val : (list.length && list[0].val) || 'no_definido' );
+		}
+		
+		return list;
+	}
+	
+
 	static getActionOptList(val, type){
 		let list = [];
 		let token = fetchAction(val, type);
@@ -300,6 +317,114 @@ export class CensoIndustriasService {
         }
         return sumario;
 	}
+
+}
+
+const seccionOptList = [
+	{val: 'administracion', label: 'Administración', slug: 'Administración' },
+	{val: 'produccion',     label: 'Producción',     slug: 'Producción' },
+	{val: 'logistica',      label: 'Logística',      slug: 'Logística' },
+	{val: 'calidad',        label: 'Calidad',        slug: 'Calidad' },
+	{val: 'ventas',         label: 'Ventas',         slug: 'Ventas' },
+	{val: 'compras',        label: 'Compras',        slug: 'Compras' },
+	{val: 'comercioext',    label: 'Comercio Ext',   slug: 'Comercio Ext' },
+	{val: 'finanzas',       label: 'Finanzas',       slug: 'Finanzas' },
+	{val: 'seguhigiene',    label: 'Seguridad e Higiene',  slug: 'Seguridad e Higiene' },
+];
+
+
+const fuenteRecursosInversionOptList = [
+	{val: 'propio',       label: 'Recursos propios'  },
+	{val: 'insfinan',     label: 'Colocación financiera'  },
+	{val: 'banco',        label: 'Crédito bancario'  },
+	{val: 'acciones',     label: 'Emisión acciones/Inversor'  },
+	{val: 'organismos',   label: 'Organismos internacionales'  },
+	{val: 'subsidionac',  label: 'Subsidio público'  },
+	{val: 'programas',    label: 'Programas incentivos públicos'  },
+	{val: 'crowd',        label: 'Crowd funding'  },
+	{val: 'fundraising',  label: 'Fund raising'  },
+	{val: 'venta',        label: 'Venta activos'  },
+]
+
+const tiposDeInversionOptList = [
+	{val: 'tecnologia',       label: 'Tecnología'  },
+	{val: 'maquinaria',       label: 'Maquinaria-Instalaciones'  },
+	{val: 'rodados',          label: 'Rodados'  },
+	{val: 'edilicia',         label: 'Edilicia'  },
+	{val: 'appinformatica',   label: 'App Informáticas'  },
+	{val: 'infrainformatica', label: 'Infraestructura Informática'  },
+	{val: 'gestion',          label: 'Mejora de Gestión'  },
+	{val: 'mercados',         label: 'Desarrollo mercados'  },
+	{val: 'otros',            label: 'Otras inversiones'  },
+	{val: 'no_definido',      label: 'Seleccione Opción'}
+];
+
+const subTipoInversionTree = {
+	tecnologia: [
+		{ val:'desarrollo',    label: 'Desarrollo'},
+		{ val:'licencia',      label: 'Licenciamiento'},
+		{ val:'investigacion', label: 'Investigación'},
+	],
+	maquinaria: [
+		{ val:'maquinaria',    label: 'Maquinaria y equipos'},
+		{ val:'linea',         label: 'Línea de producción'},
+		{ val:'mejora',        label: 'Mejora capacidad existente'},
+		{ val:'mantenimiento', label: 'Mantenimiento capacidad existente'},
+	],
+	rodados: [
+		{ val:'automotor',     label: 'Automotor'},
+		{ val:'camion',        label: 'Camión'},
+		{ val:'utilitario',    label: 'Utilitario'},
+		{ val:'motos',         label: 'Motos'},
+		{ val:'mantenimiento', label: 'Mantenimiento'},
+	],
+	edilicia: [
+		{ val:'produccion', label: 'Producción'},
+		{ val:'deposito',   label: 'Depósito'},
+		{ val:'oficinas',   label: 'Oficinas'},
+		{ val:'comercial',  label: 'Comercial'},
+	],
+	appinformatica: [
+		{ val:'productividad', label: 'Productividad'},
+		{ val:'ecommerce',     label: 'E-commerce'},
+		{ val:'gestion',       label: 'Sist de Gestión'},
+		{ val:'crm',           label: 'Gestión clientes (CRM)'},
+		{ val:'paginaweb',     label: 'Página WEB'},
+		{ val:'digital',       label: 'Comunicación Digital'},
+		{ val:'bigdata',       label: 'Ciencia de datos'},
+	],
+	infrainformatica: [
+		{ val:'onpremise', label: 'On-premise'},
+		{ val:'cloud',     label: 'Cloud'},
+		{ val:'redes',     label: 'Redes'},
+		{ val:'seguridad', label: 'Seguridad informática'},
+		{ val:'storage',   label: 'Almacenamiento'},
+		{ val:'servidor',  label: 'Servidores'},
+	],
+	gestion: [
+		{ val:'humana',         label: 'Talento humano'},
+		{ val:'calidad',        label: 'Calidad'},
+		{ val:'ambiental',      label: 'Ambiental'},
+		{ val:'procesos',       label: 'Procesos'},
+		{ val:'certificacion',  label: 'Certificaciones'},
+		{ val:'logistica',      label: 'Logística'},
+		{ val:'mantenimiento',  label: 'Mantenimiento'},
+		{ val:'administrativa', label: 'Administrativo'},
+		{ val:'marketing',      label: 'Marketing'},
+		{ val:'digital',        label: 'Comunicación Digital'},
+	],
+	mercados: [
+		{ val:'investigacion', label: 'Investigación'},
+		{ val:'desarrollo',    label: 'Desarrollo'},
+		{ val:'promocion',     label: 'Promoción'},
+	],
+	otros: [
+		{ val:'otros',         label: 'Otras inversiones'},
+	],
+
+	no_definido: [
+		{ val:'no_definido',         label: 'Seleccione Opción'},
+	]
 
 }
 
@@ -611,6 +736,11 @@ const contact_tag: Array<any> = [
     {val: 'LAB',    label: 'LAB',      slug:'LAB' },
 ];
 
+
+const optionsSubLists = {
+	stype: subTipoInversionTree
+};
+
 const optionsLists = {
     default: default_option_list,
     actions: actionOptList,
@@ -636,6 +766,12 @@ const optionsLists = {
     documentos: tipoDocumentosOptList,
     habilitacion: habilitacionOptList,
     competencia: competenciaTypeOptList,
+
+	inversionType: tiposDeInversionOptList,
+	fuenteFinanciamiento: fuenteRecursosInversionOptList,
+
+	secciones: seccionOptList,
+
    
 }
 

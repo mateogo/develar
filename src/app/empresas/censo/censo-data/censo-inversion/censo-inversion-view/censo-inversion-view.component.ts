@@ -19,6 +19,8 @@ export class CensoInversionViewComponent implements OnInit {
 	@Input() token: CensoComercializacion;
 
   public type = "";
+  public stype = "";
+  private stypeOptList = [];
   public origen = "";
   public slug = "";
   public hasPlanAumentoExpo = '';
@@ -30,6 +32,7 @@ export class CensoInversionViewComponent implements OnInit {
   public local: Mercado = new Mercado();
   public externo: Mercado = new Mercado();
 
+
   public showData = false;
 
   constructor() { }
@@ -39,19 +42,13 @@ export class CensoInversionViewComponent implements OnInit {
   }
 
   private buildView(token){
-    this.mercados = token.mercados || [];
-    this.totales = CensoIndustriasService.sumMercadeo(this.mercados);
 
-    this.total = this.totales.total;
-    this.local = this.totales.local;
-    this.externo = this.totales.externo;
-
-    this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
+    this.type = CensoIndustriasService.getOptionLabel('inversionType', this.token.type);
+    this.stypeOptList = CensoIndustriasService.populateSTypeOptList('stype', token.type) || [] ;
+    this.stype = CensoIndustriasService.getOptionLabelFromList(this.stypeOptList, token.stype);
     this.slug = this.token.slug;
     this.showData = true;
 
-    this.hasPlanAumentoExpo = token.hasPlanAumentoExpo ? 'Plan activo de aumento de exportaciones' : 'No tiene plan activo de aumento de exportaciones'
-    this.planesActivos = CensoIndustriasService.planesActivosAmentoExportaciones(token);
   }
 
 }

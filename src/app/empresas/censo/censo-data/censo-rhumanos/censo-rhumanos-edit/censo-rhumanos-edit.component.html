@@ -1,1 +1,296 @@
-<p>censo-Recursos Humanos: PROXIMAMENTE</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ng-container *ngIf="showForm">
+      <form [formGroup]="form" >
+
+        <div class="d-flex align-items-center">
+          <span class="text-normal">{{ texto1 }}</span>
+          <span class="flex-grow-1"></span>
+          <mat-icon style="cursor: pointer;"  matTooltip="{{codigo.ayuda1}}"
+                  (click)="showHelp($event, 'ayuda1')">help_outline
+          </mat-icon>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput type="text" formControlName="slug" placeholder="Alcance del bloque de datos" >
+            </mat-form-field>    
+          </div>
+
+          <div class="col-md-2">
+            <mat-form-field>
+              <input matInput type="text" formControlName="qempleados" placeholder="Empleados totales" >
+            </mat-form-field>    
+          </div>
+        </div>
+
+        
+        <p class="text-destacado">Apertura por nivel educativo y género</p>
+
+        <div class="row"  formArrayName='niveleseducativos'>
+
+          <ng-container *ngFor="let neducativo of niveleseducativos.controls; let row=index" [formGroupName]="row">
+            <ng-container *ngIf="row % 6 === 0" >
+              <div class="col-md-12">
+                <p class="text-resaltado">{{neducativo.value.seccion_tx}}</p>
+              </div>
+            </ng-container>
+
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col">
+                  <span class='text-title'>{{ neducativo.value.nivel_tx }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qh" placeholder="Hombre" >
+                  </mat-form-field>    
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>  
+          </ng-container>
+        
+        </div>
+
+        <p class="text-destacado">Apertura por nivel jerárquico y género</p>
+
+        <div class="row"  formArrayName='nivelesjerarquicos'>
+          <ng-container *ngFor="let njerarquico of nivelesjerarquicos.controls; let row=index" [formGroupName]="row">
+            <ng-container *ngIf="row % 6 === 0" >
+              <div class="col-md-12">
+                <p class="text-resaltado">{{njerarquico.value.seccion_tx}}</p>
+              </div>
+            </ng-container>
+
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col">
+                  <span class='text-title'>{{ njerarquico.value.nivel_tx }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qh" placeholder="Hombre" >
+                  </mat-form-field>    
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>  
+          </ng-container>
+        </div>
+
+
+        <p class="text-destacado">ANÁLISIS FODA</p>
+        <div class="row foda">
+          <div class="col-md-6  foda-bloque">
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="fortaleza1" placeholder="Fortaleza (1)" >
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="fortaleza2" placeholder="Fortaleza (2)" >
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="fortaleza3" placeholder="Fortaleza (3)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6 foda-bloque">
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="debilidad1" placeholder="Debilidad (1)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="debilidad2" placeholder="Debilidad (2)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="debilidad3" placeholder="Debilidad (3)" >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-6  foda-bloque">
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="oportunidad1" placeholder="Oportunidad (1)" >
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="oportunidad2" placeholder="Oportunidad (2)" >
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="oportunidad3" placeholder="Oportunidad (3)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6 foda-bloque">
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="amenaza1" placeholder="Amenaza (1)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="amenaza2" placeholder="Amenaza (2)" >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput type="text" formControlName="amenaza3" placeholder="Amenaza (3)" >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <hr>
+
+
+        <p class="text-destacado">Proyección de crecimiento de empleo para los próximos 2 años</p>
+        <div class="row" formGroupName="crecimiento" >
+          <div class="col-md-4 d-flex align-items-center">
+            <mat-checkbox formControlName='hasCrecimiento' [checked]="false" color="primary">
+                ¿Tiene planes de incorporar nuevos empleados?
+            </mat-checkbox>
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-12  d-flex align-items-center">
+                <mat-checkbox formControlName='hasBrownEmplea' [checked]="false" color="primary">
+                  ¿Conoce el programa de intermediación laboral BROWN EMPLEA?
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12  d-flex align-items-center">
+                <mat-checkbox formControlName='hasDeseoBrownEmplea' [checked]="false" color="primary">
+                  ¿Tiene interés en recibir información sobre el mismo?
+                </mat-checkbox>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col">
+                <span class="text-title">Cantidad de nuevos puestos previstos para los próximos 2 años</span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class=col-md-3>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="qnuevos" placeholder="Cantidad total" >
+                </mat-form-field>    
+              </div>
+              <div class=col-md-3>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="qsecundarios" placeholder="Con nivel secundario" >
+                </mat-form-field>    
+              </div>
+              <div class=col-md-3>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="qterciarios" placeholder="Con nivel terciario" >
+                </mat-form-field>    
+              </div>
+              <div class=col-md-3>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="quniversitarios" placeholder="Con nivel universitario" >
+                </mat-form-field>    
+              </div>
+            </div>
+
+            <div class="row">
+              <div class=col-md-12>
+                <mat-form-field>
+                  <textarea matInput type="string" formControlName="slug" placeholder="Comentario" ></textarea>
+                </mat-form-field>    
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+
+
+        <div class="additional-info">
+          <button mat-raised-button color="primary" type="submit" 
+              (click)="onSubmit()"
+              [disabled]="!form.valid" >Aceptar</button>
+          
+          <button mat-button type="button" color="accent"
+              (click)="onCancel()" >Cancelar</button>
+        </div>
+
+
+
+
+
+
+      </form>
+    </ng-container>      
+  </mat-card-content>
+
+</mat-card>
+  

@@ -15,13 +15,12 @@ import { CensoIndustriasService, UpdateEvent } from '../../../../censo-service';
 import { 	CensoIndustrias, 
 					EstadoCenso, 
 					Empresa, 
-          CensoComercializacion,
-          Mercado,
+          CensoInversion,
+          FactoresInversion,
 					CensoData } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
 const TOKEN_TYPE = 'inversion';
-const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
@@ -35,7 +34,7 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
   styleUrls: ['./censo-inversion-edit.component.scss']
 })
 export class CensoInversionEditComponent implements OnInit {
-	@Input() token: CensoComercializacion;
+	@Input() token: CensoInversion;
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
 	public form: FormGroup;
@@ -43,17 +42,22 @@ export class CensoInversionEditComponent implements OnInit {
 
   private action = "";
 
+  private _factores: Array<FactoresInversion> = [];
+
   public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
   public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
 
-  public title = "Comercialización y Mercados";
-  public texto1 = "Identifique los mercados y modos de comercialización ";
+  public typeOptList = CensoIndustriasService.getOptionlist('inversionType');
+  public stypeOptList = [];
+  public financiamientoOptList = CensoIndustriasService.getOptionlist('fuenteFinanciamiento');
+
+  public title = "Describa el tipo de plan de inversión";
+  public texto1 = "";
   public texto2: string;
 
   private unBindList = [];
 
-  public _mercados: Array<Mercado> = [];
 
   public codigo = {
     ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
@@ -74,8 +78,6 @@ export class CensoInversionEditComponent implements OnInit {
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
-
-
   ngOnInit() {
     let first = true;    
     let sscrp2 = this.censoCtrl.onReady.subscribe(readyToGo =>{
@@ -87,8 +89,6 @@ export class CensoInversionEditComponent implements OnInit {
       }
     })
     this.unBindList.push(sscrp2);
-
-
   }
 
   showHelp(event : MouseEvent, key : string){
@@ -115,10 +115,9 @@ export class CensoInversionEditComponent implements OnInit {
     }    
   }
 
-  get mercados(): FormArray{
-    return this.form.get('mercados') as FormArray;
+  get factores(): FormArray{
+    return this.form.get('factores') as FormArray;
   }
-
 
   private initComponent(){
     this.form = this.buildForm();
@@ -126,45 +125,35 @@ export class CensoInversionEditComponent implements OnInit {
     this.showForm = true;
   }
 
-  private initForEdit(form: FormGroup, token: CensoComercializacion): FormGroup {
+  private initForEdit(form: FormGroup, token: CensoInversion): FormGroup {
 
 		form.reset({
-      type:            token.type,
-		  slug:            token.slug,
-      balanzaComMonto: token.balanzaComMonto,
-      balanzaComProp: token.balanzaComProp,
-      balanzaImpProp: token.balanzaImpProp,
-      balanzaImpMonto: token.balanzaImpMonto,
-      hasPlanAumentoExpo: token.hasPlanAumentoExpo,
-      hasPlanPartFeriaInt: token.hasPlanPartFeriaInt,
-      hasPlanPartFeriaLoc: token.hasPlanPartFeriaLoc,
-      hasPlanInvestigMerc: token.hasPlanInvestigMerc,
-      hasPlanRepresExt: token.hasPlanRepresExt,
-      hasOtrosPlanes: token.hasOtrosPlanes,
-      planAumentoExpo: token.planAumentoExpo,
-      hasPlanSustImpo: token.hasPlanSustImpo,
-      planSustImpo: token.planSustImpo,
-      propComerPropia: token.propComerPropia,
-      propComerMayor: token.propComerMayor,
-      propComerMinor: token.propComerMinor,
-      propComerDigital: token.propComerDigital,
-    
+      type:         token.type,
+      stype:        token.stype,
+      hasRealizado: token.hasRealizado,
+      isPrevisto:   token.isPrevisto,
+      fuenteFinan:  token.fuenteFinan,
+      slug:         token.slug
     });
+
+    this.stypeOptList = CensoIndustriasService.populateSTypeOptList('stype', token.type, this.form);
     
-    this._mercados = token.mercados;
-    let mercadosFG = this._mercados.map(mercado => this.fb.group(mercado));
-    let mercadosFormArray = this.fb.array(mercadosFG);
-    this.form.setControl('mercados', mercadosFormArray);
+    this._factores = token.factores;
+    let factoresFG = this._factores.map(mercado => this.fb.group({
+                  ftype:     [mercado.ftype],
+                  flabel:    [mercado.flabel],
+                  alienta:   [mercado.alienta],
+                  dificulta: [mercado.dificulta],
+                  slug:      [mercado.slug],
+    }));
+    let factoresFormArray = this.fb.array(factoresFG);
+    this.form.setControl('factores', factoresFormArray);
 
 		return form;
   }
 
-  private loadOrInitCenso(censo?: CensoIndustrias){
-
-  }
-
   onSubmit(){
-  	this.initForSave(this.form, this.token);
+  	this.token = this.initForSave(this.form, this.token);
   	this.action = UPDATE;
   	this.emitEvent(this.action);
   }
@@ -191,69 +180,65 @@ export class CensoInversionEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+    console.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'type'){
+      this.stypeOptList = CensoIndustriasService.populateSTypeOptList('stype', val, this.form);
+      //this.stypeOptList = this._populateSTypeOptList('stype', val);
 
+    }
+
+    if(type === 'stype'){
+      
+    }
+
+
+  }
+
+  private _populateSTypeOptList(type, val){
+    let list = CensoIndustriasService.getSubOptList(type, val);
+    let value = this.form.get(type).value
+    let test = list.find(t => t.val === value);
+    
+    this.form.get(type).setValue( test ? test.val : (list.length && list[0].val) || 'no_definido' );
+    return list;
   }
 
  
   private buildForm(): FormGroup{
   	let form: FormGroup;
-
     form = this.fb.group({
-      type:     [],
-		  slug:     [],
-      balanzaComMonto:     [],
-      mercados:     [],
-      balanzaComProp:     [],
-      balanzaImpProp:     [],
-      balanzaImpMonto:     [],
-      hasPlanAumentoExpo:     [],
-      hasPlanPartFeriaInt:     [],
-      hasPlanPartFeriaLoc:     [],
-      hasPlanInvestigMerc:     [],
-      hasPlanRepresExt:     [],
-      hasOtrosPlanes:     [],
-      planAumentoExpo:     [],
-      hasPlanSustImpo:     [],
-      planSustImpo:     [],
-      propComerPropia:     [],
-      propComerMayor:     [],
-      propComerMinor:     [],
-      propComerDigital:     [],
-
+      type:         [null],
+      stype:        [null],
+      hasRealizado: [null],
+      isPrevisto:   [null],
+      fuenteFinan:  [null],
+      slug:         [null],
+      factores:     [null],
     });
+
     return form;
   }
 
 
- 	private initForSave(form: FormGroup, entity: CensoComercializacion): CensoComercializacion {
+ 	private initForSave(form: FormGroup, entity: CensoInversion): CensoInversion {
 		const fvalue = form.value;
+    console.log('INIT FOR SAVE***************')
+    console.dir(fvalue);
 
-    const mercadosFlds: Mercado[] = fvalue.mercados.map(t => Object.assign({}, t ))
-    entity.mercados = mercadosFlds;
+    const factoresFlds: FactoresInversion[] = fvalue.factores.map(t => {
+      //console.dir(t);
+      return Object.assign({}, t )
+    })
+    entity.factores = factoresFlds;
 
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);
-    entity.type = fvalue.type;
-    entity.slug = fvalue.slug;
-    entity.balanzaComMonto = fvalue.balanzaComMonto;
-    entity.balanzaComProp = fvalue.balanzaComProp;
-
-    entity.balanzaImpProp = fvalue.balanzaImpProp;
-    entity.balanzaImpMonto = fvalue.balanzaImpMonto;
-
-    entity.hasPlanAumentoExpo = fvalue.hasPlanAumentoExpo;
-    entity.hasPlanPartFeriaInt = fvalue.hasPlanPartFeriaInt;
-    entity.hasPlanPartFeriaLoc = fvalue.hasPlanPartFeriaLoc;
-    entity.hasPlanInvestigMerc = fvalue.hasPlanInvestigMerc;
-    entity.hasPlanRepresExt = fvalue.hasPlanRepresExt;
-    entity.hasOtrosPlanes = fvalue.hasOtrosPlanes;
-    entity.planAumentoExpo = fvalue.planAumentoExpo;
-    entity.hasPlanSustImpo = fvalue.hasPlanSustImpo;
-    entity.planSustImpo = fvalue.planSustImpo;
-    entity.propComerPropia = fvalue.propComerPropia;
-    entity.propComerMayor = fvalue.propComerMayor;
-    entity.propComerMinor = fvalue.propComerMinor;
-    entity.propComerDigital = fvalue.propComerDigital;
+    entity.type =         fvalue.type,
+    entity.stype =        fvalue.stype,
+    entity.slug =         fvalue.slug;
+    entity.hasRealizado = fvalue.hasRealizado,
+    entity.isPrevisto =   fvalue.isPrevisto,
+    entity.fuenteFinan =  fvalue.fuenteFinan,
+    entity.slug =         fvalue.slug
 
 		return entity;
 	}

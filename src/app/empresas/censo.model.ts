@@ -4,7 +4,6 @@ import { CardGraph } from '../develar-commons/asset-helper';
 import { MaterialSolicitado } from '../entities/consultas/consulta.model';
 
 
-
 export class Empresa {
 		empresaId:   string; 
 		slug: string; 
@@ -89,6 +88,7 @@ export class Mercado {
 	montoCompras: number = 0; //proporción relativa de ventas
 	slug: string = ''; //proporción relativa de ventas
 }
+
 const mercadosOptList = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
@@ -147,30 +147,6 @@ export class CensoComercializacion{
 	
 }
 
-const fuenteRecursosInversionOptList = [
-	{val: 'propio',       label: 'Recursos propios'  },
-	{val: 'insfinan',     label: 'Colocación financiera'  },
-	{val: 'banco',        label: 'Crédito bancario'  },
-	{val: 'acciones',     label: 'Emisión acciones/Inversor'  },
-	{val: 'organismos',   label: 'Organismos internacionales'  },
-	{val: 'subsidionac',  label: 'Subsidio público'  },
-	{val: 'programas',    label: 'Programas incentivos públicos'  },
-	{val: 'crowd',        label: 'Crowd funding'  },
-	{val: 'fundraising',  label: 'Fund raising'  },
-	{val: 'venta',        label: 'Venta activos'  },
-]
-
-const tiposDeInversionOptList = [
-	{val: 'tecnologia',       label: 'Tecnología'  },
-	{val: 'maquinaria',       label: 'Maquinaria-Instalaciones'  },
-	{val: 'rodados',          label: 'Rodados'  },
-	{val: 'edilicia',         label: 'Edilicia'  },
-	{val: 'appinformatica',   label: 'App Informáticas'  },
-	{val: 'infrainformatica', label: 'Infraestructura Informática'  },
-	{val: 'gestion',          label: 'Mejora de Gestión'  },
-	{val: 'mercados',         label: 'Desarrollo mercados'  },
-	{val: 'otros',            label: 'Otras inversiones'  },
-];
 const subTipoInversionOptList = {
 	tecnologia: [
 		{ val:'desarrollo',    label: 'Desarrollo'},
@@ -235,6 +211,7 @@ const subTipoInversionOptList = {
 	],
 
 }
+
 const factoresAfectanInversionOptList = [
 	{ val: 'riesgo',          label: 'Riesgos económicos'  },
 	{ val: 'competencia',     label: 'Importación de bienes iguales o similares a menor costo'  },
@@ -260,36 +237,184 @@ const factoresAfectanInversionOptList = [
 ];
 
 export class FactoresInversion {
-	tipo: string = '';
-	alienta: boolean = false;
+	ftype:     string = '';
+	flabel:    string = '';
+	alienta:   boolean = false;
 	dificulta: boolean = false;
+	slug:      string = '';
+
+	constructor(type: string, label?: string){
+		this.ftype = type;
+		this.flabel = label ? label : type
+	}
+}
+
+
+export class CensoInversion{
+	_id?:  string;
+	type:  string = 'no_definido';
+	stype: string = 'no_definido';
+	slug:  string = '';
+	
+	hasRealizado: boolean = false;
+	isPrevisto:   boolean = false;
+	fuenteFinan:  string = '';
+	factores:     Array<FactoresInversion> = [];
+
+	constructor(){
+		this.factores = factoresAfectanInversionOptList.map(f =>{
+			let factor = new FactoresInversion(f.val, f.label);
+			return factor;
+		})
+	}
+}
+
+const generoOptList = [
+	{val: 'H', label: 'Varón', slug: 'Masculino' },
+	{val: 'M', label: 'Mujer', slug: 'Femenino' },		
+]
+
+
+const seccionOptList = [
+	{val: 'administracion', label: 'Administración', slug: 'Administración' },
+	{val: 'produccion',     label: 'Producción',     slug: 'Producción' },
+	{val: 'logistica',      label: 'Logística',      slug: 'Logística' },
+	{val: 'calidad',        label: 'Calidad',        slug: 'Calidad' },
+	{val: 'ventas',         label: 'Ventas',         slug: 'Ventas' },
+	{val: 'compras',        label: 'Compras',        slug: 'Compras' },
+	{val: 'comercioext',    label: 'Comercio Ext',   slug: 'Comercio Ext' },
+	{val: 'finanzas',       label: 'Finanzas',       slug: 'Finanzas' },
+	{val: 'seguhigiene',    label: 'Seguridad e Higiene',  slug: 'Seguridad e Higiene' },
+];
+
+const nivelJerarquicoOptList = [
+	{val: 'directores',   label: 'Directores',    slug: 'Directores' },
+	{val: 'gerentes',     label: 'Gerentes',      slug: 'Gerentes' },
+	{val: 'supervisores', label: 'Supervisores',  slug: 'Supervisores' },
+	{val: 'lideres',      label: 'Líderes',       slug: 'Líderes' },
+	{val: 'tecnicos',     label: 'Técnicos',      slug: 'Técnicos' },
+	{val: 'operarios',    label: 'Operarios',     slug: 'Operarios' },
+];
+
+const nivelEstudioOptList = [
+	{val: 'univer',        label: 'Univers/posgrado', slug: 'Universitario/ posgrado' },
+	{val: 'univer_inc',    label: 'Univers(incompleto)',   slug: 'Universitario incompl' },
+	{val: 'terciario',     label: 'Terciario/ Técnico',      slug: 'Terciario/ Técnico' },
+	{val: 'secundario',    label: 'Secundaria',              slug: 'Secundaria' },
+	{val: 'primaria',      label: 'Primaria',                slug: 'Primaria' },
+	{val: 'primaria_inc',  label: 'Primaria(inc)',            slug: 'Primaria_inc' },
+];
+
+const ramasTecnicasOptList = [
+	{val: 'indus_alimen',    label: 'Indus alimenticias/ buenas prácticas', slug: 'Indus alimenticias/ buenas prácticas' },
+	{val: 'indus_grafica',   label: 'Indus gráfica', slug: 'Indus gráfica' },
+	{val: 'constr_seco',     label: 'Construcciones en seco / sustentable', slug: 'Construcciones en seco / sustentable' },
+	{val: 'electro_indus',   label: 'Electrónica industrial', slug: 'Electrónica industrial' },
+	{val: 'electri_renov',   label: 'Electricidad en sist energ renov', slug: 'Electricidad: sist energ renov' },
+	{val: 'electri_indus',   label: 'Electricidad Industrial', slug: 'Electricidad Industrial' },
+	{val: 'electromecan',    label: 'Electromecánica', slug: 'Electromecánica' },
+	{val: 'tec_quimico',     label: 'Técnico químico', slug: 'Técnico químico' },
+	{val: 'tec_colorista',   label: 'Técnico colorista', slug: 'Técnico colorista' },
+	{val: 'tec_shigiene',    label: 'Técnico en Seg & Higiene', slug: 'Técnico en Seg & Higiene' },
+	{val: 'disexcompu',      label: 'Diseño proyectual asis x compu', slug: 'Diseño proyectual asis x compu' },
+	{val: 'it_redes',        label: 'IT: redes', slug: 'IT: redes' },
+	{val: 'it_programador',  label: 'IT: programador', slug: 'IT: programador' },
+	{val: 'op_torno',        label: 'Oper: torno CNC', slug: 'Operario: torno CNC' },
+	{val: 'op_sodadura',     label: 'Oper: Sold oxiacetilénica/ arco/ mig/ tig', slug: 'Operario: Sold oxiacetilénica/ arco/ mig/ tig' },
+	{val: 'otros',           label: 'Otros oficios', slug: 'Otros oficios' },
+];
+
+export class NodoNiveles {
+}
+
+export class NodoSeccion {
+	tipo: string = 'NE' // NE= Nivel de Estudios | NJ= Nivel Jerárquico
+
+	seccion: string = '' // seccionOptList
+	seccion_tx: string = '' // label
+
+	nivel: string = '' // nivelJerarquicoOptList ó nivelEstudiosOptList;
+	nivel_tx: string = '' // label
+
+	codigo: string = ''
+	qh: number = 0; // cantidad hombres
+	qm: number = 0; // cantidad mujeres
+
+	constructor(s, stx, n, ntx, cod){
+		this.seccion = s;
+		this.seccion_tx = stx;
+		this.nivel = n;
+		this.nivel_tx = ntx;
+		this.codigo = cod;
+	}
+
+}
+
+export class CrecimientoEmpleados {
+	hasCrecimiento: boolean = false;
+	hasBrownEmplea: boolean = false;
+	hasDeseoBrownEmplea: boolean = false;
+	qnuevos: number = 0;
+	qsecundarios: number = 0;
+	qterciarios: number = 0;
+	quniversitarios: number = 0;
+
 	slug: string = '';
 }
 
 
-export class InversionData {
-	tipoInversion: string = '';
-	stipoInversion: string = '';
-	hasRealizado: boolean = false;
-	isPrevisto: boolean = false;
-	fuentePpal: string = '';
-	fuenteSec: string = '';
-	factores: Array<FactoresInversion>;
-
-}
-
-export class CensoInversion{
-	_id?: string;
-	type: string = 'comercializacion';
-	slug: string = 'Modos de comercialización y marketing';
-	
-	
-}
-
 export class CensoRecursosHumanos {
 	_id?: string;
-	type: string;
-	slug: string;
+	type: string = 'talentos humanos';
+	slug: string = 'Nivel general empresa';
+
+	qempleados: number = 0;
+	porNivelEducacion: Array<NodoSeccion> = []
+	porNivelJerarquico: Array<NodoSeccion> = []
+
+	crecimiento: CrecimientoEmpleados;
+
+	fortaleza1: string = '';
+	fortaleza2: string = '';
+	fortaleza3: string = '';
+
+	debilidad1: string = '';
+	debilidad2: string = '';
+	debilidad3: string = '';
+	
+	oportunidad1: string = '';
+	oportunidad2: string = '';
+	oportunidad3: string = '';
+	
+	amenaza1: string = '';
+	amenaza2: string = '';
+	amenaza3: string = '';
+	constructor(){
+		let neducativo = [];
+		let njerarquico = [];
+		let secciones = seccionOptList;
+
+		secciones.forEach((s, i) => {
+			nivelEstudioOptList.forEach((n, j) => {
+				let ns = new NodoSeccion(s.val, s.label, n.val, n.label, i + ':' + j);
+				neducativo.push(ns);
+			})
+		})
+		this.porNivelEducacion = neducativo;
+
+		secciones.forEach((s, i) => {
+			nivelJerarquicoOptList.forEach((n, j) => {
+				let ns = new NodoSeccion(s.val, s.label, n.val, n.label, i + ':' + j);
+				njerarquico.push(ns);
+			})
+		})
+		this.porNivelJerarquico = njerarquico;
+
+		this.crecimiento = new CrecimientoEmpleados();
+
+
+	}
+
 }
 
 export class CensoExpectativas {

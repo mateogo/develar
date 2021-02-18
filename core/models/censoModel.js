@@ -187,10 +187,53 @@ const censoPatentesSch = new Schema({
 
 })
 
+
+const nodoSeccionSch = new Schema({
+    tipo:       { type: String, required: false },
+    seccion:    { type: String, required: false },
+    seccion_tx: { type: String, required: false },
+    nivel:      { type: String, required: false },
+    nivel_tx:   { type: String, required: false },
+    codigo:     { type: String, required: false },
+    qh:         { type: Number, required: false },
+    qm:         { type: Number, required: false },
+    
+});
+
+const crecimientoEmpleadosSch = new Schema({
+    hasCrecimiento:  { type: Boolean, required: false},
+    hasBrownEmplea:  { type: Boolean, required: false},
+    qnuevos:         { type: Number,  required: false},
+    qsecundarios:    { type: Number,  required: false},
+    qterciarios:     { type: Number,  required: false},
+    quniversitarios: { type: Number,  required: false},
+    slug:            { type: String,  required: false},
+
+})
+
+
 const censoRecursosHumanosSch = new Schema({
     type: { type: String, required: false },
     slug: { type: String, required: false },
 
+    qempleados:    { type: Number, required: false },
+    porNivelEducacion:   [ nodoSeccionSch ],
+    porNivelJerarquico:  [ nodoSeccionSch ],
+    crecimiento:   { type: crecimientoEmpleadosSch, required: false },
+
+    fortaleza1:    { type: String, required: false },
+    fortaleza2:    { type: String, required: false },
+    fortaleza3:    { type: String, required: false },
+    debilidad1:    { type: String, required: false },
+    debilidad2:    { type: String, required: false },
+    debilidad3:    { type: String, required: false },
+    oportunidad1:  { type: String, required: false },
+    oportunidad2:  { type: String, required: false },
+    oportunidad3:  { type: String, required: false },
+    amenaza1:      { type: String, required: false },
+    amenaza2:      { type: String, required: false },
+    amenaza3:      { type: String, required: false },
+    
 })
 
 const censoExpectativasSch = new Schema({
@@ -260,17 +303,37 @@ const censoComercializacionSch = new mongoose.Schema({
 	mercados:          [ mercadoSch ]
 });
 
+const factoresInversionSch = new mongoose.Schema({
+	ftype:     { type: String,  required: false },
+	flabel:    { type: String,  required: false },
+	alienta:   { type: Boolean, required: false },
+	dificulta: { type: Boolean, required: false },
+	slug:      { type: String,  required: false },
+})
+
+const censoInversionesSch = new mongoose.Schema({
+    type:         { type: String,  required: false },
+    stype:        { type: String,  required: false },
+    slug:         { type: String,  required: false },
+    hasRealizado: { type: Boolean, required: false },
+    isPrevisto:   { type: Boolean, required: false },
+    fuenteFinan:  { type: String,  required: false },
+    factores:     [ factoresInversionSch ],
+
+
+});
+
 
 /**************************/
 /**   CENSO INDUSTRIAS  **/
 /************************/
 const censoindustriaSch = new Schema({
-    compPrefix: { type: String, required: false },
-    compName: { type: String, required: false },
-    compNum: { type: String, required: false },
-    action: { type: String, required: false },
+    compPrefix:   { type: String, required: false },
+    compName:     { type: String, required: false },
+    compNum:      { type: String, required: false },
+    action:       { type: String, required: false },
     categoriaEmp: { type: String, required: false },
-    rubroEmp: { type: String, required: false },
+    rubroEmp:     { type: String, required: false },
 
     sector: { type: String, required: false },
     fecomp_txa: { type: String, required: false },
@@ -280,14 +343,15 @@ const censoindustriaSch = new Schema({
     estado: { type: estadoCensoSch, required: false },
     censo: { type: censoDataSch, required: false },
     actividades: [censoActividadSch],
-    bienes:       [censoBienesSch],
-    productos:    [censoProductosSch],
-    maquinarias:  [censoMaquinariasSch],
-    patentes:     [censoPatentesSch],
-    rhumanos:     [censoRecursosHumanosSch],
-    expectativas: [censoExpectativasSch],
+    bienes:           [censoBienesSch],
+    productos:        [censoProductosSch],
+    maquinarias:      [censoMaquinariasSch],
+    patentes:         [censoPatentesSch],
+    rhumanos:         [censoRecursosHumanosSch],
+    expectativas:     [censoExpectativasSch],
     comercializacion: [censoComercializacionSch],
-    assets: [assetSch],
+    inversiones:      [censoInversionesSch],
+    assets:           [assetSch],
 });
 
 
@@ -459,6 +523,7 @@ exports.update = function(id, record, errcb, cb) {
  */
 exports.create = function(record, errcb, cb) {
     delete record._id;
+    console.dir(record)
 
     Record.create(record, function(err, entity) {
         if (err) {
