@@ -417,10 +417,32 @@ export class CensoRecursosHumanos {
 
 }
 
+const nivelActividadOptList = [
+	{val: 'acelerado',     label: 'Crecimiento acelerado',    slug: '' },
+	{val: 'normal',        label: 'Crecimiento normal',       slug: '' },
+	{val: 'estancado',     label: 'Estancamiento',            slug: '' },
+	{val: 'retraccion',    label: 'Retracción de actividad',  slug: '' },
+];
+
+const deltaActividadOptList = [
+	{val: 'aumenta',       label: 'Aumentará nivel',    slug: '' },
+	{val: 'mantiene',      label: 'Mantendrá nivel',   slug: '' },
+	{val: 'disminuye',     label: 'Disminuirá',        slug: '' },
+];
+
+
 export class CensoExpectativas {
 	_id?: string;
-	type: string;
-	slug: string;
+	type: string = 'expectativas';
+	slug: string = '';
+	nactividad:     string = ''; // nivelActividadOptList para los últimos 3 años
+	nactividad_var: number = 0; // variación porcentual de la actividad
+	qempleados_mod: string = ''; // variación empleados
+	qhorasprod_mod: string = ''; // variación empleados
+	capinstalada_mod: string = ''; // variación empleados
+	vtaexter_mod:   string = ''; // variación empleados
+	vtalocal_mod:   string = ''; // variación empleados
+
 }
 
 export class CensoProductos {

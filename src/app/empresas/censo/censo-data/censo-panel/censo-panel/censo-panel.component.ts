@@ -78,7 +78,7 @@ const literales = {
   styleUrls: ['./censo-panel.component.scss']
 })
 export class CensoPanelComponent implements OnInit {
-	@Input() items: CensoActividad[]|CensoBienes[]|CensoProductos[]|CensoInversion[]|CensoMaquinarias[]|CensoPatentes[]|CensoRecursosHumanos[]|CensoExpectativas[];
+	@Input() items: CensoActividad[]|CensoBienes[]|CensoProductos[]|CensoInversion[]|CensoMaquinarias[]|CensoPatentes[]|CensoComercializacion[]|CensoRecursosHumanos[]|CensoExpectativas[];
   @Input() type: string = "actividades";
 	@Output() updateItems = new EventEmitter<UpdateListEvent>();
 

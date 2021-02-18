@@ -180,7 +180,6 @@ export class CensoInversionEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    console.log('Change [%s] nuevo valor: [%s]', type, val);
     if(type === 'type'){
       this.stypeOptList = CensoIndustriasService.populateSTypeOptList('stype', val, this.form);
       //this.stypeOptList = this._populateSTypeOptList('stype', val);
@@ -222,11 +221,8 @@ export class CensoInversionEditComponent implements OnInit {
 
  	private initForSave(form: FormGroup, entity: CensoInversion): CensoInversion {
 		const fvalue = form.value;
-    console.log('INIT FOR SAVE***************')
-    console.dir(fvalue);
 
     const factoresFlds: FactoresInversion[] = fvalue.factores.map(t => {
-      //console.dir(t);
       return Object.assign({}, t )
     })
     entity.factores = factoresFlds;

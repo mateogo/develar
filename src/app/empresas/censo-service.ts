@@ -7,6 +7,7 @@ import {    CensoIndustrias,
             CensoPatentes,
             CensoExpectativas,
             CensoComercializacion,
+			CensoInversion,
             Mercado,
             MercadoSumario,
             Empresa } from './censo.model';
@@ -19,7 +20,7 @@ import { AcumuladoresPorArea } from '../salud/internacion/internacion.model';
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoExpectativas|DocumentData|CardGraph>;
+  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoInversion|CensoExpectativas|DocumentData|CardGraph>;
 };
 
 
@@ -41,7 +42,7 @@ export interface TipoEmpresa {
 export interface UpdateEvent {
   action:  string;
   token:   string;  
-  payload: CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoExpectativas|DocumentData|CardGraph;
+  payload: CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoInversion|CensoExpectativas|DocumentData|CardGraph;
 };
 
 function fetchAction(val, type){
@@ -736,6 +737,19 @@ const contact_tag: Array<any> = [
     {val: 'LAB',    label: 'LAB',      slug:'LAB' },
 ];
 
+const nivelActividadOptList = [
+	{val: 'acelerado',     label: 'Crecimiento acelerado',    slug: '' },
+	{val: 'normal',        label: 'Crecimiento normal',       slug: '' },
+	{val: 'estancado',     label: 'Estancamiento',            slug: '' },
+	{val: 'retraccion',    label: 'Retracción de actividad',  slug: '' },
+];
+
+const deltaActividadOptList = [
+	{val: 'aumenta',       label: 'Aumentará nivel',    slug: '' },
+	{val: 'mantiene',      label: 'Mantendrá nivel',   slug: '' },
+	{val: 'disminuye',     label: 'Disminuirá',        slug: '' },
+];
+
 
 const optionsSubLists = {
 	stype: subTipoInversionTree
@@ -771,6 +785,9 @@ const optionsLists = {
 	fuenteFinanciamiento: fuenteRecursosInversionOptList,
 
 	secciones: seccionOptList,
+
+	nactividad: nivelActividadOptList,
+	varactividad: deltaActividadOptList,
 
    
 }

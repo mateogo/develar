@@ -42,12 +42,13 @@ export class CensoExpectativasEditComponent implements OnInit {
 
   private action = "";
 
-  public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
-  public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
-  public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
+  public nactividadOptList = CensoIndustriasService.getOptionlist('nactividad');
+  public varactividadOptList = CensoIndustriasService.getOptionlist('varactividad');
 
-  public title = "Bienes estratégicos de la compañía";
-  public texto1 = "Identifique los productos, materias primas, insumos y/o maquinaria utilizada";
+  //public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
+  
+  public title = "Expectativas y proyección";
+  public texto1 = "Tomando como referencia los últimos 3 años, indique la proyección y expectativas";
   public texto2: string;
 
   private unBindList = [];
@@ -99,17 +100,20 @@ export class CensoExpectativasEditComponent implements OnInit {
   private initForEdit(form: FormGroup, token: CensoExpectativas): FormGroup {
 
 		form.reset({
-      type:            token.type,
-		  slug:            token.slug,
-
+      type:             token.type,
+		  slug:             token.slug,
+      nactividad:       token.nactividad,
+      nactividad_var:   token.nactividad_var,
+      qempleados_mod:   token.qempleados_mod,
+      qhorasprod_mod:   token.qhorasprod_mod,
+      capinstalada_mod: token.capinstalada_mod,
+      vtaexter_mod:     token.vtaexter_mod,
+      vtalocal_mod:     token.vtalocal_mod,  
 		});
 
 		return form;
   }
 
-  private loadOrInitCenso(censo?: CensoIndustrias){
-
-  }
 
   onSubmit(){
   	this.initForSave(this.form, this.token);
@@ -149,9 +153,16 @@ export class CensoExpectativasEditComponent implements OnInit {
 
     form = this.fb.group({
 
-		  slug:            [ null, Validators.compose([Validators.required]) ],
-      type:            [ null ],
-
+		  slug:             [ null, Validators.compose([Validators.required]) ],
+      type:             [ null ],
+      nactividad:       [ null ],
+      nactividad_var:   [ null ],
+      qempleados_mod:   [ null ],
+      qhorasprod_mod:   [ null ],
+      capinstalada_mod: [ null ],
+      vtaexter_mod:     [ null ],
+      vtalocal_mod:     [ null ],
+    
     });
     return form;
   }
@@ -162,9 +173,16 @@ export class CensoExpectativasEditComponent implements OnInit {
 		const today = new Date();
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);
 
-		entity.slug =            fvalue.slug;
-		entity.type =            fvalue.type;
-	
+		entity.slug =             fvalue.slug;
+		entity.type =             fvalue.type;
+    entity.nactividad =       fvalue.nactividad;
+    entity.nactividad_var =   fvalue.nactividad_var;
+    entity.qempleados_mod =   fvalue.qempleados_mod;
+    entity.qhorasprod_mod =   fvalue.qhorasprod_mod;
+    entity.capinstalada_mod = fvalue.capinstalada_mod;
+    entity.vtaexter_mod =     fvalue.vtaexter_mod;
+    entity.vtalocal_mod =     fvalue.vtalocal_mod;
+
 		return entity;
 	}
 

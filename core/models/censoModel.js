@@ -237,8 +237,15 @@ const censoRecursosHumanosSch = new Schema({
 })
 
 const censoExpectativasSch = new Schema({
-    type: { type: String, required: false },
-    slug: { type: String, required: false },
+    type:             { type: String, required: false },
+    slug:             { type: String, required: false },
+	nactividad:       { type: String, required: false },
+	nactividad_var:   { type: Number, required: false },
+	qempleados_mod:   { type: String, required: false },
+	qhorasprod_mod:   { type: String, required: false },
+	capinstalada_mod: { type: String, required: false },
+	vtaexter_mod:     { type: String, required: false },
+	vtalocal_mod:     { type: String, required: false },
 
 })
 

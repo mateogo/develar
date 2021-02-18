@@ -1,1 +1,122 @@
-<p>censo-expectativas: PROXIMAMENTE</p>
+<mat-card >
+	<mat-card-header>
+		<mat-card-title>{{ title }} </mat-card-title>
+	</mat-card-header>
+
+  <mat-card-content>
+
+    <ng-container *ngIf="showForm">
+
+      <form [formGroup]="form">
+
+        <div class="d-flex align-items-center">
+          <span class="text-normal">{{ texto1 }}</span>
+          <span class="flex-grow-1"></span>
+          <mat-icon style="cursor: pointer;" 
+                  matTooltip="{{codigo.ayuda1}}"
+                  (click)="showHelp($event, 'ayuda1')">help_outline</mat-icon>
+        </div>
+    
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldNactividad formControlName="nactividad" placeholder="Variación del nivel de actividad" 
+                    (selectionChange)="changeSelectionValue('nactividad', fldNactividad.value)">
+
+                <mat-option *ngFor='let item of nactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput type="number" formControlName="nactividad_var" placeholder="Var porcentual del nivel de activida (con signo)" >
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="col-md-8">
+            <mat-form-field>
+              <textarea matInput formControlName="slug" placeholder="Describa sus expectativas generales para los próximos 2 años" ></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldAtribUno formControlName="qempleados_mod" placeholder="La cantidad de empleados..." 
+                    (selectionChange)="changeSelectionValue('qempleados_mod', fldAtribUno.value)">
+
+                <mat-option *ngFor='let item of varactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldAtribDos formControlName="qhorasprod_mod" placeholder="Las horas de trabajo de producción..." 
+                    (selectionChange)="changeSelectionValue('qhorasprod_mod', fldAtribDos.value)">
+
+                <mat-option *ngFor='let item of varactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldAtribTres formControlName="capinstalada_mod" placeholder="El uso de la capacidad instalada..." 
+                    (selectionChange)="changeSelectionValue('capinstalada_mod', fldAtribTres.value)">
+
+                <mat-option *ngFor='let item of varactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldAtribCuatro formControlName="vtaexter_mod" placeholder="Las ventas al exterior..." 
+                    (selectionChange)="changeSelectionValue('vtaexter_mod', fldAtribCuatro.value)">
+
+                <mat-option *ngFor='let item of varactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select #fldAtribCinco formControlName="vtalocal_mod" placeholder="Las ventas locales..." 
+                    (selectionChange)="changeSelectionValue('vtalocal_mod', fldAtribCinco.value)">
+
+                <mat-option *ngFor='let item of varactividadOptList' [value]="item.val">
+                  {{ item.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="additional-info">
+          <button mat-raised-button color="primary" type="submit" 
+              (click)="onSubmit()"
+              [disabled]="!form.valid" >Aceptar</button>
+          
+          <button mat-button type="button" color="accent"
+              (click)="onCancel()" >Cancelar</button>
+        </div>
+    
+      </form>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

@@ -124,7 +124,6 @@ export class CensoRhumanosEditComponent implements OnInit {
   }
 
   private initComponent(){
-    console.log('Init Component')
     this.form = this.buildForm();
     this.initForEdit(this.form, this.token);
     this.showForm = true;
@@ -181,7 +180,6 @@ export class CensoRhumanosEditComponent implements OnInit {
     this.form.setControl('niveleseducativos', this.fb.array(neducativoFG));
 
     this.nivelJerarquicoList = token.porNivelJerarquico;
-    console.log('nivel Jerárquico [%s]', this.nivelJerarquicoList.length)
     let jerarquicoFG = this.nivelJerarquicoList.map(item => this.fb.group({
                   tipo:       [item.tipo],
                   seccion:    [item.seccion],
@@ -290,13 +288,11 @@ export class CensoRhumanosEditComponent implements OnInit {
     }
   
     const neducativoFlds: NodoSeccion[] = fvalue.niveleseducativos.map(t => {
-      //console.dir(t);
       return Object.assign({}, t )
     })
     entity.porNivelEducacion = neducativoFlds;
 
     const njerarquicoFlds: NodoSeccion[] = fvalue.nivelesjerarquicos.map(t => {
-      //console.dir(t);
       return Object.assign({}, t )
     })
     entity.porNivelJerarquico = njerarquicoFlds;

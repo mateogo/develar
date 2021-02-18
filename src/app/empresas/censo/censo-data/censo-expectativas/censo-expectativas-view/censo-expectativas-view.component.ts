@@ -17,13 +17,17 @@ export class CensoExpectativasViewComponent implements OnInit {
 	@Input() token: CensoExpectativas;
 
   public type = "";
+  public nactividad = "";
+  public varactividad = 0;
   public slug = "";
+  public nactividadOptList = CensoIndustriasService.getOptionlist('nactividad');
+  public varactividadOptList = CensoIndustriasService.getOptionlist('varactividad');
 
   constructor() { }
 
   ngOnInit() {
-    this.type = CensoIndustriasService.getOptionLabel('tipoBienes', this.token.type);
-    
+    this.nactividad = CensoIndustriasService.getOptionLabel('nactividad', this.token.nactividad);
+    this.varactividad = this.token.nactividad_var;
     this.slug = this.token.slug;
 
 

@@ -465,7 +465,6 @@ export class CensoPageComponent implements OnInit {
     }
   }
   private updateInversiones(event: UpdateListEvent){
-    console.dir(event.items)
     this.currentCenso.inversiones = event.items as CensoInversion[];
     this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
       if(censo) this.currentCenso = censo;
