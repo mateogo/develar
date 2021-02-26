@@ -485,7 +485,7 @@ const processCruceAlimentos = function(cb ){
 }
 
 function _personHasCobertura (person, record){
-    return person && person.cobertura && person.cobertura.length;
+    return (person && person.cobertura && person.cobertura.length) ? true : false;
 }
 
 function _buildBeneficiarioCruce(data, index, fealta, fets){
