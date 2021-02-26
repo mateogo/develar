@@ -398,10 +398,10 @@ const processDatosPadronAlimentar = function(cb ){
 const processCruceAlimentos = function(cb ){
     const today = new Date();
     //deploy
-    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/crucealimentosCsv.csv');
 
     //local
-    const arch = path.join(config.rootPath,        'public/migracion/alimentar/crucealimentosCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/crucealimentosCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
