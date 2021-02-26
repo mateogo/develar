@@ -113,6 +113,10 @@ exports.crucealimentos = function (errcb, cb) {
     processCruceAlimentos(cb);
 }
 
+exports.excelcruce = function(req, res ){
+    downloadExcelCruce(req, res)
+}
+
 exports.buildcontactdata = function (errcb, cb) {
     processContactData(cb);
 }
@@ -425,6 +429,27 @@ const processCruceAlimentos = function(cb ){
     });
 }
 
+ /*****************************************/
+/*   /api/alimentar/excelcruce     * /
+/***************************************/
+const downloadExcelCruce = function(req, res ){
+
+    CruceBeneficiarioModel.find().lean().exec().then(beneficiarios => {
+        if(beneficiarios && beneficiarios.length){
+            let filteredList = beneficiarios.filter(be => {
+                if(be.hasAlimentos || be.hasPerson || be.hasCobertura){
+                    return true;
+                }else{
+                    return false;
+                }
+            })
+        
+            _buildExcelCruce(filteredList, req, res);
+        }
+    })
+}
+
+
  async function _upsertCruceAlimentos(beneficiarios, cb){
     const today = new Date();
     const fealta = utils.dateToStr(today);
@@ -484,6 +509,27 @@ const processCruceAlimentos = function(cb ){
     cb({process: 'OKK ' + beneficiarios.length });
 }
 
+function _buildExcelCruce(beneficiarios, req, res){
+    res.writeHead(200, {
+        'Content-Disposition': 'attachment; filename="crucealimentos.xlsx"',
+        'Transfer-Encoding': 'chunked',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
+    var worksheet = workbook.addWorksheet('beneficiarios')
+    worksheet.addRow(['ORDEN', 'TDOC', 'NDOC', 'APELLIDO', 'NOMBRE', 'Existe padrón', 'Tiene cobertura', 'Tiene SolAsistencia', 'Cant Solicitudes' ]).commit()
+
+    beneficiarios.forEach(row => {
+        const { order, tdoc, ndoc, apellido, nombre, hasPerson, hasCobertura, hasAlimentos, qAlimentos } = row;
+        worksheet.addRow([order, tdoc, ndoc, apellido, nombre, hasPerson, hasCobertura, hasAlimentos, qAlimentos ]).commit()
+
+    })
+    worksheet.commit()
+    workbook.commit()
+
+}
+
+
 function _personHasCobertura (person, record){
     return (person && person.cobertura && person.cobertura.length) ? true : false;
 }
@@ -494,7 +540,7 @@ function _buildBeneficiarioCruce(data, index, fealta, fets){
     beneficiario.tdoc = data.tdoc || 'DNI';
     beneficiario.nombre = data.nombre;
     beneficiario.apellido = data.apellido;
-    beneficiario.index = index;
+    beneficiario.order = index;
 
     beneficiario.slug = 'Cruce beneficiarios alimentos 2021 02 25';
     beneficiario.orden = index;

@@ -80,6 +80,10 @@ router.get('/crucealimentos', function (req, res) {
     });
 });
 
+router.get('/excelcruce', function(req, res) {
+    service.excelcruce(req, res);
+
+});
 
 /**
  * Retrieve Entity by ID
@@ -107,13 +111,13 @@ router.get('/tablero', function (req, res) {
     });
 });
 
+
 router.get('/remanentes', function(req, res) {
 
     service.remanentes(req, res);
 
 
 });
-
 
 
 router.get('/beneficiario/:id', function (req, res) {
