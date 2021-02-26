@@ -15,9 +15,11 @@ const fs = require('fs');
 const path = require('path');
 const utils = require('../services/commons.utils');
 const personModule = require('./personModel');
+const asistenciaModule = require('./asistenciaModel');
 
 const csv = require('csvtojson')
 const Person = personModule.getRecord();
+const Asistencia = asistenciaModule.getRecord();
 
 
 const master = {};
@@ -49,8 +51,29 @@ const datosTarjetaSch = new Schema({
   celular:    { type: String, required: false },
 });
  
-
 const Beneficiario = mongoose.model('Tarjetaalimentar', datosTarjetaSch, 'tarjetasalimentar');
+
+
+// PROCESO DE CONTROL DE CRUCE DE BENEFICIARIOS
+const cruceBeneficiarioSch = new Schema({
+    tdoc:     { type: String, required: true },
+    ndoc:     { type: String, required: true },
+    nombre:   { type: String, required: true },
+    apellido: { type: String, required: true },
+
+    order:        { type: Number,  required: false, default: 0 },
+    hasPerson:    { type: Boolean, required: false, default: false },
+    hasCobertura: { type: Boolean, required: false, default: false },
+    hasAlimentos: { type: Boolean, required: false, default: false },
+    qAlimentos:   { type: Number, required: false, default: 0 },
+
+    fecha:    { type: String, required: false },
+    fe_ts:    { type: Number, required: false, default: 0 },
+    slug:     { type: String, required: false }
+  });
+   
+  const CruceBeneficiarioModel = mongoose.model('Crucebeneficiario', cruceBeneficiarioSch, 'crucebeneficiarios');
+  
 
 function buildQuery(query){
     let q = {};
@@ -84,6 +107,10 @@ exports.importarnacion = function (errcb, cb) {
 
 exports.importarpadron = function (errcb, cb) {
     processDatosPadronAlimentar(cb);
+}
+
+exports.crucealimentos = function (errcb, cb) {
+    processCruceAlimentos(cb);
 }
 
 exports.buildcontactdata = function (errcb, cb) {
@@ -326,10 +353,10 @@ async function upsertBeneficiario(beneficiario, today){
 const processDatosPadronAlimentar = function(cb ){
     const today = new Date();
     //deploy
-    const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
 
     //local
-    //const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+    const arch = path.join(config.rootPath,        'public/migracion/alimentar/alimentarBeneficiariosCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -353,7 +380,136 @@ const processDatosPadronAlimentar = function(cb ){
     });
 }
 
+/******
+ * Revisión padrón de beneficiarios
+ * Solicitado 2021-02-25
+ * Se trata
+ */
 
+ /*****************************************/
+/*   /api/alimentar/crucealimentos     * /
+/***************************************/
+/*
+    Columnas: caja; orden; displayName; ndoc; ncuil; dia; hora; entregada; editCaja; editEntrega
+    Columnas: displayName; ndoc; ncuil; prov; city; calle; callenro; dia; hora;
+
+**/
+
+const processCruceAlimentos = function(cb ){
+    const today = new Date();
+    //deploy
+    //const arch = path.join(config.rootPath, 'www/dsocial/migracion/alimentar/alimentarBeneficiariosCsv.csv');
+
+    //local
+    const arch = path.join(config.rootPath,        'public/migracion/alimentar/crucealimentosCsv.csv');
+
+    function toLowerCase(name){
+        return name.toLowerCase();
+    }
+
+    function toUpperCase(name){
+        return name.toUpperCase();
+    }
+
+    let count = 0;
+
+    console.log('proceso CRUCE ALIMENTOS BEGIN [%s]', arch);
+    csv({delimiter: ';'})
+    .fromFile(arch)
+    .then((records) => {
+        _upsertCruceAlimentos(records, cb)
+
+
+                    
+
+    });
+}
+
+ async function _upsertCruceAlimentos(beneficiarios, cb){
+    const today = new Date();
+    const fealta = utils.dateToStr(today);
+    const fets = today.getTime();
+    if(!beneficiarios || !beneficiarios.length){
+        cb({process: 'Error de lecutura del archivo cvs'})
+        return;
+    }
+    console.log('upsert CRUCE BASE ALIMENTOS BEGIN [%s]', beneficiarios.length);
+
+    for(let index = 0; index < beneficiarios.length; index++){
+        let record = beneficiarios[index];
+        //console.log('Processing: [%s] [%s] [%s]', record.nombre, record.apellido, record.ndoc);
+        let beneficiario = _buildBeneficiarioCruce(record, index, fealta, fets);
+
+        let hasCobertura = false;
+        let hasPerson = false;
+        let hasAlimentos = false;
+        let qAlimentos = 0
+
+        let query = {
+            estado: {$not: {$in: [ 'baja', 'bajaxduplice' ]} },
+            ndoc: record.ndoc
+        }
+        let person  = await Person.findOne(query).exec(); 
+        
+        if(person){
+            hasPerson = true;
+            hasCobertura = _personHasCobertura(person, record);
+
+            let asis_query = {
+                estado: 'activo',
+                'requeridox.ndoc': record.ndoc
+            }    
+            let asistencias  = await Asistencia.find(asis_query).lean().exec(); 
+
+            if(asistencias && asistencias.length){
+                hasAlimentos = true;
+                qAlimentos =  asistencias.length;
+                
+            }
+        }
+
+        beneficiario.hasPerson = hasPerson;
+        beneficiario.hasCobertura = hasCobertura;
+        beneficiario.hasAlimentos = hasAlimentos;
+        beneficiario.qAlimentos = qAlimentos;
+
+        if(hasPerson || hasCobertura || hasAlimentos){
+            console.log('[%s] - Beneficiario: [%s]  per:[%s] cob:[%s] asis: [%s]', beneficiario.order, beneficiario.ndoc, hasPerson, hasCobertura, hasAlimentos)
+        }
+    
+        // SAVE
+        await beneficiario.save();
+    }
+
+    cb({process: 'OKK ' + beneficiarios.length });
+}
+
+function _personHasCobertura (person, record){
+    return person && person.cobertura && person.cobertura.length;
+}
+
+function _buildBeneficiarioCruce(data, index, fealta, fets){
+    let beneficiario = new CruceBeneficiarioModel();
+    beneficiario.ndoc = data.ndoc;
+    beneficiario.tdoc = data.tdoc || 'DNI';
+    beneficiario.nombre = data.nombre;
+    beneficiario.apellido = data.apellido;
+    beneficiario.index = index;
+
+    beneficiario.slug = 'Cruce beneficiarios alimentos 2021 02 25';
+    beneficiario.orden = index;
+    beneficiario.fecha = fealta;
+    beneficiario.fe_ts = fets;
+    beneficiario.hasPerson = false; 
+    beneficiario.hasCobertura = false; 
+    beneficiario.hasAlimentos = false; 
+ 
+    return beneficiario;
+}
+
+/******
+ * crucealimentar END
+ */
 
 async function _upsertBeneficiarioOctubre2020(beneficiarios, cb){
     const today = new Date();
@@ -365,7 +521,7 @@ async function _upsertBeneficiarioOctubre2020(beneficiarios, cb){
     }
     console.log('upsertBeneficiariosOctubre 2020 BEGIN [%s]', beneficiarios.length);
 
-    for(let index = 0; index < index < beneficiarios.length; index++){
+    for(let index = 0; index < beneficiarios.length; index++){
         let record = beneficiarios[index];
         console.log('Processing: [%s] [%s] [%s]', record.nombre, record.apellido, record.ndoc);
         let beneficiario = _buildBeneficiarioAlimentar(record, index, fealta, fets);

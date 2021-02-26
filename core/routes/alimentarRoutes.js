@@ -66,6 +66,20 @@ router.get('/importarpadron', function (req, res) {
     });
 });
 
+/**
+ * Cruce de alimentos
+ */
+router.get('/crucealimentos', function (req, res) {
+    console.log('Cruce de Alimentos ROUTE BEGINS')
+    service.crucealimentos(function(err) {
+        res.status(400).json(err);
+
+    }, function(entities) {
+        res.status(200).json(entities);
+
+    });
+});
+
 
 /**
  * Retrieve Entity by ID
