@@ -2,7 +2,7 @@ import { MainMenuItem, SocialMediaItem } from '../menu-helper';
 
 export const INDUSTRIAS: MainMenuItem[] = [
   {
-    title: 'Industrias web',
+    title: 'Domicilio web',
     icon: '',
     active: false,
     groupTitle : true,

@@ -4,7 +4,7 @@
  *
  * @
 *************/
-const user = 'dsocial';
+const user = 'industrias';
 
 const globals = {
 
@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #2 21.02.08-12:16',
+		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  - SEMANA EPIDEMIOLÓGICA #2 21.02.08-12:16',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},
@@ -47,7 +47,7 @@ const globals = {
 	industrias: {
 		logoAvatar: 'avatar-develar.jpg',
 		logoUser: 'avatar-u-develar.jpg',
-		logoCompany: 'logo_publico.png',
+		logoCompany: 'logo.png',
 		logoCompany2: 'logo-publico.png',
 		company: 'MAB',
 		mainmenu: 'INDUSTRIAS',
@@ -57,7 +57,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2020 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.02.18-12:46',
+		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.03.01-11:56',
 		version: '1.0 ',
 		url: 'industrias.brown.gob.ar'
 	},

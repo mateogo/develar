@@ -21,8 +21,8 @@
             <!--- 4.0-logged LOGIN  -->
             <div class="nav-item" [ngClass]="{ 'opened' : false }">
                 <button mat-button title="usuario registrado" (click)="open($event)">
-                <div class="avatar"><img src="{{ avatar }}" width="37" height="37" alt=""></div>
-                <div class="name">{{currentUser.username }}</div>
+                <!--div class="avatar"><img src="{{ avatar }}" width="37" height="37" alt=""></div-->
+                <div class="name">@{{currentUser.username }}</div>
               </button>
 
                 <div class="dropdown-menu mini-menu">
@@ -66,7 +66,7 @@
                         <ul>
                              <li>
                                 <a role="button" (click)="goToMisConsultasYSolicitudes()">
-                                    <i class="fas fa-users"></i> <span class="ml-2">Domicilio digital</span>
+                                    <i class="fas fa-users"></i> <span class="ml-2">Censo empresarial 2021</span>
                                 </a>
                             </li>
                            <!-- <li>
@@ -175,7 +175,7 @@
             <!--- 3.1-MENU DE NAVEGACION  -->
             <div class="nav-item" [ngClass]="{ 'opened' : false }">
 
-                <button mat-button [ngStyle]='navbarItemStyle' class="text-icon" matTooltip="Menú de navegación" (click)="open($event)"><i class="fas fa-bars fa-lg"></i></button>
+                <button mat-button [ngStyle]='navbarItemStyle' class="text-icon" matTooltip="Menú de navegación" (click)="open($event)"><span class="text-ingresar">ingresar</span></button>
                 <div class="dropdown-menu">
                     <ul>
                         <li class="menu-item" *ngFor="let item of mainMenuItems" [ngClass]="{

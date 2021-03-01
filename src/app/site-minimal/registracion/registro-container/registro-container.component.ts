@@ -329,14 +329,26 @@ export class RegistroContainerComponent implements OnInit {
   togglePanel(e, i, node){
     e.stopPropagation();
     e.preventDefault();
-  	if(i === 0){
-  		this.showRegistration = false;
-  		this.showLogin = true;
-  	}
-  	if(i === 1){
-  		this.showLogin = false;
-  		this.showRegistration = true;
-  	}
+
+    let user = this.minimalCtrl.currentUser;
+
+    //OjO: Bypass a la registración WEB
+    if(user && user.username !== 'invitado'){
+      this.router.navigate(['/dashboard']);
+
+    }else {
+      this.router.navigate(['/usuariosweb']);
+
+    }
+
+    // if(i === 0){
+  	// 	this.showRegistration = false;
+  	// 	this.showLogin = true;
+  	// }
+  	// if(i === 1){
+  	// 	this.showLogin = false;
+  	// 	this.showRegistration = true;
+  	// }
 
   }
 

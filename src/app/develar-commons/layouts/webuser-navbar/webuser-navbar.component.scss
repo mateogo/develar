@@ -49,6 +49,25 @@ $text-social: #0072bb;
 
   }
 
+  .text-ingresar {
+    color: $text-item; // #0bc869
+    @media #{$max543} {
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-style: italic;
+      margin-left: 10px;
+    }
+
+    @media #{$min544} {
+      font-size: 1.8rem;
+      font-weight: 900;
+      font-style: italic;
+      margin-left: 5px;
+    }
+
+
+  }
+
   .text-social {
     margin: 0 15px 0 0;
 
@@ -99,7 +118,7 @@ $text-social: #0072bb;
     }
   }
   .name {
-    //color: rgba(#ededed,.9);
+    color: rgba(#454545,.9);
   }
 
   .logo {

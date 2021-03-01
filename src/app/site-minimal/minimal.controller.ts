@@ -94,6 +94,7 @@ export class SiteMinimalController {
     this.userListener = this.userService.userEmitter;
 
     this.userListener.subscribe((user: User) =>{
+      console.log('User listener OK: [%s]', user && user.username );
 
       this.userLoading = true;
       this.updateUserStatus(user);
@@ -803,6 +804,10 @@ export class SiteMinimalController {
       this.onReady.next (true);
     }
 
+  }
+  
+  get currentUser(): UserToken{
+    return this.userx
   }
 
 
