@@ -43,7 +43,7 @@ import { Audit, ParentEntity } from '../../../develar-commons/observaciones/obse
 
 const UPDATE = 'update';
 const NAVIGATE = 'navigate';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:00";
 
 @Component({
   selector: 'app-censo-page',
@@ -54,7 +54,7 @@ export class CensoPageComponent implements OnInit {
   private unBindList = [];
 
   // template helper
-  public title = "Censo Industrias 2020 - MAB";
+  public title = "Censo Empresarial 2021 - MAB";
   public subtitle = "Datos generales";
 
   //CensoIndustrias
@@ -82,7 +82,6 @@ export class CensoPageComponent implements OnInit {
   public hasPatentes = false;
   public patentes: CensoPatentes[] = [];
   
-  
   //Comercializacion
   public hasComercializacion = false;
   public comercializacion: CensoComercializacion[] = [];
@@ -102,10 +101,12 @@ export class CensoPageComponent implements OnInit {
   // Block SaludData
   public censoHeaderTitleTxt = "MUNICIPALIDAD DE ALMIRANTE BROWN - SECRETARÍA DE PRODUCCIÓN";
   public censoAltaTxt = "INICIE EL CENSO AQUÍ";
-  public censoBajada = "CENSO INDUSTRIAL 2020";
+  public censoBajada = "CENSO EMPRESARIAL 2021";
 
   public censoEditHeaderTxt = "Edición de datos Básicos";
   private currentIndustry: Person;
+  public actividadesOptList = [];
+
   private contactList:   PersonContactData[];
   private addressList:   Address[];
   private familyList:    FamilyData[];
@@ -290,7 +291,6 @@ export class CensoPageComponent implements OnInit {
       this.audit = this.censoCtrl.getUserData();
       this.parentEntity = this.censoCtrl.parentEntity(censo);
       this.hasObservaciones = this.parentEntity ? true : false;
-
       this.assetList = censo.assets || [];
 
 
@@ -304,7 +304,12 @@ export class CensoPageComponent implements OnInit {
   private initActividades(actividades: CensoActividad[]){
     if(actividades ){
       this.hasActividades = true;
+      this.populateActividadesOptList(actividades);
     }
+  }
+
+  private populateActividadesOptList(actividades: CensoActividad[]){
+    this.actividadesOptList = CensoIndustriasService.buildActividadesOptList(actividades);
   }
 
   private initBienes(bienes: CensoBienes[]){
@@ -413,6 +418,9 @@ export class CensoPageComponent implements OnInit {
   }
   private updateActividades(event: UpdateListEvent){
     this.currentCenso.actividades = event.items as CensoActividad[];
+
+    this.populateActividadesOptList(this.currentCenso.actividades);
+
     this.censoCtrl.partialUpdateCenso(this.currentCenso).subscribe(censo =>{
       if(censo) this.currentCenso = censo;
     })

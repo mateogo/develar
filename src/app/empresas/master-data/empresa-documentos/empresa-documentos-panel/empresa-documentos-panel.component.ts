@@ -43,7 +43,6 @@ export class EmpresaDocumentosPanelComponent implements OnInit {
   }
 
   updateItem(event: UpdateEvent){
-    console.log('33 isHabilitacion[%s]', this.isHabilitacion);
 
     if(event.action === DELETE){
       this.deleteItem(event.payload as DocumentData);

@@ -28,7 +28,7 @@ export interface EstadoCenso {
 }
 
 export class CensoData {
-  codigo: string = 'censo:industrias:2020:00';
+  codigo: string = 'censo:empresarial:2021:01';
   type: string = 'censo:anual';
   anio: number = 2020;
   q: string = 'q1';

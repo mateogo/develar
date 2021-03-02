@@ -10,8 +10,6 @@ import {
   AsyncValidatorFn,
 } from '@angular/forms';
 
-import { Router, ActivatedRoute } from '@angular/router';
-
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -52,38 +50,21 @@ const N_HAB_00 = 'NUC-HAB-00';
 })
 export class VinculosAgregarFormComponent implements OnInit {
   public form: FormGroup;
-  public addressForm: FormGroup;
+
   public vinculoForm: FormGroup;
-  public formClosed = false;
 
   public person: Person;
   public vPerson: Person;
 
   public isNewVinculo = false;
-  public isNewLocacion = false;
-  private locacionSourceTxt = '';
 
   public vinculo: BusinessMembersData;
-  public locacion: Locacion;
   public bussinessMembers: Array<BusinessMembersData> = [];
-  public locaciones: Array<Address> = [];
 
-  public estadoOptList = AsistenciaHelper.getOptionlist('estadoVinculosFam');
-  public vinculosOptList = AsistenciaHelper.getOptionlist('vinculosFam');
-  public sexoOptList = AsistenciaHelper.getOptionlist('sexo');
   public tdocOptList = AsistenciaHelper.getOptionlist('tdoc');
-  public nucleoOptList = AsistenciaHelper.getOptionlist('nucleoHabitacional');
+  public persontypes = personModel.persontypesPJ;
+  private personType: string = ''
 
-  public countriesList = personModel.paises;
-  public provinciasList = personModel.provincias;
-  public addTypeList = personModel.addressTypes;
-  public ciudadesList = personModel.ciudades;
-  public paises = personModel.paises;
-  public barrioList = [];
-  public edadActual = '';
-
-  public personError = false;
-  public personErrorMsg = '';
   public errorMessage = '';
   public docBelongsTo = { error: '' };
   public tDoc = 'CUIT';
@@ -95,13 +76,10 @@ export class VinculosAgregarFormComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<VinculosAgregarFormComponent>,
-    public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ctrl: SaludController,
     private perSrv: PersonService,
     private fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -113,7 +91,6 @@ export class VinculosAgregarFormComponent implements OnInit {
 
   private initOnce() {
     this.isNewVinculo = true;
-    this.isNewLocacion = true;
 
     this.person = this.data.person[0];
     this.currentNumDoc = '';
@@ -150,56 +127,6 @@ export class VinculosAgregarFormComponent implements OnInit {
     }
   }
 
-  /*private initLocacion() {
-    if (this.vAsistencia && this.vAsistencia.locacion) {
-      this.locacion = this.vAsistencia.locacion;
-      this.isNewLocacion = false;
-      this.isLocacionFromAsistencia = true;
-      this.isLocacionFromPerson = false;
-      this.isLocacionFromNuHab = false;
-      this.locacionSourceTxt = 'Locación recuperada de la Sol/Vigilancia';
-    } else if (
-      this.vPerson &&
-      this.vPerson.locaciones &&
-      this.vPerson.locaciones.length
-    ) {
-      this.locacion = this.vPerson.locaciones[0];
-      this.isNewLocacion = false;
-      this.isLocacionFromAsistencia = false;
-      this.isLocacionFromPerson = true;
-      this.isLocacionFromNuHab = false;
-      this.locacionSourceTxt = 'Locación recuperada del padrón de persona';
-    } else {
-      let nucHab: Address = this.vinculo.nucleo
-        ? this.nucleoHab &&
-          this.nucleoHab[this.vinculo.nucleo] &&
-          this.nucleoHab[this.vinculo.nucleo].address
-        : null;
-      let nucHabCero: Address =
-        this.nucleoHab &&
-        this.nucleoHab[N_HAB_00] &&
-        this.nucleoHab[N_HAB_00].address;
-
-      if (nucHab) {
-        this.locacion = nucHab;
-        this.isLocacionFromNuHab = true;
-        this.locacionSourceTxt = 'Locación recuperada del NUCLEO HABITACIONAL';
-      } else if (nucHabCero) {
-        this.locacion = nucHabCero;
-        this.isLocacionFromNuHab = true;
-        this.locacionSourceTxt = 'ATENCIÓN: Locación pertenece al caso índice';
-      } else {
-        this.isLocacionFromNuHab = false;
-        this.locacion = new Address();
-        this.locacionSourceTxt = 'Ingreso de nueva locación';
-      }
-
-      this.isNewLocacion = true;
-      this.isLocacionFromAsistencia = false;
-      this.isLocacionFromPerson = false;
-    }
-  }*/
-
   onSubmit() {
     this.result.action = UPDATE;
     this.initForSave();
@@ -219,63 +146,16 @@ export class VinculosAgregarFormComponent implements OnInit {
   }
 
   changeSelectionValue(type, val) {
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
-    // if (type === 'nucleo') {
-    //   // this.reviewAddress(val);
-    // }
-
     if (type === 'tdoc') {
       this.vinculoForm.controls['ndoc'].setValue('');
     }
-
-    // if (type === 'city') {
-    //   this.barrioList = personModel.getBarrioList(this.addressForm.value.city);
-
-    //   let zip = personModel.fetchCP(this.addressForm.value.city);
-    //   this.addressForm.controls['zip'].setValue(zip);
-    // }
   }
 
-  /*
-  private reviewAddress(nucleo: string) {
-    let nucleoHab: Address =
-      this.nucleoHab &&
-      this.nucleoHab[nucleo] &&
-      this.nucleoHab[nucleo].address;
-    let nucleoCero: Address =
-      this.nucleoHab &&
-      this.nucleoHab[N_HAB_00] &&
-      this.nucleoHab[N_HAB_00].address;
-
-    let telefono = this.vinculo.telefono;
-
-    if (this.isNewLocacion) {
-      if (nucleoHab) {
-        this.resetLocacionData(nucleoHab);
-        this.isLocacionFromNuHab = true;
-        this.locacionSourceTxt = 'Locación recuperada del NUCLEO HABITACIONAL';
-        if (!telefono) {
-          this.vinculoForm
-            .get('telefono')
-            .setValue(this.nucleoHab[nucleo].telefono);
-        }
-      }
-    }
-  }
-  */
-
-  private resetLocacionData(locacion: Address) {
-    this.barrioList = personModel.getBarrioList(locacion.city);
-    this.addressForm.reset(locacion);
-  }
 
   changeActualState(estado) {
     //c onsole.log('Estado COVID: [%s]', estado);
   }
 
-  nucleoHabitacionalSelected() {
-    return this.locacionSourceTxt;
-  }
 
   // template Events:
   hasVinculoError = (controlName: string, errorName: string) => {
@@ -320,31 +200,12 @@ export class VinculosAgregarFormComponent implements OnInit {
 
     if (check) {
       this.errorMessage =
-        'Este DNI ya pertenece a otro vínculo del caso índice ';
+        'Esta organización no puede ser vinculada ';
       return false; // es de otro integrante
     }
 
     return ok;
   }
-
-  /*private lookUpGeoData() {
-    if (this.locacion.street1 && this.locacion.city) {
-      this.ctrl.addressLookUp(this.locacion).then((geo) => {
-        if (geo && geo.location) {
-          this.locacion.lat = geo.location.lat || this.locacion.lat;
-          this.locacion.lng = geo.location.lng || this.locacion.lng;
-          this.ctrl.openSnackBar('Búsqueda EXITOSA', 'CERRAR');
-        } else {
-          this.ctrl.openSnackBar(
-            'No se pudo recuperar la información geográfica',
-            'ATENCIÓN'
-          );
-        }
-      });
-    } else {
-      this.ctrl.openSnackBar('Debe indicar calle y localidad ', 'ATENCIÓN');
-    }
-  }*/
 
   private saveToken() {
     /**
@@ -354,7 +215,6 @@ export class VinculosAgregarFormComponent implements OnInit {
 
     // Siempre busco persona jurídica por tratarse de una industria
     const bussinessExistsQuery = {
-      personType: 'juridica',
       tdoc: this.vinculo.tdoc,
       ndoc: this.vinculo.ndoc
     };
@@ -371,7 +231,7 @@ export class VinculosAgregarFormComponent implements OnInit {
 
         // Tiene master?
         if (this.hasBusinessMemberMaster(personItem)) {
-          this.ctrl.openSnackBar('Se requiere autorización para asociarse a esta industria', 'CERRAR');
+          this.ctrl.openSnackBar('Se requiere autorización para asociarse a esta organización', 'CERRAR');
         } else {
           const newBusinessMember = personModel.buildBusinessMemberFromPerson(this.person, null);
 
@@ -394,7 +254,9 @@ export class VinculosAgregarFormComponent implements OnInit {
           3.2. asociamos
           3.3. enviamos a vista de edición
         */
+
         const personToCreate = personModel.buildPersonFromBusinessMember(this.vinculo);
+        personToCreate.personType = this.personType;
 
         this.perSrv.createPerson(personToCreate).then(createdPerson => {
 
@@ -404,7 +266,7 @@ export class VinculosAgregarFormComponent implements OnInit {
 
           this.perSrv.updatePersonPromise(createdPerson).then(updatedPerson => {
             // c onsole.log('Creando y actualizando integrates[updatedPerson=%o]', updatedPerson);
-            //this.router.navigate(['editar/', updatedPerson._id], { relativeTo: this.route });
+
             this.result.token = updatedPerson;
 
             this.dialogRef.close({
@@ -426,209 +288,38 @@ export class VinculosAgregarFormComponent implements OnInit {
     return hasMaster;
   }
 
-  private updateVinculos() {
-    // this.ctrl.upsertAsistenciaToken(this.asistencia, contactos).then((asis) => {
-    //   this.saveVinculoRelation(); // (a)
-    // });
-  }
 
-  // private updateContactosEstrechos() {
-  //   let count = this.familyList.length || 0;
-  //   let contactos = { contactosEstrechos: count };
-  //   this.ctrl.upsertAsistenciaToken(this.asistencia, contactos).then((asis) => {
-  //     this.asistencia = asis;
-  //     this.saveVinculoRelation(); // (a)
-  //   });
-  // }
 
-  // private saveMainPerson() {
-  //   //(c)
-  //   this.vinculo.personId = this.vPerson._id;
-  //   this.vinculo.hasOwnPerson = true;
-  //   this.isNewVinculo = false;
-
-  //   this.perSrv.updatePersonPromise(this.person).then((per) => {
-  //     if (per) {
-  //       this.ctrl.openSnackBar(
-  //         'Actualización del afectado/a exitosa',
-  //         'Cerrar'
-  //       );
-  //       this.person = per;
-
-  //       setTimeout(() => {
-  //         this.updateSeguimientoBajoCasoIndice();
-  //       }, 300);
-
-  //       this.closeDialogSuccess();
-  //     } else {
-  //       this.ctrl.openSnackBar(
-  //         'Se produjo un error al intentar guardar sus datos',
-  //         'ATENCIÓN'
-  //       );
-  //     }
-  //   });
-  // }
-
-  private saveVinculoRelation() {
-    //(a)
-    if (!this.vPerson) {
-      const displayName = this.vinculo.apellido + ', ' + this.vinculo.nombre;
-      this.vPerson = new Person(displayName);
-    }
-
-    this.updateCoreData();
-    this.updatePersonAddress();
-    this.updateVperson();
-    // this.ctrl.openSnackBar('Actualización exitosa', 'Cerrar');
-    // this.closeDialogSuccess()
-  }
-
-  private updateVperson() {
-    if (this.vPerson._id) {
-      this.perSrv.updatePersonPromise(this.vPerson).then((vinculoPerson) => {
-        if (vinculoPerson) {
-          this.vPerson = vinculoPerson;
-          this.updateAsistenciaFromVinculo();
-        }
-      });
-    } else {
-      this.perSrv.createPerson(this.vPerson).then((vinculoPerson) => {
-        if (vinculoPerson) {
-          this.vPerson = vinculoPerson;
-          this.updateAsistenciaFromVinculo();
-        }
-      });
-    }
-  }
-
-  private updateAsistenciaFromVinculo() {
-    // (b)
-    this.ctrl.fetchAsistenciaByPerson(this.vPerson).subscribe((list) => {
-      if (list && list.length) {
-        const vAsistencia = list[0];
-        vAsistencia.locacion = this.locacion;
-        vAsistencia.ndoc = this.vinculo.ndoc;
-        vAsistencia.tdoc = this.vinculo.tdoc;
-
-        if (
-          this.vinculo.telefono &&
-          this.vinculo.telefono !== vAsistencia.telefono
-        ) {
-          vAsistencia.telefono = vAsistencia.telefono
-            ? this.vinculo.telefono + '// ant:' + vAsistencia.telefono
-            : this.vinculo.telefono;
-        }
-
-        vAsistencia.sexo = this.vinculo.sexo;
-        vAsistencia.edad = this.edadActual;
-
-        vAsistencia.requeridox.ndoc = this.vinculo.ndoc;
-        vAsistencia.requeridox.tdoc = this.vinculo.tdoc;
-        vAsistencia.requeridox.nombre = this.vinculo.nombre;
-        vAsistencia.requeridox.apellido = this.vinculo.apellido;
-
-        // this.ctrl.manageCovidRecord(vAsistencia).subscribe((asis) => {
-        //   if (asis) this.vAsistencia = asis;
-        //   this.saveMainPerson();
-        // });
-      } else {
-        // this.saveMainPerson();
-      }
-    });
-  }
-
-  private updatePersonAddress() {
-    if (!(this.locacion.street1 && this.locacion.city)) { return; }
-
-    let personLocation =
-      this.vPerson.locaciones &&
-      this.vPerson.locaciones.length &&
-      this.vPerson.locaciones[0];
-
-    if (!personLocation) {
-      let address = new Address();
-      address = Object.assign(address, this.locacion);
-
-      this.vPerson.locaciones = [address];
-    } else {
-      personLocation = Object.assign(personLocation, this.locacion);
-    }
-  }
-
-  private updateCoreData() {
-    this.vPerson.tdoc = this.vinculo.tdoc || this.vPerson.tdoc;
-    this.vPerson.ndoc = this.vinculo.ndoc || this.vPerson.ndoc;
-    this.vPerson.nombre = this.vinculo.nombre || this.vPerson.nombre;
-    this.vPerson.apellido = this.vinculo.apellido || this.vPerson.apellido;
-    this.vPerson.sexo = this.vinculo.sexo || this.vPerson.sexo;
-    this.vPerson.fenac = this.vinculo.fenac || this.vPerson.fenac;
-    this.vPerson.tdoc = this.vinculo.tdoc || this.vPerson.tdoc;
-
-    if (this.vinculo.telefono) {
-      let contactData =
-        this.vPerson.contactdata &&
-        this.vPerson.contactdata.length &&
-        this.vPerson.contactdata[0];
-      if (contactData) {
-        if (contactData.data !== this.vinculo.telefono) {
-          let nuevo = new PersonContactData();
-          nuevo.slug = 'actualizado por vínculo de caso índice';
-          nuevo.data = this.vinculo.telefono;
-          this.vPerson.contactdata.unshift(nuevo);
-        }
-      }
-
-      if (!contactData) {
-        contactData = new PersonContactData();
-        contactData.data = this.vinculo.telefono;
-        this.vPerson.contactdata = [contactData];
-      }
-    }
-  }
 
   private initForSave() {
     this.vinculo = Object.assign(this.vinculo, this.vinculoForm.value);
-    // this.locacion = Object.assign(this.locacion, this.addressForm.value);
+    this.personType = this.vinculoForm.value.personType;
+
     this.vinculo.hasOwnPerson = personModel.hasMinimumDataToBePerson(
       this.vinculo
     );
-    // this.result.token = this.asistencia;
+
     this.result.type = VINCULO_ESTADO;
 
   }
 
-  private openDialog(config) {
-    let dialogRef = this.dialogService.open(GenericDialogComponent, config);
-    return dialogRef.afterClosed();
-  }
+  private initForm() {
+      this.vinculoForm = this.fb.group({
+          displayName: [null],
+          tdoc: [null, Validators.compose([Validators.required])],
+          ndoc: [null],
+          personType: [null],
+          telefono: [null],
+          vinculo: [null],
+          estado: [null],
+          comentario: [null],
+          desde: [null],
+          hasta: [null]
+      });
 
-    private initForm() {
-    // this.addressForm = this.fb.group({
-    //   street1: [null],
-    //   street2: [null],
-    //   streetIn: [null],
-    //   streetOut: [null],
-    //   city: [null],
-    //   barrio: [null],
-    //   zip: [null],
-    // });
-
-    this.vinculoForm = this.fb.group({
-      displayName: [null],
-      tdoc: [null, Validators.compose([Validators.required])],
-      ndoc: [null],
-      telefono: [null],
-      vinculo: [null],
-      estado: [null],
-      comentario: [null],
-      desde: [null],
-      hasta: [null]
-    });
-
-    this.form = this.fb.group({
-      vinculoForm: this.vinculoForm,
-      // addressForm: this.addressForm,
-    });
+      this.form = this.fb.group({
+        vinculoForm: this.vinculoForm,
+      });
   }
 
   private initForEdit() {
@@ -640,8 +331,6 @@ export class VinculosAgregarFormComponent implements OnInit {
         this.blackList.push(t.ndoc);
       }
     });
-
-    this.formClosed = false;
 
     let syncValidators = [
       Validators.required,
@@ -664,11 +353,10 @@ export class VinculosAgregarFormComponent implements OnInit {
     ndocControl.setValidators(syncValidators);
     ndocControl.setAsyncValidators(asyncValidators);
 
-    // this.barrioList = personModel.getBarrioList(this.locacion.city);
 
     setTimeout(() => {
       this.vinculoForm.reset(this.vinculo);
-      // this.addressForm.reset(this.locacion);
+
     }, 100);
   }
 
@@ -694,7 +382,7 @@ export class VinculosAgregarFormComponent implements OnInit {
       return service.testPersonByDNI(tdoc, value).pipe(
         map((t) => {
           if (hasBlackList && blackList.indexOf(value) !== -1) {
-            message['error'] = 'Documento pertenece a persona ya relacionada: ';
+            message['error'] = 'La identificación pertenece a organización ya relacionada: ';
             return message;
           }
 

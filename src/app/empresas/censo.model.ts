@@ -30,7 +30,7 @@ export interface EstadoCenso {
 }
 
 export class CensoData {
-	codigo: string = 'censo:industrias:2020:00';
+	codigo: string = 'censo:empresarial:2021:01';
 	type: string =  'censo:anual'
 	anio: number = 2020;
 	q: string = 'q1';
@@ -374,21 +374,6 @@ export class CensoRecursosHumanos {
 
 	crecimiento: CrecimientoEmpleados;
 
-	fortaleza1: string = '';
-	fortaleza2: string = '';
-	fortaleza3: string = '';
-
-	debilidad1: string = '';
-	debilidad2: string = '';
-	debilidad3: string = '';
-	
-	oportunidad1: string = '';
-	oportunidad2: string = '';
-	oportunidad3: string = '';
-	
-	amenaza1: string = '';
-	amenaza2: string = '';
-	amenaza3: string = '';
 	constructor(){
 		let neducativo = [];
 		let njerarquico = [];
@@ -442,6 +427,22 @@ export class CensoExpectativas {
 	capinstalada_mod: string = ''; // variación empleados
 	vtaexter_mod:   string = ''; // variación empleados
 	vtalocal_mod:   string = ''; // variación empleados
+	
+	fortaleza1: string = '';
+	fortaleza2: string = '';
+	fortaleza3: string = '';
+
+	debilidad1: string = '';
+	debilidad2: string = '';
+	debilidad3: string = '';
+	
+	oportunidad1: string = '';
+	oportunidad2: string = '';
+	oportunidad3: string = '';
+	
+	amenaza1: string = '';
+	amenaza2: string = '';
+	amenaza3: string = '';
 
 }
 
@@ -571,7 +572,7 @@ export class CensoPatentes {
 
 	isImportada: boolean = false;
 	origen: string;
-	parancelaria: string ;
+	otorgante: string ;
 
 	isExportable: boolean = false;
 	exportableTxt: string;

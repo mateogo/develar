@@ -93,7 +93,7 @@ export class CensoTableComponent implements OnInit {
   //         consultaObj.pases.push(pase);
   //         consultaObj.isActive = false;
   //         this._censoCtrl.edit(consulta._id, consultaObj).then(success => {
-  //           console.log(success)
+  //           c onsole.log(success)
   //           this.dataRecordsSource.value.map(item => {
   //             if (item._id === consulta._id) {
   //               item.estado = ESTADO_END;

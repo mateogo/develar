@@ -24,7 +24,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 
 @Component({
@@ -35,6 +35,7 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
 export class CensoMaquinariasEditComponent implements OnInit {
 	@Input() token: CensoMaquinarias;
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
+  @Input() actividades = [];
 
 	public form: FormGroup;
   public showForm = false;
@@ -102,6 +103,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
 		  slug:            token.slug,
 
       tactividad:      token.tactividad,
+      actividadId:     token.actividadId,
 
       isImportada:     token.isImportada,
       origen:          token.origen,
@@ -176,6 +178,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
 		  slug:            [ null, Validators.compose([Validators.required]) ],
       type:            [ null ],
       tactividad:      [ null ],
+      actividadId:     [ null ],
       level:           [ null ],
       origen:          [ null ],
       isExportable:    [ null ],
@@ -209,7 +212,10 @@ export class CensoMaquinariasEditComponent implements OnInit {
 
 		entity.slug =            fvalue.slug;
 		entity.type =            fvalue.type;
-		entity.tactividad =      fvalue.tactividad;
+
+		entity.actividadId =     fvalue.actividadId;
+    entity.tactividad =      entity.actividadId ? this.actividades.find(t => t.val === entity.actividadId).label : '';
+
 		entity.level =           fvalue.level;
 		entity.origen =          fvalue.origen;
 		entity.isExportable =    fvalue.isExportable;

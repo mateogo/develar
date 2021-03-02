@@ -22,7 +22,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_CORE =      '/mab/empresas/gestion/censo2021/core/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 
 
@@ -59,6 +59,8 @@ export class CensoCoreEditComponent implements OnInit {
   public nuevaAlta: NuevaAlta;
 
   private toggleTipoEmpresa = false;
+  private hasSelectTipoEmpresa = false;
+
   private empCategoria = "";
   private empRubro = "";
   private empTipoEmpresa: TipoEmpresa;
@@ -189,36 +191,41 @@ export class CensoCoreEditComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
 
-    this.toggleTipoEmpresa = !this.toggleTipoEmpresa;
-
-    if(this.toggleTipoEmpresa){
-      if(!this.empTipoEmpresa){
-        this.empCategoria  = tipo.categoria;
-        this.empRubro  = tipo.rubro;
-        this.empTipoEmpresa = tipo;
-        e.target.style.color = "#0645f5";
-        e.target.style.fontSize = "1.2em";
-        this.categoryTemplateTxt1 = `La principal actividad de su empresa es `;
-        this.categoryTemplateTxt2 = ` ${ tipo.rubro_lbl } `;
-        this.categoryTemplateTxt3 = `De acuerdo a la facturación seleccionada su Empresa queda categorizada como: ${ tipo.categoria_lbl } `;
-
-        //.style.color = "#0645f5";
-      }
+    if(!this.hasSelectTipoEmpresa){
+      this.selectCategory(e, tipo);
 
     }else{
-      if(this.empTipoEmpresa === tipo){
-        this.empCategoria  = "";
-        this.empRubro  = "";
-        this.empTipoEmpresa = null;
-        e.target.style.color = "#000";
-        e.target.style.fontSize = "1em";
-        this.categoryTemplateTxt1 = "";
-        this.categoryTemplateTxt2 = "";
-        this.categoryTemplateTxt3 = `No se ha seleccionado una categoría`;
+      if(this.empTipoEmpresa !== tipo){
+        this.unSelectCategory(e, tipo);
+        this.selectCategory(e, tipo);
       }
 
     }
+  }
 
+  private selectCategory(e, tipo: TipoEmpresa){
+    this.empCategoria  = tipo.categoria;
+    this.empRubro  = tipo.rubro;
+    this.empTipoEmpresa = tipo;
+    e.target.style.color = "#0645f5";
+    e.target.style.fontSize = "1.2em";
+    this.categoryTemplateTxt1 = `La principal actividad de su empresa es `;
+    this.categoryTemplateTxt2 = ` ${ tipo.rubro_lbl } `;
+    this.categoryTemplateTxt3 = `De acuerdo a la facturación seleccionada su Empresa queda categorizada como: ${ tipo.categoria_lbl } `;
+    this.hasSelectTipoEmpresa = true;
+
+  }
+
+  private unSelectCategory(e, tipo: TipoEmpresa){
+    this.empCategoria  = "";
+    this.empRubro  = "";
+    this.empTipoEmpresa = null;
+    e.target.style.color = "#000";
+    e.target.style.fontSize = "1em";
+    this.categoryTemplateTxt1 = "";
+    this.categoryTemplateTxt2 = "";
+    this.categoryTemplateTxt3 = `No se ha seleccionado una categoría`;
+    this.hasSelectTipoEmpresa = false;
 
   }
 
@@ -310,8 +317,9 @@ export class CensoCoreEditComponent implements OnInit {
 
 		return form;
   }
+
   private findCategoryOnArray(rubro, categoria){
-    this.toggleTipoEmpresa = false;
+    this.hasSelectTipoEmpresa = false;
     this.empTipoEmpresa = null;
     this.categoryTemplateTxt1 = '';
     this.categoryTemplateTxt2 = '';
@@ -320,14 +328,12 @@ export class CensoCoreEditComponent implements OnInit {
     if(rubro && categoria){
       this.empTipoEmpresa = CensoIndustriasService.findRubroCategoria(rubro, categoria);
     }
+
     if(this.empTipoEmpresa){
-      this.toggleTipoEmpresa = true;
+      this.hasSelectTipoEmpresa = true;
       this.categoryTemplateTxt1 = `La principal actividad de su empresa es `;
       this.categoryTemplateTxt2 = ` ${ this.empTipoEmpresa.rubro_lbl } `;
       this.categoryTemplateTxt3 = `De acuerdo a la facturación seleccionada su Empresa queda categorizada como: ${ this.empTipoEmpresa.categoria_lbl } `;
-
-
-
     }
     
   }
@@ -426,7 +432,7 @@ export class CensoCoreEditComponent implements OnInit {
 }
 
 class NuevaAlta {
-  bienvenido = 'Gracias por iniciar el CENSO-2020';
+  bienvenido = 'Gracias por iniciar el CENSO-2021';
   code = ACTUAL_CENSO;
   indicacion1 = 'La información que Usted informe será tratada con carácter confidencial'
   indicacion2 = 'Este documento permanecerá <EN PROCESO> hasta tanto se completen todos los datos.'

@@ -16,7 +16,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_ACTIVIDAD =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 @Component({
   selector: 'censo-core-view',

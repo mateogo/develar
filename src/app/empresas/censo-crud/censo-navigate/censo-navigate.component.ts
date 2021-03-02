@@ -13,7 +13,7 @@ import { CensoIndustrias, EstadoCenso, Empresa, CensoData } from '../../censo.mo
 import { Person } from '../../../entities/person/person';
 import { User } from '../../../entities/user/user';
 
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 @Component({
   selector: 'app-censo-navigate',
@@ -24,6 +24,7 @@ export class CensoNavigateComponent implements OnInit {
   public title = 'ALTA CENSO EMPRESARIAL 2021';
   public nuevoCensoTx = 'Iniciar nuevo CENSO';
   public showData = false;
+  private hasOrganizacion = false;
 
   public censosList$: Observable<CensoIndustrias[]>;
   private currentIndustry: Person;
@@ -43,28 +44,9 @@ export class CensoNavigateComponent implements OnInit {
     this.lookUpActiveCenso()
   }
 
-
-  // private initOnce(){
-  //   this._userService.userEmitter.subscribe( user => {
-  //     if(user && user._id){
-  //       let query = new ConsultaQuery();
-  //       query.userId = user._id;
-  //       this._service.fetchConsultasByQuery(query).subscribe(list => {
-  //         if(list && list.length){
-  //           this._service.updateTableData();
-  //           this.showData = true
-  //         }
-  //       })
-
-  //     }else {
-  //       // todo
-  //     }
-  //   })
-
-  // }
-
   private lookUpActiveCenso(){
     this.showData = false;
+    this.hasOrganizacion = false;
 
     this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
@@ -72,6 +54,7 @@ export class CensoNavigateComponent implements OnInit {
         this._empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
 
           if(industria){
+            this.hasOrganizacion = true;
             this.currentIndustry = industria;
 
             let query = {
@@ -86,7 +69,8 @@ export class CensoNavigateComponent implements OnInit {
 
             })
           }else{
-            // todo
+            this.hasOrganizacion = false;
+            this._censoCtrl.openSnackBar('ATENCIÓN: Debe vincular una organización para iniciar el censo', 'CERRAR')
           }
 
         })
@@ -100,7 +84,20 @@ export class CensoNavigateComponent implements OnInit {
 
 
   nuevoCenso(): void {
-    this._router.navigate(['../censo2021'],{relativeTo: this._route});
+    if(this.hasOrganizacion){
+      if(this.showData){
+        this._censoCtrl.openSnackBar('ATENCIÓN: Ya ha iniciado el proceso de CENSO', 'CERRAR')
+
+      }else {
+        this._router.navigate(['../censo2021'],{relativeTo: this._route});
+
+      }
+
+
+    }else{
+      this._censoCtrl.openSnackBar('ATENCIÓN: Debe vincular una organización para iniciar el censo', 'CERRAR')
+
+    }
   }
 
   navigateDashboard(): void {

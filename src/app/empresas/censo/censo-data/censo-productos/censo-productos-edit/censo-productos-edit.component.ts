@@ -26,7 +26,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 
 
@@ -38,7 +38,10 @@ const ACTUAL_CENSO = "censo:industrias:2020:00";
 })
 export class CensoProductosEditComponent implements OnInit {
 	@Input() token: CensoProductos;
+  @Input() actividades = [];
+
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
+
 
 	public form: FormGroup;
   public showForm = false;
@@ -49,7 +52,7 @@ export class CensoProductosEditComponent implements OnInit {
   public tipoOptList =   CensoIndustriasService.getOptionlist('tipoProductos');
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
 
-  public title = "Principales productos producidos y/o comercializados";
+  public title = "Principales productos producidos y/o COMERCIALIZADOS";
   public texto1 = "Ingrese la información de cada producto por separado, agregando bloques según sea necesario.";
   public texto2: string;
 
@@ -106,6 +109,7 @@ export class CensoProductosEditComponent implements OnInit {
 		  slug:            token.slug,
 
       tactividad:      token.tactividad,
+      actividadId:     token.actividadId,
       parancelaria:    token.parancelaria,
 
       isProdpropia:    token.isProdpropia,
@@ -183,6 +187,7 @@ export class CensoProductosEditComponent implements OnInit {
 		  slug:            [ null, Validators.compose([Validators.required]) ],
       type:            [ null ],
       tactividad:      [ null ],
+      actividadId:     [ null ],
       parancelaria:    [ null ],
       level:           [ null ],
       origen:          [ null ],
@@ -218,8 +223,11 @@ export class CensoProductosEditComponent implements OnInit {
 
 		entity.slug =            fvalue.slug;
 		entity.type =            fvalue.type || 'pventa';
-		entity.tactividad =      fvalue.tactividad;
-		entity.parancelaria =    fvalue.parancelaria;
+
+		entity.actividadId =     fvalue.actividadId;
+    entity.tactividad =      entity.actividadId ? this.actividades.find(t => t.val === entity.actividadId).label : '';
+
+    entity.parancelaria =    fvalue.parancelaria;
 		entity.level =           fvalue.level;
 		entity.isExportable =    fvalue.isExportable;
 		entity.exportableTxt =   fvalue.exportableTxt;

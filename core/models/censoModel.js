@@ -38,7 +38,7 @@ const estadoCensoSch = new Schema({
 })
 
 const censoDataSch = new Schema({
-    codigo: { type: String, required: false, default: 'censo:industrias:2020:00' },
+    codigo: { type: String, required: false, default: 'censo:empresarial:2021:01' },
     type: { type: String, required: false, default: 'censo:anual' },
     anio: { type: Number, required: false, default: 2020 },
     q: { type: String, required: false, default: 'q1' },
@@ -221,18 +221,6 @@ const censoRecursosHumanosSch = new Schema({
     porNivelJerarquico:  [ nodoSeccionSch ],
     crecimiento:   { type: crecimientoEmpleadosSch, required: false },
 
-    fortaleza1:    { type: String, required: false },
-    fortaleza2:    { type: String, required: false },
-    fortaleza3:    { type: String, required: false },
-    debilidad1:    { type: String, required: false },
-    debilidad2:    { type: String, required: false },
-    debilidad3:    { type: String, required: false },
-    oportunidad1:  { type: String, required: false },
-    oportunidad2:  { type: String, required: false },
-    oportunidad3:  { type: String, required: false },
-    amenaza1:      { type: String, required: false },
-    amenaza2:      { type: String, required: false },
-    amenaza3:      { type: String, required: false },
     
 })
 
@@ -246,6 +234,19 @@ const censoExpectativasSch = new Schema({
 	capinstalada_mod: { type: String, required: false },
 	vtaexter_mod:     { type: String, required: false },
 	vtalocal_mod:     { type: String, required: false },
+    
+    fortaleza1:    { type: String, required: false },
+    fortaleza2:    { type: String, required: false },
+    fortaleza3:    { type: String, required: false },
+    debilidad1:    { type: String, required: false },
+    debilidad2:    { type: String, required: false },
+    debilidad3:    { type: String, required: false },
+    oportunidad1:  { type: String, required: false },
+    oportunidad2:  { type: String, required: false },
+    oportunidad3:  { type: String, required: false },
+    amenaza1:      { type: String, required: false },
+    amenaza2:      { type: String, required: false },
+    amenaza3:      { type: String, required: false },
 
 })
 

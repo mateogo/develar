@@ -68,7 +68,7 @@ export class EmpresaContactdataEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //console.log('Change [%s] nuevo valor: [%s]', type, val);
+    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
   }
  
   buildForm(): FormGroup{

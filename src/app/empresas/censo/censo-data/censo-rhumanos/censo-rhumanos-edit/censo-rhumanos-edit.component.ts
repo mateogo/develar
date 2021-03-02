@@ -29,7 +29,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 @Component({
   selector: 'censo-rhumanos-edit',
@@ -138,19 +138,6 @@ export class CensoRhumanosEditComponent implements OnInit {
       type:           token.type,
       slug:           token.type,
       qempleados:     token.qempleados,
-      fortaleza1:     token.fortaleza1,
-      fortaleza2:     token.fortaleza2,
-      fortaleza3:     token.fortaleza3,
-      debilidad1:     token.debilidad1,
-      debilidad2:     token.debilidad2,
-      debilidad3:     token.debilidad3,
-      oportunidad1:   token.oportunidad1,
-      oportunidad2:   token.oportunidad2,
-      oportunidad3:   token.oportunidad3,
-      amenaza1:       token.amenaza1,
-      amenaza2:       token.amenaza2,
-      amenaza3:       token.amenaza3,
-
       crecimiento: {
         hasCrecimiento:  token.crecimiento.hasCrecimiento,
         hasBrownEmplea:  token.crecimiento.hasBrownEmplea,
@@ -228,18 +215,6 @@ export class CensoRhumanosEditComponent implements OnInit {
         quniversitarios: [ null ],
         slug:            [ null ],
       }),
-      fortaleza1:      [ null ],
-      fortaleza2:      [ null ],
-      fortaleza3:      [ null ],
-      debilidad1:      [ null ],
-      debilidad2:      [ null ],
-      debilidad3:      [ null ],
-      oportunidad1:    [ null ],
-      oportunidad2:    [ null ],
-      oportunidad3:    [ null ],
-      amenaza1:        [ null ],
-      amenaza2:        [ null ],
-      amenaza3:        [ null ],
     
     });
     return form;
@@ -259,21 +234,6 @@ export class CensoRhumanosEditComponent implements OnInit {
 
 
     //entity.crecimiento = fvalue.crecimiento;
-    entity.fortaleza1 = fvalue.fortaleza1;
-    entity.fortaleza2 = fvalue.fortaleza2;
-    entity.fortaleza3 = fvalue.fortaleza3;
-
-    entity.debilidad1 = fvalue.debilidad1;
-    entity.debilidad2 = fvalue.debilidad2;
-    entity.debilidad3 = fvalue.debilidad3;
-    
-    entity.oportunidad1 = fvalue.oportunidad1;
-    entity.oportunidad2 = fvalue.oportunidad2;
-    entity.oportunidad3 = fvalue.oportunidad3;
-    
-    entity.amenaza1 = fvalue.amenaza1;
-    entity.amenaza2 = fvalue.amenaza2;
-    entity.amenaza3 = fvalue.amenaza3;
 
     entity.crecimiento = {
       hasCrecimiento:  tvalue.hasCrecimiento,

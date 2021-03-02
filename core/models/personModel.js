@@ -92,7 +92,7 @@ const businessSch = new mongoose.Schema({
     fenactx: { type: String, required: false, default: "" },
     ecivil: { type: String, required: false, default: "" },
     email: { type: String, required: false, default: "" },
-    phone: { type: String, required: false, default: "" },
+    telefono: { type: String, required: false, default: "" },
     nestudios: { type: String, required: false, default: "" },
     tocupacion: { type: String, required: false, default: "" },
     ocupacion: { type: String, required: false, default: "" },
@@ -852,7 +852,7 @@ function updatePersonFromVinculo(tperson, member, key) {
 
     if (key === 'integrantes') {
         tperson.email = member.email || tperson.email;
-        tperson.phone = member.phone || tperson.phone;
+        tperson.telefono = member.telefono || tperson.telefono;
         tperson.assets = updateMemberAssetsArray(tperson.assets, member.assets);
 
         if (member.vinculo === "seguridad") {

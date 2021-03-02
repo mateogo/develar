@@ -38,7 +38,6 @@ export class EmpresaDocumentosBaseComponent implements OnInit {
   }
 
   private emitEvent(event:UpdateEvent){
-    console.log('emitEvent 11')
   	if(event.action !== CANCEL){
   		this.updateToken.next(event);
   	}

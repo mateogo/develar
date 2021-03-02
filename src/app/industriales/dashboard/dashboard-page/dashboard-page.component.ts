@@ -42,6 +42,8 @@ export class DashboardPageComponent implements OnInit {
   }
 
   public goBack(): void {
-    this.location.back();
+    this.router.navigate(['dashboard']);
+
+    //this.location.back();
   }
 }

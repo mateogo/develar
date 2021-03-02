@@ -64,17 +64,18 @@
 					 </ng-container>
 					 
 		 			<ng-container *ngIf="isProductos">
-			 			<censo-productos-edit [token]='token'
+			 			<censo-productos-edit [token]='token' [actividades]='actividades' 
 			 								(updateToken)='manageToken($event)' ></censo-productos-edit>
 					 </ng-container>
 
 					 <ng-container *ngIf="isBien">
-						<censo-bienes-edit [token]='token'
+						<censo-bienes-edit [token]='token'  [actividades]='actividades' 
 											(updateToken)='manageToken($event)' ></censo-bienes-edit>
 					</ng-container>
 										
 					 <ng-container *ngIf="isMaquinarias">
-						<censo-maquinarias-edit [token]='token' (updateToken)='manageToken($event)' ></censo-maquinarias-edit>
+						<censo-maquinarias-edit [token]='token' [actividades]='actividades' 
+											(updateToken)='manageToken($event)' ></censo-maquinarias-edit>
 					</ng-container>
 
 					<ng-container *ngIf="isPatentes">
@@ -92,11 +93,13 @@
 					</ng-container>
 
 					<ng-container *ngIf="isRhumanos">
-						<censo-rhumanos-edit [token]='token' (updateToken)='manageToken($event)' ></censo-rhumanos-edit>
+						<censo-rhumanos-edit [token]='token' 
+											(updateToken)='manageToken($event)' ></censo-rhumanos-edit>
 					</ng-container>
 
 					<ng-container *ngIf="isExpectativas">
-						<censo-expectativas-edit [token]='token'  (updateToken)='manageToken($event)' ></censo-expectativas-edit>
+						<censo-expectativas-edit [token]='token'  
+											(updateToken)='manageToken($event)' ></censo-expectativas-edit>
 					</ng-container>
 					 
 				</div>

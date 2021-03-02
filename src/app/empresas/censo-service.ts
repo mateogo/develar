@@ -84,6 +84,21 @@ export class CensoIndustriasService {
 
 	}
 
+	static buildActividadesOptList(actividades: Array<CensoActividad> ){
+		let list = [];
+		if (actividades && actividades.length){
+			actividades.forEach(t => {
+				let token = {
+					val: t.codigo,
+					label: `${t.codigo} :: ${t.type}`
+				}
+				list.push(token);
+			})
+		}
+		return list;
+
+	}
+
 	static getCodigoOptList(rubro){
 		let list = [];
 
@@ -528,11 +543,11 @@ const maquinariasTypeOptList = [
 
 const patentesTypeOptList = [
     {val: 'no_definido',    label: 'Seleccione opción',        slug: 'Seleccione opción' },
+    {val: 'certifcalidad',  label: 'Certificación de calidad', slug: 'Certificación de calidad' },
     {val: 'licencia',       label: 'Licencia/Derecho',         slug: 'Licencia/Derecho' },
     {val: 'representacion', label: 'Representación',           slug: 'Representación' },
     {val: 'patente',        label: 'Patente',                  slug: 'Patente' },
     {val: 'marca',          label: 'Marca',                    slug: 'Marca' },
-    {val: 'certifcalidad',  label: 'Certificación de calidad', slug: 'Certificación de calidad' },
 ];
 
 const origenOptList = [
@@ -541,9 +556,19 @@ const origenOptList = [
       {val: 'pba',          label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
       {val: 'nacional',     label: 'Nacional',         slug: 'Nacional' },
       {val: 'mercosur',     label: 'Mercosur',         slug: 'Mercosur' },
+      {val: 'brasil',       label: 'Brasil',           slug: 'Brasil' },
+      {val: 'uruguay',      label: 'Uruguay',          slug: 'Uruguay' },
+      {val: 'paraguay',     label: 'Paraguay',         slug: 'Paraguay' },
+      {val: 'chile',        label: 'Chile',            slug: 'Chile' },
+      {val: 'bolivia',      label: 'Bolivia',          slug: 'Bolivia' },
+      {val: 'colombia',     label: 'Colombia',         slug: 'Colombia' },
+      {val: 'venezuela',    label: 'Venezuela',        slug: 'Venezuela' },
+      {val: 'mexico',       label: 'México',           slug: 'México' },
+      {val: 'centroamerica', label: 'Centroamérica',   slug: 'Centroamérica' },
       {val: 'america',      label: 'Región América',   slug: 'Región América' },
       {val: 'usa',          label: 'USA',              slug: 'USA' },
       {val: 'europa',       label: 'EU',               slug: 'EU' },
+      {val: 'africa',       label: 'África',           slug: 'África' },
       {val: 'china',        label: 'China',            slug: 'China' },
       {val: 'japon',        label: 'Japón',            slug: 'Japón' },
       {val: 'corea',        label: 'Corea del Sur',    slug: 'Corea del Sur' },
@@ -552,17 +577,27 @@ const origenOptList = [
 ];
 
 const mercadosOptList = [
-	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
+	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',      slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
-	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
+	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',    slug: 'Nacional' },
 	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
-	{val: 'mercosur',     isLocal: false, label: 'Mercosur (excluye Brasil)',         slug: 'Mercosur' },
-	{val: 'peru',         isLocal: false, label: 'Perú',   slug: 'Perú' },
-	{val: 'colombia',     isLocal: false, label: 'Colombia',   slug: 'Colombia' },
-	{val: 'mexico',       isLocal: false, label: 'México',   slug: 'México' },
-	{val: 'usa',          isLocal: false, label: 'USA',   slug: 'USA' },
-	{val: 'america',      isLocal: false, label: 'América',   slug: 'América' },
+	{val: 'mercosur',     isLocal: false, label: 'Mercosur',         slug: 'Mercosur' },
+	{val: 'bolivia',      isLocal: false, label: 'Bolivia',          slug: 'Bolivia' },
+	{val: 'uruguay',      isLocal: false, label: 'Uruguay',          slug: 'Uruguay' },
+	{val: 'paraguay',     isLocal: false, label: 'Paraguay',         slug: 'Paraguay' },
+	{val: 'peru',         isLocal: false, label: 'Perú',             slug: 'Perú' },
+	{val: 'venezuela',    isLocal: false, label: 'Venezuela',        slug: 'Venezuela' },
+	{val: 'colombia',     isLocal: false, label: 'Colombia',         slug: 'Colombia' },
+	{val: 'mexico',       isLocal: false, label: 'México',           slug: 'México' },
+	{val: 'centroamerica', isLocal: false, label: 'Centroamérica',   slug: 'Centroamérica' },
+	{val: 'usa',          isLocal: false, label: 'USA',              slug: 'USA' },
+	{val: 'america',      isLocal: false, label: 'América',          slug: 'América' },
 	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
+	{val: 'china',        isLocal: false, label: 'China',            slug: 'China' },
+	{val: 'japon',        isLocal: false, label: 'Japón',            slug: 'Japón' },
+	{val: 'corea',        isLocal: false, label: 'Corea del Sur',    slug: 'Corea del Sur' },
+	{val: 'vietnam',      isLocal: false, label: 'Vietnam',          slug: 'Vietnam' },
+	{val: 'oriente',      isLocal: false, label: 'Región Oriente',   slug: 'Región Oriente' },
 	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
 ]
 

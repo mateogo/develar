@@ -26,7 +26,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 @Component({
   selector: 'censo-expectativas-edit',
@@ -109,6 +109,22 @@ export class CensoExpectativasEditComponent implements OnInit {
       capinstalada_mod: token.capinstalada_mod,
       vtaexter_mod:     token.vtaexter_mod,
       vtalocal_mod:     token.vtalocal_mod,  
+
+      fortaleza1:     token.fortaleza1,
+      fortaleza2:     token.fortaleza2,
+      fortaleza3:     token.fortaleza3,
+      debilidad1:     token.debilidad1,
+      debilidad2:     token.debilidad2,
+      debilidad3:     token.debilidad3,
+      oportunidad1:   token.oportunidad1,
+      oportunidad2:   token.oportunidad2,
+      oportunidad3:   token.oportunidad3,
+      amenaza1:       token.amenaza1,
+      amenaza2:       token.amenaza2,
+      amenaza3:       token.amenaza3,
+
+
+
 		});
 
 		return form;
@@ -162,7 +178,20 @@ export class CensoExpectativasEditComponent implements OnInit {
       capinstalada_mod: [ null ],
       vtaexter_mod:     [ null ],
       vtalocal_mod:     [ null ],
-    
+      fortaleza1:       [ null ],
+      fortaleza2:       [ null ],
+      fortaleza3:       [ null ],
+      debilidad1:       [ null ],
+      debilidad2:       [ null ],
+      debilidad3:       [ null ],
+      oportunidad1:     [ null ],
+      oportunidad2:     [ null ],
+      oportunidad3:     [ null ],
+      amenaza1:         [ null ],
+      amenaza2:         [ null ],
+      amenaza3:         [ null ],
+
+
     });
     return form;
   }
@@ -182,6 +211,24 @@ export class CensoExpectativasEditComponent implements OnInit {
     entity.capinstalada_mod = fvalue.capinstalada_mod;
     entity.vtaexter_mod =     fvalue.vtaexter_mod;
     entity.vtalocal_mod =     fvalue.vtalocal_mod;
+
+    entity.fortaleza1 = fvalue.fortaleza1;
+    entity.fortaleza2 = fvalue.fortaleza2;
+    entity.fortaleza3 = fvalue.fortaleza3;
+
+    entity.debilidad1 = fvalue.debilidad1;
+    entity.debilidad2 = fvalue.debilidad2;
+    entity.debilidad3 = fvalue.debilidad3;
+    
+    entity.oportunidad1 = fvalue.oportunidad1;
+    entity.oportunidad2 = fvalue.oportunidad2;
+    entity.oportunidad3 = fvalue.oportunidad3;
+    
+    entity.amenaza1 = fvalue.amenaza1;
+    entity.amenaza2 = fvalue.amenaza2;
+    entity.amenaza3 = fvalue.amenaza3;
+
+
 
 		return entity;
 	}

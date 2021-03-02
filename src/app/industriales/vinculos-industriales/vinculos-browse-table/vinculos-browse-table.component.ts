@@ -107,7 +107,6 @@ export class VinculosBrowseTableComponent implements OnInit {
     );
 
     this.empresaController.fetchIndustriaFromUser(this.userService.currentUser).subscribe(items => {
-      console.log('fetchIndustriaFromuser subscribe --> items %o', items);
       this.empresaController.updateTableData();
     });
   }

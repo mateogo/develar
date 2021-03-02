@@ -563,7 +563,6 @@ export class EmpresasController {
 
   public updateTableData(): void {
     const industryTableData = personModel.buildPersonTable(new Array(this.currentIndustry));
-    console.log('INDUSTRY updateTableData --> %o', industryTableData);
     this._industriasDataSource.next(industryTableData);
   }
 

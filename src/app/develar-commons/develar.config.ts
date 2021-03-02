@@ -57,7 +57,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.03.01-11:56',
+		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.03.02-03:27',
 		version: '1.0 ',
 		url: 'industrias.brown.gob.ar'
 	},
@@ -257,5 +257,5 @@ export const gldef = globals[user];
 		// http://localhost:8080/#Tiddly%20Node%20203:%5B%5BTiddly%20Node%20203%5D%5D%20GettingStarted
 
  //var validUsersNamedBuzz = R.filter(R.where({name: 'Buzz', errors: R.isEmpty}));
-     
+// "personId" : "603d4dfd51251c1477584164", (camilo, prueba en Industrias)     
   

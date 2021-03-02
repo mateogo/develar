@@ -43,6 +43,19 @@
         </mat-form-field>
       </div>
     </div>
+    <div class="row mt-3">
+      <div class='col-md-5'>
+        <mat-form-field>
+          <mat-select #fldActividadId placeholder="Actividad relacionada"
+              [formControl]="form.controls['actividadId']"
+              (selectionChange)="changeSelectionValue('actividadId',fldActividadId.value)" >
+            <mat-option *ngFor="let item of actividades" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Indique la ACTIVIDAD vinculada con este bien</mat-hint>
+        </mat-form-field>        
+      </div>
+    </div>
     <hr>
 
     <div class="row" >

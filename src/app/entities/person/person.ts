@@ -98,26 +98,6 @@ export interface Geocoder {
   label: string;
 }
 
-// export class PersonVinculosData {
-//   nombre: string;
-//   apellido: string;
-//   tdoc: string = 'DNI';
-//   ndoc: string;
-//   personId: string;
-//   vinculo : string;
-//   estado  : string;
-//   desde : string;
-//   hasta : string;
-//   assets: Array<CardGraph> = [];
-
-// }
-
-// export interface UpdatePersonVinculosEvent {
-//   action: string;
-//   type: string;
-//   token: PersonVinculosData;
-// };
-
 
 export class Address {
     _id?: string;
@@ -318,7 +298,7 @@ export class BusinessMembersData {
   _id?: string;
   nombre: string;
   apellido: string;
-  tdoc: string = 'DNI';
+  tdoc: string = 'CUIT';
   ndoc: string;
   fenac: number = 0;
   fenactx: string;
@@ -2177,12 +2157,29 @@ class PersonModel {
       p = new Person("");
     }
 
+    console.log('PersonType [%s]', p.personType)
+
     p.nombre = member.nombre;
     p.apellido = member.apellido;
     p.tdoc = member.tdoc;
     p.ndoc = member.ndoc;
-    p.personType = 'juridica';
+    p.personType = p.personType ||'juridica';
     p.displayName = member.displayName;
+
+    if(member.telefono){
+      let contactdata = p.contactdata || [];
+
+      if(contactdata && contactdata.length){
+        contactdata[0].data = member.telefono;        
+
+      }else {
+        let token = new PersonContactData();
+        token.data = member.telefono;
+        contactdata = [ token ];
+      }
+
+      p.contactdata = contactdata;
+    }
 
     return p;
   }

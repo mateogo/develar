@@ -27,7 +27,6 @@ export class UserDatosDashboardComponent implements OnInit {
 
 
   goToEditUserData() : void {
-    console.log('ready to navigate')
     this._router.navigate(['dashboard','usuario',this.id])
   }
 

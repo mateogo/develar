@@ -26,7 +26,7 @@ const UPDATE = 'update';
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 
 
@@ -108,7 +108,7 @@ export class CensoPatentesEditComponent implements OnInit {
 
       isImportada:     token.isImportada,
       origen:          token.origen,
-      parancelaria:    token.parancelaria,
+      otorgante:       token.otorgante,
 
       isExportable:    token.isExportable,
       exportableTxt:   token.exportableTxt,
@@ -186,7 +186,7 @@ export class CensoPatentesEditComponent implements OnInit {
       isImportada:     [ null ],
       isInnovacion:    [ null ],
       isSustituible:   [ null ],
-      parancelaria:    [ null ],
+      otorgante:       [ null ],
       sustituibleTxt:  [ null ],
       innovacionTxt:   [ null ],
 
@@ -220,7 +220,7 @@ export class CensoPatentesEditComponent implements OnInit {
 		entity.isImportada =     fvalue.isImportada;
 		entity.isInnovacion =    fvalue.isInnovacion;
 		entity.isSustituible =   fvalue.isSustituible;
-		entity.parancelaria =    fvalue.parancelaria;
+		entity.otorgante =       fvalue.otorgante;
 		entity.sustituibleTxt =  fvalue.sustituibleTxt;
 		entity.innovacionTxt =   fvalue.innovacionTxt;
 

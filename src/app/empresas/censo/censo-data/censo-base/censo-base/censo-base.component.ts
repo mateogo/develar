@@ -28,6 +28,7 @@ const UPDATE = 'update';
 export class CensoBaseComponent implements OnInit {
 	@Input() token: CensoActividad|CensoBienes|CensoProductos|CensoInversion|CensoMaquinarias|CensoPatentes|CensoRecursosHumanos|CensoExpectativas;
   @Input() type: string = 'actividades'
+  @Input() actividades = [];
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
 	public showView = true;

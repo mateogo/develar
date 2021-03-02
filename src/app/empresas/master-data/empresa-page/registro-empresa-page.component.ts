@@ -92,7 +92,6 @@ export class RegistroEmpresaPageComponent implements OnInit {
 
 
   private initCurrentPage(personId: string){
-    console.log('empresa-page>initCurrentPage BEGIN')
     if(!personId){
       personId = this.empCtrl.activePerson._id;
     }
@@ -223,7 +222,6 @@ export class RegistroEmpresaPageComponent implements OnInit {
 
   // Permisos Habilitaciones Documentos
   updateDocumentsList(event:UpdateListEvent){
-    console.log('44')
     if(event.action === UPDATE){
       this.upsertPermisosList(event);
     }
@@ -237,13 +235,11 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    console.log('55')
     this.empCtrl.updatePerson(update);
   }
 
   // Permisos Habilitaciones Documentos
   updateHabilitacionesList(event:UpdateListEvent){
-    console.log('66')
     if(event.action === UPDATE){
       this.upsertHabilitacionesList(event);
     }
@@ -257,8 +253,6 @@ export class RegistroEmpresaPageComponent implements OnInit {
       token: event.type,
       person: this.currentPerson
     };
-    console.log('76')
-    console.log('H[%s]  P[%s]', this.currentPerson.habilitaciones.length, this.currentPerson.permisos.length);
     this.empCtrl.updatePerson(update);
   }
 
@@ -338,28 +332,6 @@ export class RegistroEmpresaPageComponent implements OnInit {
 
     this.empCtrl.updatePerson(update);
   }
-
-
-
-
-
-  // updateContactData(event:UpdateContactEvent){
-  //   if(event.action === UPDATE){
-  //     console.log('tsocial: READY to UpdateContactData')
-  //     this.updateContactToken(event);
-  //   }
-  // }
-
-  // updateContactToken(event:UpdateContactEvent){
-  //   this.currentPerson.contactdata = [event.token];
-
-  //   let update: UpdatePersonEvent = {
-  //     action: event.action,
-  //     token: event.type,
-  //     person: this.currentPerson
-  //   };
-  //   this.empCtrl.updatePerson(update);
-  // }
 
 
   /**********************/

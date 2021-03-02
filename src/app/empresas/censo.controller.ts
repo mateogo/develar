@@ -23,7 +23,7 @@ import { CensoIndustrias, CensoIndustriasTable } from './censo.model';
 import { CensoIndustriasService } from './censo-service';
 
 const CENSO_TYPE = 'censoindustrias'
-const ACTUAL_CENSO = "censo:industrias:2020:00";
+const ACTUAL_CENSO = "censo:empresarial:2021:01";
 
 
 

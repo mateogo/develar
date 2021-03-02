@@ -36,12 +36,12 @@ const literales = {
   },
 
   productos: {
-    title: 'Principales productos (Hasta 10 productos, en orden de relevancia)',
+    title: 'Principales productos y servicios',
     token_type: 'productos'
   },
 
   comercializacion: {
-    title: 'Comercialización y Marketing',
+    title: 'Comercialización',
     token_type: 'comercializacion'
   },
 
@@ -80,6 +80,7 @@ const literales = {
 export class CensoPanelComponent implements OnInit {
 	@Input() items: CensoActividad[]|CensoBienes[]|CensoProductos[]|CensoInversion[]|CensoMaquinarias[]|CensoPatentes[]|CensoComercializacion[]|CensoRecursosHumanos[]|CensoExpectativas[];
   @Input() type: string = "actividades";
+  @Input() actividades = [];
 	@Output() updateItems = new EventEmitter<UpdateListEvent>();
 
   public title: string;
