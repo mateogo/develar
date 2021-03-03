@@ -381,10 +381,10 @@ const entregaDesdeOptList: Array<any> = [
 		{val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
 		{val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
 
-		{val: 'secretaria',   type: 'secretaria', label: 'Secretaría',                   locacion:	'Erézcano 1252',                             telefono: '4293-4299'},
-		{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Beruti y Lestrade',    telefono: '3740-0875'},
+		{val: 'secretaria',   type: 'secretaria', label: 'Secretaría',                   locacion:	'Erézcano 1252',               telefono: '4293-4299'},
+		{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
 		{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar', locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
-		{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',                          telefono: '4291-1066'},
+		{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
 			
 			
 
@@ -426,18 +426,20 @@ const delegacionesOptList_old = [
 {val: 'rcalzada',     type: 'delegacion', label: 'Delegación Rafael Calzada',   locacion:	'Guemes 1996',               telefono: '4291-1666'},
 {val: 'solano',       type: 'delegacion', label: 'Delegación San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
 {val: 'sanjose',      type: 'delegacion', label: 'Delegación San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
-{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',     locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
+{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',     locacion:	'Garibaldi 220, entre Berutti y Lestrade',  telefono: '3740-0875'},
 //{val: 'cic burzaco',   type: 'cic',        label: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
 
 ];
 const delegacionesOptList = [
 
 	{val: 'secretaria',   type: 'secretaria', label: 'Secretaría Desarrollo Social', locacion:	'Erézcano 1252',                             telefono: '4293-4299'},
-	{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Beruti y Lestrade',    telefono: '3740-0875'},
-	{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Alsina y Martín Fierro - Barrio El Gaucho', telefono: '4299-2273'},
+	{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
+	{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Cerretti y España - Burzaco',          telefono: '4299-2273'},
 	{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',        locacion:	'Manuel Araujo y Río Diamante',              telefono: '4268-5419'},
-	{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Cerretti y España - Burzaco',               telefono: '4291-1066'},
+	{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',                          telefono: '4291-1066'},
 
+	//{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Alsina y Martín Fierro - Burzaco',          telefono: '4299-2273'},
+	
 ];
 	
 	

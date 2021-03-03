@@ -167,14 +167,14 @@ export class RegistroPageComponent implements OnInit {
   }
 
   private timeOutOfScope(): boolean{
-    let ok = devutils.timeOutOfScope();
+    let notOpenNow = devutils.timeOutOfScope();
 
-    if(ok){
+    if(notOpenNow){
       this.dsCtrl.openSnackBar('Este espacio queda habilitado días hábiles, de Lunes a Viernes de 8:00 a 14:00hs', 'Cerrar');
       //this.dsCtrl.openSnackBar('Hoy permanecemos cerrados por ser el Día de Almirante Brown, los esperamos a partir de mañana en el horario habitual de 8:00 a 14:00hs', 'Cerrar');
     } 
 
-    return ok;
+    return notOpenNow;
 
   }
 
