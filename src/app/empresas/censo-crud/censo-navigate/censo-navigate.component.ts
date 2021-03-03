@@ -64,8 +64,11 @@ export class CensoNavigateComponent implements OnInit {
             }
         
             this._censoCtrl.fetchCensoByQuery(query).subscribe(list => {
-              this._censoCtrl.updateTableData()
-              this.showData = true;
+
+              if(list && list.length){
+                this._censoCtrl.updateTableData()
+                this.showData = true;  
+              }
 
             })
           }else{
@@ -86,19 +89,16 @@ export class CensoNavigateComponent implements OnInit {
   nuevoCenso(): void {
     if(this.hasOrganizacion){
       //ToDo
-      this._router.navigate(['../censo2021'],{relativeTo: this._route});
-    //   if(this.showData){
-    //     this._censoCtrl.openSnackBar('ATENCIÓN: Ya ha iniciado el proceso de CENSO', 'CERRAR')
+      if(this.showData){
+        this._censoCtrl.openSnackBar('ATENCIÓN: Ya ha iniciado el proceso de CENSO', 'CERRAR')
 
-    //   }else {
+      }else {
+        this._router.navigate(['../censo2021'], {relativeTo: this._route} );
+      }
 
-    //   }
-
-
-    // }else{
-    //   this._censoCtrl.openSnackBar('ATENCIÓN: Debe vincular una organización para iniciar el censo', 'CERRAR')
-
-    // }
+    }else{
+      this._censoCtrl.openSnackBar('ATENCIÓN: Debe vincular una organización para iniciar el censo', 'CERRAR')
+    }
   }
 
   navigateDashboard(): void {
