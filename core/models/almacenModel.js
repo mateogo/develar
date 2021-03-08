@@ -152,6 +152,39 @@ function buildQuery(query){
   return q;
 }
 
+const entregaDesdeOptList = [
+  {val: 'almacen',      type: 'Galpón',          label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
+  {val: 'burzaco',      type: 'delegacion',      label: 'Del Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
+  {val: 'claypole',     type: 'delegacion',      label: 'Del Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
+  {val: 'donorione',    type: 'delegacion',      label: 'Del Don Orione',       locacion:	'Manuel Araujo y Río Diamante', telefono: '4268-5419'},
+  {val: 'glew',         type: 'delegacion',      label: 'Del Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
+  {val: 'josemarmol',   type: 'delegacion',      label: 'Del José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
+  {val: 'longchamps',   type: 'delegacion',      label: 'Cám Comer Longchamps',locacion:	'Burgward 1030',         telefono: '4293-4299'},
+  {val: 'malvinas',     type: 'delegacion',      label: 'Del Malvinas Arg',     locacion:	'Policastro 2389',           telefono: '4297-8615'},
+  {val: 'minrivadavia', type: 'delegacion',      label: 'Del Min Rivadavia',    locacion:	'25 de Mayo y Quiroga',      telefono: '4279-0052'},
+  {val: 'rcalzada',     type: 'delegacion',      label: 'Del Rafael Calzada',   locacion:	'Guemes 1996',               telefono: '4291-1666'},
+  {val: 'solano',       type: 'delegacion',      label: 'Del San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
+  {val: 'sanjose',      type: 'delegacion',      label: 'Del San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
+
+  {val: 'secretaria',   type: 'secretaria',      label: 'Secretaría Erézcano',                   locacion:	'Erézcano 1252',               telefono: '4293-4299'},
+  {val: 'cicglew',      type: 'cic',             label: 'CIC Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
+  {val: 'cicburzaco',   type: 'cid',             label: 'UFF Burzaco',   locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
+  {val: 'cicmarmol',    type: 'cic',             label: 'CIC J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
+
+  {val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+  {val: 'envio',        type:'Envío domicilio',  label: 'Envío domicilio' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+
+  {val: 'proveedor',    type:'Proveedor',        label: 'Proveedor'       , locacion: 'erezcano',  telefono: '11 2222 3333'},
+  {val: 'otro',         type:'Otro',             label: 'Otro'            , locacion: 'erezcano',  telefono: '11 2222 3333'},
+  {val: 'no_definido',  type:'Sin selección',    label: 'Sin selección' },
+];
+
+function getDepositoLabel(almacen){
+  if(!almacen) return 's/dato';
+  let token = entregaDesdeOptList.find(t => t.val === almacen);
+  return token ? token.label : almacen;
+}
+
 
 /**
  * El Modelo es el objeto constructor de instancias concretas
@@ -210,15 +243,14 @@ exports.findAll = function (errcb, cb) {
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
     console.dir(query)
-    console.log('justCabecera. [%s]', query.justCabecera === "false")
 
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
-        }else{
-          console.log('fetched: [%s]', entities && entities.length);
+ 
+          }else{
             cb(entities);
         }
     });
@@ -306,13 +338,11 @@ exports.fetchRemitosByPerson = function(personId){
 }
 
 exports.exportarmovimientos = function(query, req, res ){
-    console.log('exportar movimientos')
     
     if(!query){
       query = {estado: 'activo'}
     }
 
-    console.log('EXPORT BEGIN *********')
     fetchMovimientos(query, req, res)
 
 }
@@ -321,16 +351,14 @@ exports.exportarmovimientos = function(query, req, res ){
 function fetchMovimientos(query, req, res){
     let regexQuery = buildQuery(query)
 
-    console.dir('FetchMovimientos: buildQuery')
-    console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]',whoami, err)
             errcb(err);
-        }else{
-            console.log('EXPORT MOVIM ok[%s]', entities && entities.length)
-            buildExcelStream(entities, query, req, res)
+
+          }else{
+          buildExcelStream(entities, query, req, res)
         }
     });
 
@@ -362,6 +390,8 @@ function buildExcelStream(remanentes, query, req, res){
         const requeridox = row.requeridox || {slug: 'Sin beneficiario', tdoc: 's/d', ndoc: 's/d'};
 
         const entregas = row.entregas
+
+        row.deposito = getDepositoLabel(row.deposito);
 
 
         const {compName, compNum, qty, action, estado, avance, fecomp_txa, slug, deposito, tmov} = row;
@@ -404,7 +434,6 @@ function buildExcelStream(remanentes, query, req, res){
 /********************************/
 
 exports.tablero = function(fecha, errcb, cb) {
-  console.log('****** Build TABLERO ALMACEN BEGIN [%s] *******', fecha);
 
   let time_frame = utils.buildDateFrameForCurrentWeek(fecha);
 
@@ -442,18 +471,13 @@ function procesTableroRemitoalmacen(ptree, productTree, entities, timeframe, err
   let master = {};
 
   entities.forEach(remito => {
-    //console.dir(remito);
+  
     let fecomp = utils.parseDateStr(remito.fecomp_txa)
-    //console.log('remito: [%s]  [%s]',remito.fecomp_txa, (remito.fecomp_tsa == fecomp.getTime()));
     let person = ptree[remito.personId];
-    // let fenac = 0;
-    // let sexo = 'X';
     let ciudad = 'ciudad';
 
     if(person){
-      //console.log('PERSON: [%s]  [%s] [%s] [%s]' , person.displayName, person.fenac, person.fenactx, ("00" + Math.floor(utils.calcularEdad(person.fenac)/10)).substr(-2))
-      // fenac = person.fenac || 0;
-      // sexo = person.sexo || 'X';
+
       if(person.locaciones && person.locaciones.length){
         ciudad = person.locaciones[0].city || 'ciudad';
       }
@@ -489,14 +513,12 @@ function procesTableroRemitoalmacen(ptree, productTree, entities, timeframe, err
 
         token.id = buildTablerTokenId(token, fecomp, timeframe);
 
-        console.log('MasterTree: [%s] SEM:[%s]', token.id, token.name)
         processToken(token, master);
 
       })
     }
   })
   // fin del proceso
-  console.log('TABLER ENDed')
   cb(master);
 
 }

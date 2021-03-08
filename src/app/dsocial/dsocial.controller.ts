@@ -150,7 +150,7 @@ export class DsocialController {
   * obtener serial para Asistencias
   */
   fetchSerialAsistencias(type, name, sector): Observable<Serial> {
-    //console.log('t[%s] n[%s] s[%s]', type, name, sector);
+    //c onsole.log('t[%s] n[%s] s[%s]', type, name, sector);
     let serial: Serial = DsocialModel.asistenciaSerial(type, name, sector);
     let fecha = new Date();
     serial.anio = fecha.getFullYear();
@@ -311,28 +311,6 @@ export class DsocialController {
     const windw = window.open(Url, 'about:blank')
 
 
-
-    // console.log('export: [%s]', params);
-
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('GET', Url, true);
-    // xhr.send();
-
-    //fetch(Url);
-
-    // setTimeout(()=>{
-
-    //   window.location.href = 'api/remitosalmacen/exportarmovimientos'
-
-    // }, 10000)
-
-    
-    // this.daoService.exportarMovimientos<RemitoAlmacen>('remitoalmacen', query).subscribe(list =>{
-    //   console.log('export cb')
-
-    // })
-
-
   }
 
 
@@ -454,7 +432,7 @@ export class DsocialController {
     beneficiario.fe_ts = hoy.getTime();
 
     this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
-      //console.log('BENEFICIARIO UPDATE OK')
+      //c onsole.log('BENEFICIARIO UPDATE OK')
     
     })
 
@@ -467,7 +445,7 @@ export class DsocialController {
     beneficiario.fe_ts = hoy.getTime();
 
     this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
-      //console.log('BENEFICIARIO ANULACIÓN ENTREGA OK')
+      //c onsole.log('BENEFICIARIO ANULACIÓN ENTREGA OK')
     
     })
 
@@ -524,7 +502,7 @@ export class DsocialController {
       asistencia.compName = serial.compName;
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
       this.daoService.create<Asistencia>('asistencia', asistencia).then(token =>{
-        // console.log('Update Asistencia OK [%s]', token._id);
+        // c onsole.log('Update Asistencia OK [%s]', token._id);
         if(token){
           listener.next(token)
         }
@@ -1214,7 +1192,7 @@ export class DsocialController {
 
     if(urlmodule){
       urlpath = snap.substr(1, (snap.length - urlmodule.length -2));
-      //console.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
+      //c onsole.log('url path [%s] [%s]', urlpath ,(snap.length - urlmodule.length -1));
     }else{
       urlpath = snap.substr(1);
     }
@@ -1234,7 +1212,7 @@ export class DsocialController {
     let snck = this.snackBar.open(message, action, {duration: 3000});
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+      //c onsole.log('action???? [%s]', e);
     })
   }
 
@@ -1425,7 +1403,7 @@ export class DsocialController {
   }
 
   get kitAlimentosOptList():KitOptionList[]{
-    //console.log('getKitAlimentosOptList [%s]', this._kitAlimentosOptList && this._kitAlimentosOptList.length )
+    //c onsole.log('getKitAlimentosOptList [%s]', this._kitAlimentosOptList && this._kitAlimentosOptList.length )
     if(!this._kitAlimentosOptList){
       this.loadKitAlimentosOptList();
       return [];

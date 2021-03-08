@@ -132,7 +132,7 @@ export class RemitoalmacenTableComponent implements OnInit {
   }
 
   ngOnChanges(){
-    //console.log('********** ngOnChanges;')
+    //c onsole.log('********** ngOnChanges;')
   }
 
   // action: [entregar|limpiar]
@@ -162,7 +162,7 @@ export class RemitoalmacenTableComponent implements OnInit {
   }
 
   changeAction(action: MatSelectChange){
-    //console.log('Action selected:[%s] [%s] [%s]', this.selectedAction, action.value, action.source.value ); 
+    //c onsole.log('Action selected:[%s] [%s] [%s]', this.selectedAction, action.value, action.source.value ); 
     this.triggerAction(action.value);
     setTimeout(()=>{
         action.source.writeValue('no_definido')  
@@ -193,7 +193,7 @@ export class RemitoalmacenTableComponent implements OnInit {
   }
 
   changeCheckBx(event:MatCheckboxChange , col, cols){
-    //console.log('generic Dialog changeCheckBx: [%s] [%s]',  event.checked.valueOf() , argavancents.length)
+    //c onsole.log('generic Dialog changeCheckBx: [%s] [%s]',  event.checked.valueOf() , argavancents.length)
   }
 
   getLabel(item:string, arr:Array<any>, prefix: string):string{

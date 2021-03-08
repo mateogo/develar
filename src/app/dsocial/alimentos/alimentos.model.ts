@@ -401,6 +401,34 @@ const kitEntregaOptList: Array<any> = [
         {val: 'comedor',    type:'Comedor Comunitario', label: 'Comedor Comunitario' },
 ];
 
+const depositosOptList = [
+	{val: 'almacen',      type: 'Galpón',          label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
+	{val: 'burzaco',      type: 'delegacion',      label: 'Del Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
+	{val: 'claypole',     type: 'delegacion',      label: 'Del Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
+	{val: 'donorione',    type: 'delegacion',      label: 'Del Don Orione',       locacion:	'Manuel Araujo y Río Diamante', telefono: '4268-5419'},
+	{val: 'glew',         type: 'delegacion',      label: 'Del Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
+	{val: 'josemarmol',   type: 'delegacion',      label: 'Del José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
+	{val: 'longchamps',   type: 'delegacion',      label: 'Cám Comer Longchamps',locacion:	'Burgward 1030',         telefono: '4293-4299'},
+	{val: 'malvinas',     type: 'delegacion',      label: 'Del Malvinas Arg',     locacion:	'Policastro 2389',           telefono: '4297-8615'},
+	{val: 'minrivadavia', type: 'delegacion',      label: 'Del Min Rivadavia',    locacion:	'25 de Mayo y Quiroga',      telefono: '4279-0052'},
+	{val: 'rcalzada',     type: 'delegacion',      label: 'Del Rafael Calzada',   locacion:	'Guemes 1996',               telefono: '4291-1666'},
+	{val: 'solano',       type: 'delegacion',      label: 'Del San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
+	{val: 'sanjose',      type: 'delegacion',      label: 'Del San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
+  
+	{val: 'secretaria',   type: 'secretaria',      label: 'Secretaría Erézcano',                   locacion:	'Erézcano 1252',               telefono: '4293-4299'},
+	{val: 'cicglew',      type: 'cic',             label: 'CIC Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
+	{val: 'cicburzaco',   type: 'cid',             label: 'UFF Burzaco',   locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
+	{val: 'cicmarmol',    type: 'cic',             label: 'CIC J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
+  
+	{val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+	{val: 'envio',        type:'Envío domicilio',  label: 'Envío domicilio' , locacion: 'erezcano',  telefono: '11 2222 3333'},
+  
+	{val: 'proveedor',    type:'Proveedor',        label: 'Proveedor'       , locacion: 'erezcano',  telefono: '11 2222 3333'},
+	{val: 'otro',         type:'Otro',             label: 'Otro'            , locacion: 'erezcano',  telefono: '11 2222 3333'},
+	{val: 'no_definido',  type:'Sin selección',    label: 'Sin selección' },
+  ];
+  
+
 const productByKit = {
 	standard: [
 			{val: 'arroz',  id:'101',  slug:'Arroz 1kg',            ume:'kg', qty: 1},
@@ -455,6 +483,7 @@ const optionsLists = {
 		alimentos: alimentosTypeOptList,
 		frecuencia: frecuenciaOptList,
 		kitentrega: kitEntregaOptList,
+		depositos: depositosOptList,
 		kititems: productByKit,
 		tmov: tmovOptList,
 		tableactions: tableActionsOptList,
@@ -546,7 +575,7 @@ export class AlimentosHelper {
 			td.compName   = token.compName;
 			td.compNum    = token.compNum;
 			td.qty        = token.qty;
-			td.deposito   = token.deposito;
+			td.deposito   = this.getOptionLabel('depositos', token.deposito);
 			td.tmov       = token.tmov;
 			td.fecomp_tsa = token.fecomp_tsa;
 			td.fecomp_txa = token.fecomp_txa;
