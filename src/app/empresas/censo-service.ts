@@ -21,7 +21,7 @@ import { AcumuladoresPorArea } from '../salud/internacion/internacion.model';
 export interface UpdateListEvent {
   action: string;
   type:   string;
-  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoInversion|CensoExpectativas|DocumentData|CardGraph>;
+  items:  Array<CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoProductos|CensoInversion|CensoExpectativas|DocumentData|CardGraph>;
 };
 
 
