@@ -142,6 +142,7 @@ export class EmpresaCoreEditComponent implements OnInit {
       displayName:  [null, Validators.compose([Validators.required])],
       personType:   [null, Validators.compose([Validators.required])],
       email:        [null, Validators.compose([Validators.email])],
+      feInicioAct:  [null],
       brandName:    [null],
       locacion:     [null],
       nombre:       [null],
@@ -169,6 +170,7 @@ export class EmpresaCoreEditComponent implements OnInit {
 		  email:        person.email,
 		  locacion:     person.locacion,
 		  personType:   person.personType,
+      feInicioAct:  person.feInicioAct,
 		  nombre:       person.nombre,
 		  apellido:     person.apellido,
 		  tdoc:         person.tdoc,
@@ -193,7 +195,9 @@ export class EmpresaCoreEditComponent implements OnInit {
 		entity.email = fvalue.email;
 		entity.locacion = fvalue.locacion;
 		entity.personType = fvalue.personType;
-		entity.nombre = fvalue.nombre;
+    entity.feInicioAct = fvalue.feInicioAct;
+
+    entity.nombre = fvalue.nombre;
 		entity.apellido = fvalue.apellido;
 		entity.tdoc = fvalue.tdoc;
 		entity.ndoc = fvalue.ndoc;

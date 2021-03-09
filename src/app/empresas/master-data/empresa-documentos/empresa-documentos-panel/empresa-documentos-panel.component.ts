@@ -29,7 +29,7 @@ export class EmpresaDocumentosPanelComponent implements OnInit {
 
   ngOnInit() {
     if(this.isHabilitacion){
-      this.title = 'Habilitaciones';
+      this.title = 'Habilitación Municipal';
 
     }else {
       this.title = 'Licencias, Permisos y otros documentos';
@@ -61,6 +61,14 @@ export class EmpresaDocumentosPanelComponent implements OnInit {
 
   addItem(){
     let item = new DocumentData();
+    item.type = 'habilitacion';
+    item.slug = 'Habilitación Municipal';
+    item.isTramitacionMAB = true;
+    item.expedidopor = 'MAB';
+    item.fechavigencia = item.fechaexpe;
+    item.fechavigencia_ts = 0;
+    item.tramitacionURL = '';
+    
     if(this.items){
       this.items.push(item);
 

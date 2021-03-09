@@ -16,6 +16,7 @@ import { 	CensoIndustrias,
 					EstadoCenso, 
 					Empresa, 
           CensoComercializacion,
+          mercadosOptList,
           Mercado,
 					CensoData } from '../../../../censo.model';
 
@@ -155,6 +156,13 @@ export class CensoComercializacionEditComponent implements OnInit {
     });
     
     this._mercados = token.mercados;
+
+    this._mercados.forEach(m => {
+      let item = mercadosOptList.find(it => it.val === m.target);
+      m.label = item ? item.label : m.target;
+
+    })
+
     let mercadosFG = this._mercados.map(mercado => this.fb.group(mercado));
     let mercadosFormArray = this.fb.array(mercadosFG);
     this.form.setControl('mercados', mercadosFormArray);
@@ -237,6 +245,7 @@ export class CensoComercializacionEditComponent implements OnInit {
     const mercadosFlds: Mercado[] = fvalue.mercados.map(t =>{
         t.montoVentas = t.propVentas * monto_base;
         t.montoCompras = t.propCompras * monto_base;
+        console.dir(t);
 
         return Object.assign({}, t )
       })

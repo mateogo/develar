@@ -140,41 +140,6 @@
     </div>
     <hr>
 
-    <div class="row" >
-      <!--div class="col-md-3">
-        <mat-form-field>
-          <mat-select #fldDestinoBien placeholder="Destino de la producción "
-              [formControl]="form.controls['destino']"
-              (selectionChange)="changeSelectionValue('destino',fldDestinoBien.value)" >
-            <mat-option *ngFor="let item of origenOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-          <mat-hint>Aplica a productos de venta o maquinaria de fabricación</mat-hint>
-        </mat-form-field>
-      </div-->
-      <div class="col-md-3">
-        <mat-form-field >
-          <input  matInput [formControl]="form.controls['capainstalada']" 
-                  placeholder="Capacidad instalada" >
-          <mat-hint>Capacidad nominal de producción en UNIDADES/AÑO</mat-hint>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3">
-        <mat-form-field >
-          <input  matInput [formControl]="form.controls['capautilizada']" 
-                  placeholder="Capacidad utilizada" >
-          <mat-hint>Capacidad efectivamente utilizada promedio último año en UNIDADES/AÑO</mat-hint>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3">
-        <mat-form-field >
-          <input  matInput [formControl]="form.controls['anio']" 
-                  placeholder="Año de lanzamiento" >
-          <mat-hint>Año en que inició venta o producción del bien o maquinaria</mat-hint>
-        </mat-form-field>
-      </div>
-    </div>
-    <hr>
 
     <!--p class="text-destacado" >Describa la COMPETENCIA (para el caso de tratarse de un producto de REVENTA)</p>
     <div class="row" >

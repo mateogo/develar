@@ -8,6 +8,7 @@ import {    CensoIndustrias,
             CensoExpectativas,
             CensoComercializacion,
 			CensoInversion,
+			CensoProductos,
             Mercado,
             MercadoSumario,
             Empresa } from './censo.model';
@@ -42,7 +43,7 @@ export interface TipoEmpresa {
 export interface UpdateEvent {
   action:  string;
   token:   string;  
-  payload: CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoInversion|CensoExpectativas|DocumentData|CardGraph;
+  payload: CensoActividad|CensoBienes|CensoComercializacion|CensoMaquinarias|CensoRecursosHumanos|CensoPatentes|CensoProductos|CensoInversion|CensoExpectativas|DocumentData|CardGraph;
 };
 
 function fetchAction(val, type){
@@ -353,6 +354,8 @@ const fuenteRecursosInversionOptList = [
 	{val: 'propio',       label: 'Recursos propios'  },
 	{val: 'insfinan',     label: 'Colocación financiera'  },
 	{val: 'banco',        label: 'Crédito bancario'  },
+	{val: 'bancoexter',   label: 'Banco del exterior'  },
+	{val: 'provexter',    label: 'Proveedor del exterior'  },
 	{val: 'acciones',     label: 'Emisión acciones/Inversor'  },
 	{val: 'organismos',   label: 'Organismos internacionales'  },
 	{val: 'subsidionac',  label: 'Subsidio público'  },
@@ -478,6 +481,13 @@ const estadosOptList = [
       {val: 'cerrado',     label: 'Cerrado',     slug:'Cerrado' },
       {val: 'suspendido',  label: 'Suspendido',  slug:'Suspendido' },
       {val: 'baja',        label: 'Baja',        slug:'Baja' },
+]
+const estadoHabilitacionOptList = [
+	{val: 'no_definido', label: 'Sin selección', slug:'Seleccione opción' },
+	{val: 'activo',      label: 'Otorgado',      slug:'Otorgado' },
+	{val: 'entramite',   label: 'En trámite',    slug:'En trámite' },
+	{val: 'pendiente',   label: 'Pendiente',     slug:'Pendiente' },
+	{val: 'baja',        label: 'Baja',          slug:'Baja' },
 ]
 
 const avanceOptList = [
@@ -785,6 +795,13 @@ const deltaActividadOptList = [
 	{val: 'disminuye',     label: 'Disminuirá',        slug: '' },
 ];
 
+const facroresInversionOptList = [
+	{val: 'alienta',      label: 'Alienta emprender',       slug: '' },
+	{val: 'desalienta',   label: 'Desalienta emprender',    slug: '' },
+	{val: 'posibilita',   label: 'Posibilita / posibilitó', slug: '' },
+	{val: 'impide',       label: 'Impide / impidió',        slug: '' },
+];
+
 
 const optionsSubLists = {
 	stype: subTipoInversionTree
@@ -796,6 +813,7 @@ const optionsLists = {
     comprobantes: comprobantesOptList,
     tableactions: tableActions,
     estado: estadosOptList,
+	estadoHabilitacion: estadoHabilitacionOptList,
     avance: avanceOptList,
     sectores: sectorOptList,
     actividad: tipoActividadOptList,
@@ -815,6 +833,7 @@ const optionsLists = {
     documentos: tipoDocumentosOptList,
     habilitacion: habilitacionOptList,
     competencia: competenciaTypeOptList,
+	factoresInversion: facroresInversionOptList,
 
 	inversionType: tiposDeInversionOptList,
 	fuenteFinanciamiento: fuenteRecursosInversionOptList,

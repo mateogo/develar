@@ -84,8 +84,7 @@
               <thead class="thead-dark text-head">
                 <tr>
                   <th>Factor de incidencia </th>
-                  <th title="Alienta la inversion">Alienta</th>
-                  <th title="Desalienta la inversión">Desalienta</th>
+                  <th title="Impacto">Impacto</th>
                   <th>Comentario</th>
                 </tr>
               </thead>
@@ -98,10 +97,14 @@
                       </mat-form-field>
                     </td>
                     <td style='max-width: 50px;' class="align-middle" >
-                      <mat-checkbox [checked]="false" color="primary" formControlName='alienta'>Alienta</mat-checkbox>
-                    </td>
-                    <td style='max-width: 50px;' class="align-middle" >
-                      <mat-checkbox [checked]="false" color="primary" formControlName='dificulta'>Desalienta</mat-checkbox>
+                      <mat-form-field>
+                        <mat-select #fldImpacto formControlName='impacto' placeholder="Impacto"
+                                (selectionChange)="changeSelectionValue('impacto', fldImpacto.value)">
+                          <mat-option *ngFor="let item of factoresInversionOptList" [value]="item.val">
+                                {{ item.label }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
                     </td>
                     <td style='max-width: 150px;'>
                       <mat-form-field>

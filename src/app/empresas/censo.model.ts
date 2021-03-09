@@ -81,6 +81,7 @@ export class MercadoSumario {
 
 export class Mercado {
 	target: string; // browr, pba, pais, brasil, mercosur, etc.
+	label: string; // Partido Almte
 	isLocal: boolean = true;
 	propVentas: number = 0; //proporción relativa de ventas
 	propCompras: number = 0; //proporción relativa de ventas
@@ -89,7 +90,7 @@ export class Mercado {
 	slug: string = ''; //proporción relativa de ventas
 }
 
-const mercadosOptList = [
+export const mercadosOptList = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
 	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
@@ -99,8 +100,9 @@ const mercadosOptList = [
 	{val: 'colombia',     isLocal: false, label: 'Colombia',   slug: 'Colombia' },
 	{val: 'mexico',       isLocal: false, label: 'México',   slug: 'México' },
 	{val: 'usa',          isLocal: false, label: 'USA',   slug: 'USA' },
-	{val: 'america',      isLocal: false, label: 'América',   slug: 'América' },
+	{val: 'america',      isLocal: false, label: 'Resto América',   slug: 'América' },
 	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
+	{val: 'asia',         isLocal: false, label: 'Asia',               slug: 'Asia' },
 	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
 ]
 
@@ -139,6 +141,7 @@ export class CensoComercializacion{
 		this.mercados = mercadosOptList.map(t => {
 			let m = new Mercado();
 			m.target = t.val;
+			m.label =  t.label;
 			m.isLocal = t.isLocal;
 			return m;
 		})
@@ -239,6 +242,7 @@ const factoresAfectanInversionOptList = [
 export class FactoresInversion {
 	ftype:     string = '';
 	flabel:    string = '';
+	impacto:   string = '';
 	alienta:   boolean = false;
 	dificulta: boolean = false;
 	slug:      string = '';
@@ -501,6 +505,9 @@ export class CensoBienes {
 	isImportada: boolean = false;
 	origen: string;
 
+	isNacional: boolean = false;
+	origennacional: string;
+
 	isExportable: boolean = false;
 	exportableTxt: string;
 	propExportada: number; // todo
@@ -552,6 +559,7 @@ export class CensoMaquinarias {
 	destino: string; // destino de la produccion opciones ídem origen
 	capainstalada: string; // unidades año
 	capautilizada: string; // unidades año
+	umecapacidad: string; // unidad de medida capacidad
 
 	competencia: string;
 	competenciaTxt: string;

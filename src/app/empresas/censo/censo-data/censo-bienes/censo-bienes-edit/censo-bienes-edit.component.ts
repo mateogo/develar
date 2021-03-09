@@ -111,6 +111,9 @@ export class CensoBienesEditComponent implements OnInit {
 
       isImportada:     token.isImportada,
       origen:          token.origen,
+      
+      isNacional:      token.isNacional,
+      origennacional:  token.origennacional,
 
       isProdpropia:    token.isProdpropia,
       cenproductivo:   token.cenproductivo,
@@ -188,11 +191,13 @@ export class CensoBienesEditComponent implements OnInit {
       actividadId:     [ null ],
       level:           [ null ],
       origen:          [ null ],
+      origennacional:          [ null ],
       cenproductivo:   [ null ],
       isExportable:    [ null ],
       exportableTxt:   [ null ],
       isImportada:     [ null ],
       isProdpropia:    [ null ],
+      isNacional:      [ null ],
       isInnovacion:    [ null ],
       isSustituible:   [ null ],
       parancelaria:    [ null ],
@@ -228,13 +233,9 @@ export class CensoBienesEditComponent implements OnInit {
 
     entity.level =           fvalue.level;
 		entity.origen =          fvalue.origen;
-		entity.isExportable =    fvalue.isExportable;
+		entity.origennacional =  fvalue.origennacional;
 		entity.exportableTxt =   fvalue.exportableTxt;
-		entity.isImportada =     fvalue.isImportada;
-		entity.isProdpropia =    fvalue.isProdpropia;
 		entity.cenproductivo =   fvalue.cenproductivo;
-		entity.isInnovacion =    fvalue.isInnovacion;
-		entity.isSustituible =   fvalue.isSustituible;
 		entity.parancelaria =    fvalue.parancelaria;
 		entity.sustituibleTxt =  fvalue.sustituibleTxt;
 		entity.innovacionTxt =   fvalue.innovacionTxt;
@@ -249,11 +250,12 @@ export class CensoBienesEditComponent implements OnInit {
     entity.competenciaOrigen =  fvalue.competenciaOrigen;
 
 
-		entity.isImportada =   entity.isImportada   || false;
-		entity.isProdpropia =  entity.isProdpropia  || false;
-		entity.isInnovacion =  entity.isInnovacion  || false;
-		entity.isExportable =  entity.isExportable  || false;
-		entity.isSustituible = entity.isSustituible || false;
+		entity.isImportada =   fvalue.isImportada ;
+		entity.isProdpropia =  fvalue.isProdpropia;
+		entity.isNacional =    fvalue.isNacional ;
+    entity.isInnovacion =  fvalue.isInnovacion;
+		entity.isExportable =  fvalue.isExportable;
+		entity.isSustituible = fvalue.isSustituible;
 
 		return entity;
 	}

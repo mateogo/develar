@@ -4,7 +4,7 @@
 
     <!---personType;  tdoc, ndoc--->
     <div class="row" >
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
         <mat-select #fldPersonType   formControlName='personType' (change)="changeSelectionValue('personType',fldPersonType )" placeholder="Forma jurídica">
           <mat-option *ngFor="let tper of persontypes" [value]="tper.val" >{{ tper.label }}</mat-option>
@@ -12,7 +12,7 @@
         </mat-form-field>
       </div>
       
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldTdoc placeholder="Tipo de identificación"
               [formControl]="form.controls['tdoc']"
@@ -23,10 +23,15 @@
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col-md-3">
         <mat-form-field>
           <input  matInput [formControl]="form.controls['ndoc']" placeholder="Número identificación" >
           <mat-error *ngIf="hasError('ndoc', 'mailerror')">{{ docBelongsTo.error }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+            <input matInput [formControl]="form.controls['feInicioAct']" placeholder="Fecha inicio actividades">
         </mat-form-field>
       </div>
 

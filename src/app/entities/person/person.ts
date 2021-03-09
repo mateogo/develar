@@ -391,6 +391,7 @@ export class Person {
   sexo: string;
   ts_alta: number;
   ts_umodif: number;
+  feInicioAct: string;
   user_alta: string;
   user_umodif: string;
 
@@ -947,8 +948,8 @@ const barriosOptList = {
   ],
 
   burzaco: [
+    {val: 'pindustrial',  label: 'SIP: Sector Industrial Planificado' },
     {val: 'burzaco',    label: 'Burzaco Ctro' },
-    {val: 'pindustrial',  label: 'Parque Industrial AB' },
     {val: 'elhornero',    label: 'El Hornero' },
     {val: 'lapilarica',    label: 'La Pilarica' },
     {val: 'elcanario',    label: 'El Canario' },
@@ -1514,10 +1515,10 @@ const obrasSociales = [
 
 const parqueOptList = [
   {val: 'no_definido',  label: 'Seleccione opción',     slug:'Seleccione opción' },
-  {val: 'parque',       label: 'En parque industrial', slug:'Reside en el parque industrial' },
-  {val: 'ampliacion',   label: 'En zona ampliación',   slug:'Reside en zona periférica / ampliación del parque' },
-  {val: 'fuera',        label: 'Fuera del parque',     slug:'Reside fuera del parque industrial' },
+  {val: 'dentropermi',  label: 'Dentro del perímetro SIP',  slug:'Reside en el parque industrial' },
+  {val: 'fueraperim',   label: 'Fuera del perímetro SIP',   slug:'Reside fuera del parque industrial' },
   {val: 'otra',         label: 'Otra',                 slug:'Otra' },
+  //{val: 'ampliacion',   label: 'En zona ampliación',   slug:'Reside en zona periférica / ampliación del parque' },
 ];
 
 const propiedadOptList = [

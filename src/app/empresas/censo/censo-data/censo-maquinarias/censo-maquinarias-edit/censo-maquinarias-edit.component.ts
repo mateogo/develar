@@ -122,6 +122,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
       anio:            token.anio,
       capainstalada:   token.capainstalada,
       capautilizada:   token.capautilizada,
+      umecapacidad:    token.umecapacidad,
 
       competencia:       token.competencia,
       competenciaTxt:    token.competenciaTxt,
@@ -194,6 +195,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
       anio:            [ null ],
       capainstalada:   [ null ],
       capautilizada:   [ null ],
+      umecapacidad:    [ null ],
 
       competencia:         [ null ],
       competenciaTxt:      [ null ],
@@ -231,6 +233,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
     entity.anio =             fvalue.anio;
     entity.capainstalada =    fvalue.capainstalada;
     entity.capautilizada =    fvalue.capautilizada;
+    entity.umecapacidad =     fvalue.umecapacidad;
 
     entity.competencia =        fvalue.competencia;
     entity.competenciaTxt =     fvalue.competenciaTxt;

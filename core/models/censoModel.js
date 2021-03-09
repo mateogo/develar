@@ -104,6 +104,9 @@ const censoBienesSch = new Schema({
     isImportada: { type: Boolean, required: false },
     origen: { type: String, required: false },
 
+    isNacional:     { type: Boolean, required: false },
+    origennacional: { type: String, required: false },
+
     isExportable: { type: Boolean, required: false },
     exportableTxt: { type: String, required: false },
 
@@ -150,6 +153,8 @@ const censoMaquinariasSch = new Schema({
     destino: { type: String, required: false },
     capainstalada: { type: String, required: false },
     capautilizada: { type: String, required: false },
+    umecapacidad:  { type: String, required: false },
+
 
     competencia: { type: String, required: false },
     competenciaTxt: { type: String, required: false },
@@ -274,6 +279,7 @@ const mercadosOptList = [
 
 const mercadoSch = new mongoose.Schema({
 	target:         { type: String,  required: false},
+	label:          { type: String,  required: false},
 	isLocal:        { type: Boolean, required: false},
 	propVentas:     { type: Number,  required: false},
 	propCompras:    { type: Number,  required: false},
@@ -314,6 +320,7 @@ const censoComercializacionSch = new mongoose.Schema({
 const factoresInversionSch = new mongoose.Schema({
 	ftype:     { type: String,  required: false },
 	flabel:    { type: String,  required: false },
+	impacto:   { type: String,  required: false },
 	alienta:   { type: Boolean, required: false },
 	dificulta: { type: Boolean, required: false },
 	slug:      { type: String,  required: false },

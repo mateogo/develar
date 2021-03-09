@@ -32,7 +32,7 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 	public form: FormGroup;
 
   public documentos = CensoIndustriasService.getOptionlist('documentos');
-	public estados = CensoIndustriasService.getOptionlist('estado');
+	public estados = CensoIndustriasService.getOptionlist('estadoHabilitacion');
 
   public personError = false;
   public personErrorMsg = '';
@@ -154,15 +154,25 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 		entity.type =             fvalue.type;
 		entity.slug =             fvalue.slug;
     entity.observacion =      fvalue.observacion;
-    entity.feInicioActividades = fvalue.feInicioActividades;
-		entity.isTramitacionMAB = fvalue.isTramitacionMAB;
-		entity.expedidopor =      fvalue.expedidopor;
+    //entity.feInicioActividades = fvalue.feInicioActividades;
+		//entity.isTramitacionMAB = fvalue.isTramitacionMAB;
+		//entity.expedidopor =      fvalue.expedidopor;
 		entity.fechaexpe =        fvalue.fechaexpe;
 		entity.tramitacionNro =   fvalue.tramitacionNro;
-		entity.tramitacionURL =   fvalue.tramitacionURL;
-		entity.fechavigencia =    fvalue.fechavigencia;
+		//entity.tramitacionURL =   fvalue.tramitacionURL;
+		//entity.fechavigencia =    fvalue.fechavigencia;
 		entity.estado =           fvalue.estado;
 
+    entity.type = 'habilitacion';
+    entity.slug = 'Habilitación Municipal';
+    entity.isTramitacionMAB = true;
+    entity.expedidopor = 'MAB';
+    entity.fechavigencia = entity.fechaexpe;
+    entity.fechavigencia_ts = 0;
+    if(entity.fechavigencia){
+      entity.fechavigencia_ts = devutils.dateNumFromTx(entity.fechavigencia);
+    }
+    entity.tramitacionURL = '';
 
 		return entity;
 	}

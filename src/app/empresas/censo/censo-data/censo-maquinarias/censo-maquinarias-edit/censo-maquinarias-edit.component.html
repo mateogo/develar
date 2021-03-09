@@ -104,6 +104,48 @@
 
     </div>
     <hr>
+    <div class="row" >
+      <!--div class="col-md-3">
+        <mat-form-field>
+          <mat-select #fldDestinoBien placeholder="Destino de la producción "
+              [formControl]="form.controls['destino']"
+              (selectionChange)="changeSelectionValue('destino',fldDestinoBien.value)" >
+            <mat-option *ngFor="let item of origenOptList" 
+              [value]="item.val" >{{ item.label }}</mat-option>
+          </mat-select>
+          <mat-hint>Aplica a productos de venta o maquinaria de fabricación</mat-hint>
+        </mat-form-field>
+      </div-->
+      <div class="col-md-3">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['capainstalada']" 
+                  placeholder="Capacidad instalada" >
+          <mat-hint>Capacidad nominal de producción</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['capautilizada']" 
+                  placeholder="Capacidad utilizada" >
+          <mat-hint>Capacidad efectivamente utilizada promedio último año</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['umecapacidad']" 
+                  placeholder="Unidad de medida" >
+          <mat-hint>Unidad de medida utilizada para expresar capacidad, por ejemplo unidades/año</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field >
+          <input  matInput [formControl]="form.controls['anio']" 
+                  placeholder="Año de lanzamiento" >
+          <mat-hint>Año en que inició venta o producción del bien o maquinaria</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
 
     <div class="additional-info">
       <button mat-raised-button color="primary" type="submit" 

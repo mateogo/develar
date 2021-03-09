@@ -47,6 +47,7 @@ export class CensoInversionEditComponent implements OnInit {
   public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
   public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
+  public factoresInversionOptList = CensoIndustriasService.getOptionlist('factoresInversion');
 
   public typeOptList = CensoIndustriasService.getOptionlist('inversionType');
   public stypeOptList = [];
@@ -142,6 +143,7 @@ export class CensoInversionEditComponent implements OnInit {
     let factoresFG = this._factores.map(mercado => this.fb.group({
                   ftype:     [mercado.ftype],
                   flabel:    [mercado.flabel],
+                  impacto:   [mercado.impacto],
                   alienta:   [mercado.alienta],
                   dificulta: [mercado.dificulta],
                   slug:      [mercado.slug],
