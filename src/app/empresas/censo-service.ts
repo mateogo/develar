@@ -11,6 +11,10 @@ import {    CensoIndustrias,
 			CensoProductos,
             Mercado,
             MercadoSumario,
+			seccionOptList,
+			mercadosOptList,
+			nivelActividadOptList,
+			deltaActividadOptList,
             Empresa } from './censo.model';
 import { Serial }          from '../develar-commons/develar-entities';
 import { Person, DocumentData }      from '../entities/person/person';
@@ -96,6 +100,7 @@ export class CensoIndustriasService {
 				list.push(token);
 			})
 		}
+		list.push({val: 'no_definido', label: 'Sin vinculación directa con una ACTIVIDAD'})
 		return list;
 
 	}
@@ -186,6 +191,14 @@ export class CensoIndustriasService {
 
 	static getOptionlist(type){
 		return optionsLists[type] || optionsLists['default'];
+	}
+
+	static getOptionToken(type, val): OptListToken{
+		let token = {val: val || 'no_definido', label: val || 'No definido' } as OptListToken;
+		if(!val) return token;
+
+		let t = this.getOptionlist(type).find(item => item.val === val)
+		return t ? t : token;
 	}
 
 	static getOptionLabelFromList(list, val){
@@ -337,7 +350,7 @@ export class CensoIndustriasService {
 
 }
 
-const seccionOptList = [
+const seccionOptList_old = [
 	{val: 'administracion', label: 'Administración', slug: 'Administración' },
 	{val: 'produccion',     label: 'Producción',     slug: 'Producción' },
 	{val: 'logistica',      label: 'Logística',      slug: 'Logística' },
@@ -460,8 +473,8 @@ const tipoActividadOptList = [
       {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
       {val: 'principal',      label: 'Principal',      slug:'Principal' },
       {val: 'secundaria',     label: 'Secundaria',     slug:'Secundaria' },
-      {val: 'investigacion',  label: 'Invertitación',  slug:'Invertitación' },
-      {val: 'social',         label: 'Social',         slug:'Social' },
+      {val: 'investigacion',  label: 'Investigación y Desarrollo',  slug:'Investigación y Desarrollo' },
+      {val: 'social',         label: 'Resp Social',         slug:'Resp Social' },
       {val: 'otra',           label: 'Otra',           slug:'Otra' },
 ];
 
@@ -486,8 +499,8 @@ const estadoHabilitacionOptList = [
 	{val: 'no_definido', label: 'Sin selección', slug:'Seleccione opción' },
 	{val: 'activo',      label: 'Otorgado',      slug:'Otorgado' },
 	{val: 'entramite',   label: 'En trámite',    slug:'En trámite' },
-	{val: 'pendiente',   label: 'Pendiente',     slug:'Pendiente' },
-	{val: 'baja',        label: 'Baja',          slug:'Baja' },
+	{val: 'noiniciado',  label: 'No iniciado',   slug:'No iniciado' },
+	{val: 'baja',        label: 'Anulado/ Baja', slug:'Baja' },
 ]
 
 const avanceOptList = [
@@ -586,7 +599,7 @@ const origenOptList = [
       {val: 'oriente',      label: 'Región Oriente',   slug: 'Región Oriente' },
 ];
 
-const mercadosOptList = [
+const mercadosOptList_old = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',      slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
 	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',    slug: 'Nacional' },
@@ -782,18 +795,6 @@ const contact_tag: Array<any> = [
     {val: 'LAB',    label: 'LAB',      slug:'LAB' },
 ];
 
-const nivelActividadOptList = [
-	{val: 'acelerado',     label: 'Crecimiento acelerado',    slug: '' },
-	{val: 'normal',        label: 'Crecimiento normal',       slug: '' },
-	{val: 'estancado',     label: 'Estancamiento',            slug: '' },
-	{val: 'retraccion',    label: 'Retracción de actividad',  slug: '' },
-];
-
-const deltaActividadOptList = [
-	{val: 'aumenta',       label: 'Aumentará nivel',    slug: '' },
-	{val: 'mantiene',      label: 'Mantendrá nivel',   slug: '' },
-	{val: 'disminuye',     label: 'Disminuirá',        slug: '' },
-];
 
 const facroresInversionOptList = [
 	{val: 'alienta',      label: 'Alienta emprender',       slug: '' },
@@ -802,6 +803,44 @@ const facroresInversionOptList = [
 	{val: 'impide',       label: 'Impide / impidió',        slug: '' },
 ];
 
+const factoresPlenaOcupacionOptList = [
+	{ val: 'talentos',         label: 'Falta de personal calificado'  },
+	{ val: 'demanda',          label: 'Demanda deprimida'  },
+	{ val: 'proveedores',      label: 'Proveedores deficientes'  },
+	{ val: 'comercializacion', label: 'Limitante comercial'  },
+	{ val: 'financiero',       label: 'Limitante financiera'  },
+	{ val: 'logistica',        label: 'Limitante logistica'  },
+	{ val: 'serviciosgrales',  label: 'Falta de serv generales (energía/ gas/ etc.)'  },
+	{ val: 'mprimas',          label: 'Falta de materias primas'  },
+	{ val: 'insumos',          label: 'Falta de insumos'  },
+	{ val: 'otros',            label: 'Otros'  },
+];
+
+const competenciasOptList = [
+	{ val: 'tiredes',         label: 'TI: Infraestructura Redes'  },
+	{ val: 'tihardware',      label: 'TI: Servidores-equipamiento'  },
+	{ val: 'tisoftware',      label: 'TI: Desarrolladores Software'  },
+	{ val: 'tibdatos',        label: 'TI: Base / ciencia de datos'  },
+	{ val: 'ticloud',         label: 'TI: Computación en la nube'  },
+	{ val: 'automatizacion',  label: 'Automatización Indus'  },
+	{ val: 'electronica',     label: 'Electrónica'  },
+	{ val: 'electricidad',    label: 'Electricidad'  },
+	{ val: 'fisicoquimica',   label: 'Técnicos físico/ química'  },
+	{ val: 'tecnomateriales', label: 'Tecnología de materiales'  },
+	{ val: 'ecommerce',       label: 'Comercio electrónico'  },
+	{ val: 'mktdigital',      label: 'Marketing digital'  },
+	{ val: 'metalurgia',      label: 'Metalurgia'  },
+	{ val: 'matriceria',      label: 'Matricería'  },
+	{ val: 'seguehigiene',    label: 'Seguridad e Higiene'  },
+	{ val: 'calidad',         label: 'Gestión de la Calidad'  },
+	{ val: 'mejoracont',      label: 'Mejora continua'  },
+	{ val: 'disenioindus',    label: 'Diseño industrial'  },
+	{ val: 'profesionales',   label: 'Profesionales'  },
+	{ val: 'comexterior',     label: 'Comercio exterior'  },
+	{ val: 'administracion',  label: 'Administración'  },
+	{ val: 'juridico',        label: 'Jurídico'  },
+	{ val: 'otros',           label: 'Otros'  },
+];
 
 const optionsSubLists = {
 	stype: subTipoInversionTree
@@ -834,7 +873,7 @@ const optionsLists = {
     habilitacion: habilitacionOptList,
     competencia: competenciaTypeOptList,
 	factoresInversion: facroresInversionOptList,
-
+	factoresOcupacion: factoresPlenaOcupacionOptList,
 	inversionType: tiposDeInversionOptList,
 	fuenteFinanciamiento: fuenteRecursosInversionOptList,
 
@@ -842,6 +881,7 @@ const optionsLists = {
 
 	nactividad: nivelActividadOptList,
 	varactividad: deltaActividadOptList,
+	competencias: competenciasOptList,
 
    
 }
@@ -860,3 +900,7 @@ function getPrefixedLabel(list, prefix, val){
 		return label;
 }
 
+interface OptListToken {
+  val: string;
+  label: string;
+}

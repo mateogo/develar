@@ -1517,6 +1517,7 @@ const parqueOptList = [
   {val: 'no_definido',  label: 'Seleccione opción',     slug:'Seleccione opción' },
   {val: 'dentropermi',  label: 'Dentro del perímetro SIP',  slug:'Reside en el parque industrial' },
   {val: 'fueraperim',   label: 'Fuera del perímetro SIP',   slug:'Reside fuera del parque industrial' },
+  {val: 'fueradistrito', label: 'Fuera del Distrito AB',   slug:'Reside fuera del distrito AB' },
   {val: 'otra',         label: 'Otra',                 slug:'Otra' },
   //{val: 'ampliacion',   label: 'En zona ampliación',   slug:'Reside en zona periférica / ampliación del parque' },
 ];

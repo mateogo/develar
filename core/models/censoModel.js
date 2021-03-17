@@ -169,7 +169,7 @@ const censoPatentesSch = new Schema({
 
     isImportada: { type: Boolean, required: false },
     origen: { type: String, required: false },
-    parancelaria: { type: String, required: false },
+    otorgante: { type: String, required: false },
 
     isExportable: { type: Boolean, required: false },
     exportableTxt: { type: String, required: false },
@@ -202,18 +202,21 @@ const nodoSeccionSch = new Schema({
     codigo:     { type: String, required: false },
     qh:         { type: Number, required: false },
     qm:         { type: Number, required: false },
+    qau:        { type: Number, required: false },
     
 });
 
 const crecimientoEmpleadosSch = new Schema({
-    hasCrecimiento:  { type: Boolean, required: false},
-    hasBrownEmplea:  { type: Boolean, required: false},
+    hasCrecimiento:      { type: Boolean, required: false},
+    hasBrownEmplea:      { type: Boolean, required: false},
+    hasDeseoBrownEmplea: { type: Boolean, required: false},
+    
     qnuevos:         { type: Number,  required: false},
     qsecundarios:    { type: Number,  required: false},
     qterciarios:     { type: Number,  required: false},
     quniversitarios: { type: Number,  required: false},
-    slug:            { type: String,  required: false},
 
+    slug:            { type: String,  required: false},
 })
 
 
@@ -222,23 +225,33 @@ const censoRecursosHumanosSch = new Schema({
     slug: { type: String, required: false },
 
     qempleados:    { type: Number, required: false },
+    qemplab:       { type: Number, required: false },
+    qemplnoab:     { type: Number, required: false },
+
+    competencia:  { type: String, required: false },
+    competencias: [ String ],
+
     porNivelEducacion:   [ nodoSeccionSch ],
     porNivelJerarquico:  [ nodoSeccionSch ],
-    crecimiento:   { type: crecimientoEmpleadosSch, required: false },
 
-    
-})
+    crecimiento:   { type: crecimientoEmpleadosSch, required: false },    
+});
 
 const censoExpectativasSch = new Schema({
     type:             { type: String, required: false },
     slug:             { type: String, required: false },
 	nactividad:       { type: String, required: false },
+    tocupacion:       { type: Number, required: false }, 
+    fplenaocupacion:  { type: String, required: false }, 
 	nactividad_var:   { type: Number, required: false },
 	qempleados_mod:   { type: String, required: false },
 	qhorasprod_mod:   { type: String, required: false },
 	capinstalada_mod: { type: String, required: false },
 	vtaexter_mod:     { type: String, required: false },
 	vtalocal_mod:     { type: String, required: false },
+    factoresList:     [ String ],
+    
+
     
     fortaleza1:    { type: String, required: false },
     fortaleza2:    { type: String, required: false },
@@ -253,7 +266,7 @@ const censoExpectativasSch = new Schema({
     amenaza2:      { type: String, required: false },
     amenaza3:      { type: String, required: false },
 
-})
+});
 
 const assetSch = new mongoose.Schema({
     entity: { type: String, required: false, default: "" },
@@ -266,7 +279,7 @@ const assetSch = new mongoose.Schema({
 
 });
 
-const mercadosOptList = [
+const mercadosOptList_old = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de Buenos Aires', slug: 'Pcia de Buenos Aires' },
 	{val: 'nacional',     isLocal: true,  label: 'Nacional',         slug: 'Nacional' },
@@ -277,6 +290,18 @@ const mercadosOptList = [
 	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
 ];
 
+const mercadosOptList = [
+	{val: 'brown',      isLocal: true,  label: 'Distrito Almte Brown',           slug: 'Partido Almte Brown' },
+	{val: 'nacional',   isLocal: true,  label: 'Nacional (excluye Almte Brown)', slug: 'Nacional' },
+	{val: 'brasil',     isLocal: false, label: 'Brasil',                         slug: 'Brasil' },
+	{val: 'mercosur',   isLocal: false, label: 'Mercosur (excluye Brasil)',      slug: 'Mercosur' },
+	{val: 'america',    isLocal: false, label: 'Resto América',                  slug: 'América' },
+	{val: 'europa',     isLocal: false, label: 'Unión Europea',                  slug: 'Unión Europea' },
+	{val: 'china',      isLocal: false, label: 'China',                          slug: 'China' },
+	{val: 'asia',       isLocal: false, label: 'Resto de Asia',                  slug: 'Resto de Asia' },
+	{val: 'resto',      isLocal: false, label: 'Otras regiones',                 slug: 'Otras regiones' },
+]
+
 const mercadoSch = new mongoose.Schema({
 	target:         { type: String,  required: false},
 	label:          { type: String,  required: false},
@@ -285,7 +310,8 @@ const mercadoSch = new mongoose.Schema({
 	propCompras:    { type: Number,  required: false},
 	montoVentas:    { type: Number,  required: false},
 	montoCompras:   { type: Number,  required: false},
-	slug:           { type: String,  required: false}
+	slugCompras:    { type: String,  required: false},
+	slugVentas:     { type: String,  required: false}
 });
 
 const censoComercializacionSch = new mongoose.Schema({

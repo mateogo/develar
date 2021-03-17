@@ -68,7 +68,7 @@ export class CensoCoreEditComponent implements OnInit {
   public categoryTemplateTxt2 = "";
   public categoryTemplateTxt3 = "";
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-core-edit:01",
+    ayuda1: "censo:censo-core:01",
     ayuda2: "app:turnos:turno-browse:query:dos"
   }
 

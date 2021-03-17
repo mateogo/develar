@@ -15,7 +15,7 @@
           </mat-icon>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <mat-form-field>
               <input matInput type="text" formControlName="slug" placeholder="Alcance del bloque de datos" >
             </mat-form-field>    
@@ -26,6 +26,16 @@
               <input matInput type="text" formControlName="qempleados" placeholder="Empleados totales" >
             </mat-form-field>    
           </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input matInput type="text" formControlName="qemplab" placeholder="Empleados residentes AB" >
+            </mat-form-field>    
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input matInput type="text" formControlName="qemplnoab" placeholder="Empleados extra distrito" >
+            </mat-form-field>    
+          </div>
         </div>
 
         
@@ -34,27 +44,32 @@
         <div class="row"  formArrayName='niveleseducativos'>
 
           <ng-container *ngFor="let neducativo of niveleseducativos.controls; let row=index" [formGroupName]="row">
-            <ng-container *ngIf="row % 6 === 0" >
+            <ng-container *ngIf="row % 3 === 0" >
               <div class="col-md-12">
                 <p class="text-resaltado">{{neducativo.value.seccion_tx}}</p>
               </div>
             </ng-container>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="row">
-                <div class="col">
+                <div class="col justify-items-center">
                   <span class='text-title'>{{ neducativo.value.nivel_tx }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field>
                     <input matInput type="number" formControlName="qh" placeholder="Hombre" >
                   </mat-form-field>    
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field>
                     <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                  </mat-form-field>    
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qau" placeholder="GenAutoper" >
                   </mat-form-field>    
                 </div>
               </div>
@@ -67,27 +82,32 @@
 
         <div class="row"  formArrayName='nivelesjerarquicos'>
           <ng-container *ngFor="let njerarquico of nivelesjerarquicos.controls; let row=index" [formGroupName]="row">
-            <ng-container *ngIf="row % 6 === 0" >
+            <ng-container *ngIf="row % 3 === 0" >
               <div class="col-md-12">
                 <p class="text-resaltado">{{njerarquico.value.seccion_tx}}</p>
               </div>
             </ng-container>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
               <div class="row">
                 <div class="col">
                   <span class='text-title'>{{ njerarquico.value.nivel_tx }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field>
                     <input matInput type="number" formControlName="qh" placeholder="Hombre" >
                   </mat-form-field>    
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field>
                     <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                  </mat-form-field>    
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="qau" placeholder="GenAutoper" >
                   </mat-form-field>    
                 </div>
               </div>
@@ -159,8 +179,37 @@
           </div>
         </div>
         <hr>
+        <p class="text-destacado">Capacidades y competencias requeridas</p>
+        <p class="text-normal">Consigne el tipo de perfil que prevé incorporar, especialmente aquellos difícil de reclutar y/o retener.</p>
 
-
+        <div class="bordered">
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-select #fldCompetencia formControlName="competencia" placeholder="Capacidades y/o competencias demandadas" 
+                      (selectionChange)="changeSelectionValue('competencia', fldCompetencia.value)">
+  
+                  <mat-option *ngFor='let item of competenciasOptList' [value]="item.val">
+                    {{ item.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12" *ngIf="true">
+                <mat-chip-list>
+                    <mat-chip *ngFor="let item of competencia$ | async" [removable]="true" 
+                          (removed)="removeCompetencia(item)" >
+                          {{ item.label }} 
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+          </div>
+          </div>
+  
 
         <div class="additional-info">
           <button mat-raised-button color="primary" type="submit" 
@@ -170,11 +219,6 @@
           <button mat-button type="button" color="accent"
               (click)="onCancel()" >Cancelar</button>
         </div>
-
-
-
-
-
 
       </form>
     </ng-container>      

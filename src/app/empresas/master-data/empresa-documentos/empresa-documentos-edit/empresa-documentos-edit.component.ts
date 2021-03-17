@@ -130,7 +130,12 @@ export class EmpresaDocumentosEditComponent implements OnInit {
   }
 
   initForEdit(form: FormGroup, token: DocumentData): FormGroup {
-		form.reset({
+    token.type =  token.type || 'habilitacion';
+    token.slug =  token.slug || 'Habilitación Municipal';
+    token.isTramitacionMAB =  token.isTramitacionMAB || true;
+    token.expedidopor =  token.expedidopor || 'MAB';
+
+    form.reset({
 			type:             token.type,
 			slug:             token.slug,
       observacion:      token.observacion,
@@ -151,8 +156,8 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 		const fvalue = form.value;
 		const entity = token; 
 
-		entity.type =             fvalue.type;
-		entity.slug =             fvalue.slug;
+		entity.type =             fvalue.type || 'habilitacion';
+		entity.slug =             fvalue.slug || 'Habilitación Municipal';
     entity.observacion =      fvalue.observacion;
     //entity.feInicioActividades = fvalue.feInicioActividades;
 		//entity.isTramitacionMAB = fvalue.isTramitacionMAB;
@@ -163,10 +168,6 @@ export class EmpresaDocumentosEditComponent implements OnInit {
 		//entity.fechavigencia =    fvalue.fechavigencia;
 		entity.estado =           fvalue.estado;
 
-    entity.type = 'habilitacion';
-    entity.slug = 'Habilitación Municipal';
-    entity.isTramitacionMAB = true;
-    entity.expedidopor = 'MAB';
     entity.fechavigencia = entity.fechaexpe;
     entity.fechavigencia_ts = 0;
     if(entity.fechavigencia){

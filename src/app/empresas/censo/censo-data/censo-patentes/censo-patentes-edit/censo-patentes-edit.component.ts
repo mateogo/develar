@@ -55,8 +55,8 @@ export class CensoPatentesEditComponent implements OnInit {
   private unBindList = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
-    ayuda2: "app:turnos:turno-browse:query:dos"
+    ayuda1: "censo:censo-patentes:01",
+    ayuda2: "censo:censo-patentes:02"
   }
 
   constructor(
@@ -128,7 +128,6 @@ export class CensoPatentesEditComponent implements OnInit {
       competenciaTxt:    token.competenciaTxt,
       competenciaOrigen: token.competenciaOrigen,
 
-      level:           token.level,
 		});
 
 		return form;
@@ -213,7 +212,6 @@ export class CensoPatentesEditComponent implements OnInit {
 		entity.slug =            fvalue.slug;
 		entity.type =            fvalue.type;
 		entity.tactividad =      fvalue.tactividad;
-		entity.level =           fvalue.level;
 		entity.origen =          fvalue.origen;
 		entity.isExportable =    fvalue.isExportable;
 		entity.exportableTxt =   fvalue.exportableTxt;

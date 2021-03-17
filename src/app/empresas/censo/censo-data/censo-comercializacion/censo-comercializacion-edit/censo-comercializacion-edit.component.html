@@ -17,7 +17,7 @@
               (click)="showHelp($event, 'ayuda1')">help_outline</mat-icon>
     </div>
 
-
+    <h4>Apertura de ventas según mercado destino</h4>
     <div class="row" >
       <div class="col">
         <table class="table table-bordered">
@@ -25,7 +25,6 @@
             <tr>
               <th>Mercado</th>
               <th title="Porcentaje relativo de ventas de cada mercado">%Ventas</th>
-              <th title="Porcentaje relativo de compras en cada mcercado">%Compras</th>
               <th>Comentario</th>
             </tr>
           </thead>
@@ -42,18 +41,11 @@
                     <input matInput type="number" formControlName="propVentas" placeholder="Porcentual ventas" >
                   </mat-form-field>
                 </td>
-                <td style='max-width: 70px;'>
+                <td style='max-width: 170px;'>
                   <mat-form-field>
-                    <input matInput type="number" formControlName="propCompras" placeholder="Porcentual compras" >
+                    <input matInput type="string" formControlName="slugVentas" placeholder="Comentario" >
                   </mat-form-field>
                 </td>
-                <th style='max-width: 170px;'>
-                  <mat-form-field>
-                    <input matInput type="string" formControlName="slug" placeholder="Comentario" >
-                  </mat-form-field>
-
-                </th>
-
               </tr>
             </ng-container>
           </tbody>
@@ -61,6 +53,43 @@
       </div>
     </div>
     <hr>
+
+    <h4>Aprovisionamiento según origen de la materia prima / insumo</h4>
+    <div class="row" >
+      <div class="col">
+        <table class="table table-bordered">
+          <thead class="thead-dark text-head">
+            <tr>
+              <th>Mercado</th>
+              <th title="Porcentaje relativo de compras en cada mcercado">%Compras</th>
+              <th>Comentario</th>
+            </tr>
+          </thead>
+          <tbody  formArrayName='compras'>
+            <ng-container *ngFor="let token of compras.controls; let row=index"  [formGroupName]="row">
+              <tr [style]="tableRowStyle(row)">
+                <th style='max-width: 100px;'>
+                  <mat-form-field>
+                    <input matInput type="string" formControlName="label" placeholder="Mercado" >
+                  </mat-form-field>
+                </th>
+                <td style='max-width: 70px;'>
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="propCompras" placeholder="Porcentual compras" >
+                  </mat-form-field>
+                </td>
+                <td style='max-width: 170px;'>
+                  <mat-form-field>
+                    <input matInput type="string" formControlName="slugCompras" placeholder="Comentario" >
+                  </mat-form-field>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row" >
       <div class="col-md-12">
         <p class="text-normal">¿Está interesado en promocionar sus productos en el exterior?</p>

@@ -59,7 +59,7 @@ export class CensoProductosEditComponent implements OnInit {
   private unBindList = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
+    ayuda1: "censo:censo-productos:01",
     ayuda2: "app:turnos:turno-browse:query:dos"
   }
 

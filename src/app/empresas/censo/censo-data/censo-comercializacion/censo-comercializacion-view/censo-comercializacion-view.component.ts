@@ -40,7 +40,7 @@ export class CensoComercializacionViewComponent implements OnInit {
 
   }
 
-  private buildView(token){
+  private buildView(token:CensoComercializacion){
     token.mercados = (token.mercados && token.mercados.length ) ? token.mercados : [];
 
     this.mercados = token.mercados.map(t => {

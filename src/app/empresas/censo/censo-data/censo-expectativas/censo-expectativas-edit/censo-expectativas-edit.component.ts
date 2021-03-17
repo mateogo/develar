@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@ang
 
 import { CustomValidators } from 'ng2-validation';
 
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
 import { AyudaEnLineaService } from '../../../../../develar-commons/ayuda-en-linea.service';
@@ -44,18 +44,22 @@ export class CensoExpectativasEditComponent implements OnInit {
 
   public nactividadOptList = CensoIndustriasService.getOptionlist('nactividad');
   public varactividadOptList = CensoIndustriasService.getOptionlist('varactividad');
+  public factoresOcupacionOptList = CensoIndustriasService.getOptionlist('factoresOcupacion');
+
+  public factores$ = new BehaviorSubject<OptListToken[]>([]);
+  public factoresLimitantes: Array<OptListToken> = [];
 
   //public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
   
-  public title = "Expectativas y proyección";
+  public title = "Estado actual, expectativas y proyección";
   public texto1 = "Tomando como referencia los últimos 3 años, indique la proyección y expectativas";
   public texto2: string;
 
   private unBindList = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
-    ayuda2: "app:turnos:turno-browse:query:dos"
+    ayuda1: "censo:censo-expectativas:01",
+    ayuda2: "censo:censo-expectativas:02"
   }
 
   constructor(
@@ -103,12 +107,14 @@ export class CensoExpectativasEditComponent implements OnInit {
       type:             token.type,
 		  slug:             token.slug,
       nactividad:       token.nactividad,
+      tocupacion:       token.tocupacion,
       nactividad_var:   token.nactividad_var,
       qempleados_mod:   token.qempleados_mod,
       qhorasprod_mod:   token.qhorasprod_mod,
       capinstalada_mod: token.capinstalada_mod,
       vtaexter_mod:     token.vtaexter_mod,
-      vtalocal_mod:     token.vtalocal_mod,  
+      vtalocal_mod:     token.vtalocal_mod,
+      fplenaocupacion:  token.fplenaocupacion,  
 
       fortaleza1:     token.fortaleza1,
       fortaleza2:     token.fortaleza2,
@@ -126,6 +132,11 @@ export class CensoExpectativasEditComponent implements OnInit {
 
 
 		});
+
+    if(token.factoresList && token.factoresList.length){
+      this.factoresLimitantes  =   token.factoresList.map(t => CensoIndustriasService.getOptionToken('factoresOcupacion', t));
+      this.emitFactores(this.factoresLimitantes);
+    }
 
 		return form;
   }
@@ -159,8 +170,28 @@ export class CensoExpectativasEditComponent implements OnInit {
 
 
   changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'fplenaocupacion'){
+      let token = this.factoresLimitantes.find(t => t.val === val);
+      
+      if(!token){
+        this.factoresLimitantes.push(CensoIndustriasService.getOptionToken('factoresOcupacion', val));
+        this.emitFactores(this.factoresLimitantes);
+      }
+    }
+  }
 
+  removeFactor(item){
+    let token  = this.factoresLimitantes.find(t => t.val === item.val);
+    if(token){
+      let index = this.factoresLimitantes.indexOf(token);     
+      this.factoresLimitantes.splice(index,1);
+      this.emitFactores(this.factoresLimitantes)
+    }
+
+  }
+
+  private emitFactores(factores: Array<OptListToken>){
+    this.factores$.next(factores);
   }
 
  
@@ -172,12 +203,14 @@ export class CensoExpectativasEditComponent implements OnInit {
 		  slug:             [ null, Validators.compose([Validators.required]) ],
       type:             [ null ],
       nactividad:       [ null ],
+      tocupacion:       [ null ],
       nactividad_var:   [ null ],
       qempleados_mod:   [ null ],
       qhorasprod_mod:   [ null ],
       capinstalada_mod: [ null ],
       vtaexter_mod:     [ null ],
       vtalocal_mod:     [ null ],
+      fplenaocupacion:  [ null ],
       fortaleza1:       [ null ],
       fortaleza2:       [ null ],
       fortaleza3:       [ null ],
@@ -205,12 +238,14 @@ export class CensoExpectativasEditComponent implements OnInit {
 		entity.slug =             fvalue.slug;
 		entity.type =             fvalue.type;
     entity.nactividad =       fvalue.nactividad;
+    entity.tocupacion =       fvalue.tocupacion;
     entity.nactividad_var =   fvalue.nactividad_var;
     entity.qempleados_mod =   fvalue.qempleados_mod;
     entity.qhorasprod_mod =   fvalue.qhorasprod_mod;
     entity.capinstalada_mod = fvalue.capinstalada_mod;
     entity.vtaexter_mod =     fvalue.vtaexter_mod;
     entity.vtalocal_mod =     fvalue.vtalocal_mod;
+    entity.fplenaocupacion =  fvalue.fplenaocupacion;
 
     entity.fortaleza1 = fvalue.fortaleza1;
     entity.fortaleza2 = fvalue.fortaleza2;
@@ -228,9 +263,18 @@ export class CensoExpectativasEditComponent implements OnInit {
     entity.amenaza2 = fvalue.amenaza2;
     entity.amenaza3 = fvalue.amenaza3;
 
-
+    if(this.factoresLimitantes && this.factoresLimitantes.length){
+      entity.factoresList  =   this.factoresLimitantes.map(t => t.val);
+    } else {
+      entity.factoresList = [];
+    }
 
 		return entity;
 	}
 
+}
+
+interface OptListToken {
+  val: string;
+  label: string;
 }

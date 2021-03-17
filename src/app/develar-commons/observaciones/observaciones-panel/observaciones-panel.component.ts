@@ -24,7 +24,7 @@ export class ObservacionesPanelComponent implements OnInit {
 	@Input() audit: Audit;
 	@Input() parent: ParentEntity;
   @Input() type: string = 'type';
-  @Input() title: string = 'Observaciones'
+  @Input() title: string = 'Consultas, comentarios u observaciones'
 
   constructor(
   		private obsCtrl: ObservacionesController

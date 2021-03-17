@@ -17,6 +17,7 @@ import { 	CensoIndustrias,
 					Empresa, 
           CensoInversion,
           FactoresInversion,
+          factoresAfectanInversionOptList,
 					CensoData } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
@@ -57,12 +58,13 @@ export class CensoInversionEditComponent implements OnInit {
   public texto1 = "";
   public texto2: string;
 
+  private factoresInversionList: Array<FactoresInversion> = []
   private unBindList = [];
 
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
-    ayuda2: "app:turnos:turno-browse:query:dos"
+    ayuda1: "censo:censo-inversion:01",
+    ayuda2: "censo:censo-inversion:02"
   }
 
   constructor(
@@ -126,7 +128,30 @@ export class CensoInversionEditComponent implements OnInit {
     this.showForm = true;
   }
 
+  // ftype:     string = '';
+	// flabel:    string = '';
+	// impacto:   string = '';
+	// alienta:   boolean = false;
+	// dificulta: boolean = false;
+	// slug:      string = '';
+
   private initForEdit(form: FormGroup, token: CensoInversion): FormGroup {
+    let factores = token.factores || [];
+
+    let factoresList = factoresAfectanInversionOptList.map(f =>{
+			let factor = new FactoresInversion(f.val, f.label);
+      let oldData = factores.find(t => t.ftype === f.val);
+
+      if(oldData){
+        factor.impacto = oldData.impacto;
+        factor.alienta = oldData.alienta;
+        factor.dificulta = oldData.dificulta;
+        factor.slug = oldData.slug;
+      }
+      return factor;
+		});
+
+    token.factores = factoresList;
 
 		form.reset({
       type:         token.type,

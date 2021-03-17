@@ -53,7 +53,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
   private unBindList = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
+    ayuda1: "censo:censo-maquinarias:01",
     ayuda2: "app:turnos:turno-browse:query:dos"
   }
 

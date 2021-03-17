@@ -55,12 +55,12 @@ function fetchAction(val, type) {
 }
 
 const tipoActividadOptList = [
-  { val: 'no_definido', label: 'Sin selección', slug: 'Seleccione opción' },
-  { val: 'principal', label: 'Principal', slug: 'Principal' },
-  { val: 'secundaria', label: 'Secundaria', slug: 'Secundaria' },
-  { val: 'investigacion', label: 'Invertitación', slug: 'Invertitación' },
-  { val: 'social', label: 'Social', slug: 'Social' },
-  { val: 'otra', label: 'Otra', slug: 'Otra' },
+  {val: 'no_definido',    label: 'Sin selección',  slug:'Seleccione opción' },
+  {val: 'principal',      label: 'Principal',      slug:'Principal' },
+  {val: 'secundaria',     label: 'Secundaria',     slug:'Secundaria' },
+  {val: 'investigacion',  label: 'Investigación y Desarrollo',  slug:'Investigación y Desarrollo' },
+  {val: 'social',         label: 'Resp Social',         slug:'Resp Social' },
+  {val: 'otra',           label: 'Otra',           slug:'Otra' },
 ];
 
 const default_option_list: Array<any> = [

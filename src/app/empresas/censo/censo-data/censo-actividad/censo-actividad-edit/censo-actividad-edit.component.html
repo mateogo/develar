@@ -57,7 +57,7 @@
     </div>
 
     <div class="row" >
-      <div class="col-md-2">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-select #fldActividad placeholder="Tipo de actividad"
               [formControl]="form.controls['type']"
@@ -65,15 +65,15 @@
             <mat-option *ngFor="let item of actividadOptList" 
               [value]="item.val" >{{ item.label }}</mat-option>
           </mat-select>
-          <mat-hint>Indique cómo clasifica esta actividad en términos relativos</mat-hint>
+          <mat-hint>Clasificación de la actividad</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <mat-form-field >
           <input  matInput [formControl]="form.controls['level']" 
                   type="number" min="10" max="100" step="5"          
                   placeholder="Peso relativo de la actividad" >
-          <mat-hint>En porcentaje de la facturación anual ó de la inversión. Rango 10-100</mat-hint>
+          <mat-hint>En porcentaje de la facturación anual promedio últimos 3 años. Rango 10-100</mat-hint>
         </mat-form-field>
       </div>
       <div class="col-md-2">
@@ -84,7 +84,7 @@
           <mat-hint>Indique el año con cuatro dígitos</mat-hint>
         </mat-form-field>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-select #fldCadena placeholder="Ubicación en la cadena productiva"
               [formControl]="form.controls['rol']"
@@ -96,9 +96,8 @@
         </mat-form-field>
       </div>
     </div>
-    <hr>
 
-    <div class="row" >
+    <div class="row mt-4" >
       <div class="col">
         <mat-form-field>
           <textarea  matInput [formControl]="form.controls['slug']" 

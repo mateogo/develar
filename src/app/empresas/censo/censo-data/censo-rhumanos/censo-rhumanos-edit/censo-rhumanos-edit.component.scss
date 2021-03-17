@@ -38,11 +38,25 @@ $color-destacado: #0645f5;
 	font-size: 1rem;
 }
 
+.text-row-title {
+	margin: 0 0 0 0;
+	font-weight: 700;
+	font-size: 1rem;
+	text-align: center;
+
+}
+
 .foda-bloque {
 	border: 1px solid #ebebeb;
 
 }
+
 .foda {
 	border: 2px solid #fafafa;
+}
 
+.bordered {
+	border: 1px solid #ebebeb;
+	padding: 8px;
+	margin-bottom: 10px;
 }

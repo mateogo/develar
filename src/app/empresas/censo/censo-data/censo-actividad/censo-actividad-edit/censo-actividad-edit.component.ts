@@ -41,7 +41,7 @@ export class CensoActividadEditComponent implements OnInit {
 	@Output() updateToken = new EventEmitter<UpdateEvent>();
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-actividad-edit:01",
+    ayuda1: "censo:censo-actividad:01",
   }
 
 
@@ -243,12 +243,14 @@ export class CensoActividadEditComponent implements OnInit {
 		const today = new Date();
 
 		let feDate = devutils.dateFromTx(fvalue.fecomp_txa);
-		entity.slug =      fvalue.slug;
-		entity.rubro =     fvalue.rubro;
-		entity.seccion =   fvalue.seccion;
-		entity.codigo =    fvalue.codigo;
+		entity.slug =     fvalue.slug;
+		entity.rubro =    fvalue.rubro;
+		entity.seccion =  fvalue.seccion;
+		entity.codigo =   fvalue.codigo;
     entity.level =    fvalue.level;
-    entity.type =    fvalue.type;
+    entity.type =     fvalue.type;
+    entity.anio =     fvalue.anio;
+    entity.rol =      fvalue.rol;
 
 
 		return entity;

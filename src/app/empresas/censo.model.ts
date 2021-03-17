@@ -3,7 +3,6 @@ import { Person, CoberturaData }  from '../entities/person/person';
 import { CardGraph } from '../develar-commons/asset-helper';
 import { MaterialSolicitado } from '../entities/consultas/consulta.model';
 
-
 export class Empresa {
 		empresaId:   string; 
 		slug: string; 
@@ -67,30 +66,18 @@ export class MercadoSumario {
 	constructor(){
 		this.total = new Mercado();
         this.total.target = 'TOTAL:';
-        this.total.slug = 'Total compras y ventas'
+        this.total.slugVentas = 'Total compras y ventas'
 		this.local = new Mercado();
 		this.local.target = 'LOCAL';
-		this.local.slug = 'Total compras y ventas mercado local';
+		this.local.slugVentas = 'Total compras y ventas mercado local';
 		this.externo = new Mercado();
 		this.externo.target = 'EXTERIOR';
-		this.externo.slug = 'Total compras y ventas mercado externo';
+		this.externo.slugVentas = 'Total compras y ventas mercado externo';
 	}
 
 }
 
-
-export class Mercado {
-	target: string; // browr, pba, pais, brasil, mercosur, etc.
-	label: string; // Partido Almte
-	isLocal: boolean = true;
-	propVentas: number = 0; //proporción relativa de ventas
-	propCompras: number = 0; //proporción relativa de ventas
-	montoVentas: number = 0; //proporción relativa de ventas
-	montoCompras: number = 0; //proporción relativa de ventas
-	slug: string = ''; //proporción relativa de ventas
-}
-
-export const mercadosOptList = [
+export const mercadosOptList_old = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
 	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
 	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
@@ -104,6 +91,18 @@ export const mercadosOptList = [
 	{val: 'europa',       isLocal: false, label: 'EU',               slug: 'EU' },
 	{val: 'asia',         isLocal: false, label: 'Asia',               slug: 'Asia' },
 	{val: 'resto',        isLocal: false, label: 'Otras regiones',   slug: 'Otras regiones' },
+]
+
+export const mercadosOptList = [
+	{val: 'brown',      isLocal: true,  label: 'Distrito Almte Brown',           slug: 'Partido Almte Brown' },
+	{val: 'nacional',   isLocal: true,  label: 'Nacional (excluye Almte Brown)', slug: 'Nacional' },
+	{val: 'brasil',     isLocal: false, label: 'Brasil',                         slug: 'Brasil' },
+	{val: 'mercosur',   isLocal: false, label: 'Mercosur (excluye Brasil)',      slug: 'Mercosur' },
+	{val: 'america',    isLocal: false, label: 'Resto América',                  slug: 'América' },
+	{val: 'europa',     isLocal: false, label: 'Unión Europea',                  slug: 'Unión Europea' },
+	{val: 'china',      isLocal: false, label: 'China',                          slug: 'China' },
+	{val: 'asia',       isLocal: false, label: 'Resto de Asia',                  slug: 'Resto de Asia' },
+	{val: 'resto',      isLocal: false, label: 'Otras regiones',                 slug: 'Otras regiones' },
 ]
 
 export class CensoComercializacion{
@@ -145,10 +144,21 @@ export class CensoComercializacion{
 			m.isLocal = t.isLocal;
 			return m;
 		})
-	}
-
-	
+	}	
 }
+
+export class Mercado {
+	target: string; // brown, pba, pais, brasil, mercosur, etc.
+	label: string; // Partido Almte
+	isLocal: boolean = true;
+	propVentas: number = 0; //proporción relativa de ventas
+	propCompras: number = 0; //proporción relativa de ventas
+	montoVentas: number = 0; //proporción relativa de ventas
+	montoCompras: number = 0; //proporción relativa de ventas
+	slugCompras: string = ''; //proporción relativa de ventas
+	slugVentas: string = ''; //proporción relativa de ventas
+}
+
 
 const subTipoInversionOptList = {
 	tecnologia: [
@@ -215,26 +225,26 @@ const subTipoInversionOptList = {
 
 }
 
-const factoresAfectanInversionOptList = [
-	{ val: 'riesgo',          label: 'Riesgos económicos'  },
+export const factoresAfectanInversionOptList = [
 	{ val: 'competencia',     label: 'Importación de bienes iguales o similares a menor costo'  },
+	{ val: 'infraestructura', label: 'Limitantes por infraestructura de la empresa'  },
+	{ val: 'serviciosgrales', label: 'Capacidad de servicios generales (energía/ gas/ agua/ efluentes/ conectividad)'  },
 	{ val: 'capmprimas',      label: 'Capacidad de proveedores de insumos / materias primas'  },
-	{ val: 'capinsum',        label: 'Calidad de insumos / materias primas'  },
 	{ val: 'caprrhh',         label: 'Capacidad del personal'  },
 	{ val: 'capadap',         label: 'Capacidad de adaptación al cambio'  },
 	{ val: 'costomp',         label: 'Costos de materias primas '  },
 	{ val: 'costoinsum',      label: 'Costos de insumos'  },
-	{ val: 'costoprod',       label: 'Costos de generales de producciòn (incluìda la Mano de Obra)'  },
+	{ val: 'costoprod',       label: 'Costos de generales de producciòn (incluye Mano de Obra)'  },
 	{ val: 'costobuso',       label: 'Costos de bienes de uso'  },
-	{ val: 'financiacion',    label: 'Condiciones de financiamiento'  },
 	{ val: 'economico',       label: 'Riesgos económicos'  },
+	{ val: 'financiacion',    label: 'Condiciones de financiamiento'  },
 	{ val: 'plazorecupero',   label: 'Plazos de recuperación de inversión'  },
 	{ val: 'informacion',     label: 'Información de tecnología disponible'  },
-	{ val: 'infraestructura', label: 'Infraestructura de la empresa'  },
+	{ val: 'capinsum',        label: 'Calidad de insumos / materias primas'  },
 	{ val: 'regulaciones',    label: 'Regulaciones'  },
 	{ val: 'empleo',          label: 'Niveles de empleo'  },
 	{ val: 'oferta',          label: 'Oferta de productos'  },
-	{ val: 'situaciongral',   label: 'Situación actual'  },
+	{ val: 'situaciongral',   label: 'Situación o contexto actual'  },
 	{ val: 'tamaniomercado',  label: 'Tamaño de mercado'  },
 	
 ];
@@ -278,20 +288,14 @@ const generoOptList = [
 	{val: 'M', label: 'Mujer', slug: 'Femenino' },		
 ]
 
-
-const seccionOptList = [
-	{val: 'administracion', label: 'Administración', slug: 'Administración' },
+export const seccionOptList = [
 	{val: 'produccion',     label: 'Producción',     slug: 'Producción' },
-	{val: 'logistica',      label: 'Logística',      slug: 'Logística' },
-	{val: 'calidad',        label: 'Calidad',        slug: 'Calidad' },
-	{val: 'ventas',         label: 'Ventas',         slug: 'Ventas' },
-	{val: 'compras',        label: 'Compras',        slug: 'Compras' },
-	{val: 'comercioext',    label: 'Comercio Ext',   slug: 'Comercio Ext' },
-	{val: 'finanzas',       label: 'Finanzas',       slug: 'Finanzas' },
-	{val: 'seguhigiene',    label: 'Seguridad e Higiene',  slug: 'Seguridad e Higiene' },
+	{val: 'comercial',      label: 'Comercial',      slug: 'Comercial' },
+	{val: 'administracion', label: 'Administración', slug: 'Administración' },
 ];
 
-const nivelJerarquicoOptList = [
+
+const nivelJerarquicoOptList_old = [
 	{val: 'directores',   label: 'Directores',    slug: 'Directores' },
 	{val: 'gerentes',     label: 'Gerentes',      slug: 'Gerentes' },
 	{val: 'supervisores', label: 'Supervisores',  slug: 'Supervisores' },
@@ -300,13 +304,25 @@ const nivelJerarquicoOptList = [
 	{val: 'operarios',    label: 'Operarios',     slug: 'Operarios' },
 ];
 
-const nivelEstudioOptList = [
-	{val: 'univer',        label: 'Univers/posgrado', slug: 'Universitario/ posgrado' },
+const nivelJerarquicoOptList = [
+	{val: 'nivjerarquico',   label: 'Nivel jerárquico (Directores y gerentes)',   slug: 'Directores y gerentes' },
+	{val: 'mandosmedios',    label: 'Mandos medios (Supervisores y jefes)',      slug: 'Supervisores, jefes, coordinadores' },
+	{val: 'operativos',      label: 'Nivel operativo (Operarios, empleados)',    slug: 'Operarios, administrativos' },
+];
+
+const nivelEstudioOptList_old = [
+	{val: 'universitario',        label: 'Univers/posgrado', slug: 'Universitario/ posgrado' },
 	{val: 'univer_inc',    label: 'Univers(incompleto)',   slug: 'Universitario incompl' },
 	{val: 'terciario',     label: 'Terciario/ Técnico',      slug: 'Terciario/ Técnico' },
 	{val: 'secundario',    label: 'Secundaria',              slug: 'Secundaria' },
 	{val: 'primaria',      label: 'Primaria',                slug: 'Primaria' },
 	{val: 'primaria_inc',  label: 'Primaria(inc)',            slug: 'Primaria_inc' },
+];
+
+const nivelEstudioOptList = [
+	{val: 'universitario', label: 'Universitario / posgrado',   slug: 'Universitario / posgrado' },
+	{val: 'terciario',     label: 'Terciario / Técnico',         slug: 'Terciario / Técnico' },
+	{val: 'secundario',    label: 'Secundaria completa',        slug: 'Secundaria completa' },
 ];
 
 const ramasTecnicasOptList = [
@@ -343,6 +359,7 @@ export class NodoSeccion {
 	codigo: string = ''
 	qh: number = 0; // cantidad hombres
 	qm: number = 0; // cantidad mujeres
+	qau: number = 0 // cantidad autopercibidos
 
 	constructor(s, stx, n, ntx, cod){
 		this.seccion = s;
@@ -373,10 +390,14 @@ export class CensoRecursosHumanos {
 	slug: string = 'Nivel general empresa';
 
 	qempleados: number = 0;
+	qemplab: number = 0;
+	qemplnoab: number = 0;
 	porNivelEducacion: Array<NodoSeccion> = []
 	porNivelJerarquico: Array<NodoSeccion> = []
 
 	crecimiento: CrecimientoEmpleados;
+	competencia: string;
+	competencias: Array<string> = [];
 
 	constructor(){
 		let neducativo = [];
@@ -406,19 +427,18 @@ export class CensoRecursosHumanos {
 
 }
 
-const nivelActividadOptList = [
+export const nivelActividadOptList = [
 	{val: 'acelerado',     label: 'Crecimiento acelerado',    slug: '' },
 	{val: 'normal',        label: 'Crecimiento normal',       slug: '' },
 	{val: 'estancado',     label: 'Estancamiento',            slug: '' },
 	{val: 'retraccion',    label: 'Retracción de actividad',  slug: '' },
 ];
 
-const deltaActividadOptList = [
+export const deltaActividadOptList = [
 	{val: 'aumenta',       label: 'Aumentará nivel',    slug: '' },
 	{val: 'mantiene',      label: 'Mantendrá nivel',   slug: '' },
 	{val: 'disminuye',     label: 'Disminuirá',        slug: '' },
 ];
-
 
 export class CensoExpectativas {
 	_id?: string;
@@ -431,7 +451,11 @@ export class CensoExpectativas {
 	capinstalada_mod: string = ''; // variación empleados
 	vtaexter_mod:   string = ''; // variación empleados
 	vtalocal_mod:   string = ''; // variación empleados
-	
+
+	fplenaocupacion: string =  ''; // factor que limita la plena ocupacion
+	tocupacion: number  = 100; // tasa de ocupacion general rango 0-100, respecto capacidad instalada
+	factoresList: Array<string> = [];
+
 	fortaleza1: string = '';
 	fortaleza2: string = '';
 	fortaleza3: string = '';
@@ -584,7 +608,6 @@ export class CensoPatentes {
 
 	isExportable: boolean = false;
 	exportableTxt: string;
-	propExportada: number; // todo
 
 
 	isSustituible: boolean = false;
@@ -602,8 +625,6 @@ export class CensoPatentes {
 	competenciaTxt: string;
 	competenciaOrigen: string;
 
-
-	level: number; //porcentaje de la facturación o la inversión
 
 }
 
@@ -670,4 +691,10 @@ export class CensoIndustriasTable {
 
 
 };
+
+export interface OptListToken {
+	val: string;
+	label: string;
+  }
+  
 

@@ -89,10 +89,11 @@
             (updateItems)='updateExpectativasList($event)' ></censo-panel>
     </div>
 
-    <div  *ngIf="hasCurrentPerson" >
+    <!-- se utiliza el componente de archivos que está a nivel del dashboard -->
+    <!--div  *ngIf="hasCurrentPerson" >
       <censo-assets-panel  [assetList]='assetList' 
                 (updateAssets)='updateAssetList($event)' ></censo-assets-panel>
-    </div>
+    </div -->
 
     <div *ngIf="hasObservaciones" >
       <observaciones-panel 

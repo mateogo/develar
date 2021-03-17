@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@ang
 
 import { CustomValidators } from 'ng2-validation';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map  }   from 'rxjs/operators';
 
 import { AyudaEnLineaService } from '../../../../../develar-commons/ayuda-en-linea.service';
@@ -18,6 +18,7 @@ import { 	CensoIndustrias,
           NodoSeccion,
           CrecimientoEmpleados,
 					CensoRecursosHumanos,
+          OptListToken,
 					CensoData } from '../../../../censo.model';
 
 import { devutils }from '../../../../../develar-commons/utils'
@@ -48,12 +49,16 @@ export class CensoRhumanosEditComponent implements OnInit {
   public origenOptList = CensoIndustriasService.getOptionlist('origenBienes');
   public tipoOptList =   CensoIndustriasService.getOptionlist('tipoBienes');
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
-  public seccionesOptList = CensoIndustriasService.getOptionlist('secciones')
+  public seccionesOptList = CensoIndustriasService.getOptionlist('secciones');
+  public competenciasOptList = CensoIndustriasService.getOptionlist('competencias');
 
   public title = "Planta actual y proyectada de recursos humanos";
   //public texto1 = "Apertura por nivel jerárquico y por nivel educativo. Apertura por género.";
   public texto1 = "";
   public texto2: string;
+
+  public competencia$ = new BehaviorSubject<OptListToken[]>([]);
+  public competenciasBuscadas: Array<OptListToken> = [];
 
   nivelEducativoList: Array<NodoSeccion> = [];
   nivelJerarquicoList: Array<NodoSeccion> = [];
@@ -61,8 +66,8 @@ export class CensoRhumanosEditComponent implements OnInit {
   private unBindList = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
-    ayuda2: "app:turnos:turno-browse:query:dos"
+    ayuda1: "censo:censo-rhumanos:01",
+    ayuda2: "censo:censo-rhumanos:02"
   }
 
   constructor(
@@ -112,8 +117,30 @@ export class CensoRhumanosEditComponent implements OnInit {
   }
 
   changeSelectionValue(type, val){
-    //c onsole.log('Change [%s] nuevo valor: [%s]', type, val);
+    if(type === 'competencia'){
+      let token = this.competenciasBuscadas.find(t => t.val === val);
+      
+      if(!token){
+        this.competenciasBuscadas.push(CensoIndustriasService.getOptionToken('competencias', val));
+        this.emitFactores(this.competenciasBuscadas);
+      }
+    }
   }
+
+  removeCompetencia(item){
+    let token  = this.competenciasBuscadas.find(t => t.val === item.val);
+    if(token){
+      let index = this.competenciasBuscadas.indexOf(token);     
+      this.competenciasBuscadas.splice(index,1);
+      this.emitFactores(this.competenciasBuscadas)
+    }
+
+  }
+
+  private emitFactores(factores: Array<OptListToken>){
+    this.competencia$.next(factores);
+  }
+
 
   get niveleseducativos(): FormArray{
     return this.form.get('niveleseducativos') as FormArray;
@@ -138,6 +165,9 @@ export class CensoRhumanosEditComponent implements OnInit {
       type:           token.type,
       slug:           token.type,
       qempleados:     token.qempleados,
+      qemplab:        token.qemplab,
+      qemplnoab:      token.qemplnoab,
+      competencia:    token.competencia,
       crecimiento: {
         hasCrecimiento:  token.crecimiento.hasCrecimiento,
         hasBrownEmplea:  token.crecimiento.hasBrownEmplea,
@@ -151,6 +181,10 @@ export class CensoRhumanosEditComponent implements OnInit {
   
 		});
 
+    if(token.competencias && token.competencias.length){
+      this.competenciasBuscadas  =   token.competencias.map(t => CensoIndustriasService.getOptionToken('competencias', t));
+      this.emitFactores(this.competenciasBuscadas);
+    }
   
     this.nivelEducativoList = token.porNivelEducacion;
     let neducativoFG = this.nivelEducativoList.map(item => this.fb.group({
@@ -161,7 +195,8 @@ export class CensoRhumanosEditComponent implements OnInit {
                   nivel_tx:   [item.nivel_tx],
                   codigo:     [item.codigo],
                   qh:         [item.qh],
-                  qm:         [item.qm],                
+                  qm:         [item.qm],
+                  qau:        [item.qau],
 
         }));
     this.form.setControl('niveleseducativos', this.fb.array(neducativoFG));
@@ -176,6 +211,7 @@ export class CensoRhumanosEditComponent implements OnInit {
                   codigo:     [item.codigo],
                   qh:         [item.qh],
                   qm:         [item.qm],                
+                  qau:        [item.qau],
 
         }));
     this.form.setControl('nivelesjerarquicos', this.fb.array(jerarquicoFG));
@@ -204,6 +240,9 @@ export class CensoRhumanosEditComponent implements OnInit {
 		  slug:            [ null, Validators.compose([Validators.required]) ],
       type:            [ null ],
       qempleados:      [ null ],
+      qemplab:         [ null ],
+      qemplnoab:       [ null ],
+      competencia:     [ null ],
       planta:          [ null ],
       crecimiento:     this.fb.group({
         hasCrecimiento:  [ null ],
@@ -230,8 +269,10 @@ export class CensoRhumanosEditComponent implements OnInit {
 
     entity.type = fvalue.type;
     entity.slug = fvalue.slug;
+    entity.competencia = fvalue.competencia;
     entity.qempleados = fvalue.qempleados;
-
+    entity.qemplab =        fvalue.qemplab;
+    entity.qemplnoab =      fvalue.qemplnoab;
 
     //entity.crecimiento = fvalue.crecimiento;
 
@@ -247,6 +288,13 @@ export class CensoRhumanosEditComponent implements OnInit {
 
     }
   
+    if(this.competenciasBuscadas && this.competenciasBuscadas.length){
+      entity.competencias  =   this.competenciasBuscadas.map(t => t.val);
+    } else {
+      entity.competencias = [];
+    }
+
+
     const neducativoFlds: NodoSeccion[] = fvalue.niveleseducativos.map(t => {
       return Object.assign({}, t )
     })

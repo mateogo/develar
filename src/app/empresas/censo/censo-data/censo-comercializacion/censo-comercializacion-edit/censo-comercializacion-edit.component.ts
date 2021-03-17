@@ -59,8 +59,8 @@ export class CensoComercializacionEditComponent implements OnInit {
   public _mercados: Array<Mercado> = [];
 
   public codigo = {
-    ayuda1: "empresas:censo:censodata:censo-productos-edit:01",
-    ayuda2: "app:turnos:turno-browse:query:dos"
+    ayuda1: "censo:censo-comercializacion:01",
+    ayuda2: "censo:censo-comercializacion:02"
   }
 
   constructor(
@@ -122,6 +122,9 @@ export class CensoComercializacionEditComponent implements OnInit {
     return this.form.get('mercados') as FormArray;
   }
 
+  get compras(): FormArray{
+    return this.form.get('compras') as FormArray;
+  }
 
 
   private initComponent(){
@@ -166,6 +169,11 @@ export class CensoComercializacionEditComponent implements OnInit {
     let mercadosFG = this._mercados.map(mercado => this.fb.group(mercado));
     let mercadosFormArray = this.fb.array(mercadosFG);
     this.form.setControl('mercados', mercadosFormArray);
+
+    let comprasFG = this._mercados.map(mercado => this.fb.group(mercado));
+    let comprasFormArray = this.fb.array(comprasFG);
+    this.form.setControl('compras', comprasFormArray);
+
 
 		return form;
   }
@@ -244,11 +252,17 @@ export class CensoComercializacionEditComponent implements OnInit {
 
     const mercadosFlds: Mercado[] = fvalue.mercados.map(t =>{
         t.montoVentas = t.propVentas * monto_base;
-        t.montoCompras = t.propCompras * monto_base;
-        console.dir(t);
 
         return Object.assign({}, t )
       })
+
+      fvalue.compras.forEach( (token, index) =>{
+        mercadosFlds[index].propCompras = token.propCompras;
+        mercadosFlds[index].montoCompras = token.propCompras * monto_base;
+        mercadosFlds[index].slugCompras = token.slugCompras;
+      })
+
+
 
     entity.mercados = mercadosFlds;
 

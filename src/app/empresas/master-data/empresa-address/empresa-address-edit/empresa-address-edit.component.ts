@@ -41,8 +41,8 @@ export class EmpresaAddressEditComponent implements OnInit {
 
 	public renderMap = false;
 
-  private zoom: number = 8;
-  private location: Geocoder = {
+  public zoom: number = 8;
+  public location: Geocoder = {
     lat:  -34.5922017,
     lng:  -58.41167669999999,
     label: ''
