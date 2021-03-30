@@ -639,17 +639,17 @@ exports.createInitialData = function (){
         {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
         {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
   
-        // CIC Glew Cupo 100 Inicia 09:00
-        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        // DEL GLEW // Cambio a partir de 30-Mar-2021 
+        {recurso: 'glew', dow: 1, hora: 9, slug: 'DELEG GLEW 09:00 hs' },
+        {recurso: 'glew', dow: 1, hora: 9, slug: 'DELEG GLEW 09:30 hs' },
+        {recurso: 'glew', dow: 2, hora: 9, slug: 'DELEG GLEW 09:00 hs' },
+        {recurso: 'glew', dow: 2, hora: 9, slug: 'DELEG GLEW 09:30 hs' },
+        {recurso: 'glew', dow: 3, hora: 9, slug: 'DELEG GLEW 09:00 hs' },
+        {recurso: 'glew', dow: 3, hora: 9, slug: 'DELEG GLEW 09:30 hs' },
+        {recurso: 'glew', dow: 4, hora: 9, slug: 'DELEG GLEW 09:00 hs' },
+        {recurso: 'glew', dow: 4, hora: 9, slug: 'DELEG GLEW 09:30 hs' },
+        {recurso: 'glew', dow: 5, hora: 9, slug: 'DELEG GLEW 09:00 hs' },
+        {recurso: 'glew', dow: 5, hora: 9, slug: 'DELEG GLEW 09:30 hs' },
 
         // CIC Glew Cupo 100 Inicia 11:00 CUPO 200
         {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
