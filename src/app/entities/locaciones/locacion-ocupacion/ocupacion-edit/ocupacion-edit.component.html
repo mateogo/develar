@@ -24,7 +24,7 @@
                 <div formArrayName="servicios" *ngFor="let servicio of serviciosFA.controls; let i = index;">
                     <div [formGroupName]="i">
                         <div class="row">
-                            <div class="col-md-2 locacion-block">
+                            <div class="col-md-4 locacion-block">
                                 <span class="text-normal">{{ servicio.get('locCode').value }} :: {{ servicio.get('srvcode').value }}</span>
                             </div>
                             <div class="col-md-2">
