@@ -180,6 +180,11 @@ export class DaoService {
         searchURL:  'api/locacionhospitalaria/search',
         upsertURL:  'api/locacionhospitalaria/upsert'
       },
+      ocupacionhospitalaria:{
+        backendURL: 'api/ocupacionhospitalaria',
+        searchURL:  'api/ocupacionhospitalaria/search',
+        upsertURL:  'api/ocupacionhospitalaria/upsert'
+      },
       internacion:{
         backendURL:  'api/solinternacion',
         searchURL:   'api/solinternacion/search',

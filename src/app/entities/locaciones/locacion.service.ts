@@ -14,9 +14,10 @@ import { DaoService }    from '../../develar-commons/dao.service';
 
 import { LocacionHelper } from './locacion.helper';
 
-import { LocacionHospitalaria, LocacionHospTable, LocacionHospBrowse, LocacionEvent} from './locacion.model';
+import { LocacionHospitalaria, LocacionHospTable, OcupacionHospitalaria, OcupacionHospitalariaTable, LocacionHospBrowse, OcupacionHospitalariaBrowse, LocacionEvent} from './locacion.model';
 
-const RECORD = 'locacionhospitalaria'
+const LOCACION_RECORD = 'locacionhospitalaria';
+const OCUPACION_RECORD = 'ocupacionhospitalaria'
 
 
 @Injectable({
@@ -29,19 +30,23 @@ export class LocacionService {
   private emitLocHospDataSource = new BehaviorSubject<LocacionHospTable[]>([]);
   private locacionesList: Array<LocacionHospitalaria> = [];
 
+  private ocupacionHospList: Array<OcupacionHospitalaria> = [];
+  private _ocupacionHospitalariaSelector: OcupacionHospitalariaBrowse;
+  private _ocupacionSelectionModel: SelectionModel<OcupacionHospitalariaTable>
+  private emitOcupacionHospitalariaDataSource = new BehaviorSubject<OcupacionHospitalariaTable[]>([]);
+
 
 	constructor(
 		private daoService: DaoService,
     private snackBar:    MatSnackBar,
 		) {}
 
-
+    ocupacionhospitalaria
 
   /******************************************/
   /******* Locaciones Hospitalarias ********/
   /****************************************/
   manageLocacionesRecord(locacionhosp:LocacionHospitalaria ): Subject<LocacionHospitalaria>{
-
     let listener = new Subject<LocacionHospitalaria>();
 
     if(this.isNewLocacion(locacionhosp)){
@@ -49,41 +54,27 @@ export class LocacionService {
 
     }else{
       this.updateLocacionHospitalaria(listener, locacionhosp);
-
     }
 
     return listener;
   }
 
   private isNewLocacion(token:LocacionHospitalaria): boolean{
-    let isNew = true;
-
-    if(token._id){
-      isNew = false;
-    }
-
-    return isNew;
+    return token._id ? false : true;
   }
 
 
-  /******* UPDATE REMITO ********/
+  /******* UPDATE LOCACION HOSP ********/
   private updateLocacionHospitalaria(listener:Subject<LocacionHospitalaria>,  locacionhosp:LocacionHospitalaria){
+    let today = new Date()
+    locacionhosp.ts_umodif = today.getTime();
  
-    this.initLocacionHospitalariaForUpdate(locacionhosp);
-
-    this.daoService.update<LocacionHospitalaria>(RECORD, locacionhosp._id, locacionhosp).then(t =>{
+    this.daoService.update<LocacionHospitalaria>(LOCACION_RECORD, locacionhosp._id, locacionhosp).then(t =>{
       listener.next(t);
     })
   }
- 
-  private initLocacionHospitalariaForUpdate(locacionhosp: LocacionHospitalaria){
-    let today = new Date()
 
-    locacionhosp.ts_umodif = today.getTime();
-
-  }
-
-  /******* CREATE REMITO ********/
+  /******* CREATE LOCACION HOSP ********/
   private createLocacionHospitalaria(listener:Subject<LocacionHospitalaria>, locacionhosp: LocacionHospitalaria){
     let today = new Date()
 
@@ -92,10 +83,85 @@ export class LocacionService {
     locacionhosp.ts_alta =   devutils.dateFromTx(locacionhosp.fecha_tx).getTime()
     locacionhosp.ts_umodif = today.getTime();
 
-    this.daoService.create<LocacionHospitalaria>(RECORD, locacionhosp).then(token =>{
+    this.daoService.create<LocacionHospitalaria>(LOCACION_RECORD, locacionhosp).then(token =>{
       listener.next(token);
     });
   }
+
+
+  /******************************************/
+  /******* Ocupación Hospitalaria   ********/
+  /****************************************/
+  manageOcupacionRecord(ocupacionhosp:OcupacionHospitalaria ): Subject<OcupacionHospitalaria>{
+    let listener = new Subject<OcupacionHospitalaria>();
+
+    if(this._isNewOcupacion(ocupacionhosp)){
+      this._createOcupacionHospitalaria(listener, ocupacionhosp);
+
+    }else{
+      this._updateOcupacionHospitalaria(listener, ocupacionhosp);
+    }
+    return listener;
+  }
+
+  private _isNewOcupacion(token:OcupacionHospitalaria): boolean{
+    return token._id ? false : true;
+  }
+
+  /******* UPDATE OCUPACIÓN ********/
+  private _updateOcupacionHospitalaria(listener:Subject<OcupacionHospitalaria>,  ocupacionhosp:OcupacionHospitalaria){
+    let today = new Date()
+    ocupacionhosp.ts_umodif = today.getTime();
+ 
+    this.daoService.update<OcupacionHospitalaria>(OCUPACION_RECORD, ocupacionhosp._id, ocupacionhosp).then(t =>{
+      listener.next(t);
+    })
+  }
+ 
+
+  /******* CREATE OCUPACIÓN ********/
+  private _createOcupacionHospitalaria(listener:Subject<OcupacionHospitalaria>, ocupacionhosp: OcupacionHospitalaria){
+    let today = new Date()
+    ocupacionhosp.ts_alta =   today.getTime();
+    ocupacionhosp.ts_umodif = today.getTime();
+
+    this.daoService.create<OcupacionHospitalaria>(OCUPACION_RECORD, ocupacionhosp).then(token =>{
+      listener.next(token);
+    });
+  }
+
+
+
+  /******************************************/
+  /******* OCUPACIÓN Hosp Search   ********/
+  /****************************************/
+
+  fetchOcupacionById(id: string):Promise<OcupacionHospitalaria>{
+    let listener = new Subject<OcupacionHospitalaria[]>();
+    return this.daoService.findById(OCUPACION_RECORD, id);
+  }
+
+  fetchOcupacionesByQuery(query:any):Subject<OcupacionHospitalaria[]>{
+    let listener = new Subject<OcupacionHospitalaria[]>();
+    this._loadOcupacionHospitalariaByQuery(listener, query);
+    return listener;
+  }
+
+  private _loadOcupacionHospitalariaByQuery(listener: Subject<OcupacionHospitalaria[]>, query){
+    this.daoService.search<OcupacionHospitalaria>(OCUPACION_RECORD, query).subscribe(list =>{
+      if(list && list.length){
+        this.ocupacionHospList = list;
+
+      }else{
+        this.ocupacionHospList = [];
+
+      }
+      listener.next(this.ocupacionHospList);
+    })
+  }
+
+
+
 
   /******************************************/
   /******* Locaciones Hosp Search   ********/
@@ -103,7 +169,7 @@ export class LocacionService {
 
   fetchLocacionById(id: string):Promise<LocacionHospitalaria>{
     let listener = new Subject<LocacionHospitalaria[]>();
-    return this.daoService.findById(RECORD, id);
+    return this.daoService.findById(LOCACION_RECORD, id);
   }
 
   fetchLocacionesByQuery(query:any):Subject<LocacionHospitalaria[]>{
@@ -113,7 +179,7 @@ export class LocacionService {
   }
 
   private loadLocHospitalariaByQuery(listener: Subject<LocacionHospitalaria[]>, query){
-    this.daoService.search<LocacionHospitalaria>(RECORD, query).subscribe(list =>{
+    this.daoService.search<LocacionHospitalaria>(LOCACION_RECORD, query).subscribe(list =>{
       if(list && list.length){
         this.locacionesList = list;
 
@@ -161,6 +227,41 @@ export class LocacionService {
   updateTableData(){
     let tableData = LocacionHelper.buildDataTable(this.locacionesList);
     this.emitLocHospDataSource.next(tableData);
+  }
+
+  
+  /******************************************/
+  /******* Ocupación Hosp Browsing ********/
+  /****************************************/
+  get ocupacionHospitalariaSelector(): OcupacionHospitalariaBrowse{
+    if(!this._ocupacionHospitalariaSelector) this._ocupacionHospitalariaSelector = new OcupacionHospitalariaBrowse();
+    return this._ocupacionHospitalariaSelector;
+  }
+  
+  set ocupacionHospitalariaSelector(e: OcupacionHospitalariaBrowse){
+    this._ocupacionHospitalariaSelector = e;
+  }
+
+  /*****  SLocacionHospitalaria TABLE table Table    ****/
+  get ocupacionHospitalariaDataSource(): BehaviorSubject<OcupacionHospitalariaTable[]>{
+    return this.emitOcupacionHospitalariaDataSource;
+  }
+
+  get ocupacionSelectionModel(): SelectionModel<OcupacionHospitalariaTable>{
+    return this._ocupacionSelectionModel;
+  }
+
+  set ocupacionSelectionModel(selection: SelectionModel<OcupacionHospitalariaTable>){
+    this._ocupacionSelectionModel = selection;
+  }
+
+  get ocupacionTableActions(){
+    return LocacionHelper.getOptionlist('tableactions');
+  }
+
+  updateOcupacionTableData(){
+    let tableData = LocacionHelper.buildOcupacionDataTable(this.ocupacionHospList);
+    this.emitOcupacionHospitalariaDataSource.next(tableData);
   }
 
 

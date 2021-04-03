@@ -1,0 +1,16 @@
+<div class="container">
+    <mat-card class="p-0 p-md-3 mat-elevation-z0">
+        <!--mat-card-actions>
+            <button type="button" mat-flat-button class="button-volver" [routerLink]="['../alta']"><i class="fas fa-plus"></i> Nuevo parte de ocupación</button>
+            <button type="button" mat-flat-button class="ml-2 button-volver" [routerLink]="['']"><mat-icon>keyboard_arrow_left</mat-icon>Volver</button>
+
+        </mat-card-actions-->
+        <mat-card-content>
+            <div class="row">
+                <div class="col-12" *ngIf='showTable'>
+                    <ocupacion-browse-table [data$]="ocupacionList$" (event)="eventFromTable($event)"></ocupacion-browse-table>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

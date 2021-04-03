@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LocacionCreateComponent } from './locacion-data/locacion-create/locacion-create.component';
 import { LocacionDashboardComponent } from './locacion-page/locacion-dashboard/locacion-dashboard.component';
+import { OcupacionPageComponent } from './locacion-ocupacion/ocupacion-page/ocupacion-page.component';
+import { OcupacionEditComponent } from './locacion-ocupacion/ocupacion-edit/ocupacion-edit.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,18 @@ const routes: Routes = [
   {
     path: 'navegar',
     component: LocacionDashboardComponent,
+  },
+  {
+    path: 'ocupacion',
+    component: OcupacionPageComponent,
+  },
+  {
+    path: 'parteocupacion/:id',
+    component: OcupacionEditComponent,
+  },
+  {
+    path: 'parteocupacion',
+    component: OcupacionEditComponent,
   },
   {
     path: ':id',

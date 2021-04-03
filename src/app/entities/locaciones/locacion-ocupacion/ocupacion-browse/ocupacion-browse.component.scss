@@ -1,0 +1,20 @@
+@import '../../../../../assets/sass/variable';
+@import '../../../../../assets/sass/mixin';
+.container {
+    margin: 0 auto;
+    @media #{$min992} {
+        width: 100%;
+    }
+    @media #{$max543} {
+        width: 100%;
+        nav {
+            button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.mat-flat-button {
+    @include button-agn;
+}

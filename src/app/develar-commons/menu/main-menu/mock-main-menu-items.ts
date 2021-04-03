@@ -794,6 +794,10 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     rolesOut: ['ivr:operator'],
     sub: [
       {
+        title: 'Ocupación',
+        routing: '/salud/entidades/locaciones/ocupacion'
+      },
+      {
         title: 'Centros de internación',
         routing: '/salud/entidades/locaciones/navegar'
       },

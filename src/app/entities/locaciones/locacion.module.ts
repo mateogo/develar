@@ -17,6 +17,10 @@ import { LocacionEditComponent } from './locacion-data/locacion-edit/locacion-ed
 import { LocacionBaseComponent } from './locacion-data/locacion-base/locacion-base.component';
 import { LocacionListComponent } from './locacion-data/locacion-list/locacion-list.component';
 import { LocacionTableComponent } from './locacion-data/locacion-table/locacion-table.component';
+import { OcupacionPageComponent } from './locacion-ocupacion/ocupacion-page/ocupacion-page.component';
+import { OcupacionBrowseComponent } from './locacion-ocupacion/ocupacion-browse/ocupacion-browse.component';
+import { OcupacionBrowseTableComponent } from './locacion-ocupacion/ocupacion-browse-table/ocupacion-browse-table.component';
+import { OcupacionEditComponent } from './locacion-ocupacion/ocupacion-edit/ocupacion-edit.component';
 
 //InMemoryWebApiModule.forRoot(InMemoryDataService),
 
@@ -37,7 +41,11 @@ import { LocacionTableComponent } from './locacion-data/locacion-table/locacion-
       LocacionEditComponent,
       LocacionBaseComponent,
       LocacionListComponent,
-      LocacionTableComponent
+      LocacionTableComponent,
+      OcupacionPageComponent,
+      OcupacionBrowseComponent,
+      OcupacionBrowseTableComponent,
+      OcupacionEditComponent
   ],
   entryComponents: [LocacionCreateComponent],
   exports:[

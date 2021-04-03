@@ -1,0 +1,27 @@
+@mixin button-agn() {
+    border-radius: 0;
+    background-color: #01BBED;
+    color: #FFF;
+    font-size: 1.25em;
+    font-weight: bold;
+    i {
+        vertical-align: baseline;
+    }
+    .mat-icon {
+        vertical-align: sub;
+    }
+}
+
+@mixin button-develar() {
+    border-radius: 0;
+    background-color: #3c4e62;
+    color: #FFF;
+    font-size: 1em;
+
+    i {
+        vertical-align: baseline;
+    }
+    .mat-icon {
+        vertical-align: sub;
+    }
+}

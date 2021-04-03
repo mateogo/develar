@@ -1,4 +1,4 @@
-import { LocacionHospitalaria, LocacionHospTable, Servicio, Recurso, LocacionEvent} from './locacion.model';
+import { LocacionHospitalaria, LocacionHospTable, OcupacionHospitalaria, OcupacionHospitalariaTable, Servicio, Recurso, LocacionEvent} from './locacion.model';
 import { serviciosInternacion, especialidadesInternacion }  from '../../salud/internacion/internacion.helper';
 
 
@@ -145,7 +145,52 @@ export class  LocacionHelper {
 
   }
 
+  static buildOcupacionDataTable(list: OcupacionHospitalaria[]){
+
+    return list.map(token => {
+      let td = new OcupacionHospitalariaTable();
+      td._id =  token._id;
+      td.slug = token.slug;
+      td.fecha_tx = token.fecha_tx;
+      td.estado = token.estado; 
+     
+      let summary = {
+        qlocaciones: new Set<string>(),
+        qDispUTI: 0,
+        qDispUTE: 0, 
+        qDispAMB: 0,
+        qOcupUTI: 0,
+        qOcupUTE: 0, 
+        qOcupAMB: 0,
+      }
+  
+      summary = token.servicios.reduce((sum, token) => {
+        sum.qlocaciones.add(token.locCode);
+        sum.qDispUTI += token.srvcode === "UTI"  ? token.srvQDisp : 0;
+        sum.qDispUTE += token.srvcode === "UTE"  ? token.srvQDisp : 0;
+        sum.qDispAMB += token.srvcode === "GUAR" ? token.srvQDisp : 0;
+        sum.qOcupUTI += token.srvcode === "UTI"  ? token.srvQOcup : 0;
+        sum.qOcupUTE += token.srvcode === "UTE"  ? token.srvQOcup : 0;
+        sum.qOcupAMB += token.srvcode === "GUAR" ? token.srvQOcup : 0;
+        return sum;
+
+      }, summary)
+
+      console.dir(summary)
+
+      td.qlocaciones = summary.qlocaciones.size;
+      td.pOcupUTI = summary.qDispUTI ? Math.round((summary.qOcupUTI/summary.qDispUTI) * 100) : 0;
+      td.pOcupUTE = summary.qDispUTE ? Math.round((summary.qOcupUTE/summary.qDispUTE) * 100) : 0;
+      td.pOcupAMB = summary.qDispAMB ? Math.round((summary.qOcupAMB/summary.qDispAMB) * 100) : 0;
+      return td;
+    })
+  }
+
 }
+
+
+
+
 
 function addNewRecursosToActualList(count, servicio, recursos: Recurso[]){
 
@@ -233,19 +278,59 @@ const default_option_list: Array<any> = [
 ];
 
 
+const capacidadesOptList = [
+  {val: 'UTI',            etario: 1, target: 'intensivos',           ord: '1.1', label: 'UTI'           },
+  {val: 'UTIP',           etario: 2, target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
+  {val: 'UTIN',           etario: 3, target: 'intensivos',           ord: '1.3', label: 'UTIN'          },
+  {val: 'UTE',            etario: 1, target: 'intensivos',           ord: '1.4', label: 'UTE'           },
+  {val: 'UCO',            etario: 1, target: 'intensivos',           ord: '1.5', label: 'UCO'           },
+  {val: 'CIRUGIA',        etario: 1, target: 'otros',                ord: '2.7', label: 'INT-CIRUGÍA'   },
+  {val: 'INTERNACION',    etario: 1, target: 'intermedios',          ord: '2.1', label: 'INT-GENERAL'   },
+  {val: 'PEDIATRIA',      etario: 2, target: 'intermedios',          ord: '2.2', label: 'INT-PEDIATRÍA' },
+  {val: 'NEONATOLOGIA',   etario: 3, target: 'intermedios',          ord: '2.3', label: 'INT-NEO'       },
+  {val: 'MATERNIDAD',     etario: 1, target: 'otros',                ord: '2.4', label: 'MATERNIDAD'    },
+  {val: 'TRAUMATOLOGIA',  etario: 1, target: 'otros',                ord: '2.5', label: 'INT-TRAUMATO'  },
+  {val: 'CLINICA',        etario: 1, target: 'minimos',              ord: '2.6', label: 'CLÍNICA MÉDICA'},
+  {val: 'AISLAMIENTO',    etario: 1, target: 'aislamiento',          ord: '4.1', label: 'AISLAMIENTO'  },
+  {val: 'CONSULEXT',      etario: 1, target: 'ambulatorios',         ord: '5.1', label: 'CONS-EXT'     },
+  {val: 'GUARDIA',        etario: 1, target: 'ambulatorios',         ord: '5.2', label: 'GUARDIA'      },
+];
+
+
+// internacionHelper: capacidadesOptList
+const capacidadesGroupByOptList = [
+  {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
+  {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'UTE'  , slug: 'C.INTERMED' },
+  {val: 'otros',         label: 'OTROS SERVICIOS'       , code: 'OTROS' , slug: 'OTROS'},
+  {val: 'minimos',       label: 'CUIDADOS MÍNIMOS'      , code: 'CMÍN' , slug: 'C.MÍNIMOS'},
+  {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'AISLAMIENTO'   },
+  {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
+
+];
+
+const capacidadesForReport = [
+  {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
+  {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'UTE'  , slug: 'C.INTERMED' },
+  {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
+
+];
+
 
 
 
 
 
 const hospitalTypeOptList: Array<any> = [
-    {val: 'no_definido',   label: 'Seleccione opción' },
-    {val: 'HOSPPROV',      label: 'HOSP PROV'  },
-    {val: 'HOSPNAC',       label: 'HOSP NAC'   },
-    {val: 'EXHOSP',        label: 'EXTRA HOSP' },
-    {val: 'APRIVADO',      label: 'PRIVADO'    },
-    {val: 'CAPS',          label: 'CAPS'       },
+    {val: 'no_definido', label: 'Seleccione opción' },
+    {val: 'HOSPAPROV',   label: 'HOSP PROVINCIAL'  },
+    {val: 'HOSPBPNAC',   label: 'HOSP NAC'   },
+    {val: 'HOSPCPRIV',   label: 'HOSP / CLINICA PRIVADA'    },
+    {val: 'HOSPDEXTRA',  label: 'UNIDAD EXTRA HOSPITALARIA' },
+    {val: 'CAPS',        label: 'CAPS'       },
 ];
+
+const locacionesHospitalarias: Array<string> =['HOSPAPROV', 'HOSPBPNAC', 'HOSPCPRIV' ]
+
 
 const recursosTypeOptList: Array<any> = [
     {val: 'no_definido',   label: 'Seleccione opción' },
@@ -258,6 +343,12 @@ const tableActionsOptList = [
       {val: 'autorizar',    label: 'Autorizar', slug:'Autorizar' },
 ]
 
+const ocupacionTableActionsOptList = [
+  {val: 'no_definido',  label: 'Seleccione opción',   slug:'Seleccione opción' },
+  {val: 'editar',    label: 'Editar', slug:'Editar' },
+]
+
+
 
 const optionsLists = {
    default: default_option_list,
@@ -265,6 +356,11 @@ const optionsLists = {
    especialidades: especialidadesInternacion,
    hospital: hospitalTypeOptList,
    tableactions: tableActionsOptList,
+   ocupaciontableactions: ocupacionTableActionsOptList,
    recursos: recursosTypeOptList,
+   capacidades: capacidadesOptList,
+   capacidadesagrupadas: capacidadesGroupByOptList,
+   capacidadesreporte: capacidadesForReport,
+   hospitalaria: locacionesHospitalarias
 }
 
