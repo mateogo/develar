@@ -126,7 +126,13 @@ export class OcupacionEditComponent implements OnInit {
       ocupacion.srvtype = capacidad.val;
       ocupacion.srvcode = capacidad.code;
       ocupacion.srvQDisp = servicios.reduce((acum, serv) => {
-        let target = this.capacidades.find(t => t.val === serv.srvtype).target;
+        let targetObj = this.capacidades.find(t => t.val === serv.srvtype)
+        let target = "intermedios";
+        if(targetObj){
+          target = targetObj.target || target;
+        }else {
+          console.log('Servicio  no encontrado: [%s]', serv.srvtype)
+        }
         return target === capacidad.val ? acum + serv.srvQDisp : acum;
       }, 0)
       ocupacionServicios.push(ocupacion);  
