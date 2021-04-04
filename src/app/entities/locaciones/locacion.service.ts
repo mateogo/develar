@@ -14,7 +14,20 @@ import { DaoService }    from '../../develar-commons/dao.service';
 
 import { LocacionHelper } from './locacion.helper';
 
-import { LocacionHospitalaria, LocacionHospTable, OcupacionHospitalaria, OcupacionHospitalariaTable, LocacionHospBrowse, OcupacionHospitalariaBrowse, LocacionEvent} from './locacion.model';
+import {  LocacionHospitalaria, 
+          LocacionHospTable, 
+          OcupacionHospitalaria, 
+          OcupacionXServicio,
+          OcupacionHospitalariaTable, 
+          LocacionHospBrowse, 
+          ReportAllocationData,
+          OcupaciomPorArea,
+          OcupacionToken,
+          MasterAllocation,
+          DisponiblePorArea,
+          EstadoAreasInternacion,
+          OcupacionHospitalariaBrowse, 
+          LocacionEvent} from './locacion.model';
 
 const LOCACION_RECORD = 'locacionhospitalaria';
 const OCUPACION_RECORD = 'ocupacionhospitalaria'
@@ -34,6 +47,9 @@ export class LocacionService {
   private _ocupacionHospitalariaSelector: OcupacionHospitalariaBrowse;
   private _ocupacionSelectionModel: SelectionModel<OcupacionHospitalariaTable>
   private emitOcupacionHospitalariaDataSource = new BehaviorSubject<OcupacionHospitalariaTable[]>([]);
+
+  private hospitalarias = LocacionHelper.getOptionlist('hospitalaria');
+  private capacidadesReporte = LocacionHelper.getOptionlist('capacidadesreporte');
 
 
 	constructor(
@@ -160,6 +176,140 @@ export class LocacionService {
     })
   }
 
+  /******************************************/
+  /**** DISPONIBLE                 *********/
+	/****************************************/
+	fetchCapacidadDisponible(query?: any): Subject<Map<string, ReportAllocationData>>{
+    let listener = new Subject<Map<string, ReportAllocationData>>();
+    this.fetchProcess(listener, query);
+
+    return listener;
+	}
+
+  private fetchProcess(listener: Subject<Map<string, ReportAllocationData>>, query?: any){
+    query = this.ocupacionHospitalariaSelector;
+    this.fetchOcupacionesByQuery(query).subscribe(data => {
+      this.buildMasterAllocation(listener, data);
+
+    })
+
+    // this.daoService.fetchMasterAllocator<MasterAllocation>(RECORD, query).subscribe(list =>{
+    //   if(list && list.length){
+    //   	listener.next(list);
+
+    //   }else{
+    //   	listener.next(null);
+
+    //   }
+    // })
+  }
+
+  private buildMasterAllocation(listener: Subject<Map<string, ReportAllocationData>>, data: OcupacionHospitalaria[]){
+    if(data && data.length){
+      let ocupacion = data[0]
+      let servicios = ocupacion.servicios;
+
+      if(servicios && servicios.length){
+        let master = new Map<string, ReportAllocationData>();
+        servicios.forEach(servicio => {
+          if(!master.has(servicio.locCode)){
+            this._initNewLocacion(master, servicio);
+          }
+          let allocatedData = master.get(servicio.locCode);
+          allocatedData.disponible[servicio.srvtype]['capacidad']  = servicio.srvQDisp;
+          allocatedData.disponible[servicio.srvtype]['ocupado']    = servicio.srvQOcup;
+          allocatedData.disponible[servicio.srvtype]['porcentual'] = servicio.srvPOcup;          
+        })
+        listener.next(master)
+
+      }else {
+        console.log('oops: no services')
+        listener.next(null);
+      }
+    }else{
+      console.log('oops: no data')
+      listener.next(null);
+    }
+
+
+  }
+  private _initNewLocacion(master, servicio: OcupacionXServicio){
+    let data = {
+      code: servicio.locCode,
+      slug: servicio.locCode,
+      type: servicio.locType,
+      disponible: new OcupaciomPorArea()
+      // disponible: {
+      //   intensivos: {
+      //     capacidad: 0,
+      //     ocupado: 0,
+      //     porcentual: 0
+      //   },
+      //   intermedios: {
+      //     capacidad: 0,
+      //     ocupado: 0,
+      //     porcentual: 0
+
+      //   }, 
+      //   ambulatorio: {
+      //     capacidad: 0,
+      //     ocupado: 0,
+      //     porcentual: 0
+      //   }
+      // }
+    } as ReportAllocationData;
+
+    master.set(servicio.locCode, data);
+  }
+
+
+  private loadLocaciones(listener: Subject<MasterAllocation[]>, data: OcupacionHospitalaria[]){
+    let query = this.locacionesSelector;
+    this.fetchLocacionesByQuery(query).subscribe(locaciones =>{
+      console.log('LocacionesLoaded: [%s]', locaciones && locaciones.length);
+      this.buildOcupacionXServicio(locaciones);
+    });
+  }
+
+  private buildOcupacionXServicio(locaciones: LocacionHospitalaria[]){
+    let _locaciones = locaciones.filter(loc => this.hospitalarias.indexOf(loc.type) !== -1) // filtra locaciones hospitalarias, excluye CAPS
+    let ocupacionServicios: OcupacionXServicio[] = [];
+    console.log('locaciones filtered: [%s]', _locaciones.length);
+    _locaciones.forEach(loc => {
+
+      let baseData = new OcupacionXServicio(loc)
+      let servicios = loc.servicios;
+      //this.addOcupacionServicios (ocupacionServicios, baseData, servicios);
+
+    })
+    // this.parteOcupacion.servicios = ocupacionServicios;
+    // console.dir(this.parteOcupacion)
+    // this.initForEdit(this.parteOcupacion);
+    // this.showEditor = true;
+
+
+  }
+
+  // private addOcupacionServicios(ocupacionServicios: OcupacionXServicio[], baseData: OcupacionXServicio, servicios: Servicio[]){
+  //   if(!(servicios && servicios.length)) return;
+
+  //   this.capacidadesReporte.map(capacidad => {
+  //     let ocupacion = {...baseData};
+  //     ocupacion.srvtype = capacidad.val;
+  //     ocupacion.srvcode = capacidad.code;
+  //     ocupacion.srvQDisp = servicios.reduce((acum, serv) => {
+  //       let targetObj = this.capacidades.find(t => t.val === serv.srvtype)
+  //       let target = "intermedios";
+  //       if(targetObj){
+  //         target = targetObj.target || target;
+  //       }else {
+  //         console.log('Servicio  no encontrado: [%s]', serv.srvtype)
+  //       }
+  //       return target === capacidad.val ? acum + serv.srvQDisp : acum;
+  //     }, 0)
+  //     ocupacionServicios.push(ocupacion);  
+  //   })
+  // }
 
 
 

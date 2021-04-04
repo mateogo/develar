@@ -1,0 +1,148 @@
+@import '../../../../../assets/sass/variable';
+
+$color-destacado: #0645f5;
+$color-destacado-vinculo: #2413c6;
+$color-desafectado-vinculo: #8a95a1;
+
+$color-button: #3c4e62;
+$color-header: #2326ff;
+
+$color-total-titulo: #fdfdfd;
+$color-total-label: #fdfdfd;
+$color-total-valor: #fdfdfd ;
+
+$color-locacion: #710b5f;
+$color-capacidad: #910f6f;
+
+mat-card {
+	background-color: #f0f0f0;
+	margin-top: 15px;
+
+}
+
+.doughnut-chart {
+	margin-bottom: 50px;
+
+}
+
+.total-card {
+		background-color: #3c4e62;
+		color: $color-total-titulo;
+}
+
+.total-header {
+		font-weight: 700;
+		font-size: 1.2rem;
+    @media #{$max991} {
+			font-size: 1.2rem;
+    }
+
+}
+
+.total-capacidad {
+
+}
+
+.total-ocupacion {
+
+}
+
+.total-header-cell {
+		background-color: #51053f;
+		padding: 5px 5px 5px 5px;
+		margin: 2px 2px 2px 2px;
+	  border: 1px solid #710b1f;
+	  text-align: center;
+
+}
+
+.total-cell {
+		background-color: #710b5f;
+		padding: 5px 5px 5px 5px;
+		margin: 2px 2px 2px 2px;
+	  border: 1px solid #912b3f;
+	  text-align: center;
+
+}
+
+.total-label {
+		font-weight: 400;
+		font-size: 1rem;
+		color: $color-total-label;
+    @media #{$max991} {
+			font-size: 0.8rem;
+    }
+}
+
+.total-valor{
+		font-weight: 700;
+		font-size: 2rem;
+		color: $color-total-valor;
+
+    @media #{$max991} {
+			font-size: 1.5rem;
+    }
+
+}
+
+
+
+.table-card {
+
+}
+
+.table-header{
+		color: $color-destacado;
+		font-weight: 700;
+		font-size: 1rem;
+}
+
+.locacion-header-cell{
+		text-align: center;
+		background-color: #e2cdcd;
+	  border: 1px solid #c2adad;
+	  line-height: 3em;
+
+}
+
+
+
+
+.table-data {
+	  margin-top: 18px;
+}
+
+.locacion-cell{
+		text-align: left;
+		font-weight: 700;
+		font-size: 1.2rem;
+		color: $color-locacion;
+}
+
+.capacidad-cell {
+		text-align: left;
+		font-weight: 400;
+		font-size: 1.2rem;
+		color: $color-locacion;
+		background-color: #e2cdcd;
+	  border: 1px solid #c2adad;
+
+}
+
+
+.locacion-data-cell{
+		text-align: center;
+		font-weight: 700;
+		font-size: 1.2rem;
+		color: $color-capacidad;
+		background-color: #e2cdcd;
+	  border: 1px solid #c2adad;
+
+}
+
+
+.target-group {
+	margin: 15px 0 15px 0;
+}
+
+

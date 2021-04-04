@@ -142,7 +142,7 @@ export class OcupacionHospitalariaTable {
   estado:      string = "activo";
   ts_alta:     number = 0;
   ts_umodif:   number = 0;
-  
+
   qlocaciones: number = 0; 
   pOcupUTI:    number = 0; 
   pOcupUTE:    number = 0; 
@@ -154,6 +154,79 @@ export class OcupacionHospitalariaBrowse {
   fecha_tx:    string;
   fecha_ts:    number;
   estado:      string = "activo";
+}
+
+export class DashboardBrowse {
+		sintoma:      string;
+		sector:      string;
+		estado:      string;
+		avance:      string;
+		fecharef?:   string;
+		locacionhosp?:   string = 'no_definido';
+}
+
+export class ReportAllocationData {
+  code: string;  // code del hospital
+  slug: string;  // denom del hospital
+  type: string; // tipo de hospital (PRIVADO)
+  disponible: OcupaciomPorArea;
+
+}
+export class OcupaciomPorArea {
+  intensivos: OcupacionToken;
+  intermedios: OcupacionToken;
+  ambulatorios: OcupacionToken;
+  constructor(){
+    this.intensivos = new OcupacionToken();
+    this.intermedios = new OcupacionToken();
+    this.ambulatorios = new OcupacionToken();
+  }
+}
+
+export class OcupacionToken {
+  capacidad: number= 0;
+  ocupado: number= 0;
+  porcentual: number = 0;
+}
+
+export class MasterAllocation {
+  id: string;    // hospital _id ó 'pool'
+  code: string;  // code del hospital
+  slug: string;  // denom del hospital
+  type: string; // tipo de hospital (PRIVADO)
+  direccion: string; // direccion postal
+  servicios: Array<EstadoServicios>;
+  disponible: DisponiblePorArea;
+}
+
+export class EstadoServicios {
+  type: string // tipo de Servicio UTI, UTE, etc.UTE
+  code: string // printAs... del servicios
+  nominal: number;
+  adicional: number;
+  ocupado: number;
+}
+
+
+export class DisponiblePorArea {
+  intensivos: EstadoAreasInternacion;
+  intermedios: EstadoAreasInternacion;
+  pediatrica: EstadoAreasInternacion;
+  neonatologia: EstadoAreasInternacion;
+  aislamiento: EstadoAreasInternacion;
+  ambulatorio: EstadoAreasInternacion;
+}
+
+export class EstadoAreasInternacion {
+  capacidad: AcumuladoresPorArea;
+  ocupado: AcumuladoresPorArea;
+}
+
+export class AcumuladoresPorArea {
+	total: number;
+	adu: number;
+	ped: number;
+	neo: number;
 }
 
 

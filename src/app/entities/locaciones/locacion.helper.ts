@@ -1,4 +1,4 @@
-import { LocacionHospitalaria, LocacionHospTable, OcupacionHospitalaria, OcupacionHospitalariaTable, Servicio, Recurso, LocacionEvent} from './locacion.model';
+import { LocacionHospitalaria, DashboardBrowse, LocacionHospTable, OcupacionHospitalaria, OcupacionHospitalariaTable, Servicio, Recurso, LocacionEvent} from './locacion.model';
 import { serviciosInternacion, especialidadesInternacion }  from '../../salud/internacion/internacion.helper';
 
 
@@ -186,6 +186,18 @@ export class  LocacionHelper {
     })
   }
 
+	static defaultQueryForTablero(): DashboardBrowse{
+		let q = new DashboardBrowse();
+		q.estado = "no_definido";
+		q.avance = "no_definido";
+		q.sintoma = "no_definido";
+		q.sector = "no_definido";
+		q.locacionhosp = 'GENERAL'
+
+		return q;
+	}
+
+
 }
 
 
@@ -278,6 +290,7 @@ const default_option_list: Array<any> = [
 ];
 
 
+
 const capacidadesOptList = [
   {val: 'UTI',            etario: 1, target: 'intensivos',           ord: '1.1', label: 'UTI'           },
   {val: 'UTIP',           etario: 2, target: 'intensivos',           ord: '1.2', label: 'UTIP'          },
@@ -306,6 +319,13 @@ const capacidadesGroupByOptList = [
   {val: 'aislamiento',   label: 'AISLAMIENTO PREVENTIVO', code: 'AISL' , slug: 'AISLAMIENTO'   },
   {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
 
+];
+
+
+const capacidadesReportOptList: Array<any> = [
+  {val: 'intensivos',    label: 'CUIDADOS INTENSIVOS'   , code: 'UTI'  , slug: 'C.INTENSIVOS'  },
+  {val: 'intermedios',   label: 'CUIDADOS INTERMEDIOS'  , code: 'INTERMED'  , slug: 'C.INTERMED' },
+  {val: 'ambulatorios',  label: 'SERVICIO AMBULATORIO'  , code: 'GUAR' , slug: 'AMBULATORIO'   },
 ];
 
 const capacidadesForReport = [

@@ -21,6 +21,7 @@ import { OcupacionPageComponent } from './locacion-ocupacion/ocupacion-page/ocup
 import { OcupacionBrowseComponent } from './locacion-ocupacion/ocupacion-browse/ocupacion-browse.component';
 import { OcupacionBrowseTableComponent } from './locacion-ocupacion/ocupacion-browse-table/ocupacion-browse-table.component';
 import { OcupacionEditComponent } from './locacion-ocupacion/ocupacion-edit/ocupacion-edit.component';
+import { LocacionReportComponent } from './locacion-page/locacion-report/locacion-report.component';
 
 //InMemoryWebApiModule.forRoot(InMemoryDataService),
 
@@ -45,7 +46,8 @@ import { OcupacionEditComponent } from './locacion-ocupacion/ocupacion-edit/ocup
       OcupacionPageComponent,
       OcupacionBrowseComponent,
       OcupacionBrowseTableComponent,
-      OcupacionEditComponent
+      OcupacionEditComponent,
+      LocacionReportComponent
   ],
   entryComponents: [LocacionCreateComponent],
   exports:[

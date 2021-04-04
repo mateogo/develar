@@ -241,7 +241,7 @@ export class DisponiblePorArea {
 
 }
 
-export class MasterAllocation {
+ export class MasterAllocation {
   id: string;    // hospital _id ó 'pool'
   code: string;  // code del hospital
   slug: string;  // denom del hospital

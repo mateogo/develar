@@ -63,6 +63,10 @@ function buildQuery(query){
       q["type"] = query['type'];
   }
 
+  if(query['fecha_tx']){
+    q["fecha_ts"] = {$lte: utils.dateNumFromTx(query['fecha_tx'])}
+  }
+
   return q;
 }
 
@@ -113,7 +117,7 @@ exports.findByQuery = function (rtype, query, errcb, cb) {
     Record.find(regexQuery)
           .limit(100)
           .lean()
-          .sort( '-fe_ts' )
+          .sort( '-fecha_ts' )
           .exec(function(err, entities) {
               if (err) {
                   console.log('[%s] findByQuery ERROR: [%s]', whoami, err)

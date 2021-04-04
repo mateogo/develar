@@ -792,7 +792,12 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     active: false,
     groupTitle: false,
     rolesOut: ['ivr:operator'],
-    sub: [
+    sub: [      
+      {
+        title: 'Reporte ocupación',
+        routing: '/salud/entidades/locaciones/reporteocupacion'
+      },
+
       {
         title: 'Ocupación',
         routing: '/salud/entidades/locaciones/ocupacion'

@@ -5,6 +5,7 @@ import { LocacionCreateComponent } from './locacion-data/locacion-create/locacio
 import { LocacionDashboardComponent } from './locacion-page/locacion-dashboard/locacion-dashboard.component';
 import { OcupacionPageComponent } from './locacion-ocupacion/ocupacion-page/ocupacion-page.component';
 import { OcupacionEditComponent } from './locacion-ocupacion/ocupacion-edit/ocupacion-edit.component';
+import { LocacionReportComponent } from './locacion-page/locacion-report/locacion-report.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'ocupacion',
     component: OcupacionPageComponent,
+  },
+  {
+    path: 'reporteocupacion',
+    component: LocacionReportComponent,
   },
   {
     path: 'parteocupacion/:id',
