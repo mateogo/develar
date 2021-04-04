@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject,  Observable, merge }       from 'rxjs';
 import { map }   from 'rxjs/operators';
@@ -49,14 +50,14 @@ export class OcupacionBrowseTableComponent implements OnInit {
   @Input() data$: Observable<OcupacionHospitalaria[]>;
   @Output() event: EventEmitter<string> = new EventEmitter<string>();
 
-  @Input() public displayedColumns =  ['select', "fecha_tx", "qlocaciones", "pOcupUTI", "pOcupUTE", "pOcupAMB", "slug",];
+  @Input() public displayedColumns =  ['select', "fecha_tx", "qlocaciones", "pOcupUTI", "pOcupUTE", "pOcupAMB", "slug", "rowactions" ];
   @Input() isColSelectionAllowed = true;
   @Output() private actionTriggered: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  public table_columns =  ['select', "fecha_tx", "qlocaciones", "pOcupUTI", "pOcupUTE", "pOcupAMB",  "slug"];
+  public table_columns =  ['select', "fecha_tx", "qlocaciones", "pOcupUTI", "pOcupUTE", "pOcupAMB",  "slug", "rowactions" ];
   public table_columns_sel = {
     'select':      false,
     'fecha_tx':    false,
@@ -64,7 +65,8 @@ export class OcupacionBrowseTableComponent implements OnInit {
     "qlocaciones": false, 
     "pOcupUTI":    false, 
     "pOcupUTE":    false, 
-    "pOcupAMB":    false
+    "pOcupAMB":    false,
+    "rowactions":  false,
   }
 
 
@@ -80,6 +82,8 @@ export class OcupacionBrowseTableComponent implements OnInit {
 
   constructor(
           private locSrv: LocacionService,
+          private route: ActivatedRoute,
+          private router: Router,
           public dialogService: MatDialog
     ){
       this.dataRecordsSource = this.locSrv.ocupacionHospitalariaDataSource;
@@ -111,6 +115,10 @@ export class OcupacionBrowseTableComponent implements OnInit {
     return numSelected === numRows;
   }
 
+  editItem(item){
+    this.router.navigate(['../', 'parteocupacion', item._id], {relativeTo: this.route})
+  }
+ 
   masterToggle() {
     this.isAllSelected() ?
         this.selection.clear() :

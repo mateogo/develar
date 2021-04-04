@@ -74,7 +74,16 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de notificación</mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.fecha_tx}} </mat-cell>
       </ng-container>
-  
+
+      <ng-container matColumnDef="rowactions">
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span style="cursor: pointer;">
+            <mat-icon matTooltip="Editar datos" class="mr-3" (click)="editItem(element)" >edit</mat-icon>
+          </span>
+        </mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
     </mat-table>

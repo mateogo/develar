@@ -9,8 +9,6 @@ import { LocacionCreateComponent } from '../../locacion-data/locacion-create/loc
 
 import { LocacionHelper } from '../../locacion.helper';
 import { LocacionService } from '../../locacion.service';
-import { BasePortalHost } from '@angular/cdk/portal';
-import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'ocupacion-edit',
@@ -51,12 +49,14 @@ export class OcupacionEditComponent implements OnInit {
   onSubmit() {
     this.initForSave();
     this.saveParteDeOcupacion();
+    this.navigateBack()
   }
 
   cancelEdit(){
     console.log('CANCEL EDIT CLICK')
-
+    this.navigateBack()
   }
+
   get serviciosFA() {
     return this.formGroup.get('servicios') as FormArray;
   }
@@ -78,9 +78,23 @@ export class OcupacionEditComponent implements OnInit {
 
     this.parteId = this.route.snapshot.paramMap.get('id')
     this.isAlta = this.parteId ? false : true;
+    if(this.isAlta){
+      this.loadLocaciones();
 
-    console.log('ParteID: [%s]', this.parteId);
-    this.loadLocaciones();
+    }else {
+      this.locSrv.fetchOcupacionById(this.parteId).then(parte => {
+        if(parte){
+          this.parteOcupacion = parte;
+          this.initForEdit(this.parteOcupacion);
+          this.showEditor = true;
+      
+        }else{
+          this.isAlta = true;
+          this.loadLocaciones();
+        }
+
+      })
+    }
   }
 
   private newOcupacionHospitalaria(): OcupacionHospitalaria {
@@ -96,7 +110,6 @@ export class OcupacionEditComponent implements OnInit {
   private loadLocaciones(){
     let query = this.locSrv.locacionesSelector;
     this.locSrv.fetchLocacionesByQuery(query).subscribe(locaciones =>{
-      console.log('LocacionesLoaded: [%s]', locaciones && locaciones.length);
       this.buildOcupacionXServicio(locaciones);
     });
   }
@@ -104,14 +117,13 @@ export class OcupacionEditComponent implements OnInit {
   private buildOcupacionXServicio(locaciones: LocacionHospitalaria[]){
     let _locaciones = locaciones.filter(loc => this.hospitalarias.indexOf(loc.type) !== -1) // filtra locaciones hospitalarias, excluye CAPS
     let ocupacionServicios: OcupacionXServicio[] = [];
-    console.log('locaciones filtered: [%s]', _locaciones.length);
+ 
     _locaciones.forEach(loc => {
       let baseData = new OcupacionXServicio(loc)
       let servicios = loc.servicios;
       this.addOcupacionServicios (ocupacionServicios, baseData, servicios);
     })
     this.parteOcupacion.servicios = ocupacionServicios;
-    console.dir(this.parteOcupacion)
     this.initForEdit(this.parteOcupacion);
     this.showEditor = true;
 
@@ -131,7 +143,7 @@ export class OcupacionEditComponent implements OnInit {
         if(targetObj){
           target = targetObj.target || target;
         }else {
-          console.log('Servicio  no encontrado: [%s]', serv.srvtype)
+          console.log('ERROR: Servicio  no encontrado: [%s]', serv.srvtype)
         }
         return target === capacidad.val ? acum + serv.srvQDisp : acum;
       }, 0)
@@ -174,8 +186,6 @@ export class OcupacionEditComponent implements OnInit {
   }
 
   private saveParteDeOcupacion(){
-    console.log('ready to save');
-    console.dir(this.parteOcupacion);
     this.locSrv.manageOcupacionRecord(this.parteOcupacion).subscribe(parte => {
       if(parte){
         this.parteOcupacion = parte;
@@ -185,6 +195,10 @@ export class OcupacionEditComponent implements OnInit {
 
       }
     })
+  }
+
+  private navigateBack(){
+    this.router.navigate(['/salud/entidades/locaciones/ocupacion'])
   }
 
 

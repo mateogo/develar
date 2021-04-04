@@ -28,8 +28,10 @@
 
     <ng-container matColumnDef="rowactions">
         <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let industry">
-            <mat-icon matTooltip="Editar datos de la empresa" class="mr-3" (click)="editItem(industry)">edit</mat-icon>
+        <mat-cell *matCellDef="let industry" style="cursor: pointer;">
+            <span style="cursor: pointer;">
+                <mat-icon matTooltip="Editar datos de la empresa" class="mr-3" (click)="editItem(industry)" >edit</mat-icon>
+            </span>
             <!-- <mat-icon matTooltip="Cancelar este turno" *ngIf="turno.estado != 'Cancelado'" (click)="deleteItem(turno)">delete</mat-icon> -->
         </mat-cell>
     </ng-container>

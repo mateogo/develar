@@ -57,6 +57,7 @@ export class LocacionReportComponent implements OnInit {
   private fecharef: string;
   private fecharef_date: Date;
   public  fecharef_label: string;
+  public fechaEfectiva: string;
 
 
   constructor(
@@ -102,11 +103,11 @@ export class LocacionReportComponent implements OnInit {
   private reloadOcupacionData(){
     let query = this.locSrv.ocupacionHospitalariaSelector
     query.fecha_tx = this.fecharef;
-    
+
     this.locSrv.fetchCapacidadDisponible(query).subscribe(map => {
       if(map){
         this.masterReportList = Array.from(map.values())
-        this.data$.next(this.masterReportList);
+        //data$.next(this.masterReportList);
         this.totalCapacidad = this.globalResourcesData(this.masterReportList)
         this.refreshView()
       }

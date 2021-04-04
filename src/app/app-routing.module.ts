@@ -227,6 +227,11 @@ const webRoutes: Routes = [
     children: dsocialModuleRoutes
   },
   {
+    path: 'internacion',
+    component: PresentacionLayoutComponent,
+    loadChildren: () => import('./entities/locaciones/locacion.module').then(m => m.LocacionHospitalariaModule)
+  },
+  {
     path: 'salud',
     component: PresentacionLayoutComponent,
     children: saludModuleRoutes

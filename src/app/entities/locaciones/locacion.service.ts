@@ -213,7 +213,7 @@ export class LocacionService {
         let master = new Map<string, ReportAllocationData>();
         servicios.forEach(servicio => {
           if(!master.has(servicio.locCode)){
-            this._initNewLocacion(master, servicio);
+            this._initNewLocacion(master, servicio, ocupacion);
           }
           let allocatedData = master.get(servicio.locCode);
           allocatedData.disponible[servicio.srvtype]['capacidad']  = servicio.srvQDisp;
@@ -223,21 +223,24 @@ export class LocacionService {
         listener.next(master)
 
       }else {
-        console.log('oops: no services')
+        // c onsole.log('oops: no services')
+        this.openSnackBar('ATENCIÓN: Hay un error de carga en el registro procesado', 'ACEPTAR')
         listener.next(null);
       }
     }else{
-      console.log('oops: no data')
+      // c onsole.log('oops: no data')
+      this.openSnackBar('ATENCIÓN: No hay datos para la fecha solicitada', 'ACEPTAR')
       listener.next(null);
     }
 
 
   }
-  private _initNewLocacion(master, servicio: OcupacionXServicio){
+  private _initNewLocacion(master, servicio: OcupacionXServicio, ocupacion: OcupacionHospitalaria){
     let data = {
       code: servicio.locCode,
       slug: servicio.locCode,
       type: servicio.locType,
+      fecha: ocupacion.fecha_tx,
       disponible: new OcupaciomPorArea()
       // disponible: {
       //   intensivos: {
@@ -266,7 +269,7 @@ export class LocacionService {
   private loadLocaciones(listener: Subject<MasterAllocation[]>, data: OcupacionHospitalaria[]){
     let query = this.locacionesSelector;
     this.fetchLocacionesByQuery(query).subscribe(locaciones =>{
-      console.log('LocacionesLoaded: [%s]', locaciones && locaciones.length);
+      // c onsole.log('LocacionesLoaded: [%s]', locaciones && locaciones.length);
       this.buildOcupacionXServicio(locaciones);
     });
   }
@@ -274,7 +277,7 @@ export class LocacionService {
   private buildOcupacionXServicio(locaciones: LocacionHospitalaria[]){
     let _locaciones = locaciones.filter(loc => this.hospitalarias.indexOf(loc.type) !== -1) // filtra locaciones hospitalarias, excluye CAPS
     let ocupacionServicios: OcupacionXServicio[] = [];
-    console.log('locaciones filtered: [%s]', _locaciones.length);
+    // c onsole.log('locaciones filtered: [%s]', _locaciones.length);
     _locaciones.forEach(loc => {
 
       let baseData = new OcupacionXServicio(loc)
@@ -283,7 +286,6 @@ export class LocacionService {
 
     })
     // this.parteOcupacion.servicios = ocupacionServicios;
-    // console.dir(this.parteOcupacion)
     // this.initForEdit(this.parteOcupacion);
     // this.showEditor = true;
 
@@ -303,7 +305,7 @@ export class LocacionService {
   //       if(targetObj){
   //         target = targetObj.target || target;
   //       }else {
-  //         console.log('Servicio  no encontrado: [%s]', serv.srvtype)
+  //         // c onsole.log('Servicio  no encontrado: [%s]', serv.srvtype)
   //       }
   //       return target === capacidad.val ? acum + serv.srvQDisp : acum;
   //     }, 0)
@@ -422,7 +424,7 @@ export class LocacionService {
     let snck = this.snackBar.open(message, action, {duration: 3000});
 
     snck.onAction().subscribe((e)=> {
-      //console.log('action???? [%s]', e);
+      //c onsole.log('action???? [%s]', e);
     })
   }
 

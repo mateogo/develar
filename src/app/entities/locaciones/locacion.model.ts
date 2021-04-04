@@ -169,6 +169,7 @@ export class ReportAllocationData {
   code: string;  // code del hospital
   slug: string;  // denom del hospital
   type: string; // tipo de hospital (PRIVADO)
+  fecha: string;
   disponible: OcupaciomPorArea;
 
 }

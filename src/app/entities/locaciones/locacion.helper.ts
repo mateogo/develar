@@ -176,8 +176,6 @@ export class  LocacionHelper {
 
       }, summary)
 
-      console.dir(summary)
-
       td.qlocaciones = summary.qlocaciones.size;
       td.pOcupUTI = summary.qDispUTI ? Math.round((summary.qOcupUTI/summary.qDispUTI) * 100) : 0;
       td.pOcupUTE = summary.qDispUTE ? Math.round((summary.qOcupUTE/summary.qDispUTE) * 100) : 0;
