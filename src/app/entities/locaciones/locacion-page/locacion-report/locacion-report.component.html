@@ -84,7 +84,7 @@
           <div  class="col-md-8">
             <div class="row">
               <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
-                <div  class="col-md-4 locacion-header-cell">
+                <div  class="col-md-6 locacion-header-cell">
                   <span>{{ capacidad.slug }}</span>
                 </div>
               </ng-container>
@@ -106,7 +106,7 @@
             <div  class="col-md-8">
               <div class="row">
                 <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
-                  <div  class="col-md-4 locacion-data-cell">
+                  <div  class="col-md-6 locacion-data-cell">
                     <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
                   </div>
                 </ng-container>
@@ -121,7 +121,7 @@
             <div  class="col-md-8">
               <div class="row">
                 <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
-                  <div  class="col-md-4 locacion-data-cell">
+                  <div  class="col-md-6 locacion-data-cell">
                     <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['ocupado'] }}</span>
                   </div>
                 </ng-container>
@@ -136,7 +136,7 @@
             <div  class="col-md-8">
               <div class="row">
                 <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
-                  <div  class="col-md-4 locacion-data-cell">
+                  <div  class="col-md-6 locacion-data-cell">
                     <span>{{capacidad.code}} : 
                             {{ getOcupacionPorcentual(
                             locacion['disponible'][capacidad.val]['ocupado'], 

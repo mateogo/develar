@@ -40,7 +40,7 @@ const PRIVADO = 'HOSPCPRIV';
 })
 export class LocacionReportComponent implements OnInit {
   public title = 'Tablero Ocupación Locaciones de Internación';
-  public totalTitle = 'Ocupación locaciones públicas'
+  public totalTitle = 'Nivel de ocupación total en AB'
 
   public capacidadesOptList = LocacionHelper.getOptionlist('capacidadesreporte');
   public groupservices = [];
@@ -163,7 +163,7 @@ export class LocacionReportComponent implements OnInit {
       capacidades[t.val] =  {capacidad: 0, ocupado: 0, libre: 0, porcentual:""};
     })
     masterList.forEach(t => {
-        if(t.type === PRIVADO) return;
+        //if(t.type === PRIVADO) return;
 
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
