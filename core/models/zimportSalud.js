@@ -62,11 +62,11 @@ function processSisaArchive(req, errcb, cb){
 
 function _processSisaArchive(req, errcb, cb, userList){
     //deploy
-    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
-	console.log('ATENCIÓN: ESTÁ EN LOCAL MODE')
+    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
 
+	//c onsole.log('ATENCIÓN: ESTÁ EN LOCAL MODE')
     // local
-    const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -323,7 +323,7 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 	let asis;
 
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
-	console.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
+	//c onsole.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
 		await updateAsistenciaRecord(token, person, asis, userList);
@@ -378,7 +378,7 @@ function assignUserToPerson(asis, token, userList){
 	
 	let user = userList[utils.between(0, userList.length)]
 	console.log('assignUserToPerson TO BEGIN [%s] rnd:[%s]', userList.length, user.displayName);
-	
+
 	_applyAsignadoToAsistencia(asis, user)
 }
 
@@ -393,7 +393,7 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 			followUpToken.isAsignado =   true;
 			followUpToken.asignadoId =   user.id;
 			followUpToken.asignadoSlug = user.displayName;
-			console.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
+			//c onsole.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
 		}
     }
 }
