@@ -36,6 +36,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   public vectorSeguimientoOptList = AsistenciaHelper.getOptionlist('vectorSeguim')
   public resultadoSeguimOptList = AsistenciaHelper.getOptionlist('resultadoSeguim')
   public sintomaOptList = AsistenciaHelper.getOptionlist('sintomaInfection')
+  public offsetLlamadosOptList = AsistenciaHelper.getOptionlist('offsetLlamados')
 
   public displayAs = '';
   public estadoSintoma = '';
@@ -189,6 +190,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
   }
 
   private updateFollowUp(token: AfectadoUpdate, afectado: AfectadoFollowUp, today: Date){
+    let nextCall = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (token.nuevollamadoOffset || 1))
   	afectado.fe_ullamado = token.fe_llamado;
   	afectado.fets_ullamado = today.getTime();
   	afectado.qllamados += 1;
@@ -199,6 +201,9 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 		afectado.slug = token.slug;
 		afectado.isActive = token.isActive;
     afectado.isAsistido = token.isAsistido;
+    afectado.nuevollamadoOffset = token.nuevollamadoOffset;
+
+    afectado.fets_nextLlamado = nextCall.getTime();
 
 		if(token.resultado === LLAMADO_LOGRADO){
 			afectado.fe_ucontacto = token.fe_llamado;
@@ -257,6 +262,8 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
 
   private initForEdit(){
     this.formClosed = false;
+    this.seguimientoEvent.nuevollamadoOffset = this.seguimientoEvent.nuevollamadoOffset  ? this.seguimientoEvent.nuevollamadoOffset  : 1;
+
     this.form.reset({
       isActive:   this.seguimientoEvent.isActive,
       isAsistido: this.seguimientoEvent.isAsistido,
@@ -271,6 +278,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
       sintoma:    this.seguimientoEvent.sintoma,
       slug:       this.seguimientoEvent.slug,
       indicacion: this.seguimientoEvent.indicacion,
+      nuevollamadoOffset: this.seguimientoEvent.nuevollamadoOffset
 
     })
   }
@@ -328,6 +336,7 @@ export class VigilanciaSeguimientofwupComponent implements OnInit {
       fe_llamado:     [null],
       slug:           [null],
       indicacion:     [null],
+      nuevollamadoOffset: [null]
 
     })
 

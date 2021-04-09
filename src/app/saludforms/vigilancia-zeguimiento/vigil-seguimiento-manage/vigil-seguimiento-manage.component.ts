@@ -402,6 +402,11 @@ export class VigilSeguimientoManageComponent implements OnInit {
       let asignadoTxt = token.isAsignado ? ' - ASIGN: ' + token.asignadoSlug : ''
 
       followupBadgeToken.toolTip = `Inicio:[${token.fe_inicio}] últ contacto:[${token.fe_ucontacto}] Contactos logrados:[${token.qcontactos}/${token.qllamados}] No contesta:[${token.qIntents}] ${token.slug} ${asignadoTxt} `;
+      if(token.fets_nextLlamado){
+        followupBadgeToken.nextCall = token.altaVigilancia ? 'ALTA VIGILANCIA': devutils.txFromDateTime(token.fets_nextLlamado);
+      }else {
+        followupBadgeToken.nextCall = token.altaVigilancia ? 'ALTA VIGILANCIA': '';
+      }
 
 
       if(contactos && contactos.length){
@@ -836,6 +841,7 @@ class FollowUpBadge {
   outline = true;
   arrow = 'bottom';
   asignado = false;
+  nextCall = '';
   size = '';
   branding = 'LL';
   label = '';

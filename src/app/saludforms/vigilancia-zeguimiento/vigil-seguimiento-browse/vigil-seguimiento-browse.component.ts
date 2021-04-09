@@ -170,6 +170,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
       urgencia:     [null],
       intervencion: [null],
       trabajadorId: [null],
+      nextCallDate: [null],
 
     });
 
@@ -177,6 +178,9 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   }
 
   private initForEdit(form: FormGroup, query: VigilanciaBrowse): FormGroup {
+    
+    query.nextCallDate = devutils.txFromDate(new Date());
+
 		form.reset({
         compPrefix:  query.compPrefix,
         compName:    query.compName,
@@ -221,6 +225,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
         urgencia:     query.urgencia,
         intervencion:     query.intervencion,
         trabajadorId: query.trabajadorId,
+        nextCallDate: query.nextCallDate,
 
 
 		});
@@ -287,6 +292,12 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     entity.urgencia =      fvalue.urgencia;
     entity.intervencion =      fvalue.intervencion;
     entity.trabajadorId =  fvalue.trabajadorId;
+
+    if(entity.isSeguimiento){
+      entity.nextCallDate = fvalue.nextCallDate;
+    }else {
+      entity.nextCallDate = "";
+    }
 
     if(entity.fenovd) entity.fenovd_ts = devutils.dateNumFromTx(entity.fenovd)
     if(entity.fenovh) entity.fenovh_ts = devutils.dateNumPlusOneFromTx(entity.fenovh);

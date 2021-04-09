@@ -175,6 +175,7 @@ export class Novedad {
 		actividades: AvancesNovedad[] = [];
 		atendidox: Atendido;
 
+
 		constructor(){
 			let hoy = new Date();
 
@@ -734,8 +735,23 @@ export class AfectadoFollowUp {
 	fets_inicio:    number = 0;
 	fets_ucontacto: number = 0;
 	fets_ullamado:  number = 0;
+	nuevollamadoOffset: number = 0;
+	fets_nextLlamado: number = 0;
+
 
 }
+
+
+const offsetLlamadosOptList = [
+	{ val: 1,      label: 'Mañana'},
+	{ val: 2,      label: 'Pasado mañana'},
+	{ val: 3,      label: 'En 3 días'},
+	{ val: 4,      label: 'En 4 días'},
+	{ val: 5,      label: 'En 5 días'},
+	{ val: 6,      label: 'En 6 días'},
+	{ val: 7,      label: 'En 7 días'},
+	{ val: 10,     label: 'En 10 días'},
+];
 
 const resultadoSeguimientoOptList = [
 	{ val: 'logrado',      label: 'Logrado'},
@@ -756,6 +772,7 @@ export class AfectadoUpdate {
 	isAsistido: boolean = false;
 	altaVigilancia: boolean = false; // no se le hace más seguimiento epidemiológico, caso de alta
 	altaAsistencia: boolean = false; // no se le hace más seguimiento asistencial
+	nuevollamadoOffset: number = 0;
 
 
 	fe_llamado: string = '';
@@ -770,8 +787,10 @@ export class AfectadoUpdate {
 	slug: string = ''; // mensaje
 	indicacion: string = ''; // mensaje
 
+
 	fets_llamado: number = 0;
 	audit: Audit;
+
 }
 
 
@@ -1198,6 +1217,7 @@ export class VigilanciaBrowse {
 		userAsignado: string = '';
 		urgencia:  number;
 		trabajadorId: string;
+		nextCallDate: string = '';
 
 }
 
@@ -2259,6 +2279,7 @@ const optionsLists = {
    faseFollowUp: faseAfectadoOptList,
    vectorSeguim: vectorSeguimientoOptList,
    resultadoSeguim: resultadoSeguimientoOptList,
+   offsetLlamados: offsetLlamadosOptList,
 
    //InfectionFollowUp
    avanceInfection: avanceInfectionOptList,
@@ -2795,6 +2816,7 @@ export class AsistenciaHelper {
       if(key === 'resultado'      && !query[key]) delete query[key];
       if(key === 'urgencia'       && !query[key]) delete query[key];
       if(key === 'trabajadirId'   && !query[key]) delete query[key];
+      if(key === 'nextCallDate'   && !query[key]) delete query[key];
 
 
     })

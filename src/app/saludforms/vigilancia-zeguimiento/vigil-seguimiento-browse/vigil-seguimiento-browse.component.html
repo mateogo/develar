@@ -133,7 +133,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <mat-form-field>
             <mat-select #fldResultado placeholder="Resultado llamado"
                 [formControl]="form.controls['resultado']"
@@ -151,6 +151,15 @@
         </div>
 
       </div>
+      <div class="row" >
+        <div class="col-md-4 offset-md-4">
+            <mat-form-field>
+              <input matInput [formControl]="form.controls['nextCallDate']" 
+                      placeholder="Llamados programados para la fecha indicada" >
+            </mat-form-field>
+        </div>
+       </div>
+
 
     </div>
     <hr>

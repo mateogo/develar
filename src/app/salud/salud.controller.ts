@@ -604,6 +604,9 @@ export class SaludController {
 
     followUp.fe_inicio = devutils.txFromDate(new Date());
     followUp.fets_inicio = devutils.dateNumFromTx(followUp.fe_inicio);
+		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
+
 
     followUp.tipo = 'infectado';
     followUp.sintoma = investigacion.sintoma;

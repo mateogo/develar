@@ -114,6 +114,17 @@ const searchBestDoB = function(tdoc, ndoc): string{
     return fenac;
 }
 
+function betweenExcludesMax(min: number, max: number) {  
+    //Math.random() * (max - min) + min      // max-exclusive
+    //Math.random() * (max - min + 1) + min  // min-exclusive
+    //USO: para tomar un elemento al azar de un cierto array, invocando la función con (0, array.length)
+    return Math.floor(
+        Math.random() * (max - min) + min
+    )
+}
+
+
+
 /******
 const 
 1.000.000 a 2.000.000 ;1921
@@ -888,6 +899,10 @@ class Devutils {
         let fech_aux = new Date(fecharef.getTime());
         let ts_desde = fech_aux.setDate(fech_aux.getDate()-7);
         return { feDesde: dateToStr(new Date(ts_desde)), feHasta: dateToStr(fecha_origen) }
+    }
+
+    between(min: number, max: number){
+        return betweenExcludesMax(min, max);
     }
 
 }

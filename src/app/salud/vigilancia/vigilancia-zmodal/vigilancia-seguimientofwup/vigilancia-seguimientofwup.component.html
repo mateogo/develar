@@ -158,6 +158,24 @@
 													CONFIRMAR ACCIÓN</button>
 			</div>
 	</div>
+	<div class="row">
+		<div class="col-md-6" style="text-align: center;">
+			<mat-form-field>
+				<mat-label>Agendar próximo llamado para dentro de...</mat-label>
+				<mat-select #fldOffsetLlamado  formControlName='nuevollamadoOffset'
+										(selectionChange)="changeSelectionValue('resultado', fldOffsetLlamado.value)">
+
+				    <mat-optgroup [disabled]="!offsetLlamadosOptList.length" [label]="'nuevo llamado en...'">
+				        <mat-option *ngFor="let resultado of offsetLlamadosOptList" [value]="resultado.val">
+				            {{ resultado.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+
+	</div>
 
 	<div class="d-md-flex justify-content-start">
 		<button mat-raised-button color="primary" class='m-1'

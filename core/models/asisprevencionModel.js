@@ -360,6 +360,7 @@ const afectadoUpdateSch = new Schema({
 
     altaVigilancia:  { type: Boolean, required: false },
     altaAsistencia:  { type: Boolean, required: false },
+    nuevollamadoOffset: {type: Number, required: false, default: 1},
 
     fe_llamado: { type: String, required: false },
     resultado:  { type: String, required: false },
@@ -414,6 +415,8 @@ const afectadosFollowUpSch = new Schema({
   fets_inicio:   { type: Number, required: false },
   fets_ucontacto:{ type: Number, required: false },
   fets_ullamado: { type: Number, required: false },
+  nuevollamadoOffset: {type: Number, required: false, default: 1},
+  fets_nextLlamado: {type: Number, required: false},
 
 })
 
@@ -974,10 +977,14 @@ function buildQuery(query, today){
     q["muestraslab.locacionId"] = query['locacionId'];
   }
 
-
   if(query['isSeguimiento']){
+    console.dir(query)
     q["followUp.isActive"] = true;
     q['followUp.altaVigilancia'] =  {$ne: true};
+
+    if(query['nextCallDate']){
+      q['followUp.fets_nextLlamado'] =  {$lte: utils.dateNumFromTx(query['nextCallDate']) };
+    }
   }
 
   if(query['tipoSeguimiento']){
@@ -1012,6 +1019,8 @@ function buildQuery(query, today){
     q["infeccion.sintoma"] = query['sintomaCovid'];
 
   }
+//1617821677565
+//1617850800000
 
   if(query['isActiveSisa']){    
     q["sisaevent.isActive"] = true;

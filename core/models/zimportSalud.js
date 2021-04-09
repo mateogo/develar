@@ -15,6 +15,7 @@ const utils = require('../services/commons.utils');
 const csv = require('csvtojson')
 
 const person = require('./personModel');
+const userModel = require('./userModel');
 
 const asisprevencion = require('./asisprevencionModel.js');
 const serialModule = require('./serialModel.js');
@@ -22,6 +23,7 @@ const serialModule = require('./serialModel.js');
 const Schema = mongoose.Schema;
 
 const self = this;
+const USER_EPIDEMI_OPERATOR = 'vigilancia:operator'
 
 const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
@@ -50,11 +52,21 @@ exports.importSisaArchive = processSisaArchive;
 /* 	Importa archivo CSV originado por SISA SNVS */
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
+
+	userModel.findByRole(USER_EPIDEMI_OPERATOR).then(userList => {
+		userList = userList || [];
+		_processSisaArchive(req, errcb, cb, userList)
+	});
+}
+
+
+function _processSisaArchive(req, errcb, cb, userList){
     //deploy
-    const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+    //const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
+	console.log('ATENCIÓN: ESTÁ EN LOCAL MODE')
 
     // local
-    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -86,7 +98,7 @@ function processSisaArchive(req, errcb, cb){
 						})
 
 					for(let index = 0; index < persons.length; index++){
-						processOneSaludPerson(persons[index], compNumCounter);
+						processOneSaludPerson(persons[index], compNumCounter, userList);
 						compNumCounter +=1;
 
 					}
@@ -110,7 +122,7 @@ function processSisaArchive(req, errcb, cb){
 }
 
 
-async function processOneSaludPerson(token, compNum){
+async function processOneSaludPerson(token, compNum, userList){
 		let tperson;
 
 		if(token.feresultado && !utils.dateNumFromTx(token.feresultado)){
@@ -125,12 +137,12 @@ async function processOneSaludPerson(token, compNum){
 
 		tperson = await PersonRecord.findOne(query).exec();
 
-		processOnePerson(tperson, token, compNum);
+		processOnePerson(tperson, token, compNum, userList);
 
 
 }
 
-function processOnePerson(person, token, compNum){
+function processOnePerson(person, token, compNum, userList){
     //c onsole.log('processOnePerson [%s]', person && person.apellido);
     let isNew = false;
 
@@ -147,8 +159,7 @@ function processOnePerson(person, token, compNum){
     buildSaludCoreData(person, token, isNew);
     buildSaludLocaciones(person, token, isNew);
 
-
-    saveSaludRecord(person, isNew, token, compNum);
+    saveSaludRecord(person, isNew, token, compNum, userList);
 }
 
 const buildSaludCoreData = function(person, token, isNew){
@@ -272,14 +283,14 @@ const buildSaludLocaciones = function(person, token, isNew){
 
 
 
-function saveSaludRecord(person, isNew, token, compNum){
+function saveSaludRecord(person, isNew, token, compNum, userList){
     if(isNew){
 
     	//c onsole.log('Ready To PersonSave')
       person.save().then(person =>{
           if(person && person._id){
               //c onsole.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
-              processAsistenciaPrevencion(token, person, compNum);
+              processAsistenciaPrevencion(token, person, compNum, userList);
           }
 
       })
@@ -290,7 +301,7 @@ function saveSaludRecord(person, isNew, token, compNum){
       PersonRecord.findByIdAndUpdate(person._id, person, { new: true }).then( person =>  {
           if(person && person._id){
               //c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
-              processAsistenciaPrevencion(token, person, compNum);
+              processAsistenciaPrevencion(token, person, compNum, userList);
           }
       })
 
@@ -302,7 +313,7 @@ function saveSaludRecord(person, isNew, token, compNum){
 /* 	Create / Update Asistencia Prevencion       */
 /***********************************************/
 
-async function processAsistenciaPrevencion(token, person, compNum){
+async function processAsistenciaPrevencion(token, person, compNum, userList){
 
 	let regexQuery = asisprevencionBuildQuery({
 		ndoc: person.ndoc,
@@ -315,14 +326,14 @@ async function processAsistenciaPrevencion(token, person, compNum){
 	console.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
-		await updateAsistenciaRecord(token, person, asis);
+		await updateAsistenciaRecord(token, person, asis, userList);
 	}else {
-		await createAsistenciaRecord(token, person, compNum);
+		await createAsistenciaRecord(token, person, compNum, userList);
 	}
 
 }
 
-async function updateAsistenciaRecord(token, person, asis){
+async function updateAsistenciaRecord(token, person, asis, userList){
 		asis.prioridad = 2;
 		asis.idbrown = 'sisa:' + token.fealta;
 
@@ -338,12 +349,14 @@ async function updateAsistenciaRecord(token, person, asis){
 		updateFollowUp(asis, token);
 		buildMuestrasLab(asis, token);
 		buildCovid(asis,token);
+		assignUserToPerson(asis, token, userList)
 
+		//c onsole.log('OjO: UPDATE save is commented')
 		await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
 }
 
 
-async function createAsistenciaRecord(token, person, compNum){
+async function createAsistenciaRecord(token, person, compNum, userList){
 				const asis = new AsisprevencionRecord();
 				buildCoreAsis(asis, person, compNum, token);
 				buildCovid(asis, token);
@@ -351,8 +364,38 @@ async function createAsistenciaRecord(token, person, compNum){
 				buildMuestrasLab(asis, token);
 				buildSisaEvent(asis, token);
 
+				assignUserToPerson(asis, token, userList)
+				//c onsole.log('OjO: CREATE save is commented')
 				asis.save();
 
+}
+
+function assignUserToPerson(asis, token, userList){
+	if(!(userList && userList.length)) return;
+
+	// los casos marcados como CAPS serán autoasignados por éstos
+	if(token.asignadoa && token.asignadoa === 'CAPS') return;
+	
+	let user = userList[utils.between(0, userList.length)]
+	console.log('assignUserToPerson TO BEGIN [%s] rnd:[%s]', userList.length, user.displayName);
+	
+	_applyAsignadoToAsistencia(asis, user)
+}
+
+
+function _applyAsignadoToAsistencia(asistencia, user ){
+	if(!user) return;
+    let followUpToken = asistencia.followUp;
+    if(followUpToken){
+		if(!(followUpToken.isAsignado && followUpToken.asignadoId)){
+			followUpToken.isActive = true;
+			followUpToken.tipo =         'infectado';
+			followUpToken.isAsignado =   true;
+			followUpToken.asignadoId =   user.id;
+			followUpToken.asignadoSlug = user.displayName;
+			console.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
+		}
+    }
 }
 
 
@@ -363,6 +406,8 @@ function updateFollowUp(asis, token){
 		followUp.isActive = true;
 		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
 		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
+		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 		if(!followUp.isAsignado){
 			if(followUp.isContacto){
 				followUp.isAsignado = followUp.isContacto;
@@ -379,9 +424,10 @@ function updateFollowUp(asis, token){
 		let followUp = new AfectadoFollowUp();
 		followUp.fe_inicio = token.fealta;
 		followUp.fets_inicio = utils.dateNumFromTx(token.fealta);
+		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 		asis.followUp = followUp;
 	}
-
 }
 
 function buildCovid(asis, token){
@@ -469,9 +515,10 @@ function buildFollowUp(asis, token){
 	let followUp = new AfectadoFollowUp();
 	followUp.fe_inicio = token.fealta;
 	followUp.fets_inicio = utils.dateNumFromTx(followUp.fe_inicio);
+	followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+	followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 	asis.followUp = followUp;
 }
-
 
 
 /**
@@ -541,9 +588,6 @@ function buildFollowUp(asis, token){
 		seguimEvolucion:   Array<AfectadoUpdate>;
 		contextoAfectados: Array<ContextoAfectados>;
 		morbilidades:      Array<Morbilidad>;
-
-
-
 **/
 
 function updateCoreAsis(asis, person, data){
@@ -651,9 +695,7 @@ function updateCoreAsis(asis, person, data){
 }
 
 
-
 function buildCoreAsis(asis, person, compNum, data){
-
 		let ts = Date.now();
 		let novedades = [];
 
@@ -783,7 +825,6 @@ function buildCoreAsis(asis, person, compNum, data){
 			novedades.push(descartado_to_notify);				
 		}
 
-
 		asis.fecomp_txa = fealta;
 		asis.fecomp_tsa = fealta_ts;
 
@@ -816,10 +857,6 @@ function buildCoreAsis(asis, person, compNum, data){
 		asis.isVigilado = true;
 
 		return asis;
-
-
-
-
 }
 
 
@@ -1413,6 +1450,8 @@ class AfectadoFollowUp {
 	fets_inicio = 0;
 	fets_ucontacto = 0;
 	fets_ullamado= 0;
+	nuevollamadoOffset = 1;
+	fets_nextLlamado = 0;
 
 }
 

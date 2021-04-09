@@ -379,6 +379,16 @@ exports.buildDateFrameForCurrentWeek = function(fecha_time){
     }
 }
 
+exports.between = function(min, max) {  
+    // Excludes max
+    // Math.random() * (max - min) + min      // max-exclusive
+    // Math.random() * (max - min + 1) + min  // min-exclusive
+    // USO: para tomar un elemento al azar de un cierto array, invocando la función con (0, array.length)
+    return Math.floor(
+        Math.random() * (max - min) + min
+    )
+}
+
 
 
 /* For a given date, get the ISO week number
