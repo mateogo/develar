@@ -527,7 +527,9 @@ function buildQuery(query, today){
   let comp_range = [];
 
   if(query['requirenteId']){
-      q["requeridox.id"] = query['requirenteId'];
+      //
+      q["idPerson"] =  query['requirenteId'];
+
       //if(q["isVigilado"]) return q; // es caso único, no filtra por nada más
       return q; // es caso único, no filtra por nada más
 

@@ -796,6 +796,17 @@ export class SaludController {
 
     }
 
+    //
+    if(entity.estado === 'cumplido' && entity.avance === 'cerrado'){
+      console.log('ToDo:   marcar la solicitud como cerrada!!!!')
+      entity.isVigilado = false;
+      entity.hasSeguimiento = false;
+      entity.isCovid = false;
+      entity.idPerson = null;
+      entity.ndoc = null;
+    }
+
+
   }
 
   upsertAsistenciaToken(asistencia: Asistencia, token: any){

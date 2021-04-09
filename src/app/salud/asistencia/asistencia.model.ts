@@ -1551,6 +1551,7 @@ const prioridadOptList = [
 const avanceOptList = [
       {val: 'no_definido',          tipo:0, order:  1, label: 'Sin selección',        slug:'Sin selección' },
       {val: 'emitido',              tipo:0, order:  2, label: 'Emitida',              slug:'Emitida' },
+      {val: 'cerrado',              tipo:0, order:  2, label: 'Cerrada',              slug:'Cerrada' },
 
       {val: 'esperamedico',         tipo:1, order: 11, label: 'Espera médico/a',      slug:'Esepra médico/a' },
       {val: 'enobservacion',        tipo:1, order: 12, label: 'En observación',       slug:'En observación' },
@@ -1575,7 +1576,8 @@ const avanceOptList = [
 
 const ejecucionOptList = [
       {val: 'no_definido',          estado: 'activo',  tipo:0, order:  1, label: 'Sin selección',        slug:'Sin selección',   },
-      {val: 'emitido',              estado: 'activo',  tipo:0, order:  2, label: 'Emitida',              slug:'Emitida',         },
+      {val: 'cerrado',              estado: 'cerrado', tipo:0, order:  2, label: 'Caso cerrado',         slug:'Caso cerrado',    },
+      {val: 'emitido',              estado: 'activo',  tipo:0, order:  2, label: 'Emitida',              slud:'Emitida',         },
       {val: 'derivado',             estado: 'activo',  tipo:1, order: 11, label: 'Derivado',             slug:'Derivado',        },
       {val: 'enejecucion',          estado: 'activo',  tipo:1, order: 12, label: 'En ejecucion',         slug:'En ejecucion',    },
       {val: 'cumplido',             estado: 'cerrado', tipo:1, order: 13, label: 'Cumplida',             slug:'Cumplida',        },
@@ -1700,6 +1702,11 @@ const avance_estadoRelation = {
   emitido: [
     {val: 'activo',   label: 'Activa' },
   ],
+
+  cerrado: [
+    {val: 'cumplido',   label: 'Cumplido' },
+  ],
+
 
   descartado: [
     {val: 'cerrado',   label: 'Cerrado' },

@@ -73,7 +73,7 @@ export class SolasisEditComponent implements OnInit {
   }
 
   emitEvent(action:string){
-  	this.updateToken.next({
+    this.updateToken.next({
   		action: action,
   		type: TOKEN_TYPE,
       selected: true,
