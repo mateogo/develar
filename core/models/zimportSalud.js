@@ -375,6 +375,9 @@ function assignUserToPerson(asis, token, userList){
 
 	// los casos marcados como CAPS serán autoasignados por éstos
 	if(token.asignadoa && token.asignadoa === 'CAPS') return;
+
+	// los obitos no se asignan para seguimiento sino para salud mental
+	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
 	
 	let user = userList[utils.between(0, userList.length)]
 	console.log('assignUserToPerson TO BEGIN [%s] rnd:[%s]', userList.length, user.displayName);
@@ -406,7 +409,7 @@ function updateFollowUp(asis, token){
 		followUp.isActive = true;
 		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
 		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
-		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : utils.dateNumFromTx(token.fealta);
 		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 		if(!followUp.isAsignado){
 			if(followUp.isContacto){
