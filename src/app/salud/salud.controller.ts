@@ -604,7 +604,7 @@ export class SaludController {
 
     followUp.fe_inicio = devutils.txFromDate(new Date());
     followUp.fets_inicio = devutils.dateNumFromTx(followUp.fe_inicio);
-		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : (followUp.fets_inicio || Date.now());
 		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 
 
@@ -612,30 +612,8 @@ export class SaludController {
     followUp.sintoma = investigacion.sintoma;
     followUp.vector = followUp.vector || 'inicia';
     followUp.fase = followUp.fase || 'fase0';
-    //followUp.slug = '';
-
-
-    // followUp.fe_ucontacto = '';
-    // followUp.fe_ullamado = '';
-    // followUp.parentId = '';
-    // followUp.parentSlug = '';
-    // followUp.qllamados = '';
-    // followUp.qcontactos = '';
-    // followUp.lastCall = '';
-    // followUp.qIntents = '';
-    // followUp.vector = '';
-    // followUp.fase = '';
-    // followUp.isAsignado = '';
-    // followUp.asignadoId = '';
-    // followUp.asignadoSlug = '';
-    // followUp.isContacto = '';
-    // followUp.derivadoId = '';
-    // followUp.derivadoSlug = '';
-    // followUp.fets_ucontacto = '';
-    // followUp.fets_ullamado = '';
 
     asistencia.followUp = followUp;
-
   }
 
   private updateCovidFromInvestig(asistencia: Asistencia, investigacion: ContextoCovid ){

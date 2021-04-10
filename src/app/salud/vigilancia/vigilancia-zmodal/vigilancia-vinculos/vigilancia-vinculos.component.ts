@@ -93,8 +93,6 @@ export class VigilanciaVinculosComponent implements OnInit {
     this.initForm();
 
     this.initOnce();
-
- 
   }
 
   private initOnce(){
@@ -166,7 +164,6 @@ export class VigilanciaVinculosComponent implements OnInit {
       this.isLocacionFromNuHab = false;
       this.locacionSourceTxt = 'Locación recuperada del padrón de persona'
 
-
     }else {
 
       let nucHab:Address = this.vinculo.nucleo ? (this.nucleoHab && this.nucleoHab[this.vinculo.nucleo] && this.nucleoHab[this.vinculo.nucleo].address) : null;
@@ -193,7 +190,6 @@ export class VigilanciaVinculosComponent implements OnInit {
       this.isLocacionFromAsistencia = false;
       this.isLocacionFromPerson = false;
     }
-
   }
 
   onSubmit(){
@@ -212,7 +208,9 @@ export class VigilanciaVinculosComponent implements OnInit {
     this.formClosed = true;
     this.result.action = UPDATE;
     this.initForSave()
-    this.updateSeguimientoBajoCasoIndice();
+    if(!this.updateSeguimientoBajoCasoIndice()){
+      this.formClosed = false;
+    }
   }
 
   onCancel(){
@@ -338,19 +336,19 @@ export class VigilanciaVinculosComponent implements OnInit {
   	return ok;
   }
 
-  private updateSeguimientoBajoCasoIndice(){
+  private updateSeguimientoBajoCasoIndice(): boolean{
     if(this.isNewVinculo){
         this.ctrl.openSnackBar('Debe confirmar el alta del vínculo primero. No se puede actualizar', 'ATENCIÓN');
-        return
+        return false;
     }
 
     if(!this.asistencia){
         this.ctrl.openSnackBar('No se estableció el caso índice. No se puede actualizar', 'ATENCIÓN');
-        return
+        return false;
     }
     if(!this.vinculo.personId){
         this.ctrl.openSnackBar('No se ha creado un nuevo afectado a partir de este vínculo. No se puede actualizar', 'ATENCIÓN');
-        return
+        return false;
     }
 
     this.perSrv.fetchPersonById(this.vinculo.personId).then(per => {
@@ -373,6 +371,7 @@ export class VigilanciaVinculosComponent implements OnInit {
         this.ctrl.openSnackBar('No se pudo recuperar el registro de PERSONA. No se puede actualizar', 'ATENCIÓN');
       }
     })
+    return true;
 
   }
 

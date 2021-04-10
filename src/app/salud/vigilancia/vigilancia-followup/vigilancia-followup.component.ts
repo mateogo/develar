@@ -241,7 +241,7 @@ export class VigilanciaFollowupComponent implements OnInit {
   }
 
 
-  public manageModalEditors(token: string){
+  private manageModalEditors(token: string){
 
     this.dsCtrl.fetchAsistenciaById(this.asistencia._id).then(asis =>{
       if(asis){

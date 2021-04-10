@@ -262,7 +262,7 @@ export class ContextoCovid {
 	hasCOVID: boolean = false;
 	isCOVID: boolean = false;
 	//
-	fe_investig: string = '';
+	fe_investig: string = devutils.txFromDate(new Date());
 	fets_investig: number = 0;
 	userInvestig: string = '';
 	userAsignado: string = '';

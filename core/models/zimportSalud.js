@@ -424,11 +424,7 @@ function updateFollowUp(asis, token){
 		}
 
 	}else {
-		let followUp = new AfectadoFollowUp();
-		followUp.fe_inicio = token.fealta;
-		followUp.fets_inicio = utils.dateNumFromTx(token.fealta);
-		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
-		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
+		let followUp = this.buildFollowUp(asis, token);
 		asis.followUp = followUp;
 	}
 }
@@ -518,9 +514,10 @@ function buildFollowUp(asis, token){
 	let followUp = new AfectadoFollowUp();
 	followUp.fe_inicio = token.fealta;
 	followUp.fets_inicio = utils.dateNumFromTx(followUp.fe_inicio);
-	followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : followUp.fets_inicio;
+	followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : utils.dateNumFromTx(token.fealta);
 	followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
 	asis.followUp = followUp;
+	return followUp;
 }
 
 

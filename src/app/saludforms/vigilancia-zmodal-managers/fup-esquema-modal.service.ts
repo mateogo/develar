@@ -16,6 +16,7 @@ import {  Asistencia,
 import { VigilanciaSeguimientoComponent } from '../../salud/vigilancia/vigilancia-zmodal/vigilancia-seguimiento/vigilancia-seguimiento.component';
 
 const ROLE_ADMIN = 'vigilancia:admin';
+const ROLE_OPERATOR = 'vigilancia:operator';
 
 const UPDATE =   'update';
 const CANCEL =   'cancel';
@@ -38,20 +39,20 @@ export class FollowUpEsquemaModalService {
   openDialog(asistencia: Asistencia ): Subject<UpdateAsistenciaEvent>{
   	this.asistencia = asistencia;
 
-    this.validateCredentials(asistencia);
+    if(this.validateCredentials(asistencia)){
+      this.loadAsistencia(asistencia._id)
+    }
 
   	return this.dialogResult$;
   }
 
-  private validateCredentials(asistencia: Asistencia){
-    if(!this.checkUserPermission(ROLE_ADMIN)){
-
+  private validateCredentials(asistencia: Asistencia): boolean{
+    if( !(this.checkUserPermission(ROLE_ADMIN) || this.checkUserPermission(ROLE_OPERATOR)) ){
       this.fireError('Acceso restringido', 'ATENCIÓN')
-
-    }else {
-      this.loadAsistencia(asistencia._id)
-
-    }    
+      return false;
+    }
+      
+    return true;
   }
 
   private loadAsistencia(asistenciaId){

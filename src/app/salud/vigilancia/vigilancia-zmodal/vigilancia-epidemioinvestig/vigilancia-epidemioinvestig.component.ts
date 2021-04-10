@@ -249,7 +249,7 @@ export class VigilanciaEpidemioinvestigComponent implements OnInit {
       hasTrabajoSalud:        sintomaCovid.hasTrabajoSalud,
 
       contexto:           sintomaCovid.contexto,
-      fe_investig:        sintomaCovid.fe_investig,
+      fe_investig:        sintomaCovid.fe_investig || devutils.txFromDate(new Date()),
       userId:             sintomaCovid.userId,
       hasInvestigacion:   sintomaCovid.hasInvestigacion,
 
@@ -342,7 +342,7 @@ export class VigilanciaEpidemioinvestigComponent implements OnInit {
     covid.userId =              fvalue.userId;
     covid.hasInvestigacion =    fvalue.hasInvestigacion;
     if(covid.fe_investig){
-      covid.fets_investig = devutils.dateNumFromTx(covid.fe_inicio);
+      covid.fets_investig = devutils.dateNumFromTx(covid.fe_investig);
     }
     if(covid.userId){
       covid.userInvestig = this.usersOptList.find(t=>t.val === covid.userId).label;

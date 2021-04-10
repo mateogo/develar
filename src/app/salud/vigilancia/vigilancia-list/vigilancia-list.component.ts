@@ -47,7 +47,7 @@ export class VigilanciaListComponent implements OnInit {
   private currentAvance: string;
   
   private asistenciaList: BehaviorSubject<Asistencia[]>;
-  private asistenciaDataSource: ArrayDataSource<Asistencia>;
+  public  asistenciaDataSource: ArrayDataSource<Asistencia>;
 
   public itemsLength: number = 0;
 

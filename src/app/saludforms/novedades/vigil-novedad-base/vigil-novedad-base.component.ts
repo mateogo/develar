@@ -202,12 +202,12 @@ export class VigilNovedadBaseComponent implements OnInit {
     }
   }
 
-
-
 	removeToken(){
 	}
 
+  editModalidad(){
 
+  }
 
 
   private manageModalEditors(token: string){

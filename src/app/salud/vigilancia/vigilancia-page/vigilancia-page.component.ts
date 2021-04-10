@@ -47,7 +47,7 @@ export class VigilanciaPageComponent implements OnInit {
 
   public renderMap = false;
   public zoom = 15;
-  public baseLatLng = {};
+  public baseLatLng: {lat:number, lng: number} = {lat: 0, lng: 0};
   public mapData: AsistenciaSig[] = [];
   public viewList: Array<string> = [];
 

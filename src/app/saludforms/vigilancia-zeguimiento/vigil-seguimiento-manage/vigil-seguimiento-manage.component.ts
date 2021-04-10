@@ -408,6 +408,13 @@ export class VigilSeguimientoManageComponent implements OnInit {
         followupBadgeToken.nextCall = token.altaVigilancia ? 'ALTA VIGILANCIA': '';
       }
 
+      followupBadgeToken.investigAlert = '';
+      if(AsistenciaHelper.isCovidActivo(asistencia)){
+        let investig = asistencia.sintomacovid;
+        if(!(investig && investig.hasInvestigacion)){
+          followupBadgeToken.investigAlert = '¡SIN INVESTIGACIÓN!'
+        }  
+      }
 
       if(contactos && contactos.length){
         llamadosCount = contactos.length;
@@ -842,6 +849,7 @@ class FollowUpBadge {
   arrow = 'bottom';
   asignado = false;
   nextCall = '';
+  investigAlert = '';
   size = '';
   branding = 'LL';
   label = '';

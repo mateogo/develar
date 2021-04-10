@@ -192,6 +192,7 @@ export class VigilanciaSeguimientoComponent implements OnInit {
 
   }
 
+
   private applyAsignadoToAsistencia(asistencia: Asistencia, resolve ){
     let followUpToken = asistencia.followUp;
     if(followUpToken){
@@ -202,6 +203,8 @@ export class VigilanciaSeguimientoComponent implements OnInit {
         followUpToken.fe_inicio   = this.seguimientoEvent.fe_inicio || devutils.txFromDate(new Date());
         followUpToken.fets_inicio =  devutils.dateNumFromTx(followUpToken.fe_inicio);
       }
+      followUpToken.fets_nextLlamado = followUpToken.fets_nextLlamado ? followUpToken.fets_nextLlamado : followUpToken.fets_inicio;
+      followUpToken.nuevollamadoOffset = followUpToken.nuevollamadoOffset || 1;
 
       followUpToken.tipo =         this.seguimientoEvent.tipo || 'sospecha';
       followUpToken.isAsignado =   this.seguimientoEvent.isAsignado;
@@ -211,6 +214,8 @@ export class VigilanciaSeguimientoComponent implements OnInit {
     }else {
       followUpToken = new AfectadoFollowUp();
       followUpToken = {...followUpToken, ...this.seguimientoEvent};
+      followUpToken.fets_nextLlamado = followUpToken.fets_nextLlamado ? followUpToken.fets_nextLlamado : followUpToken.fets_inicio;
+      followUpToken.nuevollamadoOffset = followUpToken.nuevollamadoOffset || 1;
       asistencia.followUp = followUpToken
 
     }
