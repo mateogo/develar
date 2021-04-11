@@ -23,7 +23,7 @@ const serialModule = require('./serialModel.js');
 const Schema = mongoose.Schema;
 
 const self = this;
-const USER_EPIDEMI_OPERATOR = 'vigilancia:operator'
+const USER_EPIDEMI_OPERATOR = [ 'vigilancia:operator' ];
 
 const PersonRecord = person.getRecord();
 const AsisprevencionRecord = asisprevencion.getRecord();
@@ -53,8 +53,9 @@ exports.importSisaArchive = processSisaArchive;
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
 
-	userModel.findByRole(USER_EPIDEMI_OPERATOR).then(userList => {
+	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
 		userList = userList || [];
+		console.log('process SISA ARCHIVE to BEGIN 	W/[%S]', userList.length);
 		_processSisaArchive(req, errcb, cb, userList)
 	});
 }
@@ -380,7 +381,7 @@ function assignUserToPerson(asis, token, userList){
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
 	
 	let user = userList[utils.between(0, userList.length)]
-	console.log('assignUserToPerson TO BEGIN [%s] rnd:[%s]', userList.length, user.displayName);
+	console.log('assignUserToPerson [%s] rnd:[%s]', userList.length, user.displayName);
 
 	_applyAsignadoToAsistencia(asis, user)
 }

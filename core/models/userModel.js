@@ -614,6 +614,11 @@ exports.findByRole = function(roles){
 
 }
 
+exports.findByEpidemioRole = function(role){
+    let query = {moduleroles: {$in: roles}}
+    return User.find(query).exec();
+}
+
 exports.findOrCreateGoogle = function (profile, accessToken,  cb){
     let id = profile.id;
 
