@@ -614,7 +614,7 @@ exports.findByRole = function(roles){
 
 }
 
-exports.findByEpidemioRole = function(role){
+exports.findByEpidemioRole = function(roles){
     let query = {moduleroles: {$in: roles}}
     return User.find(query).exec();
 }
