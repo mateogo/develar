@@ -431,8 +431,10 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 
 function updateFollowUp(asis, token){
 	let followUp = asis.followUp;
+	if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.1')
 
 	if(followUp){
+		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.2')
 		followUp.isActive = true;
 		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
 		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
@@ -451,9 +453,14 @@ function updateFollowUp(asis, token){
 		}
 
 	}else {
+		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.1')
 		let followUp = this.buildFollowUp(asis, token);
+		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.2')
 		asis.followUp = followUp;
+		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.3')
 	}
+	if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.4')
+
 }
 
 function buildCovid(asis, token){
