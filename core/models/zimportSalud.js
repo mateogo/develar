@@ -301,12 +301,10 @@ function savePersonSaludRecord(person, isNew, token, compNum, userList){
     	//c onsole.log('Ready To PersonFindAndUpdate')
       PersonRecord.findByIdAndUpdate(person._id, person, { new: true }).exec().then( updatedPerson =>  {
 		if(updatedPerson){
-			if(updatedPerson&& updatedPerson.ndoc === "39114113") console.log('update TARGET')
 			processAsistenciaPrevencion(token, updatedPerson, compNum, userList);
 
 				//c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
           }else {
-			if(person&& person.ndoc === "39114113") console.log('error updating TARGET')
 			console.log('Error updating PERSON #307 [%s]', person.ndoc)
 			processAsistenciaPrevencion(token, person, compNum, userList);
 		  }
@@ -328,13 +326,7 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 	});
 
 	let asis;
-
-	if(person.ndoc === '39114113') console.log('asis.findOne ASIS: ')
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
-	if(asis&& asis.ndoc === "39114113"){
-		console.log('asis FOUNDED!')
-		console.dir(asis);
-	}else if(person.ndoc === '39114113') console.log('asis NOTFOUNDED!')
 
 	if(asis) {
 		await updateAsistenciaRecord(token, person, asis, userList);
@@ -345,9 +337,6 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 }
 
 async function updateAsistenciaRecord(token, person, asis, userList){
-
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia BEGIN [%s] [%s]', asis._id, asis.id);
-
 		asis.prioridad = 2;
 
 		asis.isVigilado = true;
@@ -359,23 +348,15 @@ async function updateAsistenciaRecord(token, person, asis, userList){
 		asis.avance = 'emitido';
 
 		updateCoreAsis(asis, person, token);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P1')
 		updateFollowUp(asis, token);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2')
 		buildMuestrasLab(asis, token);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P3')
 		buildCovid(asis,token);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P4')
 		assignUserToFollowUp(asis, token, userList);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P5')
 
 		//c onsole.log('OjO: UPDATE save is commented')
 		// c onsole.log('updating ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
-		if(asis.ndoc === "39114113"){
-			console.dir(asis);
-		}
+
 		let result = await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
-		if(asis&& asis.ndoc === "39114113") console.log('UPDATED ASISTENCIA P1')
 		return result;
 
 }
@@ -431,10 +412,8 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 
 function updateFollowUp(asis, token){
 	let followUp = asis.followUp;
-	if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.1')
 
 	if(followUp){
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.2')
 		followUp.isActive = true;
 		followUp.fe_inicio = followUp.fe_inicio ? followUp.fe_inicio : token.fealta
 		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
@@ -453,13 +432,9 @@ function updateFollowUp(asis, token){
 		}
 
 	}else {
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.1')
 		let followUp = buildFollowUp(asis, token);
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.2')
 		asis.followUp = followUp;
-		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.3')
 	}
-	if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.4')
 
 }
 
