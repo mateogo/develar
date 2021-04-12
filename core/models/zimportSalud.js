@@ -327,7 +327,6 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 	let asis;
 
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
-	console.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
 		await updateAsistenciaRecord(token, person, asis, userList);
@@ -355,7 +354,12 @@ async function updateAsistenciaRecord(token, person, asis, userList){
 		assignUserToFollowUp(asis, token, userList);
 
 		//c onsole.log('OjO: UPDATE save is commented')
-		await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
+		console.log('updating ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
+		if(asis.ndoc === "39114113"){
+			console.dir(asis);
+		}
+		await AsisprevencionRecord.findByIdAndUpdate(asis.id, asis, { new: true }).exec();
+		console.log('UPDATED ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
 }
 
 
@@ -383,7 +387,7 @@ function assignUserToFollowUp(asis, token, userList){
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
 	
 	let user = userList[utils.between(0, userList.length)]
-	console.log('assignUserToFollowUp [%s] rnd:[%s]', userList.length, (user && user.displayName ));
+	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userList.length, (user && user.displayName ));
 
 	_applyAsignadoToAsistencia(asis, user)
 }
@@ -401,7 +405,7 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 			followUpToken.asignadoSlug = user.displayName;
 			//c onsole.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
 		}else {
-			console.log('OOOPS: NO FOLLOW UP TO ASSIGN RESPONSABLE');
+			//c onsole.log('ALREADY HAS USER ASIGNED TO FOLLOW UP');
 		}
     }
 }
