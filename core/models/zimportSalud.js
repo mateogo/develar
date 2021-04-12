@@ -261,7 +261,7 @@ const buildPersonSaludLocaciones = function(person, token, isNew){
         "description": "Importado de excel",
         "isDefault": true,
         "addType": "principal",
-        "street1": (token.direccion + (token.callenro || '')) || 'sin dato',
+        "street1": (token.direccion + ' ' + (token.callenro || '')) || 'sin dato',
         "street2": "",
         "streetIn": "",       
         "streetOut": "",
@@ -299,11 +299,14 @@ function savePersonSaludRecord(person, isNew, token, compNum, userList){
     }else{
 
     	//c onsole.log('Ready To PersonFindAndUpdate')
-      PersonRecord.findByIdAndUpdate(person._id, person, { new: true }).then( person =>  {
-          if(person && person._id){
-              //c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
-              processAsistenciaPrevencion(token, person, compNum, userList);
-          }
+      PersonRecord.findByIdAndUpdate(person._id, person, { new: true }).exec().then( updatedPerson =>  {
+		if(updatedPerson){
+			processAsistenciaPrevencion(token, updatedPerson, compNum, userList);
+			//c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
+          }else {
+			console.log('Error updating PERSON #307 [%s]', person.ndoc)
+			processAsistenciaPrevencion(token, person, compNum, userList);
+		  }
       })
 
     }
@@ -324,7 +327,7 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 	let asis;
 
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
-	//c onsole.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
+	console.log('PROCESS ASIS: [%s] [%s]', person.ndoc, asis && asis.compNum)
 
 	if(asis) {
 		await updateAsistenciaRecord(token, person, asis, userList);
