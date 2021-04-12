@@ -55,7 +55,7 @@ function processSisaArchive(req, errcb, cb){
 
 	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
 		userList = userList || [];
-		console.log('process SISA ARCHIVE to BEGIN 	W/[%S]', userList.length);
+		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userList.length);
 		_processSisaArchive(req, errcb, cb, userList)
 	});
 }
@@ -157,13 +157,13 @@ function processOnePerson(person, token, compNum, userList){
     }
 
 
-    buildSaludCoreData(person, token, isNew);
-    buildSaludLocaciones(person, token, isNew);
+    buildPersonSaludCoreData(person, token, isNew);
+    buildPersonSaludLocaciones(person, token, isNew);
 
-    saveSaludRecord(person, isNew, token, compNum, userList);
+    savePersonSaludRecord(person, isNew, token, compNum, userList);
 }
 
-const buildSaludCoreData = function(person, token, isNew){
+const buildPersonSaludCoreData = function(person, token, isNew){
 
     person.grupo_familiar = 0;
     person.apellido = token.apellido
@@ -244,7 +244,7 @@ const buildSaludCoreData = function(person, token, isNew){
     // person.oficios = token. ;
 }
 
-const buildSaludLocaciones = function(person, token, isNew){
+const buildPersonSaludLocaciones = function(person, token, isNew){
     let locaciones = person.locaciones || [];
     let city = '';
     let zip = '';
@@ -284,7 +284,7 @@ const buildSaludLocaciones = function(person, token, isNew){
 
 
 
-function saveSaludRecord(person, isNew, token, compNum, userList){
+function savePersonSaludRecord(person, isNew, token, compNum, userList){
     if(isNew){
 
     	//c onsole.log('Ready To PersonSave')
@@ -336,7 +336,6 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 
 async function updateAsistenciaRecord(token, person, asis, userList){
 		asis.prioridad = 2;
-		asis.idbrown = 'sisa:' + token.fealta;
 
 		asis.isVigilado = true;
 		asis.tipo = 1;
@@ -346,11 +345,11 @@ async function updateAsistenciaRecord(token, person, asis, userList){
 		asis.estado = 'activo';
 		asis.avance = 'emitido';
 
-		updateCoreAsis(asis, person, token)
+		updateCoreAsis(asis, person, token);
 		updateFollowUp(asis, token);
 		buildMuestrasLab(asis, token);
 		buildCovid(asis,token);
-		assignUserToPerson(asis, token, userList)
+		assignUserToFollowUp(asis, token, userList);
 
 		//c onsole.log('OjO: UPDATE save is commented')
 		await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
@@ -365,13 +364,13 @@ async function createAsistenciaRecord(token, person, compNum, userList){
 				buildMuestrasLab(asis, token);
 				buildSisaEvent(asis, token);
 
-				assignUserToPerson(asis, token, userList)
+				assignUserToFollowUp(asis, token, userList)
 				//c onsole.log('OjO: CREATE save is commented')
 				asis.save();
 
 }
 
-function assignUserToPerson(asis, token, userList){
+function assignUserToFollowUp(asis, token, userList){
 	if(!(userList && userList.length)) return;
 
 	// los casos marcados como CAPS serán autoasignados por éstos
@@ -381,7 +380,7 @@ function assignUserToPerson(asis, token, userList){
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
 	
 	let user = userList[utils.between(0, userList.length)]
-	console.log('assignUserToPerson [%s] rnd:[%s]', userList.length, user.displayName);
+	console.log('assignUserToFollowUp [%s] rnd:[%s]', userList.length, (user && user.displayName ));
 
 	_applyAsignadoToAsistencia(asis, user)
 }
@@ -398,6 +397,8 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 			followUpToken.asignadoId =   user.id;
 			followUpToken.asignadoSlug = user.displayName;
 			//c onsole.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
+		}else {
+			console.log('OOOPS: NO FOLLOW UP TO ASSIGN RESPONSABLE');
 		}
     }
 }
@@ -522,75 +523,6 @@ function buildFollowUp(asis, token){
 }
 
 
-/**
-
-		_id: string;
-		compPrefix:  string = 'SOL';
-		compName:    string = 'S/Asistencia';
-		compNum:     string = '00000';
-		tipo:        number = 1; // 1: COVID 2:Denuncia  3:IVR 4:Detectar
-		prioridad:   number = 2; // 1:baja 2:media 3: alta
-
-		idPerson:    string;
-		ndoc:        string;
-		tdoc:        string;
-		sexo:        string;
-		fenactx:     string;
-		edad:        string;
-		telefono:    string;
-		osocial:     string;
-		osocialTxt:  string;
-
-		contactosEstrechos?:number = 0; // helper de listado
-
-		idbrown:     string;
-		fecomp_tsa:  number;
-		fecomp_txa:  string;
-		fenotif_tsa:  number;
-		fenotif_txa:  string;
-
-		action:      string = 'covid';
-		slug:        string;
-		description: string;
-
-		sector:      string;
-		estado:      string = 'activo';
-		avance:      string = 'emitido';
-		ts_alta:     number;
-		ts_fin:      number;
-		ts_prog:     number;
-
-		sintomacovid: ContextoCovid;
-		denuncia: ContextoDenuncia;
-
-		locacion:    Locacion;
-		requeridox:  Requirente;
-		atendidox:   Atendido;
-
-		modalidad:   Alimento;
-		encuesta:    Encuesta;
-		pedido:      Pedido;
-
-		isVigilado:     boolean;
-		hasSeguimiento: boolean;
-		isCovid:        boolean;
-		isInternado:    boolean;
-		hasParent:      boolean;
-		casoIndice:   CasoIndice;
-
-		infeccion:    InfectionFollowUp;
-		internacion:  InternacionAsis;
-		sisaevent:    SisaEvent;
-		followUp:     AfectadoFollowUp;
-
-		novedades:         Array<Novedad>;
-		muestraslab:       Array<MuestraLaboratorio>;
-		sisaEvolucion:     Array<SisaEvolucion>;
-		seguimEvolucion:   Array<AfectadoUpdate>;
-		contextoAfectados: Array<ContextoAfectados>;
-		morbilidades:      Array<Morbilidad>;
-**/
-
 function updateCoreAsis(asis, person, data){
 
 		let ts = Date.now();
@@ -599,6 +531,8 @@ function updateCoreAsis(asis, person, data){
 		let fealta = data.fealta || utils.dateToStr(new Date());
 		let fealta_date = utils.parseDateStr(fealta) || new Date();
 		let fealta_ts = fealta_date ? fealta_date.getTime() : ts;
+
+    	asis.idbrown = 'sisa: ' + fealta + ' [' + ts + ']';
 
 		let requirente;
 
@@ -678,10 +612,9 @@ function updateCoreAsis(asis, person, data){
 
 		asis.tipo = 1;
 		asis.prioridad = 2;
-    	asis.idbrown = 'sisa:' + data.fealta;
 
 		asis.action = 'epidemio';
-		asis.slug = 'Alta importacion SISA: ' + fealta;
+		asis.slug = 'Registro importado de SISA el: ' + fealta;
 
 		asis.requeridox = requirente;
 
@@ -695,7 +628,6 @@ function updateCoreAsis(asis, person, data){
 		return asis;
 }
 
-
 function buildCoreAsis(asis, person, compNum, data){
 		let ts = Date.now();
 		let novedades = [];
@@ -703,6 +635,8 @@ function buildCoreAsis(asis, person, compNum, data){
 		let fealta = data.fealta || utils.dateToStr(new Date());
 		let fealta_date = utils.parseDateStr(fealta) || new Date();
 		let fealta_ts = fealta_date ? fealta_date.getTime() : ts;
+
+    	asis.idbrown = 'sisa: ' + fealta + ' [' + ts + ']';
 
 
 		let requirente;
@@ -837,10 +771,9 @@ function buildCoreAsis(asis, person, compNum, data){
 		asis.tipo = 1;
 		asis.isCovid = true;
 		asis.prioridad = 2;
-    	asis.idbrown = 'sisa:' + data.fealta;
 
 		asis.action = 'epidemio';
-		asis.slug = 'Alta importacion SISA: ' + fealta;
+		asis.slug = 'Registro importado de SISA el: ' + fealta;
 		asis.sector = 'epidemiologia';
 		asis.requeridox = requirente;
 		asis.description = '';
