@@ -454,7 +454,7 @@ function updateFollowUp(asis, token){
 
 	}else {
 		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.1')
-		let followUp = this.buildFollowUp(asis, token);
+		let followUp = buildFollowUp(asis, token);
 		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.2')
 		asis.followUp = followUp;
 		if(asis&& asis.ndoc === "39114113") console.log('updateAsistncia P2.3.3')
