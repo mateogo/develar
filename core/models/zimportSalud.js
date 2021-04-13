@@ -380,7 +380,7 @@ function assignUserToFollowUp(asis, token, userList){
 	if(!(userList && userList.length)) return;
 
 	// los casos marcados como CAPS serán autoasignados por éstos
-	if(token.asignadoa && token.asignadoa === 'CAPS') return;
+	if(token.asignadoa && token.asignadoa === 'CAPS'|| token.asignadoa === 'SALUD MENTAL') return;
 
 	// los obitos no se asignan para seguimiento sino para salud mental
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
@@ -396,7 +396,7 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 	if(!user) return;
     let followUpToken = asistencia.followUp;
     if(followUpToken){
-		if(!(followUpToken.isAsignado && followUpToken.asignadoId)){
+		if(!followUpToken.asignadoId){
 			followUpToken.isActive = true;
 			followUpToken.tipo =         'infectado';
 			followUpToken.isAsignado =   true;
@@ -612,7 +612,6 @@ function updateCoreAsis(asis, person, data){
 			investigacion.hasInvestigacion = investigacion.userId ? true: false;
 			asis.sintomacovid = investigacion;	
 		}
-
 
 		asis.fenotif_txa = fealta;
 		asis.fenotif_tsa = fealta_ts;

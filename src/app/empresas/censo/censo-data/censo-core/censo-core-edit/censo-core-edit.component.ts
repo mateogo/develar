@@ -434,10 +434,18 @@ export class CensoCoreEditComponent implements OnInit {
 class NuevaAlta {
   bienvenido = 'Gracias por iniciar el CENSO-2021';
   code = ACTUAL_CENSO;
-  indicacion1 = 'La información que Usted informe será tratada con carácter confidencial'
-  indicacion2 = 'Este documento permanecerá <EN PROCESO> hasta tanto se completen todos los datos.'
-  indicacion3 = 'Una vez completada y validada la carga, Usted presta conformidad al momento'
-  indicacion4 = 'en que EMITE el CENSO, dando por concluido el proceso.'
+  indicacion1 = 'Toda la informació provista será tratada con carácter confidencial, al exclusivo fin previsto en la Ordenanza Municipal.'
+  indicacion2 = 'Los datos le serán requeridos en BLOQUES DE INFORMACIÓN (Actividades principales y secundarias; Activos principales; Comercialización; Planes de inversión; Talentos humanos; Expectativas, riesgos y oportuniades).'
+  indicacion3 = 'Usted podrá completar la información en forma progresiva, reingresando con sus credenciales toda vez que sea necesario. Este documento permanecerá EN PROCESO hasta tanto se completen todos los datos.'
+  indicacion4 = 'Una vez completada y validada la carga, Usted prestará conformidad con todo lo indicado y estará en condiciones de CERRAR el CENSO 2021'
+  indicacion5 = 'Para la carga de datos es probable que Usted requiera contar con documentación de apoyo. A modo orientativo, sugerimos diponga de:'
+  indicacion6 = '* Últimos 3 balances de la compañía'
+  indicacion7 = '* Planilla con la nómina de personal'
+  indicacion8 = '* Certificaciones de normas de calidad'
+  indicacion9 = '* Datos relativos a la Habilitación Municipal'
+  indicaciona = '* Constancia de inscripción AFIP'
+  indicacionb = '* Datos de comercio exterior y codificación de los principales productos por posición arancelaria NCM'
+  indicacionc = 'ATENDEREMOS sus dudas y comentarios a través del bloque "Consultas, comentarios u observaciones" disponible al final de la página del CENSO.'
   fecha: string;
   empName: string;
   ndoc: string;

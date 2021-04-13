@@ -7,16 +7,25 @@
 
   <mat-card-content>
   <ng-container *ngIf="isAlta">
-    <p class="text-normal">Almirante Brown {{ nuevaAlta.fecha }}</p>
+    <p class="text-resaltado">Almirante Brown {{ nuevaAlta.fecha }}</p>
     <p class="text-normal">{{ nuevaAlta.bienvenido }}</p>
-    <p class="text-normal">Está dando inicio al CENSO: {{ nuevaAlta.code }}</p>
-    <p class="text-normal">Para la empresa: {{ nuevaAlta.empName }}</p>
+    <p class="text-normal">Está dando inicio al CENSO: {{ nuevaAlta.code }} para la Empresa:</p>
+    <p class="text-normal"><strong>{{ nuevaAlta.empName }}</strong></p>
     <p class="text-normal">CUIT: {{ nuevaAlta.ndoc }}</p>
 
     <p class="text-normal">{{ nuevaAlta.indicacion1 }}</p>
     <p class="text-normal">{{ nuevaAlta.indicacion2 }}</p>
     <p class="text-normal">{{ nuevaAlta.indicacion3 }}</p>
     <p class="text-normal">{{ nuevaAlta.indicacion4 }}</p>
+    <p class="text-normal"><strong>{{ nuevaAlta.indicacion5 }}</strong></p>
+    <p class="text-normal">{{ nuevaAlta.indicacion6 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion7 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion8 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacion9 }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicaciona }}</p>
+    <p class="text-normal">{{ nuevaAlta.indicacionb }}</p>
+    <hr>
+    <p class="text-normal"><strong>{{ nuevaAlta.indicacionc }}</strong></p>
 
     <hr>
     <div class="additional-info">

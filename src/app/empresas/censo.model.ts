@@ -229,10 +229,11 @@ export const factoresAfectanInversionOptList = [
 	{ val: 'competencia',     label: 'Importación de bienes iguales o similares a menor costo'  },
 	{ val: 'infraestructura', label: 'Limitantes por infraestructura de la empresa'  },
 	{ val: 'serviciosgrales', label: 'Capacidad de servicios generales (energía/ gas/ agua/ efluentes/ conectividad)'  },
-	{ val: 'capmprimas',      label: 'Capacidad de proveedores de insumos / materias primas'  },
+	{ val: 'proveedores',     label: 'Capacidad de proveedores'  },
 	{ val: 'caprrhh',         label: 'Capacidad del personal'  },
 	{ val: 'capadap',         label: 'Capacidad de adaptación al cambio'  },
-	{ val: 'costomp',         label: 'Costos de materias primas '  },
+	{ val: 'costomp',         label: 'Costos de materias primas e insumos'  },
+	{ val: 'accesoimportados',label: 'Costos/ acceso a bienes importados'  },
 	{ val: 'costoinsum',      label: 'Costos de insumos'  },
 	{ val: 'costoprod',       label: 'Costos de generales de producciòn (incluye Mano de Obra)'  },
 	{ val: 'costobuso',       label: 'Costos de bienes de uso'  },
@@ -242,12 +243,13 @@ export const factoresAfectanInversionOptList = [
 	{ val: 'informacion',     label: 'Información de tecnología disponible'  },
 	{ val: 'capinsum',        label: 'Calidad de insumos / materias primas'  },
 	{ val: 'regulaciones',    label: 'Regulaciones'  },
-	{ val: 'empleo',          label: 'Niveles de empleo'  },
 	{ val: 'oferta',          label: 'Oferta de productos'  },
 	{ val: 'situaciongral',   label: 'Situación o contexto actual'  },
 	{ val: 'tamaniomercado',  label: 'Tamaño de mercado'  },
 	
 ];
+
+
 
 export class FactoresInversion {
 	ftype:     string = '';
