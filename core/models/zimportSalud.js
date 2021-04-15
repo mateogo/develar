@@ -60,7 +60,7 @@ function processSisaArchive(req, errcb, cb){
 		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userMap.size);
 		console.dir(Array.from(userMap.keys())  )
-		cb(Array.from(userMap.values()) )
+		cb(Array.from(userMap) )
 
 		//_processSisaArchive(req, errcb, cb, userMap)
 	});
@@ -1007,7 +1007,7 @@ const capsUsers = [
 	{ email: 'capsglew1@gmail.com',                 city: 'glew' },
 	{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
 	{ email: 'ramoncarrilloglewsur@gmail.com',      city: 'glew' },
-	{ email: 'sanjose.saludbrown.@gmail.com',       city: 'marmol' },
+	{ email: 'sanjose.saludbrown@gmail.com',        city: 'marmol' },
 	{ email: 'rayodesol.saludbrown@gmail.com',      city: 'longchamps' },
 	{ email: 'caps24virgenmaria@gmail.com',         city: 'longchamps' },
 	{ email: 'sakuracaps28@gmail.com',              city: 'longchamps' },
