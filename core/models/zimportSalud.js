@@ -60,7 +60,7 @@ function processSisaArchive(req, errcb, cb){
 		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userMap.size);
 		console.dir(Array.from(userMap.keys())  )
-		cb(JSON.stringify(Array.from(userMap.keys())) )
+		cb(Array.from(userMap.values()) )
 
 		//_processSisaArchive(req, errcb, cb, userMap)
 	});
@@ -425,7 +425,7 @@ function _fetchRandomUser(userMap, token){
 	let index = 'general';
 	if(token.asignadoa === 'CAPS') {
 		if(token.city){
-			let city = ciudadesBrown.find(t => t.sisa === token.city);
+			let city = cityToUser.find(t => t.sisa === token.city);
 			index = city ? city.val : index;
 			index = userMap.has(index) ? index : BASE;
 			index = userMap.get(index).length ? index : BASE;
@@ -969,6 +969,25 @@ const ciudadesBrown = [
     {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',     sisa: '', },
 ];
 
+const cityToUser = [
+    {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogue' },
+    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
+    {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
+    {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    sisa: 'Rafael Calzada' },
+    {val: 'claypole',            cp:'1849', label: 'Claypole',           sisa: 'Claypole' },
+    {val: 'claypole',            cp:'1850', label: 'Don Orione',         sisa: 'Don Orione' },
+    {val: 'glew',                cp:'1856', label: 'Glew',               sisa: 'Glew' },
+    {val: 'longchamps',          cp:'1854', label: 'Longchamps',         sisa: 'Longchamps' },
+    {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',sisa: 'Malvinas Argentinas' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa: 'José Mármol' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa: 'JOSÉ MÁRMOL' },
+    {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', sisa: 'Ministro Rivadavia' },
+    {val: 'solano',              cp:'1846', label: 'San Fco Solano',     sisa: 'San Francisco Solano' },
+    {val: 'sanjose',             cp:'1846', label: 'San José',           sisa: 'San José' },
+    {val: 'sindato',             cp:'0000', label: 'Sin dato',           sisa: 'En Investigacion', },
+    {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',     sisa: '', },
+];
 
 const capsUsers = [
 	{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
