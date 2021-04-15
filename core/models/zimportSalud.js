@@ -52,21 +52,18 @@ exports.importSisaArchive = processSisaArchive;
 /* 	Importa archivo CSV originado por SISA SNVS */
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
-	console.log('processSisaArchive to begin')
 
 	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
 		console.log('userList: [%s]', userList.length)
 		userList = userList || [];
 		let userMap = _buildUserMap(userList);
-		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userMap.size);
 
 		console.dir(Array.from(userMap.keys())  )
 		userMap.forEach((v, k) => {
 			console.log('key: [%s]: [%s]', k, v.length)
 		})
-		cb(Array.from(userMap) )
 
-		//_processSisaArchive(req, errcb, cb, userMap)
+		_processSisaArchive(req, errcb, cb, userMap)
 	});
 }
 
@@ -380,11 +377,11 @@ async function updateAsistenciaRecord(token, person, asis, userMap){
 		buildCovid(asis,token);
 		assignUserToFollowUp(asis, token, userMap);
 
-		console.log('OjO: UPDATE save is commented')
+		// c onsole.log('OjO: UPDATE save is commented')
 		// c onsole.log('updating ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
-		let result = null;
 
-		//result = await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
+		let result = null;
+		result = await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
 		return result;
 
 }
