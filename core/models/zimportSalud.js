@@ -396,8 +396,8 @@ async function createAsistenciaRecord(token, person, compNum, userMap){
 				buildSisaEvent(asis, token);
 
 				assignUserToFollowUp(asis, token, userMap)
-				console.log('OjO: CREATE save is commented')
-				//asis.save();
+				//console.log('OjO: CREATE save is commented')
+				asis.save();
 
 }
 
