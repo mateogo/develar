@@ -59,7 +59,11 @@ function processSisaArchive(req, errcb, cb){
 		userList = userList || [];
 		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userMap.size);
+
 		console.dir(Array.from(userMap.keys())  )
+		userMap.forEach((v, k) => {
+			console.log('key: [%s]: [%s]', k, v.length)
+		})
 		cb(Array.from(userMap) )
 
 		//_processSisaArchive(req, errcb, cb, userMap)
