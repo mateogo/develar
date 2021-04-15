@@ -380,10 +380,11 @@ async function updateAsistenciaRecord(token, person, asis, userMap){
 		buildCovid(asis,token);
 		assignUserToFollowUp(asis, token, userMap);
 
-		//c onsole.log('OjO: UPDATE save is commented')
+		console.log('OjO: UPDATE save is commented')
 		// c onsole.log('updating ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
+		let result = null;
 
-		let result = await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
+		//result = await AsisprevencionRecord.findByIdAndUpdate(asis._id, asis, { new: true }).exec();
 		return result;
 
 }
@@ -398,8 +399,8 @@ async function createAsistenciaRecord(token, person, compNum, userMap){
 				buildSisaEvent(asis, token);
 
 				assignUserToFollowUp(asis, token, userMap)
-				//c onsole.log('OjO: CREATE save is commented')
-				asis.save();
+				console.log('OjO: CREATE save is commented')
+				//asis.save();
 
 }
 
@@ -418,10 +419,6 @@ function assignUserToFollowUp(asis, token, userMap){
 	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
 	_applyAsignadoToAsistencia(asis, user)
 }
-//const ciudadesBrown = [
-    // {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
-    // {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
-    // {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
 
 
 function _fetchRandomUser(userMap, token){
@@ -436,7 +433,7 @@ function _fetchRandomUser(userMap, token){
 		}
 	}
 	let arr_length = userMap.get(index).length;
-	let arr_index = utils.between(0, arr_length || 0);
+	let arr_index = utils.between(0, arr_length);
 	return userMap.get(index)[arr_index];
 }
 
@@ -975,6 +972,7 @@ const ciudadesBrown = [
 
 const cityToUser = [
     {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
+    {val: 'adrogue',             cp:'1846', label: 'Almirante Brown ',   sisa: 'Almirante Brown' },
     {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogue' },
     {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
     {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
@@ -995,13 +993,12 @@ const cityToUser = [
 
 const capsUsers = [
 	{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
-	{ email: 'caps9florealferrara@gmail.com ',      city: 'burzaco' },
+	{ email: 'caps9florealferrara@gmail.com',       city: 'burzaco' },
 	{ email: 'burzaco.saludbrown@gmail.com',        city: 'burzaco' },
 	{ email: 'cmd.saludbrown@gmail.com',            city: 'burzaco' },
 	{ email: 'cmsayz@gmail.com',                    city: 'burzaco' },
 	{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
 	{ email: 'caps28dediciembre@gmail.com',         city: 'calzada' },
-	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
 	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
 	{ email: 'mihorizonte2012@gmail.com',           city: 'claypole' },
 	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
@@ -1027,7 +1024,6 @@ const capsUsers = [
 	{ email: '13dejulio.salud@gmail.com',           city: 'solano' },
 	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
 ];
-
 
 const optList = {
     city: ciudadesBrown,
