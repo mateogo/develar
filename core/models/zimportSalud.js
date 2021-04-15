@@ -52,8 +52,10 @@ exports.importSisaArchive = processSisaArchive;
 /* 	Importa archivo CSV originado por SISA SNVS */
 /***********************************************/
 function processSisaArchive(req, errcb, cb){
+	console.log('processSisaArchive to begin')
 
 	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
+		console.log('userList: [%s]', userList.length)
 		userList = userList || [];
 		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userList.length);
@@ -70,7 +72,7 @@ function _buildUserMap(ulist){
 		let index = 'general';
 		// 1. busco dentro de los usuarios-caps
 		let capsUser = capsUsers.find(t => t.email === u.email);
-		index = capsUser ? casUser.city : index;
+		index = capsUser ? capsUser.city : index;
 		if(umap.has(index)){
 			umap.get(index).push(u);
 		}else {
