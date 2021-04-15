@@ -1024,7 +1024,7 @@ const capsUsers = [
 	{ email: 'caps30lospinos.saludbrown@gmail.com', city: 'ministrorivadavia' },
 	{ email: 'gloria.saludbrown@gmail.com',         city: 'sanjose' },
 	{ email: 'caps32.salud@gmail.com',              city: 'sanjose' },
-	{ email: '13dejulio.salud@gmsil.com',           city: 'solano' },
+	{ email: '13dejulio.salud@gmail.com',           city: 'solano' },
 	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
 ];
 
