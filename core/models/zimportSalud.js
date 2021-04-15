@@ -57,7 +57,10 @@ function processSisaArchive(req, errcb, cb){
 		userList = userList || [];
 		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userList.length);
-		_processSisaArchive(req, errcb, cb, userMap)
+		console.dir(userMap.values())
+		cb(JSON.stringify(userMap.values()))
+
+		//_processSisaArchive(req, errcb, cb, userMap)
 	});
 }
 
@@ -75,7 +78,7 @@ function _buildUserMap(ulist){
 		}
 	})
 
-
+	return umap;
 }
 
 
