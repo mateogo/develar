@@ -55,13 +55,31 @@ function processSisaArchive(req, errcb, cb){
 
 	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
 		userList = userList || [];
+		let userMap = _buildUserMap(userList);
 		console.log('process SISA ARCHIVE to BEGIN 	W/[%s]', userList.length);
-		_processSisaArchive(req, errcb, cb, userList)
+		_processSisaArchive(req, errcb, cb, userMap)
 	});
 }
 
+function _buildUserMap(ulist){
+	let umap = new Map();
+	ulist.forEach(u => {
+		let index = 'general';
+		// 1. busco dentro de los usuarios-caps
+		let capsUser = capsUsers.find(t => t.email === u.email);
+		index = capsUser ? casUser.city : index;
+		if(umap.has(index)){
+			umap.get(index).push(u);
+		}else {
+			umap.set(index, [ u ])
+		}
+	})
 
-function _processSisaArchive(req, errcb, cb, userList){
+
+}
+
+
+function _processSisaArchive(req, errcb, cb, userMap){
     //deploy
     const arch = path.join(config.rootPath, 'www/salud/migracion/sisa/personasImportCsv.csv');
 
@@ -99,7 +117,7 @@ function _processSisaArchive(req, errcb, cb, userList){
 						})
 
 					for(let index = 0; index < persons.length; index++){
-						processOneSaludPerson(persons[index], compNumCounter, userList);
+						processOneSaludPerson(persons[index], compNumCounter, userMap);
 						compNumCounter +=1;
 
 					}
@@ -123,7 +141,7 @@ function _processSisaArchive(req, errcb, cb, userList){
 }
 
 
-async function processOneSaludPerson(token, compNum, userList){
+async function processOneSaludPerson(token, compNum, userMap){
 		let tperson;
 
 		if(token.feresultado && !utils.dateNumFromTx(token.feresultado)){
@@ -138,12 +156,12 @@ async function processOneSaludPerson(token, compNum, userList){
 
 		tperson = await PersonRecord.findOne(query).exec();
 
-		processOnePerson(tperson, token, compNum, userList);
+		processOnePerson(tperson, token, compNum, userMap);
 
 
 }
 
-function processOnePerson(person, token, compNum, userList){
+function processOnePerson(person, token, compNum, userMap){
     //c onsole.log('processOnePerson [%s]', person && person.apellido);
     let isNew = false;
 
@@ -160,7 +178,7 @@ function processOnePerson(person, token, compNum, userList){
     buildPersonSaludCoreData(person, token, isNew);
     buildPersonSaludLocaciones(person, token, isNew);
 
-    savePersonSaludRecord(person, isNew, token, compNum, userList);
+    savePersonSaludRecord(person, isNew, token, compNum, userMap);
 }
 
 const buildPersonSaludCoreData = function(person, token, isNew){
@@ -284,14 +302,14 @@ const buildPersonSaludLocaciones = function(person, token, isNew){
 
 
 
-function savePersonSaludRecord(person, isNew, token, compNum, userList){
+function savePersonSaludRecord(person, isNew, token, compNum, userMap){
     if(isNew){
 
     	//c onsole.log('Ready To PersonSave')
       person.save().then(person =>{
           if(person && person._id){
               //c onsole.log('CREATED: Person [%s] [%s]', person._id, person.displayName);
-              processAsistenciaPrevencion(token, person, compNum, userList);
+              processAsistenciaPrevencion(token, person, compNum, userMap);
           }
 
       })
@@ -301,12 +319,12 @@ function savePersonSaludRecord(person, isNew, token, compNum, userList){
     	//c onsole.log('Ready To PersonFindAndUpdate')
       PersonRecord.findByIdAndUpdate(person._id, person, { new: true }).exec().then( updatedPerson =>  {
 		if(updatedPerson){
-			processAsistenciaPrevencion(token, updatedPerson, compNum, userList);
+			processAsistenciaPrevencion(token, updatedPerson, compNum, userMap);
 
 				//c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
           }else {
 			console.log('Error updating PERSON #307 [%s]', person.ndoc)
-			processAsistenciaPrevencion(token, person, compNum, userList);
+			processAsistenciaPrevencion(token, person, compNum, userMap);
 		  }
       })
 
@@ -318,7 +336,7 @@ function savePersonSaludRecord(person, isNew, token, compNum, userList){
 /* 	Create / Update Asistencia Prevencion       */
 /***********************************************/
 
-async function processAsistenciaPrevencion(token, person, compNum, userList){
+async function processAsistenciaPrevencion(token, person, compNum, userMap){
 
 	let regexQuery = asisprevencionBuildQuery({
 		ndoc: person.ndoc,
@@ -329,14 +347,14 @@ async function processAsistenciaPrevencion(token, person, compNum, userList){
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
 
 	if(asis) {
-		await updateAsistenciaRecord(token, person, asis, userList);
+		await updateAsistenciaRecord(token, person, asis, userMap);
 	}else {
-		await createAsistenciaRecord(token, person, compNum, userList);
+		await createAsistenciaRecord(token, person, compNum, userMap);
 	}
 
 }
 
-async function updateAsistenciaRecord(token, person, asis, userList){
+async function updateAsistenciaRecord(token, person, asis, userMap){
 		asis.prioridad = 2;
 
 		asis.isVigilado = true;
@@ -351,7 +369,7 @@ async function updateAsistenciaRecord(token, person, asis, userList){
 		updateFollowUp(asis, token);
 		buildMuestrasLab(asis, token);
 		buildCovid(asis,token);
-		assignUserToFollowUp(asis, token, userList);
+		assignUserToFollowUp(asis, token, userMap);
 
 		//c onsole.log('OjO: UPDATE save is commented')
 		// c onsole.log('updating ASIS: [%s] [%s]', asis.ndoc, asis && asis.compNum)
@@ -362,7 +380,7 @@ async function updateAsistenciaRecord(token, person, asis, userList){
 }
 
 
-async function createAsistenciaRecord(token, person, compNum, userList){
+async function createAsistenciaRecord(token, person, compNum, userMap){
 				const asis = new AsisprevencionRecord();
 				buildCoreAsis(asis, person, compNum, token);
 				buildCovid(asis, token);
@@ -370,25 +388,47 @@ async function createAsistenciaRecord(token, person, compNum, userList){
 				buildMuestrasLab(asis, token);
 				buildSisaEvent(asis, token);
 
-				assignUserToFollowUp(asis, token, userList)
+				assignUserToFollowUp(asis, token, userMap)
 				//c onsole.log('OjO: CREATE save is commented')
 				asis.save();
 
 }
 
-function assignUserToFollowUp(asis, token, userList){
-	if(!(userList && userList.length)) return;
+function assignUserToFollowUp(asis, token, userMap){
+	if(!(userMap && userMap.size)) return;
 
-	// los casos marcados como CAPS serán autoasignados por éstos
-	if(token.asignadoa && token.asignadoa === 'CAPS'|| token.asignadoa === 'SALUD MENTAL') return;
+	// los casos marcados como SALUD MENTAL no se asignan automaticamente
+	if(token.asignadoa === 'SALUD MENTAL') return;
 
 	// los obitos no se asignan para seguimiento sino para salud mental
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
 	
-	let user = userList[utils.between(0, userList.length)]
-	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userList.length, (user && user.displayName ));
+	// encontar el usuario random
+	let user = _fetchRandomUser(userMap, token);
 
+	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
 	_applyAsignadoToAsistencia(asis, user)
+}
+//const ciudadesBrown = [
+    // {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
+    // {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
+    // {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
+
+
+function _fetchRandomUser(userMap, token){
+	const BASE = 'general'
+	let index = 'general';
+	if(token.asignadoa === 'CAPS') {
+		if(token.city){
+			let city = ciudadesBrown.find(t => t.sisa === token.city);
+			index = city ? city.val : index;
+			index = userMap.has(index) ? index : BASE;
+			index = userMap.get(index).length ? index : BASE;
+		}
+	}
+	let arr_length = userMap.get(index).length;
+	let arr_index = utils.between(0, arr_length || 0);
+	return userMap.get(index)[arr_index];
 }
 
 
@@ -419,6 +459,8 @@ function updateFollowUp(asis, token){
 		followUp.fets_inicio = followUp.fets_inicio ? followUp.fets_inicio : utils.dateNumFromTx(token.fealta);
 		followUp.fets_nextLlamado = followUp.fets_nextLlamado ? followUp.fets_nextLlamado : utils.dateNumFromTx(token.fealta);
 		followUp.nuevollamadoOffset = followUp.nuevollamadoOffset || 1;
+
+		if(followUp.isAsignado && !followUp.asignadoId) followUp.isAsignado = false;
 		if(!followUp.isAsignado){
 			if(followUp.isContacto){
 				followUp.isAsignado = followUp.isContacto;
@@ -429,6 +471,10 @@ function updateFollowUp(asis, token){
 				followUp.derivadoId = "";
 				followUp.derivadoSlug = "";
 			}
+		}else {
+			followUp.isContacto = false;
+			followUp.derivadoId = "";
+			followUp.derivadoSlug = "";
 		}
 
 	}else {
@@ -910,12 +956,48 @@ const ciudadesBrown = [
     {val: 'longchamps',          cp:'1854', label: 'Longchamps',         sisa: 'Longchamps' },
     {val: 'malvinasargentinas',  cp:'1846', label: 'Malvinas Argentinas',sisa: 'Malvinas Argentinas' },
     {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa: 'José Mármol' },
+    {val: 'marmol',              cp:'1845', label: 'J.Mármol',           sisa: 'JOSÉ MÁRMOL' },
     {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia', sisa: 'Ministro Rivadavia' },
     {val: 'solano',              cp:'1846', label: 'San Fco Solano',     sisa: 'San Francisco Solano' },
     {val: 'sanjose',             cp:'1846', label: 'San José',           sisa: 'San José' },
     {val: 'sindato',             cp:'0000', label: 'Sin dato',           sisa: 'En Investigacion', },
     {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',     sisa: '', },
+];
 
+
+const capsUsers = [
+	{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
+	{ email: 'caps9florealferrara@gmail.com ',      city: 'burzaco' },
+	{ email: 'burzaco.saludbrown@gmail.com',        city: 'burzaco' },
+	{ email: 'cmd.saludbrown@gmail.com',            city: 'burzaco' },
+	{ email: 'cmsayz@gmail.com',                    city: 'burzaco' },
+	{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
+	{ email: 'caps28dediciembre@gmail.com',         city: 'calzada' },
+	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
+	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
+	{ email: 'mihorizonte2012@gmail.com',           city: 'claypole' },
+	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
+	{ email: 'caps29laesther@gmail.com',            city: 'claypole' },
+	{ email: 'caps12donorione@gmail.com',           city: 'claypole' },
+	{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' },
+	{ email: 'capsglew1@gmail.com',                 city: 'glew' },
+	{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
+	{ email: 'ramoncarrilloglewsur@gmail.com',      city: 'glew' },
+	{ email: 'sanjose.saludbrown.@gmail.com',       city: 'marmol' },
+	{ email: 'rayodesol.saludbrown@gmail.com',      city: 'longchamps' },
+	{ email: 'caps24virgenmaria@gmail.com',         city: 'longchamps' },
+	{ email: 'sakuracaps28@gmail.com',              city: 'longchamps' },
+	{ email: 'caps31salud@gmail.com',               city: 'longchamps' },
+	{ email: 'barriolindo02015@gmail.com',          city: 'malvinasargentinas' },
+	{ email: 'encuentro.saludbrown@gmail.com',      city: 'malvinasargentinas' },
+	{ email: 'lomaverde.saludbrown@gmail.com',      city: 'malvinasargentinas' },
+	{ email: 'mtrorivadavia@gmail.com',             city: 'ministrorivadavia' },
+	{ email: 'casitatea2013@gmail.com',             city: 'ministrorivadavia' },
+	{ email: 'caps30lospinos.saludbrown@gmail.com', city: 'ministrorivadavia' },
+	{ email: 'gloria.saludbrown@gmail.com',         city: 'sanjose' },
+	{ email: 'caps32.salud@gmail.com',              city: 'sanjose' },
+	{ email: '13dejulio.salud@gmsil.com',           city: 'solano' },
+	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
 ];
 
 
