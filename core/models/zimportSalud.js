@@ -414,7 +414,7 @@ function assignUserToFollowUp(asis, token, userMap){
 	let user = _fetchRandomUser(userMap, token);
 
 	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
-	_applyAsignadoToAsistencia(asis, user)
+	_applyAsignadoToAsistencia(asis, user, token)
 }
 
 
@@ -422,8 +422,8 @@ function _fetchRandomUser(userMap, token){
 	const BASE = 'general'
 	let index = 'general';
 	if(token.asignadoa === 'CAPS') {
-		if(token.city){
-			let city = cityToUser.find(t => t.sisa === token.city);
+		if(token.localidad){
+			let city = cityToUser.find(t => t.sisa === token.localidad);
 			index = city ? city.val : index;
 			index = userMap.has(index) ? index : BASE;
 			index = userMap.get(index).length ? index : BASE;
@@ -435,11 +435,11 @@ function _fetchRandomUser(userMap, token){
 }
 
 
-function _applyAsignadoToAsistencia(asistencia, user ){
+function _applyAsignadoToAsistencia(asistencia, user, token ){
 	if(!user) return;
     let followUpToken = asistencia.followUp;
     if(followUpToken){
-		if(!followUpToken.asignadoId){
+		if(!followUpToken.asignadoId || token.asignadoa === 'CAPS' ){
 			followUpToken.isActive = true;
 			followUpToken.tipo =         'infectado';
 			followUpToken.isAsignado =   true;
