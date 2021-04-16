@@ -19,6 +19,7 @@ const userModel = require('./userModel');
 
 const asisprevencion = require('./asisprevencionModel.js');
 const serialModule = require('./serialModel.js');
+const { ENOTTY } = require('node:constants');
 
 const Schema = mongoose.Schema;
 
@@ -353,14 +354,22 @@ async function processAsistenciaPrevencion(token, person, compNum, userMap){
 	asis = await AsisprevencionRecord.findOne(regexQuery).lean().exec()
 
 	if(asis) {
-		await updateAsistenciaRecord(token, person, asis, userMap);
+		if(isAsistenciaDeprecated(asis)){
+			bajaAsistenciaDeprecated(asis);
+			await createNewAsistenciaRecord(token, person, compNum, userMap);
+
+		}else {
+			await updateExistingAsistenciaRecord(token, person, asis, userMap);
+
+		}
+
 	}else {
-		await createAsistenciaRecord(token, person, compNum, userMap);
+		await createNewAsistenciaRecord(token, person, compNum, userMap);
 	}
 
 }
 
-async function updateAsistenciaRecord(token, person, asis, userMap){
+async function updateExistingAsistenciaRecord(token, person, asis, userMap){
 		asis.prioridad = 2;
 
 		asis.isVigilado = true;
@@ -387,7 +396,7 @@ async function updateAsistenciaRecord(token, person, asis, userMap){
 }
 
 
-async function createAsistenciaRecord(token, person, compNum, userMap){
+async function createNewAsistenciaRecord(token, person, compNum, userMap){
 				const asis = new AsisprevencionRecord();
 				buildCoreAsis(asis, person, compNum, token);
 				buildCovid(asis, token);
@@ -414,7 +423,7 @@ function assignUserToFollowUp(asis, token, userMap){
 	let user = _fetchRandomUser(userMap, token);
 
 	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
-	_applyAsignadoToAsistencia(asis, user, token)
+	_applyAsignadoToAsistencia(asis, user)
 }
 
 
@@ -435,11 +444,11 @@ function _fetchRandomUser(userMap, token){
 }
 
 
-function _applyAsignadoToAsistencia(asistencia, user, token ){
+function _applyAsignadoToAsistencia(asistencia, user ){
 	if(!user) return;
     let followUpToken = asistencia.followUp;
     if(followUpToken){
-		if(!followUpToken.asignadoId || token.asignadoa === 'CAPS' ){
+		if(!followUpToken.asignadoId){
 			followUpToken.isActive = true;
 			followUpToken.tipo =         'infectado';
 			followUpToken.isAsignado =   true;
@@ -938,6 +947,47 @@ function buildMuestrasLab(asis, token){
 		asis.muestraslab = muestras;
 	}
 
+
+}
+function isAsistenciaDeprecated(asis){
+	/***
+		fecomp_tsa
+		idPerson===null
+		ndoc===null
+		estado===cumplido
+		avance===cerrado
+		infeccion:
+			fets_inicio
+			fets_alta
+			actualState: 5 // alta
+	* 
+	*/
+	let deprecated = false;
+	if(asis.estado === "cumplido" || asis.avance === "cerrado") return true;
+	if(!asis.idPerson) return true;
+
+	let today = Date.now();
+	let infeccion = asis.infeccion;
+	if(infeccion){
+		if(infeccion.fets_inicio &&  infeccion.fets_inicio < (today  - (1000 * 60 * 60 * 24 * 90)) ) return true;
+		if(infeccion.actualState === 5){
+			if(infeccion.fets_alta &&  infeccion.fets_alta < (today  - (1000 * 60 * 60 * 24 * 30)) ) return true;
+		}
+	}
+	return deprecated;
+}
+
+function bajaAsistenciaDeprecated(asis){
+	console.log('ToDo:   marcar la solicitud como cerrada!!!!')
+	asis.estado = "cumplido";
+	asis.avance = "cerrado";
+	asis.isVigilado = false;
+	asis.hasSeguimiento = false;
+	asis.isCovid = false;
+	asis.idPerson = null;
+	asis.ndoc = null;
+	console.log('[%s] Asistencia dada de baja: [%s] [%s]',asis._id, asis.compNum, asis.fecomp_txa );
+	AsisprevencionRecord.findByIdAndUpdate(asis._id, asis).exec();
 
 }
 
