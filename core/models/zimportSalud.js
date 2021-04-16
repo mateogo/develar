@@ -19,7 +19,6 @@ const userModel = require('./userModel');
 
 const asisprevencion = require('./asisprevencionModel.js');
 const serialModule = require('./serialModel.js');
-const { ENOTTY } = require('node:constants');
 
 const Schema = mongoose.Schema;
 
