@@ -888,8 +888,8 @@ function updatedMuestrasLab(laboratory, token){
 	let tmuestra = laboratory.tipoMuestra || 'sindato';
 
 	if(token.tecnica){
-		let token = tipoMuestraLaboratorioOptList.find(t => t.label === token.tecnica);
-		tmuestra = token ? token.val: tmuestra;		
+		let itemLab = tipoMuestraLaboratorioOptList.find(t => t.label === token.tecnica);
+		tmuestra = itemLab ? itemLab.val: tmuestra;		
 	}
 	laboratory.tipoMuestra = tmuestra;
 	return laboratory;
