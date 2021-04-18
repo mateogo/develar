@@ -343,6 +343,10 @@ exports.parseDateStr = function(str) {
 
 
 exports.dateNumFromTx = function(datex){
+        if(!datex) return 0;
+        if(datex === "00/00/0000") return 0;
+        if(datex === "*sin dato*" || datex === "sin dato") return 0;
+
         let fecha =  this.parseDateStr(datex);
         if(fecha) return fecha.getTime();
         else return 0;

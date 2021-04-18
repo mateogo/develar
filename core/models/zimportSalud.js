@@ -857,8 +857,21 @@ function buildCoreAsis(asis, person, compNum, data){
 }
 
 
+const tipoMuestraLaboratorioOptList = [
+	{ val: 'hisopadopcr',              label: 'Hisopado:PCR' },
+	{ val: 'rt-pcrentiemporeal',       label: 'RT-PCR en tiempo real' },
+	{ val: 'amplificacionisotermica',  label: 'Amplificacion isotermica' },
+	{ val: 'inmunocromatografia',      label: 'Inmunocromatografía' },
+	{ val: 'inmunoensayofluorescente', label: 'Inmunoensayo fluorescente' },
+	{ val: 'testantigeno',             label: 'Test antigeno' },
+	{ val: 'criterioclinico',          label: 'criterio clinico' },
+	{ val: 'sindato',                  label: 'sin dato' },
+	{ val: 'otro',                     label: 'Otro' },
+];
+
 
 function updatedMuestrasLab(laboratory, token){
+
 	laboratory.resultado = (!token.resultado || token.resultado === 'CONFIRMADO') ? 'confirmada' : 'descartada';
 
 	laboratory.fe_toma = token.femuestra || '';
@@ -870,9 +883,15 @@ function updatedMuestrasLab(laboratory, token){
 	laboratory.fe_resestudio = token.feresultado || token.fealta;
 	laboratory.fets_resestudio = laboratory.fe_resestudio ? utils.dateNumFromTx(laboratory.fe_resestudio) : 0 ;
 
-	laboratory.slug = 'Resultado importado de SISA el ' + token.fealta;
+	laboratory.slug = 'Resultado importado de SISA el ' + token.fealta + ' / método: ' + token.tecnica;
 	laboratory.laboratorio = token.reportadox || '';
-	laboratory.tipoMuestra = token.tecnica ? utils.safeIdentifier(token.tecnica) : laboratory.tipoMuestra || 'hisopadopcr';
+	let tmuestra = laboratory.tipoMuestra || 'sindato';
+
+	if(token.tecnica){
+		let token = tipoMuestraLaboratorioOptList.find(t => t.label === token.tecnica);
+		tmuestra = token ? token.val: tmuestra;		
+	}
+	laboratory.tipoMuestra = tmuestra;
 	return laboratory;
 }
 
@@ -883,7 +902,7 @@ function buildMuestrasLab(asis, token){
 		secuencia: 'EN SISA', // labsequenceOptList
 		muestraId: '',
 		fe_toma: '',
-		tipoMuestra: 'hisopadopcr', // tipoMuestraLaboratorioOptList
+		tipoMuestra: '', // tipoMuestraLaboratorioOptList
 		locacionId: 'otro', // locMuestraOptList
 		locacionSlug: '',
 		laboratorio: '',
@@ -901,19 +920,21 @@ function buildMuestrasLab(asis, token){
 	}
 
 	let oldlab;
-	let muestras = (asis && asis.muestraslab) || [];
 	let femuestra = token.femuestra
 	let femuestra_ts = 0
+
 	if(femuestra){
 		try {
 			femuestra_ts = utils.dateNumFromTx(femuestra)
 		}
-		catch {
-			return null;
+		catch(e) {
+			console.log('utils dateNumFromTx catch Error: [%s]', femuestra);
+			//return null;
 		}
 	}
 	
 
+	let muestras = (asis && asis.muestraslab) || [];
 	if (muestras && muestras.length){
 		oldlab = muestras.find(lab => {
 			if(!lab.isActive || (lab.secuencia !== 'EN SISA' && lab.resultado !== 'pendiente') ){
@@ -937,17 +958,17 @@ function buildMuestrasLab(asis, token){
 		}else {
 			_laboratory = updatedMuestrasLab(_laboratory, token)
 			muestras.push(_laboratory);		
-			asis.muestraslab = muestras;
 		}
 
 	}else {
 		_laboratory = updatedMuestrasLab(_laboratory, token)
 		muestras.push(_laboratory);	
-		asis.muestraslab = muestras;
 	}
 
+	asis.muestraslab = muestras;
 
 }
+
 function isAsistenciaDeprecated(asis){
 	/***
 		fecomp_tsa

@@ -591,6 +591,7 @@ const tipoMuestraLaboratorioOptList = [
 	{ val: 'inmunocromatografia',      label: 'Inmunocromatografía' },
 	{ val: 'inmunoensayofluorescente', label: 'Inmunoensayo Fluorescente' },
 	{ val: 'criterioclinico',          label: 'Criterio Clínico' },
+	{ val: 'sindato',                  label: 'Sin dato' },
 	{ val: 'otro',                     label: 'Otro' },
 ];
 
