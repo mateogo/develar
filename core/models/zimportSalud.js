@@ -1067,6 +1067,7 @@ const capsUsers = [
 	{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
 	{ email: 'caps28dediciembre@gmail.com',         city: 'calzada' },
 	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
+	{ email: 'caps.2deabril@gmail.com',             city: 'calzada' },
 	{ email: 'mihorizonte2012@gmail.com',           city: 'claypole' },
 	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
 	{ email: 'caps29laesther@gmail.com',            city: 'claypole' },
