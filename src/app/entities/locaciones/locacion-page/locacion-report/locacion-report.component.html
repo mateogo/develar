@@ -40,8 +40,8 @@
         <div class="row total-capacidad">
           <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
             <div  class="col total-cell">
-              <span class="total-label" >CAPACIDAD</span><br>
-              <span class="total-valor" >{{ totalCapacidad[capacidad.val]['capacidad'] }}</span>
+              <span class="total-label" >CAPACIDAD POTENCIAL / OPERATIVA</span><br>
+              <span class="total-valor" >{{ totalCapacidad[capacidad.val]['capacidad'] }} / {{ totalCapacidad[capacidad.val]['real'] }}</span>
             </div>
           </ng-container>
         </div>
@@ -58,8 +58,9 @@
         <div class="row">
           <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
             <div  class="col total-cell">
+              <span class="total-label" >OCUPACIÓN% POTENCIAL / OPERATVIO</span><br>
               <span class="total-valor" >
-                {{ totalCapacidad[capacidad.val].porcentual }}
+                {{ totalCapacidad[capacidad.val].porcentual }} / {{ totalCapacidad[capacidad.val].porcentualreal }}
               </span>
             </div>
           </ng-container>
@@ -101,13 +102,13 @@
     
           <div class="row">
             <div  class="col-md-4 capacidad-cell">
-              <span>CAPACIDAD TOTAL</span>
+              <span>CAPACIDAD POTENCIAL / OPERATIVA</span>
             </div>
             <div  class="col-md-8">
               <div class="row">
                 <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
                   <div  class="col-md-6 locacion-data-cell">
-                    <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'] }}</span>
+                    <span>{{capacidad.code}} : {{ locacion['disponible'][capacidad.val]['capacidad'] }} / {{ locacion['disponible'][capacidad.val]['real'] }}</span>
                   </div>
                 </ng-container>
               </div>
@@ -131,16 +132,21 @@
 
           <div class="row">
             <div  class="col-md-4 capacidad-cell">
-              <span>% OCUPACIÓN</span>
+              <span>% OCUP POT / OPERATIVA</span>
             </div>
             <div  class="col-md-8">
               <div class="row">
                 <ng-container *ngFor='let capacidad of capacidadesOptList; let row=index'>
                   <div  class="col-md-6 locacion-data-cell">
-                    <span>{{capacidad.code}} : 
+                    <span>
+                            {{capacidad.code}} : 
                             {{ getOcupacionPorcentual(
                             locacion['disponible'][capacidad.val]['ocupado'], 
-                            locacion['disponible'][capacidad.val]['capacidad']) }}
+                            locacion['disponible'][capacidad.val]['capacidad']) }} /
+
+                            {{ getOcupacionPorcentual(
+                            locacion['disponible'][capacidad.val]['ocupado'], 
+                            locacion['disponible'][capacidad.val]['real']) }}
                     </span>
                   </div>
                 </ng-container>
@@ -153,7 +159,7 @@
   </mat-card-content>
 </mat-card>
 
-<ng-container *ngIf='false'>
+<ng-container *ngIf='true'>
 <dump-data  [title]="'MasterData'"
             [data$]='data$'
             [showTests]='true'></dump-data>

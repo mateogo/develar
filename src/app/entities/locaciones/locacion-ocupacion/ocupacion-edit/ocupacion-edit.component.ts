@@ -53,7 +53,6 @@ export class OcupacionEditComponent implements OnInit {
   }
 
   cancelEdit(){
-    console.log('CANCEL EDIT CLICK')
     this.navigateBack()
   }
 
@@ -147,6 +146,18 @@ export class OcupacionEditComponent implements OnInit {
         }
         return target === capacidad.val ? acum + serv.srvQDisp : acum;
       }, 0)
+
+      ocupacion.srvQReal = servicios.reduce((acum, serv) => {
+        let targetObj = this.capacidades.find(t => t.val === serv.srvtype)
+        let target = "intermedios";
+        if(targetObj){
+          target = targetObj.target || target;
+        }else {
+          console.log('ERROR: Servicio  no encontrado: [%s]', serv.srvtype)
+        }
+        return target === capacidad.val ? acum + serv.srvQAdic : acum;
+      }, 0)
+
       ocupacionServicios.push(ocupacion);  
     })
   }

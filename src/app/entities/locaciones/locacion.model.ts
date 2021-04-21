@@ -121,8 +121,10 @@ export class OcupacionXServicio {
   srvcode: string = '';
   
   srvQDisp: number = 0;
+  srvQReal: number = 0;
   srvQOcup: number = 0;
   srvPOcup: number = 0;
+  srvPReal: number = 0;
   
   constructor(locacion?: LocacionHospitalaria){
     if(locacion){
@@ -186,6 +188,7 @@ export class OcupaciomPorArea {
 
 export class OcupacionToken {
   capacidad: number= 0;
+  real: number= 0;
   ocupado: number= 0;
   porcentual: number = 0;
 }

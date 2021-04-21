@@ -26,8 +26,10 @@ const ocupacionXServicioSch = new Schema({
     srvtype:        { type: String, required: false },
     srvcode:        { type: String, required: false },
     srvQDisp:       { type: Number, required: false },
+    srvQReal:       { type: Number, required: false },
     srvQOcup:       { type: Number, required: false },
     srvPOcup:       { type: Number, required: false },
+    srvPReal:       { type: Number, required: false },
 });
 
 

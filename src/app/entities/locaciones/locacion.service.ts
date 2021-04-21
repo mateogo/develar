@@ -217,6 +217,7 @@ export class LocacionService {
           }
           let allocatedData = master.get(servicio.locCode);
           allocatedData.disponible[servicio.srvtype]['capacidad']  = servicio.srvQDisp;
+          allocatedData.disponible[servicio.srvtype]['real']  = servicio.srvQReal;
           allocatedData.disponible[servicio.srvtype]['ocupado']    = servicio.srvQOcup;
           allocatedData.disponible[servicio.srvtype]['porcentual'] = servicio.srvPOcup;          
         })

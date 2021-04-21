@@ -107,7 +107,7 @@ export class LocacionReportComponent implements OnInit {
     this.locSrv.fetchCapacidadDisponible(query).subscribe(map => {
       if(map){
         this.masterReportList = Array.from(map.values())
-        //data$.next(this.masterReportList);
+        this.data$.next(this.masterReportList);
         this.totalCapacidad = this.globalResourcesData(this.masterReportList)
         this.refreshView()
       }
@@ -160,20 +160,27 @@ export class LocacionReportComponent implements OnInit {
     let capacidades = {}
 
     this.capacidadesOptList.forEach(t=>{
-      capacidades[t.val] =  {capacidad: 0, ocupado: 0, libre: 0, porcentual:""};
+      capacidades[t.val] =  {capacidad: 0, ocupado: 0, real: 0, libre: 0, librereal: 0, porcentual:"", porcentualreal:""};
     })
     masterList.forEach(t => {
         //if(t.type === PRIVADO) return;
 
         let disponible = t.disponible;
         for(let label of this.capacidadesOptList){
-          let ocupado = 0, capacidad = 0;
+          let ocupado = 0, capacidad = 0, real =0;
+          if(!disponible[label.val]['real']){
+            disponible[label.val]['real'] = disponible[label.val]['capacidad']           
+          }
+          
           ocupado =   disponible[label.val]['ocupado'];
           capacidad = disponible[label.val]['capacidad'];
+          real = disponible[label.val]['real'] || disponible[label.val]['capacidad'];
 
           capacidades[label.val].ocupado += ocupado;
           capacidades[label.val].capacidad += capacidad;
+          capacidades[label.val].real += real;
           capacidades[label.val].libre += capacidad - ocupado;
+          capacidades[label.val].librereal += real - ocupado;
         }        
     })
 
@@ -182,6 +189,11 @@ export class LocacionReportComponent implements OnInit {
                       ? Math.floor( capacidades[label.val].ocupado / capacidades[label.val].capacidad * 100) + "%" 
                       : '';
       capacidades[label.val].porcentual = porcentual;
+
+      let porcentualreal = capacidades[label.val].real 
+                      ? Math.floor( capacidades[label.val].ocupado / capacidades[label.val].real * 100) + "%" 
+                      : '';
+      capacidades[label.val].porcentualreal = porcentualreal;
     }
     return capacidades
   }
