@@ -181,6 +181,10 @@ export class OcupacionEditComponent implements OnInit {
 
   private addControls(entity: OcupacionHospitalaria): void {
     let servicios = entity.servicios || [];
+    servicios.forEach(s => {
+      if(!s.srvPReal) s.srvPReal = 0;
+      if(!s.srvQReal) s.srvQReal = s.srvQDisp;
+    });
     let serviciosFormArray = servicios.map(srv => this._fb.group(srv))
     this.formGroup.setControl('servicios', this._fb.array(serviciosFormArray));
   }
