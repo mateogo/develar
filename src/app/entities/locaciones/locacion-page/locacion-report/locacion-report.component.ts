@@ -107,7 +107,7 @@ export class LocacionReportComponent implements OnInit {
     this.locSrv.fetchCapacidadDisponible(query).subscribe(map => {
       if(map){
         this.masterReportList = Array.from(map.values())
-        this.data$.next(this.masterReportList);
+        //this.data$.next(this.masterReportList);
         this.totalCapacidad = this.globalResourcesData(this.masterReportList)
         this.refreshView()
       }
