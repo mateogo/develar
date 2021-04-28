@@ -148,6 +148,29 @@ export class CensoIndustriasController {
   /*********************************/
   /*  Censo Retrieve, fetch, load */
   /*******************************/
+
+  fetchCensoById(censoId: string){
+    const subject = new BehaviorSubject<CensoIndustrias>(null);
+    this.loadCensoById(subject, censoId);
+    return subject;
+  }
+
+  private loadCensoById(subject: BehaviorSubject<CensoIndustrias>, censoId: string):void {
+  	this.daoService.findById<CensoIndustrias>(CENSO_TYPE, censoId).then(censo => {
+  		if(censo){
+  			this._currentCenso = censo;
+        this._censosList = [ censo ];
+
+      } else {
+  			this._currentCenso = null;
+        this._censosList = [];
+      }
+      subject.next(this._currentCenso)
+      this.censoListener.next(this._currentCenso);
+
+  	})
+  }
+
   fetchCensoByQuery(query: any){
     const subject = new BehaviorSubject<CensoIndustrias[]>([]);
     this.loadCensoByQuery(subject, query);

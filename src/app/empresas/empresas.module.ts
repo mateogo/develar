@@ -143,6 +143,19 @@ import { CensoBienesViewComponent } from './censo/censo-data/censo-bienes/censo-
     CensoBienesEditComponent,
     CensoBienesViewComponent
   ],
+  exports: [
+    CensoindustriasBannerComponent,
+    CensoPageComponent,
+    CensoCoreEditComponent,
+    CensoPanelComponent,
+    CensoActividadEditComponent,
+    CensoActividadViewComponent,
+    CensoBaseComponent,
+    CensoCoreViewComponent,
+    CensoProductosViewComponent,
+    CensoProductosEditComponent,
+
+  ]
 
 })
 export class EmpresasModule { }

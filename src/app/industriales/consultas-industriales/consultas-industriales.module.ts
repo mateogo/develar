@@ -8,7 +8,7 @@ import { ConsultasEditComponent } from './consultas-edit/consultas-edit.componen
 import { DevelarCommonsModule } from '../../develar-commons/develar-commons.module';
 import { ConsultasModule } from '../../entities/consultas/consultas.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { EmpresasModule } from '../../empresas/empresas.module';
 
 @NgModule({
   declarations: [ConsultasBrowseComponent, ConsultasTableComponent, ConsultasEditComponent],
@@ -17,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     DevelarCommonsModule,
-    ConsultasModule
+    ConsultasModule,
+    EmpresasModule,
   ]
 })
 export class ConsultasIndustrialesModule { }

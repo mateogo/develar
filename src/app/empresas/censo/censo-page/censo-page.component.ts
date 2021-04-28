@@ -143,7 +143,7 @@ export class CensoPageComponent implements OnInit {
 
   ngOnInit() {
     let first = true;    
-    //this.censoId = this.route.snapshot.paramMap.get('id')
+    this.censoId = this.route.snapshot.paramMap.get('id')
 
     this.empCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
@@ -151,7 +151,13 @@ export class CensoPageComponent implements OnInit {
 
       if(readyToGo && first){
         first = false;
-        this.lookUpActiveCenso();
+        if(this.censoId){
+          this.lookUpActiveCensoById(this.censoId);
+
+        }else {
+          this.lookUpActiveCenso();
+
+        }
 
       }
     })
@@ -237,6 +243,40 @@ export class CensoPageComponent implements OnInit {
       }else {
         // todo
       }
+    })
+
+  }
+  private lookUpActiveCensoById(censoId: string){
+    console.log('lookUpById to BEGIN')
+    this.censoCtrl.fetchCensoById(censoId).subscribe(censo => {
+
+      if(censo){
+        console.log('Centro Retrieved')
+        let empresaId = censo.empresa.empresaId;
+
+        this.empCtrl.fetchPersonById(empresaId).then(industria =>{
+          console.log('industria: [%s]', industria.displayName)
+          this.currentIndustry = industria;
+          this.censoCtrl.currentIndustry = this.currentIndustry;
+
+          this.initCurrentIndustry(this.currentIndustry)
+            this.initCurrentCenso(censo)
+            this.showData = true;  
+        })
+  
+      }else {
+        this.hasActividades = false;
+        this.hasBienes = false;
+        this.hasProductos = false;
+        this.hasCurrentCenso = false;
+        this.hasMaquinarias = false;
+        this.hasPatentes = false;
+        this.hasExpectativas = false;
+        this.hasRhumanos = false;
+        this.showData = true;
+      }
+
+
     })
 
   }
