@@ -247,15 +247,12 @@ export class CensoPageComponent implements OnInit {
 
   }
   private lookUpActiveCensoById(censoId: string){
-    console.log('lookUpById to BEGIN')
     this.censoCtrl.fetchCensoById(censoId).subscribe(censo => {
 
       if(censo){
-        console.log('Centro Retrieved')
         let empresaId = censo.empresa.empresaId;
 
         this.empCtrl.fetchPersonById(empresaId).then(industria =>{
-          console.log('industria: [%s]', industria.displayName)
           this.currentIndustry = industria;
           this.censoCtrl.currentIndustry = this.currentIndustry;
 

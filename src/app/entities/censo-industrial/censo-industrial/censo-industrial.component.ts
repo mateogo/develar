@@ -10,6 +10,7 @@ import { CensoIndustrialService } from '../censo-industrial.service';
 })
 export class CensoIndustrialComponent implements OnInit {
   public showData = false;
+  public title = 'Censo Empresarial';
 
   public pageTitle = 'Gestión de censos';
 

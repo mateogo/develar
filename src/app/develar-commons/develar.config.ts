@@ -4,7 +4,7 @@
  *
  * @
 *************/
-const user = 'industrias';
+const user = 'salud';
 
 const globals = {
 
@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: 'DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 21.04.05 - 14:27',
+		copyright: 'DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 21.05.03 - 10:35',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  -  21.04.21-17:06',
+		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  -  21.05.05-00:30',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},

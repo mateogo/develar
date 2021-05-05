@@ -48,7 +48,7 @@
 
 		<ng-container *ngIf='showData'>
       <div *ngIf="renderMap">
-        <agm-map [latitude]="baseLatLng.lat" [longitude]="baseLatLng.lng" [zoom]="zoom">
+        <agm-map [latitude]="baseLatLng['lat']" [longitude]="baseLatLng['lng']" [zoom]="zoom">
         	<ng-container *ngFor="let location of mapData">
           <agm-marker [latitude]="location.lat" [longitude]="location.lng">
             <agm-info-window>

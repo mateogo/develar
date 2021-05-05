@@ -69,19 +69,29 @@ function processSisaArchive(req, errcb, cb){
 
 function _buildUserMap(ulist){
 	let umap = new Map();
+	let default_index = 'general';
+
 	ulist.forEach(u => {
-		let index = 'general';
+		let index = default_index;
 		// 1. busco dentro de los usuarios-caps
 		let capsUser = capsUsers.find(t => t.email === u.email);
-		index = capsUser ? capsUser.city : index;
-		if(umap.has(index)){
-			umap.get(index).push(u);
-		}else {
-			umap.set(index, [ u ])
+		index = capsUser ? capsUser.city : default_index;
+		_addToMap(umap, index, u);
+
+		// los pediatras están TAMBIÉN en la lista general
+		if(index === 'pediatra'){
+			_addToMap(umap, default_index, u);
 		}
 	})
-
 	return umap;
+}
+
+function _addToMap(umap, index, user){
+	if(umap.has(index)){
+		umap.get(index).push(user);
+	}else {
+		umap.set(index, [ user ])
+	}
 }
 
 
@@ -429,7 +439,16 @@ function assignUserToFollowUp(asis, token, userMap){
 function _fetchRandomUser(userMap, token){
 	const BASE = 'general'
 	let index = 'general';
-	if(token.asignadoa === 'CAPS') {
+	let edad = token.edad ? parseInt(token.edad, 10) : 999;
+	edad = isNaN(edad) ? 999: edad;
+
+	if(edad <= 16){
+		// asigna pediatras
+		index = 'pediatra';
+		index = userMap.has(index) ? index : BASE;
+		index = userMap.get(index).length ? index : BASE;
+
+	}else if(token.asignadoa === 'CAPS') {
 		if(token.localidad){
 			let city = cityToUser.find(t => t.sisa === token.localidad);
 			index = city ? city.val : index;
@@ -437,6 +456,7 @@ function _fetchRandomUser(userMap, token){
 			index = userMap.get(index).length ? index : BASE;
 		}
 	}
+
 	let arr_length = userMap.get(index).length;
 	let arr_index = utils.between(0, arr_length);
 	return userMap.get(index)[arr_index];
@@ -1039,9 +1059,9 @@ const ciudadesBrown = [
 
 const cityToUser = [
     {val: 'no_definido',         cp:'1800', label: 'Seleccione opción',  sisa: 'Seleccione opción' },
-    {val: 'adrogue',             cp:'1846', label: 'Almirante Brown ',   sisa: 'Almirante Brown' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogue' },
-    {val: 'adrogue',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },
+    {val: 'general',             cp:'1846', label: 'Almirante Brown ',   sisa: 'Almirante Brown' },// adrogue no tiene caps
+    {val: 'general',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogue' },// adrogue no tiene caps
+    {val: 'general',             cp:'1846', label: 'Adrogué ',           sisa: 'Adrogué' },// adrogue no tiene caps
     {val: 'burzaco',             cp:'1852', label: 'Burzaco ',           sisa: 'Burzaco' },
     {val: 'calzada',             cp:'1847', label: 'Rafael Calzada ',    sisa: 'Rafael Calzada' },
     {val: 'claypole',            cp:'1849', label: 'Claypole',           sisa: 'Claypole' },
@@ -1059,22 +1079,22 @@ const cityToUser = [
 ];
 
 const capsUsers = [
-	{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
+	//{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
 	{ email: 'caps9florealferrara@gmail.com',       city: 'burzaco' },
 	{ email: 'burzaco.saludbrown@gmail.com',        city: 'burzaco' },
 	{ email: 'cmd.saludbrown@gmail.com',            city: 'burzaco' },
 	{ email: 'cmsayz@gmail.com',                    city: 'burzaco' },
-	{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
+	//{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
 	{ email: 'caps28dediciembre@gmail.com',         city: 'calzada' },
-	{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' },
+	//{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' }, CAPS 16
 	{ email: 'caps.2deabril@gmail.com',             city: 'calzada' },
 	{ email: 'mihorizonte2012@gmail.com',           city: 'claypole' },
 	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
 	{ email: 'caps29laesther@gmail.com',            city: 'claypole' },
-	{ email: 'caps12donorione@gmail.com',           city: 'claypole' },
-	{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' },
-	{ email: 'capsglew1@gmail.com',                 city: 'glew' },
-	{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
+	//{ email: 'caps12donorione@gmail.com',           city: 'claypole' },
+	//{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' },
+	{ email: 'capsglew1@gmail.com',                 city: 'glew' }, // GLEW-1 Gorriti: Gentile
+	//{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
 	{ email: 'ramoncarrilloglewsur@gmail.com',      city: 'glew' },
 	{ email: 'bealta64@gmail.com',                  city: 'glew' },
 	{ email: 'sanjose.saludbrown@gmail.com',        city: 'marmol' },
@@ -1093,7 +1113,15 @@ const capsUsers = [
 	{ email: 'caps32.salud@gmail.com',              city: 'sanjose' },
 	{ email: '13dejulio.salud@gmail.com',           city: 'solano' },
 	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
+	{ email: 'dra.mgarcia64@gmail.com',             city: 'pediatra' },
+	{ email: 'ivcp05@gmail.com',                    city: 'pediatra' },
+	{ email: 'terrazavivoana3@gmail.com',           city: 'pediatra' },
+	{ email: 'patriciadelcolle@gmail.com',          city: 'pediatra' },
+	{ email: 'unzienguillermo@hotmail.com',         city: 'pediatra' },		
 ];
+
+
+
 
 const optList = {
     city: ciudadesBrown,

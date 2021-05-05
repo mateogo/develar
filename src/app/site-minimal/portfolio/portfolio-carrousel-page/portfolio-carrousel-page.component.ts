@@ -18,7 +18,7 @@ export class PortfolioCarrouselPageComponent implements OnInit {
 
   private templ = "portfolio";
   private stempl = "carrousel1";
-  public linkText = "Ver galería"
+  public linkText = "Ver emprendedores"
 
   private cRows = 2;
   private cCol = 3;
@@ -92,6 +92,7 @@ export class PortfolioCarrouselPageComponent implements OnInit {
   }
 
   renderHomePage(records: RecordCard[]){
+    console.log('Render carrousel [%s]', records && records.length)
   	this.buildCarrousel(records);
   	if(this.carrouseles.length){
   		this.hasCarrousel = true;

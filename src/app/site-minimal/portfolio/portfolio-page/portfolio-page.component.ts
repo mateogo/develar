@@ -90,6 +90,7 @@ export class PortfolioPageComponent implements OnInit {
 
   ngOnInit() {
     var first = true;
+    console.log('PortfolioPageComponent')
     setTimeout(() => this.minimalCtrl.setHomeView(false),500);
 
     this.route.url.subscribe(url=> {
@@ -153,7 +154,7 @@ export class PortfolioPageComponent implements OnInit {
 
     this.minimalCtrl.setPapersTitle();
     
-
+    console.log('FetchProfolios')
     let sscrp1 = this.minimalCtrl.fetchPortfolioRecords(this.topic).subscribe(records => {
       this.sortProperly(records);
       this.renderHomePage(records);
@@ -178,6 +179,8 @@ export class PortfolioPageComponent implements OnInit {
   }
 
   renderHomePage(records: RecordCard[]){
+    console.log('Render HOme Portfolio Page: [%s]', records && records.length)
+
     if(records && records.length){
 
 
