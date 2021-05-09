@@ -542,7 +542,12 @@ function buildCovid(asis, token){
 		novedad = (novedad && novedad.toLowerCase()) || '';
 
 		if(novedad === 'obito' ){
-			infeccion.actualState = 4
+			infeccion.actualState = 4;
+			infeccion.hasCovid = false;
+			infeccion.fe_alta = token.fealta
+
+		}else if (novedad === 'alta'){
+			infeccion.actualState = 5;
 			infeccion.hasCovid = false;
 			infeccion.fe_alta = token.fealta
 
@@ -550,12 +555,9 @@ function buildCovid(asis, token){
 			infeccion.avance = 'nexo';
 			infeccion.mdiagnostico = 'nexo';
 
-
 		}else if (novedad === 'criterio clinico' || novedad === 'criterio clínico'){
 			infeccion.avance = 'comunitario';
 			infeccion.mdiagnostico = 'clinica';
-
-
 
 		}else if (novedad === 'geriatrico'){
 			infeccion.institucion = 'geriatrico';
@@ -1092,7 +1094,7 @@ const capsUsers = [
 	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
 	{ email: 'caps29laesther@gmail.com',            city: 'claypole' },
 	//{ email: 'caps12donorione@gmail.com',           city: 'claypole' },
-	//{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' },
+	//{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' }, // caps 6
 	{ email: 'capsglew1@gmail.com',                 city: 'glew' }, // GLEW-1 Gorriti: Gentile
 	//{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
 	{ email: 'ramoncarrilloglewsur@gmail.com',      city: 'glew' },
@@ -1113,8 +1115,8 @@ const capsUsers = [
 	{ email: 'caps32.salud@gmail.com',              city: 'sanjose' },
 	{ email: '13dejulio.salud@gmail.com',           city: 'solano' },
 	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
-	{ email: 'dra.mgarcia64@gmail.com',             city: 'pediatra' },
-	{ email: 'ivcp05@gmail.com',                    city: 'pediatra' },
+	{ email: 'dra.mgarcia64@gmail.com',             city: 'pediatra' }, // Mónica García
+	{ email: 'ivcp05@gmail.com',                    city: 'pediatra' },  // Ivette Perkik
 	{ email: 'terrazavivoana3@gmail.com',           city: 'pediatra' },
 	{ email: 'patriciadelcolle@gmail.com',          city: 'pediatra' },
 	{ email: 'unzienguillermo@hotmail.com',         city: 'pediatra' },		
