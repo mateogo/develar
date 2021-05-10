@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { CensoFollowupComponent } from '../zmodals/censo-followup/censo-followup.component';
+import { CensoIndustrialService } from '../censo-industrial.service';
 
 import {  CensoBienes,
   CensoIndustrias,
@@ -20,8 +20,9 @@ import {  CensoBienes,
 
   import { CensoIndustriasQuery } from '../censo.model';
 
-  import { CensoIndustrialService } from '../censo-industrial.service';
-
+  import { CensoFollowupComponent } from '../zmodals/censo-followup/censo-followup.component';
+  import { CensoVistaModalComponent } from '../zmodals/censo-vista-modal/censo-vista-modal.component';
+  
  
 const ROLE_ADMIN =    'vigilancia:admin';
 const ROLE_OPERATOR = 'vigilancia:operator';
@@ -42,11 +43,11 @@ export class FollowUpEsquemaModalService {
   	) {}
 
 
-  openDialog(censo: CensoIndustrias ): Subject<UpdateCensoEvent>{
+  openDialog(censo: CensoIndustrias, target?: string ): Subject<UpdateCensoEvent>{
   	this.censo = censo;
 
     if(this.validateCredentials(censo)){
-      this.loadCenso(censo._id)
+      this.loadCenso(censo._id, target)
     }
 
   	return this.dialogResult$;
@@ -54,23 +55,23 @@ export class FollowUpEsquemaModalService {
 
   private validateCredentials(censo: CensoIndustrias): boolean{
     if( !(this.checkUserPermission(ROLE_ADMIN) || this.checkUserPermission(ROLE_OPERATOR)) ){
-      this.fireError('Acceso restringido', 'ATENCIÓN')
+      this._fireError('Acceso restringido', 'ATENCIÓN')
       return false;
     }
       
     return true;
   }
 
-  private loadCenso(censoId){
+  private loadCenso(censoId, target?: string){
     this.dsCtrl.fetchCensoById(censoId).subscribe(censo_record=> {
     	if(censo_record){
 
     		this.censo = censo_record;
 
-        this.openModalDialog(this.censo);
+        this.openModalDialog(this.censo, target);
 
     	}else {
-    		this.fireError('Error: No se pudo recuperar la información del Censo', 'ATENCIÓN')
+    		this._fireError('Error: No se pudo recuperar la información del Censo', 'ATENCIÓN')
     		return;
     	}
 
@@ -95,7 +96,20 @@ export class FollowUpEsquemaModalService {
   }
 
 
-  private openModalDialog(censo: CensoIndustrias){
+  /** 
+   * DISPATCHER
+  */
+   private openModalDialog(censo: CensoIndustrias, target?: string){
+    if(target === 'seguimiento') this.followUpDialog(censo);
+    if(target === 'vista')       this.vistaDialog(censo);
+
+  }
+
+
+  /** 
+   * SEGUIMIENTO
+  */
+  private followUpDialog(censo: CensoIndustrias){
     const dialogRef = this.dialog.open(
       CensoFollowupComponent,
       {
@@ -108,22 +122,48 @@ export class FollowUpEsquemaModalService {
 
     dialogRef.afterClosed().subscribe((res: UpdateCensoEvent) => {
         if(res) this.dialogResult$.next(res);
-        else this.fireCancel();
+        else this._fireCancel();
     });    
 
   }
 
-  private fireError(msj: string, action: string){
+  /** 
+   * SEGUIMIENTO
+  */
+  private vistaDialog(censo: CensoIndustrias){
+    console.log('ready to open dialog')
+      const dialogRef = this.dialog.open(
+        CensoVistaModalComponent,
+        {
+          width: '800px',
+          height: '70vh',
+          data: {
+            censo: censo,
+          }
+        }
+      );
+  
+      dialogRef.afterClosed().subscribe((res: UpdateCensoEvent) => {
+          if(res) this.dialogResult$.next(res);
+          else this._fireCancel();
+      });    
+  
+  }
+  
+  /** 
+   * CIERRE DE LA VENTANA MODAL CON ERROR O CANCEL
+  */
+  private _fireError(msj: string, action: string){
     this.dsCtrl.openSnackBar(msj, action);
 
-  	this.dialogResult$.next({
+    this.dialogResult$.next({
   		action: ERROR,
   		type: msj,
   		token: this.censo
   	} as UpdateCensoEvent)
   }
 
-  private fireCancel(){
+  private _fireCancel(){
   	this.dialogResult$.next({
   		action: CANCEL,
   		type: 'operación cancelada',

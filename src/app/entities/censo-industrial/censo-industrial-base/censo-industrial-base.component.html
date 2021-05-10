@@ -5,16 +5,16 @@
 
 <mat-card>
     <mat-card-content>
-                <div class="d-md-flex justify-content-start align-items-center" >
-            <mat-button-toggle-group #fldButtonGrp2  name="actions"  class="panel-header-followup"
-                  (change)='actionTriggered($event)'>
-              <mat-button-toggle value="seguimiento">
-                SEGUIMIENTO
-              </mat-button-toggle>
-          
-            </mat-button-toggle-group>      
-              
-          </div>
+
+      <div class="d-md-flex justify-content-start align-items-center" >
+        <mat-button-toggle-group #fldButtonGrp2  name="actions"  class="panel-header-followup"
+                                (change)='actionTriggered($event)'>
+
+            <mat-button-toggle value="seguimiento">SEGUIMIENTO</mat-button-toggle>
+            <mat-button-toggle value="vista">VISTA</mat-button-toggle>
+
+        </mat-button-toggle-group>      
+      </div>
           
     </mat-card-content>
 </mat-card>

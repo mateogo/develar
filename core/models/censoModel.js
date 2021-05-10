@@ -421,6 +421,10 @@ function buildQuery(query) {
         return q;
     }
 
+    if (query['asignadoId']) {
+        q['followUp.asignadoId'] = query['asignadoId'];
+    }
+
     // Rango de fecha
     if (query.fechaDesde && query.fechaHasta) {
         q['$and'] = [{ 'fecomp_tsa': { '$gte': parseInt(query.fechaDesde, 10), '$lt': parseInt(query.fechaHasta, 10) } }];

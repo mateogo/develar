@@ -1,0 +1,150 @@
+<mat-card >
+    <mat-card-content   *ngIf='showView'>
+        <div class='row'>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-destacado">{{ coreData.censo.empresa.slug }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-destacado">CUIT: {{ coreData.censo.empresa.ndoc }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-destacado-black">Censo: {{ coreData.censo.compNum }} Inicio: {{ coreData.censo.fecomp_txa }} | {{coreData.rubroEmp}} | {{ coreData.categoriaEmp }}</span>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col-md-12">
+                            <span class="text-destacado-black">Avance: {{ estadoData.avance }} - Última actualización: {{estadoData.feult}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <ng-container *ngFor='let actividad of coreData.actividades'>
+                        <div class="col-md-12"><span class="text-small">{{ actividad }} </span></div>
+                    </ng-container>
+                </div>
+        
+
+            </div>
+        </div>
+
+
+        <div class='row icons-block'>
+            <div class="col-md-12">
+                <div class="d-md-flex justify-content-between align-items-center" >
+                    <div>
+                        <badge [color]='bienesData.color' >{{ bienesData.slug }}</badge>
+                        <badge [color]='bienesData.color' >{{ bienesData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='patentesData.color' >{{ patentesData.slug }}</badge>
+                        <badge [color]='patentesData.color' >{{ patentesData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='inversionesData.color' >{{ inversionesData.slug }}</badge>
+                        <badge [color]='inversionesData.color' >{{ inversionesData.count }}</badge>    
+                    </div>            
+                    <div>
+                        <badge [color]='comercializacionData.color' >{{ comercializacionData.slug }}</badge>
+                    </div>
+                    <div>
+                        <badge [color]='rhumanosData.color' >{{ rhumanosData.slug }}</badge>
+                    </div>
+                    <div>
+                        <badge [color]='expectativasData.color' >{{ expectativasData.slug }}</badge>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--------------  MÁQUINAS ---------------   -->
+        <div class='row title-block'>
+            <div class="col-md-12">
+                <p><span class="text-destacado">Maquinaria, recursos informáticos y tecnológicos</span></p>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let maquina of maquinariasData.maquinarias">
+            <div class='row title-block ml-1 mt-2'>
+                <div class="col-md-12">
+                    <p><span class="text-destacado-black">{{maquina.anio}} | {{ getLabel('tipoMaquinas',maquina.type) }} | {{ maquina.slug }}</span></p>
+                </div>
+                <div class="col-md-12">
+                    <p><span class="text-normal">{{maquina.parancelaria}} | {{ getLabel('origenBienes',maquina.origen) }} | Capacidad: ({{ maquina.umecapacidad}}) Instalada:{{ maquina.capainstalada }} / Utilizada: {{ maquina.capautilizada }} </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='maquina.isInnovacion'>
+                    <p><span class="text-normal">Factor de innovación: {{ maquina.innovacionTxt }} </span></p>
+                </div>
+            </div>
+    
+        </ng-container>
+
+        <!--------------  PRODUCTOS ---------------   -->
+        <div class='row title-block mt-2'>
+            <div class="col-md-12">
+                <p><span class="text-destacado">Principales productos producidos y/o comercializados</span></p>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let producto of productosData.productos">
+            <div class='row title-block ml-1 mt-2'>
+                <div class="col-md-12">
+                    <p><span class="text-destacado-black">{{producto.anio}} | {{ getLabel('tipoProductos',producto.type) }} | {{ producto.slug }}</span></p>
+                </div>
+                <div class="col-md-12">
+                    <p><span class="text-normal">{{producto.parancelaria}} | {{ getLabel('origenBienes',producto.origen) }}  </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='producto.isInnovacion'>
+                    <p><span class="text-normal">Factor de innovación: {{ producto.innovacionTxt }} </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='producto.isExportable'>
+                    <p><span class="text-normal">Exportación: {{ producto.exportableTxt }} </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='producto.isSustituible'>
+                    <p><span class="text-normal">¿Puede sustituir importación?: {{ producto.sustituibleTxt }} </span></p>
+                </div>
+            </div>
+    
+        </ng-container>
+
+        <!--------------  MATERIAS PRIMAS ---------------   -->
+        <div class='row title-block mt-2'>
+            <div class="col-md-12">
+                <p><span class="text-destacado">Principales materias primas, semielaborados e insumos estratégicos</span></p>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let materiaprima of bienesData.bienes">
+            <div class='row title-block ml-1 mt-2'>
+                <div class="col-md-12">
+                    <p><span class="text-destacado-black">{{materiaprima.anio}} | {{ getLabel('tipoBienes',materiaprima.type) }} | {{ materiaprima.slug }}</span></p>
+                </div>
+                <div class="col-md-12">
+                    <p><span class="text-normal">{{materiaprima.parancelaria}} | {{ getLabel('origenBienes',materiaprima.origen) }}  </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='materiaprima.isInnovacion'>
+                    <p><span class="text-normal">Factor de innovación: {{ materiaprima.innovacionTxt }} </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='materiaprima.isExportable'>
+                    <p><span class="text-normal">Exportación: {{ materiaprima.exportableTxt }} </span></p>
+                </div>
+                <div class="col-md-12" *ngIf='materiaprima.isSustituible'>
+                    <p><span class="text-normal">¿Puede sustituir importación?: {{ materiaprima.sustituibleTxt }} </span></p>
+                </div>
+            </div>
+    
+        </ng-container>
+
+
+ 
+    </mat-card-content>
+</mat-card>
+    

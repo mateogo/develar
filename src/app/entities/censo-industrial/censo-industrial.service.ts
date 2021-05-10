@@ -9,6 +9,7 @@ import { BehaviorSubject, Subject, Observable } from 'rxjs';
 import { CensoIndustriasHelper } from './censo-industrial.helper';
 import { HttpParams } from '@angular/common/http';
 import { User }          from '../user/user';
+import { AfectadoFollowUp } from '../../salud/asistencia/asistencia.model';
 
 const RECORD = 'censoindustrias';
 const EXPORTAR_URL = 'api/' + RECORD + '/exportarcensos';
@@ -114,12 +115,14 @@ export class CensoIndustrialService {
     if(!this._trabajadorxs) return arr;
     
     arr = this._trabajadorxs.map(x => ({val: x._id, label: x.displayName}) )
+    
 
     arr.sort((f, s)=>{
       if(f.label < s.label )return -1;
       if(f.label > s.label ) return 1;
       return 0
     })
+    arr.unshift({val: 'no_definido', label: 'Sin selección'});
 
     return arr;
   }

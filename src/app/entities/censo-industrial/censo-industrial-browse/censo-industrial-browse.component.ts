@@ -19,6 +19,7 @@ export class CensoIndustrialBrowseComponent implements OnInit {
   public form: FormGroup;
 
   public estadoAvanceList = [];
+  public usersOptList = [];
 
 
   public censos$: Observable<CensoIndustrias[]>;
@@ -37,16 +38,22 @@ export class CensoIndustrialBrowseComponent implements OnInit {
     this.form = this.fb.group({
       fechaDesde: [devutils.datePickerToDate(devutils.dateFromTx(rangoFecha.feDesde))],
       fechaHasta: [devutils.datePickerToDate(devutils.dateFromTx(rangoFecha.feHasta))],
-      avance: [null]
+      avance: [null],
+      asignadoId: [null],
     });
   }
 
   ngOnInit(): void {
     this.estadoAvanceList = CensoIndustriasHelper.getOptionlist('avance');
+    this.usersOptList = this.censoService.buildTuteladoresOptList();
 
     this.searchTerms.pipe(
       tap(term => this.lookUpModels.next(term))
     ).subscribe();
+  }
+
+  changeSelectionValue(type,  val){
+
   }
 
   public doRefreshResults(): void {
@@ -67,7 +74,11 @@ export class CensoIndustrialBrowseComponent implements OnInit {
     }
 
     if (key === 'empresaId') {
-      this.isFilterByIndustriaActive = true;
+      //
+    }
+
+    if (key === 'asignadoId') {
+      this.isFilterByIndustriaActive = false;
     }
 
     this.query = this.initQuery(this.form, this.query);
@@ -88,6 +99,7 @@ export class CensoIndustrialBrowseComponent implements OnInit {
     query.tipoConsulta = fvalue.tipoConsulta;
     query.estado = fvalue.estado;
     query.avance = fvalue.avance;
+    query.asignadoId = fvalue.asignadoId;
     return query;
   }
 

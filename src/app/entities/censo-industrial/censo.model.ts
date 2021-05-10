@@ -92,6 +92,7 @@ export class CensoIndustriasQuery {
   fechaHasta: number;
   avance: string; // CensoIndustrias.estado.navance
   empresa: string; // CensoIndustrias.empresa.slug ??
+  asignadoId: string; // 
 }
 
 /**************************/

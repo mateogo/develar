@@ -24,10 +24,21 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
+            <mat-form-field>
+              <mat-select #fldUserList placeholder="Asignado para tutela"
+                  [formControl]="form.controls['asignadoId']"
+                  (selectionChange)="onSelectionChange('asignadoId', fldUserList.value)" >
+                <mat-option *ngFor="let item of usersOptList" 
+                  [value]="item.val" >{{ item.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+    
+        <div class="col-md-3">
             <app-censo-industrial-persona-buscar (person$)="addFilterByIndustria($event)"></app-censo-industrial-persona-buscar>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <mat-checkbox (click)="removeIndustriaFilter()" *ngIf="isFilterByIndustriaActive" [checked]="true">Selección activa</mat-checkbox>
         </div>
     </div>

@@ -124,7 +124,6 @@ export class CensoFollowupComponent implements OnInit {
       this.seguimientoEvent = this.censo.followUp;
 
     }else {
-      console.log('esNewRecord')
       this.isNewRecord = true;
       this.seguimientoEvent = new CensoFollowUp();
     }

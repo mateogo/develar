@@ -35,26 +35,34 @@ export class CensoIndustrialBaseComponent implements OnInit {
   }
 
   private manageModalEditors(token: string){
-    if(token === 'seguimiento')           this.openSeguimientoModal();
+    if(token === 'seguimiento')        this.openSeguimientoModal(token);
+    if(token === 'vista')              this.openVistaModal(token);
   }
 
-  private openSeguimientoModal(){
+  private openSeguimientoModal(target: string){
 
-		this.fupEsquema.openDialog(this.censo).subscribe(editEvent =>{
+		this.fupEsquema.openDialog(this.censo, target).subscribe(editEvent =>{
 			if(editEvent.action === UPDATE){
         this.censo = editEvent.token;
-        this.manageAsistenciaView();				
+        this._manageAsistenciaView();				
 			}
 		})
-
   }
 
-  private manageAsistenciaView(){
+  private _manageAsistenciaView(){
     this.showCesnoManage = false;
-
     setTimeout(() => {
       this.showCesnoManage = true;
     },70)
   }
+
+  private openVistaModal(target: string){
+		this.fupEsquema.openDialog(this.censo, target).subscribe(editEvent =>{
+      //
+
+		})
+  }
+
+
 
 }
