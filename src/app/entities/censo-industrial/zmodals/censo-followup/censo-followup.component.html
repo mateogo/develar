@@ -1,0 +1,61 @@
+<div class="container-fluid p-0 app">
+	<form [formGroup]="form">
+		
+	<div class="row">
+		<div  class="col-md-6">
+			<mat-checkbox 
+				[checked]="form.controls['isActive'].value===true"
+				[formControl]="form.controls['isActive']" >
+				Empresa bajo tutela de un censista?
+			</mat-checkbox>
+		</div>
+		<div  class="col-md-6">
+				<p class="text-resaltado" >{{ displayAs }}</p>
+		</div>
+	</div>
+
+    <div class="row">
+	    <div  class="col-md-6">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['fe_inicio']" placeholder="Fecha inicio tutela" >
+	        </mat-form-field>
+	    </div>
+		<div class="col-md-6" style="text-align: center;">
+			<mat-form-field>
+                <input matInput [formControl]="form.controls['slug']" placeholder="Comentario">
+			</mat-form-field>
+		</div>
+	</div>	
+
+	<div class="row" >
+	  <div class="col-md-4">
+	    <mat-form-field>
+	      <mat-select #fldUserList placeholder="Asignado para tutela"
+	          [formControl]="form.controls['asignadoId']"
+	          (selectionChange)="changeSelectionValue('asignadoId',fldUserList.value)" >
+	        <mat-option *ngFor="let item of usersOptList" 
+	          [value]="item.val" >{{ item.label }}</mat-option>
+	      </mat-select>
+	    </mat-form-field>
+	  </div>
+
+	  <div class="col-md-4 d-flex align-items-center">
+        <mat-checkbox [checked]='false' 
+        				[formControl]="form.controls['isAsignado']"
+        				(change)="changeAsignado($event)">
+        Selección activa: {{ asignadoSlug }}</mat-checkbox>
+	  </div>
+	</div>
+
+	<div class="d-md-flex justify-content-start">
+		<button mat-raised-button color="primary" class='m-1'
+				[disabled]="!form.valid || formClosed"
+				(click)="onSubmit()">
+		    Confirmar </button>
+		<button mat-raised-button color="warn"   class='m-1'
+				(click)="onCancel()">
+		    Cancelar </button>
+	</div>
+	  
+	</form>
+</div>

@@ -29,6 +29,7 @@ export class CensoIndustrialComponent implements OnInit {
     this.censoService.fetchCensosIndustrialesByQuery(query).subscribe(turnosList => {
       if (turnosList && turnosList.length > 0) {
         this.censoService.updateTableData();
+        this.censoService.broadcastCensoList();
         this.showData = true;
       } else {
         this.showData = false;

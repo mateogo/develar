@@ -1,0 +1,57 @@
+<mat-card >
+    <mat-card-content   *ngIf='showView'>
+        <div class='row'>
+            <div class="col-md-5">
+                    <span class="text-destacado">{{ coreData.censo.empresa.slug }} CUIT: {{ coreData.censo.empresa.ndoc }}</span>
+            </div>
+            <div class="col-md-7">
+                    <span class="text-destacado-black">Censo: {{ coreData.censo.compNum }} Inicio: {{ coreData.censo.fecomp_txa }} | {{coreData.rubroEmp}} | {{ coreData.categoriaEmp }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <ng-container *ngFor='let actividad of coreData.actividades'>
+                <div class="offset-md-5 col-md-7"><span class="text-small">{{ actividad }} </span></div>
+            </ng-container>
+        </div>
+
+        <div class='row icons-block'>
+            <div class="col-md-12">
+                <div class="d-md-flex justify-content-between align-items-center" >
+                    <badge [color]='estadoData.color' >{{ estadoData.avance }}:{{estadoData.feult}}</badge>
+                    <div>
+                        <badge [color]='maquinariasData.color' >{{ maquinariasData.slug }}</badge>
+                        <badge [color]='maquinariasData.color' >{{ maquinariasData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='productosData.color' >{{ productosData.slug }}</badge>
+                        <badge [color]='productosData.color' >{{ productosData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='bienesData.color' >{{ bienesData.slug }}</badge>
+                        <badge [color]='bienesData.color' >{{ bienesData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='patentesData.color' >{{ patentesData.slug }}</badge>
+                        <badge [color]='patentesData.color' >{{ patentesData.count }}</badge>    
+                    </div>
+                    <div>
+                        <badge [color]='inversionesData.color' >{{ inversionesData.slug }}</badge>
+                        <badge [color]='inversionesData.color' >{{ inversionesData.count }}</badge>    
+                    </div>            
+                    <div>
+                        <badge [color]='comercializacionData.color' >{{ comercializacionData.slug }}</badge>
+                    </div>
+                    <div>
+                        <badge [color]='rhumanosData.color' >{{ rhumanosData.slug }}</badge>
+                    </div>
+                    <div>
+                        <badge [color]='expectativasData.color' >{{ expectativasData.slug }}</badge>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+    </mat-card-content>
+</mat-card>
+    

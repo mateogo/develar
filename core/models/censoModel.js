@@ -363,6 +363,15 @@ const censoInversionesSch = new mongoose.Schema({
 
 
 });
+const censoFollowUpSch = new mongoose.Schema({
+	isActive:      { type: Boolean, required: false },
+	fe_inicio:     { type: String,  required: false },
+	fets_inicio:   { type: Number,  required: false },
+	slug:          { type: String,  required: false },
+	isAsignado:    { type: Boolean, required: false },
+	asignadoId:    { type: String,  required: false },
+	asignadoSlug:  { type: String,  required: false },
+})
 
 
 /**************************/
@@ -383,6 +392,8 @@ const censoindustriaSch = new Schema({
     responsable: { type: responsableSch, required: false },
     estado: { type: estadoCensoSch, required: false },
     censo: { type: censoDataSch, required: false },
+    followUp: { type: censoFollowUpSch, required: false },
+  
     actividades: [censoActividadSch],
     bienes:           [censoBienesSch],
     productos:        [censoProductosSch],

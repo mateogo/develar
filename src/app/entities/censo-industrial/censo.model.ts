@@ -1,6 +1,11 @@
 import { devutils } from '../../develar-commons/utils';
 import { Person, CoberturaData } from '../person/person';
 import { CardGraph } from '../../develar-commons/asset-helper';
+import { ArrayDataSource, CollectionViewer } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+
+import { BehaviorSubject,  Observable, merge }       from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export class Empresa {
   empresaId: string;
@@ -140,3 +145,32 @@ export class CensoIndustriasTable {
 
   empresa: string;
 }
+
+export class CensoListDataSource extends ArrayDataSource<CensoIndustrias> {
+
+  constructor(private sourceData: BehaviorSubject<CensoIndustrias[]>,
+              private _paginator: MatPaginator){
+    super(sourceData);
+  }
+
+  connect(): Observable<CensoIndustrias[]> {
+
+    const displayDataChanges = [
+      this.sourceData,
+      this._paginator.page
+    ];
+
+    return merge(...displayDataChanges).pipe(
+        map(() => {
+          const data = this.sourceData.value.slice()
+
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          return data.splice(startIndex, this._paginator.pageSize);
+        })
+     );
+  }
+
+  disconnect() {}
+
+}
+

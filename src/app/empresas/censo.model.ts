@@ -1,3 +1,9 @@
+import { ArrayDataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+
+import { BehaviorSubject,  Observable, merge }       from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { devutils } from '../develar-commons/utils';
 import { Person, CoberturaData }  from '../entities/person/person';
 import { CardGraph } from '../develar-commons/asset-helper';
@@ -631,6 +637,23 @@ export class CensoPatentes {
 }
 
 
+export class CensoFollowUp {
+	isActive: boolean = true;
+
+	fe_inicio: string = '';
+	fets_inicio:    number = 0;
+
+	// asignados: Array<AsignadosSeguimiento> = [];
+	slug: string = 'Inicia seguimiento tutelado/a';
+
+	//Caso indice asignado a... 
+	isAsignado: boolean = false;
+	asignadoId: string = '';
+	asignadoSlug: string = ''
+
+}
+
+
 /**************************/
 /**   CENSO INDUSTRIAS  **/
 /************************/
@@ -669,6 +692,7 @@ export class CensoIndustrias {
     	assets: Array<CardGraph> = [];
 
 		censo: CensoData;
+		followUp: CensoFollowUp;
 
 
 };
@@ -691,12 +715,49 @@ export class CensoIndustriasTable {
 	fecomp:  string;
 	navance: string;
 
+	empresa: string;
 
 };
 
 export interface OptListToken {
 	val: string;
 	label: string;
+};
+
+export interface UpdateCensoEvent {
+	action: string;
+	type: string;
+	token: CensoIndustrias;
+};
+
+export class CensoListDataSource extends ArrayDataSource<CensoIndustrias> {
+
+	constructor(private sourceData: BehaviorSubject<CensoIndustrias[]>,
+				private _paginator: MatPaginator){
+	  super(sourceData);
+	}
+  
+	connect(): Observable<CensoIndustrias[]> {
+  
+	  const displayDataChanges = [
+		this.sourceData,
+		this._paginator.page
+	  ];
+  
+	  return merge(...displayDataChanges).pipe(
+		  map(() => {
+			const data = this.sourceData.value.slice()
+  
+			const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+			return data.splice(startIndex, this._paginator.pageSize);
+		  })
+	   );
+	}
+  
+	disconnect() {}
+  
   }
   
+  
+
 

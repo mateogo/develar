@@ -26,12 +26,12 @@
                             </div>
                         </div>
                     </div>
-                    <ng-container *ngIf='!view.value || view.value=="list"'>
+                    <ng-container *ngIf='view.value=="list"'>
                         <app-censo-industrial-table *ngIf="showData"></app-censo-industrial-table>
                     </ng-container>
         
-                    <ng-container *ngIf='view.value=="grid"'>
-                        <app-censo-industrial-table *ngIf="showData"></app-censo-industrial-table>
+                    <ng-container *ngIf='!view.value || view.value=="grid"'>
+                        <censo-industrial-grid *ngIf="showData"></censo-industrial-grid>
                     </ng-container>
         
                 </mat-card-content>

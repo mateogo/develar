@@ -1,1 +1,16 @@
-<p>censo-industrial-grid works!</p>
+<ng-container *ngIf="showGrid">
+	<div  *ngFor="let item of dataSource.connect()|async">
+
+			<censo-industrial-base [censo]="item"></censo-industrial-base>
+
+	</div>
+
+
+</ng-container>
+
+	<mat-paginator #paginator
+      [length]="itemsLength"
+      [pageIndex]="0"
+      [pageSize]="25"
+      [pageSizeOptions]="[5, 25, 50, 75, 100]">
+	</mat-paginator>

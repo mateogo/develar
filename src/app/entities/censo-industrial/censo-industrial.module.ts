@@ -9,6 +9,9 @@ import { CensoIndustrialBrowseComponent } from './censo-industrial-browse/censo-
 import { CensoIndustrialTableComponent } from './censo-industrial-table/censo-industrial-table.component';
 import { CensoPersonaBuscarComponent } from './censo-industrial-persona-buscar/censo-industrial-persona-buscar.component';
 import { CensoIndustrialGridComponent } from './censo-industrial-grid/censo-industrial-grid.component';
+import { CensoIndustrialBaseComponent } from './censo-industrial-base/censo-industrial-base.component';
+import { CensoIndustrialManageComponent } from './censo-industrial-manage/censo-industrial-manage.component';
+import { CensoFollowupComponent } from './zmodals/censo-followup/censo-followup.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { CensoIndustrialGridComponent } from './censo-industrial-grid/censo-indu
     CensoIndustrialBrowseComponent,
     CensoIndustrialTableComponent,
     CensoPersonaBuscarComponent,
-    CensoIndustrialGridComponent
+    CensoIndustrialGridComponent,
+    CensoIndustrialBaseComponent,
+    CensoIndustrialManageComponent,
+    CensoFollowupComponent
   ],
   imports: [
     CommonModule,

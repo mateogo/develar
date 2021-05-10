@@ -1,0 +1,33 @@
+$bgcolor-action-selectors: #f2eded;
+$color-togglebutton: #261565;
+
+
+
+$color-destacado: #0645f5;
+$color-button: #3c4e62;
+
+$bgcolor-sisa: #9298eb;
+$bgcolor-followup: #7e98eb;
+$bgcolor-covid: #6568ff;
+$bgcolor-laboratorio: #7eaceb;
+$bgcolor-vinculofam: #6568ff;
+$bgcolor-selectors: #d79e96;
+$bgcolor-closepanel: #d76e66;
+
+
+.panel-header-followup {
+	margin: 10px 0 0 0;
+	
+	.mat-button-toggle {
+		margin-right: 2px;
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .3);
+		color: $color-togglebutton;
+	}
+
+	.mat-button-toggle-checked {
+		max-height: 45px;
+		background-color: rgba($bgcolor-action-selectors, .7);
+		color: $color-togglebutton;
+	}
+}

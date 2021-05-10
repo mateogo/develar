@@ -4,7 +4,7 @@ import {
   CensoActividad,
   CensoBienes,
   Empresa,
-} from './censo.model';
+} from '../../empresas/censo.model';
 import { Serial } from '../../develar-commons/develar-entities';
 import { Person, DocumentData } from '../person/person';
 import { nomencladorList } from './nomenclador-data';
@@ -85,11 +85,12 @@ const estadosOptList = [
 ];
 
 const avanceOptList = [
-  { val: 'no_definido', label: 'Sin selección', slug: 'Sin selección' },
-  { val: 'enproceso', label: 'En proceso', slug: 'En proceso' },
-  { val: 'completado', label: 'Completado', slug: 'Completado' },
-  { val: 'emitido', label: 'Emitido', slug: 'Emitido' },
-  { val: 'cancelado', label: 'Cancelado', slug: 'Cancelado' },
+  { val: 'no_definido', color: 'danger',  label: 'Sin selección', slug: 'Sin selección' },
+  { val: 'emitido',     color: 'info',    label: 'Emitido',       slug: 'Emitido' },
+  { val: 'enproceso',   color: 'info',    label: 'En proceso',    slug: 'En proceso' },
+  { val: 'completado',  color: 'warning', label: 'Completado',    slug: 'Completado' },
+  { val: 'aprobado',    color: 'success', label: 'Aprobado',      slug: 'Aprobado' },
+  { val: 'cancelado',   color: 'black',   label: 'Cancelado',     slug: 'Cancelado' },
 ];
 
 const comprobantesOptList: Array<any> = [
@@ -540,6 +541,13 @@ const optionsLists = {
   competencia: competenciaTypeOptList,
 };
 
+function getToken(type, val, token) {
+  if(!val) return 'no_definido';
+  let t = optionsLists[type].find((item) => item.val === val);
+  return t ? t[token] : val;
+}
+
+
 function getLabel(list, val) {
   let t = list.find((item) => item.val === val);
   return t ? t.label : val;
@@ -611,6 +619,7 @@ export class CensoIndustriasHelper {
 
   static getActividadOptionLabel(val, type) {
     let label = 'No encontrado';
+    if(!val) return 'no informado';
 
     let token = fetchAction(val, type);
 
@@ -649,6 +658,10 @@ export class CensoIndustriasHelper {
   static getOptionLabelFromList(list, val) {
     if (!val) return 'no-definido';
     return getLabel(list, val);
+  }
+
+  static getOptionToken(type, val, token) {
+    return getToken(type, val, token);
   }
 
   static getOptionLabel(type, val) {
