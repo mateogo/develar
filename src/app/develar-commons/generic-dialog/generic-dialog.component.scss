@@ -1,0 +1,31 @@
+@import '../../../assets/sass/variable';
+:host {
+    border-radius: 0;
+    display: block;
+    // padding: 50px;
+    // width: 500px;
+    .mat-dialog-title {
+        font-family: 'Encode Sans';
+        font-weight: bold;
+        text-align: center;
+        font-size: 2em;
+    }
+    .mat-dialog-content {
+        color: #05BAED;
+        font-size: 1.4em;
+    }
+    .mat-flat-button {
+        border-radius: 0;
+        background-color: #01BBED;
+        color: #FFF;
+        font-size: 1.35em;
+        font-weight: bold;
+    }
+}
+
+@media #{$min768} {
+     :host {
+        padding: 50px;
+        width: 500px;
+    }
+}

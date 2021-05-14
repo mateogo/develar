@@ -363,16 +363,50 @@ const censoInversionesSch = new mongoose.Schema({
 
 
 });
-const censoFollowUpSch = new mongoose.Schema({
-	isActive:      { type: Boolean, required: false },
-	fe_inicio:     { type: String,  required: false },
-	fets_inicio:   { type: Number,  required: false },
-	slug:          { type: String,  required: false },
-	isAsignado:    { type: Boolean, required: false },
-	asignadoId:    { type: String,  required: false },
-	asignadoSlug:  { type: String,  required: false },
-})
 
+const auditSch = new mongoose.Schema({
+	userId:    { type: String, required: false },
+	username:  { type: String, required: false },
+	ts_alta:   { type: Number, required: false },
+
+});
+
+const censoFollowUpSch = new mongoose.Schema({
+    isActive:           { type: Boolean, required: false },
+    endingFollowUp:     { type: Boolean, required: false },
+    fe_inicio:          { type: String,  required: false },
+    fets_inicio:        { type: Number,  required: false },
+    slug:               { type: String,  required: false },
+    isAsignado:         { type: Boolean, required: false },
+    asignadoId:         { type: String,  required: false },
+    asignadoSlug:       { type: String,  required: false },
+    fe_ucontacto:       { type: String,  required: false },
+    fe_ullamado:        { type: String,  required: false },
+    qllamados:          { type: Number,  required: false },
+    qcontactos:         { type: Number,  required: false },
+    lastCall:           { type: String,  required: false },
+    qIntents:           { type: Number,  required: false },
+    avance:             { type: String,  required: false },
+    fase:               { type: String,  required: false },
+    fets_ucontacto:     { type: Number,  required: false },
+    fets_ullamado:      { type: Number,  required: false },
+    nuevollamadoOffset: { type: Number,  required: false },
+    fets_nextLlamado:   { type: Number,  required: false }, 
+});
+
+const censoFollowUpUpdateSch = new mongoose.Schema({
+    isActive:           { type: Boolean, required: false },
+    endingFollowUp:     { type: Boolean, required: false },
+    fe_llamado:         { type: String,  required: false },
+    resultado:          { type: String,  required: false },
+    avance:             { type: String,  required: false },
+    nuevollamadoOffset: { type: Number,  required: false },
+    slug:               { type: String,  required: false },
+    indicacion:         { type: String,  required: false },
+    fets_llamado:       { type: Number,  required: false },
+    audit:              { type: auditSch, required: false },
+
+});
 
 /**************************/
 /**   CENSO INDUSTRIAS  **/
@@ -393,6 +427,8 @@ const censoindustriaSch = new Schema({
     estado: { type: estadoCensoSch, required: false },
     censo: { type: censoDataSch, required: false },
     followUp: { type: censoFollowUpSch, required: false },
+
+    followUpdates: [ censoFollowUpUpdateSch ],
   
     actividades: [censoActividadSch],
     bienes:           [censoBienesSch],

@@ -14,6 +14,8 @@ import { CensoIndustrialManageComponent } from './censo-industrial-manage/censo-
 import { CensoFollowupComponent } from './zmodals/censo-followup/censo-followup.component';
 import { CensoVistaModalComponent } from './zmodals/censo-vista-modal/censo-vista-modal.component';
 import { CensoIndustrialViewComponent } from './censo-industrial-view/censo-industrial-view.component';
+import { CensoFollowupUpdateComponent } from './zmodals/censo-followup-update/censo-followup-update.component';
+import { CensoFollowupHistoryComponent } from './zmodals/censo-followup-history/censo-followup-history.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { CensoIndustrialViewComponent } from './censo-industrial-view/censo-indu
     CensoIndustrialManageComponent,
     CensoFollowupComponent,
     CensoVistaModalComponent,
-    CensoIndustrialViewComponent
+    CensoIndustrialViewComponent,
+    CensoFollowupUpdateComponent,
+    CensoFollowupHistoryComponent
   ],
   imports: [
     CommonModule,

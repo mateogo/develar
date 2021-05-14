@@ -519,6 +519,47 @@ const habilitacionOptList: Array<any> = [
   { val: 'habilitacion', label: 'Habilitación', slug: 'Habilitación' },
 ];
 
+/****
+ * FollowUp
+ */
+const avanceFollowUpOptList = [
+	{ val: 'contactado',    label: 'Inicio contacto'},
+	{ val: 'preliminares',  label: 'Preparación inicial'},
+	{ val: 'inicializo',    label: 'Proceso inicial'},
+	{ val: 'enproceso',     label: 'En proceso'},
+	{ val: 'completado',    label: 'Completado'},
+	{ val: 'cumplio',       label: 'Cumplido'},
+	{ val: 'baja',          label: 'Baja'},
+	{ val: 'suspendido',    label: 'Suspendido'},
+	{ val: 'demorado',      label: 'Demorado'},
+	{ val: 'sindato',       label: 'Sin dato'},
+	
+];
+
+const tipoSeguimientoAfectadoOptList = [
+	{ val: 'sospecha',  label: 'Sospecha'},
+	{ val: 'infectado', label: 'Confirmado'},
+	{ val: 'monitoreo', label: 'Monitoreo'},
+];
+
+const resultadoFollowUpOptList = [
+	{ val: 'logrado',      label: 'Logrado'},
+	{ val: 'nocontesta',   label: 'No contesta'},
+	{ val: 'notelefono',   label: 'Dato de contacto incorrecto'},
+];
+
+const offsetFollowUpOptList = [
+	{ val: 1,      label: 'Mañana'},
+	{ val: 2,      label: 'Pasado mañana'},
+	{ val: 3,      label: 'En 3 días'},
+	{ val: 4,      label: 'En 4 días'},
+	{ val: 5,      label: 'En 5 días'},
+	{ val: 6,      label: 'En 6 días'},
+	{ val: 7,      label: 'En 7 días'},
+	{ val: 10,     label: 'En 10 días'},
+];
+
+
 const optionsLists = {
   default: default_option_list,
   actions: actionOptList,
@@ -539,6 +580,9 @@ const optionsLists = {
   documentos: tipoDocumentosOptList,
   habilitacion: habilitacionOptList,
   competencia: competenciaTypeOptList,
+  avanceFwUp: avanceFollowUpOptList,
+  resultadoFwUp: resultadoFollowUpOptList,
+  offsetFwUp: offsetFollowUpOptList,
 };
 
 function getToken(type, val, token) {

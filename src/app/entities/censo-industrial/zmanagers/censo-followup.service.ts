@@ -20,8 +20,11 @@ import {  CensoBienes,
 
   import { CensoIndustriasQuery } from '../censo.model';
 
-  import { CensoFollowupComponent } from '../zmodals/censo-followup/censo-followup.component';
-  import { CensoVistaModalComponent } from '../zmodals/censo-vista-modal/censo-vista-modal.component';
+  import { CensoFollowupComponent }        from '../zmodals/censo-followup/censo-followup.component';
+  import { CensoFollowupUpdateComponent }  from '../zmodals/censo-followup-update/censo-followup-update.component';
+  import { CensoFollowupHistoryComponent } from '../zmodals/censo-followup-history/censo-followup-history.component';
+  
+  import { CensoVistaModalComponent }      from '../zmodals/censo-vista-modal/censo-vista-modal.component';
   
  
 const ROLE_ADMIN =    'vigilancia:admin';
@@ -100,8 +103,10 @@ export class FollowUpEsquemaModalService {
    * DISPATCHER
   */
    private openModalDialog(censo: CensoIndustrias, target?: string){
-    if(target === 'seguimiento') this.followUpDialog(censo);
-    if(target === 'vista')       this.vistaDialog(censo);
+    if(target === 'seguimiento')     this.followUpDialog(censo);
+    if(target === 'followupdate')    this.followUpdateDialog(censo);
+    if(target === 'followhistory')   this.followHistoryDialog(censo);
+    if(target === 'vista')           this.vistaDialog(censo);
 
   }
 
@@ -128,7 +133,53 @@ export class FollowUpEsquemaModalService {
   }
 
   /** 
-   * SEGUIMIENTO
+   * FOLLOW-UP UPDATE
+  */
+     private followUpdateDialog(censo: CensoIndustrias){
+      const dialogRef = this.dialog.open(
+        CensoFollowupUpdateComponent,
+        {
+          width: '800px',
+          data: {
+            censo: censo,
+          }
+        }
+      );
+  
+      dialogRef.afterClosed().subscribe((res: UpdateCensoEvent) => {
+          if(res) this.dialogResult$.next(res);
+          else this._fireCancel();
+      });    
+  
+    }
+  
+  /** 
+   * FOLLOW-UP HISTORY
+  */
+   private followHistoryDialog(censo: CensoIndustrias){
+    const dialogRef = this.dialog.open(
+      CensoFollowupHistoryComponent,
+      {
+        width: '800px',
+        height: '70vh',
+        data: {
+          censo: censo,
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateCensoEvent) => {
+        if(res) this.dialogResult$.next(res);
+        else this._fireCancel();
+    });    
+
+  }
+
+
+
+
+    /** 
+   * VISTA DETALLADA
   */
   private vistaDialog(censo: CensoIndustrias){
     console.log('ready to open dialog')

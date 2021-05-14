@@ -22,7 +22,7 @@ export class CensoIndustrialBaseComponent implements OnInit {
   public showCesnoManage = true;
 
   constructor(
-    private fupEsquema: FollowUpEsquemaModalService,
+    private fupService: FollowUpEsquemaModalService,
 
   ) { }
 
@@ -36,12 +36,14 @@ export class CensoIndustrialBaseComponent implements OnInit {
 
   private manageModalEditors(token: string){
     if(token === 'seguimiento')        this.openSeguimientoModal(token);
+    if(token === 'followupdate')       this.openSeguimientoModal(token);
+    if(token === 'followhistory')      this.openSeguimientoModal(token);
     if(token === 'vista')              this.openVistaModal(token);
   }
 
   private openSeguimientoModal(target: string){
 
-		this.fupEsquema.openDialog(this.censo, target).subscribe(editEvent =>{
+		this.fupService.openDialog(this.censo, target).subscribe(editEvent =>{
 			if(editEvent.action === UPDATE){
         this.censo = editEvent.token;
         this._manageAsistenciaView();				
@@ -57,7 +59,7 @@ export class CensoIndustrialBaseComponent implements OnInit {
   }
 
   private openVistaModal(target: string){
-		this.fupEsquema.openDialog(this.censo, target).subscribe(editEvent =>{
+		this.fupService.openDialog(this.censo, target).subscribe(editEvent =>{
       //
 
 		})

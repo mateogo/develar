@@ -103,7 +103,7 @@ export class CensoPageComponent implements OnInit {
   public censoAltaTxt = "INICIE EL CENSO AQUÍ";
   public censoBajada = "CENSO EMPRESARIAL 2021";
 
-  public censoEditHeaderTxt = "Edición de datos Básicos";
+  public censoEditHeaderTxt = "Edición de datos básicos";
   private currentIndustry: Person;
   public actividadesOptList = [];
 

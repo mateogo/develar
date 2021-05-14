@@ -1,0 +1,86 @@
+@import '../../../../../assets/sass/variable';
+$color-destacado: #0645f5;
+$color-button: #3c4e62;
+.view-port {
+	max-height: 500px;
+}
+.panel-header{
+		background-color: #f2eded;
+}
+
+.panel-header-text {
+		margin: 0 0 0 15px;
+		font-weight: 700;
+		font-size: 1.2rem;
+}
+
+.panel-header-control {
+		margin: 15px 0 15px 0;
+}
+
+.mat-button-toggle {
+	max-height: 45px;
+	background-color: #f2eded;
+	color: $color-destacado;
+}
+.mat-button-toggle-checked {
+	max-height: 45px;
+	background-color: #c2adad;
+	color: $color-button;
+}
+
+.novedades-container {
+		margin: 10px 0 15px 15px;
+		padding: 5px;
+
+}
+
+.text-destacado {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: 1.5rem;
+		color: $color-destacado;
+		font-style: italic;
+
+}
+
+.text-resaltado {
+		margin: 0 0 0 0;
+		font-weight: 700;
+		font-size: 1.2rem;
+
+}
+
+.text-normal {
+		margin: 5px 0 0 0;
+		font-weight: 400;
+		font-size: 1.2rem;
+		line-height: .8;
+}
+
+.text-audit {
+		margin: 0 0 0 0;
+		font-weight: 400;
+		font-size: .8rem;
+}
+
+.button-action {
+		margin: 0 15px 5px 0;
+		color: #ffffff;
+		width: 250px;
+		height: 50px;
+		background-color: $color-button;
+		font-weight: 700;
+		font-size: 1.2rem;
+		font-style: italic;
+
+}
+
+.badge-style {
+	margin-right: 25px;
+	margin-top: 7px;
+  font-size: 1.2rem;
+  font-family: $main-ff;
+  line-height: $main-lh;
+}
+

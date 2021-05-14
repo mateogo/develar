@@ -639,6 +639,7 @@ export class CensoPatentes {
 
 export class CensoFollowUp {
 	isActive: boolean = true;
+	endingFollowUp: boolean = false; // no se le hace más seguimiento 
 
 	fe_inicio: string = '';
 	fets_inicio:    number = 0;
@@ -651,7 +652,54 @@ export class CensoFollowUp {
 	asignadoId: string = '';
 	asignadoSlug: string = ''
 
+
+	fe_ucontacto: string = '';
+	fe_ullamado: string = '';
+
+	qllamados: number = 0;   // llamados totales
+	qcontactos: number = 0; // llamados con respuesta del afectado
+
+	lastCall: string = 'logrado';// resultadoSeguimientoOptList 'pendiente|logrado|nocontesta'
+	qIntents: number = 0;
+
+	//tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList
+	avance: string = 'sindato'; //sintomaOptList
+	fase: string = 'fase0' //faseAfectadoOptList
+
+
+	fets_ucontacto: number = 0;
+	fets_ullamado:  number = 0;
+	nuevollamadoOffset: number = 0;
+	fets_nextLlamado: number = 0;
+
+
 }
+
+
+export class CensoFollowUpUpdate {
+	isActive: boolean = false;
+	endingFollowUp: boolean = false; // no se le hace más seguimiento 
+
+	fe_llamado: string = '';
+	resultado: string = ''; // resultadoFollowUpOptList
+	avance: string = ''; // avanceFollowUpOptList
+	//tipo: string = 'sospecha'; //tipoSeguimientoAfectadoOptList esquemas de llamados, si hubiera
+	nuevollamadoOffset: number = 0;  // offsetFollowUpOptList
+	
+
+	slug: string = ''; // mensaje o comentario del contactado
+	indicacion: string = ''; // mensaje indicacion del censista
+
+	fets_llamado: number = 0;
+	audit: Audit;
+
+}
+
+export class Audit {
+	userId:      string;
+	username:    string;
+	ts_alta: number;
+};
 
 
 /**************************/
@@ -693,6 +741,7 @@ export class CensoIndustrias {
 
 		censo: CensoData;
 		followUp: CensoFollowUp;
+		followUpdates: Array<CensoFollowUpUpdate>;
 
 
 };

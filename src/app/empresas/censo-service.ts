@@ -1,3 +1,5 @@
+import { BehaviorSubject }       from 'rxjs';
+
 import {    CensoIndustrias,
             CensoIndustriasTable,
             CensoActividad,
@@ -69,6 +71,8 @@ function fetchAction(val, type){
 
 
 export class CensoIndustriasService {
+	static closable$ = new BehaviorSubject<boolean>(false);
+
 	static getSectionOptList(){
 		let list = nomencladorList.filter(t => t.isSeccion === 1);
 		return list;
@@ -295,6 +299,35 @@ export class CensoIndustriasService {
 
         return planes;
     }
+	static checkIfClosable(censo: CensoIndustrias): boolean{
+		let isNotClosable = false;
+		let isCompleted = true;
+		let tokens = ['actividades', 'bienes', 'productos', 'maquinarias', 'patentes', 'maquinarias', 'comercializacion', 'inversiones', 'rhumanos', 'expectativas'];
+
+		// si ya fue cerrado, puede entrar a re-abrirlo		
+		if(censo.estado.estado === 'completado') return isCompleted; // ya fue cerrado
+
+		let minimum = tokens.reduce((check, t)=> {
+			//console.log('Reduce: [%s]  [%s]' , t, check && (censo[t] && censo[t].length))
+
+			return check && (censo[t] && censo[t].length);
+		}, true);
+
+		if(minimum) return isCompleted;
+
+		return isNotClosable;
+	}
+
+	static emitIfClosable(censo: CensoIndustrias){
+		if(this.checkIfClosable(censo)){
+			console.log('NOP')
+			this.closable$.next(true);
+		}else {
+			console.log('SIP')
+			this.closable$.next(false);
+		}
+
+	}
 
 
 	static sumMercadeo(mercados: Array<Mercado>): MercadoSumario{
@@ -492,6 +525,7 @@ const estadosOptList = [
       {val: 'no_definido', label: 'Sin selección',  slug:'Seleccione opción' },
       {val: 'activo',      label: 'Activo',      slug:'Activo' },
       {val: 'cerrado',     label: 'Cerrado',     slug:'Cerrado' },
+      {val: 'completado',  label: 'Completado',     slug:'Completado' },
       {val: 'suspendido',  label: 'Suspendido',  slug:'Suspendido' },
       {val: 'baja',        label: 'Baja',        slug:'Baja' },
 ]

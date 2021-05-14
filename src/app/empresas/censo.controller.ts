@@ -193,6 +193,12 @@ export class CensoIndustriasController {
   	})
   }
 
+  closeCenso(censo: CensoIndustrias){
+    censo.estado.estado = 'completado';
+    censo.estado.navance = 'completado';
+    return this.partialUpdateCenso(censo);
+  }
+
 
   fetchActiveCensoFromOrganisation(organisationId){
   	let query = {
@@ -303,6 +309,17 @@ export class CensoIndustriasController {
     } as Audit
   }
 
+  buildAuditData(){
+    let userx = this.userService.currentUser;
+    if(! userx) return null;
+
+    return {
+        userId:   userx.id,
+        username: userx.username,
+        ts_alta:  Date.now()
+    }
+  }
+ 
   parentEntity(censo: CensoIndustrias): ParentEntity {
   	if(!censo) return null;
   	let pentity = {

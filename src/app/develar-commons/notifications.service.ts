@@ -1,5 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { GenericDialogComponent } from '../develar-commons/generic-dialog/generic-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,8 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 export class NotificationService {
   constructor(
     private readonly snackBar: MatSnackBar,
+    private dialogService: MatDialog,
+
     private readonly zone: NgZone
   ) {}
 
@@ -44,6 +48,11 @@ export class NotificationService {
       duration: 3000,
       panelClass: 'error-notification-overlay'
     });
+  }
+
+  openModalDialog(config) {
+    let dialogRef = this.dialogService.open(GenericDialogComponent, config);
+    return dialogRef.afterClosed()
   }
 
   private show(message: string, configuration: MatSnackBarConfig) {

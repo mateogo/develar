@@ -1,18 +1,16 @@
 <h2 mat-dialog-title>{{data.caption}}</h2>
 
-<mat-dialog-content>
-	<div *ngIf="!headerTemplate">
-		<h6>{{data.title}}</h6> 
-		<p innerHtml='{{data.body}}'></p>
-	</div>
+<mat-dialog-content class="text-center">
+    <div *ngIf="!headerTemplate">
+        <h6>{{data.title}}</h6>
+        <p innerHtml='{{data.body}}'></p>
+    </div>
 
-	<ng-container *ngTemplateOutlet="headerTemplate" ></ng-container>
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
-	<button *ngIf='hasAccept' mat-raised-button color="primary"
-			[mat-dialog-close]='data.accept.action'  >{{data.accept.label}}</button>
-	<button *ngIf='hasCancel' mat-raised-button color="accent" 
-	  	mat-dialog-close >{{data.cancel.label}} </button>
+<mat-dialog-actions class="justify-content-center mb-0 p-0 mt-5">
+    <button *ngIf='hasAccept' mat-flat-button color="primary" [mat-dialog-close]='data.accept.action'>{{data.accept.label}}</button>
+    <button *ngIf='hasCancel' mat-flat-button color="accent" mat-dialog-close>{{data.cancel.label}} </button>
 </mat-dialog-actions>

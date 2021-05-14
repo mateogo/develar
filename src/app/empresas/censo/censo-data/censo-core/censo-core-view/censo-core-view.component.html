@@ -6,8 +6,15 @@
  			<p class='text-normal'>{{ codigo }} </p>
 
  			<p class='text-normal'>
- 				<strong>{{ slug }}</strong>
+				<strong>{{ slug }}</strong>
  			</p>
+			 <ng-container *ngIf="closable$ | async ">
+				<div class="close-block">
+					<button mat-raised-button color="primary" 
+							(click)="closeCenso()" >Cerrar CENSO</button>
+				  </div>
+			  
+			 </ng-container>
  		</div>
 	</div>
 </div>

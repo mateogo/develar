@@ -47,7 +47,7 @@ export class CensoMaquinariasEditComponent implements OnInit {
   public competenciaTypeOptList = CensoIndustriasService.getOptionlist('competencia');
 
   public title = "Maquinaria, recursos informáticos y tecnológicos ";
-  public texto1 = "Ingrese la información de cada activo por separado, agregando bloques según sea necesario.";
+  public texto1 = "Informe las principales líneas de producción o máquinas o recursos tecnológicos que sean significativos o constituyan un factor de innovación o diferenciación estratégica. Puede ingresar hasta 5 (cinco) ítems, pulsando el '+' de la barra superior del bloque.";
   public texto2: string;
 
   private unBindList = [];

@@ -1,0 +1,120 @@
+<div class="container-fluid p-0">
+	<form [formGroup]="form">
+
+	<div class="row">
+	    <div  class="col">
+				<mat-checkbox 
+					[checked]="form.controls['isActive'].value===true"
+					[formControl]="form.controls['isActive']" >
+					Seguimiento activo vigente </mat-checkbox>
+			</div>
+			<div  class="col">
+				<p class="text-resaltado" >{{ displayAs }}</p>
+			</div>
+	</div>
+	
+	<div class="row">
+	    <div  class="col">
+	        <mat-form-field>
+	          <input  matInput [formControl]="form.controls['fe_llamado']" placeholder="Fecha contacto" >
+	        </mat-form-field>
+	    </div>
+		<div class="col" style="text-align: center;">
+			<mat-form-field>
+				<mat-label>Resultado del contacto</mat-label>
+				<mat-select #fldResultado  formControlName='resultado'
+										(selectionChange)="changeSelectionValue('resultado', fldResultado.value)">
+
+				    <mat-optgroup [disabled]="!resultadoFwUp.length" [label]="'Resultado del llamado'">
+				        <mat-option *ngFor="let resultado of resultadoFwUp" [value]="resultado.val">
+				            {{ resultado.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col">
+			<mat-form-field>
+				<mat-label>Avance</mat-label>
+				<mat-select #fldAvance  formControlName='avance' 
+										(selectionChange)="changeSelectionValue('avance', fldAvance.value)">
+
+				    <mat-optgroup [disabled]="!avanceFwUp.length" [label]="'Síntoma'">
+				        <mat-option *ngFor="let item of avanceFwUp" [value]="item.val">
+				            {{ item.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div class="row">
+		<div  class="col">
+		    <mat-form-field>
+		      <input  matInput [formControl]="form.controls['slug']"  
+		      				 placeholder="Comentarios recibido del contactado" >
+		    </mat-form-field>
+		</div>
+	</div>
+
+    <div class="row">
+		<div  class="col">
+		    <mat-form-field>
+		      <input  matInput [formControl]="form.controls['indicacion']" 
+		      				placeholder="Indicaciones y observaciones dadas" >
+		    </mat-form-field>
+		</div>
+	</div>
+	<hr>
+
+	<div class="row">
+	    <div  class="col">
+					<mat-checkbox 
+						[checked]="form.controls['endingFollowUp'].value===true"
+						[formControl]="form.controls['endingFollowUp']" >
+						FINALIZAR SEGUIMIENTO</mat-checkbox>
+			</div>
+			<div  class="col">
+					<button mat-raised-button color="accent" 
+							(click)="finalizarFollowUp()"
+							[disabled]="!form.valid || 
+														formClosed || 
+														!form.controls['endingFollowUp'].value !== followUpdate.endingFollowUp">
+													CONFIRMAR ACCIÓN</button>
+			</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6" style="text-align: center;">
+			<mat-form-field>
+				<mat-label>Agendar próximo contacto para dentro de...</mat-label>
+				<mat-select #fldOffsetLlamado  formControlName='nuevollamadoOffset'
+										(selectionChange)="changeSelectionValue('resultado', fldOffsetLlamado.value)">
+
+				    <mat-optgroup [disabled]="!offsetFwUp.length" [label]="'nuevo llamado en...'">
+				        <mat-option *ngFor="let resultado of offsetFwUp" [value]="resultado.val">
+				            {{ resultado.label }} 
+				        </mat-option>
+				    </mat-optgroup>
+
+				</mat-select>
+			</mat-form-field>
+		</div>
+
+	</div>
+
+	<div class="d-md-flex justify-content-start">
+		<button mat-raised-button color="primary" class='m-1'
+				[disabled]="!form.valid || formClosed"
+				(click)="onSubmit()">
+		    Confirmar </button>
+		<button mat-raised-button color="warn"   class='m-1'
+				(click)="onCancel()">
+		    Cancelar </button>
+
+	</div>
+  
+	</form>
+</div>
