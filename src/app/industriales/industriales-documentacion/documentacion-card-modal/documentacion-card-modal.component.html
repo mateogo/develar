@@ -9,7 +9,7 @@
                         </div>
                         <ng-container *ngIf="asset.mimetype === 'application/pdf'">
                         <div class="col-12">
-                            <pdf-viewer [src]="url" [textLayer]="true" height="80vh"></pdf-viewer>
+                            <pdf-viewer [src]="url" [render-text]="true" height="80vh"></pdf-viewer>
                         </div>
                         </ng-container>
                     </div>

@@ -90,6 +90,13 @@ export class CensoMaquinariasEditComponent implements OnInit {
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
 
+  deleteToken(){
+  	// this.action = DELETE;
+  	// this.emitEvent(this.action);
+
+  }
+
+
   private initComponent(){
     this.form = this.buildForm();
     this.initForEdit(this.form, this.token);

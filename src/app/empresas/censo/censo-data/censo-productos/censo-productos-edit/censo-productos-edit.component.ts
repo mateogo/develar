@@ -77,6 +77,12 @@ export class CensoProductosEditComponent implements OnInit {
     this.unBindList.forEach(x => {x.unsubscribe()});
   }
 
+  deleteToken(){
+  	// this.action = DELETE;
+  	// this.emitEvent(this.action);
+
+  }
+
 
 
   ngOnInit() {

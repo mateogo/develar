@@ -106,10 +106,10 @@ export class UserWebFormRegistroEditComponent implements OnInit {
         Validators.maxLength(15)], 
       ],
 
-      numTramite: [
-        this.isEdit ? this.usuario.numTramite : '',
-        Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(11), Validators.maxLength(11), Validators.required]),
-      ],
+      // numTramite: [
+      //   this.isEdit ? this.usuario.numTramite : '',
+      //   Validators.compose([Validators.pattern('[0-9]+'), Validators.minLength(11), Validators.maxLength(11), Validators.required]),
+      // ],
       fechaNacimiento: [this.isEdit ? new Date(this.usuario.fechaNacimiento) : '', Validators.required],
       telefono: [
         this.isEdit ? this.usuario.telefono : '',
@@ -142,7 +142,7 @@ export class UserWebFormRegistroEditComponent implements OnInit {
     this.form.get('tipoDoc').disable();
     this.form.get('ndoc').disable();
     this.form.get('ndoc').clearAsyncValidators();
-    this.form.get('numTramite').disable();
+    //this.form.get('numTramite').disable();
     this.showForm = true;
   }
 

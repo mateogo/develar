@@ -1020,6 +1020,7 @@ const ciudadesBrown = [
     { val: 'ministrorivadavia', cp: '1852', label: 'Ministro Rivadavia', brown: 'rivadavia' },
     { val: 'solano', cp: '1846', label: 'San Fco Solano', brown: 'solano' },
     { val: 'sanjose', cp: '1846', label: 'San José', brown: 'san jos' },
+    { val: 'almirantebrown', cp:'0000', label: 'Almirante Brown ',  brown: 'almirantebrown' }
 ];
 
 const ciudadesTalimentar = [
@@ -1036,6 +1037,7 @@ const ciudadesTalimentar = [
     { val: 'ministrorivadavia', cp: '1852', label: 'Ministro Rivadavia', brown: 'rivadavia' },
     { val: 'solano', cp: '1846', label: 'San Fco Solano', brown: 'solano' },
     { val: 'sanjose', cp: '1846', label: 'San José', brown: 'san jos' },
+    { val: 'almirantebrown', cp:'0000', label: 'Almirante Brown ',  brown: 'almirantebrown' }
 ];
 
 

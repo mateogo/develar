@@ -88,6 +88,7 @@ const ciudadesBrown = [
     {val: 'ministrorivadavia',   cp:'1852', label: 'Ministro Rivadavia',slug:'Ministro Rivadavia' },
     {val: 'solano',              cp:'1846', label: 'San Fco Solano',   slug:'San Fco Solano' },
     {val: 'sanjose',             cp:'1846', label: 'San José',   slug:'San José' },
+    {val: 'almirantebrown',      cp:'0000', label: 'Almirante Brown ',    slug: 'Almirante Brown' },// adrogue no tiene caps
     {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',   slug:'Fuera del Municipio de Brown' },
 ];
 

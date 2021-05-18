@@ -136,6 +136,12 @@ export class CensoActividadEditComponent implements OnInit {
   	this.emitEvent(this.action);
   }
 
+  deleteToken(){
+  	// this.action = DELETE;
+  	// this.emitEvent(this.action);
+
+  }
+
 
   private emitEvent(action:string){
   	this.updateToken.next({

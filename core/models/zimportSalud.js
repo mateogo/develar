@@ -101,7 +101,7 @@ function _processSisaArchive(req, errcb, cb, userMap){
 
 	//c onsole.log('ATENCIÓN: ESTÁ EN LOCAL MODE')
     // local
-    //const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
+    // const arch = path.join(config.rootPath,        'public/migracion/sisa/personasImportCsv.csv');
 
     function toLowerCase(name){
         return name.toLowerCase();
@@ -1056,6 +1056,7 @@ const ciudadesBrown = [
     {val: 'solano',              cp:'1846', label: 'San Fco Solano',     sisa: 'San Francisco Solano' },
     {val: 'sanjose',             cp:'1846', label: 'San José',           sisa: 'San José' },
     {val: 'sindato',             cp:'0000', label: 'Sin dato',           sisa: 'En Investigacion', },
+    {val: 'almirantebrown',      cp:'0000', label: 'Almirante Brown ',   sisa: 'Almirante Brown' },// adrogue no tiene caps
     {val: 'extradistrito',       cp:'0000', label: 'Extra distrito',     sisa: '', },
 ];
 

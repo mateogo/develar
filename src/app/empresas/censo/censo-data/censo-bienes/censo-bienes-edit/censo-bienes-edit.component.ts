@@ -91,7 +91,11 @@ export class CensoBienesEditComponent implements OnInit {
   showHelp(event : MouseEvent, key : string){
     this._onlineHelpService.showOnlineHelp(this.codigo[key]);
   }
+  
+  deleteToken(){
 
+  }
+  
   private initComponent(){
     this.form = this.buildForm();
     this.initForEdit(this.form, this.token);

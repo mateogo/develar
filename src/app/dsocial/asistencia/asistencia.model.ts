@@ -742,6 +742,7 @@ const ciudadesBrown: Array<any> = [
     {val: 'marmol',              label: 'José Mármol',        slug:'José Mármol' },
     {val: 'ministrorivadavia',   label: 'Ministro Rivadavia', slug:'Ministro Rivadavia' },
     {val: 'sanjose',             label: 'San José',           slug:'San José' },
+    {val: 'almirantebrown',      label: 'Almirante Brown ',   slug: 'Almirante Brown' },// adrogue no tiene caps
     {val: 'extradistrito',       label: 'Extra distrito',     slug:'Fuera del Municipio de Brown' },
 ];
 

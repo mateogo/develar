@@ -109,6 +109,10 @@ export class CensoInversionEditComponent implements OnInit {
     return {}
   }
 
+  deleteToken(){
+    
+  }
+
   /***** Template Helpers ******/
   tableColStyle(tipoCol: string){
     if(true){
