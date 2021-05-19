@@ -39,7 +39,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  -  21.05.18-10:49',
+		copyright: '©2021 DGTS@modernización - Secretaría General - Secretaría de Salud - Almirante Brown  -  21.05.19-14:57',
 		version: '1.0 beta',
 		url: 'salud.brown.gob.ar'
 	},

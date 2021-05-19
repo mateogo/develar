@@ -4,6 +4,9 @@
  * Module dependencies.
  * usage: DEVELOPMENT: 
  * DEBUG=develar:server PORT=8080 NODE_ENV=development DBASE=saludmab SERVER=http://develar-local.co PUBLIC=/public node core/services/panicScript
+ * 
+ * usage: PRODUCTION: SALUD
+ * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
  */
 
  const config = require('../config/config')
