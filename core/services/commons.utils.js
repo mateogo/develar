@@ -393,6 +393,53 @@ exports.between = function(min, max) {
     )
 }
 
+exports.dateToNumPlusOne = function(dateRefTxt){
+    let fecha =  this.parseDateStr(dateRefTxt);
+    if(fecha) {
+        fecha.setDate(fecha.getDate() + 1);
+        return fecha.getTime();
+    }
+    else return 0;
+
+}
+
+// si plus_day === 0, entonces devuelve la fecha de fin de mes, acorde al mes computado.
+// si plus_day !== 0, entonces la suma, a modo de corrimiento, respecto del día actual.
+exports.getProjectedDate = function (dateRef, plus_day, plus_month){
+    if(!dateRef) return null;
+    plus_day = plus_day || 0;
+    plus_month = plus_month || 0;
+
+    if(plus_day) {
+        dateRef.setMonth(dateRef.getMonth() + plus_month, dateRef.getDate() + plus_day);
+
+    }else {
+        dateRef.setMonth(dateRef.getMonth() + plus_month, 0);
+
+    }
+    return dateRef;
+}
+
+exports.getProjectedDateNum = function (dateRef, plus_day, plus_month){
+    let date = this.getProjectedDate(dateref, plus_day, plus_month)
+    return date ? date.getTime() : 0 ;
+}
+
+exports.txFromDateTime = function(time){
+    return this.dateToStr(new Date(time));
+}
+
+exports.dateTxList = function(dateNum, qitems){
+    let dateList = [];
+    let date = new Date(dateNum);
+    let day = date.getDate();
+
+    for(let index = 0; index <= qitems; index++){
+        date.setDate( day + index);
+        dateList.push(this.dateToStr(date));
+    }
+    return dateList;
+}
 
 
 /* For a given date, get the ISO week number
