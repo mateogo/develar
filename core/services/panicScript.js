@@ -50,7 +50,7 @@
  * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
  */
 function computeUserWorkLoad(){
-  let feref = "20/05/2021"
+  let feref = "19/05/2021"
   let dateFrame = _buildDateFrame(feref);
   _loadAsistencias(dateFrame).then(asistencias => {
     console.log('asistencias: [%s]', asistencias && asistencias.length);
@@ -88,7 +88,6 @@ function _showSample(asis){
 
 function buildUserMapping(asisMapping){
   let umap = new Map();
-  console.log('MAP INIT: mapSize: [%s]', umap.size);
 
   asisMapping.forEach(asis => {
     let asignado = (asis.isAsignado && asis.asignadoId) || 'no_asignado';
@@ -101,14 +100,12 @@ function buildUserMapping(asisMapping){
       token.qcasosSinTel += asis.hasTelefono ? 0 : 1;
       token.qcasosConTel += asis.hasTelefono ? 1 : 0;
       token.qActualState[asis.actualState] += 1;
-      console.log('UPDATE TOKEN: mapSize: [%s]', umap.size);
 
       
     }else {
       let token = new MappedUser(asis);
 
       umap.set(asignado, token);
-      console.log('NEW TOKEN: mapSize: [%s]', umap.size);
 
     }
   
@@ -128,17 +125,16 @@ class MappedUser {
   qcasos = 1;
   qcasosSinTel = 0;
   qcasosConTel = 0;
-  qActualState = [0, 0, 0, 0, 0, 0];
+  qActualState = [0, 0, 0, 0, 0, 0, 0, 0];
 
   constructor(asis){
-    if(!asis) console.log('****************** Asistencia undefined');
     this.asignadoId = asis.asignadoId;
     this.asignadoSlug = asis.asignadoSlug;
     this.qInvestigacion = asis.hasInvestigacion ? 1 : 0;
     this.qllamados = asis.qllamados;
     this.qcontactos = asis.qcontactos;
     this.qcasosSinTel = asis.hasTelefono ? 0 : 1;
-    this.qcasosConTel = asis.hasTelefono ? 1 : 0;
+    this.qcasosConTel = asis.hasTelefono ? 1 : 0;    
     this.qActualState[asis.actualState] = 1;
 
   }
@@ -172,7 +168,7 @@ class MappedAsis {
   qllamados = 0;
   qcontactos = 0;
   fUpSlug; 
-  actualState;
+  actualState = 7;
   hasInvestigacion = false;
   city;
 
