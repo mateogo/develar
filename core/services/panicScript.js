@@ -58,7 +58,7 @@ function computeUserWorkLoad(){
       processWorkLoad(dateFrame, asistencias);
 
     }else {
-      console.load('todo: no hay asistencias para el períoodo')
+      console.log('todo: no hay asistencias para el períoodo')
     }
   });
 }

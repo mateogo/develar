@@ -491,6 +491,7 @@ const estadoActualAfectadoOptList = [
 	{ val: 4, label: 'FALLECIDO'},
 	{ val: 5, label: 'DE ALTA'},
 	{ val: 6, label: 'EN MONITOREO'},
+	{ val: 7, label: 'SIN DATO'},
 ];
 
 const estadoActualTableroOptList = [

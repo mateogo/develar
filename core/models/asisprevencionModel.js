@@ -1158,6 +1158,235 @@ exports.updateAsistenciaFromPerson = function(asistencia){
 }
 
 
+ /*************************************************************************************
+ * computeUserWorkLoad: usado en mayo-2021 para evaluar la carga de trabajo del usuario
+ * usage: DEVELOPMENT: 
+ * localhost:8080/api/asisprevencion/workload
+ * 
+ * PANIC SCRIPT
+ * usage: DEVELOPMENT: 
+ * DEBUG=develar:server PORT=8080 NODE_ENV=development DBASE=saludmab SERVER=http://develar-local.co PUBLIC=/public node core/services/panicScript
+ * 
+ * usage: PRODUCTION: SALUD
+ * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
+ */
+  exports.userWorkload = computeUserWorkLoad;
+
+ function computeUserWorkLoad(query, errcb, cb){
+  console.log('computeUserWorkLoad EPIDEMIO MODEL BEGIN')
+
+  query = query || {}; 
+  //let feref = query.feref ? query.feref : utils.dateToStr(new Date());
+
+  let feref = "19/05/2021";
+  let dateFrame = _buildDateFrame(feref);
+
+  _loadAsistencias(dateFrame).then(asistencias => {
+    console.log('computeUserWorkLoad: asistencias: [%s]', asistencias && asistencias.length);
+    if(asistencias && asistencias.length){
+
+      processWorkLoad(dateFrame, asistencias, cb);
+
+    }else {
+      console.log('todo: no hay asistencias para el períoodo');
+      cb({})
+    }
+  });
+}
+
+function processWorkLoad(datef, asistencias, cb){
+
+  let asisMapping = asistencias.map(asis => asisMapFunction(asis))
+
+  let userMapping = buildUserMapping(asisMapping);
+  //console.dir(userMapping);
+  let returnData = buildReturnData(datef, asisMapping, userMapping);
+  cb(returnData);
+
+
+  //_showSample(asisMapping);
+
+}
+
+function buildReturnData(datef, asisMapping, userMapping){
+  let returnData = {
+    casos: asisMapping,
+    usuarios:  Array.from(userMapping),
+    dataframe: datef
+  }
+  return returnData;
+
+}
+
+function asisMapFunction(asis){
+  return new MappedAsis(asis)
+}
+
+function _showSample(asis){
+  let sample = asis.find(t => t.ndoc === '36286721')
+  console.dir(sample);
+}
+
+function buildUserMapping(asisMapping){
+  let umap = new Map();
+
+  asisMapping.forEach(asis => {
+    let asignado = (asis.isAsignado && asis.asignadoId) || 'no_asignado';
+    if(umap.has(asignado)){
+      let token = umap.get(asignado);
+      token.qInvestigacion += asis.hasInvestigacion ? 1 : 0;
+      token.qllamados += asis.qllamados;
+      token.qcontactos += asis.qcontactos;
+      token.qcasos += 1;
+      token.qcasosSinTel += asis.hasTelefono ? 0 : 1;
+      token.qcasosConTel += asis.hasTelefono ? 1 : 0;
+      token.qActualState[asis.actualState] += 1;
+
+      
+    }else {
+      let token = new MappedUser(asis);
+
+      umap.set(asignado, token);
+
+    }
+  
+
+  })
+
+  return umap;
+}
+
+class MappedUser {
+  asignadoId;
+  asignadoSlug;
+  qInvestigacion = 0;
+  qllamados = 0;
+  qcontactos = 0;
+
+  qcasos = 1;
+  qcasosSinTel = 0;
+  qcasosConTel = 0;
+  qActualState = [0, 0, 0, 0, 0, 0, 0, 0];
+
+  constructor(asis){
+    this.asignadoId = asis.asignadoId;
+    this.asignadoSlug = asis.asignadoSlug;
+    this.qInvestigacion = asis.hasInvestigacion ? 1 : 0;
+    this.qllamados = asis.qllamados;
+    this.qcontactos = asis.qcontactos;
+    this.qcasosSinTel = asis.hasTelefono ? 0 : 1;
+    this.qcasosConTel = asis.hasTelefono ? 1 : 0;    
+    this.qActualState[asis.actualState] = 1;
+
+  }
+
+
+
+}
+
+class MappedContactos {
+  qllamados = 0;
+  qcontactos = 0;
+
+
+}
+
+class MappedAsis {
+  asistenciaId;
+  ndoc;
+  idPerson;
+  tdoc;
+  sexo;
+  edad;
+  telefono;
+  ndoc;
+  requeridox;
+  slug;
+  hasTelefono = false;
+  isAsignado = false;
+  asignadoId;
+  asignadoSlug;
+  qllamados = 0;
+  qcontactos = 0;
+  fUpSlug; 
+  actualState = 7;
+  hasInvestigacion = false;
+  city;
+
+  constructor(asis){
+    this.asistenciaId = asis._id.toString();
+    this.ndoc = asis.ndoc;
+    this.idPerson = asis.idPerson;
+    this.requeridox = asis.requeridox.slug;
+    this.tdoc = asis.tdoc;
+    this.sexo = asis.sexo;
+    this.edad = asis.edad;
+    this.telefono = asis.telefono;
+    this.ndoc = asis.ndoc;
+    this.slug = asis.slug;
+    this.hasTelefono = asis.telefono && asis.telefono !== 'sin dato';
+    
+    let fUp = asis.followUp;
+    if(fUp){
+      this.isAsignado = fUp.isAsignado;
+      this.asignadoId = fUp.asignadoId ;
+      this.asignadoSlug = fUp.asignadoSlug ;
+      this.qllamados = fUp.qllamados ;
+      this.qcontactos = fUp.qcontactos ;
+      this.fUpSlug = fUp.slug ;
+    }
+
+    let infeccion = asis.infeccion;
+    if(infeccion){
+      this.actualState = infeccion.actualState ;
+    }
+
+    let sintomacovid = asis.sintomacovid;
+    if(sintomacovid){
+      this.hasInvestigacion = sintomacovid.hasInvestigacion ;
+    }
+
+    let locacion = asis.locacion;
+    if(locacion){
+      this.city = locacion.city ;
+    }
+  }
+}
+
+async function _loadAsistencias(dateFrame){
+  let query = {
+    estado: 'activo',
+    fecomp_tsa: {$gte: dateFrame.tsDesde, $lt: dateFrame.tsHasta},
+  };
+  console.log('loadAsistencias  [%s]', query)
+
+  return await Record.find(query).lean().exec();
+}
+
+function _buildDateFrame(feTxt){
+  let date = utils.parseDateStr(feTxt);
+  let desdeNum = utils.getProjectedDate(date, -10, 0).getTime();
+  let hastaNum = utils.dateToNumPlusOne(feTxt);
+
+  let dateFrame = {
+    tsHasta:  hastaNum,
+    tsDesde: desdeNum,
+    txHasta: utils.txFromDateTime(hastaNum),
+    txDesde: utils.txFromDateTime(desdeNum),
+    dateList: utils.dateTxList(desdeNum, 10)
+
+  }
+  console.log('Date Dif : [%s]', (dateFrame.tsHasta - dateFrame.tsDesde)/(1000 * 60 * 60 * 24))
+  console.dir(dateFrame);
+  return dateFrame;
+
+}
+/**
+ * FIN: computeUserWorkLoad
+ ******************************/
+
+
+
 
 
 /*************************/
