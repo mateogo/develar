@@ -13,8 +13,8 @@ export class WorkloadByfechaTableComponent implements OnInit {
   @Input() datesList: Array<{fets:number, fetx:string}> = [];
 
 
-  public work_rows = ["casos", "telef", "inves", "covid", "altas", "otros"]
-  public work_labels = ["TOTAL CASOS", "CON TELEF", "INVESTIG OK", "COVID+", "ALTA", "OTROS"]
+  public work_rows = ["casos", "telef", "inves", "covid", "altas",  "obito",  "sospe", "otros"]
+  public work_labels = ["Casos", "c/Telefono", "c/Investig", "COVID+", "ALTA", "ÓBITO", "SOSPECHOSO", "OTROS"]
 
   public showTable = false;
 

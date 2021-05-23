@@ -141,8 +141,8 @@ export class WorkloadDashboardComponent implements OnInit {
   /*   workload WorkLoad WORKLOAD  */
   /********************************/
 
-  public work_rows = ["casos", "telef", "inves", "covid", "altas", "otros"]
-  public work_labels = ["Casos", "c/Telefono", "c/Investig", "COVID+", "ALTA", "OTROS"]
+  public work_rows = ["casos", "telef", "inves", "covid", "altas",  "obito",  "sospe", "otros"]
+  public work_labels = ["Casos", "c/Telefono", "c/Investig", "COVID+", "ALTA", "ÓBITO", "SOSPECHOSO", "OTROS"]
   public uniqueTS: Array<number>;
   public uniqueDates: Array<{fets:number, fetx:string}>;
 
@@ -166,22 +166,37 @@ export class WorkloadDashboardComponent implements OnInit {
   private buildWorkLoadTable(asistencias: AsistenciaFollowUp[]){
     this.uniqueTS = Array.from(new Set (asistencias.map(asis=> asis.fecomp_tsa))).sort((a, b)=> a-b);
     this.uniqueDates = this.uniqueTS.map(t => {return  {fets: t, fetx: devutils.txDayDateFromTime(t)}});
+    this.uniqueDates.unshift({fets:0, fetx: 'TOTAL'})
     this.workLoad = {
-      casos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      telef: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      inves: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      covid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      altas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      otros: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      casos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      telef: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      inves: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      covid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      altas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      obito: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      sospe: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      otros: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     }
     this.workLoad = asistencias.reduce((acum, asis)=> {
-      let index = this.uniqueTS.indexOf(asis.fecomp_tsa);
+      let index = this.uniqueTS.indexOf(asis.fecomp_tsa) + 1;
       acum["casos"][index] += 1;
       acum["telef"][index] += asis.hasTelefono ? 1: 0;
       acum["inves"][index] += asis.hasInvestigacion ? 1: 0;
       acum["covid"][index] += asis.actualState === 1 ? 1: 0;
       acum["altas"][index] += asis.actualState === 5 ? 1: 0;
-      acum["otros"][index] += (asis.actualState !== 1 && asis.actualState !== 5) ? 1: 0;
+      acum["obito"][index] += asis.actualState === 4 ? 1: 0;
+      acum["sospe"][index] += asis.actualState === 0 ? 1: 0;
+      acum["otros"][index] += (asis.actualState !== 1 && asis.actualState !== 5 && asis.actualState !== 4 && asis.actualState !== 0) ? 1: 0;
+
+      acum["casos"][0] += 1;
+      acum["telef"][0] += asis.hasTelefono ? 1: 0;
+      acum["inves"][0] += asis.hasInvestigacion ? 1: 0;
+      acum["covid"][0] += asis.actualState === 1 ? 1: 0;
+      acum["altas"][0] += asis.actualState === 5 ? 1: 0;
+      acum["obito"][0] += asis.actualState === 4 ? 1: 0;
+      acum["sospe"][0] += asis.actualState === 0 ? 1: 0;
+      acum["otros"][0] += (asis.actualState !== 1 && asis.actualState !== 5 && asis.actualState !== 4 && asis.actualState !== 0) ? 1: 0;
+
       return acum;
 
     }, this.workLoad);

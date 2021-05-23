@@ -116,11 +116,12 @@ export class LlamadosBrowseComponent implements OnInit {
   }
 
   refreshData(e){
+    console.log('Refresch Data')
     let fe = this.form.value.fecharef;
     this.updateFechaFromTo(fe);
 
     this.form.controls.fenovd.setValue(this.query.fenovd);
-    this.form.controls.feHasta.setValue(this.query.feHasta);
+    this.form.controls.fenovh.setValue(this.query.fenovh);
   }
 
   private updateFechaFromTo(fecha: string){
@@ -131,7 +132,9 @@ export class LlamadosBrowseComponent implements OnInit {
     this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
 
     let fedesde = devutils.projectedDate(devutils.dateFromTx(fecha), -10, 0);
-    let fehasta = devutils.dateFromTx(fecha);
+    let fehasta = devutils.projectedDate(new Date(fedesde.getTime()), 9, 0);
+
+    //let fehasta = devutils.projectedDate(devutils.dateFromTx(fecha), -1, 0);
 
     //let dateFromTo = devutils.dateWeekFromTo(this.fecharef_date);
 
@@ -236,7 +239,7 @@ export class LlamadosBrowseComponent implements OnInit {
     entity.sintomaCovid =   fvalue.sintomaCovid;
     if(this.fechatipo === SEGUIMIENTO){
       entity.fenovd = devutils.txFormatted(fvalue.fenovd);
-      entity.fenovh = devutils.txFormatted(fvalue.fenovh);
+      entity.fenovh = devutils.txFromDate(devutils.projectedDate(devutils.dateFromTx(entity.fenovd), 9, 0));
 
       entity.fecomp_d = '';
       entity.fecomp_h = '';

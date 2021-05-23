@@ -13,7 +13,7 @@ export class WorkloadHelper {
 	}
 
 	static getOptionLabel(type, val){
-		if(!val) return '';
+		if(!val && val !== 0) return '';
 		if(!type) return val;
 		return getLabel(this.getOptionlist(type), val);
 	}

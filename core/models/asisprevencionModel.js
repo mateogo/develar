@@ -1355,9 +1355,9 @@ class MappedAsis {
   asistenciaId;
   idPerson;
   tdoc;
-  sexo;
-  edad;
-  telefono;
+  sexo = '';
+  edad = 0;
+  telefono = '';
   ndoc;
   fecomp_txa;
   fecomp_tsa;
@@ -1365,14 +1365,14 @@ class MappedAsis {
   slug;
   hasTelefono = false;
   isAsignado = false;
-  asignadoId;
-  asignadoSlug;
+  asignadoId = '';
+  asignadoSlug = 'SIN ASIGNAR';
   qllamados = 0;
   qcontactos = 0;
-  fUpSlug; 
+  fUpSlug = '';  
   actualState = 7;
   hasInvestigacion = false;
-  city;
+  city = 'almirante brown';
 
   constructor(asis){
     this.asistenciaId = asis._id.toString();
