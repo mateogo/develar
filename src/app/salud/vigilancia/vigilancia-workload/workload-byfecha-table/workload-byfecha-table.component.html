@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Afectados/as incorporados en el período
+        </mat-card-title>
+        <mat-card-subtitle>
+            Total de casos con/ sin teléfono; total invesigaciones epidemio cerradas; cantidad de llamados; estado actual afectado/a
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            DESCRIPCIÓN
+                        </th>
+
+                        <th scope="col" *ngFor="let fecha of datesList">
+                            {{ fecha.fetx}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let label of work_rows; let j=index;">
+                        <tr scope="row">
+                            <th class="afectado-row">{{ work_labels[j] }}</th>
+
+                            <td scope="col" *ngFor="let fecha of datesList; let k=index;">
+                                {{ workLoad[label][k] }}
+                            </td>
+    
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>
+

@@ -726,6 +726,11 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator']
       },
       {
+        title: 'Tablero llamados',
+        routing: '/salud/gestion/tablerollamados',
+        rolesOut: ['ivr:operator']
+      },
+      {
         title: 'Geolocalización',
         routing: '/salud/gestion/geolocalizacion',
         rolesOut: ['ivr:operator'],

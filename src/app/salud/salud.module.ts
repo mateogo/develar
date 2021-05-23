@@ -132,6 +132,10 @@ import { VigilanciaEpidemioinvestigComponent } from './vigilancia/vigilancia-zmo
 import { LlamadosByuserTableComponent } from './vigilancia/vigilancia-zdashboard/llamados-byuser-table/llamados-byuser-table.component';
 import { LlamadosAsisTableComponent } from './vigilancia/vigilancia-zdashboard/llamados-asis-table/llamados-asis-table.component';
 import { LlamadosAuditbyuserTableComponent } from './vigilancia/vigilancia-zdashboard/llamados-auditbyuser-table/llamados-auditbyuser-table.component';
+import { WorkloadDashboardComponent } from './vigilancia/vigilancia-workload/workload-dashboard/workload-dashboard.component';
+import { WorkloadByuserTableComponent } from './vigilancia/vigilancia-workload/workload-byuser-table/workload-byuser-table.component';
+import { WorkloadByafectadoTableComponent } from './vigilancia/vigilancia-workload/workload-byafectado-table/workload-byafectado-table.component';
+import { WorkloadByfechaTableComponent } from './vigilancia/vigilancia-workload/workload-byfecha-table/workload-byfecha-table.component';
 
 @NgModule({
   imports: [
@@ -259,6 +263,10 @@ import { LlamadosAuditbyuserTableComponent } from './vigilancia/vigilancia-zdash
     LlamadosByuserTableComponent,
     LlamadosAsisTableComponent,
     LlamadosAuditbyuserTableComponent,
+    WorkloadDashboardComponent,
+    WorkloadByuserTableComponent,
+    WorkloadByafectadoTableComponent,
+    WorkloadByfechaTableComponent,
   ],
   entryComponents: 
   [

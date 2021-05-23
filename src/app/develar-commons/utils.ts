@@ -387,6 +387,7 @@ function getProjectedDate(date: Date, plus_day:number, plus_month:number){
         date.setMonth(date.getMonth() + plus_month, 0);
 
     }
+    return date;
 }
 
 function buildFecharefLabel(fecharef: Date): string{
@@ -735,7 +736,7 @@ class Devutils {
             return fecha.getTime();
         }
         else return 0;
-    }
+    }    
 
 	txFromDate(date){
 		return dateToStr(date);

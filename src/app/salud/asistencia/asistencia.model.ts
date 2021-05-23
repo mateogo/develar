@@ -2800,6 +2800,8 @@ export class AsistenciaHelper {
       if(key === 'rebuildLatLon'   && !query[key]) delete query[key];
       if(key === 'avanceSisa'      && !query[key]) delete query[key];
       if(key === 'userId'          && !query[key]) delete query[key];
+      if(key === 'userAsignado'    && !query[key]) delete query[key];
+	  	  
       if(key === 'avanceCovid'     && !query[key]) delete query[key];
       if(key === 'sintomaCovid'    && !query[key]) delete query[key];
       if(key === 'feDesde'         && !query[key]) delete query[key];

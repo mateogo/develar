@@ -1,0 +1,70 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Afectados/as incorporados en el período
+        </mat-card-title>
+        <mat-card-subtitle>
+            Total de casos con/ sin teléfono; total invesigaciones epidemio cerradas; cantidad de llamados; estado actual afectado/a
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Afectado/a
+                        </th>
+                        <th scope="col">
+                            Teléfono
+                        </th>
+                        <th scope="col">
+                            Sexo
+                        </th>
+                        <th scope="col">
+                            Edad
+                        </th>
+                        <th scope="col">
+                            Usu asignado
+                        </th>
+                        <th scope="col">
+                            ¿INVESTIG?
+                        </th>
+                        <th scope="col">
+                            Llamados
+                        </th>
+                        <th scope="col">
+                            Logrados
+                        </th>
+                        <th scope="col">
+                            Localidad
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let asis of asistencias">
+                        <tr scope="row">
+
+                            <td class="afectado-row">{{ asis.requeridox }}</td>
+                            <td class="afectado-row">{{ asis.hasTelefono ? asis.telefono : 's/Tel' }}</td>
+                            <td class="afectado-row">{{ asis.sexo }}</td>
+                            <td class="afectado-row">{{ asis.edad }}</td>
+
+                            <td class="asignado-row"> {{ asis.asignadoSlug }}</td>  
+
+                            <td class="totrow">{{ asis.hasInvestigacion ?  'INV-SÍ': 'INV-NO' }}</td>  
+                            <td class="totrow">{{ asis.qllamados }}</td>  
+                            <td class="totrow">{{ asis.qcontactos }}</td>  
+
+
+                            <td class="city-row">{{ asis.city }}</td>   
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>

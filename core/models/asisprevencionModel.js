@@ -559,6 +559,64 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['reporte'] && query['reporte']==="WORKLOAD"){
+    q = {
+          isVigilado: true,
+          avance: {$ne: 'anulado'},
+        }
+
+    if(query['fenovd_ts'] && query['fenovh_ts']){
+      let fedesde = parseInt(query['fenovd_ts'], 10);
+      let fehasta = parseInt(query['fenovh_ts'], 10);
+      q['fecomp_tsa'] = { $gte: fedesde, $lt: fehasta };
+    }
+  
+    if(query['asignadoId']){
+        q["followUp.asignadoId"] = query['asignadoId'];
+    }
+
+    if(query['hasCovid']){
+      q["infeccion.hasCovid"] = true;
+    }
+
+    if(query['casoCovid']){
+      q['infeccion.actualState'] = {$in: [1, 4, 5]}; 
+    }
+
+    if(query['vigiladoCovid']){
+      q["infeccion.isActive"] = true;
+    }
+
+    if(query['actualState']){
+      q["infeccion.actualState"] = parseInt(query['actualState'], 10);
+    }
+
+    if(query['isSeguimiento']){
+      q["followUp.isActive"] = true;
+      q['followUp.altaVigilancia'] =  {$ne: true};
+    }
+
+    if(query['tipoSeguimiento']){
+      q["followUp.tipo"] = query['tipoSeguimiento'];
+    }
+
+    if(query['avanceCovid']){
+      q["infeccion.avance"] = query['avanceCovid'];
+    }
+
+    if(query['sintomaCovid']){
+      q["infeccion.sintoma"] = query['sintomaCovid'];
+    }
+
+    if(query['asistidoId']){
+        q["requeridox.id"] = query['asistidoId'];
+        return q;
+    }
+
+
+    return q;
+  }
+
   if(query['reporte'] && query['reporte']==="LLAMADOSEPIDEMIO"){
       q = {
             isVigilado: true,
@@ -1176,12 +1234,14 @@ exports.updateAsistenciaFromPerson = function(asistencia){
   console.log('computeUserWorkLoad EPIDEMIO MODEL BEGIN')
 
   query = query || {}; 
-  //let feref = query.feref ? query.feref : utils.dateToStr(new Date());
+  let regexQuery = buildQuery(query, new Date());
 
-  let feref = "19/05/2021";
-  let dateFrame = _buildDateFrame(feref);
+  let feref = query.feref ? query.feref : utils.dateToStr(new Date());
+  console.dir(query);
 
-  _loadAsistencias(dateFrame).then(asistencias => {
+  let dateFrame = _buildDateFrame(query);
+
+  _loadAsistencias(regexQuery).then(asistencias => {
     console.log('computeUserWorkLoad: asistencias: [%s]', asistencias && asistencias.length);
     if(asistencias && asistencias.length){
 
@@ -1293,13 +1353,14 @@ class MappedContactos {
 
 class MappedAsis {
   asistenciaId;
-  ndoc;
   idPerson;
   tdoc;
   sexo;
   edad;
   telefono;
   ndoc;
+  fecomp_txa;
+  fecomp_tsa;
   requeridox;
   slug;
   hasTelefono = false;
@@ -1317,6 +1378,8 @@ class MappedAsis {
     this.asistenciaId = asis._id.toString();
     this.ndoc = asis.ndoc;
     this.idPerson = asis.idPerson;
+    this.fecomp_txa = asis.fecomp_txa;
+    this.fecomp_tsa = asis.fecomp_tsa;
     this.requeridox = asis.requeridox.slug;
     this.tdoc = asis.tdoc;
     this.sexo = asis.sexo;
@@ -1353,33 +1416,31 @@ class MappedAsis {
   }
 }
 
-async function _loadAsistencias(dateFrame){
-  let query = {
-    estado: 'activo',
-    fecomp_tsa: {$gte: dateFrame.tsDesde, $lt: dateFrame.tsHasta},
-  };
+async function _loadAsistencias(query){
   console.log('loadAsistencias  [%s]', query)
 
   return await Record.find(query).lean().exec();
 }
 
-function _buildDateFrame(feTxt){
-  let date = utils.parseDateStr(feTxt);
-  let desdeNum = utils.getProjectedDate(date, -10, 0).getTime();
-  let hastaNum = utils.dateToNumPlusOne(feTxt);
+function _buildDateFrame(query){
+  //let date = utils.parseDateStr(feTxt);
+  //let desdeNum = utils.getProjectedDate(date, -10, 0).getTime();
+  //let hastaNum = utils.dateToNumPlusOne(feTxt);
+    //txHasta: utils.txFromDateTime(hastaNum),
+    //txDesde: utils.txFromDateTime(desdeNum),
 
   let dateFrame = {
-    tsHasta:  hastaNum,
-    tsDesde: desdeNum,
-    txHasta: utils.txFromDateTime(hastaNum),
-    txDesde: utils.txFromDateTime(desdeNum),
-    dateList: utils.dateTxList(desdeNum, 10)
+    tsDesde: parseInt(query['fenovd_ts'], 10),
+    txDesde: query.fenovd,
 
+    tsHasta:  parseInt(query['fenovh_ts'], 10),
+    txHasta:  query.fenovh,
+    dateList: utils.dateTxList(parseInt(query['fenovd_ts'], 10), 10)
   }
+
   console.log('Date Dif : [%s]', (dateFrame.tsHasta - dateFrame.tsDesde)/(1000 * 60 * 60 * 24))
   console.dir(dateFrame);
   return dateFrame;
-
 }
 /**
  * FIN: computeUserWorkLoad

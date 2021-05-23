@@ -1,0 +1,71 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Casos ingresados en el período por usuario
+        </mat-card-title>
+        <mat-card-subtitle>
+            Total de casos con/ sin teléfono; total invesigaciones epidemio cerradas; cantidad de llamados; estado actual afectado/a
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <ng-container *ngIf="showTable">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Usuario
+                        </th>
+                        <th scope="col">
+                            CASOS
+                        </th>
+                        <th  class="covid-header" scope="col">
+                            c/TEL
+                        </th>
+                        <th class="covid-header" scope="col">
+                            s/TEL
+                        </th>
+                        <th class="telefono-header" scope="col">
+                            INVESTIG
+                        </th>
+                        <th class="telefono-header" scope="col">
+                            LL-TOT
+                        </th>
+                        <th class="telefono-header" scope="col">
+                            LL_OK
+                        </th>
+                        <th scope="col">
+                            COVID
+                        </th>
+                        <th scope="col">
+                            ALTA
+                        </th>
+                        <th scope="col">
+                            OTROS
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let user of usertable">
+                        <tr scope="row">
+                            <td>{{user.asignadoSlug}}</td>
+
+                            <td class="totrow">{{ user.qcasos }}</td>  
+                            <td class="totrow">{{ user.qcasosConTel }}</td>  
+                            <td class="totrow">{{ user.qcasosSinTel }}</td>    
+                            <td class="telefono">{{ user.qInvestigacion }}</td>    
+                            <td class="telefono">{{ user.qllamados }}</td>    
+                            <td class="telefono">{{ user.qcontactos }}</td>
+                            <td class="covid">{{ user.qActualState[1] }}</td>    
+                            <td class="covid">{{ user.qActualState[5] }}</td>    
+                            <td class="covid">{{ user.qActualState[0] + user.qActualState[2] + user.qActualState[3] + user.qActualState[4] + user.qActualState[6] +user.qActualState[7] }}</td>    
+                        </tr>
+                    </ng-container>
+        
+                </tbody>
+
+
+            </table>
+        </ng-container>    
+    </mat-card-content>
+</mat-card>
+

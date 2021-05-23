@@ -1,0 +1,46 @@
+@import '../../../../../assets/sass/variable';
+
+$color-destacado: #0645f5;
+$color-destacado-vinculo: #2413c6;
+$color-desafectado-vinculo: #8a95a1;
+
+$color-button: #3c4e62;
+$color-header: #2326ff;
+
+$color-total-titulo: #fdfdfd;
+$color-total-label: #fdfdfd;
+$color-total-valor: #fdfdfd ;
+
+$color-locacion: #710b5f;
+$color-capacidad: #910f6f;
+
+.cards {
+	margin-top: 20px;
+}
+
+.state-card {
+	width: 250px;
+}
+
+
+mat-card {
+	background-color: #f5f5f5;
+
+}
+
+.chart-card {
+	//background-color: #2e3d50;
+	background-color: #fefefe;
+}
+
+mat-card {
+	background-color: #f0f0f0;
+	margin-top: 15px;
+
+}
+
+.chart-container {
+	margin-bottom: 30px;
+
+}
+

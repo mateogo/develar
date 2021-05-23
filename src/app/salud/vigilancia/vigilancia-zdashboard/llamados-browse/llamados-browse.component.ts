@@ -130,10 +130,13 @@ export class LlamadosBrowseComponent implements OnInit {
     this.fecharef = devutils.txFromDate(this.fecharef_date);
     this.fecharef_label = devutils.txForEpidemioWeek(this.fecharef_date);
 
-    let dateFromTo = devutils.dateWeekFromTo(this.fecharef_date);
+    let fedesde = devutils.projectedDate(devutils.dateFromTx(fecha), -10, 0);
+    let fehasta = devutils.dateFromTx(fecha);
 
-    this.query.fenovd = dateFromTo.feDesde;
-    this.query.fenovh = dateFromTo.feHasta;
+    //let dateFromTo = devutils.dateWeekFromTo(this.fecharef_date);
+
+    this.query.fenovd = devutils.txFromDate(fedesde);
+    this.query.fenovh = devutils.txFromDate(fehasta);
 
   }
 

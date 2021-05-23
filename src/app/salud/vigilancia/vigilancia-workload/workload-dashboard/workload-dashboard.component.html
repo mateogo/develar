@@ -1,0 +1,36 @@
+<llamados-browse 		[query]="query" 
+						[export]='true'
+						[title]="browseTitle"
+						(updateQuery)="refreshSelection($event)"></llamados-browse>
+
+
+
+<ng-container *ngIf='showData'>
+
+	<workload-byfecha-table 
+		[workLoad]="workLoad"
+		[tsList]="uniqueTS"
+		[datesList]="uniqueDates"  ></workload-byfecha-table>
+	  
+</ng-container>
+						
+<ng-container *ngIf='showData'>
+
+	<workload-byuser-table [usertable]="userTable"></workload-byuser-table>
+
+</ng-container>
+<ng-container *ngIf='showData'>
+
+	<workload-byafectado-table [asistencias]="asistencias"></workload-byafectado-table>
+
+</ng-container>
+
+
+
+<ng-container *ngIf='dumpData'>
+
+	<dump-data  [title]="'MasterData'"
+	            [data$]='data$'
+	            [showTests]='true'></dump-data>
+
+</ng-container>

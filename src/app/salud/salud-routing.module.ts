@@ -19,6 +19,7 @@ import { InternacionDashboardPageComponent } from './vigilancia/vigilancia-zdash
 import { VigilanciaMappingPageComponent } from './vigilancia/vigilancia-zdashboard/vigilancia-mapping-page/vigilancia-mapping-page.component';
 import { MapBoxComponent }   from '../develar-commons/mapbox/components/map-box/map-box.component';
 import { LlamadosDashboardPageComponent } from './vigilancia/vigilancia-zdashboard/llamados-dashboard-page/llamados-dashboard-page.component';
+import { WorkloadDashboardComponent } from './vigilancia/vigilancia-workload/workload-dashboard/workload-dashboard.component';
 
 const routes: Routes = [
 	{
@@ -48,6 +49,10 @@ const routes: Routes = [
 	{
 		path: 'tableroseguimiento',
 		component: LlamadosDashboardPageComponent
+	},
+	{
+		path: 'tablerollamados',
+		component: WorkloadDashboardComponent
 	},
 	{
 		path: 'tablerointernacion',
