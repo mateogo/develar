@@ -6,6 +6,9 @@
         <mat-card-subtitle>
             Total de casos con/ sin teléfono; total invesigaciones epidemio cerradas; cantidad de llamados; estado actual afectado/a
         </mat-card-subtitle>
+        <mat-card-subtitle>
+            {{ user.asignadoSlug }} Casos: {{ casos }}
+        </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <ng-container *ngIf="showTable">
@@ -13,7 +16,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">
-                            Incorporado
+                            Ingresado
                         </th>
                         <th scope="col">
                             Documento
@@ -51,12 +54,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let asis of asistencias">
+                    <ng-container *ngFor="let asis of asistencia$ | async">
                         <tr scope="row">
 
-                            <td class="afectado-row">{{ asis.fecomp_txa }}</td>
-                            <td class="afectado-row">{{  asis.ndoc }}</td>
-                            <td class="afectado-row">{{ asis.requeridox }}</td>
+                            <td class="fecha-row">{{ asis.fecomp_txa }}</td>
+                            <td class="ndoc-row">{{ asis.ndoc }}</td>
+                            <td class="requerido-row">{{ asis.requeridox }}</td>
                             <td class="afectado-row">{{ asis.hasTelefono ? (asis.telefono ? asis.telefono.substr(0,15): 's/Tel' ) : 's/Tel' }}</td>
                             <td class="afectado-row">{{ asis.sexo || '' }}</td>
                             <td class="afectado-row">{{ asis.edad ||'' }}</td>

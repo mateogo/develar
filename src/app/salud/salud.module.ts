@@ -136,6 +136,7 @@ import { WorkloadDashboardComponent } from './vigilancia/vigilancia-workload/wor
 import { WorkloadByuserTableComponent } from './vigilancia/vigilancia-workload/workload-byuser-table/workload-byuser-table.component';
 import { WorkloadByafectadoTableComponent } from './vigilancia/vigilancia-workload/workload-byafectado-table/workload-byafectado-table.component';
 import { WorkloadByfechaTableComponent } from './vigilancia/vigilancia-workload/workload-byfecha-table/workload-byfecha-table.component';
+import { WorkloadZmodalByuserComponent } from './vigilancia/vigilancia-workload/workload-zmodal-byuser/workload-zmodal-byuser.component';
 
 @NgModule({
   imports: [
@@ -267,6 +268,7 @@ import { WorkloadByfechaTableComponent } from './vigilancia/vigilancia-workload/
     WorkloadByuserTableComponent,
     WorkloadByafectadoTableComponent,
     WorkloadByfechaTableComponent,
+    WorkloadZmodalByuserComponent,
   ],
   entryComponents: 
   [

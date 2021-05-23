@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {WorkLoad, AsistenciaFollowUp, UserWorkload, EventEmitted} from '../workload-helper';
-const ACTION = 'viewdetail';
+const ACTION = 'user:detail';
+const FILTER = 'asis:filter';
 const TYPE = 'user:workload';
 @Component({
   selector: 'workload-byuser-table',
@@ -22,13 +23,21 @@ export class WorkloadByuserTableComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
     console.log('Click: [%s]',user.asignadoId );
-    this.emitEvent(user)
+    this.emitEvent(user, ACTION)
 
   }
 
-  private emitEvent(token: UserWorkload){
+  filterAsistencias(e, user){
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Click: [%s]',user.asignadoId );
+    this.emitEvent(user, FILTER)
+
+  }
+
+  private emitEvent(token: UserWorkload, action:string){
     this.useremit.next({
-      action: ACTION,
+      action: action,
       type: TYPE,
       token: token
     })

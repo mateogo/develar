@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { SaludController } from '../../../salud.controller';
 import { ChartType} from 'chart.js';
@@ -27,7 +27,8 @@ const INVESIGACIONESREALIZADAS = 'INVESTIGACIONESREALIZADAS';
 const SEARCH = 'search';
 const EXPORT = 'export';
 
-const ACTION = 'viewdetail';
+const ACTION = 'user:detail';
+const FILTER = 'asis:filter';
 const TYPE = 'user:workload';
 
 @Component({
@@ -67,6 +68,8 @@ export class WorkloadDashboardComponent implements OnInit {
   public userTable: Array<UserWorkload> = [];
 
   public asistencias: Array<AsistenciaFollowUp> = [];
+  public asistencia$: BehaviorSubject<AsistenciaFollowUp[]> = new BehaviorSubject<AsistenciaFollowUp[]>([]);
+  public user$: BehaviorSubject<UserWorkload> = new BehaviorSubject<UserWorkload>(new UserWorkload());
 
   public workLoad: any;
 
@@ -110,7 +113,28 @@ export class WorkloadDashboardComponent implements OnInit {
   viewUserDetail(event: EventEmitted){
     if(event.action === ACTION){
       console.log('event Bubbled: [%s]', event.token.asignadoId)
+      this.openUserDetailView(event.token)
     }
+    if(event.action === FILTER){
+      console.log('event Bubbled FILTER: [%s]', event.token.asignadoId)
+      this.filterAsistencias(event.token)
+    }
+  }
+
+  private openUserDetailView(user: UserWorkload){
+    let filteredAsis = this.filterAsistencias(user);
+    
+    this.service.openUserDialog(user, filteredAsis)
+
+  }
+
+  private filterAsistencias(user: UserWorkload): AsistenciaFollowUp[]{
+    let filteredAsis = this.service.filterAsistencias(user, this.asistencias);
+
+    this.asistencia$.next(filteredAsis);
+    this.user$.next(user);
+    return filteredAsis;
+
   }
 
   /**********************************/
@@ -129,6 +153,7 @@ export class WorkloadDashboardComponent implements OnInit {
       this.userTable = Array.from(this.userMap.values());
 
       this.asistencias = workload.casos;
+      this.asistencia$.next(this.asistencias);
 
       this.workLoad = this.buildWorkLoadTable(this.asistencias)
 
