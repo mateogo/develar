@@ -1,1 +1,14 @@
-<p>workload-zmodal-byuser works!</p>
+<mat-card>
+    <mat-card-title>
+        {{ user.asignadoSlug}}
+
+    </mat-card-title>
+    <ng-container *ngIf="showData">
+        <mat-card-content>
+            <p><span class="text-atributo">Casos totales:</span> <span class="text-resaltado">{{user.qcasos}} Ratio c/s teléfono: {{getRatio(user.qcasosConTel, user.qcasos) }}% </span> <span class="text-normal">[ {{user.qcasosConTel}}/{{user.qcasos}} ]</span></p>
+            <p><span class="text-atributo">Estado actual afectados:</span> <span class="text-resaltado">{{ actualStateTxt }}</span></p>
+            <p><span class="text-atributo">Investigaciones:</span> <span class="text-resaltado">{{user.qInvestigacion}} Efectividad: {{getRatio(user.qInvestigacion, user.qcasosConTel) }}% </span> <span class="text-destacado">[ {{user.qInvestigacion}}/{{user.qcasosConTel}} ]</span></p>
+
+        </mat-card-content>    
+    </ng-container>
+</mat-card>

@@ -80,7 +80,7 @@ export class EventEmitted {
 }
 
 function getLabel(list, val){
-  let t = list.find(item => item.val === val)
+  let t = list.find(item => item.val == val)
   return t ? t.label : val;
 }
 

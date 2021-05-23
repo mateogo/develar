@@ -165,7 +165,7 @@ export class WorkloadDashboardComponent implements OnInit {
   
   private buildWorkLoadTable(asistencias: AsistenciaFollowUp[]){
     this.uniqueTS = Array.from(new Set (asistencias.map(asis=> asis.fecomp_tsa))).sort((a, b)=> a-b);
-    this.uniqueDates = this.uniqueTS.map(t => {return  {fets: t, fetx: devutils.txFromDateTime(t)}});
+    this.uniqueDates = this.uniqueTS.map(t => {return  {fets: t, fetx: devutils.txDayDateFromTime(t)}});
     this.workLoad = {
       casos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       telef: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

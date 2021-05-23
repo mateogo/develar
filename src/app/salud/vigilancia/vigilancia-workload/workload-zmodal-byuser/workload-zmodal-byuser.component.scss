@@ -1,14 +1,20 @@
 $color-destacado: #0645f5;
 
-.form-control {
-	margin-left: 15px;
-}
 
 .text-resaltado {
 		margin: 0 0 0 0;
 		color: $color-destacado;
 		font-weight: 700;
 		font-size: 1.2rem;
-		font-style: italic;
 
+}
+.text-atributo {
+	margin: 0 5px 0 0;
+	font-weight: 700;
+	font-size: 1.4rem;
+}
+.text-destacado {
+	margin: 0 5px 0 0;
+	font-weight: 400;
+	font-size: 1.2rem;
 }

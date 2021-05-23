@@ -24,6 +24,15 @@ const fumeList = [
         {val:'alojamiento'  , label:'aloj'},
         {val:'tramo'        , label:'tram'},
 ];
+const dayOfWeekTxt = [
+    {largo: 'Domingo',   corto: 'Dom', may: 'DOM'},
+    {largo: 'Lunes',     corto: 'Lun', may: 'LUN'},
+    {largo: 'Martes',    corto: 'Mar', may: 'MAR'},
+    {largo: 'Miércoles', corto: 'Mie', may: 'MIE'},
+    {largo: 'Jueves',    corto: 'Jue', may: 'JUE'},
+    {largo: 'Viernes',   corto: 'Vie', may: 'VIE'},
+    {largo: 'Sábado',    corto: 'Sab', may: 'SAB'},
+]
 
 const semana_labels = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
 const mes_labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul' , 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']; 
@@ -762,7 +771,10 @@ class Devutils {
         return dateToStr(new Date(time));
     }
 
-
+    txDayDateFromTime(time: number){
+        let date = new Date(time);
+        return `${dayOfWeekTxt[date.getDay()]['corto']} ${date.getDate()}`
+    }
 
     dateWeekFromTo(datex ){
         return buildDateFromTo(datex);
