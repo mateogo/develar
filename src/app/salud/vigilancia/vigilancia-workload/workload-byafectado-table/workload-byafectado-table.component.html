@@ -13,6 +13,12 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">
+                            Incorporado
+                        </th>
+                        <th scope="col">
+                            Documento
+                        </th>
+                        <th scope="col">
                             Afectado/a
                         </th>
                         <th scope="col">
@@ -23,6 +29,9 @@
                         </th>
                         <th scope="col">
                             Edad
+                        </th>
+                        <th scope="col">
+                            Covid
                         </th>
                         <th scope="col">
                             Usu asignado
@@ -45,10 +54,13 @@
                     <ng-container *ngFor="let asis of asistencias">
                         <tr scope="row">
 
+                            <td class="afectado-row">{{ asis.fecomp_txa }}</td>
+                            <td class="afectado-row">{{  asis.ndoc }}</td>
                             <td class="afectado-row">{{ asis.requeridox }}</td>
-                            <td class="afectado-row">{{ asis.hasTelefono ? asis.telefono : 's/Tel' }}</td>
-                            <td class="afectado-row">{{ asis.sexo }}</td>
-                            <td class="afectado-row">{{ asis.edad }}</td>
+                            <td class="afectado-row">{{ asis.hasTelefono ? (asis.telefono ? asis.telefono.substr(0,15): 's/Tel' ) : 's/Tel' }}</td>
+                            <td class="afectado-row">{{ asis.sexo || '' }}</td>
+                            <td class="afectado-row">{{ asis.edad ||'' }}</td>
+                            <td class="afectado-row">{{ getLabel('actualState', asis.actualState) }}</td>
 
                             <td class="asignado-row"> {{ asis.asignadoSlug }}</td>  
 

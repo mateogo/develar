@@ -47,7 +47,7 @@
                 <tbody>
                     <ng-container *ngFor="let user of usertable">
                         <tr scope="row">
-                            <td>{{user.asignadoSlug}}</td>
+                            <td><a role="button" (click)="viewUserDetails($event, user)">{{user.asignadoSlug}}</a></td>
 
                             <td class="totrow">{{ user.qcasos }}</td>  
                             <td class="totrow">{{ user.qcasosConTel }}</td>  

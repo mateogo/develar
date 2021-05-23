@@ -16,7 +16,7 @@
 						
 <ng-container *ngIf='showData'>
 
-	<workload-byuser-table [usertable]="userTable"></workload-byuser-table>
+	<workload-byuser-table [usertable]="userTable" (useremit)="viewUserDetail($event)"></workload-byuser-table>
 
 </ng-container>
 <ng-container *ngIf='showData'>

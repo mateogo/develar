@@ -17,7 +17,7 @@ import { 	Asistencia,
 					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 import { User } from '../../../../entities/user/user';
 
-import {WorkLoad, AsistenciaFollowUp, UserWorkload} from '../workload-helper';
+import {WorkLoad, AsistenciaFollowUp, UserWorkload, EventEmitted} from '../workload-helper';
 import { devutils } from '../../../../develar-commons/utils';
 
 
@@ -26,6 +26,9 @@ const WORKLOADREPORT = 'WORKLOAD';
 const INVESIGACIONESREALIZADAS = 'INVESTIGACIONESREALIZADAS';
 const SEARCH = 'search';
 const EXPORT = 'export';
+
+const ACTION = 'viewdetail';
+const TYPE = 'user:workload';
 
 @Component({
   selector: 'workload-dashboard',
@@ -102,6 +105,12 @@ export class WorkloadDashboardComponent implements OnInit {
 
 		}
 
+  }
+
+  viewUserDetail(event: EventEmitted){
+    if(event.action === ACTION){
+      console.log('event Bubbled: [%s]', event.token.asignadoId)
+    }
   }
 
   /**********************************/

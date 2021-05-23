@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {WorkLoad, AsistenciaFollowUp, UserWorkload} from '../workload-helper';
+import {WorkloadHelper, WorkLoad, AsistenciaFollowUp, UserWorkload} from '../workload-helper';
 
 
 @Component({
@@ -16,6 +16,9 @@ export class WorkloadByafectadoTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.showTable = true;
+  }
+  getLabel(type: string, value: string){
+    return WorkloadHelper.getOptionLabel(type, value);
   }
 
 }
