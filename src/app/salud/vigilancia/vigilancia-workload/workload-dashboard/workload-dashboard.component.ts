@@ -151,8 +151,21 @@ export class WorkloadDashboardComponent implements OnInit {
     this.service.fetchWorkloadByQuery<WorkLoad>(query).subscribe(workload => {
       this.userMap = new Map(workload.usuarios)
       this.userTable = Array.from(this.userMap.values());
+      this.userTable.sort((fe, se) => {
+        return ((fe.qcasos * 100) + fe.qInvestigacion) - ((se.qcasos * 100) + se.qInvestigacion)
+
+      })
 
       this.asistencias = workload.casos;
+      this.asistencias.sort((fe, se) => {
+        if(fe.fecomp_tsa > se.fecomp_tsa) return 1;
+        else if(fe.fecomp_tsa < se.fecomp_tsa) return -1;
+        else if(fe.hasInvestigacion && !se.hasInvestigacion) return 1;
+        else if(!fe.hasInvestigacion && se.hasInvestigacion) return -1;
+        else if(fe.requeridox.toLowerCase() > fe.requeridox.toLowerCase()) return 1;
+        else return -1
+
+      })
       this.asistencia$.next(this.asistencias);
 
       this.workLoad = this.buildWorkLoadTable(this.asistencias)

@@ -12,13 +12,10 @@ export class WorkloadByfechaTableComponent implements OnInit {
   @Input() tsList: Array<number> = [];
   @Input() datesList: Array<{fets:number, fetx:string}> = [];
 
-
   public work_rows = ["casos", "telef", "inves", "covid", "altas",  "obito",  "sospe", "otros"]
-  public work_labels = ["Casos", "c/Telefono", "c/Investig", "COVID+", "ALTA", "ÓBITO", "SOSPECHOSO", "OTROS"]
+  public work_labels = ["Casos", "c/Teléfono", "c/Investigación", "COVID+", "ALTA", "ÓBITO", "SOSPECHOSO", "OTROS"]
 
   public showTable = false;
-
-
 
   constructor() { }
 
