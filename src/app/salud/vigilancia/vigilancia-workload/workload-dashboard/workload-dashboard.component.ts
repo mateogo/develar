@@ -158,11 +158,11 @@ export class WorkloadDashboardComponent implements OnInit {
 
       this.asistencias = workload.casos;
       this.asistencias.sort((fe, se) => {
-        if(fe.fecomp_tsa > se.fecomp_tsa) return 1;
-        else if(fe.fecomp_tsa < se.fecomp_tsa) return -1;
-        else if(fe.hasInvestigacion && !se.hasInvestigacion) return 1;
-        else if(!fe.hasInvestigacion && se.hasInvestigacion) return -1;
-        else if(fe.requeridox.toLowerCase() > fe.requeridox.toLowerCase()) return 1;
+        if      ( fe.fecomp_tsa > se.fecomp_tsa) return 1;
+        else if ( fe.fecomp_tsa < se.fecomp_tsa) return -1;
+        else if ( fe.hasInvestigacion && !se.hasInvestigacion) return 1;
+        else if (!fe.hasInvestigacion &&  se.hasInvestigacion) return -1;
+        else if ( fe.requeridox.toLowerCase() > se.requeridox.toLowerCase()) return 1;
         else return -1
 
       })
