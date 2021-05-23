@@ -1379,7 +1379,7 @@ class MappedAsis {
     this.ndoc = asis.ndoc;
     this.idPerson = asis.idPerson;
     this.fecomp_txa = asis.fecomp_txa;
-    this.fecomp_tsa = asis.fecomp_tsa;
+    this.fecomp_tsa = this.fecomp_txa? utils.dateNumFromTx(this.fecomp_txa) : asis.fecomp_tsa;
     this.requeridox = asis.requeridox.slug;
     this.tdoc = asis.tdoc;
     this.sexo = asis.sexo;
