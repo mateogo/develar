@@ -3,12 +3,49 @@
         {{ user.asignadoSlug}}
 
     </mat-card-title>
-    <ng-container *ngIf="showData">
-        <mat-card-content>
-            <p><span class="text-atributo">Casos totales:</span> <span class="text-resaltado">{{user.qcasos}} Ratio c/s teléfono: {{getRatio(user.qcasosConTel, user.qcasos) }}% </span> <span class="text-normal">[ {{user.qcasosConTel}}/{{user.qcasos}} ]</span></p>
-            <p><span class="text-atributo">Estado actual afectados:</span> <span class="text-resaltado">{{ actualStateTxt }}</span></p>
-            <p><span class="text-atributo">Investigaciones:</span> <span class="text-resaltado">{{user.qInvestigacion}} Efectividad: {{getRatio(user.qInvestigacion, user.qcasosConTel) }}% </span> <span class="text-destacado">[ {{user.qInvestigacion}}/{{user.qcasosConTel}} ]</span></p>
+    <mat-card-content>
+        <div class="container">
+            <ng-container *ngIf="showData">
 
-        </mat-card-content>    
-    </ng-container>
+                <p class="text-atributo"><span class="text-atributo">Casos totales:</span> <span class="text-resaltado">{{user.qcasos}} --  Ratio c/s teléfono: {{getRatio(user.qcasosConTel, user.qcasos) }}% </span> <span class="text-normal">[ {{user.qcasosConTel}}/{{user.qcasos}} ]</span></p>
+                <p class="text-atributo"><span class="text-atributo">Estado actual afectados:</span> <span class="text-resaltado">{{ actualStateTxt }}</span></p>
+                <p class="text-atributo"><span class="text-atributo">Investigaciones registradas:</span> <span class="text-resaltado">{{user.qInvestigacion}} --  Efectividad: {{getRatio(user.qInvestigacion, user.qcasosConTel) }}% </span> <span class="text-destacado">[ {{user.qInvestigacion}}/{{user.qcasosConTel}} ]</span></p>
+
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <span class="text-header">Plan de llamados a afectados/as COVID+</span>
+                    </div>
+                </div>
+
+                <div class='d-md-flex justify-content-start'>
+                    <ng-container *ngFor="let token of workplan">
+                        <div class="token">
+                            <p class="token-header"><span >{{getLabel('workPlanShort',token.fe)}}</span></p>
+                            <p class="token-data"><span >{{token.qllamados}}</span></p>
+                        </div>
+                    </ng-container>
+                </div>
+
+
+            </ng-container>
+        </div>
+    </mat-card-content>    
 </mat-card>
+<!--div class="row">
+    <div class="col-md-2">
+        <p><span class="text-atributo-right">CASOS </span></p>
+    </div>
+    <div class="col-md-8">
+        <p><span class="text-atributo">FECHA PREVISTA PRÓXIMO CONTACTO</span></p>
+    </div>
+</div>
+<ng-container *ngFor="let token of workplan">
+    <div class="row">
+        <div class="col-md-2">
+            <p><span class="text-number">{{token.qllamados}}</span></p>
+        </div>
+        <div class="col-md-8">
+            <p><span class="text-normal">{{getLabel('workplanStatus',token.fe)}}</span></p>
+        </div>
+    </div>
+</ng-container -->

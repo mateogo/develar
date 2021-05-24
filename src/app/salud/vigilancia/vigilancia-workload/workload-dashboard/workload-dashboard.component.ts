@@ -17,7 +17,7 @@ import { 	Asistencia,
 					AsistenciaHelper } from '../../../asistencia/asistencia.model';
 import { User } from '../../../../entities/user/user';
 
-import {WorkLoad, AsistenciaFollowUp, UserWorkload, EventEmitted} from '../workload-helper';
+import {WorkLoad, AsistenciaFollowUp, UserWorkload, WorkPlanToken, EventEmitted} from '../workload-helper';
 import { devutils } from '../../../../develar-commons/utils';
 
 
@@ -41,6 +41,8 @@ const TYPE = 'user:workload';
 export class WorkloadDashboardComponent implements OnInit {
   public query: VigilanciaBrowse;
   public tableActualColumns: Array<string> = [];
+
+  public loadingProgress = false;
   public showData =  false;
   public showDetalle = false;
   public showChart = false;
@@ -98,21 +100,28 @@ export class WorkloadDashboardComponent implements OnInit {
   /**********************/
   refreshSelection(query: VigilanciaBrowse){
 
-    this.query = AsistenciaHelper.cleanQueryToken(query, false);
-    console.dir(this.query)
+    if(!this.loadingProgress){
+      this.loadingDataInit();
+      this.query = AsistenciaHelper.cleanQueryToken(query, false);
+  
+      if(query.searchAction === SEARCH){
+        this.fetchWorkLoad(this.query);
+        //this.fetchAuditEpidemio(this.query);
+  
+      }else if (query.searchAction === EXPORT){
+        this.dsCtrl.exportSequimientosByQuery(this.query);
+        this.loadingDataFinish();
+  
+      }
+    }else {
+      this.service.openSnackBar('Aguarde, hay una consulta en curso', 'CERRAR');
 
-    if(query.searchAction === SEARCH){
-    	this.fetchWorkLoad(this.query);
-    	//this.fetchAuditEpidemio(this.query);
-
-		}else if (query.searchAction === EXPORT){
-			this.dsCtrl.exportSequimientosByQuery(this.query);
-
-		}
+    }
 
   }
 
   viewUserDetail(event: EventEmitted){
+    this.loadingDataInit();
     if(event.action === ACTION){
       console.log('event Bubbled: [%s]', event.token.asignadoId)
       this.openUserDetailView(event.token)
@@ -120,6 +129,7 @@ export class WorkloadDashboardComponent implements OnInit {
     if(event.action === FILTER){
       console.log('event Bubbled FILTER: [%s]', event.token.asignadoId)
       this.filterAsistencias(event.token)
+      this.loadingDataFinish();
     }
   }
   //weekplanning
@@ -151,9 +161,6 @@ export class WorkloadDashboardComponent implements OnInit {
     // testing API:
     this.loadUserPlanning(user);
 
-    let filteredAsis = this.filterAsistencias(user);
-    
-    this.service.openUserDialog(user, filteredAsis)
 
   }
 
@@ -175,8 +182,11 @@ export class WorkloadDashboardComponent implements OnInit {
     }
 
     let query = new QueryClass(user);
-    this.service.fetcWeekPlanningByQuery(query).subscribe(list => {
-      console.dir(list);
+    this.service.fetcWeekPlanningByQuery<WorkPlanToken[]>(query).subscribe(list => {
+    
+      let filteredAsis = this.filterAsistencias(user);
+      this.service.openUserDialog(user, filteredAsis, list)
+        console.dir(list);
     })
 
   }
@@ -224,9 +234,20 @@ export class WorkloadDashboardComponent implements OnInit {
       this.workLoad = this.buildWorkLoadTable(this.asistencias)
 
       this.showData = true;
+      this.loadingDataFinish();
 
     })
 
+  }
+
+  private loadingDataInit(){
+    this.loadingProgress = true;
+  }
+
+  private loadingDataFinish(){
+    setTimeout(()=> {
+      this.loadingProgress = false;
+    }, 500);
   }
   
   private buildWorkLoadTable(asistencias: AsistenciaFollowUp[]){
@@ -514,6 +535,8 @@ export class WorkloadDashboardComponent implements OnInit {
   private fetchLlamadosSeguimiento(query: any){
     this.showData = false;
     this.showChart= false;
+    this.loadingDataInit();
+
 		this.query.reporte = WORKLOADREPORT;
 
     this.dsCtrl.fetchResultListFromAsistenciaByQuery<any>(query).subscribe(records => {

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { devutils }from '../../../../develar-commons/utils';
-import {WorkloadHelper, WorkLoad, AsistenciaFollowUp, UserWorkload, EventEmitted} from '../workload-helper';
+import {WorkloadHelper, WorkLoad, AsistenciaFollowUp, UserWorkload, WorkPlanToken, EventEmitted} from '../workload-helper';
 
 const UPDATE = 'update';
 const CANCEL = 'cancel';
@@ -22,6 +22,7 @@ export class WorkloadZmodalByuserComponent implements OnInit {
 
   public actualState = [];
   public actualStateTxt = '';
+  public workplan: Array<WorkPlanToken> = [];
 
   constructor(
         public dialogRef: MatDialogRef<WorkloadZmodalByuserComponent>,
@@ -32,6 +33,7 @@ export class WorkloadZmodalByuserComponent implements OnInit {
     console.log('Iaujuuuuu [%s]', this.data && this.data.asistencias.length);
     this.user = this.data.user;
     this.asistencias = this.data.asistencias;
+    this.workplan = this.data.workplan || [];
     this.buildUserData(this.user);
     this.buildWorkData(this.asistencias);
     this.showData = true;
@@ -70,6 +72,9 @@ export class WorkloadZmodalByuserComponent implements OnInit {
 
     },'')
     return this.actualState;
+  }
+  getLabel(type, val){
+    return WorkloadHelper.getOptionLabel(type, val);
   }
 
   onCancel(){

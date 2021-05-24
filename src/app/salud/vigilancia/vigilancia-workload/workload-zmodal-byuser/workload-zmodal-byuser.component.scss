@@ -1,20 +1,72 @@
 $color-destacado: #0645f5;
 
 
-.text-resaltado {
-		margin: 0 0 0 0;
-		color: $color-destacado;
-		font-weight: 700;
-		font-size: 1.2rem;
-
+.text-header {
+	margin: 15px 0 0 0;
+	color: $color-destacado;
+	font-weight: 700;
+	font-size: 1.4rem;
 }
+
+.text-resaltado {
+	margin: 0 5px 0 5px;
+	color: $color-destacado;
+	font-weight: 700;
+	font-size: 1rem;
+}
+
+.text-normal {
+	margin: 0 0 0 0;
+	font-weight: 400;
+	font-size: 1rem;
+}
+
+.text-number {
+	margin: 0 0 0 0;
+	font-weight: 400;
+	font-size: 1.2rem;
+	display: flex;
+	justify-content: flex-end;
+  
+}
+
+.text-atributo-right{
+	margin: 0 0 0 0;
+	font-weight: 700;
+	font-size: 1.0rem;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .text-atributo {
 	margin: 0 5px 0 0;
 	font-weight: 700;
-	font-size: 1.4rem;
+	font-size: 1.0rem;
 }
 .text-destacado {
 	margin: 0 5px 0 0;
 	font-weight: 400;
 	font-size: 1.2rem;
+}
+.token {
+	width: 100px;
+	//border: 1px solid rgba(#000,.8);
+}
+.token-header {
+	border: 1px solid rgba(#000,.8);
+	color: $color-destacado;
+	background-color: rgba(150, 150, 255, 0.65);
+	font-weight: 400;
+	font-size: 1rem;
+	display: flex;
+	justify-content: center;
+	margin: 0 0 0 0;
+}
+.token-data {
+	border: 1px solid rgba(#000,.8);
+	font-weight: 400;
+	font-size: 1rem;
+	display: flex;
+	justify-content: center;
+	margin: 0 0 0 0;
 }

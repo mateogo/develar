@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams }    from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Observable, Subject,  of }    from 'rxjs';
 import { catchError }     from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
-import {WorkloadHelper, WorkLoad, AsistenciaFollowUp, UserWorkload, EventEmitted} from './workload-helper';
+import {WorkloadHelper, WorkLoad, AsistenciaFollowUp, UserWorkload, WorkPlanToken, EventEmitted} from './workload-helper';
 
 import { WorkloadZmodalByuserComponent } from './workload-zmodal-byuser/workload-zmodal-byuser.component';
 
@@ -40,6 +42,8 @@ export class WorkLoadService {
 
   constructor(
     public dialog: MatDialog,
+    private snackBar:  MatSnackBar,
+
   	private http: HttpClient) { 
 
   }
@@ -84,20 +88,35 @@ export class WorkLoadService {
     return asistencias.filter(asis => asis.asignadoId === user.asignadoId)
   }
 
-  openUserDialog(user: UserWorkload, asistencias: AsistenciaFollowUp[] ): Subject<EventEmitted>{
-    this.openModalDialog(user, asistencias);
+  openUserDialog(user: UserWorkload, asistencias: AsistenciaFollowUp[], workplan: Array<WorkPlanToken> ): Subject<EventEmitted>{
+    this.openModalDialog(user, asistencias, workplan);
     return this.dialogResult$;
   }
 
-  private openModalDialog(user: UserWorkload,asistencias: AsistenciaFollowUp[]){
+  /***************************/
+  /** Notification HELPER ****/
+  /***************************/
+  openSnackBar(message: string, action: string, config?: any) {
+    config = config || {}
+    config = Object.assign({duration: 3000}, config)
+
+    let snck = this.snackBar.open(message, action, config);
+
+    snck.onAction().subscribe((e)=> {
+      //c onsole.log('action???? [%s]', e);
+    })
+  }
+
+
+  private openModalDialog(user: UserWorkload,asistencias: AsistenciaFollowUp[],  workplan:Array<WorkPlanToken>){
     const dialogRef = this.dialog.open(
       WorkloadZmodalByuserComponent,
       {
         width: '800px',
         data: {
           asistencias: asistencias,
-          user: user
-
+          user: user,
+          workplan: workplan
         }
       }
     );

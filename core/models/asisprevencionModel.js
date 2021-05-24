@@ -1251,7 +1251,7 @@ exports.updateAsistenciaFromPerson = function(asistencia){
  * DEBUG=develar:server PORT=8080 NODE_ENV=development DBASE=saludmab SERVER=http://develar-local.co PUBLIC=/public node core/services/panicScript
  * 
  * usage: PRODUCTION: SALUD
- * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
+ * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar Pública =/www/salud node core/services/panicScript
  */
   
  exports.userWeekPlanning = userWeekCallPlanning;
@@ -1281,8 +1281,8 @@ exports.updateAsistenciaFromPerson = function(asistencia){
 function _processWorkPlanning(asistencias, cb){
   let workPlanMap = new Map([
             ['casos',       {fe: 'casos',       fets: 0, qllamados: 0}],
-            ['noplan',      {fe: 'noplan',      fets: 0, qllamados: 0}],
             ['sincontacto', {fe: 'sincontacto', fets: 0, qllamados: 0}],
+            ['noplan',      {fe: 'noplan',      fets: 0, qllamados: 0}],
             ['anteriores',  {fe: 'anteriores',  fets: 0, qllamados: 0}]
           ]);
 

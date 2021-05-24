@@ -4,6 +4,7 @@
 						(updateQuery)="refreshSelection($event)"></llamados-browse>
 
 
+<mat-progress-bar mode="determinate" color="primary" *ngIf="loadingProgress"></mat-progress-bar>
 
 <ng-container *ngIf='showData'>
 

@@ -79,6 +79,12 @@ export class EventEmitted {
   
 }
 
+export class WorkPlanToken {
+  fe: string;
+  fets: number;
+  qllamados: number;
+}
+
 function getLabel(list, val){
   let t = list.find(item => item.val == val)
   return t ? t.label : val;
@@ -111,8 +117,24 @@ const estadoActualAfectadoOptList = [
 	{ val: 7, label: 'SIN DATO'},
 ];
 
+const worPlanSintesis = [
+	{ val: "casos",        label: 'CASOS COVID+ ACTUALES (C/TELÉFONO)'},
+	{ val: "sincontacto",  label: 'CASOS SIN NINGÚN CONTACTO LOGRADO'},
+	{ val: "noplan",       label: 'CASOS SIN FECHA CONTACTO PROGRAMADO'},
+	{ val: "anteriores",   label: 'CASOS CON FECHA CONTACTO ANTERIOR'},
+	
+];
+const worPlanSintesisShort = [
+	{ val: "casos",        label: 'CASOS '},
+	{ val: "sincontacto",  label: 'S/CONTACTO'},
+	{ val: "noplan",       label: 'S/PROGRAMA'},
+	{ val: "anteriores",   label: 'ANTERIORES'},
+	
+];
 
 const optionsLists = {
   default: default_option_list,
   actualState: estadoActualAfectadoOptList,
+  workplanStatus: worPlanSintesis,
+  workPlanShort: worPlanSintesisShort
 }
