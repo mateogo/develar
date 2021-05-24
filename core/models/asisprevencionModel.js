@@ -1065,7 +1065,6 @@ function buildQuery(query, today){
   }
 
   if(query['isSeguimiento']){
-    console.dir(query)
     q["followUp.isActive"] = true;
     q['followUp.altaVigilancia'] =  {$ne: true};
 
@@ -1293,28 +1292,27 @@ function _processWorkPlanning(asistencias, cb){
     if(asis.infeccion && asis.infeccion.actualState === 1 && asis.telefono){
       wp.get('casos').qllamados += 1;
 
-      let fwUp = asis.followUp
-      if(!fwUp){
+      let followUp = asis.followUp
+      if(followUp){
 
-        if(fwUp.fets_nextLlamado){
-          if(fwUp.fets_nextLlamado < dateRefTime){
-
+        if(followUp.fets_nextLlamado && followUp.qcontactos){
+          if(followUp.fets_nextLlamado < dateRefTime){
             wp.get('anteriores').qllamados += 1;
 
           }else {
-            let fe = utils.txFromDateTime(fwUp.fets_nextLlamado);
+            let fe = utils.txFromDateTime(followUp.fets_nextLlamado);
        
             if(wp.has(fe)){
               wp.get(fe).qllamados += 1;
   
             }else {
-              wp.set(fe,  {fe: fe, fets: fwUp.fets_nextLlamado, qllamados: 1})
+              wp.set(fe,  {fe: fe, fets: followUp.fets_nextLlamado, qllamados: 1})
             }
   
           }
        
         }else {
-          if(fwUp.qcontactos){
+          if(followUp.qcontactos){
             wp.get('noplan').qllamados += 1;
 
           }else {
@@ -1363,7 +1361,6 @@ async function _loadCallPlanning(query){
   exports.userWorkload = computeUserWorkLoad;
 
  function computeUserWorkLoad(query, errcb, cb){
-  console.log('computeUserWorkLoad EPIDEMIO MODEL BEGIN')
 
   query = query || {}; 
   let regexQuery = buildQuery(query, new Date());
@@ -1373,7 +1370,6 @@ async function _loadCallPlanning(query){
   let dateFrame = _buildDateFrame(query);
 
   _loadAsistencias(regexQuery).then(asistencias => {
-    console.log('computeUserWorkLoad: asistencias: [%s]', asistencias && asistencias.length);
     if(asistencias && asistencias.length){
 
       processWorkLoad(dateFrame, asistencias, cb);
@@ -1390,7 +1386,7 @@ function processWorkLoad(datef, asistencias, cb){
   let asisMapping = asistencias.map(asis => asisMapFunction(asis))
 
   let userMapping = buildUserMapping(asisMapping);
-  //console.dir(userMapping);
+  //c onsole.dir(userMapping);
   let returnData = buildReturnData(datef, asisMapping, userMapping);
   cb(returnData);
 
@@ -1415,7 +1411,7 @@ function asisMapFunction(asis){
 
 function _showSample(asis){
   let sample = asis.find(t => t.ndoc === '36286721')
-  console.dir(sample);
+  //c onsole.dir(sample);
 }
 
 function buildUserMapping(asisMapping){
@@ -1548,8 +1544,6 @@ class MappedAsis {
 }
 
 async function _loadAsistencias(query){
-  console.log('loadAsistencias  [%s]', query)
-
   return await Record.find(query).lean().exec();
 }
 
@@ -1569,8 +1563,8 @@ function _buildDateFrame(query){
     dateList: utils.dateTxList(parseInt(query['fenovd_ts'], 10), 10)
   }
 
-  console.log('Date Dif : [%s]', (dateFrame.tsHasta - dateFrame.tsDesde)/(1000 * 60 * 60 * 24))
-  console.dir(dateFrame);
+  //c onsole.log('Date Dif : [%s]', (dateFrame.tsHasta - dateFrame.tsDesde)/(1000 * 60 * 60 * 24))
+  //c onsole.dir(dateFrame);
   return dateFrame;
 }
 /**
@@ -1990,7 +1984,6 @@ exports.findByQuery = function (query, errcb, cb) {
     if(query && query.necesitaLab ){
       necesitaLab = true;
     }
-    console.log('findByQuery#1557')
     console.dir(regexQuery);
 
     if(reporte && reporte === 'ASIGNACIONCASOS'){

@@ -107,12 +107,19 @@ router.get('/epidemio/:fecha', function (req, res) {
 //     }, function(entities) {
 //         res.status(200).json(entities);
 
+
+
+
+
 //     });
 // });
 
 /**
  * Retrieve all entity
- */
+db.asisprevenciones.find({isVigilado: true, avance: { '$ne': 'anulado' }, fecomp_tsa: { '$gte': 1621009585073, '$lt': 1621787185073 }, 'followUp.asignadoId': '5efcc30e2e36303f04fe52da', 'infeccion.hasCovid': true, 'infeccion.actualState': { '$in': [ 1, 4, 5 ] }}, {followUp: 1})
+
+
+*/
 router.post('/nextitem', function (req, res) {
     service.upsertNext(req.body, function(err) {
         res.status(400).json(err);
