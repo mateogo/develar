@@ -22,7 +22,6 @@ export class WorkloadByuserTableComponent implements OnInit {
   viewUserDetails(e, user){
     e.preventDefault();
     e.stopPropagation();
-    console.log('Click: [%s]',user.asignadoId );
     this.emitEvent(user, ACTION)
 
   }
@@ -30,7 +29,6 @@ export class WorkloadByuserTableComponent implements OnInit {
   filterAsistencias(e, user){
     e.preventDefault();
     e.stopPropagation();
-    console.log('Click: [%s]',user.asignadoId );
     this.emitEvent(user, FILTER)
 
   }

@@ -123,11 +123,10 @@ export class WorkloadDashboardComponent implements OnInit {
   viewUserDetail(event: EventEmitted){
     this.loadingDataInit();
     if(event.action === ACTION){
-      console.log('event Bubbled: [%s]', event.token.asignadoId)
       this.openUserDetailView(event.token)
     }
+
     if(event.action === FILTER){
-      console.log('event Bubbled FILTER: [%s]', event.token.asignadoId)
       this.filterAsistencias(event.token)
       this.loadingDataFinish();
     }
@@ -186,7 +185,6 @@ export class WorkloadDashboardComponent implements OnInit {
     
       let filteredAsis = this.filterAsistencias(user);
       this.service.openUserDialog(user, filteredAsis, list)
-        console.dir(list);
     })
 
   }
@@ -294,7 +292,7 @@ export class WorkloadDashboardComponent implements OnInit {
 
 //  let a = ["1", "1", "2", "3", "3", "1"];
 // let unique = a.filter((item, i, ar) => ar.indexOf(item) === i);
-// console.log(unique);
+// c onsole.log(unique);
   private dateArrayReduce(asistencias: AsistenciaFollowUp[]){
     let unique
     asistencias.reduce

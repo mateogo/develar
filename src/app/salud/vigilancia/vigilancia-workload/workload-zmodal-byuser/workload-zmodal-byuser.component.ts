@@ -30,7 +30,6 @@ export class WorkloadZmodalByuserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Iaujuuuuu [%s]', this.data && this.data.asistencias.length);
     this.user = this.data.user;
     this.asistencias = this.data.asistencias;
     this.workplan = this.data.workplan || [];

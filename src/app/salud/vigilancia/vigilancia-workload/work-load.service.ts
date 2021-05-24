@@ -74,7 +74,6 @@ export class WorkLoadService {
   }
 
 	private handleError(error: any): Promise<any> {
-		console.error('[%s]: Ocurrió un error: [%s]',whoami, error);
 		return Promise.reject(error.message || error);
 	}
 

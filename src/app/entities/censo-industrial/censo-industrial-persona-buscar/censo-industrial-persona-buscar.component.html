@@ -1,5 +1,5 @@
 <mat-form-field>
-    <input #searchBox matInput id="search-box" name="displayName" [matAutocomplete]="displayName" (keyup)="search(searchBox.value)" placeholder="Buscar organización por nombre ó CUIT..." />
+    <input #searchBox matInput  name="displayName" [matAutocomplete]="displayName" (keyup)="search(searchBox.value)" placeholder="Buscar organización por nombre ó CUIT..." />
 </mat-form-field>
 
 <mat-autocomplete #displayName="matAutocomplete">

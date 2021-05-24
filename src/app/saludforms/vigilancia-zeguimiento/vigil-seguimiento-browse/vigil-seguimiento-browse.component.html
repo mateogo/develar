@@ -288,6 +288,16 @@
 
   </mat-expansion-panel>
 
+  <div class='d-md-flex justify-content-start mt-3'>
+    <ng-container *ngFor="let token of workplan$ | async">
+        <div class="token">
+            <p class="token-header"><span >{{getLabel('workPlanShort',token.fe)}}</span></p>
+            <p class="token-data"><span >{{token.qllamados}}</span></p>
+        </div>
+    </ng-container>
+  </div>
+
+
   <div class="d-md-flex justify-content-start align-items-center" 
         title="Se mostrarán solo los casos índice">
 

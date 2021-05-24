@@ -2,10 +2,14 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
+import { BehaviorSubject } from 'rxjs'
+
 import { CustomValidators } from 'ng2-validation';
 
 import { Person, personModel } from '../../../entities/person/person';
 import { VigilanciaBrowse,  AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
+import { WorkloadHelper, WorkPlanToken } from '../../../salud/vigilancia/vigilancia-workload/workload-helper';
+import { WorkLoadService } from '../../../salud/vigilancia/vigilancia-workload/work-load.service';
 
 import { SaludController } from '../../../salud/salud.controller';
 
@@ -19,7 +23,8 @@ const SEARCH_NEXT = 'search_next';
 @Component({
   selector: 'vigil-seguimiento-browse',
   templateUrl: './vigil-seguimiento-browse.component.html',
-  styleUrls: ['./vigil-seguimiento-browse.component.scss']
+  styleUrls: ['./vigil-seguimiento-browse.component.scss'],
+  providers: [ WorkLoadService ]
 })
 export class VigilSeguimientoBrowseComponent implements OnInit {
 	@Input() query: VigilanciaBrowse = new VigilanciaBrowse();
@@ -51,9 +56,12 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   private fireEvent: VigilanciaBrowse;
   public usersOptList;
 
+  public workplan$ = new BehaviorSubject<WorkPlanToken[]>([])
+
   constructor(
     private dsCtrl: SaludController,
   	private fb: FormBuilder,
+    private service: WorkLoadService
   	) { 
   		this.form = this.buildForm();
 	}
@@ -68,6 +76,7 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     //this.query = this.dsCtrl.vigilanciaSelector;
   	this.initForEdit(this.form, this.query);
     this.usersOptList = this.dsCtrl.buildEncuestadoresOptList();
+    this.loadUserPlanning();
 
   }
 
@@ -114,6 +123,37 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
   changeCity() {
       this.barrioList = personModel.getBarrioList(this.form.value.city);
   }
+
+  getLabel(type: string, val: string){
+    return WorkloadHelper.getOptionLabel(type, val);
+  }
+
+  private loadUserPlanning(){
+    let user = this.dsCtrl.currentUser;
+    
+    const QueryClass = class {
+      fenovd_ts: number = 0;
+      fenovh_ts: number = 0;
+      hasCovid = true;
+      casoCovid = true;
+      asignadoId: string;
+      reporte =  'WEEKPLANNING';
+
+      constructor(user: any){
+        let today = new Date();
+        this.fenovd_ts = devutils.projectedDate(today, -10, 0).getTime();
+        this.fenovh_ts = devutils.projectedDate(today, -1,  0).getTime();
+        this.asignadoId = user['id'];
+      }
+    }
+
+    let query = new QueryClass(user);
+    this.service.fetcWeekPlanningByQuery<WorkPlanToken[]>(query).subscribe(list => {    
+        this.workplan$.next(list);
+    })
+
+  }
+
 
   private emitEvent(action:string){
   	this.query.searchAction = action;

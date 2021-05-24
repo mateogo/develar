@@ -1676,6 +1676,10 @@ export class SaludController {
       Object.assign(this.naviCmty, this.userCmty);
   }
 
+  get currentUser(): UserToken{
+    return this.userx;
+  }
+
   updateUserStatus(user:User){
     this.userx.id = user._id;
     this.userx.data = user;

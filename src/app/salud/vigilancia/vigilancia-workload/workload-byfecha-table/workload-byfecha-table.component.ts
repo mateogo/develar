@@ -20,7 +20,6 @@ export class WorkloadByfechaTableComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.dir(this.workLoad)
     this.showTable = true;
   }
 
