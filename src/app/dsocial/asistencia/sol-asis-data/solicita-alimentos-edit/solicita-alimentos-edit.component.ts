@@ -99,20 +99,20 @@ export class SolicitaAlimentosEditComponent implements OnInit {
     if(!this.parent || !val) return;
     
     let date_from = devutils.dateFromTx(this.parent.fecomp_txa);
-    let date_to = devutils.dateFromTx(this.parent.fecomp_txa);
-    let datex;
+    let date_ref = devutils.dateFromTx(this.parent.fecomp_txa);
+    let date_to;
 
     if(val === "3M"){
-      datex =  devutils.projectedDate(date_to, 0, 3);
+      date_to =  devutils.projectedDate(date_ref, 0, 3);
 
     }else if(val === "6M"){
-      datex =  devutils.projectedDate(date_to, 0, 6);
+      date_to =  devutils.projectedDate(date_ref, 0, 6);
 
     }else if(val === "9M"){
-      datex =  devutils.projectedDate(date_to, 0, 9);
+      date_to =  devutils.projectedDate(date_ref, 0, 9);
 
     }else if(val === "12M"){
-      datex =  devutils.projectedDate(date_to, 0, 12);
+      date_to =  devutils.projectedDate(date_ref, 0, 12);
 
     }
 

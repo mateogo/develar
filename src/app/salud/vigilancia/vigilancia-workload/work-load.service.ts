@@ -19,14 +19,16 @@ const ERROR =    'error';
 const whoami = 'workload-service: ';
 const ASIS_PREVENCION_RECORD = 'asisprevencion';
 const WORKLOAD = 'workloadURL'
+const WEEKPLANNING = 'weekplanningURL'
 
 @Injectable()
 export class WorkLoadService {
 
   private apiRoutes = {
-    backendURL:     'api/asisprevencion',
-    searchURL:      'api/asisprevencion/search',
-    workloadURL:    'api/asisprevencion/workload',
+    backendURL:      'api/asisprevencion',
+    searchURL:       'api/asisprevencion/search',
+    workloadURL:     'api/asisprevencion/workload',
+    weekplanningURL: 'api/asisprevencion/weekplanning'
   }
 
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -45,9 +47,13 @@ export class WorkLoadService {
   fetchWorkloadByQuery<T>(query:any): Observable<T>{
     return this.search<T>(WORKLOAD, query);
   }
-  
-  private search<T>(type:string, query): Observable<T> {
-    let searchUrl = `${this.apiRoutes[type] }`;
+
+  fetcWeekPlanningByQuery<T>(query:any): Observable<T>{
+    return this.search<T>(WEEKPLANNING, query);
+  }
+
+  private search<T>(targetUrl: string, query): Observable<T> {
+    let searchUrl = `${this.apiRoutes[targetUrl]}`;
     let params = this.buildParams(query);
     return this.http
                .get<T>(searchUrl, { params })
@@ -73,15 +79,6 @@ export class WorkLoadService {
     return Object.getOwnPropertyNames(query)
                  .reduce((p, key) => p.append(key, query[key]), new HttpParams());
   }
-
-
-
-
-
-
-  
-  
-
 
   filterAsistencias(user: UserWorkload, asistencias: AsistenciaFollowUp[]): AsistenciaFollowUp[]{
     return asistencias.filter(asis => asis.asignadoId === user.asignadoId)
@@ -121,17 +118,12 @@ export class WorkLoadService {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
 }
-
+/***
+ * db.asisprevencion.find({
+ *              
+ * })
+ * 
+ * 
+ */
 

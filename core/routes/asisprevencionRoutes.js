@@ -64,6 +64,21 @@ router.get('/tablero', function (req, res) {
         });
 });
 
+/**
+ * Retrieve Entity by ID
+ */
+ router.get('/weekplanning', function (req, res) {
+    console.log('weekplanning EPIDEMIO ROUTE BEGIN')
+    service.userWeekPlanning(req.query, 
+        function(err) {
+            res.status(400).json(err);
+
+        }, function(entities) {
+            res.status(200).json(entities);
+
+        });
+});
+
 
 
 

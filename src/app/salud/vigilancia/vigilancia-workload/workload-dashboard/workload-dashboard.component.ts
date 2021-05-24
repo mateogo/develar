@@ -23,6 +23,7 @@ import { devutils } from '../../../../develar-commons/utils';
 
 
 const WORKLOADREPORT = 'WORKLOAD';
+const WEEKPLANNING = "WEEKPLANNING";
 const INVESIGACIONESREALIZADAS = 'INVESTIGACIONESREALIZADAS';
 const SEARCH = 'search';
 const EXPORT = 'export';
@@ -98,6 +99,7 @@ export class WorkloadDashboardComponent implements OnInit {
   refreshSelection(query: VigilanciaBrowse){
 
     this.query = AsistenciaHelper.cleanQueryToken(query, false);
+    console.dir(this.query)
 
     if(query.searchAction === SEARCH){
     	this.fetchWorkLoad(this.query);
@@ -120,11 +122,62 @@ export class WorkloadDashboardComponent implements OnInit {
       this.filterAsistencias(event.token)
     }
   }
+  //weekplanning
+  //fetcWeekPlanningByQuery
 
+  /*** 
+   *     if(query['fenovd_ts'] && query['fenovh_ts']){
+      let fedesde = parseInt(query['fenovd_ts'], 10);
+      let fehasta = parseInt(query['fenovh_ts'], 10);
+      q['fecomp_tsa'] = { $gte: fedesde, $lt: fehasta };
+    }
+
+    if(query['asignadoId']){
+        q["followUp.asignadoId"] = query['asignadoId'];
+    }
+
+    if(query['hasCovid']){
+      q["infeccion.hasCovid"] = true;
+    }
+
+    if(query['casoCovid']){
+      q['infeccion.actualState'] = {$in: [1, 4, 5]}; 
+    }
+
+    return q;
+
+  */
   private openUserDetailView(user: UserWorkload){
+    // testing API:
+    this.loadUserPlanning(user);
+
     let filteredAsis = this.filterAsistencias(user);
     
     this.service.openUserDialog(user, filteredAsis)
+
+  }
+
+  private loadUserPlanning(user: UserWorkload){
+    const QueryClass = class {
+      fenovd_ts: number = 0;
+      fenovh_ts: number = 0;
+      hasCovid = true;
+      casoCovid = true;
+      asignadoId: string;
+      reporte =  'WEEKPLANNING';
+
+      constructor(user: UserWorkload){
+        let today = new Date();
+        this.fenovd_ts = devutils.projectedDate(today, -10, 0).getTime();
+        this.fenovh_ts = devutils.projectedDate(today, -1,  0).getTime();
+        this.asignadoId = user.asignadoId;
+      }
+    }
+
+    let query = new QueryClass(user);
+    this.service.fetcWeekPlanningByQuery(query).subscribe(list => {
+      console.dir(list);
+    })
 
   }
 

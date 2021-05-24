@@ -559,6 +559,33 @@ function buildQuery(query, today){
       }
   }
 
+  if(query['reporte'] && query['reporte']==="WEEKPLANNING"){
+    q = {
+      isVigilado: true,
+      avance: {$ne: 'anulado'},
+    }
+
+    if(query['fenovd_ts'] && query['fenovh_ts']){
+      let fedesde = parseInt(query['fenovd_ts'], 10);
+      let fehasta = parseInt(query['fenovh_ts'], 10);
+      q['fecomp_tsa'] = { $gte: fedesde, $lt: fehasta };
+    }
+
+    if(query['asignadoId']){
+        q["followUp.asignadoId"] = query['asignadoId'];
+    }
+
+    if(query['hasCovid']){
+      q["infeccion.hasCovid"] = true;
+    }
+
+    if(query['casoCovid']){
+      q['infeccion.actualState'] = {$in: [1, 4, 5]}; 
+    }
+
+    return q;
+  }
+
   if(query['reporte'] && query['reporte']==="WORKLOAD"){
     q = {
           isVigilado: true,
@@ -1215,6 +1242,110 @@ exports.updateAsistenciaFromPerson = function(asistencia){
     })
 }
 
+ /*************************************************************************************
+ * weekplanning: usado en mayo-2021 para evaluar la carga de trabajo del usuario
+ * usage: DEVELOPMENT: 
+ * localhost:8080/api/asisprevencion/workload
+ * 
+ * PANIC SCRIPT
+ * usage: DEVELOPMENT: 
+ * DEBUG=develar:server PORT=8080 NODE_ENV=development DBASE=saludmab SERVER=http://develar-local.co PUBLIC=/public node core/services/panicScript
+ * 
+ * usage: PRODUCTION: SALUD
+ * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
+ */
+  
+ exports.userWeekPlanning = userWeekCallPlanning;
+
+ function userWeekCallPlanning(query, errcb, cb){
+  console.log('userWeekCallPlanning EPIDEMIO MODEL BEGIN')
+
+  query = query || {}; 
+  let regexQuery = buildQuery(query, new Date());
+  console.dir(query);
+  console.dir(regexQuery);
+
+  _loadCallPlanning(regexQuery).then(asistencias => {
+    console.log('userWeekCallPlanning: asistencias: [%s]', asistencias && asistencias.length);
+    if(asistencias && asistencias.length){
+
+      let workPlanMap =  _processWorkPlanning(asistencias, cb);
+      cb(Array.from(workPlanMap.values()))
+
+    }else {
+      console.log('todo: no hay asistencias para el períoodo');
+      cb([])
+    }
+  });
+}
+
+function _processWorkPlanning(asistencias, cb){
+  let workPlanMap = new Map([
+            ['casos',       {fe: 'casos',       fets: 0, qllamados: 0}],
+            ['noplan',      {fe: 'noplan',      fets: 0, qllamados: 0}],
+            ['sincontacto', {fe: 'sincontacto', fets: 0, qllamados: 0}],
+            ['anteriores',  {fe: 'anteriores',  fets: 0, qllamados: 0}]
+          ]);
+
+  let dateRefTime = Date.now();
+  
+  workPlanMap = asistencias.reduce((wp, asis) => {
+    if(asis.infeccion && asis.infeccion.actualState === 1 && asis.telefono){
+      wp.get('casos').qllamados += 1;
+
+      let fwUp = asis.followUp
+      if(!fwUp){
+
+        if(fwUp.fets_nextLlamado){
+          if(fwUp.fets_nextLlamado < dateRefTime){
+
+            wp.get('anteriores').qllamados += 1;
+
+          }else {
+            let fe = utils.txFromDateTime(fwUp.fets_nextLlamado);
+       
+            if(wp.has(fe)){
+              wp.get(fe).qllamados += 1;
+  
+            }else {
+              wp.set(fe,  {fe: fe, fets: fwUp.fets_nextLlamado, qllamados: 1})
+            }
+  
+          }
+       
+        }else {
+          if(fwUp.qcontactos){
+            wp.get('noplan').qllamados += 1;
+
+          }else {
+            wp.get('sincontacto').qllamados += 1;
+
+          }
+        }
+
+      }else{
+        wp.get('sincontacto').qllamados += 1;
+      }
+    }
+    return wp;
+  }, workPlanMap)
+
+  return workPlanMap;
+}
+
+async function _loadCallPlanning(query){
+  return await Record.find(query)
+                  .select({ndoc: 1, telefono: 1, edad: 1,  infeccion: 1, followUp: 1})
+                  .lean()
+                  .exec();
+}
+
+/**
+ * ortegamiriam2204@gmail.com 
+ * 5efcc30e2e36303f04fe52da
+ * FIN: computeUserWorkLoad
+ ******************************/
+
 
  /*************************************************************************************
  * computeUserWorkLoad: usado en mayo-2021 para evaluar la carga de trabajo del usuario
@@ -1228,6 +1359,7 @@ exports.updateAsistenciaFromPerson = function(asistencia){
  * usage: PRODUCTION: SALUD
  * DEBUG=develar:server PORT=8081 NODE_ENV=production DBASE=salud SERVER=https://salud.brown.gob.ar PUBLIC=/www/salud node core/services/panicScript
  */
+
   exports.userWorkload = computeUserWorkLoad;
 
  function computeUserWorkLoad(query, errcb, cb){
@@ -1236,8 +1368,7 @@ exports.updateAsistenciaFromPerson = function(asistencia){
   query = query || {}; 
   let regexQuery = buildQuery(query, new Date());
 
-  let feref = query.feref ? query.feref : utils.dateToStr(new Date());
-  console.dir(query);
+  console.dir(regexQuery);
 
   let dateFrame = _buildDateFrame(query);
 

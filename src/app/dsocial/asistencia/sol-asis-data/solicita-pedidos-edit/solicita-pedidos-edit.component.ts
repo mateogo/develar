@@ -110,22 +110,22 @@ export class SolicitaPedidosEditComponent implements OnInit {
       //this.form.controls['city'].setValue(t.city);
     if(!this.asistencia) return;
     let date_from = devutils.dateFromTx(this.asistencia.fecomp_txa);
-    let date_to = devutils.dateFromTx(this.asistencia.fecomp_txa);
+    let date_ref = devutils.dateFromTx(this.asistencia.fecomp_txa);
     let freq = this.form.controls['freq'].value;
 
-    let datex;
+    let date_to;
 
     if(type==="periodo" && val==="3M"){
-      datex =  devutils.projectedDate(date_to, 0, 3);
+      date_to =  devutils.projectedDate(date_ref, 0, 3);
 
     }else if(type==="periodo" && val==="6M"){
-      datex =  devutils.projectedDate(date_to, 0, 6);
+      date_to =  devutils.projectedDate(date_ref, 0, 6);
 
     }else if(type==="periodo" && val==="9M"){
-      datex =  devutils.projectedDate(date_to, 0, 9);
+      date_to =  devutils.projectedDate(date_ref, 0, 9);
 
     }else if(type==="periodo" && val==="12M"){
-      datex =  devutils.projectedDate(date_to, 0, 12);
+      date_to =  devutils.projectedDate(date_ref, 0, 12);
 
     }
 

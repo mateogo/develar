@@ -384,8 +384,10 @@ function umeTx(ume, fume, fumetx, qt, freq){
 
 // si plus_day === 0, entonces devuelve la fecha de fin de mes, acorde al mes computado.
 // si plus_day !== 0, entonces la suma, a modo de corrimiento, respecto del día actual.
-function getProjectedDate(date: Date, plus_day:number, plus_month:number){
-    if(!date) return null;
+function getProjectedDate(inputDate: Date, plus_day:number, plus_month:number): Date{
+    if(!inputDate) return null;
+    // clona el inputDate para no modificar el argumento
+    let date = new Date(inputDate.getTime());
     plus_day = plus_day || 0;
     plus_month = plus_month || 0;
 
