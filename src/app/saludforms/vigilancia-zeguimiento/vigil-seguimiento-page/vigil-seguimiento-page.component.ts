@@ -40,6 +40,8 @@ export class VigilSeguimientoPageComponent implements OnInit {
 
   public showData =  false;
   public showEditor = false;
+  public loadingProgress = false;
+
 
   public viewList: Array<string> = [];
 
@@ -133,33 +135,39 @@ export class VigilSeguimientoPageComponent implements OnInit {
     if(!query){
       query = new VigilanciaBrowse();
       query['avance'] = 'emitido';
-
       this.query = query;
     }
-
     AsistenciaHelper.cleanQueryToken(this.query, false);
 
+    if(!this.loadingProgress){
+      this.loadingDataInit();
 
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length > 0){
-        this.asistenciasList = list;
+      this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
+        if(list && list.length > 0){
+          this.asistenciasList = list;
+  
+          if(query.casosIndice) this.asistenciasList = this.filterCasosIndice(this.asistenciasList);
+  
+          this.sortProperly(this.asistenciasList);
+  
+          this.dsCtrl.triggerAsistenciaEmitter(this.asistenciasList);
+  
+          this.showData = true;
+  
+        }else {
+          this.dsCtrl.triggerAsistenciaEmitter([]);
+          this.asistenciasList = [];
+  
+          this.showData = false;
+        }
 
-        if(query.casosIndice) this.asistenciasList = this.filterCasosIndice(this.asistenciasList);
+        this.loadingDataFinish();  
+      })
+        
+    }else{
+      this.dsCtrl.openSnackBar('Aguarde, hay una consulta en curso', 'CERRAR');
+    }
 
-        this.sortProperly(this.asistenciasList);
-
-        this.dsCtrl.triggerAsistenciaEmitter(this.asistenciasList);
-
-        this.showData = true;
-
-      }else {
-        this.dsCtrl.triggerAsistenciaEmitter([]);
-        this.asistenciasList = [];
-
-        this.showData = false;
-      }
-
-    })
   }
 
   private filterCasosIndice(list: Asistencia[]): Asistencia[]{
@@ -183,6 +191,16 @@ export class VigilSeguimientoPageComponent implements OnInit {
 
 
     });
+  }
+
+  private loadingDataInit(){
+    this.loadingProgress = true;
+  }
+
+  private loadingDataFinish(){
+    setTimeout(()=> {
+      this.loadingProgress = false;
+    }, 500);
   }
 
 

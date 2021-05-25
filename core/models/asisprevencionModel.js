@@ -2014,6 +2014,7 @@ exports.findByQuery = function (query, errcb, cb) {
       if(reporte && reporte === 'COVID'){
         Record.find(regexQuery)
               .lean()
+              .limit(5000)
               .sort( '-fecomp_tsa' )
               .exec(function(err, entities) {
                   if (err) {
@@ -3424,7 +3425,10 @@ function dashboardEpidemio(datenum, errcb, cb){
     
   person.buildIdTree().then(pTree =>{
 
-    Record.find(regexQuery).lean().exec(function(err, entities) {
+    Record.find(regexQuery)
+          .select({fecomp_txa: 1, ndoc: 1, idPerson:1 , sector: 1, telefono: 1, edad: 1, sexo: 1,locacion:1,  sisaevent:1 , infeccion: 1})
+          .lean()
+          .exec(function(err, entities) {
 
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)

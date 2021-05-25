@@ -667,10 +667,24 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     groupTitle: false,
     sub: [
       {
+        title: 'Investigación Epidemio',
+        routing: '/salud/formularios/epidemio',
+        rolesOut: ['ivr:operator']
+      },
+      {
+        title: 'Seguimiento afectado/as',
+        routing: '/salud/formularios/seguimiento',
+        rolesOut: ['ivr:operator'],
+      },
+      {
+        title: 'Emisión constancia ALTA',
+        routing: '/tramites/misconsultas',
+        rolesOut: ['ivr:operator'],
+      },
+      {
         title: 'Recepción',
         routing: '/salud/gestion/recepcion',
         rolesOut: ['ivr:operator']
-
       },
       {
         title: 'Alta eventos COVID',
@@ -679,21 +693,6 @@ export const SALUD_ITEMS: MainMenuItem[] = [
       {
         title: 'Evolución COVID',
         routing: '/salud/gestion/solicitudes'
-      },
-      {
-        title: 'Tablero COVID',
-        routing: '/salud/gestion/tablerocovid',
-        rolesOut: ['ivr:operator'],
-      },
-      {
-        title: 'DeTecTar',
-        routing: '/salud/gestion/detectar',
-        rolesOut: ['ivr:operator'],
-      },
-      {
-        title: 'Padrón personas',
-        routing: '/salud/gestion/atencionsocial',
-        rolesOut: ['ivr:operator'],
       },
       {
         title: 'Gestión internación',
@@ -731,16 +730,6 @@ export const SALUD_ITEMS: MainMenuItem[] = [
         rolesOut: ['ivr:operator']
       },
       {
-        title: 'Geolocalización',
-        routing: '/salud/gestion/geolocalizacion',
-        rolesOut: ['ivr:operator'],
-      },
-      {
-        title: 'Internacion TestUNO',
-        routing: '/salud/gestion/testuno',
-        rolesOut: ['ivr:operator'],
-      },
-      {
         title: 'Reporte Vigilancia',
         routing:  '/salud/gestion/reportesvigilancia',
         rolesOut: ['ivr:operator'],
@@ -750,34 +739,6 @@ export const SALUD_ITEMS: MainMenuItem[] = [
     externalLink: '',
     budge: '',
     budgeColor: ''
-  },
-  {
-    title: 'Formularios SALUD',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Investigación Epidemio',
-        routing: '/salud/formularios/epidemio',
-        rolesOut: ['ivr:operator']
-      },
-      {
-        title: 'Seguimiento afectado/as',
-        routing: '/salud/formularios/seguimiento',
-        rolesOut: ['ivr:operator'],
-      },
-      {
-        title: 'Emisión constancia ALTA',
-        routing: '/tramites/misconsultas',
-        rolesOut: ['ivr:operator'],
-      },
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-
   },
   {
     title: 'Entidades',
@@ -2010,26 +1971,3 @@ export const COMPANY_MENU = {
   INDUSTRIAS:  INDUSTRIAS_ITEMS
 };
 
-/****
-  {
-    title: 'Formularios SALUD',
-    icon: 'fa fa-user-circle',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Investigación Epidemio',
-        routing: '/salud/formularios/epidemio',
-        rolesOut: ['ivr:operator']
-      }
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-
-  },
-
-
-
-***/

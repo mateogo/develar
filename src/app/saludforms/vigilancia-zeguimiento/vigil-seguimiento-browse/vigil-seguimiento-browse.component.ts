@@ -148,8 +148,10 @@ export class VigilSeguimientoBrowseComponent implements OnInit {
     }
 
     let query = new QueryClass(user);
-    this.service.fetcWeekPlanningByQuery<WorkPlanToken[]>(query).subscribe(list => {    
+    this.service.fetcWeekPlanningByQuery<WorkPlanToken[]>(query).subscribe(list => {
+      if(list && list.length){
         this.workplan$.next(list);
+      }
     })
 
   }

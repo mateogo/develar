@@ -2,6 +2,7 @@
 
 <vigil-seguimiento-browse [query]="query" 
 								(updateQuery)="refreshSelection($event)" ></vigil-seguimiento-browse>
+<mat-progress-bar mode="indeterminate" color="warning" *ngIf="loadingProgress"></mat-progress-bar>
 
 <mat-card>
   <mat-card-content>
