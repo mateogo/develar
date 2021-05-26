@@ -69,28 +69,34 @@ function processSisaArchive(req, errcb, cb){
 
 function _buildUserMap(ulist){
 	let umap = new Map();
-	let default_index = 'general';
+	let default_role = 'general';
 
 	ulist.forEach(u => {
-		let index = default_index;
-		// 1. busco dentro de los usuarios-caps
-		let capsUser = capsUsers.find(t => t.email === u.email);
-		index = capsUser ? capsUser.city : default_index;
-		_addToMap(umap, index, u);
+		let umap_key = default_role;
 
-		// los pediatras están TAMBIÉN en la lista general
-		if(index === 'pediatra'){
-			_addToMap(umap, default_index, u);
+		// 1. verifica si el usuario tiene roles específicos declarados en el json capsUsers
+		let specialUsers = capsUsers.filter(t => t.email === u.email);
+
+		if(specialUsers && specialUsers.length){
+			specialUsers.forEach(item => {
+				umap_key = item.role;
+				_addToMap(umap, umap_key, u);		
+			})
+
+		}else {
+			umap_key = default_role;
+			_addToMap(umap, umap_key, u);
 		}
+
 	})
 	return umap;
 }
 
-function _addToMap(umap, index, user){
-	if(umap.has(index)){
-		umap.get(index).push(user);
+function _addToMap(umap, role, user){
+	if(umap.has(role)){
+		umap.get(role).push(user);
 	}else {
-		umap.set(index, [ user ])
+		umap.set(role, [ user ])
 	}
 }
 
@@ -1082,45 +1088,59 @@ const cityToUser = [
 ];
 
 const capsUsers = [
-	//{ email: 'centros.saludbrown@gmail.com',        city: 'adrogue' },
-	{ email: 'caps9florealferrara@gmail.com',       city: 'burzaco' },
-	{ email: 'burzaco.saludbrown@gmail.com',        city: 'burzaco' },
-	{ email: 'cmd.saludbrown@gmail.com',            city: 'burzaco' },
-	{ email: 'cmsayz@gmail.com',                    city: 'burzaco' },
-	//{ email: 'usam.caps26.altebrown@gmail.com',     city: 'burzaco' },
-	{ email: 'caps28dediciembre@gmail.com',         city: 'calzada' },
-	//{ email: 'calzada.saludbrown@gmail.com',        city: 'calzada' }, CAPS 16
-	{ email: 'caps.2deabril@gmail.com',             city: 'calzada' },
-	{ email: 'mihorizonte2012@gmail.com',           city: 'claypole' },
-	{ email: 'peron.saludbrown@gmail.com',          city: 'claypole' },
-	{ email: 'caps29laesther@gmail.com',            city: 'claypole' },
-	//{ email: 'caps12donorione@gmail.com',           city: 'claypole' },
-	//{ email: 'alamos.saludbrown@gmail.com',         city: 'glew' }, // caps 6
-	{ email: 'capsglew1@gmail.com',                 city: 'glew' }, // GLEW-1 Gorriti: Gentile
-	//{ email: 'caps15.claumol@gmail.com',            city: 'glew' },
-	{ email: 'ramoncarrilloglewsur@gmail.com',      city: 'glew' },
-	{ email: 'bealta64@gmail.com',                  city: 'glew' },
-	{ email: 'sanjose.saludbrown@gmail.com',        city: 'marmol' },
-	{ email: 'rayodesol.saludbrown@gmail.com',      city: 'longchamps' },
-	{ email: 'caps24virgenmaria@gmail.com',         city: 'longchamps' },
-	{ email: 'sakuracaps28@gmail.com',              city: 'longchamps' },
-	{ email: 'caps31salud@gmail.com',               city: 'longchamps' },
-	{ email: 'barriolindo02015@gmail.com',          city: 'malvinasargentinas' },
-	{ email: 'encuentro.saludbrown@gmail.com',      city: 'malvinasargentinas' },
-	{ email: 'lomaverde.saludbrown@gmail.com',      city: 'malvinasargentinas' },
-	{ email: 'mellinoantonella@gmail.com',          city: 'ministrorivadavia' },
-	{ email: 'mtrorivadavia@gmail.com',             city: 'ministrorivadavia' },
-	{ email: 'casitatea2013@gmail.com',             city: 'ministrorivadavia' },
-	{ email: 'caps30lospinos.saludbrown@gmail.com', city: 'ministrorivadavia' },
-	{ email: 'gloria.saludbrown@gmail.com',         city: 'sanjose' },
-	{ email: 'caps32.salud@gmail.com',              city: 'sanjose' },
-	{ email: '13dejulio.salud@gmail.com',           city: 'solano' },
-	{ email: 'sanagustin.saludbrown@gmail.com',     city: 'solano' },
-	{ email: 'dra.mgarcia64@gmail.com',             city: 'pediatra' }, // Mónica García
-	{ email: 'ivcp05@gmail.com',                    city: 'pediatra' },  // Ivette Perkik
-	{ email: 'terrazavivoana3@gmail.com',           city: 'pediatra' },
-	{ email: 'patriciadelcolle@gmail.com',          city: 'pediatra' },
-	{ email: 'unzienguillermo@hotmail.com',         city: 'pediatra' },		
+	//{ email: 'centros.saludbrown@gmail.com',      role: 'adrogue' },
+	{ email: 'caps9florealferrara@gmail.com',       role: 'burzaco' },
+	{ email: 'burzaco.saludbrown@gmail.com',        role: 'burzaco' },
+	{ email: 'cmd.saludbrown@gmail.com',            role: 'burzaco' },
+	{ email: 'cmsayz@gmail.com',                    role: 'burzaco' },
+	//{ email: 'usam.caps26.altebrown@gmail.com',   role: 'burzaco' },
+	{ email: 'caps28dediciembre@gmail.com',         role: 'calzada' },
+	//{ email: 'calzada.saludbrown@gmail.com',      role: 'calzada' }, CAPS 16
+	{ email: 'caps.2deabril@gmail.com',             role: 'calzada' },
+	{ email: 'mihorizonte2012@gmail.com',           role: 'claypole' },
+	{ email: 'peron.saludbrown@gmail.com',          role: 'claypole' },
+	{ email: 'caps29laesther@gmail.com',            role: 'claypole' },
+	//{ email: 'caps12donorione@gmail.com',         role: 'claypole' },
+	//{ email: 'alamos.saludbrown@gmail.com',       role: 'glew' }, // caps 6
+	{ email: 'capsglew1@gmail.com',                 role: 'glew' }, // GLEW-1 Gorriti: Gentile
+	//{ email: 'caps15.claumol@gmail.com',          role: 'glew' },
+	{ email: 'ramoncarrilloglewsur@gmail.com',      role: 'glew' },
+	{ email: 'bealta64@gmail.com',                  role: 'glew' },
+	{ email: 'rayodesol.saludbrown@gmail.com',      role: 'longchamps' },
+	{ email: 'caps24virgenmaria@gmail.com',         role: 'longchamps' },
+	{ email: 'sakuracaps28@gmail.com',              role: 'longchamps' },
+	{ email: 'caps31salud@gmail.com',               role: 'longchamps' },
+	{ email: 'barriolindo02015@gmail.com',          role: 'malvinasargentinas' },
+	{ email: 'encuentro.saludbrown@gmail.com',      role: 'malvinasargentinas' },
+	{ email: 'lomaverde.saludbrown@gmail.com',      role: 'malvinasargentinas' },
+	{ email: 'mellinoantonella@gmail.com',          role: 'ministrorivadavia' },
+	{ email: 'mtrorivadavia@gmail.com',             role: 'ministrorivadavia' },
+	{ email: 'casitatea2013@gmail.com',             role: 'ministrorivadavia' },
+	{ email: 'caps30lospinos.saludbrown@gmail.com', role: 'ministrorivadavia' },
+
+	{ email: 'sanjose.saludbrown@gmail.com',        role: 'marmol' },
+	{ email: 'gloria.saludbrown@gmail.com',         role: 'marmol' }, // OjO estan compartiendo usuarios con San Jose
+	{ email: 'caps32.salud@gmail.com',              role: 'marmol' }, // 
+
+	{ email: 'gloria.saludbrown@gmail.com',         role: 'sanjose' }, // San jose CAPS 11 LA GLORIA
+	{ email: 'caps32.salud@gmail.com',              role: 'sanjose' }, // san jose JOSE ALEGRE 
+	{ email: 'sanjose.saludbrown@gmail.com',        role: 'sanjose' }, // caps 04 (ver por qué tiene tantos casos)	
+
+	{ email: '13dejulio.salud@gmail.com',           role: 'solano' },
+	{ email: 'sanagustin.saludbrown@gmail.com',     role: 'solano' },
+	{ email: 'dra.mgarcia64@gmail.com',             role: 'pediatra' }, // Mónica García
+	{ email: 'ivcp05@gmail.com',                    role: 'pediatra' },  // Ivette Perkik
+	{ email: 'terrazavivoana3@gmail.com',           role: 'pediatra' },
+	{ email: 'patriciadelcolle@gmail.com',          role: 'pediatra' },
+	{ email: 'unzienguillermo@hotmail.com',         role: 'pediatra' },	
+
+	// los pediatras TAMBIÉN atienden casos generales
+	{ email: 'dra.mgarcia64@gmail.com',             role: 'general' }, // Mónica García
+	{ email: 'ivcp05@gmail.com',                    role: 'general' },  // Ivette Perkik
+	{ email: 'terrazavivoana3@gmail.com',           role: 'general' },
+	{ email: 'patriciadelcolle@gmail.com',          role: 'general' },
+	{ email: 'unzienguillermo@hotmail.com',         role: 'general' },		
+
 ];
 
 
