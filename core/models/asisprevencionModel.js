@@ -2022,7 +2022,7 @@ exports.findByQuery = function (query, errcb, cb) {
                       errcb(err);
                   }else{
                       if(entities && entities.length){
-                        dispatchQuerySearch(reporte, entities, query, errcb, cb)
+                        dispatchQuerySearch(reporte, entities, query, regexQuery, errcb, cb)
                       }else {
                         cb([]);
                       }
@@ -2032,6 +2032,7 @@ exports.findByQuery = function (query, errcb, cb) {
       }else {
         Record.find(regexQuery)
               .lean()
+              .limit(5000)
               .exec(function(err, entities) {
                   if (err) {
                       console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
@@ -2043,7 +2044,7 @@ exports.findByQuery = function (query, errcb, cb) {
                           entities = filterNecesidadDeLaboratorio(entities);
                         }
 
-                        dispatchQuerySearch(reporte, entities, query, errcb, cb)
+                        dispatchQuerySearch(reporte, entities, query, regexQuery, errcb, cb)
 
                       }else {
                         cb([]);
@@ -2057,9 +2058,16 @@ exports.findByQuery = function (query, errcb, cb) {
 
 };
 
-function dispatchQuerySearch(reporte, movimientos, query, errcb, cb){
+function dispatchQuerySearch(reporte, movimientos, query,regexQuery, errcb, cb){
 
   if(!reporte || !findByQueryProcessFunction[reporte]){
+      if(!movimientos || (movimientos && movimientos.length && movimientos.length > 4500)){
+        console.log('>>>>>>>>>>>>>>>>> ATENCIÓN SOLICITUD MUY ABARCATIVA >>>>>>>>>>>>>>>>>')
+        console.log('Registros [%s]', movimientos.length);
+        console.dir(regexQuery);
+        console.log('<<<<<<<<<<<<<=== ATENCIÓN SOLICITUD MUY ABARCATIVA <<<<<<<<<<<<<===')
+      }
+
       cb(movimientos);
 
   }else {
