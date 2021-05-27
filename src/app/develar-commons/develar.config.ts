@@ -4,7 +4,7 @@
  *
  * @
 *************/
-const user = 'industrias';
+const user = 'salud';
 
 const globals = {
 
