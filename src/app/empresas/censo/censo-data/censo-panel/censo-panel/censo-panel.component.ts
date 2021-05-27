@@ -111,6 +111,7 @@ export class CensoPanelComponent implements OnInit {
     let index = this.items.indexOf(t);
 
     if(index !== -1){
+      console.log('ITEM FOUND TO BE DELETED')
       this.items.splice(index, 1)
     }
   }

@@ -23,6 +23,8 @@ const TOKEN_TYPE = 'patentes';
 const BIENES = 'bien';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
+const DELETE = 'delete';
+
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
@@ -93,8 +95,8 @@ export class CensoPatentesEditComponent implements OnInit {
   }
 
   deleteToken(){
-  	// this.action = DELETE;
-  	// this.emitEvent(this.action);
+  	this.action = DELETE;
+  	this.emitEvent(this.action);
 
   }
 

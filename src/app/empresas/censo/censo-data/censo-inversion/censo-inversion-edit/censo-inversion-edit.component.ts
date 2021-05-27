@@ -24,6 +24,8 @@ import { devutils }from '../../../../../develar-commons/utils'
 const TOKEN_TYPE = 'inversion';
 const CANCEL = 'cancel';
 const UPDATE = 'update';
+const DELETE = 'delete';
+
 const PAGE_ABSOLUTE =   '/mab/empresas/inicio';
 const CENSO_ABSOLUTE =  '/mab/empresas/gestion/censo2021';
 const CENSO_BIENES =      '/mab/empresas/gestion/censo2021/actividad/:id';
@@ -110,7 +112,8 @@ export class CensoInversionEditComponent implements OnInit {
   }
 
   deleteToken(){
-    
+  	this.action = DELETE;
+  	this.emitEvent(this.action);
   }
 
   /***** Template Helpers ******/
