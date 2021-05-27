@@ -85,7 +85,7 @@ export class MercadoSumario {
 
 export const mercadosOptList_old = [
 	{val: 'brown',        isLocal: true,  label: 'Partido Almte Brown',  slug: 'Partido Almte Brown' },
-	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye AB)', slug: 'Pcia de Buenos Aires' },
+	{val: 'pba',          isLocal: true,  label: 'Pcia de BsAs (excluye Almirante Brown)', slug: 'Pcia de Buenos Aires' },
 	{val: 'nacional',     isLocal: true,  label: 'Nacional (excluye PBA)',         slug: 'Nacional' },
 	{val: 'brasil',       isLocal: false, label: 'Brasil',           slug: 'Brasil' },
 	{val: 'mercosur',     isLocal: false, label: 'Mercosur (excluye Brasil)',         slug: 'Mercosur' },

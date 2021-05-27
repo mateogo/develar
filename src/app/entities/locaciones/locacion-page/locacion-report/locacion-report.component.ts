@@ -40,7 +40,7 @@ const PRIVADO = 'HOSPCPRIV';
 })
 export class LocacionReportComponent implements OnInit {
   public title = 'Tablero Ocupación Locaciones de Internación';
-  public totalTitle = 'Nivel de ocupación total en AB'
+  public totalTitle = 'Nivel de ocupación total en Almirante Brown'
 
   public capacidadesOptList = LocacionHelper.getOptionlist('capacidadesreporte');
   public groupservices = [];
