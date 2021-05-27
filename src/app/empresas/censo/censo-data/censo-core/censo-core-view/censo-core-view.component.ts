@@ -64,6 +64,10 @@ export class CensoCoreViewComponent implements OnInit {
   public isClosable = false;
   public closable$:BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(false);
 
+  public btnLabel = '';
+  public btnColor = '';
+  public disclaimer = 'La información provista es confidencial y sólo será utilizada con fines estadísticos, de acuerdo a lo establecidos por el <a target="_blank" rel="noopener" href="https://www.argentina.gob.ar/normativa/nacional/ley-17622-24962/actualizacion" >Artículo 10 de la Ley Nacional 17.622</a>'
+  
   constructor(
 	private _notificationService: NotificationService,
 	private censoCtrl: CensoIndustriasController,
@@ -80,21 +84,38 @@ export class CensoCoreViewComponent implements OnInit {
     this.codigo = "Estado: " + _estado + '::' + 'Avance: ' + _navance;
 
 	this.closable$ = CensoIndustriasService.closable$;
+	this.btnLabel = 'Cerrar CENSO';
+	this.btnColor = 'primary';
+
+
+	this.btnLabelSelect();
+
+  }
+
+  private btnLabelSelect(){
+	if(this.token.estado.estado === 'completado'){
+		this.btnLabel = 'CENSO COMPLETADO'
+		this.btnColor = 'accent';
+	}else {
+		this.btnLabel = 'Cerrar CENSO';
+		this.btnColor = 'primary';
+
+	}
 
 	CensoIndustriasService.emitIfClosable(this.token);
 
   }
 
   closeCenso(){
-	  console.log('todo');
 	  const whichModal = CONFIRMATION_MODAL_CONFIG;
 
 	  this._notificationService.openModalDialog(whichModal).subscribe(result => {
-		  console.log('result [%s]', result);
 		  if(result === "accept"){
 			  this.censoCtrl.closeCenso(this.token).subscribe(censo => {
 				  if(censo){
 					  this.censoCtrl.openSnackBar('Actualización exitosa', 'CERRAR');
+					  this.token = censo;
+					  this.btnLabelSelect();
 				  }
 			  })
 		  }

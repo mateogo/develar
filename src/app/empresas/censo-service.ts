@@ -320,10 +320,8 @@ export class CensoIndustriasService {
 
 	static emitIfClosable(censo: CensoIndustrias){
 		if(this.checkIfClosable(censo)){
-			console.log('NOP')
 			this.closable$.next(true);
 		}else {
-			console.log('SIP')
 			this.closable$.next(false);
 		}
 
