@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-content>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Empreas</th>
+                    <th>Categoria</th>
+                    <th>Rubro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let tamanio of tamanios">
+                    <tr>
+                        <td>{{ tamanio.empresaSlug }}</td>
+                        <td>{{ tamanio.categoria }}</td>
+                        <td>{{ tamanio.rubro }}</td>
+                    </tr>
+        
+                </ng-container>
+                        
+            </tbody>
+        </table>
+    </mat-card-content>
+</mat-card>

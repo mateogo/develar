@@ -614,7 +614,6 @@ export class CensoIndustriasHelper {
   static getRubroOptList(seccion) {
     let list = [];
 
-    console.log('seccion [%s]', seccion);
     let token = nomencladorList.find((t) => t.val === seccion);
     if (token) {
       list = nomencladorList.filter(
@@ -628,7 +627,6 @@ export class CensoIndustriasHelper {
   }
 
   static getCodigoOptList(rubro) {
-    console.log('rubro [%s]', rubro);
     let list = [];
 
     list = nomencladorList.filter(
@@ -642,12 +640,12 @@ export class CensoIndustriasHelper {
   static getActionOptList(val, type) {
     let list = [];
     let token = fetchAction(val, type);
-    console.log(
-      'getActionOptList [%s] [%s] [%s]',
-      val,
-      type,
-      token && token.val
-    );
+    // c onsole.log(
+    //   'getActionOptList [%s] [%s] [%s]',
+    //   val,
+    //   type,
+    //   token && token.val
+    // );
 
     if (type === 'seccion') {
       list = this.getSectionOptList();

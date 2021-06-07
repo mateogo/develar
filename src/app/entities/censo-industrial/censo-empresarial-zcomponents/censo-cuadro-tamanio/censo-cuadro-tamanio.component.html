@@ -1,23 +1,23 @@
 <mat-card>
     <mat-card-content class="table-responsive-md">
-        <h2 class="block-title">Actividad empresarial</h2>
+        <h2 class="block-title">Empresas por Tamaño</h2>
         <section class="block">
         <table class="table table-sm">
             <thead class="thead-dark">
                 <tr>
+                    <th>Categoria</th>
                     <th>Rubro</th>
-                    <th>Denominación</th>
                     <th>Empresas</th>
                     <th>Ver</th>
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let actividad of actividadesList">
+                <ng-container *ngFor="let rubro of rubrosList">
                     <tr>
-                        <td>{{ getRubroOf( actividad ).rubro }}</td>
-                        <td>{{ getRubroOf( actividad ).label }}</td>
-                        <td style="text-align: center;">{{ getRubroOf( actividad ).count}}</td>
-                        <td><button mat-flat-button (click)='showEmpresas(actividad)' title="Ver detalle por empresa"><mat-icon>open_in_new</mat-icon></button></td>
+                        <td>{{ getTokenOf( rubro ).categoria }}</td>
+                        <td>{{ getTokenOf( rubro ).rubro }}</td>
+                        <td style="text-align: center;">{{ getTokenOf( rubro ).count}}</td>
+                        <td><button mat-flat-button (click)='showEmpresas(rubro)' title="Ver detalle por empresa"><mat-icon>open_in_new</mat-icon></button></td>
                     </tr>
         
                 </ng-container>

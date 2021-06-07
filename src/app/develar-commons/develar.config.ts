@@ -57,7 +57,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: '2021 DGTS@innovación - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.06.05-11:25',
+		copyright: '2021 DGTS@innovación - Secretaría General - Secretaría de Producción - Almirante Brown  - 21.06.07-03:40',
 		version: '1.0 ',
 		url: 'industrias.brown.gob.ar'
 	},

@@ -207,7 +207,6 @@ export class FollowUpEsquemaModalService {
    * VISTA DETALLADA
   */
   private vistaDialog(censo: CensoIndustrias){
-    console.log('ready to open dialog')
       const dialogRef = this.dialog.open(
         CensoVistaModalComponent,
         {

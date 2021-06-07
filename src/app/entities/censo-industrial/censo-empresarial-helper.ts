@@ -113,8 +113,6 @@ const aperturaXUbicacionOptList: CondicionBusqueda[] = [
 /***
  * CUADRO-2 ACTIVIDADES EMPRESA
  */
-
-
 export class ActividadEmpresa {
     rubro: string;
     seccion: string;
@@ -138,6 +136,24 @@ export class ActividadEmpresa {
       this.rubro = actividad['rubro'];
     }
   }
+
+/***
+ * CUADRO-3 TAMAÑO EMPRESA
+ */
+ export class TamanioEmpresa {
+    rubro: string;
+    categoria: string;
+    empresaId: string;
+    empresaSlug: string;
+    constructor(empresa: any, categoriaEmp: string, rubroEmp: string){
+      this.empresaId = empresa['empresaId'];
+      this.empresaSlug = empresa['slug'];
+  
+      this.categoria = categoriaEmp;
+      this.rubro = rubroEmp;
+    }
+  }
+  
   
 /***
  * CENSO EMPRESARIAL HELPER CLASS

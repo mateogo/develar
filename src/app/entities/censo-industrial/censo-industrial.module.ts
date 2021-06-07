@@ -21,6 +21,8 @@ import { CensoEmpresarialBrowseComponent } from './censo-empresarial-zcomponents
 import { CensoCuadroEstadoComponent } from './censo-empresarial-zcomponents/censo-cuadro-estado/censo-cuadro-estado.component';
 import { CensoCuadroActividadComponent } from './censo-empresarial-zcomponents/censo-cuadro-actividad/censo-cuadro-actividad.component';
 import { CensoEmpActividadesModalComponent } from './zmodals/censo-emp-actividades-modal/censo-emp-actividades-modal.component';
+import { CensoCuadroTamanioComponent } from './censo-empresarial-zcomponents/censo-cuadro-tamanio/censo-cuadro-tamanio.component';
+import { CensoEmpTamanioModalComponent } from './zmodals/censo-emp-tamanio-modal/censo-emp-tamanio-modal.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { CensoEmpActividadesModalComponent } from './zmodals/censo-emp-actividad
     CensoEmpresarialBrowseComponent,
     CensoCuadroEstadoComponent,
     CensoCuadroActividadComponent,
-    CensoEmpActividadesModalComponent
+    CensoEmpActividadesModalComponent,
+    CensoCuadroTamanioComponent,
+    CensoEmpTamanioModalComponent
   ],
   imports: [
     CommonModule,

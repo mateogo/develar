@@ -98,7 +98,6 @@ export class CensoIndustrialService {
   }
   
   public broadcastCensoList(): void {
-    console.log('broadcast')
     this._censoListDataSource.next(this.censosIndustrialesList);
   }
   
@@ -157,7 +156,7 @@ export class CensoIndustrialService {
   /** Dashboard Censo Empresarial ****/
   /***************************/
   exportToExcel (query : CensoFeatureQuery){
-    console.log('[%s] INIT exportación a Excel - query --> %o', query);
+    //c onsole.log('[%s] INIT exportación a Excel - query --> %o', query);
 
     const urlAndParams = this.buildParamsFromArray((EXPORTAR_URL + '?'), query);
 
@@ -165,7 +164,7 @@ export class CensoIndustrialService {
   }
   
   excelExport(query: CensoIndustriasQuery): void {
-    console.log('[%s] INIT exportación a Excel - query --> %o', query);
+    //c onsole.log('[%s] INIT exportación a Excel - query --> %o', query);
 
     const params = this.buildParams(query);
     const url = EXPORTAR_URL + '?' + params.toString();
