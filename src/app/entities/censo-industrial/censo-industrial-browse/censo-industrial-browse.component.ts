@@ -116,7 +116,6 @@ export class CensoIndustrialBrowseComponent implements OnInit {
   }
 
   public doDownloadResults(): void {
-    console.log('Descargamos de Excel');
 
     this.query = this.initQuery(this.form, this.query);
     this.query = CensoIndustriasHelper.cleanQueryToken(this.query);

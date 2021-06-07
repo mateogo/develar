@@ -1,0 +1,36 @@
+<mat-card>
+    <mat-card-content>
+
+        <h2 class="block-title">Estado de avance</h2>
+
+        <ng-container *ngIf='showData'>
+            <section class="block">
+                <div class="d-md-flex justify-content-between">
+                    <ng-container *ngFor="let avance of aperturasCol">
+                        <div class="header">
+                            <span class="header-text">{{ avance.label }}</span>
+                        </div>
+                    </ng-container>
+            
+                </div>
+                <div class="d-md-flex justify-content-between align-items-center content">
+                    <ng-container *ngFor="let avance of aperturasCol">
+                        <div class="content">
+                            <span class="content-text">{{ getLabelOf(0, avance )}}</span>
+                        </div>
+                    </ng-container>
+            
+                </div>    
+            </section>
+        </ng-container>
+        <hr>
+
+
+        <dump-data  class="mt-4" [title]="'Censos'"
+                    [data$]='data$'
+                    [showTests]='false'>
+        </dump-data>
+
+    </mat-card-content>
+</mat-card>
+

@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject,  Observable, merge }       from 'rxjs';
 import { map } from 'rxjs/operators';
 
+
 export class Empresa {
   empresaId: string;
   slug: string;

@@ -16,6 +16,11 @@ import { CensoVistaModalComponent } from './zmodals/censo-vista-modal/censo-vist
 import { CensoIndustrialViewComponent } from './censo-industrial-view/censo-industrial-view.component';
 import { CensoFollowupUpdateComponent } from './zmodals/censo-followup-update/censo-followup-update.component';
 import { CensoFollowupHistoryComponent } from './zmodals/censo-followup-history/censo-followup-history.component';
+import { CensoEmpresarialDashboardComponent } from './censo-empresarial-dashboard/censo-empresarial-dashboard.component';
+import { CensoEmpresarialBrowseComponent } from './censo-empresarial-zcomponents/censo-empresarial-browse/censo-empresarial-browse.component';
+import { CensoCuadroEstadoComponent } from './censo-empresarial-zcomponents/censo-cuadro-estado/censo-cuadro-estado.component';
+import { CensoCuadroActividadComponent } from './censo-empresarial-zcomponents/censo-cuadro-actividad/censo-cuadro-actividad.component';
+import { CensoEmpActividadesModalComponent } from './zmodals/censo-emp-actividades-modal/censo-emp-actividades-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +35,12 @@ import { CensoFollowupHistoryComponent } from './zmodals/censo-followup-history/
     CensoVistaModalComponent,
     CensoIndustrialViewComponent,
     CensoFollowupUpdateComponent,
-    CensoFollowupHistoryComponent
+    CensoFollowupHistoryComponent,
+    CensoEmpresarialDashboardComponent,
+    CensoEmpresarialBrowseComponent,
+    CensoCuadroEstadoComponent,
+    CensoCuadroActividadComponent,
+    CensoEmpActividadesModalComponent
   ],
   imports: [
     CommonModule,

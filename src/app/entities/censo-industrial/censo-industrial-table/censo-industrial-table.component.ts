@@ -32,9 +32,6 @@ class CensosIndustriasDataSource extends DataSource<CensoIndustriasTable> {
     return merge(...displayDataChanges).pipe(
       map(() => {
         const data = this._getSortedData();
-
-        console.log('censo industrias dsdata --> %o', data);
-
         this._paginator.length = data.length;
         const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
         return data.splice(startIndex, this._paginator.pageSize);
@@ -125,7 +122,6 @@ export class CensoIndustrialTableComponent implements OnInit {
   }
 
   public editItem(item: CensoIndustriasTable) {
-    console.log('Ready to navigate: [%s]', item._id)
     this.router.navigate(['vista', 'censo2021', item._id], { relativeTo: this.route });
 
     //this.router.navigate(['editar', item._id], { relativeTo: this.route });

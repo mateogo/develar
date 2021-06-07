@@ -1,0 +1,30 @@
+<p>censo-cuadro-actividad works!</p>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Rubro</th>
+            <th>Denominación</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let actividad of actividadesList">
+            <tr>
+                <td>{{ getRubroOf( actividad ).rubro }}</td>
+                <td>{{ getRubroOf( actividad ).label }}</td>
+                <td>{{ getRubroOf( actividad ).count}}</td>
+                <td><button mat-flat-button (click)='showEmpresas(actividad)'><mat-icon>help</mat-icon></button></td>
+            </tr>
+
+        </ng-container>
+                
+    </tbody>
+</table>
+<hr>
+<dump-data  class="mt-4" [title]="'Censos'"
+    [data$]='data$'
+    [showTests]='true'>
+</dump-data>
+

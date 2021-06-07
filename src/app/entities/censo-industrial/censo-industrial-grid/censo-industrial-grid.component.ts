@@ -48,7 +48,6 @@ export class CensoIndustrialGridComponent implements OnInit {
 
 
   public editItem(item: CensoIndustrias) {
-    console.log('Ready to navigate: [%s]', item._id)
     //this.router.navigate(['vista', 'censo2021', item._id], { relativeTo: this.route });
 
     //this.router.navigate(['editar', item._id], { relativeTo: this.route });

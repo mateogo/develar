@@ -548,6 +548,7 @@ exports.findAll = function(errcb, cb) {
  */
 exports.findByQuery = function(query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    console.log('Censo findByQuery ===========')
     console.dir(regexQuery);
 
     Record.find(regexQuery).lean().exec(function(err, entities) {

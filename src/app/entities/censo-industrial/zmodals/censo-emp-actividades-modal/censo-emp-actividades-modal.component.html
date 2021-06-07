@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-content>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Empreas</th>
+                    <th>Actividad</th>
+                    <th>Tipo</th>
+                    <th>Part%</th>
+                    <th>Año</th>
+                    <th>Comentario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let actividad of actividades">
+                    <tr>
+                        <td>{{ actividad.empresaSlug }}</td>
+                        <td>{{ actividad.codigo }}</td>
+                        <td>{{ actividad.type }}</td>
+                        <td>{{ actividad.level }}</td>
+                        <td>{{ actividad.anio }}</td>
+                        <td>{{ actividad.slug }}</td>
+                    </tr>
+        
+                </ng-container>
+                        
+            </tbody>
+        </table>
+    </mat-card-content>
+</mat-card>

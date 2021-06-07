@@ -1,0 +1,70 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Tablero Censos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>        
+        <mat-tab-group class="container-fluid wrapper">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Buscar
+                </ng-template>
+                <ng-template matTabContent>
+
+                    <div class="row mt-3">
+                        <div class="offset-md-1 col-md-9">
+
+                            <censo-empresarial-browse [query]='query' (browseEvent)="fetchCensos($event)"  ></censo-empresarial-browse>
+
+                            <mat-progress-bar mode="indeterminate" *ngIf="searching"></mat-progress-bar>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                           <div class="d-flex justify-content-between align-items-center panel-header">
+            
+                                <div class="panel-header-text">{{ title }}</div>
+            
+                                <div class="panel-header-control" >
+                                  <mat-button-toggle-group #view="matButtonToggleGroup"  >
+                                    <mat-button-toggle value="list">
+                                      <mat-icon>view_list</mat-icon>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="grid">
+                                      <mat-icon>view_module</mat-icon>
+                                    </mat-button-toggle>
+                                  </mat-button-toggle-group>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <ng-container *ngIf='view.value=="list"'>
+                                <app-censo-industrial-table *ngIf="showData"></app-censo-industrial-table>
+                            </ng-container>
+                
+                            <ng-container *ngIf='!view.value || view.value=="grid"'>
+                                <censo-industrial-grid *ngIf="showData"></censo-industrial-grid>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Cuadros
+                </ng-template>
+                <ng-template matTabContent>
+
+                    <censo-cuadro-estado></censo-cuadro-estado>
+                    <censo-cuadro-actividad></censo-cuadro-actividad>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
+
+

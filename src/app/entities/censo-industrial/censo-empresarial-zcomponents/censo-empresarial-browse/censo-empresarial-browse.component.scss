@@ -1,0 +1,9 @@
+@import '../../../../../assets/sass/mixin';
+
+.mat-flat-button {
+    @include button-agn;
+}
+
+.mat-icon-button {
+    color : #01BBED;
+}

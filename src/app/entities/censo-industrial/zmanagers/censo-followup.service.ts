@@ -152,7 +152,32 @@ export class FollowUpEsquemaModalService {
       });    
   
     }
-  
+
+
+  /** 
+   * ACTIVIDADES EMPRESA
+  */
+   private actividadesEmpresaDialog(censo: CensoIndustrias){
+    const dialogRef = this.dialog.open(
+      CensoFollowupHistoryComponent,
+      {
+        width: '800px',
+        height: '70vh',
+        data: {
+          censo: censo,
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res: UpdateCensoEvent) => {
+        if(res) this.dialogResult$.next(res);
+        else this._fireCancel();
+    });    
+
+  }
+
+    
+
   /** 
    * FOLLOW-UP HISTORY
   */

@@ -2,12 +2,17 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CensoIndustrialComponent } from './censo-industrial/censo-industrial.component';
-import { CensoPageComponent } from '../../empresas/censo/censo-page/censo-page.component';
+import { CensoEmpresarialDashboardComponent } from './censo-empresarial-dashboard/censo-empresarial-dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
     component: CensoIndustrialComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'censoempresarial',
+    component: CensoEmpresarialDashboardComponent,
     pathMatch: 'full'
   },
   {

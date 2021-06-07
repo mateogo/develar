@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
+import { HttpParams, HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators'
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DaoService } from '../../develar-commons/dao.service';
-import { CensoIndustrias, CensoIndustriasTable } from '../../empresas/censo.model';
-import { CensoIndustriasQuery } from './censo.model';
 
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
-import { CensoIndustriasHelper } from './censo-industrial.helper';
-import { HttpParams } from '@angular/common/http';
+import { CensoIndustrias, CensoIndustriasTable } from '../../empresas/censo.model';
+
+import { CensoIndustriasQuery } from './censo.model';
+import { CensoFeatureQuery, ConsultaCensoQuery } from './censo-empresarial-helper';
+
+import { CensoIndustriasHelper} from './censo-industrial.helper';
+
 import { User }          from '../user/user';
-import { AfectadoFollowUp } from '../../salud/asistencia/asistencia.model';
 
 const RECORD = 'censoindustrias';
 const EXPORTAR_URL = 'api/' + RECORD + '/exportarcensos';
@@ -29,9 +34,12 @@ export class CensoIndustrialService {
 
   private currentCenso: CensoIndustrias;
   private censosIndustrialesList: CensoIndustrias[];
+  private emitVidaQueryDataSource = new BehaviorSubject<any[]>([]);
+  private urlSearch : string = 'api/vida/search';
 
   constructor(
     private snackBar: MatSnackBar,
+    private http : HttpClient,
     private dao: DaoService
   ) { 
 
@@ -50,20 +58,8 @@ export class CensoIndustrialService {
   }
 
 
-  /**
-   * Exportación a Excel
-   *
-   */
-  public excelExport(query: CensoIndustriasQuery): void {
-    console.log('[%s] INIT exportación a Excel - query --> %o', query);
 
-    const params = this.buildParams(query);
-    const url = EXPORTAR_URL + '?' + params.toString();
-
-    window.open(url, 'about: blank');
-  }
-
-  private buildParams(query) {
+  private buildParams(query : any){
     return Object.getOwnPropertyNames(query)
                  .reduce((p, key) => p.append(key, query[key]), new HttpParams());
   }
@@ -82,7 +78,14 @@ export class CensoIndustrialService {
     return this._censoListDataSource;
   }
 
-  private loadcensosIndustrialesByQuery(subject: BehaviorSubject<CensoIndustrias[]>, query: CensoIndustriasQuery): void {
+  public fetchCensosIndustrialesByQuery(query: CensoIndustriasQuery|CensoFeatureQuery): BehaviorSubject<CensoIndustrias[]> {
+    const subject = new BehaviorSubject<CensoIndustrias[]>([]);
+    this.loadcensosIndustrialesByQuery(subject, query);
+    return subject;
+  }
+
+
+  private loadcensosIndustrialesByQuery(subject: BehaviorSubject<CensoIndustrias[]>, query: CensoIndustriasQuery|CensoFeatureQuery): void {
     this.fetchByQuery(query).subscribe(items => {
       if (items && items.length > 0) {
         this.censosIndustrialesList = items;
@@ -93,15 +96,9 @@ export class CensoIndustrialService {
       subject.next(this.censosIndustrialesList);
     });
   }
-
-  public fetchCensosIndustrialesByQuery(query: CensoIndustriasQuery): BehaviorSubject<CensoIndustrias[]> {
-    const subject = new BehaviorSubject<CensoIndustrias[]>([]);
-    this.loadcensosIndustrialesByQuery(subject, query);
-    return subject;
-  }
-
   
   public broadcastCensoList(): void {
+    console.log('broadcast')
     this._censoListDataSource.next(this.censosIndustrialesList);
   }
   
@@ -155,6 +152,61 @@ export class CensoIndustrialService {
       subject.next(this.currentCenso)
   	})
   }
+
+  /***************************/
+  /** Dashboard Censo Empresarial ****/
+  /***************************/
+  exportToExcel (query : CensoFeatureQuery){
+    console.log('[%s] INIT exportación a Excel - query --> %o', query);
+
+    const urlAndParams = this.buildParamsFromArray((EXPORTAR_URL + '?'), query);
+
+    window.open(urlAndParams, 'about: blank');
+  }
+  
+  excelExport(query: CensoIndustriasQuery): void {
+    console.log('[%s] INIT exportación a Excel - query --> %o', query);
+
+    const params = this.buildParams(query);
+    const url = EXPORTAR_URL + '?' + params.toString();
+
+    window.open(url, 'about: blank');
+  }
+
+  
+  searchArray<Acervo>( query : CensoFeatureQuery, consulta: ConsultaCensoQuery) : Observable<Acervo[]> {
+
+    let searchUrl = this.buildParamsFromArray(this.urlSearch, query);
+    let params = this.buildParams(consulta);
+    return this.http
+               .get<Acervo[]>(searchUrl, { params })
+               .pipe(
+                   catchError(this.handleObsError<Acervo[]>('search',[]))
+                 ) as Observable<Acervo[]>;
+  }
+
+  private handleObsError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      return of(result as T);
+    };
+  }
+
+
+  private buildParamsFromArray(url: string, query) : string {
+    let searchUrl = url;
+
+    let recurso = '?recurso=' + query.recurso + "&isArray=" +  (query.condiciones.length > 1 ? true : false);
+
+    let condiciones : string = "";
+
+    query.condiciones.forEach( condicion => {
+      condiciones = condiciones + "&termino=" + condicion.termino + "&buscarEn=" + condicion.buscarEn + "&tipoBusqueda="+condicion.tipoBusqueda;
+    });
+
+    return searchUrl = searchUrl+recurso+condiciones;
+  }
+
+
 
 
   /***************************/

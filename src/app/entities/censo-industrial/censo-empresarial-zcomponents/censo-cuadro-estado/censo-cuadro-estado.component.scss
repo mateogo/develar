@@ -1,0 +1,62 @@
+$color-destacado: #0645f5;
+$color-destacado-vinculo: #2413c6;
+$color-desafectado-vinculo: #8a95a1;
+
+$color-button: #3c4e62;
+$color-header: #2326ff;
+
+$color-total-titulo: #fdfdfd;
+$color-total-label: #fdfdfd;
+$color-total-valor: #fdfdfd ;
+
+$color-capacidad: #910f6f;
+
+$color-header-bg: #710b5f;
+$color-header-tx: #fdfdfd ;
+
+$color-content-bg: #910f6f;
+$color-content-tx: #fdfdfd ;
+
+.block {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.block-title {
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.header {
+    display: flex;
+    background-color: $color-header-bg;
+    border: solid 1px  rgba(255, 255, 255, .80);
+    border-radius: 2%;
+    width: 100%;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-text {
+    font-size: 1em;
+    font-weight: 700;
+    color: $color-header-tx;
+}
+
+.content {
+    display: flex;
+    background-color: $color-content-bg;
+    border: solid 1px  rgba(255, 255, 255, .80);
+    border-radius: 2%;
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-text {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: $color-content-tx;
+}
