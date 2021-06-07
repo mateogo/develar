@@ -239,8 +239,7 @@ export const factoresAfectanInversionOptList = [
 	{ val: 'caprrhh',         label: 'Capacidad del personal'  },
 	{ val: 'capadap',         label: 'Capacidad de adaptación al cambio'  },
 	{ val: 'costomp',         label: 'Costos de materias primas e insumos'  },
-	{ val: 'accesoimportados',label: 'Costos/ acceso a bienes importados'  },
-	{ val: 'costoinsum',      label: 'Costos de insumos'  },
+	{ val: 'accesoimportados',label: 'Acceso a bienes importados'  },
 	{ val: 'costoprod',       label: 'Costos de generales de producciòn (incluye Mano de Obra)'  },
 	{ val: 'costobuso',       label: 'Costos de bienes de uso'  },
 	{ val: 'economico',       label: 'Riesgos económicos'  },
@@ -249,7 +248,6 @@ export const factoresAfectanInversionOptList = [
 	{ val: 'informacion',     label: 'Información de tecnología disponible'  },
 	{ val: 'capinsum',        label: 'Calidad de insumos / materias primas'  },
 	{ val: 'regulaciones',    label: 'Regulaciones'  },
-	{ val: 'oferta',          label: 'Oferta de productos'  },
 	{ val: 'situaciongral',   label: 'Situación o contexto actual'  },
 	{ val: 'tamaniomercado',  label: 'Tamaño de mercado'  },
 	
@@ -297,9 +295,9 @@ const generoOptList = [
 ]
 
 export const seccionOptList = [
-	{val: 'produccion',     label: 'Producción',     slug: 'Producción' },
-	{val: 'comercial',      label: 'Comercial',      slug: 'Comercial' },
-	{val: 'administracion', label: 'Administración', slug: 'Administración' },
+	{val: 'produccion',     label: 'Producción (Fábrica, Mantenimiento, Depósitos, Logística, etc.)',     slug: 'Producción' },
+	{val: 'comercial',      label: 'Comercial (Ventas, Marketing, Locales, etc)',                         slug: 'Comercial' },
+	{val: 'administracion', label: 'Administración (Administración, Finanzas, RRHH, Tesorería, etc.)',    slug: 'Administración' },
 ];
 
 
@@ -463,6 +461,7 @@ export class CensoExpectativas {
 	fplenaocupacion: string =  ''; // factor que limita la plena ocupacion
 	tocupacion: number  = 100; // tasa de ocupacion general rango 0-100, respecto capacidad instalada
 	factoresList: Array<string> = [];
+	fcupaciontxt: string = '';
 
 	fortaleza1: string = '';
 	fortaleza2: string = '';

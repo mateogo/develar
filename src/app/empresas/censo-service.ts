@@ -842,6 +842,8 @@ const factoresPlenaOcupacionOptList = [
 	{ val: 'comercializacion', label: 'Limitante comercial'  },
 	{ val: 'financiero',       label: 'Limitante financiera'  },
 	{ val: 'logistica',        label: 'Limitante logistica'  },
+	{ val: 'tecnologica',      label: 'Limitante tecnológica' },
+	{ val: 'fabril',           label: 'Deficiencias en infraestructura fabril' },
 	{ val: 'serviciosgrales',  label: 'Falta de serv generales (energía/ gas/ etc.)'  },
 	{ val: 'mprimas',          label: 'Falta de materias primas'  },
 	{ val: 'insumos',          label: 'Falta de insumos'  },

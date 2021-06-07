@@ -250,6 +250,7 @@ const censoExpectativasSch = new Schema({
 	vtaexter_mod:     { type: String, required: false },
 	vtalocal_mod:     { type: String, required: false },
     factoresList:     [ String ],
+	fcupaciontxt:     { type: String, required: false },
     
 
     

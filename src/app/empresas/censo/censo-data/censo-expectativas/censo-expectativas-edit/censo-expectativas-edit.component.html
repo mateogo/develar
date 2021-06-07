@@ -18,16 +18,16 @@
         </div>
         <div class="bordered">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <mat-form-field >
               <input  matInput [formControl]="form.controls['tocupacion']" 
-                      placeholder="Nivel de ocupación general" >
-              <mat-hint>Relativo a la capacidad instalada. Rango 0-100</mat-hint>
+                      placeholder="Nivel de utilización de la capacidad instalada" >
+              <mat-hint>Indique el porcentaje de utilización actual medio, rango 0-100</mat-hint>
             </mat-form-field>
           </div>
           <div class="col-md-4">
             <mat-form-field>
-              <mat-select #fldFactorOcupacion formControlName="fplenaocupacion" placeholder="Factores que limitan la plena ocupación" 
+              <mat-select #fldFactorOcupacion formControlName="fplenaocupacion" placeholder="Factores que limitan la plena utilización" 
                     (selectionChange)="changeSelectionValue('fplenaocupacion', fldFactorOcupacion.value)">
 
                 <mat-option *ngFor='let item of factoresOcupacionOptList' [value]="item.val">
@@ -36,8 +36,18 @@
               </mat-select>
             </mat-form-field>
           </div>
-
         </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <mat-form-field >
+              <textarea  matInput [formControl]="form.controls['fcupaciontxt']" 
+                      placeholder="Su observación relativa a los factores de plena utilización" ></textarea>
+              <mat-hint>Explique sintéticamente la causa principal que limita la plena ocupación de sus recursos</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
         <div class="row mt-3">
           <div class="col-md-12" *ngIf="true">
               <mat-chip-list>
@@ -54,7 +64,7 @@
 
         <div class="bordered">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <mat-form-field>
               <mat-select #fldNactividad formControlName="nactividad" placeholder="Variación del nivel de actividad" 
                     (selectionChange)="changeSelectionValue('nactividad', fldNactividad.value)">

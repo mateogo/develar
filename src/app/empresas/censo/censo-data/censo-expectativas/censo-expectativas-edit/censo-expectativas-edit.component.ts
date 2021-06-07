@@ -117,6 +117,7 @@ export class CensoExpectativasEditComponent implements OnInit {
       vtaexter_mod:     token.vtaexter_mod,
       vtalocal_mod:     token.vtalocal_mod,
       fplenaocupacion:  token.fplenaocupacion,  
+      fcupaciontxt:     token.fcupaciontxt,
 
       fortaleza1:     token.fortaleza1,
       fortaleza2:     token.fortaleza2,
@@ -218,6 +219,7 @@ export class CensoExpectativasEditComponent implements OnInit {
       vtaexter_mod:     [ null ],
       vtalocal_mod:     [ null ],
       fplenaocupacion:  [ null ],
+      fcupaciontxt:     [ null ],
       fortaleza1:       [ null ],
       fortaleza2:       [ null ],
       fortaleza3:       [ null ],
@@ -253,6 +255,7 @@ export class CensoExpectativasEditComponent implements OnInit {
     entity.vtaexter_mod =     fvalue.vtaexter_mod;
     entity.vtalocal_mod =     fvalue.vtalocal_mod;
     entity.fplenaocupacion =  fvalue.fplenaocupacion;
+    entity.fcupaciontxt =     fvalue.fcupaciontxt;
 
     entity.fortaleza1 = fvalue.fortaleza1;
     entity.fortaleza2 = fvalue.fortaleza2;

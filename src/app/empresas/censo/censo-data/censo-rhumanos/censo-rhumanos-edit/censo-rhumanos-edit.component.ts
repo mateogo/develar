@@ -59,6 +59,9 @@ export class CensoRhumanosEditComponent implements OnInit {
   public texto1 = "";
   public texto2: string;
 
+  public aperturaPorNivelEducativo$ = new BehaviorSubject<string>('');
+  public aperturaPorNivelJerarquico$ = new BehaviorSubject<string>('');
+
   public competencia$ = new BehaviorSubject<OptListToken[]>([]);
   public competenciasBuscadas: Array<OptListToken> = [];
 
@@ -117,6 +120,14 @@ export class CensoRhumanosEditComponent implements OnInit {
   deleteToken(){
   	this.action = DELETE;
   	this.emitEvent(this.action);
+  }
+
+  checkSumNE(){
+    this.checkSumNivelEducativo(this.form, this.aperturaPorNivelEducativo$);
+  }
+
+  checkSumNJ(){
+    this.checkSumNivelJerarquico(this.form, this.aperturaPorNivelJerarquico$);
   }
 
   hasError = (controlName: string, errorName: string) =>{
@@ -222,6 +233,8 @@ export class CensoRhumanosEditComponent implements OnInit {
 
         }));
     this.form.setControl('nivelesjerarquicos', this.fb.array(jerarquicoFG));
+    this.checkSumNivelEducativo(this.form, this.aperturaPorNivelEducativo$);
+    this.checkSumNivelJerarquico(this.form, this.aperturaPorNivelJerarquico$);
 
 		return form;
   }
@@ -264,6 +277,43 @@ export class CensoRhumanosEditComponent implements OnInit {
     
     });
     return form;
+  }
+
+  private checkSumNivelEducativo(form: FormGroup, output$: BehaviorSubject<string>){
+		const fvalue = form.value;
+    const total_empleados = fvalue.qempleados;
+
+    const nodosFlds: NodoSeccion[] = fvalue.niveleseducativos.map(t => {
+      return Object.assign({}, t )
+    })
+
+    let work_data = nodosFlds.reduce((sum, t) =>{
+      let parcial = t.qau + t.qh + t.qm;
+      sum += isNaN(parcial) ? 0 : parcial;
+      return sum;
+    }, 0)
+
+    let neducativo_checksum = `Total empleados: ${total_empleados} - Apertura por Nivel Educativo: ${work_data} -  DIFERENCIA: ${total_empleados - work_data}`;
+    output$.next(neducativo_checksum)
+  }
+
+  private checkSumNivelJerarquico(form: FormGroup, output$: BehaviorSubject<string>){
+		const fvalue = form.value;
+    const total_empleados = fvalue.qempleados;
+
+    const nodosFlds: NodoSeccion[] = fvalue.nivelesjerarquicos.map(t => {
+      return Object.assign({}, t )
+    })
+
+    let work_data = nodosFlds.reduce((sum, t) =>{
+      let parcial = t.qau + t.qh + t.qm;
+      sum += isNaN(parcial) ? 0 : parcial;
+      return sum;
+    }, 0)
+
+    let neducativo_checksum = `Total empleados: ${total_empleados} - Apertura por Nivel Jerárquico: ${work_data} -  DIFERENCIA: ${total_empleados - work_data}`;
+    output$.next(neducativo_checksum)
+
   }
 
 

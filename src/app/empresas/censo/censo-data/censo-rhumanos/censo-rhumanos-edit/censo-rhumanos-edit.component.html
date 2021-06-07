@@ -59,24 +59,25 @@
               <div class="row">
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qh" placeholder="Hombre" >
+                    <input matInput (change)='checkSumNE()' type="number" formControlName="qh" placeholder="Hombre" >
                   </mat-form-field>    
                 </div>
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                    <input matInput (change)='checkSumNE()'  type="number" formControlName="qm" placeholder="Mujer" >
                   </mat-form-field>    
                 </div>
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qau" placeholder="Gén Autopercibido" >
+                    <input matInput (change)='checkSumNE()'  type="number" formControlName="qau" placeholder="Gén Autopercibido" >
                   </mat-form-field>    
                 </div>
               </div>
-            </div>  
-          </ng-container>
-        
+            </div> 
+          </ng-container>        
         </div>
+        <p class="text-title">{{ aperturaPorNivelEducativo$ | async}}</p> 
+
 
         <p class="text-destacado">Apertura por nivel jerárquico y género</p>
 
@@ -97,23 +98,24 @@
               <div class="row">
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qh" placeholder="Hombre" >
+                    <input matInput (change)='checkSumNJ()'  type="number" formControlName="qh" placeholder="Hombre" >
                   </mat-form-field>    
                 </div>
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qm" placeholder="Mujer" >
+                    <input matInput (change)='checkSumNJ()'  type="number" formControlName="qm" placeholder="Mujer" >
                   </mat-form-field>    
                 </div>
                 <div class="col-md-4">
                   <mat-form-field>
-                    <input matInput type="number" formControlName="qau" placeholder="Gén Autopercibido" >
+                    <input matInput (change)='checkSumNJ()'  type="number" formControlName="qau" placeholder="Gén Autopercibido" >
                   </mat-form-field>    
                 </div>
               </div>
             </div>  
           </ng-container>
         </div>
+        <p class="text-title">{{ aperturaPorNivelJerarquico$ | async}}</p> 
 
 
 
