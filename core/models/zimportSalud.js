@@ -431,8 +431,9 @@ function assignUserToFollowUp(asis, token, userMap){
 	// los casos marcados como SALUD MENTAL no se asignan automaticamente
 	if(token.asignadoa === 'SALUD MENTAL') return;
 
-	// los obitos no se asignan para seguimiento sino para salud mental
+	// los obitos y las ALTAS no se asignan para seguimiento sino para salud mental
 	if(token['novedad'] && token['novedad'].toLowerCase() === 'obito' ) return;
+	if(token['novedad'] && token['novedad'].toLowerCase() === 'alta'  ) return;
 	
 	// encontar el usuario random
 	let user = _fetchRandomUser(userMap, token);
