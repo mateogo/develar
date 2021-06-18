@@ -12,7 +12,7 @@ const utils = require('../services/commons.utils');
 const usuarioWebSch = new Schema({
     ndoc:              { type: String,  required: true },
     tipoDoc:           { type: String,  required: true, default: 'DNI' },
-    numTramite:        { type: Number,  required: true },
+    numTramite:        { type: Number,  required: false, default: '00123456789' },
     nombre:            { type: String,  required: false },
     apellido:          { type: String,  required: false },
     username:          { type: String,  required: false },

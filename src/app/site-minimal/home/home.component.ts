@@ -108,7 +108,6 @@ export class HomeComponent implements OnInit {
 
   initHomePage(){
 
-    console.log('InitHomePage')
     this.minimalCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
 
     if(this.minimalCtrl.navigateToUserCommunity()){
@@ -116,7 +115,6 @@ export class HomeComponent implements OnInit {
 
     }else{
 
-      console.log('Fetch Record cards')
       let sscrp1 = this.minimalCtrl.fetchContextRecords(HOME).subscribe(records => {
         this.renderHomePage(records);
       });
@@ -129,14 +127,12 @@ export class HomeComponent implements OnInit {
 
   renderHomePage(records: RecordCard[]){
     this.minimalCtrl.setHomeTitle();
-    console.log('Render HOme: [%s]', records && records.length)
 
     if(records && records.length){
 
       records.forEach(record => {
 
         let publish = record.publish;
-        console.log('Iterating: [%s]', publish.template)
         
         if(publish.template === BRANDING){
           this.topbranding = record;
@@ -174,10 +170,8 @@ export class HomeComponent implements OnInit {
           this.papers.push(record);
 
         }else if(publish.template === PORTFOLIO){
-          console.log('Portfolio')
           if(this.showPortfolioComponent){
             this.portfolios.push(record);
-            console.log('Portfolio ok [%s]', this.portfolios.length);
           }
 
         }else if(publish.template === REGISTRO){
