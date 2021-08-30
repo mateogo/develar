@@ -195,7 +195,6 @@ export class VinculosAgregarFormComponent implements OnInit {
         );
       }
     }
-
     const check = this.bussinessMembers.find((fam) => fam.ndoc === per.ndoc);
 
     if (check) {

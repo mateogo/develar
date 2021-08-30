@@ -44,6 +44,7 @@ export class CensoNavigateComponent implements OnInit {
     this.lookUpActiveCenso()
   }
 
+  //ToDoAca
   private lookUpActiveCenso(){
     this.showData = false;
     this.hasOrganizacion = false;

@@ -11,8 +11,9 @@
       <div class="col">
         <card [bgColor]="'warning'" class="info-card">
           <div class="title text-uppercase">{{ censoHeaderTitleTxt }}</div>
-          <div class="count">{{ censoBajada }}</div>
-          <badge (click)="editCensoHeader($event)"  
+          <div class="title text-uppercase">{{ censoBajada }}</div>
+          <div class="count">{{ currentIndustry.displayName }}</div>
+          <badge (click)="editCensoHeader($event)"
                   [customColor]="'rgba(255,255,255,0.1)'" 
                   [borderRadius]="false">{{ censoAltaTxt }}</badge> 
           <mat-icon>donut_large</mat-icon>
@@ -40,6 +41,9 @@
           <div class="col-md-11">
             <censo-core-view [token]='currentCenso'></censo-core-view>
           </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-md-11"><span class="text-normal ml-3">Responsable: {{ apoderado }}</span></div>
         </div>
       </mat-card-content>
     </mat-card>

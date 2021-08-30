@@ -314,7 +314,7 @@ export class EmpresasController {
 
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
           return err;
       });
 
@@ -526,6 +526,12 @@ export class EmpresasController {
     }
   }
 
+  // ToDoAca
+  fetchAllIndustriesIntegratedByUser(user: User): Observable<Person[]>{
+    return this.personService.fetchAllIndustriesIntegratedFromUser(user);
+  }
+  
+  // ToDoAca
   fetchIndustriaFromUser(user: User): Observable<Person>{
     let query = {}
     let industryListener = new Subject<Person>()

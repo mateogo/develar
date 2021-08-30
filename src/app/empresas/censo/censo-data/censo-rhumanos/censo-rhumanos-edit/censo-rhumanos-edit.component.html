@@ -200,7 +200,7 @@
   
           </div>
           <div class="row mt-3">
-            <div class="col-md-12" *ngIf="true">
+            <div class="col-md-12">
                 <mat-chip-list>
                     <mat-chip *ngFor="let item of competencia$ | async" [removable]="true" 
                           (removed)="removeCompetencia(item)" >
@@ -208,6 +208,13 @@
                           <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
                 </mat-chip-list>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                <mat-form-field>
+                  <textarea matInput type="string" formControlName="competenciaObs" placeholder="Dificultades para el reclutamiento / retención de talentos" ></textarea>
+                </mat-form-field>    
             </div>
           </div>
           </div>

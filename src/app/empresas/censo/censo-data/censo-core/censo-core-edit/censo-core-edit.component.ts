@@ -57,6 +57,7 @@ export class CensoCoreEditComponent implements OnInit {
 
   private unBindList = [];
   public nuevaAlta: NuevaAlta;
+  public empresaLabel = "";
 
   private toggleTipoEmpresa = false;
   private hasSelectTipoEmpresa = false;
@@ -127,6 +128,10 @@ export class CensoCoreEditComponent implements OnInit {
     this.showForm = false;
     this.isAlta = false;
     this.censodata = new CensoData();
+    this.currentIndustry = this.censoCtrl.currentIndustry;
+
+    // se perdió el currentIndustry, vuelve al dashborad
+    if(!this.currentIndustry) this.navigateToDashboard();
 
     if(censo && censo._id){
       this.censoindustria = censo;
@@ -134,6 +139,7 @@ export class CensoCoreEditComponent implements OnInit {
       this.censodata = censo.censo;
 
       this.currentIndustry = this.censoCtrl.currentIndustry;
+      this.empresaLabel = this.censoindustria.empresa.slug;
 
       //this.initPerson(this.currentIndustry);
 
@@ -146,6 +152,7 @@ export class CensoCoreEditComponent implements OnInit {
       this.censoindustria.censo= this.censodata;
 
       this.currentIndustry = this.censoCtrl.currentIndustry;
+
       //this.initPerson(this.currentIndustry);
 
       this.initForEdit(this.form, this.censoindustria);
@@ -232,7 +239,6 @@ export class CensoCoreEditComponent implements OnInit {
   private manageEvent(action:string){
     this.navigateToDashboard();
   	// todo
-
   }
 
   private saveCensoCore(){
@@ -245,12 +251,11 @@ export class CensoCoreEditComponent implements OnInit {
   }
 
   private navigateToDashboard(){
-    if(this.isAlta){
-      this.router.navigate(['../'], { relativeTo: this.route });
-
-    }else{
-      this.router.navigate(['../../'], { relativeTo: this.route });
-    }
+    this.router.navigate(['dashboard']);
+    // if(this.isAlta){
+    // }else{
+    //   this.router.navigate(['../../'], { relativeTo: this.route });
+    // }
   }
 
   hasError = (controlName: string, errorName: string) =>{
@@ -299,7 +304,8 @@ export class CensoCoreEditComponent implements OnInit {
   }
 
   initForEdit(form: FormGroup, token: CensoIndustrias): FormGroup {
-  	let estado, navance;
+  	let estado: string, navance: string;
+
   	estado = token.estado ? token.estado.estado : 'activo';
   	navance = token.estado ? token.estado.navance : 'caratulado';
     this.empCategoria = token.categoriaEmp;

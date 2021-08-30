@@ -46,95 +46,99 @@
               (click)="showHelp($event, 'ayuda1')">help_outline</mat-icon>
     </div>
 
-  <form [formGroup]="form">
-    <div class="row" >
-      <div class="col">
-      	<p class="text-normal">{{ texto1 }}</p>
-      </div>
+    <div class="d-flex justify-content-start align-items-center">
+      <span class="text-destacado">{{ empresaLabel }}</span>
     </div>
 
-    <div class="row" >
-      <div class="col">
-        <mat-form-field>
-          <input matInput [formControl]="form.controls['fecomp_txa']" 
-                  placeholder="Fecha censo" >
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldAvance placeholder="Avance"
-              [formControl]="form.controls['navance']"
-              (selectionChange)="changeSelectionValue('navance',fldAvance.value)" >
-            <mat-option *ngFor="let item of navanceOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+    <form [formGroup]="form">
+      <div class="row" >
+        <div class="col">
+          <p class="text-normal">{{ texto1 }}</p>
+        </div>
       </div>
 
-      <div class="col">
-        <mat-form-field>
-          <mat-select #fldEstado placeholder="Estado"
-              [formControl]="form.controls['estado']"
-              (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
-            <mat-option *ngFor="let item of estadoOptList" 
-              [value]="item.val" >{{ item.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="row" >
+        <div class="col">
+          <mat-form-field>
+            <input matInput [formControl]="form.controls['fecomp_txa']" 
+                    placeholder="Fecha censo" >
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <mat-select #fldAvance placeholder="Avance"
+                [formControl]="form.controls['navance']"
+                (selectionChange)="changeSelectionValue('navance',fldAvance.value)" >
+              <mat-option *ngFor="let item of navanceOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field>
+            <mat-select #fldEstado placeholder="Estado"
+                [formControl]="form.controls['estado']"
+                (selectionChange)="changeSelectionValue('estado',fldEstado.value)" >
+              <mat-option *ngFor="let item of estadoOptList" 
+                [value]="item.val" >{{ item.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <p class="text-destacado">Identifique la categoría de su Empresa en la siguiente tabla</p>
-    <p class="text-normal">Seleccione una columna en función de la actividad principal de su Empresa</p>
-    <p class="text-normal">Determine la categoría considerando el rango de facturación, según la actividad</p>
-    <p class="text-normal">Los importes indican topes de facturación anual para cada actividad</p>
+      <p class="text-destacado">Identifique la categoría de su Empresa en la siguiente tabla</p>
+      <p class="text-normal">Seleccione una columna en función de la actividad principal de su Empresa</p>
+      <p class="text-normal">Determine la categoría considerando el rango de facturación, según la actividad</p>
+      <p class="text-normal">Los importes indican topes de facturación anual para cada actividad</p>
 
-    <div class="row" >
-      <div class="col">
-        <table class="table table-bordered">
-          <thead class="thead-dark text-head">
-            <tr>
-              <th>Categoría</th>
-              <th class="text-right">Construcción</th>
-              <th class="text-right">Servicios</th>
-              <th class="text-right">Comercio</th>
-              <th class="text-right">Industria</th>
-              <th class="text-right">Minería</th>
-              <th class="text-right">Agropecuario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let token of tipoEmpresaOptList; let row=index">
-            <tr [style]="tableRowStyle(row)">
-              <th>{{ token[0].categoria_lbl}}</th>
-              <td *ngFor="let tipoEmp of token; let col=index" 
-                  class="text-right">
-                  <a  role="button" 
-                      [ngStyle]="tableColStyle(tipoEmp)" 
-                      (click)="toggleTipoEmp($event, tipoEmp)"> 
-                      ${{ tipoEmp.tope | number:'0.1-1' }}</a>
-              </td>
-            </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <p class="text-normal" >{{ categoryTemplateTxt1 }}
-          <span class="text-resaltado" >{{ categoryTemplateTxt2 }} </span></p>
-        <p class="text-resaltado">{{ categoryTemplateTxt3 }}</p>
+      <div class="row" >
+        <div class="col">
+          <table class="table table-bordered">
+            <thead class="thead-dark text-head">
+              <tr>
+                <th>Categoría</th>
+                <th class="text-right">Construcción</th>
+                <th class="text-right">Servicios</th>
+                <th class="text-right">Comercio</th>
+                <th class="text-right">Industria</th>
+                <th class="text-right">Minería</th>
+                <th class="text-right">Agropecuario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let token of tipoEmpresaOptList; let row=index">
+              <tr [style]="tableRowStyle(row)">
+                <th>{{ token[0].categoria_lbl}}</th>
+                <td *ngFor="let tipoEmp of token; let col=index" 
+                    class="text-right">
+                    <a  role="button" 
+                        [ngStyle]="tableColStyle(tipoEmp)" 
+                        (click)="toggleTipoEmp($event, tipoEmp)"> 
+                        ${{ tipoEmp.tope | number:'0.1-1' }}</a>
+                </td>
+              </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <p class="text-normal" >{{ categoryTemplateTxt1 }}
+            <span class="text-resaltado" >{{ categoryTemplateTxt2 }} </span></p>
+          <p class="text-resaltado">{{ categoryTemplateTxt3 }}</p>
 
+        </div>
       </div>
-    </div>
 
 
 
-    <hr>
-    <div class="additional-info">
-      <button mat-raised-button color="primary" type="submit" 
-      		(click)="onSubmit()"
-          [disabled]="!form.valid" >Aceptar</button>
-      
-      <button mat-button type="button" color="accent"
-      		(click)="onCancel()" >Cancelar</button>
-    </div>
-  </form>
+      <hr>
+      <div class="additional-info">
+        <button mat-raised-button color="primary" type="submit" 
+            (click)="onSubmit()"
+            [disabled]="!form.valid" >Aceptar</button>
+        
+        <button mat-button type="button" color="accent"
+            (click)="onCancel()" >Cancelar</button>
+      </div>
+    </form>
 
   </ng-container>
   </mat-card-content>

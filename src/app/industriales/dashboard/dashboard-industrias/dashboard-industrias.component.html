@@ -3,7 +3,7 @@
         <mat-icon style="margin-right: 2px;" >home_work</mat-icon>
         {{ industriasDashboardTitle }}
         <span class="flex-grow-1"></span>
-        <mat-icon class="clickeable" (click)="gotoIndustriasPage()">keyboard_arrow_right</mat-icon>
+        <mat-icon class="clickeable" title="gestionar empresas vinculadas" (click)="gotoIndustriasPage()">keyboard_arrow_right</mat-icon>
     </mat-card-title>
     <mat-card-subtitle class="mb-0">
         {{ industriasDashboardSubtitle }}
@@ -13,10 +13,16 @@
         <mat-list class="pt-0">
             <ng-container *ngIf="showData">
                 <mat-divider></mat-divider>
-                <mat-list-item class="align-items-center">
-                    <p class="mb-0"><strong>{{ currentIndustry.ndoc  }} {{currentIndustry.displayName }} </strong></p>
-                    <mat-divider></mat-divider>
-                </mat-list-item>
+
+                <ng-container *ngFor="let industry of relatedIndustries">
+                    <mat-list-item class="align-items-center">
+                        <p class="mb-0"><strong>{{ industry.ndoc  }} {{industry.displayName }} </strong></p>
+                        <div class="d-flex align-items-center ml-3">
+                            <button title="Gestione el CENSO 2021 para {{industry.displayName }}, cliqueando acá" style="cursor: pointer;" class="censo-btn" mat-flat-button color="primary" (click)="loadCenso(industry)">CENSO 2021 Ingrese acá ></button>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </mat-list-item>    
+                </ng-container>
 
             </ng-container>
         </mat-list>

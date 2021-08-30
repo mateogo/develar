@@ -56,6 +56,7 @@ export class CensoPageComponent implements OnInit {
   // template helper
   public title = "Censo Empresarial 2021 - MAB";
   public subtitle = "Datos generales";
+  public apoderado = '';
 
   //CensoIndustrias
   public currentCenso: CensoIndustrias;
@@ -155,7 +156,8 @@ export class CensoPageComponent implements OnInit {
           this.lookUpActiveCensoById(this.censoId);
 
         }else {
-          this.lookUpActiveCenso();
+
+          this.lookUpNuevoeCensoData();
 
         }
 
@@ -170,83 +172,39 @@ export class CensoPageComponent implements OnInit {
 
 
 
-  private initCurrentPage(){
-
-    let sscrp3 = this.empCtrl.personListener.subscribe(p => {
-      if(p){
-        this.initCurrentIndustry(p);
-
-      }else{
-        // ToDo.... qué pasa si no hay una Person activa?
-      }
-    })
-
-    let sscrp4 = this.censoCtrl.censoListener.subscribe(censo => {
-      if(censo){
-
-        this.initCurrentCenso(censo);
-
-      }else{
-        // ToDo.... qué pasa si no hay una Person activa?
-      }
-    })
-
-    this.unBindList.push(sscrp3);
-    this.unBindList.push(sscrp4);
-  
-  }
-
-  private lookUpActiveCenso(){
+  private lookUpNuevoeCensoData(){
     this.showData = false;
 
     this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
 
-        this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
+        this.currentIndustry = this.censoCtrl.currentIndustry;
+        this.initCurrentIndustry(this.currentIndustry);
 
-          if(industria){
-            this.currentIndustry = industria;
-            this.censoCtrl.currentIndustry = this.currentIndustry;
+        this.hasActividades = false;
+        this.hasBienes = false;
+        this.hasProductos = false;
+        this.hasMaquinarias = false;
+        this.hasPatentes = false;
+        this.hasExpectativas = false;
+        this.hasRhumanos = false;
 
-            this.initCurrentIndustry(this.currentIndustry)
+        this.hasCurrentCenso = false;
+        this.showData = true;
 
-            let query = {
-              search: 'actual:censo',
-              empresaId: this.currentIndustry._id,
-              codigo: ACTUAL_CENSO
-            }
-        
-            this.censoCtrl.fetchCensoByQuery(query).subscribe(list => {
-
-              if(list && list.length){
-                this.initCurrentCenso(list[0])
-                this.showData = true;  
-              }else{
-                this.hasActividades = false;
-                this.hasBienes = false;
-                this.hasProductos = false;
-                this.hasCurrentCenso = false;
-                this.hasMaquinarias = false;
-                this.hasPatentes = false;
-                this.hasExpectativas = false;
-                this.hasRhumanos = false;
-                this.showData = true;
-              }
-
-            })
-          }else{
-            // Error: no hay industria no hay censo creado aún
-          }
-
-        })
-            
       }else {
         // todo
       }
     })
 
   }
+
+
+
+
   private lookUpActiveCensoById(censoId: string){
+    this.showData = false;
+    this.currentIndustry = this.censoCtrl.currentIndustry;
     this.censoCtrl.fetchCensoById(censoId).subscribe(censo => {
 
       if(censo){
@@ -257,20 +215,21 @@ export class CensoPageComponent implements OnInit {
           this.censoCtrl.currentIndustry = this.currentIndustry;
 
           this.initCurrentIndustry(this.currentIndustry)
-            this.initCurrentCenso(censo)
-            this.showData = true;  
+          this.initCurrentCenso(censo)
+
         })
   
       }else {
+        // acá hay un error
         this.hasActividades = false;
         this.hasBienes = false;
         this.hasProductos = false;
-        this.hasCurrentCenso = false;
         this.hasMaquinarias = false;
         this.hasPatentes = false;
         this.hasExpectativas = false;
         this.hasRhumanos = false;
-        this.showData = true;
+        this.hasCurrentCenso = false;
+        this.showData = false;
       }
 
 
@@ -323,16 +282,18 @@ export class CensoPageComponent implements OnInit {
       this.expectativas = censo.expectativas || [];
       this.initExpectativas(this.expectativas);
 
-      this.refreshCenso(censo);
-
       this.audit = this.censoCtrl.getUserData();
       this.parentEntity = this.censoCtrl.parentEntity(censo);
       this.hasObservaciones = this.parentEntity ? true : false;
       this.assetList = censo.assets || [];
+      this.hasCurrentCenso = true;
+      this.showData = true;
 
 
     } else{
+      // acá hay un error
       this.hasCurrentCenso = false;
+      this.showData = false;
 
     }
 
@@ -396,12 +357,9 @@ export class CensoPageComponent implements OnInit {
     }
   }
 
-  private refreshCenso(censo){
-    this.hasCurrentCenso = true;
-  }
-
 
   private initCurrentIndustry(p: Person){
+    this.apoderado = "";
     if(p){
       this.personId = p._id;
       this.currentIndustry = p;
@@ -414,6 +372,10 @@ export class CensoPageComponent implements OnInit {
       this.saludList =     p.salud || [];
       this.coberturaList = p.cobertura || [];
       this.ambientalList = p.ambiental || [];
+      let integrantes = p.integrantes;
+      if(integrantes && integrantes.length){
+        this.apoderado = integrantes[0].displayName;
+      }
 
       this.hasCurrentPerson = true;
 
@@ -453,6 +415,7 @@ export class CensoPageComponent implements OnInit {
       this.updateActividades(event);
     }
   }
+
   private updateActividades(event: UpdateListEvent){
     this.currentCenso.actividades = event.items as CensoActividad[];
 

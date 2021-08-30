@@ -150,12 +150,12 @@ export class CensoIndustriasController {
   /*******************************/
 
   fetchCensoById(censoId: string){
-    const subject = new BehaviorSubject<CensoIndustrias>(null);
+    const subject = new Subject<CensoIndustrias>();
     this.loadCensoById(subject, censoId);
     return subject;
   }
 
-  private loadCensoById(subject: BehaviorSubject<CensoIndustrias>, censoId: string):void {
+  private loadCensoById(subject: Subject<CensoIndustrias>, censoId: string):void {
   	this.daoService.findById<CensoIndustrias>(CENSO_TYPE, censoId).then(censo => {
   		if(censo){
   			this._currentCenso = censo;
@@ -172,12 +172,12 @@ export class CensoIndustriasController {
   }
 
   fetchCensoByQuery(query: any){
-    const subject = new BehaviorSubject<CensoIndustrias[]>([]);
+    const subject = new Subject<CensoIndustrias[]>();
     this.loadCensoByQuery(subject, query);
     return subject;
   }
 
-  private loadCensoByQuery(subject: BehaviorSubject<CensoIndustrias[]>, query: any):void {
+  private loadCensoByQuery(subject: Subject<CensoIndustrias[]>, query: any):void {
   	this.daoService.search<CensoIndustrias>(CENSO_TYPE, query).subscribe(censos => {
   		if(censos && censos.length){
         this._censosList = censos;
@@ -242,6 +242,16 @@ export class CensoIndustriasController {
   	}
   	return this._censoListener;
   }
+
+  // CURRENT CENSO
+  get currentCenso():CensoIndustrias{
+    return this._currentCenso;
+  }
+
+  set currentCenso(censo: CensoIndustrias){
+    this._currentCenso = censo;
+  }
+
 
 
 

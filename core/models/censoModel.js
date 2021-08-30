@@ -229,6 +229,7 @@ const censoRecursosHumanosSch = new Schema({
     qemplnoab:     { type: Number, required: false },
 
     competencia:  { type: String, required: false },
+    competenciaObs: { type: String, required: false },
     competencias: [ String ],
 
     porNivelEducacion:   [ nodoSeccionSch ],

@@ -62,6 +62,7 @@ export class CensoCoreViewComponent implements OnInit {
   public codigo = "";
   public slug = "";
   public isClosable = false;
+  public empresa = ""; 
   public closable$:BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(false);
 
   public btnLabel = '';
@@ -86,6 +87,7 @@ export class CensoCoreViewComponent implements OnInit {
 	this.closable$ = CensoIndustriasService.closable$;
 	this.btnLabel = 'Cerrar CENSO';
 	this.btnColor = 'primary';
+	this.empresa = this.token.empresa.slug;
 
 
 	this.btnLabelSelect();

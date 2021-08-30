@@ -186,6 +186,7 @@ export class CensoRhumanosEditComponent implements OnInit {
       qemplab:        token.qemplab,
       qemplnoab:      token.qemplnoab,
       competencia:    token.competencia,
+      competenciaObs: token.competenciaObs || '',
       crecimiento: {
         hasCrecimiento:  token.crecimiento.hasCrecimiento,
         hasBrownEmplea:  token.crecimiento.hasBrownEmplea,
@@ -263,6 +264,7 @@ export class CensoRhumanosEditComponent implements OnInit {
       qemplab:         [ null ],
       qemplnoab:       [ null ],
       competencia:     [ null ],
+      competenciaObs:  [ null ],
       planta:          [ null ],
       crecimiento:     this.fb.group({
         hasCrecimiento:  [ null ],
@@ -327,6 +329,7 @@ export class CensoRhumanosEditComponent implements OnInit {
     entity.type = fvalue.type;
     entity.slug = fvalue.slug;
     entity.competencia = fvalue.competencia;
+    entity.competenciaObs = fvalue.competenciaObs;
     entity.qempleados = fvalue.qempleados;
     entity.qemplab =        fvalue.qemplab;
     entity.qemplnoab =      fvalue.qemplnoab;

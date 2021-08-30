@@ -403,6 +403,7 @@ export class CensoRecursosHumanos {
 
 	crecimiento: CrecimientoEmpleados;
 	competencia: string;
+	competenciaObs: string = "";
 	competencias: Array<string> = [];
 
 	constructor(){

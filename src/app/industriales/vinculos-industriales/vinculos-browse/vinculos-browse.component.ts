@@ -93,7 +93,7 @@ export class VinculosBrowseComponent implements OnInit {
   }
 
   public nuevoVinculo(): void {
-    if (this.currentIndustry) {
+    if (false /*this.currentIndustry*/) {
       this.censoCtrl.openSnackBar('Usted ya posee una industria vinculada.', 'CERRAR');
      } else {
       this._userService.fetchPersonByUserId(this._userService.currentUser._id).then(person => {

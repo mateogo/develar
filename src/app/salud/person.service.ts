@@ -5,6 +5,7 @@ import { DaoService }    from '../develar-commons/dao.service';
 import { devutils } from '../develar-commons/utils';
 import { Person, PersonContactData, Address, UpdatePersonEvent }        from '../entities/person/person';
 import { UserWeb } from '../entities/user-web/user-web.model';
+import { User } from '../entities/user/user';
 
 import { Asistencia, Requirente, AsistenciaSig } from './asistencia/asistencia.model';
 import { Turno }         from './turnos/turnos.model';
@@ -115,17 +116,27 @@ export class PersonService {
       tdoc: tdoc,
       ndoc: ndoc
     }
-    this.personEmitter(listener, query);
-    return listener;
-  }  
-
-  fetchPersonByQuery(query: any): Subject<Person[]>{
-    let listener = new Subject<Person[]>();
-    this.personsEmitter(listener, query);
+    this._personEmitter(listener, query);
     return listener;
   }
 
-  private personsEmitter(listener:Subject<Person[]>, query: any){
+  private _personEmitter(listener:Subject<Person>, query: any){
+    this.daoService.search<Person>(RECORD, query).subscribe(tokens =>{
+      if(tokens && tokens.length){
+        listener.next(tokens[0])
+      }else{
+        listener.next(null);
+      }
+    });
+  }
+
+  fetchPersonByQuery(query: any): Subject<Person[]>{
+    let listener = new Subject<Person[]>();
+    this._personsEmitter(listener, query);
+    return listener;
+  }
+
+  private _personsEmitter(listener:Subject<Person[]>, query: any){
     this.daoService.search<Person>(RECORD, query).subscribe(tokens =>{
       if(tokens){
         listener.next(tokens)
@@ -135,15 +146,75 @@ export class PersonService {
     });
   }
 
-  private personEmitter(listener:Subject<Person>, query: any){
+
+  fetchPersonOwnedByUser(user: User|UserWeb): Subject<Person>{
+    let query = {}
+    let listener = new Subject<Person>();
+
+    if(user.isUsuarioWeb){
+      query['userwebId']=user._id
+    }else {
+      query['userId']=user._id
+    }
+
     this.daoService.search<Person>(RECORD, query).subscribe(tokens =>{
       if(tokens && tokens.length){
-        listener.next(tokens[0])
+        listener.next(tokens[0]);
+
       }else{
         listener.next(null);
+        return null;
       }
     });
+
+    return listener;
   }
+
+  fetchIndustriesIntegratedByPerson(integrante: Person): Subject<Person[]>{
+    let listener = new Subject<Person[]>();
+    let query={ integrante: integrante._id }
+
+    this.daoService.search<Person>(RECORD, query).subscribe(tokens =>{
+      if(tokens && tokens.length){
+        listener.next(tokens);
+
+      }else{
+        listener.next(null);
+        return null;
+      }
+    });
+
+    return listener;
+  }
+
+  fetchAllIndustriesIntegratedFromUser(user: User|UserWeb): Subject<Person[]>{
+    let listener = new Subject<Person[]>()
+
+    this.fetchPersonOwnedByUser(user).subscribe(person =>{
+      if(person){
+        this.currentPerson = person;
+
+        this.fetchIndustriesIntegratedByPerson(person).subscribe(industrias =>{
+          if(industrias && industrias.length){
+            listener.next(industrias);
+
+          }else{
+            // todo, no encontré industria
+            listener.next(null)
+          }
+        })
+
+      }else{
+        //todo, no encontré personFromUser
+        listener.next(null)
+      }
+    })
+
+    return listener;
+  }
+
+
+
 
   loadPersonAddresses(personId): Observable<Address[]>{
     const addresses$ = new Subject<Address[]>();

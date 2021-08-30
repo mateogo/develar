@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, from } from 'rxjs';
+import { take, pluck, map } from 'rxjs/operators';
 
 import { ConsultasService } from '../../../entities/consultas/consultas.service';
 import { UserService } from '../../../entities/user/user.service';
@@ -19,17 +20,16 @@ import { User } from '../../../entities/user/user'
   styleUrls: ['./dashboard-industrias.component.scss']
 })
 export class DashboardIndustriasComponent implements OnInit {
-  public industriasDashboardTitle = 'Empresa';
-  public industriasDashboardSubtitle = 'Vincular la organización que represento';
+  public industriasDashboardTitle = 'Empresas';
+  public industriasDashboardSubtitle = 'Acceda a esta sección para gestionar sus empresas vinculadas';
 
   public consultasList$: Observable<Consulta[]>;
   public censosList$: Observable<CensoIndustrias[]>;
   private activeCenso: CensoIndustrias;
   public currentIndustry: Person;
+  public relatedIndustries: Person[] = [];
 
   public showData = false;
-
-
 
   public industriasList = [];
 
@@ -49,19 +49,17 @@ export class DashboardIndustriasComponent implements OnInit {
   private fetchCompaniaVinculada(){
     this.showData = false;
 
-
     this._userService.userEmitter.subscribe((user: User) => {
       if(user && user._id){
-        this.empCtrl.fetchIndustriaFromUser(user).subscribe(industria =>{
-          if(industria){
-            this.currentIndustry = industria;
+        this.empCtrl.fetchAllIndustriesIntegratedByUser(user).subscribe(industrias =>{
+          if(industrias && industrias.length){
+            this.relatedIndustries = industrias;
             this.showData = true;
  
           }else{
             this.showData = false;
           }
         })
-
 
       }else {
         // todo
@@ -70,7 +68,47 @@ export class DashboardIndustriasComponent implements OnInit {
 
   }
 
+  loadCenso(industria: Person){
+    this.censoCtrl.currentIndustry = industria;
+    this.censoCtrl.currentCenso = null;
 
+    this.censoCtrl.fetchActiveCensos$(industria._id).subscribe(censos => {
+
+      if(censos && censos.length){
+        let censoId = censos[0]._id
+        this.censoCtrl.fetchCensoById(censoId).subscribe(censo =>{
+          if(censo){
+            this.gotoCensoById(censoId);
+    
+          }else{
+            // esto es un error
+            console.error('censo no encontrado')
+          }
+        });
+
+      }else {
+
+        this.gotoCensoNuevo();
+      }
+
+    })
+
+  }
+  
+  //http://develar-local.co:4200/censo2021/5fc9ab369002ac35d6f10daa
+  // public fetchCensoActivo$(industria: Person){
+  //   return this.censoCtrl.fetchActiveCensos$(industria._id).pipe( 
+  //       map(list => list && list.length && list[0].compNum) 
+  //     );
+  // }
+
+  public gotoCensoById(censoId: string){
+    this.router.navigate(['/dashboard/censos/censo2021', censoId]);
+  }
+
+  public gotoCensoNuevo(){
+    this.router.navigate(['/dashboard/censos/censo2021']);
+  }
 
   public gotoIndustriasPage(): void {
     this.router.navigate(['industrias'], { relativeTo: this.route });
