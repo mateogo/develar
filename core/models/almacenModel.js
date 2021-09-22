@@ -375,7 +375,8 @@ function buildExcelStream(remanentes, query, req, res){
     var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res })
     var worksheet = workbook.addWorksheet('movimientos')
 
-    var justCabecera = query.justCabecera === "true"
+    var justCabecera = query.justCabecera === "true";
+    console.log('EXCEL BEGIN')
 
     
     worksheet.addRow(['Movimientos de Almacén']).commit()
@@ -385,12 +386,15 @@ function buildExcelStream(remanentes, query, req, res){
     worksheet.addRow(['Comprobante','Número','Cantidad','Acción','Estado','Avance','Fecha','Comentario','Depósito','T/Mov','T/Kit','Kit','DOC','Documento','Beneficiario/a','Cód','Artículo','Descripción','UME','Cant']).commit();
 
     remanentes.forEach(row => {
+      console.log('row foEach')
+      console.dir(row);
         const parent = row.parent || {type: 's/d', kit: 's/d', compNum: 's/d'};
 
         const requeridox = row.requeridox || {slug: 'Sin beneficiario', tdoc: 's/d', ndoc: 's/d'};
 
         const entregas = row.entregas
-
+        const personLink = {text: 'Haga clic acá para abrir la ficha del referente', hyperlink: `https://dsocial.brown.gob.ar/alimentar/gestion/atencionsocial/${row.personId}`};
+    
         row.deposito = getDepositoLabel(row.deposito);
 
 
@@ -414,7 +418,7 @@ function buildExcelStream(remanentes, query, req, res){
           })
 
         }else {
-          worksheet.addRow([...basicArr, ...parentArr, ... requeridoxArr]).commit()
+          worksheet.addRow([...basicArr, ...parentArr, ... requeridoxArr, personLink ]).commit()
 
         }
 

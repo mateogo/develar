@@ -4,7 +4,7 @@
  *
  * @
 *************/
-const user = 'industrias';
+const user = 'dsocial';
 
 const globals = {
 
@@ -21,7 +21,7 @@ const globals = {
 		socialmedia: 'DEFAULT_SOCIAL_MEDIA',
 		emailsubject: '[MAB] Contacto',
 		emailbody: 'Formulario de contacto completado',
-		copyright: 'DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 21.05.20 - 23:09',
+		copyright: 'DGTS@modernización - Secretaría General - Secretaría de Desarrollo Social - Almirante Brown 21.09.22 - 11:27',
 		version: '1.0 beta',
 		url: 'dsocial.brown.gob.ar'
 	},
