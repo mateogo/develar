@@ -7,22 +7,22 @@ import { devutils }    from '../utils';
 const observacionesTypeOptList: Array<any> = [
 		{val: 'general',      type: 'General',         label: 'General' },
 		{val: 'tramitacion',  type: 'Tramitación',     label: 'Tramitación' },
-    {val: 'resultado',    type: 'Tramitación',     label: 'Resultado Tramitación' },
+		{val: 'resultado',    type: 'Tramitación',     label: 'Resultado Tramitación' },
 		{val: 'violencia',    type: 'Violencia',       label: 'Violencia' },
 		{val: 'reclamo',      type: 'Reclamo',         label: 'Reclamo' },
 		{val: 'articulacion', type: 'Articulación',    label: 'Articulación' },
 		{val: 'emergencia',   type: 'Emergencia',      label: 'Emergencia' },
 		{val: 'tsocial',      type: 'Intervención TS', label: 'Intervención TS' },
-    {val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
-    {val: 'asesoria',     type: 'Asesoria',        label: 'Asesoría general' },
-    {val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
-    {val: 'subsidio',     type: 'subsidio',        label: 'Tramitación subsidio' },
-    {val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
-    {val: 'entrevista',   type: 'entrevista',      label: 'Entrevista TS' },
-    {val: 'informe',      type: 'informe',         label: 'Informe SE TS' },
-    {val: 'relevamiento', type: 'relevamiento',    label: 'Relevam SA TS' },
-    {val: 'otros',        type: 'otros',           label: 'Otros' },
-    {val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
+		{val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
+		{val: 'asesoria',     type: 'Asesoria',        label: 'Asesoría general' },
+		{val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
+		{val: 'subsidio',     type: 'subsidio',        label: 'Tramitación subsidio' },
+		{val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
+		{val: 'entrevista',   type: 'entrevista',      label: 'Entrevista TS' },
+		{val: 'informe',      type: 'informe',         label: 'Informe SE TS' },
+		{val: 'relevamiento', type: 'relevamiento',    label: 'Relevam SA TS' },
+		{val: 'otros',        type: 'otros',           label: 'Otros' },
+		{val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
 
 ];
 
@@ -31,14 +31,14 @@ const observacionesCCKOptList: Array<any> = [
 		{val: 'tramitacion',  type: 'Tramitación',     label: 'Tramitación' },
 		{val: 'reclamo',      type: 'Reclamo',         label: 'Reclamo' },
 		{val: 'articulacion', type: 'Articulación',    label: 'Articulación' },
-    {val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
-    {val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
-    {val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
-    {val: 'entrevista',   type: 'entrevista',      label: 'Entrevista' },
-    {val: 'informe',      type: 'informe',         label: 'Informe ' },
-    {val: 'relevamiento', type: 'relevamiento',    label: 'Relevam ' },
-    {val: 'otros',        type: 'otros',           label: 'Otros' },
-    {val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
+		{val: 'entrega',      type: 'Entrega',         label: 'Entrega' },
+		{val: 'expediente',   type: 'expediente',      label: 'Apertura expediente' },
+		{val: 'notificacion', type: 'notificacion',    label: 'Notificación' },
+		{val: 'entrevista',   type: 'entrevista',      label: 'Entrevista' },
+		{val: 'informe',      type: 'informe',         label: 'Informe ' },
+		{val: 'relevamiento', type: 'relevamiento',    label: 'Relevam ' },
+		{val: 'otros',        type: 'otros',           label: 'Otros' },
+		{val: 'no_definido',  type: 'no_definido',     label: 'Sin selección' },
 
 ];
 
@@ -52,9 +52,9 @@ const saludAsisprevencionOptList: Array<any> = [
 const observacionesCensoOptList: Array<any> = [
 		{val: 'consulta',     type: 'consulta',     label: 'Consulta Empresa' },
 		{val: 'observación',  type: 'observacion',  label: 'Observación Empresa' },
-    {val: 'notificacion', type: 'notificacion', label: 'Notificación MAB' },
+		{val: 'notificacion', type: 'notificacion', label: 'Notificación MAB' },
 		{val: 'general',      type: 'general',      label: 'General' },
-    {val: 'no_definido',  type: 'no_definido',  label: 'Sin selección' },
+		{val: 'no_definido',  type: 'no_definido',  label: 'Sin selección' },
 
 ];
 

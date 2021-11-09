@@ -12,6 +12,17 @@ export class Observacion {
 		parent:       ParentEntity;
 		audit:        Audit;
 		comentarios:  Comentario[];
+}
+
+export class ObservacionBrowse {
+	type:      string = "general";
+	fed:       string; 
+	feh:       string;
+	entityType: string = 'person';
+	searchAction: string; 
+	action: string;
+
+	slug: string;
 
 }
 

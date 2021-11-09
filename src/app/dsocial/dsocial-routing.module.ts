@@ -16,6 +16,7 @@ import { AlimentarDashboardComponent } from './tsocial/alimentar-dashboard/alime
 import { EntregasExportComponent } from './tableros/entregas-export/entregas-export.component';
 import { RegistroPageComponent } from './delegaciones/turnos/registro-page/registro-page.component';
 import { AlimentarConsultaComponent } from './tsocial/alimentar-consulta/alimentar-consulta.component';
+import { ObserPageComponent } from './observaciones/obser-page/obser-page.component';
 
 const routes: Routes = [
 	{
@@ -45,6 +46,10 @@ const routes: Routes = [
 	{
 		path:'exportaralmacen',
 		component: EntregasExportComponent
+	},
+	{
+		path:'observaciones',
+		component: ObserPageComponent
 	},
 	{
 		path:'validacionentregas/:id',

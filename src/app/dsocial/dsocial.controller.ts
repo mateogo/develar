@@ -29,7 +29,7 @@ import { UserWeb } from '../entities/user-web/user-web.model';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
-import { Observacion } from '../develar-commons/observaciones/observaciones.model';
+import { Observacion, ObservacionBrowse } from '../develar-commons/observaciones/observaciones.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse,Requirente,TurnosAsignados,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
@@ -64,6 +64,7 @@ export class DsocialController {
   private navigationUrl = "";
 
   private _asistenciasSelector: AsistenciaBrowse;
+  private _observacionesSelector: ObservacionBrowse;
 
   private _encuestadores: User[];
 
@@ -1372,6 +1373,15 @@ export class DsocialController {
       });
   }
 
+ // Browse Solicitud de Asistencia Form Data 
+ get observacionesSelector():ObservacionBrowse{
+  if(!this._observacionesSelector) this._observacionesSelector = new ObservacionBrowse();
+  return this._observacionesSelector;
+}
+
+set observacionesSelector(e: ObservacionBrowse){
+  this._observacionesSelector = e;
+}
 
 
   /***************************/

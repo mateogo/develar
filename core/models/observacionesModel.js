@@ -71,6 +71,24 @@ function buildQuery(query){
 
   let q = {};
 
+
+  if(query['fed']){
+    let fed_ts = utils.parseDateStr(query['fed']).getTime();
+    q['fe_ts'] = { $gte: fed_ts}
+
+  }
+
+  if(query['feh']){
+    let feh_ts = utils.parseDateStr(query['feh']).getTime();
+    q['fe_ts'] = { $lte: feh_ts}
+
+  }
+
+  if(query['type']){
+    q['type'] = query['type'];
+  }
+
+
   if(query['entityType']){
       q["parent.entityType"] = query['entityType'];
   }
@@ -78,6 +96,11 @@ function buildQuery(query){
   if(query['entityId']){
       q["parent.entityId"] = query['entityId'];
   }
+
+  if(query['slug']){
+    q["observacion"] = query['slug'];
+  }
+
 
   return q;
 }
@@ -115,6 +138,7 @@ exports.findAll = function (errcb, cb) {
  */
 exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
+    console.dir(regexQuery);
 
     Record.find(regexQuery, function(err, entities) {
         if (err) {
