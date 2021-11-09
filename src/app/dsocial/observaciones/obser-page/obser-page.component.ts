@@ -8,13 +8,13 @@ import {  Person } from '../../../entities/person/person';
 
 import { Observacion } from '../../../develar-commons/observaciones/observaciones.model';
 
-import { 	Asistencia, 
+import { 	Asistencia,
           AsistenciaTable,
           AsistenciaBrowse,
 					Alimento,
-          AsistenciaSig, 
-					UpdateAsistenciaEvent, 
-					UpdateAlimentoEvent, 
+          AsistenciaSig,
+					UpdateAsistenciaEvent,
+					UpdateAlimentoEvent,
 					UpdateAsistenciaListEvent,
 					AsistenciaHelper } from '../../asistencia/asistencia.model';
 
@@ -25,7 +25,7 @@ const CREATE = 'create';
 const SEARCH = 'search';
 const NAVIGATE = 'navigate';
 const SEARCH_NEXT = 'search_next';
-
+const EXCEL= 'excel';
 
 @Component({
   selector: 'obser-page',
@@ -63,7 +63,7 @@ export class ObserPageComponent implements OnInit {
   public asistenciasList: Asistencia[];
   public itemsFound = false;
   public currentAsistencia:Asistencia;
-
+  public observacionesList: Observacion[];
 
 
   constructor(
@@ -97,7 +97,7 @@ export class ObserPageComponent implements OnInit {
   }
 
   initCurrentPage(){
-    
+
     if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
         this.loadPerson(this.personId);
     }
@@ -150,20 +150,16 @@ export class ObserPageComponent implements OnInit {
       if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
     })
 
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length > 0){
-        this.asistenciasList = list;
-        this.dsCtrl.updateTableData();
-
+    this.dsCtrl.fetchObservacionesByQuery(query).subscribe(list => {
+      if(list && list.length) {
+        this.observacionesList = list;
+        this.dsCtrl.updateObservacionesTableData(list);
         this.showData = true;
-
-      }else {
-        this.asistenciasList = [];
-
-        this.showData = false;
-
       }
-
+      else {
+        this.observacionesList = [];
+        this.showData = false;
+      }
     })
 
   }
@@ -214,7 +210,7 @@ export class ObserPageComponent implements OnInit {
   }
 
   emitEvent(event:UpdateAsistenciaEvent){
-  
+
   	if(event.action === UPDATE){
   		this.updateItems.next({
   		action: UPDATE,
@@ -259,6 +255,8 @@ export class ObserPageComponent implements OnInit {
 
     if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
       this.fetchSolicitudes(this.query, query.searchAction);
+    } else if (query.searchAction == EXCEL) {
+      this._exportExcel();
     }
 
   }
@@ -289,7 +287,7 @@ export class ObserPageComponent implements OnInit {
           lat: tokens[0].lat,
           lng: tokens[0].lng
         }
-        
+
         tokens[0].asistencia.requeridox.slug
 
 
@@ -300,7 +298,18 @@ export class ObserPageComponent implements OnInit {
       }
     })
 
-    
+
+  }
+
+  private _exportExcel(): void {
+    console.log("observaciones --> %o",this.observacionesList);
+
+    Object.keys(this.query).forEach(key =>{
+      if(this.query[key] == null || this.query[key] == 'no_definido' ) delete this.query[key];
+      if(key === 'fecomp_h' || key === 'fecomp_d') delete this.query[key];
+    })
+
+    this.dsCtrl.exportObservacionesByQuery(this.query);
   }
 
 

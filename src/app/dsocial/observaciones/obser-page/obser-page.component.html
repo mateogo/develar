@@ -3,14 +3,14 @@
 		<div class="selector">
 	  	<div class="d-flex align-items-center justify-content-between panel-header">
 				<div class="panel-header-text">{{ searchTitle }}</div>
-				<div class="panel-header-control" ><span 
+				<div class="panel-header-control" ><span
 					(click)='openSearchForm()' title="Abrir panel de búsqueda avanzada">
-					<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'" 
+					<i [class]="openEditor ? 'fas fa-pen-square' : 'far fa-edit'"
 						aria-hidden="true"></i></span></div>
 				</div>
 		</div>
 		<ng-container *ngIf="openEditor">
-			<obser-browse [query]="query" (updateQuery)="refreshSelection($event)"></obser-browse>
+			<obser-browse [query]="query" [observacionesList]="observacionesList" (updateQuery)="refreshSelection($event)"></obser-browse>
 		</ng-container>
 	</mat-card-content>
 </mat-card>
@@ -28,9 +28,9 @@
 					    <mat-button-toggle value="list">
 					      <mat-icon>view_list</mat-icon>
 					    </mat-button-toggle>
-					    <mat-button-toggle value="grid">
+					    <!-- <mat-button-toggle value="grid">
 					      <mat-icon>view_module</mat-icon>
-					    </mat-button-toggle>
+					    </mat-button-toggle> -->
 					  </mat-button-toggle-group>
 					</div>
 
@@ -40,7 +40,7 @@
 		<ng-container *ngIf='showData'>
 
 			<ng-container *ngIf='!view.value || view.value=="list"'>
-				<sol-table (actionTriggered)="tableAction($event)"  ></sol-table>
+				<obser-list (actionTriggered)="tableAction($event)"  ></obser-list>
 			</ng-container>
 
 			<ng-container *ngIf='view.value=="grid"'>

@@ -13,6 +13,7 @@ const path = require('path');
 const utils = require('../services/commons.utils');
 const person = require('./personModel');
 
+const Excel = require('exceljs');
 
 
 const Schema = mongoose.Schema;
@@ -71,17 +72,21 @@ function buildQuery(query){
 
   let q = {};
 
-
-  if(query['fed']){
+  if(query['fed'] && query['feh']) {
     let fed_ts = utils.parseDateStr(query['fed']).getTime();
-    q['fe_ts'] = { $gte: fed_ts}
-
-  }
-
-  if(query['feh']){
     let feh_ts = utils.parseDateStr(query['feh']).getTime();
-    q['fe_ts'] = { $lte: feh_ts}
+    q['fe_ts'] = { $gte: fed_ts, $lte: feh_ts };
+  } else {
+    if(query['fed']){
+      let fed_ts = utils.parseDateStr(query['fed']).getTime();
+      q['fe_ts'] = { $gte: fed_ts}
+    }
 
+    if(query['feh']){
+      let feh_ts = utils.parseDateStr(query['feh']).getTime();
+      q['fe_ts'] = { $lte: feh_ts}
+
+    }
   }
 
   if(query['type']){
@@ -98,7 +103,7 @@ function buildQuery(query){
   }
 
   if(query['slug']){
-    q["observacion"] = query['slug'];
+    q["observacion"] = { $regex: query['slug'], $options: "ig" };
   }
 
 
@@ -164,7 +169,7 @@ exports.findById = function (id, errcb, cb) {
             console.log('[%s] findByID ERROR() argument [%s]', whoami, arguments.length);
             err.itsme = whoami;
             errcb(err);
-        
+
         }else{
             cb(entity);
         }
@@ -187,7 +192,7 @@ exports.update = function (id, record, errcb, cb) {
             console.log('[%s] validation error as validate() argument [%s]',whoami)
             err.itsme = whoami;
             errcb(err);
-        
+
         }else{
             cb(entity);
         }
@@ -209,7 +214,7 @@ exports.create = function (record, errcb, cb) {
             console.log('[%s] validation error as validate() argument ',whoami);
             err.itsme = whoami;
             errcb(err);
-        
+
         }else{
             cb(entity);
         }
@@ -264,7 +269,7 @@ function processObservationArchive(person_tree, req, errcb, cb){
             console.dir(err);
 
         }else{
-            parser.parseString(data, 
+            parser.parseString(data,
 
             function(err, jdata){
                 if(err){
@@ -372,7 +377,7 @@ const populateMasterObservacion = function(person_tree, master, record){
       file.size = record.size;
       file.extension = record.extension;
     }
-    
+
     let observacion = new Record({
             type:       'general',
             fe_tx:       fe_tx,
@@ -407,6 +412,137 @@ async function insertObservacionToDB (observacion){
 
 }
 
+exports.exportExcel = function(query, req, res) {
+  if(!query) {
+    query = { "parent.entityType" : 'person' }
+  }
+
+  obtenerMovimientos(query, req, res);
+}
+
+async function obtenerMovimientos(query, req, res) {
+  console.log("obtener movimientos")
+
+  const regexQuery = buildQuery(query);
+
+  try {
+    console.log(regexQuery)
+    const entities = await Record.find(regexQuery).lean().exec();
+
+    if (entities && entities.length) {
+      _generarArchivoDeExcel(entities, req, res);
+    } else {
+      _generarArchivoDeExcel([], req, res);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+function _generarArchivoDeExcel(entities, req, res) {
+
+  console.log("_generar excel --> %s", entities.length)
+  const itemsExcel = [];
+  if(entities && entities.length) {
+    for(let i = 0; i < entities.length; i++) {
+
+      const {
+        _id,
+        is_pinned,
+        type,
+        fe_tx,
+        fe_ts,
+        ts_umod,
+        parent,
+        audit,
+        observacion,
+      } = entities[i];
+
+      const itemExcel = {
+        _id,
+        is_pinned,
+        type,
+        fe_tx,
+        fe_ts,
+        ts_umod,
+        entityId: parent ? parent.entityId : '',
+        entitySlug: parent ? parent.entitySlug : '',
+        entityType: parent ? parent.entityType : '',
+        userAlta: audit ? audit.username : '',
+        fechaAlta: audit && audit.ts_alta ? utils.dateToStr(new Date(audit.ts_alta)) : null,
+        observacion
+      }
+      itemsExcel.push(itemExcel);
+    }
+  }
+
+  if(itemsExcel && itemsExcel.length) {
+    _exportarAExcel(itemsExcel, req, res);
+  }
+
+}
+
+function _exportarAExcel(observaciones, req, res) {
+  console.log("llegó a _Exportar excel");
+  const archivoSalida = 'observaciones_' + utils.dateToStr(new Date()) + '.xlsx';
 
 
+  res.writeHead(200, {
+    'Content-Disposition': 'attachment; filename="' + archivoSalida + '"',
+    'Transfer-Encoding': 'chunked',
+    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  });
 
+  const libro = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
+  const hoja = libro.addWorksheet('observaciones');
+
+  hoja.addRow([
+    '_id',
+    'is_pinned',
+    'type',
+    'fe_tx',
+    'fe_ts',
+    'ts_umod',
+    'entityId',
+    'entitySlug',
+    'entityType',
+    'userAlta',
+    'fechaAlta',
+    'observacion'
+  ]).commit();
+
+  observaciones.forEach(item => {
+    const {
+    _id,
+    is_pinned,
+    type,
+    fe_tx,
+    fe_ts,
+    ts_umod,
+    entityId,
+    entitySlug,
+    entityType,
+    userAlta,
+    fechaAlta,
+    observacion
+    } = item;
+
+    hoja.addRow([
+      _id,
+      is_pinned,
+      type,
+      fe_tx,
+      fe_ts,
+      ts_umod,
+      entityId,
+      entitySlug,
+      entityType,
+      userAlta,
+      fechaAlta,
+      observacion
+    ]).commit();
+  });
+
+  hoja.commit();
+  libro.commit();
+}

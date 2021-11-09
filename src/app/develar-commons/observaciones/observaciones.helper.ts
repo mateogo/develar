@@ -1,7 +1,7 @@
 /**
 	OBSERVACIONES HELPER
 */
-import { Observacion } from './observaciones.model';
+import { Observacion, ObservacionTable } from './observaciones.model';
 import { devutils }    from '../utils';
 
 const observacionesTypeOptList: Array<any> = [
@@ -101,6 +101,20 @@ export class ObservacionesHelper {
 		return obs;
 
 	}
+
+  static buildDataTable(list: Observacion[]): ObservacionTable[] {
+    return list.map(token => {
+      const tableCell = new ObservacionTable();
+      tableCell._id = token._id;
+      tableCell.entitySlug = token.parent?.entitySlug;
+      tableCell.fe_tx = token.fe_tx;
+      tableCell.fe_ts = token.fe_ts;
+      tableCell.observacion = token.observacion;
+      tableCell.type = this.getOptionLabel('type', token.type);
+
+      return tableCell;
+    })
+  }
 
 
 }

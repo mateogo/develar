@@ -29,13 +29,15 @@ import { UserWeb } from '../entities/user-web/user-web.model';
 import { Community }     from '../develar-commons/community/community.model';
 import { DsocialModel, Serial, Ciudadano } from './dsocial.model';
 import { Turno, TurnoAction, Atendido, TurnosModel }         from './turnos/turnos.model';
-import { Observacion, ObservacionBrowse } from '../develar-commons/observaciones/observaciones.model';
+import { Observacion, ObservacionBrowse, ObservacionTable } from '../develar-commons/observaciones/observaciones.model';
 
 import { Asistencia, Alimento, AsistenciaBrowse,Requirente,TurnosAsignados,
           AsistenciaTable, AsistenciaHelper, AsistenciaSig,
           UpdateAsistenciaEvent, UpdateAlimentoEvent } from './asistencia/asistencia.model';
 
 import { RemitoAlmacen, RemitoAlmacenModel, RemitoAlmacenTable, KitOptionList, AlimentosHelper } from './alimentos/alimentos.model';
+import { ObservacionesHelper } from '../develar-commons/observaciones/observaciones.helper';
+import { HttpParams } from '@angular/common/http';
 
 const ATTENTION_ROUTE = "atencionsocial";
 const ALIMENTAR_ROUTE = "tarjetaalimentar";
@@ -52,7 +54,7 @@ const SALUD = 'salud';
 const COBERTURA = 'cobertura';
 const ENCUESTA = 'ambiental';
 const ASSETS = 'assets';
-
+const OBSERVACION = 'observacion';
 @Injectable({
 	providedIn: 'root'
 })
@@ -84,6 +86,7 @@ export class DsocialController {
   public  onReady = new BehaviorSubject<boolean>(false);
 
   private emitAsistenciaDataSource = new BehaviorSubject<AsistenciaTable[]>([]);
+  private emitObservacionesDataSource = new BehaviorSubject<ObservacionTable[]>([]);
   private _selectionModel: SelectionModel<AsistenciaTable>
   private solicitudesList: Array<Asistencia> = [];
 
@@ -182,7 +185,7 @@ export class DsocialController {
     requirente.tdoc = person.tdoc;
     requirente.ndoc = person.ndoc;
     requirente.id   = person._id;
-    
+
     gturno.requeridox = requirente;
     return this.daoService.processGTurno<TurnosAsignados>('gturno', gturno);
 
@@ -228,13 +231,13 @@ export class DsocialController {
 
   /******* UPDATE REMITO ********/
   updateRemitoAlmacen(listener:Subject<RemitoAlmacen>, type, remitoalmacen:RemitoAlmacen){
- 
+
     this.initRemitoAlmacenForUpdate(remitoalmacen);
 
     this.upsertRemitoAlmacen(listener, type, remitoalmacen);
 
   }
- 
+
   private initRemitoAlmacenForUpdate(entity: RemitoAlmacen){
     entity.atendidox = this.atendidoPor(entity.sector);
     entity.ts_prog = Date.now();
@@ -272,7 +275,7 @@ export class DsocialController {
       remitoalmacen.compPrefix = serial.compPrefix ;
       remitoalmacen.compName = serial.compName;
       remitoalmacen.compNum = (serial.pnumero + serial.offset) + "";
-     
+
       this.insertRemitoAlmacen(listener, type, remitoalmacen);
     });
   }
@@ -413,7 +416,7 @@ export class DsocialController {
 
   /************************************^***/
   /******* alimentar Beneficiario ********/
-  /**************************************/ 
+  /**************************************/
   fetchBeneficiario(ndoc: string){
 
     return this.daoService.fetchTarjetaAlimentar<BeneficiarioAlimentar>('beneficiarioalimentar', ndoc);
@@ -434,7 +437,7 @@ export class DsocialController {
 
     this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
       //c onsole.log('BENEFICIARIO UPDATE OK')
-    
+
     })
 
   }
@@ -447,7 +450,7 @@ export class DsocialController {
 
     this.daoService.update<BeneficiarioAlimentar>('beneficiarioalimentar', beneficiario._id, beneficiario).then(t =>{
       //c onsole.log('BENEFICIARIO ANULACIÓN ENTREGA OK')
-    
+
     })
 
   }
@@ -494,7 +497,7 @@ export class DsocialController {
     alimento.type = kit.val;
 
     asistencia.modalidad = alimento;
-    
+
     asistencia.atendidox = this.atendidoPor(sector);
     asistencia.ts_prog = Date.now();
 
@@ -509,7 +512,7 @@ export class DsocialController {
         }
 
       });
-     
+
     });
   }
 
@@ -544,13 +547,13 @@ export class DsocialController {
 
   /******* UPDATE ASISTENCIA ********/
   updateAsistencia(asistencia$:Subject<Asistencia>, type, asistencia:Asistencia){
- 
+
     this.initAsistenciaForUpdate(asistencia);
 
     this.upsertAsistencia(asistencia$, type, asistencia);
 
   }
- 
+
   private initAsistenciaForUpdate(entity: Asistencia){
     let novedades = entity.novedades;
     let sector = entity.sector;
@@ -610,7 +613,7 @@ export class DsocialController {
       asistencia.compPrefix = serial.compPrefix ;
       asistencia.compName = serial.compName;
       asistencia.compNum = (serial.pnumero + serial.offset) + "";
-     
+
       this.insertAsistencia(asistencia$, type, asistencia);
     });
   }
@@ -683,6 +686,7 @@ export class DsocialController {
     this.emitAsistenciaDataSource.next(tableData);
   }
 
+
   updateAvanceAsistencia(type, avance,   asistenciaId:string){
     let token = {
       avance: avance
@@ -741,7 +745,7 @@ export class DsocialController {
 
     return listener;
   }
-  
+
 
   upsertTurno(listener: Subject<Turno>, turno: Turno){
     this.daoService.update<Turno>('turno', turno._id, turno).then(t =>{
@@ -787,7 +791,7 @@ export class DsocialController {
   private initNuevoTurno(turno$:Subject<Turno>, type, name, sector, peso, person:Person){
 
     this.fetchSerialTurnos(type, name, sector, peso).subscribe(serial =>{
-      
+
       let turno = TurnosModel.initNewTurno(type, name, sector, serial, peso, person);
 
       this.fetchNuevoTurno(turno$, turno);
@@ -834,7 +838,7 @@ export class DsocialController {
     if(event.token === CORE){
       this.upsertPersonCore(event.person._id, event.person);
     }
-    
+
     if(event.token === CONTACT){
       this.upsertPersonCore(event.person._id, event.person);
     }
@@ -842,7 +846,7 @@ export class DsocialController {
     if(event.token === ADDRESS){
       this.upsertPersonCore(event.person._id, event.person);
     }
-    
+
     if(event.token === FAMILY){
       this.upsertPersonCore(event.person._id, event.person);
     }
@@ -908,7 +912,7 @@ export class DsocialController {
         query['tdoc'] = tdoc;
         query['ndoc'] = term;
       }
-      
+
       return this.daoService.search<Person>('person', query);
   }
 
@@ -957,7 +961,7 @@ export class DsocialController {
 
     this.loadPersonByDNI(listener, tdoc,ndoc);
     return listener;
-  }  
+  }
 
   private loadPersonByDNI(recordEmitter:Subject<Person[]>, tdoc, ndoc){
     let query = {
@@ -1026,7 +1030,7 @@ export class DsocialController {
     }
     return this.daoService.search<Person>('person', query)
 
-  }  
+  }
 
   addressLookUp(address: Address): Promise<any>{
     return this.daoService.geocodeForward(address);
@@ -1059,7 +1063,7 @@ export class DsocialController {
     let sigList: AsistenciaSig[] = []
 
     list.forEach(asis => {
-      if(asis.requeridox && asis.requeridox.id){ 
+      if(asis.requeridox && asis.requeridox.id){
         personList.push(asis.requeridox.id);
         asistenciaList.push(asis);
       }
@@ -1087,7 +1091,7 @@ export class DsocialController {
         sigList$.next(sigList);
       })
 
-    }else{      
+    }else{
         sigList$.next(sigList);
     }
 
@@ -1160,7 +1164,7 @@ export class DsocialController {
 
       }else if (sector === 'recepcion'){
         return RECEPTION_ROUTE;
- 
+
       }else if (sector === 'auditoria'){
         return AUDITENTREGAS_ROUTE;
 
@@ -1199,10 +1203,10 @@ export class DsocialController {
     }
 
     if(urlpath){
-      let split = urlpath.split('/') 
+      let split = urlpath.split('/')
       urlpath = split[0];
     }
-    return urlpath 
+    return urlpath
   }
 
 
@@ -1238,7 +1242,7 @@ export class DsocialController {
             this.userCmty.isLoading = false;
             this.userCmty.userOwned = true;
             this.userCmty.url = entity.urlpath;
-    
+
             this.pushCommunityFromUser()
 
           }else{
@@ -1304,7 +1308,7 @@ export class DsocialController {
   buildEncuestadoresOptList(){
     let arr = []
     if(!this._encuestadores) return arr;
-    
+
     this._encuestadores.forEach(x => {
       let t = {
         val: x._id,
@@ -1316,12 +1320,12 @@ export class DsocialController {
     return arr;
   }
 
-  // Browse Solicitud de Asistencia Form Data 
+  // Browse Solicitud de Asistencia Form Data
   get asistenciasSelector():AsistenciaBrowse{
     if(!this._asistenciasSelector) this._asistenciasSelector = new AsistenciaBrowse();
     return this._asistenciasSelector;
   }
-  
+
   set asistenciasSelector(e: AsistenciaBrowse){
     this._asistenciasSelector = e;
   }
@@ -1340,6 +1344,27 @@ export class DsocialController {
   /***************************/
   /******* Observaciones *******/
   /***************************/
+
+  fetchObservacionesByQuery(query: any): Observable<Observacion[]> {
+    return this.daoService.search<Observacion>(OBSERVACION, query);
+  }
+
+
+  updateObservacionesTableData(list: Observacion[]){
+    const tableData = ObservacionesHelper.buildDataTable(list);
+    this.emitObservacionesDataSource.next(tableData);
+  }
+
+  get observacionesDataSource(): BehaviorSubject<ObservacionTable[]>{
+    return this.emitObservacionesDataSource;
+  }
+
+  exportObservacionesByQuery(query: any) {
+    const url = `api/observaciones/export`;
+    const params = new HttpParams({ fromObject: query}).toString();
+
+    window.open(url, '?', params);
+  }
 
    manageObservacionRecord(text, audit, parent ): Subject<Observacion>{
     let listener = new Subject<Observacion>();
@@ -1373,7 +1398,7 @@ export class DsocialController {
       });
   }
 
- // Browse Solicitud de Asistencia Form Data 
+ // Browse Solicitud de Asistencia Form Data
  get observacionesSelector():ObservacionBrowse{
   if(!this._observacionesSelector) this._observacionesSelector = new ObservacionBrowse();
   return this._observacionesSelector;
@@ -1409,7 +1434,7 @@ set observacionesSelector(e: ObservacionBrowse){
     })
 
     return listener$;
-  
+
   }
 
   get kitAlimentosOptList():KitOptionList[]{

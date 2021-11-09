@@ -6,7 +6,7 @@ import { Person, personModel } from '../../../entities/person/person';
 import { AsistenciaHelper } from '../../asistencia/asistencia.model';
 
 import { DsocialController } from '../../dsocial.controller';
-import { ObservacionBrowse } from '../../../develar-commons/observaciones/observaciones.model';
+import { Observacion, ObservacionBrowse } from '../../../develar-commons/observaciones/observaciones.model';
 import { ObservacionesHelper } from '../../../develar-commons/observaciones/observaciones.helper';
 
 import { devutils }from '../../../develar-commons/utils'
@@ -23,6 +23,7 @@ const SEARCH_NEXT = 'search_next';
 })
 export class ObserBrowseComponent implements OnInit {
 	@Input() query: ObservacionBrowse = new ObservacionBrowse();
+  @Input() observacionesList: Observacion[];
 	@Output() updateQuery = new EventEmitter<ObservacionBrowse>();
   @Output() mapRequest = new EventEmitter<string>();
 
@@ -46,7 +47,7 @@ export class ObserBrowseComponent implements OnInit {
   constructor(
     private dsCtrl: DsocialController,
   	private fb: FormBuilder,
-  	) { 
+  	) {
   		this.form = this.buildForm();
 	}
 
@@ -79,7 +80,6 @@ export class ObserBrowseComponent implements OnInit {
 
   }
 
- 
   buildForm(): FormGroup{
   	let form: FormGroup;
 
@@ -110,14 +110,14 @@ export class ObserBrowseComponent implements OnInit {
 	initForSave(form: FormGroup, query: ObservacionBrowse): ObservacionBrowse {
 		const fvalue = form.value;
 		const entity = query;
-    let dateD = devutils.dateFromTx(fvalue.fecomp_d);
-    let dateH = devutils.dateFromTx(fvalue.fecomp_h);
+    let dateD = fvalue.fed ? devutils.dateFromTx(fvalue.fed) : null;
+    let dateH = fvalue.feh ? devutils.dateFromTx(fvalue.feh) : null;
 
 
     entity.slug =        fvalue.slug;
     entity.type =        fvalue.type;
-    entity.fed =         devutils.txFromDate(dateD);
-    entity.feh =         devutils.txFromDate(dateH);
+    entity.fed =         dateD ? devutils.txFromDate(dateD) : null;
+    entity.feh =         dateH ? devutils.txFromDate(dateH) : null;
     entity.action =      fvalue.action;
 
 		return entity;

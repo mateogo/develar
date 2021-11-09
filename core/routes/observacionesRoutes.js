@@ -9,6 +9,10 @@ var service = require('../models/observacionesModel.js');
 const whoami =  "Router:routes/observacionesRoutes: ";
 
 
+router.get('/export', (req, res) => {
+  console.log("Exportar movimientos")
+  service.exportExcel(req.query, req, res);
+})
 /**
  * Retrieve all entities
  */
@@ -80,7 +84,7 @@ router.post('/', function (req, res) {
  * Update entity
  */
 router.put('/:id', function (req, res) {
-    service.update(req.params.id, req.body, 
+    service.update(req.params.id, req.body,
         function (err) {
             res.status(400).json(err);
 

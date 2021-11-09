@@ -12,7 +12,7 @@ export class DaoService {
 
 	private backendUrl = 'api/folders';
   private searchUrl  = 'api/folders/search';
-  
+
 	private headers = new HttpHeaders().set('Content-Type', 'application/json');
   private dao = {};
 
@@ -42,7 +42,7 @@ export class DaoService {
 	}
 
   constructor(
-  	private http: HttpClient) { 
+  	private http: HttpClient) {
     this.buildDaoData()
   }
 
@@ -119,7 +119,8 @@ export class DaoService {
       },
       observacion:{
         backendURL: 'api/observaciones',
-        searchURL:  'api/observaciones/search'
+        searchURL:  'api/observaciones/search',
+        exportarURL: 'api/observaciones/export'
       },
       task:{
         backendURL: 'api/tasks',
@@ -436,7 +437,7 @@ export class DaoService {
                    catchError(this.handleObsError<T[]>('search',[]))
                  );
   }
-  
+
   fetchAsistenciaDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}/${fecha}`;
     return this.http
@@ -445,7 +446,7 @@ export class DaoService {
                    catchError(this.handleObsError<T>('search',null))
                  );
   }
-  
+
   fetchTarjetasPorDiaAlimentarDashboard<T>(type: string, fecha: number): Observable<T> {
     let url = `${this.dao[type].dashboardURL}`;
     return this.http
@@ -605,7 +606,7 @@ class MailModel{
   get content(){
     return this.mailData;
   }
-  
+
   get url(){
     return this.urlRoot;
   }
