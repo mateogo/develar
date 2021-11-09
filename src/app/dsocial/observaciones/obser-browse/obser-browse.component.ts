@@ -23,9 +23,8 @@ const SEARCH_NEXT = 'search_next';
 })
 export class ObserBrowseComponent implements OnInit {
 	@Input() query: ObservacionBrowse = new ObservacionBrowse();
-  @Input() observacionesList: Observacion[];
-	@Output() updateQuery = new EventEmitter<ObservacionBrowse>();
-  @Output() mapRequest = new EventEmitter<string>();
+
+  @Output() updateQuery = new EventEmitter<ObservacionBrowse>();
 
   public typeOptList =  ObservacionesHelper.getOptionlist('type');
 

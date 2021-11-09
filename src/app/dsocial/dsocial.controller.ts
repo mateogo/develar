@@ -1349,6 +1349,16 @@ export class DsocialController {
     return this.daoService.search<Observacion>(OBSERVACION, query);
   }
 
+  exportObservacionesByQuery(query: any) {
+
+    let params = this.daoService.buildParams(query);
+
+    const url = `api/observaciones/export?${params.toString()}`;
+    //const Url = 'api/remitosalmacen/exportarmovimientos?' + params.toString();
+  
+    window.open(url, 'about:blank')
+  
+  }
 
   updateObservacionesTableData(list: Observacion[]){
     const tableData = ObservacionesHelper.buildDataTable(list);
@@ -1357,13 +1367,6 @@ export class DsocialController {
 
   get observacionesDataSource(): BehaviorSubject<ObservacionTable[]>{
     return this.emitObservacionesDataSource;
-  }
-
-  exportObservacionesByQuery(query: any) {
-    const url = `api/observaciones/export`;
-    const params = new HttpParams({ fromObject: query}).toString();
-
-    window.open(url, '?', params);
   }
 
    manageObservacionRecord(text, audit, parent ): Subject<Observacion>{

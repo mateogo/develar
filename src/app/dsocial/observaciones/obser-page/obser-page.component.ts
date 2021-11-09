@@ -6,11 +6,10 @@ import { DsocialController } from '../../dsocial.controller';
 
 import {  Person } from '../../../entities/person/person';
 
-import { Observacion } from '../../../develar-commons/observaciones/observaciones.model';
+import { Observacion, ObservacionBrowse } from '../../../develar-commons/observaciones/observaciones.model';
 
 import { 	Asistencia,
           AsistenciaTable,
-          AsistenciaBrowse,
 					Alimento,
           AsistenciaSig,
 					UpdateAsistenciaEvent,
@@ -34,13 +33,12 @@ const EXCEL= 'excel';
 })
 export class ObserPageComponent implements OnInit {
 	@Input() items: Array<Asistencia>;
-	@Output() updateItems = new EventEmitter<UpdateAsistenciaListEvent>();
 
   public searchTitle = 'Explorar Observaciones';
   public title = 'Observaciones';
   public openEditor = true;
   public unBindList = [];
-  public query: AsistenciaBrowse = new AsistenciaBrowse();
+  public query: ObservacionBrowse = new ObservacionBrowse();
 
   public showData =  false;
 	public showTable = false;
@@ -74,12 +72,6 @@ export class ObserPageComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-
-  	if(this.items && this.items.length){
-  		this.asistenciasList = this.items;
-  		this.showData = true;
-  	}
-
     let first = true;
     this.personId = this.route.snapshot.paramMap.get('id')
     this.dsCtrl.actualRoute(this.router.routerState.snapshot.url, this.route.snapshot.url);
@@ -98,57 +90,34 @@ export class ObserPageComponent implements OnInit {
 
   initCurrentPage(){
 
-    if(this.dsCtrl.activePerson && this.personId && this.dsCtrl.activePerson._id !== this.personId){
-        this.loadPerson(this.personId);
-    }
-
-    if(!this.dsCtrl.activePerson && this.personId){
-        this.loadPerson(this.personId);
-    }
-
-    if(this.dsCtrl.activePerson){
-        this.currentPerson = this.dsCtrl.activePerson;
-    }
-
     // current selector saved in Controller
-    this.query = this.dsCtrl.asistenciasSelector;
-    this.fetchSolicitudes(this.query, SEARCH);
-  }
-
-  loadPerson(id){
-    this.dsCtrl.setCurrentPersonFromId(id).then(p => {
-      if(p){
-        this.currentPerson = p;
-
-      }
-    });
+    this.query = this.dsCtrl.observacionesSelector;
+    //this.fetchSolicitudes(this.query, SEARCH);
   }
 
 
-  /************************/
-  /*    Sol/Asistencia   */
-  /**********************/
-  fetchSolicitudes(query: any, action: string){
+  openSearchForm(){
+    this.openEditor = !this.openEditor;
+  }
 
-    if(!query){
-      query = new AsistenciaBrowse();
-      query['avance'] = 'emitido';
+  refreshSelection(query: ObservacionBrowse){
+    this.query = query;
 
-      this.query = query;
+    if(query.searchAction === SEARCH || query.searchAction === SEARCH_NEXT){
+      this.fetchSolicitudes(this.query);
+
+    } else if (query.searchAction === EXCEL) {
+      this._exportExcel(this.query);
     }
 
-    if(action === SEARCH_NEXT){
-      let last = this.getLastListed();
-      if(last){
-        this.query.fecomp_ts_h = last;
-      }
+  }
 
-    }
+  /******************/
+  /*    DAO        */
+  /****************/
+  private fetchSolicitudes(query: ObservacionBrowse){
 
-    Object.keys(query).forEach(key =>{
-      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete query[key];
-    })
+    query = this._cleanQuery(query);
 
     this.dsCtrl.fetchObservacionesByQuery(query).subscribe(list => {
       if(list && list.length) {
@@ -161,156 +130,50 @@ export class ObserPageComponent implements OnInit {
         this.showData = false;
       }
     })
-
-  }
-  private getLastListed(){
-    let last = 0;
-    if(this.asistenciasList && this.asistenciasList.length){
-      last = this.asistenciasList[this.asistenciasList.length - 1].fecomp_tsa;
-    }
-    return last;
   }
 
-
-  asistenciaSelected(event: UpdateAsistenciaEvent){
-    if(event.action === UPDATE){
-
-    }
-  }
-
-  fetchAsistenciasList(){
-    this.asistenciasList = [];
-    let query = {};
-
-    this.dsCtrl.fetchAsistenciaByQuery(query).subscribe(list => {
-      if(list && list.length) this.asistenciasList = list;
-
-      this.itemsFound = true;
-  		this.showData = true;
-    })
-  }
-
-
-  updateItem(event: UpdateAsistenciaEvent){
-    if(event.action === UPDATE){
-      // this.dsCtrl.manageAsistenciaRecord('asistencia',event.token).subscribe(t =>{
-      //   if(t){
-      //     event.token = t;
-      //   }
-
-      //   this.emitEvent(event);
-
-      // });
-    }
-  }
-
-  addItem(){
-    let item = AsistenciaHelper.initNewAsistencia('alimentos', 'alimentos', this.currentPerson)
-
-  }
-
-  emitEvent(event:UpdateAsistenciaEvent){
-
-  	if(event.action === UPDATE){
-  		this.updateItems.next({
-  		action: UPDATE,
-  		type: TOKEN_TYPE,
-  		items: this.items
-  	});
-  	}
-  }
-
-  tableAction(action){
-    let selection = this.dsCtrl.selectionModel;
-    let selected = selection.selected as AsistenciaTable[];
-
-    if(action === 'autorizar'){
-      selected.forEach(t =>{
-        this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
-      })
-    }
-
-    if(action === 'editarencuestas'){
-      //
-
-    }
-
-    setTimeout(()=>{
-      this.fetchSolicitudes(this.query, SEARCH);
-    },1000)
-
-  }
-
-  moveOn(e){
-  	e.stopPropagation();
-  	e.preventDefault();
-  }
-
-  openSearchForm(){
-    this.openEditor = !this.openEditor;
-  }
-
-  refreshSelection(query: AsistenciaBrowse){
-    this.query = query;
-
-    if(query.searchAction == SEARCH || query.searchAction == SEARCH_NEXT){
-      this.fetchSolicitudes(this.query, query.searchAction);
-    } else if (query.searchAction == EXCEL) {
-      this._exportExcel();
-    }
-
-  }
-
-  updateAsistenciaList(event: UpdateAsistenciaListEvent){
-    if(event.action === NAVIGATE){
-        this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento')], {relativeTo: this.route});
-     }
-  }
-
-  mapRequest(act:string){
-    if(act ==="map:show"){
-      this.initMapToRender();
-
-    }else if(act === "map:hide"){
-      this.renderMap = false;
-
-
-    }
-
-  }
-
-  initMapToRender(){
-    let listener$: Subject<AsistenciaSig[]> = this.dsCtrl.fetchMapDataFromAsis(this.asistenciasList);
-    listener$.subscribe(tokens => {
-      if(tokens && tokens.length){
-        this.baseLatLng = {
-          lat: tokens[0].lat,
-          lng: tokens[0].lng
-        }
-
-        tokens[0].asistencia.requeridox.slug
-
-
-        this.mapData = tokens;
-        this.renderMap = true;
-
-
-      }
-    })
-
-
-  }
-
-  private _exportExcel(): void {
-    console.log("observaciones --> %o",this.observacionesList);
-
-    Object.keys(this.query).forEach(key =>{
-      if(this.query[key] == null || this.query[key] == 'no_definido' ) delete this.query[key];
-      if(key === 'fecomp_h' || key === 'fecomp_d') delete this.query[key];
-    })
-
+  private _exportExcel(query: ObservacionBrowse): void {
+    query = this._cleanQuery(query);
     this.dsCtrl.exportObservacionesByQuery(this.query);
   }
+
+  private _cleanQuery(query: ObservacionBrowse): ObservacionBrowse{
+    Object.keys(query).forEach(key =>{
+      if(query[key] == null || query[key] == 'no_definido' ) delete query[key];
+
+    })
+    return query;
+  }
+  
+
+  tableAction(action){
+    // let selection = this.dsCtrl.selectionModel;
+    // let selected = selection.selected as AsistenciaTable[];
+
+    // if(action === 'autorizar'){
+    //   selected.forEach(t =>{
+    //     this.dsCtrl.updateAvanceAsistencia('asistencia', 'autorizado', t.asistenciaId);
+    //   })
+    // }
+
+    // if(action === 'editarencuestas'){
+    //   //
+
+    // }
+
+    // setTimeout(()=>{
+    //   this.f etchSolicitudes(this.query, SEARCH);
+    // },1000)
+
+  }
+
+
+
+  // updateAsistenciaList(event: UpdateAsistenciaListEvent){
+  //   if(event.action === NAVIGATE){
+  //       this.router.navigate(['../', this.dsCtrl.atencionRoute('seguimiento')], {relativeTo: this.route});
+  //    }
+  // }
 
 
 }

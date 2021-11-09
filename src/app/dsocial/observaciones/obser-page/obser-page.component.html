@@ -10,7 +10,7 @@
 				</div>
 		</div>
 		<ng-container *ngIf="openEditor">
-			<obser-browse [query]="query" [observacionesList]="observacionesList" (updateQuery)="refreshSelection($event)"></obser-browse>
+			<obser-browse [query]="query" (updateQuery)="refreshSelection($event)"></obser-browse>
 		</ng-container>
 	</mat-card-content>
 </mat-card>
@@ -43,10 +43,10 @@
 				<obser-list (actionTriggered)="tableAction($event)"  ></obser-list>
 			</ng-container>
 
-			<ng-container *ngIf='view.value=="grid"'>
+			<!--ng-container *ngIf='view.value=="grid"'>
 				<solasis-panel [items]='asistenciasList'
 		 							(updateItems)='updateAsistenciaList($event)' ></solasis-panel>
-			</ng-container>
+			</ng-container-->
 		</ng-container>
   </mat-card-content>
 </mat-card>

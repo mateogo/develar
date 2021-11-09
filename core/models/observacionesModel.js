@@ -74,8 +74,9 @@ function buildQuery(query){
 
   if(query['fed'] && query['feh']) {
     let fed_ts = utils.parseDateStr(query['fed']).getTime();
-    let feh_ts = utils.parseDateStr(query['feh']).getTime();
+    let feh_ts =  utils.dateToNumPlusOne(query['feh'])
     q['fe_ts'] = { $gte: fed_ts, $lte: feh_ts };
+
   } else {
     if(query['fed']){
       let fed_ts = utils.parseDateStr(query['fed']).getTime();
@@ -83,7 +84,9 @@ function buildQuery(query){
     }
 
     if(query['feh']){
-      let feh_ts = utils.parseDateStr(query['feh']).getTime();
+      let feh_ts = utils.dateToNumPlusOne(query['feh']);
+      //utils.parseDateStr(query['feh']).getTime();
+
       q['fe_ts'] = { $lte: feh_ts}
 
     }
@@ -145,7 +148,7 @@ exports.findByQuery = function (query, errcb, cb) {
     let regexQuery = buildQuery(query)
     console.dir(regexQuery);
 
-    Record.find(regexQuery, function(err, entities) {
+    Record.find(regexQuery).lean().limit(1000).exec(function(err, entities) {
         if (err) {
             console.log('[%s] findByQuery ERROR: [%s]', whoami, err)
             errcb(err);
@@ -427,7 +430,7 @@ async function obtenerMovimientos(query, req, res) {
 
   try {
     console.log(regexQuery)
-    const entities = await Record.find(regexQuery).lean().exec();
+    const entities = await Record.find(regexQuery).lean().limit(5000).exec();
 
     if (entities && entities.length) {
       _generarArchivoDeExcel(entities, req, res);
@@ -441,51 +444,7 @@ async function obtenerMovimientos(query, req, res) {
 
 function _generarArchivoDeExcel(entities, req, res) {
 
-  console.log("_generar excel --> %s", entities.length)
-  const itemsExcel = [];
-  if(entities && entities.length) {
-    for(let i = 0; i < entities.length; i++) {
-
-      const {
-        _id,
-        is_pinned,
-        type,
-        fe_tx,
-        fe_ts,
-        ts_umod,
-        parent,
-        audit,
-        observacion,
-      } = entities[i];
-
-      const itemExcel = {
-        _id,
-        is_pinned,
-        type,
-        fe_tx,
-        fe_ts,
-        ts_umod,
-        entityId: parent ? parent.entityId : '',
-        entitySlug: parent ? parent.entitySlug : '',
-        entityType: parent ? parent.entityType : '',
-        userAlta: audit ? audit.username : '',
-        fechaAlta: audit && audit.ts_alta ? utils.dateToStr(new Date(audit.ts_alta)) : null,
-        observacion
-      }
-      itemsExcel.push(itemExcel);
-    }
-  }
-
-  if(itemsExcel && itemsExcel.length) {
-    _exportarAExcel(itemsExcel, req, res);
-  }
-
-}
-
-function _exportarAExcel(observaciones, req, res) {
-  console.log("llegó a _Exportar excel");
   const archivoSalida = 'observaciones_' + utils.dateToStr(new Date()) + '.xlsx';
-
 
   res.writeHead(200, {
     'Content-Disposition': 'attachment; filename="' + archivoSalida + '"',
@@ -495,54 +454,37 @@ function _exportarAExcel(observaciones, req, res) {
 
   const libro = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
   const hoja = libro.addWorksheet('observaciones');
+  hoja.addRow(['Observaciones emitidas']).commit()
+  hoja.addRow(['Fecha emisión', new Date().toString()]).commit()
+  hoja.addRow().commit()
 
-  hoja.addRow([
-    '_id',
-    'is_pinned',
-    'type',
-    'fe_tx',
-    'fe_ts',
-    'ts_umod',
-    'entityId',
-    'entitySlug',
-    'entityType',
-    'userAlta',
-    'fechaAlta',
-    'observacion'
-  ]).commit();
+  hoja.addRow([ 'Fecha emisión', 'Tipo', 'TS', 'Referente', 'Enlace', 'Observación']).commit();
 
-  observaciones.forEach(item => {
-    const {
-    _id,
-    is_pinned,
-    type,
-    fe_tx,
-    fe_ts,
-    ts_umod,
-    entityId,
-    entitySlug,
-    entityType,
-    userAlta,
-    fechaAlta,
-    observacion
-    } = item;
+  console.log("_generar excel --> %s", entities.length)
+  const itemsExcel = [];
+  if(entities && entities.length) {
+    for(let i = 0; i < entities.length; i++) {
 
-    hoja.addRow([
-      _id,
-      is_pinned,
-      type,
-      fe_tx,
-      fe_ts,
-      ts_umod,
-      entityId,
-      entitySlug,
-      entityType,
-      userAlta,
-      fechaAlta,
-      observacion
-    ]).commit();
-  });
+      const { type, fe_tx, parent, audit, observacion } = entities[i];
+      const entityId =   parent ? parent.entityId : '';
+      const entitySlug = parent ? parent.entitySlug : '';
+      const userAlta =   audit ? audit.username : '';
+      const personLink = {text: 'Ver referente', hyperlink: `https://dsocial.brown.gob.ar/alimentar/gestion/atencionsocial/${entityId}`};
 
-  hoja.commit();
-  libro.commit();
+      //const entityType = parent ? parent.entityType : '';
+      //const fechaAlta =  audit && audit.ts_alta ? utils.dateToStr(new Date(audit.ts_alta)) : null;
+
+      hoja.addRow([
+        fe_tx,
+        type,
+        userAlta,
+        entitySlug,
+        personLink,
+        observacion
+      ]).commit();
+    }
+
+    hoja.commit();
+    libro.commit();  
+  }
 }

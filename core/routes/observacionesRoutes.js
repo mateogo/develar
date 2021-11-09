@@ -9,10 +9,6 @@ var service = require('../models/observacionesModel.js');
 const whoami =  "Router:routes/observacionesRoutes: ";
 
 
-router.get('/export', (req, res) => {
-  console.log("Exportar movimientos")
-  service.exportExcel(req.query, req, res);
-})
 /**
  * Retrieve all entities
  */
@@ -51,7 +47,10 @@ router.get('/search', function (req, res) {
     });
 });
 
-
+router.get('/export', (req, res) => {
+    service.exportExcel(req.query, req, res);
+})
+  
 /**
  * Retrieve Entity by ID
  */
