@@ -185,12 +185,18 @@ export class Novedad {
 }
 
 export class ContextoDenuncia {
-		denunciante: string; 
-		dendoc: string;
-		dentel: string;
-		inombre: string;
-		iapellido: string; 
-		islug: string; 
+	denunciante: string; 
+	dendoc: string;
+	dentel: string;
+	inombre: string;
+	iapellido: string; 
+	islug: string; 
+}
+export class VacunaToken {
+	vacuna: string = ""   // vacunaOptList
+	feVacuna: string = "" // fecha aplicación
+	fetsVacuna: number = 0;  // fets aplicacion
+	dosisVacuna: string = ""; // dosisOptList  - nro de dosis
 }
 
 export class ContextoCovid {
@@ -270,6 +276,14 @@ export class ContextoCovid {
 	actualState: number;
 	avanceCovid: string;
 	hasInvestigacion: boolean = false;
+
+	hasVacuna: boolean = false;
+	vacuna: string = ""
+	feVacuna: string = ""
+	fetsVacuna: number = 0;
+	dosisVacuna: string = "";
+
+	vacunaHistory: VacunaToken[] = [];
 }
 
 export class CasoIndice {
@@ -1898,6 +1912,32 @@ const intervencionOptList = [
 
 ]
 
+/****
+ * VACUNAS vacunas
+ */
+const vacunaOptList = [
+	{ val: "sputnik",     label: "Sputnik - (2) ≥18",     slug: "Gam-COVID-Vac- Centro Nac Gamaleya",                         procedencia: "Rusia",       qdosis:	2, habilitado: "≥ 18 años" },
+	{ val: "covishield",  label: "Covishield - (2) ≥18",  slug: "ChAdOx1 nCoV- 19 (Recombinant) - Serum Institute",           procedencia: "India",       qdosis:	2, habilitado: "≥ 18 años" },
+	{ val: "sinopharm",   label: "Sinopharm - (2) ≥3",   slug: "SARS COV-2 (células vero) Beijing Inst of Biological Prod",  procedencia: "China",       qdosis:	2, habilitado: "≥ 3 años"  },
+	{ val: "astraZeneca", label: "AstraZeneca - (2) ≥18", slug: "ChAdOx1 nCoV-19 vaccine (AZD1222) AstraZeneca - Oxford",     procedencia: "Reino Unido", qdosis:	2, habilitado: "≥ 18 años" },
+	{ val: "moderna",     label: "Moderna - (2) ≥12",     slug: "mRAN-1273 COVID-19 - Moderna Switzerland GmbH",              procedencia: "USA",         qdosis:	2, habilitado: "≥ 12 años" },
+	{ val: "convidecia",  label: "Convidecia - (1) ≥18",  slug: "Ad5-nCoV	Instituto de Biotecnología de Beijing - Cansino",   procedencia: "China",       qdosis:	1, habilitado: "≥ 18 años" },
+	{ val: "comirnaty",   label: "Pfizer - (2) ≥12",      slug: "Pfizer-BionTech - Pfizer-BioNTech",                          procedencia: "USA",         qdosis:	2, habilitado: "≥ 12 años" },
+	{ val: "janssen",     label: "Janssen - (1) ≥18",     slug: "Janssen - Janssen",                                          procedencia: "USA",         qdosis:	1, habilitado: "≥ 18 años" },
+];
+
+const dosisOptList = [
+	{ val: '0novax',  label: 'Sin vacuna' },
+	{ val: '1-1ra',     label: 'Primera dosis' },
+	{ val: '2-2da',     label: 'Segunda dosis (Esq completo/ Monodosis)' },
+	{ val: '3-1ref',    label: '1er Refuerzo' },
+	{ val: '4-2ref',    label: '2do Refuerzo' },
+	{ val: '5-3ref',    label: '3er Refuerzo' },
+	{ val: '6-4ref',    label: '4to Refuerzo' },
+	{ val: '7-5ref',    label: '5to Refuerzo' },
+	{ val: '0nodata', label: 'Sin dato' },
+]
+
 const intervencionManager = {
 		urgencia: {
 			isActive: true,
@@ -2297,10 +2337,10 @@ const optionsLists = {
    estadoActualInfection: estadoActualAfectadoOptList,
    estadoActualTablero: estadoActualTableroOptList,
    metodoDiagnostico: mdiagnosticoOptList,
-	 institucionalizado: institucionalizadoOptList,
-	 lugartrabajo: lugartrabajoOptList,
-	 tinternacion: tinternacionOptList,
-	 derivacion: derivacionOptList,
+   institucionalizado: institucionalizadoOptList,
+   lugartrabajo: lugartrabajoOptList,
+   tinternacion: tinternacionOptList,
+   derivacion: derivacionOptList,
    tipoMuestraLab: tipoMuestraLaboratorioOptList,
    estadoMuestraLab: estadoMuestraLaboratorioOptList,
    locMuestraOptList: locMuestraOptList,
@@ -2312,6 +2352,10 @@ const optionsLists = {
    estadoVinculosFam: estadoVinculosOptList,
    sexo: sexoOptList,
    tdoc: tiposCompPersonaFisica,
+
+   // vacunación
+   dosisOptList: dosisOptList,
+   vacunaOptList: vacunaOptList,
 
    // reportes
    reportesVigilancia: reportesVigilanciaOptList,

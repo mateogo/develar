@@ -15,10 +15,12 @@ import {  Asistencia,
           ContextoDenuncia,
           InfectionFollowUp,
           Novedad, 
+          VacunaToken,
           Locacion,
           UpdateAsistenciaEvent, UpdateAlimentoEvent, AsistenciaHelper } from '../../../salud/asistencia/asistencia.model';
 
 import { devutils }from '../../../develar-commons/utils'
+import { Subject } from 'rxjs';
 
 const TOKEN_TYPE = 'asistencia';
 const CANCEL = 'cancel';
@@ -51,6 +53,11 @@ export class InvestigEpidemioEditComponent implements OnInit {
   public trabajoOptList = AsistenciaHelper.getOptionlist('lugartrabajo')
   public avanceCovidOptList = AsistenciaHelper.getOptionlist('avanceInfection')
 
+  public dosisOptList = AsistenciaHelper.getOptionlist('dosisOptList');
+  public vacunaOptList = AsistenciaHelper.getOptionlist('vacunaOptList');
+  public vaxhistory$: Subject<VacunaToken[]> = new Subject();
+  public vaxHistory: VacunaToken[] = [];
+
 	public form: FormGroup;
 
   private formAction = "";
@@ -70,6 +77,11 @@ export class InvestigEpidemioEditComponent implements OnInit {
   ngOnInit() {
     
   	this.initForEdit(this.form, this.token);
+    setTimeout(() => {
+      this.vaxhistory$.next(this.vaxHistory)
+
+    },1000)
+ 
 
   }
 
@@ -108,6 +120,44 @@ export class InvestigEpidemioEditComponent implements OnInit {
   changeActualState(estado){
     //c onsole.log('Estado COVID: [%s]', estado);
   }
+ 
+  addVaxineToHistory(e){
+    let covix = this.buildCovid(this.form.value, this.token);
+    let token: VacunaToken = this.getVaxineToken(covix);
+    if(token) this.addTokenToHistory(token);
+  }
+
+  private getVaxineToken(covix: ContextoCovid): VacunaToken{
+
+    let vaxToken: VacunaToken = {
+      feVacuna: covix.feVacuna,
+      vacuna: covix.vacuna,
+      dosisVacuna: covix.dosisVacuna,
+      fetsVacuna: 0
+    } as VacunaToken;
+
+    if( vaxToken.dosisVacuna === "0novax" || vaxToken.dosisVacuna === "nodata" ) return null;
+    vaxToken.feVacuna = vaxToken.feVacuna ? devutils.txNormalize(vaxToken.feVacuna) : '';
+    vaxToken.fetsVacuna = vaxToken.feVacuna ? devutils.dateNumFromTx(vaxToken.feVacuna) : 0;
+ 
+		return vaxToken;
+  }
+
+  private addTokenToHistory(token: VacunaToken){
+    let previous = this.vaxHistory.find(t => (t.dosisVacuna === token.dosisVacuna));
+    if(previous){
+      previous.feVacuna = token.feVacuna;
+      previous.fetsVacuna = token.fetsVacuna;
+      previous.vacuna = token.vacuna;
+    }else {
+      this.vaxHistory.push(token);
+    }
+    this.vaxHistory.sort((a, b) => a.dosisVacuna > b.dosisVacuna ? 1 : -1);
+
+    this.vaxhistory$.next(this.vaxHistory);
+  }
+
+
 
   buildForm(): FormGroup{
   	let form: FormGroup;
@@ -171,6 +221,12 @@ export class InvestigEpidemioEditComponent implements OnInit {
 
       //actualState:        [null],
       avanceCovid:        [null],
+
+      // esquema de vacunación
+      vacuna:      [null],  // vacunaOptList
+      feVacuna:    [null],  // fecha aplicación
+      fetsVacuna:  [null],  // fets aplicacion
+      dosisVacuna: [null],  // dosisOptList  - nro de dosis
 
     });
 
@@ -259,9 +315,19 @@ export class InvestigEpidemioEditComponent implements OnInit {
       //actualState:   infeccion.actualState,
       avanceCovid:   infeccion.avance,
 
+      // vacunación
+      vacuna:        sintomaCovid.vacuna,  // vacunaOptList
+      feVacuna:      sintomaCovid.feVacuna,  // fecha aplicación
+      fetsVacuna:    sintomaCovid.fetsVacuna,  // fets aplicacion
+      dosisVacuna:   sintomaCovid.dosisVacuna,  // dosisOptList  - nro de dosis
+
     });
 
     this.asignadoInicial = sintomaCovid.userAsignado ? sintomaCovid.userAsignado : '';
+    this.vaxHistory = sintomaCovid.vacunaHistory;
+    if(this.vaxHistory && this.vaxHistory.length) {
+      this.vaxhistory$.next(this.vaxHistory)
+    }
 
 
 		return form;
@@ -392,6 +458,27 @@ export class InvestigEpidemioEditComponent implements OnInit {
     if(covid.userId){
       covid.userInvestig = this.usersOptList.find(t=>t.val === covid.userId).label;
     }
+
+    covid.vacuna =         fvalue.vacuna;  // vacunaOptList
+    covid.feVacuna =       fvalue.feVacuna;  // fecha aplicación
+    covid.fetsVacuna =     fvalue.fetsVacuna;  // fets aplicacion
+    covid.dosisVacuna =    fvalue.dosisVacuna;  // dosisOptList  - nro de dosis
+    
+    let vaxtoken = this.getVaxineToken(covid);
+    covid.hasVacuna = vaxtoken ? true : false;
+    if(vaxtoken) {
+      this.addTokenToHistory(vaxtoken);
+      if(this.vaxHistory && this.vaxHistory.length){
+        let normalized = this.vaxHistory[this.vaxHistory.length-1]
+        covid.vacuna =         normalized.vacuna;  // vacunaOptList
+        covid.feVacuna =       normalized.feVacuna;  // fecha aplicación
+        covid.fetsVacuna =     normalized.fetsVacuna;  // fets aplicacion
+        covid.dosisVacuna =    normalized.dosisVacuna;  // dosisOptList  - nro de dosis
+      }
+
+    }
+
+    covid.vacunaHistory = this.vaxHistory;
 
     return covid;
   }

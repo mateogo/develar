@@ -160,6 +160,14 @@ const contextoDenunciaSch = new Schema({
     islug:       { type: String, required: false },
 })
 
+const vacunaTokenSch = new Schema({
+  hasVacuna:     { type: Boolean, required: false, default: false  }, // boolean = false;
+  vacuna:        { type: String,  required: false  }, // string = ""
+  feVacuna:      { type: String,  required: false  }, // string = ""
+  fetsVacuna:    { type: Number,  required: false  }, // number = 0;
+  dosisVacuna:   { type: String,  required: false  }, // string = "";
+})
+
 const contextoCovidSch = new Schema({
     hasFiebre:    { type: Boolean, required: false },
     fiebreTxt:    { type: String,  required: false },
@@ -239,6 +247,13 @@ const contextoCovidSch = new Schema({
     userId:        { type: String, required: false },
     hasInvestigacion: { type: Boolean, required: false, default: false },
 
+    hasVacuna:     { type: Boolean, required: false  }, // boolean = false;
+    vacuna:        { type: String,  required: false  }, // string = ""
+    feVacuna:      { type: String,  required: false  }, // string = ""
+    fetsVacuna:    { type: Number,  required: false  }, // number = 0;
+    dosisVacuna:   { type: String,  required: false  }, // string = "";
+  
+    vacunaHistory: [ vacunaTokenSch ],
 });
 
  

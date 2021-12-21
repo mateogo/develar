@@ -348,6 +348,66 @@
 			</div>
 
 			<hr>
+			<div class="row">
+				<div class="col-md-12 d-flex align-items-center">
+				  <span class="text-resaltado">ESTADO DE VACUNACIÓN</span>
+				</div>
+			</div>
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Dosis de vacunación: </span>
+	      </div>
+
+	      <div class="col-md-3">
+	        <mat-form-field>
+	          <mat-select #fldDosis placeholder="Dosis recibida"
+	              [formControl]="form.controls['dosisVacuna']"
+	              (selectionChange)="changeSelectionValue('dosisVacuna',fldDosis.value)" >
+	            <mat-option *ngFor="let item of dosisOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+	      <div class="col-md-2">
+	        <mat-form-field>
+	          <mat-select #fldVacuna placeholder="Vacuna"
+	              [formControl]="form.controls['vacuna']"
+	              (selectionChange)="changeSelectionValue('vacuna',fldVacuna.value)" >
+	            <mat-option *ngFor="let item of vacunaOptList" 
+	              [value]="item.val" >{{ item.label }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+	      </div>
+			  <div class="col-md-2">
+			    <mat-form-field>
+			      <input  matInput  
+			              formControlName="feVacuna" placeholder="Fecha aplicación" >
+			    </mat-form-field>
+			  </div>
+        <div class="col-md-2">
+          <button mat-raised-button color="accent" title="agregar entrada en el historial de vacunación"
+              (click)="addVaxineToHistory($event)"  >agregar a historial</button>
+        </div>
+    
+      </div>
+			<div class="row">
+	      <div class="col-md-3 d-flex align-items-center">
+	        <span class="text-normal">Historial de vacunación: </span>
+	      </div>
+        <div class="col-md-5">
+          <ng-container *ngFor="let vax of vaxhistory$ | async ">
+            <div class="row">
+              <div class="col d-flex justify-content-between">
+                  <span>{{vax.dosisVacuna}}</span>
+                  <span>{{vax.vacuna}}</span>
+                  <span>{{vax.feVacuna}}</span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <hr>
 	    <div class="row">
 	      <div class="col-md-3 d-flex align-items-center">
 	        <span class="text-resaltado">INTERNACIÓN / DERIVACIÓN</span>
