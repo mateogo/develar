@@ -1055,14 +1055,17 @@ function insertOneRecord(token, data, req, errcb, cb){
 /*********************************************************/
 /***** GENERAR ARCHIVO DE TRANSFERENCIA CETEC       *****/
 /*******************************************************/
-const fe_desde = new Date(2020, 4, 1).getTime();
+const fe_desde = new Date(2021, 8, 1).getTime();
+const fe_hasta = new Date(2021, 10, 1).getTime();
 
 function generateCetecData (req, errcb, cb){
   let regexQuery = {
     isVigilado: true,
     mcetec: {$ne: 1},
-    avance: {$ne: 'anulado'}
+    avance: {$ne: 'anulado'},
+	fecomp_tsa: { '$gte': fe_desde, '$lt': fe_hasta }
   }
+  console.dir(regexQuery);
 
   AsisprevencionRecord.find(regexQuery)
     .lean()

@@ -76,6 +76,7 @@ router.get('/getdatosmaestros', function (req, res) {
 
 /**
  * Prepara datos a transferir a CETEC
+ * 1ER PASO
  * 
  * local: localhost:8080/api/cetec/generarinfo
  * server: http://salud.brown.gob.ar/api/cetec/generarinfo
