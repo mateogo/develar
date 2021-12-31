@@ -99,7 +99,7 @@ export class RegistroPageComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
 
-    //ToDo OjO
+    //OjO BypPass timeOutOfScope turnos desarrollo social
     if(this.timeOutOfScope()) return;
 
     if(i === 0){

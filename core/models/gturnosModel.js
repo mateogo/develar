@@ -640,16 +640,16 @@ exports.createInitialData = function (){
         {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
   
         // DEL GLEW // Cambio a partir de 30-Mar-2021 
-        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 2, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 3, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
-        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
-        {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+        {recurso: 'glew', dow: 1, hora: 10, slug: 'DELEGACIÓN GLEW 10:00 hs' },
+        {recurso: 'glew', dow: 1, hora: 10, slug: 'DELEGACIÓN GLEW 10:30 hs' },
+        {recurso: 'glew', dow: 2, hora: 10, slug: 'DELEGACIÓN GLEW 10:00 hs' },
+        {recurso: 'glew', dow: 2, hora: 10, slug: 'DELEGACIÓN GLEW 10:30 hs' },
+        {recurso: 'glew', dow: 3, hora: 10, slug: 'DELEGACIÓN GLEW 10:00 hs' },
+        {recurso: 'glew', dow: 3, hora: 10, slug: 'DELEGACIÓN GLEW 10:30 hs' },
+        {recurso: 'glew', dow: 4, hora: 10, slug: 'DELEGACIÓN GLEW 10:00 hs' },
+        {recurso: 'glew', dow: 4, hora: 10, slug: 'DELEGACIÓN GLEW 10:30 hs' },
+        {recurso: 'glew', dow: 5, hora: 10, slug: 'DELEGACIÓN GLEW 10:00 hs' },
+        {recurso: 'glew', dow: 5, hora: 10, slug: 'DELEGACIÓN GLEW 10:30 hs' },
 
         // CIC Glew Cupo 100 Inicia 11:00 CUPO 200
         {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
@@ -748,8 +748,8 @@ exports.createInitialData = function (){
     turno.recurso = recurso;
     turno.capacidad = capacidad;
     turno.estado = 'activo';
-    turno.vigenciad = utils.parseDateStr('01/12/2020').getTime();
-    turno.vigenciah = utils.parseDateStr('31/12/2021').getTime();
+    turno.vigenciad = utils.parseDateStr('01/01/2022').getTime();
+    turno.vigenciah = utils.parseDateStr('31/12/2022').getTime();
 
     turno.tfecha = 2;
     turno.fep_ts = 0;
