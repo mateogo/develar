@@ -438,7 +438,7 @@ function assignUserToFollowUp(asis, token, userMap){
 	// encontar el usuario random
 	let user = _fetchRandomUser(userMap, token);
 
-	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
+	console.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
 	_applyAsignadoToAsistencia(asis, user)
 }
 
@@ -474,15 +474,15 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 	if(!user) return;
     let followUpToken = asistencia.followUp;
     if(followUpToken){
-		if(!followUpToken.asignadoId){
+		if(true /*!followUpToken.asignadoId */){
 			followUpToken.isActive = true;
 			followUpToken.tipo =         'infectado';
 			followUpToken.isAsignado =   true;
 			followUpToken.asignadoId =   user.id;
 			followUpToken.asignadoSlug = user.displayName;
-			//c onsole.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
+			console.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
 		}else {
-			//c onsole.log('ALREADY HAS USER ASIGNED TO FOLLOW UP');
+			//console.log('ALREADY HAS USER ASIGNED TO FOLLOW UP');
 		}
     }
 }
