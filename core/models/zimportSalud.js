@@ -54,11 +54,11 @@ exports.importSisaArchive = processSisaArchive;
 function processSisaArchive(req, errcb, cb){
 
 	userModel.findByEpidemioRole(USER_EPIDEMI_OPERATOR).then(userList => {
-		console.log('userList: [%s]', userList.length)
+		// c onsole.log('userList: [%s]', userList.length)
 		userList = userList || [];
 		let userMap = _buildUserMap(userList);
 
-		console.dir(Array.from(userMap.keys())  )
+		// c onsole.dir(Array.from(userMap.keys())  )
 		userMap.forEach((v, k) => {
 			console.log('key: [%s]: [%s]', k, v.length)
 		})
@@ -345,7 +345,7 @@ function savePersonSaludRecord(person, isNew, token, compNum, userMap){
 
 				//c onsole.log('UPDATAED: Person [%s] [%s]', person._id, person.displayName);
           }else {
-			console.log('Error updating PERSON #307 [%s]', person.ndoc)
+			console.error('Error updating PERSON #307 [%s]', person.ndoc)
 			processAsistenciaPrevencion(token, person, compNum, userMap);
 		  }
       })
@@ -420,7 +420,7 @@ async function createNewAsistenciaRecord(token, person, compNum, userMap){
 				buildSisaEvent(asis, token);
 
 				assignUserToFollowUp(asis, token, userMap)
-				//console.log('OjO: CREATE save is commented')
+				//c onsole.log('OjO: CREATE save is commented')
 				asis.save();
 
 }
@@ -438,7 +438,7 @@ function assignUserToFollowUp(asis, token, userMap){
 	// encontar el usuario random
 	let user = _fetchRandomUser(userMap, token);
 
-	console.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
+	//c onsole.log('assignUserToFollowUp [%s] rnd:[%s]', userMap.length, (user && user.displayName ));
 	_applyAsignadoToAsistencia(asis, user)
 }
 
@@ -480,9 +480,9 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 			followUpToken.isAsignado =   true;
 			followUpToken.asignadoId =   user.id;
 			followUpToken.asignadoSlug = user.displayName;
-			console.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
+			//c onsole.log('Iajuuu  Asignado a: [%s]', followUpToken.asignadoSlug)
 		}else {
-			//console.log('ALREADY HAS USER ASIGNED TO FOLLOW UP');
+			//c onsole.log('ALREADY HAS USER ASIGNED TO FOLLOW UP');
 		}
     }
 }
@@ -957,7 +957,7 @@ function buildMuestrasLab(asis, token){
 			femuestra_ts = utils.dateNumFromTx(femuestra)
 		}
 		catch(e) {
-			console.log('utils dateNumFromTx catch Error: [%s]', femuestra);
+			console.error('utils dateNumFromTx catch Error: [%s]', femuestra);
 			//return null;
 		}
 	}
@@ -1027,7 +1027,7 @@ function isAsistenciaDeprecated(asis){
 }
 
 function bajaAsistenciaDeprecated(asis){
-	console.log('ToDo:   marcar la solicitud como cerrada!!!!')
+	// c onsole.log('ToDo:   marcar la solicitud como cerrada!!!!')
 	asis.estado = "cumplido";
 	asis.avance = "cerrado";
 	asis.isVigilado = false;
