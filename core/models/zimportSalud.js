@@ -474,7 +474,7 @@ function _applyAsignadoToAsistencia(asistencia, user ){
 	if(!user) return;
     let followUpToken = asistencia.followUp;
     if(followUpToken){
-		if(true /*!followUpToken.asignadoId */){
+		if(!followUpToken.asignadoId ){
 			followUpToken.isActive = true;
 			followUpToken.tipo =         'infectado';
 			followUpToken.isAsignado =   true;
