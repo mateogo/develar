@@ -996,7 +996,7 @@ export const DSOCIAL_ITEMS: MainMenuItem[] = [
         routing: '/dsocial/gestion/seguimiento'
       },
       {
-        title: 'vOUCHer de entrega',
+        title: 'Voucher de entrega',
         routing: '/dsocial/gestion/alimentos'
       },
       {
