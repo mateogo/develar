@@ -371,7 +371,7 @@ const entregaDesdeOptList: Array<any> = [
         {val: 'almacen',      type: 'Galpón',     label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
 		{val: 'burzaco',      type: 'delegacion', label: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
 		{val: 'claypole',     type: 'delegacion', label: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
-		{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',       locacion:	'Manuel Araujo y Río Diamante', telefono: '4268-5419'},
+		{val: 'donorione',    type: 'delegacion', label: 'CIC Don Orione',       locacion:	'Eva Perón y Río Colorado', telefono: '4268-5419'},
 		{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 		{val: 'josemarmol',   type: 'delegacion', label: 'Delegación José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
 		{val: 'longchamps',   type: 'delegacion', label: 'Cámara de Comercio de Longchamps',locacion:	'Burgward 1030',         telefono: '4293-4299'},
@@ -436,7 +436,7 @@ const delegacionesOptList = [
 	{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
 	//{val: 'glew',         type: 'delegacion', label: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 	{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Cerretti y España - Burzaco',          telefono: '4299-2273'},
-	{val: 'donorione',    type: 'delegacion', label: 'Delegación Don Orione',        locacion:	'Manuel Araujo y Río Diamante',              telefono: '4268-5419'},
+	{val: 'donorione',    type: 'cic',        label: 'Centro Comunitario Don Orione',        locacion:	'Eva Peron y Río Colorado',              telefono: '4268-5419'},
 	{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',                          telefono: '4291-1066'},
 
 	//{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Alsina y Martín Fierro - Burzaco',          telefono: '4299-2273'},
