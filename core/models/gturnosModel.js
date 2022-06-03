@@ -627,18 +627,6 @@ exports.createInitialData = function (){
     if(true){
         return  [
 
-        // secretaria Cupo 100 Inicia 10:00
-        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
-        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
-        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
-        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
-        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
-        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
-        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
-        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
-        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
-        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
-  
         // DEL GLEW // Cambio a partir de 30-Mar-2021 
         {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
         {recurso: 'cicglew', dow: 1, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
@@ -650,45 +638,42 @@ exports.createInitialData = function (){
         {recurso: 'cicglew', dow: 4, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
         {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:00 hs' },
         {recurso: 'cicglew', dow: 5, hora: 9, slug: 'CEN INTEG COMUNITARIA GLEW 09:30 hs' },
+  
+          // secretaria Cupo 100 Inicia 10:00
+        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 1, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 2, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 3, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 4, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:00 hs' },
+        {recurso: 'secretaria', dow: 5, hora: 10, slug: 'SECRETARÍA DESARROLLO SOCIAL 10:30 hs' },
+  
 
         // CIC Glew Cupo 100 Inicia 11:00 CUPO 200
-        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
-        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:30 hs' },
-        {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:45 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:15 hs' },
         {recurso: 'cicburzaco', dow: 1, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:30 hs' },
-        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
-        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:30 hs' },
-        {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:45 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:15 hs' },
         {recurso: 'cicburzaco', dow: 2, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:30 hs' },
-        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
-        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:30 hs' },
-        {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:45 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:15 hs' },
         {recurso: 'cicburzaco', dow: 3, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:30 hs' },
-        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
-        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:30 hs' },
-        {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:45 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:15 hs' },
         {recurso: 'cicburzaco', dow: 4, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:30 hs' },
-        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:00 hs' },
-        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:30 hs' },
-        {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 11:45 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 11, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:00 hs' },
+        {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:15 hs' },
         {recurso: 'cicburzaco', dow: 5, hora: 12, slug: 'UNIDAD DE FORTALECIM FAMILIAR BURZACO 12:30 hs' },
         
-        // Don Orione Inicia 13:00 INICIA 13:00 CUPO 150
-        {recurso: 'donorione', dow: 1, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
-        {recurso: 'donorione', dow: 1, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
-        {recurso: 'donorione', dow: 1, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
-        {recurso: 'donorione', dow: 2, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
-        {recurso: 'donorione', dow: 2, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
-        {recurso: 'donorione', dow: 2, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
-        {recurso: 'donorione', dow: 3, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
-        {recurso: 'donorione', dow: 3, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
-        {recurso: 'donorione', dow: 3, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
-        {recurso: 'donorione', dow: 4, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
-        {recurso: 'donorione', dow: 4, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
-        {recurso: 'donorione', dow: 4, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
-        {recurso: 'donorione', dow: 5, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
-        {recurso: 'donorione', dow: 5, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
-        {recurso: 'donorione', dow: 5, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
 
         // CIC Mármol Cupo 200 Inicia 14:00 CUPO 200
         {recurso: 'cicmarmol', dow: 1, hora: 13, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 12:00 hs' },
@@ -711,6 +696,37 @@ exports.createInitialData = function (){
         {recurso: 'cicmarmol', dow: 5, hora: 13, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 12:30 hs' },
         {recurso: 'cicmarmol', dow: 5, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 13:00 hs' },
         {recurso: 'cicmarmol', dow: 5, hora: 14, slug: 'CEN INTEG COMUNITARIA J. MÁRMOL 13:30 hs' },
+
+        // Don Orione Inicia 13:00 INICIA 13:00 CUPO 150
+        {recurso: 'donorione', dow: 1, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 1, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 1, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 2, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 2, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 2, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 3, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 3, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 3, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 4, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 4, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 4, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
+        {recurso: 'donorione', dow: 5, hora: 13, slug: 'CIC DON ORIONE 13:00 hs' },
+        {recurso: 'donorione', dow: 5, hora: 13, slug: 'CIC DON ORIONE 13:30 hs' },
+        {recurso: 'donorione', dow: 5, hora: 14, slug: 'CIC DON ORIONE 14:00 hs' },
+
+              // malvinas
+        {recurso: 'cicmalvinas', dow: 1, hora: 14, slug: 'DEL MALVINAS ARG 14:00 hs' },
+        {recurso: 'cicmalvinas', dow: 1, hora: 14, slug: 'DEL MALVINAS ARG 14:30 hs' },
+        {recurso: 'cicmalvinas', dow: 2, hora: 14, slug: 'DEL MALVINAS ARG 14:00 hs' },
+        {recurso: 'cicmalvinas', dow: 2, hora: 14, slug: 'DEL MALVINAS ARG 14:30 hs' },
+        {recurso: 'cicmalvinas', dow: 3, hora: 14, slug: 'DEL MALVINAS ARG 14:00 hs' },
+        {recurso: 'cicmalvinas', dow: 3, hora: 14, slug: 'DEL MALVINAS ARG 14:30 hs' },
+        {recurso: 'cicmalvinas', dow: 4, hora: 14, slug: 'DEL MALVINAS ARG 14:00 hs' },
+        {recurso: 'cicmalvinas', dow: 4, hora: 14, slug: 'DEL MALVINAS ARG 14:30 hs' },
+        {recurso: 'cicmalvinas', dow: 5, hora: 14, slug: 'DEL MALVINAS ARG 14:00 hs' },
+        {recurso: 'cicmalvinas', dow: 5, hora: 14, slug: 'DEL MALVINAS ARG 14:30 hs' },
+
+
         ]
     }
 

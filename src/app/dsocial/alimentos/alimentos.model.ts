@@ -419,7 +419,8 @@ const depositosOptList = [
 	{val: 'cicglew',      type: 'cic',             label: 'CIC Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
 	{val: 'cicburzaco',   type: 'cid',             label: 'UFF Burzaco',   locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
 	{val: 'cicmarmol',    type: 'cic',             label: 'CIC J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
-  
+	{val: 'cicmalvinas',  type: 'cic',             label: 'CIC Malvinas',  locacion:	'Pasteur y Lapacho - Malvinas',  telefono: '3740-0875'},
+
 	{val: 'regionvi',     type:'Región VI-Lomas',  label: 'Región VI-Lomas' , locacion: 'erezcano',  telefono: '11 2222 3333'},
 	{val: 'envio',        type:'Envío domicilio',  label: 'Envío domicilio' , locacion: 'erezcano',  telefono: '11 2222 3333'},
   

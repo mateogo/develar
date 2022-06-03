@@ -19,6 +19,7 @@ const delegaciones = [
 {val: 'solano',       type: 'delegacion', name: 'Delegación San Fco Solano',   locacion:	'Lirio 423',                 telefono: '4277-5203'},
 {val: 'sanjose',      type: 'delegacion', name: 'Delegación San José',         locacion:	'Salta 1915',                telefono: '4211-1007'},
 {val: 'cicglew',      type: 'cic',        name: 'Centro Comunitario Glew',     locacion:	'Garibaldi 220, entre Beruti y Lestrade',  telefono: '3740-0875'},
+{val: 'cicmalvinas',  type: 'cic',        name: 'Centro Comunitario Malvinas', locacion:	'Pasteur y Lapacho - Malvinas',  telefono: '3740-0875'},
 //{val: 'cic burzaco',   type: 'cic',        name: 'Centro Comunitario Burzaco',  locacion:	'Alsina y Martin Fierro, Barrio el Gaucho', telefono: '4238-2538'},
 
 ];

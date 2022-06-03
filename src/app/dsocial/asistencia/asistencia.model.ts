@@ -385,6 +385,7 @@ const entregaDesdeOptList: Array<any> = [
 		{val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
 		{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar', locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
 		{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
+		{val: 'cicmalvinas',  type: 'cic',        label: 'Centro Comunitario Malvinas',  locacion:	'Pasteur y Lapacho - Malvinas',  telefono: '3740-0875'},
 			
 			
 
@@ -438,7 +439,7 @@ const delegacionesOptList = [
 	{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Cerretti y España - Burzaco',          telefono: '4299-2273'},
 	{val: 'donorione',    type: 'cic',        label: 'Centro Comunitario Don Orione',        locacion:	'Eva Peron y Río Colorado',              telefono: '4268-5419'},
 	{val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol', locacion:	'Frías y San Luis',                          telefono: '4291-1066'},
-
+	{val: 'cicmalvinas',  type: 'cic',        label: 'Centro Comunitario Malvinas',  locacion:	'Pasteur y Lapacho - Malvinas',  telefono: '3740-0875'},
 	//{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Alsina y Martín Fierro - Burzaco',          telefono: '4299-2273'},
 	
 ];
