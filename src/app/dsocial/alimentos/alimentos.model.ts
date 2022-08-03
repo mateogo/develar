@@ -417,7 +417,7 @@ const depositosOptList = [
   
 	{val: 'secretaria',   type: 'secretaria',      label: 'Secretaría Erézcano',                   locacion:	'Erézcano 1252',               telefono: '4293-4299'},
 	{val: 'cicglew',      type: 'cic',             label: 'CIC Glew',      locacion:	'Garibaldi 220, entre Berutti y Lestrade',    telefono: '3740-0875'},
-	{val: 'cicburzaco',   type: 'cid',             label: 'UFF Burzaco',   locacion:	'Cerretti y España - Burzaco', telefono: '4299-2273'},
+	{val: 'cicburzaco',   type: 'cid',             label: 'CIC Burzaco',   locacion:	'Martín Fierro 750 (y Alsina) - Burzaco', telefono: '4299-2273'},
 	{val: 'cicmarmol',    type: 'cic',             label: 'CIC J. Marmol', locacion:	'Frías y San Luis',            telefono: '4291-1066'},
 	{val: 'cicmalvinas',  type: 'cic',             label: 'CIC Malvinas',  locacion:	'Pasteur y Lapacho - Malvinas',  telefono: '3740-0875'},
 
