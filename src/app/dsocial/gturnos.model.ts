@@ -8,7 +8,7 @@ const delegaciones = [
 
 {val: 'burzaco',      type: 'delegacion', name: 'Delegación Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
 {val: 'claypole',     type: 'delegacion', name: 'Delegación Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
-{val: 'donorione',    type: 'delegacion', name: 'CIC Don Orione',              locacion:	'Eva Perón y Río Colorado', telefono: '4268-5419'},
+{val: 'donorione',    type: 'delegacion', name: 'CIC Don Orione',              locacion:	'Río Carcaraña 688 y Av. Eva Perón', telefono: '4268-5419'},
 {val: 'glew',         type: 'delegacion', name: 'Delegación Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 {val: 'josemarmol',   type: 'delegacion', name: 'Delegación José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
 //{val: 'longchamps',   type: 'delegacion', name: 'Delegación Longchamps',       locacion:	'Av. Longchamps y vías del FFCC', telefono: '4293-4299'},

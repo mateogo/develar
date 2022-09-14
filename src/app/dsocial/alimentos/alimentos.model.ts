@@ -405,7 +405,7 @@ const depositosOptList = [
 	{val: 'almacen',      type: 'Galpón',          label: 'Galpón'                    , locacion: 'erezcano',  telefono: '11 2222 3333'},
 	{val: 'burzaco',      type: 'delegacion',      label: 'Del Burzaco',          locacion:	'9 de Julio y Roca', telefono: '4299-2273'},
 	{val: 'claypole',     type: 'delegacion',      label: 'Del Claypole',         locacion:	'17 de Octubre 920',         telefono: '4291-1944'},
-	{val: 'donorione',    type: 'delegacion',      label: 'CIC Don Orione',       locacion:	'Eva Perón y Río Colorado', telefono: '4268-5419'},
+	{val: 'donorione',    type: 'delegacion',      label: 'CIC Don Orione',       locacion:	'Río Carcaraña 688 y Av. Eva Perón', telefono: '4268-5419'},
 	{val: 'glew',         type: 'delegacion',      label: 'Del Glew',             locacion:	'Sarmiento y Alem',          telefono: '(02224)420792'},
 	{val: 'josemarmol',   type: 'delegacion',      label: 'Del José Marmol',      locacion:	'Bynnon y 20 de Septiembre', telefono: '4291-1066'},
 	{val: 'longchamps',   type: 'delegacion',      label: 'Cám Comer Longchamps',locacion:	'Burgward 1030',         telefono: '4293-4299'},
