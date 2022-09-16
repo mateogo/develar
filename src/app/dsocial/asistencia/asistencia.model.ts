@@ -433,8 +433,7 @@ const delegacionesOptList_old = [
 ];
 // delgaciones desde donde se entrega asistencia social directa
 const delegacionesOptList = [
-
-	//{val: 'secretaria',   type: 'secretaria', label: 'Secretaría Desarrollo Social', locacion:	'Erézcano 1252',                        telefono: '4293-4299'},
+	{ val: 'secretaria',   type: 'secretaria', label: 'Secretaría Desarrollo Social',  locacion: 'Erézcano 1252',                           telefono: '4293-4299'},
 	{ val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',       locacion: 'Garibaldi 220, entre Berutti y Lestrade', telefono: '3740-0875'},
 	//{val: 'glew',        type: 'delegacion', label: 'Delegación Glew',               locacion: 'Sarmiento y Alem',                        telefono: '(02224)420792'},
 	{ val: 'cicburzaco',   type: 'cid',        label: 'Centro Comunitario Burzaco',    locacion: 'Martín Fierro 750 (y Alsina) - Burzaco',  telefono: '4299-2273'},
