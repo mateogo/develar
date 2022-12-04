@@ -434,12 +434,13 @@ const delegacionesOptList_old = [
 // delgaciones desde donde se entrega asistencia social directa
 const delegacionesOptList = [
 	{ val: 'secretaria',   type: 'secretaria', label: 'Secretaría Desarrollo Social',  locacion: 'Erézcano 1252',                           telefono: '4293-4299'},
-	{ val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',       locacion: 'Garibaldi 220, entre Berutti y Lestrade', telefono: '3740-0875'},
+	// { val: 'cicglew',      type: 'cic',        label: 'Centro Comunitario Glew',       locacion: 'Garibaldi 220, entre Berutti y Lestrade', telefono: '3740-0875'},
+	// { val: 'cicburzaco',   type: 'cid',        label: 'Centro Comunitario Burzaco',    locacion: 'Martín Fierro 750 (y Alsina) - Burzaco',  telefono: '4299-2273'},
+	// { val: 'donorione',    type: 'cic',        label: 'Centro Comunitario Don Orione', locacion: 'Río Carcaraña 688 y Av. Eva Perón',                telefono: '4268-5419'},
+	// { val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol',  locacion: 'Frías y San Luis',                        telefono: '4291-1066'},
+	// { val: 'cicmalvinas',  type: 'cic',        label: 'Centro Comunitario Malvinas',   locacion: 'Pasteur y Lapacho - Malvinas',            telefono: '3740-0875'},
+
 	//{val: 'glew',        type: 'delegacion', label: 'Delegación Glew',               locacion: 'Sarmiento y Alem',                        telefono: '(02224)420792'},
-	{ val: 'cicburzaco',   type: 'cid',        label: 'Centro Comunitario Burzaco',    locacion: 'Martín Fierro 750 (y Alsina) - Burzaco',  telefono: '4299-2273'},
-	{ val: 'donorione',    type: 'cic',        label: 'Centro Comunitario Don Orione', locacion: 'Río Carcaraña 688 y Av. Eva Perón',                telefono: '4268-5419'},
-	{ val: 'cicmarmol',    type: 'cic',        label: 'Centro Comunitario J. Marmol',  locacion: 'Frías y San Luis',                        telefono: '4291-1066'},
-	{ val: 'cicmalvinas',  type: 'cic',        label: 'Centro Comunitario Malvinas',   locacion: 'Pasteur y Lapacho - Malvinas',            telefono: '3740-0875'},
 	//{val: 'cicburzaco',   type: 'cid',        label: 'Unidad de Fortalecim Familiar',locacion:	'Alsina y Martín Fierro - Burzaco',     telefono: '4299-2273'},	
 ];
 	

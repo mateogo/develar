@@ -581,7 +581,7 @@ export class TurnoValidateComponent implements OnInit {
   	let form: FormGroup;
 
     form = this.fb.group({
-      delegacion:        [null],
+      delegacion:        [null, Validators.required],
     });
 
     return form;
