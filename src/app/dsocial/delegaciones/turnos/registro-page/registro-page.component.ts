@@ -10,6 +10,7 @@ import { Person, UpdatePersonEvent, personModel } from '../../../../entities/per
 import { User } from '../../../../entities/user/user';
 
 import { DsocialModel, Ciudadano, SectorAtencion } from '../../../dsocial.model';
+import { Turno, TurnoAction, TurnosModel }  from '../../../../dsocial/turnos/turnos.model';
 
 import { RecordCard, SubCard  } from '../../../../site-minimal/recordcard.model';
 
@@ -142,6 +143,7 @@ export class RegistroPageComponent implements OnInit {
 
 
   validatePersonEvent(e: UpdatePersonEvent){
+    console.log('ACTION: [%s]',e.action )
     if(e.action === NEXT){
       this.moveToFailedAndGoodByeStep()
     }
@@ -179,12 +181,18 @@ export class RegistroPageComponent implements OnInit {
   }
 
   private createNuevoTurnoMostrador(){
+    // c onsole.log(this.readyToCreateNewTurno())
     if(this.readyToCreateNewTurno()){
 
       this.dsCtrl.turnosByPersonId$(this.person, 'altaweb').subscribe(turnos =>{
-        if(turnos && turnos.length){
+        if(this.verifyIfHasTurno(turnos)){
+          // ya tiene turno
+          //c onsole.log('ya tiene turno...');
+          //c onsole.dir(turnos)
+
 
         }else{
+            console.log('nuevo turno')
             this.dsCtrl.turnoCreate('turnos', 'ayudadirecta', this.currentSector.val, this.peso, this.person).subscribe(turno =>{
 
             })
@@ -193,6 +201,15 @@ export class RegistroPageComponent implements OnInit {
       })
 
     }
+
+  }
+
+  private verifyIfHasTurno(turnos:Turno[]):boolean{
+    if(!(turnos && turnos.length)) return false;
+    let turno = turnos[turnos.length-1];
+    if((Date.now() - turno.ts_prog)> 3*24*60*60*1000) return false;
+
+    return true;
 
   }
 

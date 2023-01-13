@@ -132,13 +132,15 @@ export class TurnoValidateComponent implements OnInit {
   		if(this.hasRestricciones()){
   			this.hasFailedShow = true;
         this.submited = false;
+  			this.turnoShow = false;
+
 
   		}else {
   			this.assignTurno();
 
   		}
 
-  	},800)
+  	},1800)
 
 
   }
@@ -545,6 +547,8 @@ export class TurnoValidateComponent implements OnInit {
 
 
   private emitFailedEvent(failed: any){
+    console.log('Turno ALTA WEB')
+    console.dir(failed)
     if(failed.reporta){
       this.person.alerta = failed.type + ':: ' + failed.slug;
       this.person.followUp = 'altaweb';
